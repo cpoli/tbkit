@@ -1,4 +1,4 @@
-# tbkit — a Tight-Binding package for research and education
+# tbkit — a Tight-Binding package
 
 [![tests](https://github.com/cpoli/tbkit/actions/workflows/tests.yml/badge.svg)](https://github.com/cpoli/tbkit/actions/workflows/tests.yml)
 [![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](https://cpoli.github.io/tbkit/coverage/)
