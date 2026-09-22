@@ -157,6 +157,18 @@ html_theme = 'pydata_sphinx_theme'
 # documentation.
 html_theme_options = {
     'github_url': 'https://github.com/cpoli/tbkit',
+    # PyPI has no built-in shortcut option (unlike 'github_url'), so it
+    # goes through icon_links instead; icon is a locally hosted copy of
+    # the official PyPI mark (simple-icons) rather than a live external
+    # URL, so the navbar doesn't depend on a third-party CDN staying up.
+    'icon_links': [
+        {
+            'name': 'PyPI',
+            'url': 'https://pypi.org/project/tbkit/',
+            'icon': '_static/images/pypi.svg',
+            'type': 'local',
+        },
+    ],
     # No 'theme-switcher': tbkit is light-mode only, unlike the sibling
     # physicskit/mathematicskit/chemistrykit docs (which default to dark).
     # Omitting the switcher removes the user-facing way to pick dark/auto.

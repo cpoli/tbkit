@@ -60,6 +60,13 @@ research prototyping.
 Requires Python >= 3.10.
 
 ```bash
+pip install tbkit
+```
+
+or, for an editable install from a clone (e.g. to run the test suite or
+work on tbkit itself):
+
+```bash
 git clone https://github.com/cpoli/tbkit
 cd tbkit
 pip install -e .
