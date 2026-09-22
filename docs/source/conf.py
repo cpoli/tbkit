@@ -157,7 +157,10 @@ html_theme = 'pydata_sphinx_theme'
 # documentation.
 html_theme_options = {
     'github_url': 'https://github.com/cpoli/tbkit',
-    'navbar_end': ['theme-switcher', 'navbar-icon-links'],
+    # No 'theme-switcher': tbkit is light-mode only, unlike the sibling
+    # physicskit/mathematicskit/chemistrykit docs (which default to dark).
+    # Omitting the switcher removes the user-facing way to pick dark/auto.
+    'navbar_end': ['navbar-icon-links'],
     'show_toc_level': 2,
     'navigation_with_keys': True,
     'navigation_depth': 2,
@@ -178,6 +181,19 @@ html_theme_options = {
 html_context = {
     'default_mode': 'light',
 }
+
+# `default_mode` above only supplies the fallback used the first time a
+# visitor's browser has no theme preference stored at all. GitHub Pages
+# serves every cpoli.github.io/<project>/ site from the *same* origin,
+# and the theme's dark/light choice is stored in `localStorage`, which is
+# shared across the whole origin -- so a visitor who picked (or was
+# defaulted to) dark mode on a sibling project's docs will land on
+# tbkit's docs already in dark mode, `default_mode` notwithstanding.
+# Since tbkit has no theme-switcher (see above) there is no supported way
+# for a visitor to end up in dark mode on purpose, so force_light.js
+# unconditionally overwrites the stored preference back to light on every
+# page load.
+html_js_files = ['js/force_light.js']
 
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
