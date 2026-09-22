@@ -1,11 +1,12 @@
 # tbkit — a Tight-Binding package for research and education
 
 [![tests](https://github.com/cpoli/tbkit/actions/workflows/tests.yml/badge.svg)](https://github.com/cpoli/tbkit/actions/workflows/tests.yml)
+[![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](https://cpoli.github.io/tbkit/coverage/)
 [![docs](https://img.shields.io/badge/docs-cpoli.github.io%2Ftbkit-blue.svg)](https://cpoli.github.io/tbkit/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](pyproject.toml)
 [![License: BSD 3-Clause](https://img.shields.io/badge/License-BSD--3--Clause-blue.svg)](LICENSE)
 
-![tbkit logo](docs/source/_static/image/tbkit_logo.png)
+![tbkit logo](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/image/tbkit_logo.png)
 
 **tbkit** is a Python package to build and solve Tight-Binding models, written
 in vectorized NumPy/SciPy. It aims to make the mechanics of Tight-Binding
@@ -78,6 +79,9 @@ or, to also install the tools needed to run the test suite:
 pip install -e ".[test]"
 pytest tests/
 ```
+
+The test suite has 100% line coverage of the `tbkit` package; see the
+[HTML coverage report](https://cpoli.github.io/tbkit/coverage/).
 
 ## Quick start
 
