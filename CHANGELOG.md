@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.2.1
+
+First release published to PyPI (`pip install tbkit`).
+
+### Fixed
+- README's logo image used a path relative to the repository
+  (`docs/source/_static/image/tbkit_logo.png`), which GitHub resolves
+  against the repo automatically but PyPI does not -- PyPI renders the
+  README standalone, so the logo was broken on the PyPI project page.
+  Switched to an absolute `raw.githubusercontent.com` URL, which
+  renders correctly on both.
+
+### Added
+- PyPI links: an icon in the docs navbar next to GitHub, and a link
+  from the docs home page and the README.
+- A test coverage badge/link in the README, pointing at an HTML
+  coverage report (100% line coverage) published alongside the docs.
+
 ## 0.2.0
 
 **tbkit** now runs on current Python/NumPy/SciPy, and gained a new
