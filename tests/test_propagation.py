@@ -97,7 +97,14 @@ class TestPropagation(unittest.TestCase):
 
     def test_get_animation_non_posix(self):
         prop = build_propagated()
-        with mock.patch('os.name', 'nt'):
+        # Patch the `os` reference as seen by `tbkit.propagation`, not the
+        # real `os` module: patching the latter (`os.name`) is process-wide
+        # for the duration of the `with` block, and matplotlib's font
+        # manager -- invoked here via the colorbar's tick labels -- reads
+        # the *real* `os.name` too, so it would try to build a WindowsPath
+        # for a font file and crash with NotImplementedError on Linux/macOS.
+        with mock.patch('tbkit.propagation.os') as mock_os:
+            mock_os.name = 'nt'
             ani = prop.get_animation()
         self.assertEqual(ani.__class__.__name__, 'FuncAnimation')
 
