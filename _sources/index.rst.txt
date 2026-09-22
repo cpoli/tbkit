@@ -65,7 +65,8 @@ Start with the :doc:`tutorial`, browse the :doc:`example gallery
     * A small library of ready-made lattices.
     * Time propagation.
 
-**tbkit** is available at https://github.com/cpoli/tbkit
+**tbkit** is available at https://github.com/cpoli/tbkit and on PyPI at
+https://pypi.org/project/tbkit/
 
 
 To use **tbkit**:
