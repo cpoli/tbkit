@@ -1,6 +1,7 @@
 # tbkit — a Tight-Binding package for research and education
 
 [![tests](https://github.com/cpoli/tbkit/actions/workflows/tests.yml/badge.svg)](https://github.com/cpoli/tbkit/actions/workflows/tests.yml)
+[![docs](https://img.shields.io/badge/docs-cpoli.github.io%2Ftbkit-blue.svg)](https://cpoli.github.io/tbkit/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](pyproject.toml)
 [![License: BSD 3-Clause](https://img.shields.io/badge/License-BSD--3--Clause-blue.svg)](LICENSE)
 
@@ -196,6 +197,8 @@ flakes, kagome/Lieb/dumbbell lattices, disorder, strain, time propagation)
 predating the 0.2 API refresh below.
 
 ## Documentation
+
+Rendered docs (tutorial, API reference, example gallery): https://cpoli.github.io/tbkit/
 
 * [`docs/source/tutorial.rst`](docs/source/tutorial.rst) -- a narrative walkthrough of the
   package, from building a lattice through topology, spin-orbit coupling,
