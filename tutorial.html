@@ -1,0 +1,745 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Tutorial &#8212; tbkit 0.2.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+
+    <script src="_static/documentation_options.js?v=95e61db4"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/sg-tags.js?v=d80f6fa4"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorial';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="History" href="history.html" />
+    <link rel="prev" title="tbkit" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/tbkit_logo.png" class="logo__image only-light" alt="tbkit logo"/>
+    <img src="_static/tbkit_logo.png" class="logo__image only-dark pst-js-only" alt="tbkit logo"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="tbkit.html">
+    tbkit package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="tbkit.html">
+    tbkit package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Tutorial</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="tutorial">
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Link to this heading">#</a></h1>
+<p>This walks through <strong>tbkit</strong>’s pieces in the order you would normally use
+them: define a lattice, build a real-space Tight-Binding model and
+diagonalize it, build the same model’s Bloch Hamiltonian in reciprocal
+space, then layer on more physics (disorder, strain, a magnetic field,
+spin-orbit coupling, topology, edge states). Runnable versions of most of
+this live in the <code class="docutils literal notranslate"><span class="pre">examples/</span></code> directory, referenced throughout.</p>
+<p>A Tight-Binding Hamiltonian describes electrons hopping between localized
+orbitals:</p>
+<div class="math notranslate nohighlight">
+\[H = \sum_i \epsilon_i c_i^\dagger c_i + \sum_{i \neq j} t_{ij}\, c_i^\dagger c_j\]</div>
+<p>where <span class="math notranslate nohighlight">\(\epsilon_i\)</span> are onsite energies and <span class="math notranslate nohighlight">\(t_{ij}\)</span> are
+hopping amplitudes between orbitals <em>i</em> and <em>j</em>. Everything in <strong>tbkit</strong>
+is about building this matrix (or, in reciprocal space, its Bloch analog
+<span class="math notranslate nohighlight">\(H(\mathbf{k})\)</span>) and then doing something with it: diagonalizing
+it, plotting it, evolving a wavepacket under it.</p>
+<section id="building-a-lattice">
+<h2>Building a lattice<a class="headerlink" href="#building-a-lattice" title="Link to this heading">#</a></h2>
+<p><a class="reference internal" href="tbkit.html#tbkit.lattice.Lattice" title="tbkit.lattice.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.lattice.Lattice</span></code></a> defines the geometry: a unit cell (a list of
+orbitals, each with a sublattice <em>tag</em> and a position) and one or two
+primitive vectors:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.lattice</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lattice</span>
+
+<span class="n">unit_cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)}]</span>
+<span class="n">prim_vec</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)]</span>
+<span class="n">lat</span> <span class="o">=</span> <span class="n">Lattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="n">unit_cell</span><span class="p">,</span> <span class="n">prim_vec</span><span class="o">=</span><span class="n">prim_vec</span><span class="p">)</span>
+<span class="n">lat</span><span class="o">.</span><span class="n">get_lattice</span><span class="p">(</span><span class="n">n1</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n2</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>   <span class="c1"># 6x6 unit cells -&gt; 36 sites</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">lat.coor</span></code> now holds every site’s position and tag. Sculpt the shape
+with methods like <code class="docutils literal notranslate"><span class="pre">remove_sites</span></code>, <code class="docutils literal notranslate"><span class="pre">ellipse_in</span></code>/<code class="docutils literal notranslate"><span class="pre">ellipse_out</span></code>,
+<code class="docutils literal notranslate"><span class="pre">boundary_line</span></code>, or by adding/subtracting two lattices (<code class="docutils literal notranslate"><span class="pre">lat1</span> <span class="pre">+</span> <span class="pre">lat2</span></code>).
+<a class="reference internal" href="tbkit.html#module-tbkit.lattices" title="tbkit.lattices"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.lattices</span></code></a> has a handful of common lattices (chain, square,
+triangular, honeycomb, kagome, Lieb) ready to use instead of writing out
+<em>unit_cell</em>/<em>prim_vec</em> by hand.</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">lat.plot()</span></code> to look at what you built, and
+<code class="docutils literal notranslate"><span class="pre">examples/examples_lattice.ipynb</span></code> for many more shapes.</p>
+</section>
+<section id="real-space-build-and-solve-a-finite-system">
+<h2>Real space: build and solve a finite system<a class="headerlink" href="#real-space-build-and-solve-a-finite-system" title="Link to this heading">#</a></h2>
+<p><a class="reference internal" href="tbkit.html#tbkit.system.System" title="tbkit.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.system.System</span></code></a> takes a <em>Lattice</em> and builds the Hamiltonian
+from a list of hoppings:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.system</span><span class="w"> </span><span class="kn">import</span> <span class="n">System</span>
+
+<span class="n">sys</span> <span class="o">=</span> <span class="n">System</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mf">0.</span><span class="p">})</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}])</span>   <span class="c1"># nearest-neighbor hopping t=1</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">get_ham</span><span class="p">()</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">get_eig</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="p">)</span>   <span class="c1"># eigenenergies, sorted</span>
+</pre></div>
+</div>
+<p>Hoppings are addressed by neighbor order (<code class="docutils literal notranslate"><span class="pre">'n':</span> <span class="pre">1</span></code> is nearest-neighbor,
+<code class="docutils literal notranslate"><span class="pre">'n':</span> <span class="pre">2</span></code> next-nearest, …; <code class="docutils literal notranslate"><span class="pre">sys.print_distances()</span></code> lists them), and
+optionally further filtered by bond angle or by sublattice-pair tag –
+see <a class="reference internal" href="tbkit.html#tbkit.system.System.set_hopping" title="tbkit.system.System.set_hopping"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.system.System.set_hopping()</span></code></a>’s docstring for the full
+mini-language. For anything that doesn’t fit that pattern, <code class="docutils literal notranslate"><span class="pre">i,j</span></code>-indexed
+hoppings work directly on the actual real-space site indices printed by
+<code class="docutils literal notranslate"><span class="pre">lat.plot(plt_index=True)</span></code>. Hamiltonians can be Hermitian or, if you fill
+in both the <em>i&lt;j</em> and <em>i&gt;j</em> parts independently, non-Hermitian.</p>
+<p><code class="docutils literal notranslate"><span class="pre">tbkit.plot.Plot</span></code> plots the lattice, the spectrum, sublattice
+polarization, eigenstate intensities, and the density of states
+(<a class="reference internal" href="tbkit.html#tbkit.plot.Plot.dos" title="tbkit.plot.Plot.dos"><code class="xref py py-meth docutils literal notranslate"><span class="pre">dos()</span></code></a>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.plot</span><span class="w"> </span><span class="kn">import</span> <span class="n">Plot</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">Plot</span><span class="p">(</span><span class="n">sys</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">spectrum</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">dos</span><span class="p">(</span><span class="n">broadening</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Every other example in this gallery reaches straight for matplotlib to plot a spectrum or a band structure by hand. tbkit.plot.Plot instead wraps the handful of plots that come up for any real-space model, directly from a System instance: the lattice itself (with or without its hoppings drawn on), the spectrum (optionally colored by sublattice polarization), the density of states, and an eigenstate&#x27;s spatial intensity."><img alt="" src="_images/sphx_glr_plot_visualizing_a_model_thumb.png" />
+<p><a class="reference internal" href="api/gallery/tight_binding/plot_visualizing_a_model.html"><span class="doc">Visualizing a Model: tbkit.plot.Plot</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Visualizing a Model: tbkit.plot.Plot</div>
+</div></div></section>
+<section id="reciprocal-space-bloch-hamiltonians-and-band-structures">
+<h2>Reciprocal space: Bloch Hamiltonians and band structures<a class="headerlink" href="#reciprocal-space-bloch-hamiltonians-and-band-structures" title="Link to this heading">#</a></h2>
+<p>A finite flake is one way to look at a lattice; the other is to keep it
+infinite and periodic, and work with its Bloch Hamiltonian
+<span class="math notranslate nohighlight">\(H(\mathbf{k})\)</span>. <a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace</span></code></a> builds it from a small
+set of <em>intra-unit-cell</em> hoppings, each tagged by which neighboring cell
+(<span class="math notranslate nohighlight">\(\mathbf{R} = n_1\mathbf{a}_1+n_2\mathbf{a}_2\)</span>) it connects to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">reciprocal_vectors</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.lattices</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">lattices</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">lat</span> <span class="o">=</span> <span class="n">lattices</span><span class="o">.</span><span class="n">honeycomb</span><span class="p">()</span>
+<span class="n">gra</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
+<span class="n">gra</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}])</span>
+</pre></div>
+</div>
+<p>Only one representative of each bond is needed – the reverse bond
+(<span class="math notranslate nohighlight">\(j\to i\)</span>, <span class="math notranslate nohighlight">\(\mathbf{R}\to-\mathbf{R}\)</span>) is added automatically
+as its Hermitian conjugate. Diagonalize at a single k-point with
+<code class="docutils literal notranslate"><span class="pre">get_ham</span></code>/<code class="docutils literal notranslate"><span class="pre">LA.eigh</span></code>, over an explicit set of k-points with
+<code class="docutils literal notranslate"><span class="pre">get_bands</span></code>, or along a path through high-symmetry points with
+<code class="docutils literal notranslate"><span class="pre">k_path</span></code> (<a class="reference internal" href="tbkit.html#tbkit.kspace.reciprocal_vectors" title="tbkit.kspace.reciprocal_vectors"><code class="xref py py-func docutils literal notranslate"><span class="pre">reciprocal_vectors()</span></code></a> gives the reciprocal
+lattice vectors to build that path from):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">b1</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">reciprocal_vectors</span><span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">prim_vec</span><span class="p">))</span>
+<span class="n">Gamma</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="n">b1</span> <span class="o">-</span> <span class="n">b2</span><span class="p">)</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="n">b1</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">gra</span><span class="o">.</span><span class="n">k_path</span><span class="p">([</span><span class="n">Gamma</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">Gamma</span><span class="p">],</span> <span class="n">nk</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">gra</span><span class="o">.</span><span class="n">plot_bands</span><span class="p">(</span><span class="n">node_labels</span><span class="o">=</span><span class="p">[</span><span class="sa">r</span><span class="s1">&#39;$\Gamma$&#39;</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$\Gamma$&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">gra.mesh_bands(nk)</span></code> samples a uniform mesh over the whole Brillouin
+zone instead (used internally by <code class="docutils literal notranslate"><span class="pre">plot_dos</span></code>, and for the topology tools
+below). See <code class="docutils literal notranslate"><span class="pre">examples/tight_binding/plot_graphene_bands.py</span></code>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A from-scratch walkthrough of tbkit&#x27;s two complementary ways of looking at a Tight-Binding model:"><img alt="" src="_images/sphx_glr_plot_graphene_bands_thumb.png" />
+<p><a class="reference internal" href="api/gallery/tight_binding/plot_graphene_bands.html"><span class="doc">Graphene: Real-Space Flake and Reciprocal-Space Bands</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Graphene: Real-Space Flake and Reciprocal-Space Bands</div>
+</div></div></section>
+<section id="disorder-strain-and-a-magnetic-field">
+<h2>Disorder, strain, and a magnetic field<a class="headerlink" href="#disorder-strain-and-a-magnetic-field" title="Link to this heading">#</a></h2>
+<p>On a <em>System</em>, <code class="docutils literal notranslate"><span class="pre">set_onsite_dis</span></code>/<code class="docutils literal notranslate"><span class="pre">set_hopping_dis</span></code> add uniform random
+disorder; <code class="docutils literal notranslate"><span class="pre">GrapheneSystem.set_hop_linear_strain</span></code> (in <a class="reference internal" href="tbkit.html#module-tbkit.graphene" title="tbkit.graphene"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.graphene</span></code></a>)
+applies triaxial strain. An orbital magnetic field is added via the
+Peierls substitution – each hopping amplitude gets multiplied by a phase
+equal to the line integral of the vector potential along the bond:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sys</span><span class="o">.</span><span class="n">set_hopping_manual</span><span class="p">(</span><span class="n">hop_dict</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">set_magnetic_field</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>   <span class="c1"># alpha = B/Phi_0, flux quanta per unit area</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">get_ham</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">set_peierls_phase</span></code> takes an arbitrary phase function for a
+non-uniform field or a different gauge. See
+<code class="docutils literal notranslate"><span class="pre">examples/magnetic_field/plot_magnetic_field.py</span></code> for an Aharonov-Bohm ring, where the
+spectrum is checked to be exactly periodic in the enclosed flux.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="tbkit applies a magnetic field via the Peierls substitution (~tbkit.system.System.set_peierls_phase / set_magnetic_field): each hopping amplitude gets multiplied by a phase equal to the line integral of the vector potential along the bond. This script builds a simple N-site ring threaded by a perpendicular field and reproduces the textbook Aharonov-Bohm result: the energy spectrum is periodic in the flux threading the ring, with period exactly one flux quantum."><img alt="" src="_images/sphx_glr_plot_magnetic_field_thumb.png" />
+<p><a class="reference internal" href="api/gallery/magnetic_field/plot_magnetic_field.html"><span class="doc">Aharonov-Bohm Ring: A Magnetic Field on a Lattice</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Aharonov-Bohm Ring: A Magnetic Field on a Lattice</div>
+</div></div></section>
+<section id="spin-and-spin-orbit-coupling">
+<h2>Spin and spin-orbit coupling<a class="headerlink" href="#spin-and-spin-orbit-coupling" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">KSpace(lat,</span> <span class="pre">spin=True)</span></code> gives every site a spin-1/2 degree of freedom
+(orbitals double: <code class="docutils literal notranslate"><span class="pre">2*i,</span> <span class="pre">2*i+1</span></code> are the up/down components of site <em>i</em>).
+<code class="docutils literal notranslate"><span class="pre">set_onsite</span></code>/<code class="docutils literal notranslate"><span class="pre">set_hopping</span></code> then also accept 2x2 matrices – built from
+<a class="reference internal" href="tbkit.html#tbkit.kspace.PAULI" title="tbkit.kspace.PAULI"><code class="xref py py-data docutils literal notranslate"><span class="pre">tbkit.kspace.PAULI</span></code></a>’s Pauli matrices – for spin-dependent terms:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">PAULI</span>
+
+<span class="n">kmele</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">spin</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">kmele</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
+                          <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
+                          <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}])</span>
+<span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]:</span>
+    <span class="n">kmele</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">lam</span><span class="o">*</span><span class="n">PAULI</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]}])</span>   <span class="c1"># intrinsic SOC</span>
+    <span class="n">kmele</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">lam</span><span class="o">*</span><span class="n">PAULI</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]}])</span>
+</pre></div>
+</div>
+<p>A plain number is still accepted for a spin-independent hopping (expanded
+to <code class="docutils literal notranslate"><span class="pre">t*PAULI['0']</span></code>), and onsite values accept a pair <code class="docutils literal notranslate"><span class="pre">(E_up,</span> <span class="pre">E_down)</span></code>
+for a Zeeman-like splitting.</p>
+</section>
+<section id="topology-berry-curvature-and-chern-numbers">
+<h2>Topology: Berry curvature and Chern numbers<a class="headerlink" href="#topology-berry-curvature-and-chern-numbers" title="Link to this heading">#</a></h2>
+<p>For a periodic (<em>KSpace</em>) model, <a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.chern_number" title="tbkit.kspace.KSpace.chern_number"><code class="xref py py-meth docutils literal notranslate"><span class="pre">chern_number()</span></code></a>
+gives the Chern number of a group of bands (an isolated band, or several
+occupied bands below a gap), computed by the gauge-invariant
+Fukui-Hatsugai-Suzuki lattice method – an integer, for a group of bands
+with a gap above and below it everywhere in the Brillouin zone:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chern</span> <span class="o">=</span> <span class="n">gra</span><span class="o">.</span><span class="n">chern_number</span><span class="p">(</span><span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nk</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>    <span class="c1"># ~0 for plain graphene (gapless!)</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.berry_curvature" title="tbkit.kspace.KSpace.berry_curvature"><code class="xref py py-meth docutils literal notranslate"><span class="pre">berry_curvature()</span></code></a> gives the underlying
+<span class="math notranslate nohighlight">\(\mathbf{k}\)</span>-resolved curvature (<code class="docutils literal notranslate"><span class="pre">chern_number</span></code> is just its sum,
+divided by <span class="math notranslate nohighlight">\(2\pi\)</span>). See <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_haldane_topology.py</span></code> for the
+Haldane model – the original Chern insulator – reproducing its
+topological phase transition (Chern number 1 in one phase, 0 in the
+other) as a sublattice mass term is tuned.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The Haldane model is honeycomb graphene with a complex next-nearest-neighbor hopping t_2 e^{i\phi} (breaking time-reversal symmetry, e.g. via a staggered flux pattern with zero net flux) and a staggered sublattice onsite energy \pm M (breaking inversion symmetry). It is the first model shown to realize a Chern insulator -- a gapped phase with quantized Hall conductance and no net magnetic field."><img alt="" src="_images/sphx_glr_plot_haldane_topology_thumb.png" />
+<p><a class="reference internal" href="api/gallery/topology/plot_haldane_topology.html"><span class="doc">The Haldane Model: Berry Curvature and a Topological Phase Transition</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Haldane Model: Berry Curvature and a Topological Phase Transition</div>
+</div></div></section>
+<section id="edge-states-cutting-a-ribbon">
+<h2>Edge states: cutting a ribbon<a class="headerlink" href="#edge-states-cutting-a-ribbon" title="Link to this heading">#</a></h2>
+<p>Bulk topology has a physical consequence at an edge. <a class="reference internal" href="tbkit.html#tbkit.kspace.ribbon" title="tbkit.kspace.ribbon"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.kspace.ribbon()</span></code></a>
+cuts a ribbon – periodic along one primitive vector, finite (open
+boundary, a chosen number of unit cells) along the other – out of any
+periodic model, keeping its hoppings intact:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">ribbon</span>
+
+<span class="n">list_hop</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
+                  <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
+                  <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}]</span>
+<span class="n">rib</span> <span class="o">=</span> <span class="n">ribbon</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">list_hop</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">rib</span><span class="o">.</span><span class="n">k_path</span><span class="p">([(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,),</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,)],</span> <span class="n">nk</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">rib</span><span class="o">.</span><span class="n">plot_bands</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For a zigzag graphene ribbon this reproduces the famous zero-energy edge
+flat band; cutting a ribbon from the Kane-Mele model above instead shows
+helical edge states crossing the bulk gap, protected by Kramers’ theorem.
+See <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_edge_states.py</span></code>, where both are checked numerically (the
+second also against a large real-space flake, as an independent
+cross-check).</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Cutting a periodic 2D model into a ribbon (periodic in one direction, finite/open in the other -- see tbkit.kspace.ribbon) is the standard way to see edge physics in a tight-binding band structure. Two classic examples:"><img alt="" src="_images/sphx_glr_plot_edge_states_thumb.png" />
+<p><a class="reference internal" href="api/gallery/topology/plot_edge_states.html"><span class="doc">Edge States on Ribbons</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Edge States on Ribbons</div>
+</div></div></section>
+<section id="where-next">
+<h2>Where next<a class="headerlink" href="#where-next" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="tbkit.html"><span class="doc">tbkit package</span></a> – the full API reference, generated from the source
+docstrings.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">examples/</span></code> in the repository – runnable scripts and notebooks for
+everything above, plus more (kagome, Lieb, propagation, …).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tests/</span></code> – every claim above (flat bands, Chern numbers, Kramers
+degeneracy, flux periodicity, …) is checked against an analytic or
+independently-computed result somewhere in the test suite; reading them
+alongside the code they test is a good way to see the underlying physics
+made concrete.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">tbkit</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="history.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">History</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-a-lattice">Building a lattice</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#real-space-build-and-solve-a-finite-system">Real space: build and solve a finite system</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reciprocal-space-bloch-hamiltonians-and-band-structures">Reciprocal space: Bloch Hamiltonians and band structures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disorder-strain-and-a-magnetic-field">Disorder, strain, and a magnetic field</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spin-and-spin-orbit-coupling">Spin and spin-orbit coupling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topology-berry-curvature-and-chern-numbers">Topology: Berry curvature and Chern numbers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#edge-states-cutting-a-ribbon">Edge states: cutting a ribbon</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-next">Where next</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/tutorial.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2026, Charles Poli.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,126 @@
+
+
+.. _sphx_glr_api_gallery_topology:
+
+Topology
+--------
+
+Topological band theory: the SSH model's bulk-boundary correspondence,
+the Haldane model's Chern-number phase transition and Berry curvature,
+zigzag graphene and Kane-Mele helical edge states cut from ribbons, the
+Thouless quantum pump's exactly quantized charge transport, and a
+topological (Chern) flat band on the kagome lattice.
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cutting a periodic 2D model into a ribbon (periodic in one direction, finite/open in the other -- see tbkit.kspace.ribbon) is the standard way to see edge physics in a tight-binding band structure. Two classic examples:">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_edge_states_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_edge_states`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Edge States on Ribbons</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The Haldane model is honeycomb graphene with a complex next-nearest-neighbor hopping t_2 e^{i\phi} (breaking time-reversal symmetry, e.g. via a staggered flux pattern with zero net flux) and a staggered sublattice onsite energy \pm M (breaking inversion symmetry). It is the first model shown to realize a Chern insulator -- a gapped phase with quantized Hall conductance and no net magnetic field.">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_haldane_topology_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_haldane_topology`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Haldane Model: Berry Curvature and a Topological Phase Transition</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The kagome lattice&#x27;s flat band (see /api/gallery/flat_bands/plot_flat_bands) isn&#x27;t isolated: at zero field it touches the middle dispersive band exactly at \Gamma (a symmetry-protected degeneracy, both at E=-2t). Making the nearest-neighbor hopping complex -- the same phase t e^{i\phi} on every bond, regardless of which of the lattice&#x27;s two triangle orientations it belongs to -- breaks the mirror symmetries protecting that degeneracy (while leaving the threefold rotation intact) and opens a genuine gap across the whole Brillouin zone. The resulting lower band is no longer exactly flat, but it stays topologically nontrivial: a Chern insulator with no net magnetic field, built entirely from a real, physically motivated mechanism -- the scalar spin chirality of a canted magnetic texture on the kagome lattice acts, for the itinerant electrons, exactly like this complex hopping (Ohgushi, Murakami, and Nagaosa, 2000).">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_kagome_chern_band_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_kagome_chern_band`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">A Topological Flat Band on the Kagome Lattice</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A 1D dimerized chain -- alternating intracell hopping v and intercell hopping w -- is the earliest and simplest example of a topological insulator: for w &gt; v the chain is topological and an open finite chain hosts a pair of exponentially localized, near-zero-energy edge modes, one per end. For v &gt; w it is trivial and no such modes exist. The bulk gap (2|v-w|) closes exactly at the transition, v = w.">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_ssh_model_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_ssh_model`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The SSH Model: Bulk-Boundary Correspondence</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Take the SSH model (plot_ssh_model) and cycle its two parameters -- the dimerization v-w and a staggered onsite potential -- slowly around a closed loop enclosing the SSH gap-closing point. Thouless showed that the charge transported around one full cycle is exactly quantized, equal to the Chern number of the (k,\phi) torus swept out by the cycle -- a 1D adiabatic pump is, in this sense, a slice through a 2D Chern insulator, with the pump parameter \phi playing the role of a second crystal momentum.">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_thouless_pump_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_thouless_pump`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Thouless Quantum Pump (Rice-Mele Model)</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /api/gallery/topology/plot_edge_states
+   /api/gallery/topology/plot_haldane_topology
+   /api/gallery/topology/plot_kagome_chern_band
+   /api/gallery/topology/plot_ssh_model
+   /api/gallery/topology/plot_thouless_pump
+

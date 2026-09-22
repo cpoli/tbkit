@@ -1,0 +1,72 @@
+
+
+.. _sphx_glr_api_gallery_tight_binding:
+
+Tight-Binding
+-------------
+
+The generic real-space and reciprocal-space machinery: a graphene flake
+diagonalized directly and its Bloch band structure along a k-path,
+including Wallace's 1947 linear (Dirac) dispersion near the K point;
+and :class:`tbkit.plot.Plot`'s lattice, spectrum, density-of-states, and
+eigenstate-intensity plots.
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A from-scratch walkthrough of tbkit&#x27;s two complementary ways of looking at a Tight-Binding model:">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_graphene_bands_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_graphene_bands`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Graphene: Real-Space Flake and Reciprocal-Space Bands</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Every other example in this gallery reaches straight for matplotlib to plot a spectrum or a band structure by hand. tbkit.plot.Plot instead wraps the handful of plots that come up for any real-space model, directly from a System instance: the lattice itself (with or without its hoppings drawn on), the spectrum (optionally colored by sublattice polarization), the density of states, and an eigenstate&#x27;s spatial intensity.">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_visualizing_a_model_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_visualizing_a_model`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Visualizing a Model: tbkit.plot.Plot</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /api/gallery/tight_binding/plot_graphene_bands
+   /api/gallery/tight_binding/plot_visualizing_a_model
+

@@ -1,0 +1,88 @@
+
+
+.. _sphx_glr_api_gallery_magnetic_field:
+
+Magnetic Field
+--------------
+
+The Peierls substitution on a lattice: an Aharonov-Bohm ring's
+flux-periodic spectrum, and the self-similar, fractal Hofstadter butterfly
+swept continuously in flux.
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sweeping the flux per plaquette continuously (rather than fixing it, as the Aharonov-Bohm ring example does) reveals a self-similar, fractal spectrum: at rational flux p/q, each Landau-level-like band splits into q sub-bands, and the whole pattern is periodic in the flux with period one flux quantum. This script sweeps set_magnetic_field over a finite square-lattice flake and plots the resulting &quot;butterfly&quot;.">
+
+.. only:: html
+
+  .. image:: /api/gallery/magnetic_field/images/thumb/sphx_glr_plot_hofstadter_butterfly_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/magnetic_field/plot_hofstadter_butterfly`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Hofstadter's Butterfly</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A weak, uniform magnetic field (~tbkit.system.System.set_magnetic_field, same Peierls substitution as the Aharonov-Bohm and Hofstadter-butterfly examples) quantizes a 2D band&#x27;s low-energy spectrum into discrete Landau levels. Two flakes, two very different ladders:">
+
+.. only:: html
+
+  .. image:: /api/gallery/magnetic_field/images/thumb/sphx_glr_plot_landau_levels_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/magnetic_field/plot_landau_levels`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Landau Levels: Square Lattice vs. Graphene</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="tbkit applies a magnetic field via the Peierls substitution (~tbkit.system.System.set_peierls_phase / set_magnetic_field): each hopping amplitude gets multiplied by a phase equal to the line integral of the vector potential along the bond. This script builds a simple N-site ring threaded by a perpendicular field and reproduces the textbook Aharonov-Bohm result: the energy spectrum is periodic in the flux threading the ring, with period exactly one flux quantum.">
+
+.. only:: html
+
+  .. image:: /api/gallery/magnetic_field/images/thumb/sphx_glr_plot_magnetic_field_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/magnetic_field/plot_magnetic_field`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Aharonov-Bohm Ring: A Magnetic Field on a Lattice</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /api/gallery/magnetic_field/plot_hofstadter_butterfly
+   /api/gallery/magnetic_field/plot_landau_levels
+   /api/gallery/magnetic_field/plot_magnetic_field
+

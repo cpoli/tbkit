@@ -1,0 +1,450 @@
+:orphan:
+
+Examples
+========
+
+Runnable scripts demonstrating the conceptual breakthroughs behind
+**tbkit**, from Bloch's band theory through the Thouless quantum pump --
+see :doc:`/history` for the full chronology each script illustrates.
+
+See also the narrative walkthrough: :doc:`/tutorial`.
+
+Each script in this gallery is self-contained and can be run directly with
+``python examples/<section>/<script>.py``. Every script also carries an
+RST module docstring as its title/description and uses ``# %%`` markers
+to split narrative text from code, which is exactly what Sphinx-Gallery
+renders into the pages below -- the script *is* the source of truth for
+what you see, not a copy of it. Every numeric claim a script's narrative
+makes is checked with an ``assert`` right there in the code -- nothing is
+asserted in the docs that isn't also verified in code.
+
+Sections
+--------
+
+- **tight_binding** -- the generic real-space/reciprocal-space
+  machinery: a graphene flake and its Bloch band structure, including
+  Wallace's 1947 linear (Dirac) dispersion near the K point.
+- **magnetic_field** -- the Peierls substitution: an Aharonov-Bohm ring's
+  flux-periodic spectrum, and the fractal Hofstadter butterfly swept
+  continuously in flux.
+- **disorder** -- Anderson localization: the Inverse Participation Ratio
+  vs. disorder strength, and an extended state next to a localized one.
+- **topology** -- topological band theory: the SSH model's bulk-boundary
+  correspondence, the Haldane model's Chern-number phase transition and
+  Berry curvature, zigzag graphene and Kane-Mele helical edge states on
+  ribbons, and the Thouless quantum pump's quantized charge transport.
+- **flat_bands** -- the kagome and Lieb lattices' exactly flat bands, the
+  natural home for strong-correlation physics via Lieb's theorem.
+- **dynamics** -- real-time wavepacket propagation: Bloch oscillations and
+  the Wannier-Stark ladder under a uniform tilt.
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+Disorder
+--------
+
+Anderson localization: the Inverse Participation Ratio vs. disorder
+strength, and an extended state shown side by side with a localized one.
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In a 1D (or 2D) tight-binding chain, any nonzero amount of uncorrelated onsite disorder exponentially localizes every eigenstate -- interference between all the scattering paths off the random potential, rather than merely reducing a mean free path. A state&#x27;s degree of localization is diagnosed by its Inverse Participation Ratio,">
+
+.. only:: html
+
+  .. image:: /api/gallery/disorder/images/thumb/sphx_glr_plot_anderson_localization_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/disorder/plot_anderson_localization`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Anderson Localization</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+Dynamics
+--------
+
+Real-time wavepacket propagation: Bloch oscillations and the
+Wannier-Stark ladder under a uniform lattice tilt.
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A uniform force on an electron in a periodic lattice does not produce uniform acceleration, the way it would in free space: Bloch&#x27;s 1929 argument (formalized by Wannier in 1960) shows the electron instead oscillates periodically in real space, with period T_B=2\pi/F (in units where \hbar=1). In real crystals scattering happens on a far shorter timescale than T_B, which is why the effect went unobserved for over 60 years -- it took artificial semiconductor superlattices (Waschke et al., 1993), with a far larger effective lattice constant, to see it directly. See /history for the full historical context.">
+
+.. only:: html
+
+  .. image:: /api/gallery/dynamics/images/thumb/sphx_glr_plot_bloch_oscillations_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/dynamics/plot_bloch_oscillations`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Bloch Oscillations and the Wannier-Stark Ladder</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+Flat Bands
+----------
+
+The kagome and Lieb lattices' exactly flat bands, the natural home for
+strong-correlation physics via Lieb's theorem.
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Some lattice geometries host a perfectly flat (dispersionless) band with uniform nearest-neighbor hopping alone -- destructive interference confines an eigenstate to a small loop of sites (a single hexagon on kagome, a single &quot;plus sign&quot; of four sites on Lieb) with exactly zero amplitude everywhere else, for every Bloch momentum simultaneously. A flat band&#x27;s macroscopic degeneracy is the natural home for strong-correlation physics: Lieb&#x27;s theorem guarantees the half-filled Hubbard model on a bipartite lattice with an unequal number of sites per sublattice (as Lieb&#x27;s own lattice has, 2 vs 1) is a ferromagnet, for any nonzero repulsion U -- one of the very few rigorous, non-perturbative results in the many-body problem. tbkit.lattices provides both lattices ready-made.">
+
+.. only:: html
+
+  .. image:: /api/gallery/flat_bands/images/thumb/sphx_glr_plot_flat_bands_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/flat_bands/plot_flat_bands`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Flat-Band Lattices: Kagome and Lieb</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+Magnetic Field
+--------------
+
+The Peierls substitution on a lattice: an Aharonov-Bohm ring's
+flux-periodic spectrum, and the self-similar, fractal Hofstadter butterfly
+swept continuously in flux.
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sweeping the flux per plaquette continuously (rather than fixing it, as the Aharonov-Bohm ring example does) reveals a self-similar, fractal spectrum: at rational flux p/q, each Landau-level-like band splits into q sub-bands, and the whole pattern is periodic in the flux with period one flux quantum. This script sweeps set_magnetic_field over a finite square-lattice flake and plots the resulting &quot;butterfly&quot;.">
+
+.. only:: html
+
+  .. image:: /api/gallery/magnetic_field/images/thumb/sphx_glr_plot_hofstadter_butterfly_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/magnetic_field/plot_hofstadter_butterfly`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Hofstadter's Butterfly</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A weak, uniform magnetic field (~tbkit.system.System.set_magnetic_field, same Peierls substitution as the Aharonov-Bohm and Hofstadter-butterfly examples) quantizes a 2D band&#x27;s low-energy spectrum into discrete Landau levels. Two flakes, two very different ladders:">
+
+.. only:: html
+
+  .. image:: /api/gallery/magnetic_field/images/thumb/sphx_glr_plot_landau_levels_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/magnetic_field/plot_landau_levels`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Landau Levels: Square Lattice vs. Graphene</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="tbkit applies a magnetic field via the Peierls substitution (~tbkit.system.System.set_peierls_phase / set_magnetic_field): each hopping amplitude gets multiplied by a phase equal to the line integral of the vector potential along the bond. This script builds a simple N-site ring threaded by a perpendicular field and reproduces the textbook Aharonov-Bohm result: the energy spectrum is periodic in the flux threading the ring, with period exactly one flux quantum.">
+
+.. only:: html
+
+  .. image:: /api/gallery/magnetic_field/images/thumb/sphx_glr_plot_magnetic_field_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/magnetic_field/plot_magnetic_field`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Aharonov-Bohm Ring: A Magnetic Field on a Lattice</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+Tight-Binding
+-------------
+
+The generic real-space and reciprocal-space machinery: a graphene flake
+diagonalized directly and its Bloch band structure along a k-path,
+including Wallace's 1947 linear (Dirac) dispersion near the K point;
+and :class:`tbkit.plot.Plot`'s lattice, spectrum, density-of-states, and
+eigenstate-intensity plots.
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A from-scratch walkthrough of tbkit&#x27;s two complementary ways of looking at a Tight-Binding model:">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_graphene_bands_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_graphene_bands`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Graphene: Real-Space Flake and Reciprocal-Space Bands</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Every other example in this gallery reaches straight for matplotlib to plot a spectrum or a band structure by hand. tbkit.plot.Plot instead wraps the handful of plots that come up for any real-space model, directly from a System instance: the lattice itself (with or without its hoppings drawn on), the spectrum (optionally colored by sublattice polarization), the density of states, and an eigenstate&#x27;s spatial intensity.">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_visualizing_a_model_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_visualizing_a_model`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Visualizing a Model: tbkit.plot.Plot</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+Topology
+--------
+
+Topological band theory: the SSH model's bulk-boundary correspondence,
+the Haldane model's Chern-number phase transition and Berry curvature,
+zigzag graphene and Kane-Mele helical edge states cut from ribbons, the
+Thouless quantum pump's exactly quantized charge transport, and a
+topological (Chern) flat band on the kagome lattice.
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cutting a periodic 2D model into a ribbon (periodic in one direction, finite/open in the other -- see tbkit.kspace.ribbon) is the standard way to see edge physics in a tight-binding band structure. Two classic examples:">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_edge_states_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_edge_states`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Edge States on Ribbons</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The Haldane model is honeycomb graphene with a complex next-nearest-neighbor hopping t_2 e^{i\phi} (breaking time-reversal symmetry, e.g. via a staggered flux pattern with zero net flux) and a staggered sublattice onsite energy \pm M (breaking inversion symmetry). It is the first model shown to realize a Chern insulator -- a gapped phase with quantized Hall conductance and no net magnetic field.">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_haldane_topology_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_haldane_topology`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Haldane Model: Berry Curvature and a Topological Phase Transition</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The kagome lattice&#x27;s flat band (see /api/gallery/flat_bands/plot_flat_bands) isn&#x27;t isolated: at zero field it touches the middle dispersive band exactly at \Gamma (a symmetry-protected degeneracy, both at E=-2t). Making the nearest-neighbor hopping complex -- the same phase t e^{i\phi} on every bond, regardless of which of the lattice&#x27;s two triangle orientations it belongs to -- breaks the mirror symmetries protecting that degeneracy (while leaving the threefold rotation intact) and opens a genuine gap across the whole Brillouin zone. The resulting lower band is no longer exactly flat, but it stays topologically nontrivial: a Chern insulator with no net magnetic field, built entirely from a real, physically motivated mechanism -- the scalar spin chirality of a canted magnetic texture on the kagome lattice acts, for the itinerant electrons, exactly like this complex hopping (Ohgushi, Murakami, and Nagaosa, 2000).">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_kagome_chern_band_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_kagome_chern_band`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">A Topological Flat Band on the Kagome Lattice</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A 1D dimerized chain -- alternating intracell hopping v and intercell hopping w -- is the earliest and simplest example of a topological insulator: for w &gt; v the chain is topological and an open finite chain hosts a pair of exponentially localized, near-zero-energy edge modes, one per end. For v &gt; w it is trivial and no such modes exist. The bulk gap (2|v-w|) closes exactly at the transition, v = w.">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_ssh_model_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_ssh_model`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The SSH Model: Bulk-Boundary Correspondence</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Take the SSH model (plot_ssh_model) and cycle its two parameters -- the dimerization v-w and a staggered onsite potential -- slowly around a closed loop enclosing the SSH gap-closing point. Thouless showed that the charge transported around one full cycle is exactly quantized, equal to the Chern number of the (k,\phi) torus swept out by the cycle -- a 1D adiabatic pump is, in this sense, a slice through a 2D Chern insulator, with the pump parameter \phi playing the role of a second crystal momentum.">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_thouless_pump_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_thouless_pump`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Thouless Quantum Pump (Rice-Mele Model)</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+   :includehidden:
+
+
+   /api/gallery/disorder/index.rst
+   /api/gallery/dynamics/index.rst
+   /api/gallery/flat_bands/index.rst
+   /api/gallery/magnetic_field/index.rst
+   /api/gallery/tight_binding/index.rst
+   /api/gallery/topology/index.rst
+
+
+
+.. only:: html
+
+ .. rst-class:: sphx-glr-signature
+
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_
