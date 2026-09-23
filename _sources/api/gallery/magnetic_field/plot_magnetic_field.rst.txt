@@ -30,7 +30,7 @@ threaded by a perpendicular field and reproduces the textbook
 Aharonov-Bohm result: the energy spectrum is periodic in the flux
 threading the ring, with period exactly one flux quantum.
 
-.. GENERATED FROM PYTHON SOURCE LINES 14-21
+.. GENERATED FROM PYTHON SOURCE LINES 14-22
 
 .. code-block:: Python
 
@@ -39,6 +39,7 @@ threading the ring, with period exactly one flux quantum.
 
     from tbkit.lattice import Lattice, COOR_DTYPE
     from tbkit.system import System
+    from tbkit.plot import Plot
 
 
 
@@ -48,14 +49,14 @@ threading the ring, with period exactly one flux quantum.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 22-26
+.. GENERATED FROM PYTHON SOURCE LINES 23-27
 
 Building an N-site ring
 ------------------------------
 A ring isn't a Bravais lattice, so the sites are placed by hand and the
 hoppings wired up with :meth:`~tbkit.system.System.set_hopping_manual`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-56
+.. GENERATED FROM PYTHON SOURCE LINES 27-54
 
 .. code-block:: Python
 
@@ -80,9 +81,33 @@ hoppings wired up with :meth:`~tbkit.system.System.set_hopping_manual`.
     sys = System(lat)
     hop_dict = {(int(ring_order[k]), int(ring_order[(k + 1) % N])): t for k in range(N)}
 
-    # Sanity check at zero field: a ring of N sites has the analytic spectrum
-    # E_n = 2t cos(2 pi n / N).
     sys.set_hopping_manual(hop_dict)
+
+    # The ring itself. The flux that matters below is the one enclosed by this
+    # polygon, not by the circle of radius R the sites were placed on.
+    fig_ring = Plot(sys).lattice(plt_hop=True, ms=12, figsize=(4.6, 4.6))
+
+
+
+
+.. image-sg:: /api/gallery/magnetic_field/images/sphx_glr_plot_magnetic_field_001.png
+   :alt: plot magnetic field
+   :srcset: /api/gallery/magnetic_field/images/sphx_glr_plot_magnetic_field_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 55-57
+
+Sanity check at zero field: a ring of N sites has the analytic spectrum
+E_n = 2t cos(2 pi n / N).
+
+.. GENERATED FROM PYTHON SOURCE LINES 57-63
+
+.. code-block:: Python
+
     sys.get_ham()
     sys.get_eig()
     expected = np.sort(2 * t * np.cos(2 * np.pi * np.arange(N) / N))
@@ -102,7 +127,7 @@ hoppings wired up with :meth:`~tbkit.system.System.set_hopping_manual`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-63
+.. GENERATED FROM PYTHON SOURCE LINES 64-70
 
 Sweeping the flux through the ring
 ------------------------------------------
@@ -111,7 +136,7 @@ spanned by the N sites, not the continuous circle of radius R (the two
 only agree as N -> infinity). The exact area comes from the shoelace
 formula, so that "one flux quantum" means exactly one period below.
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-89
+.. GENERATED FROM PYTHON SOURCE LINES 70-96
 
 .. code-block:: Python
 
@@ -144,9 +169,9 @@ formula, so that "one flux quantum" means exactly one period below.
 
 
 
-.. image-sg:: /api/gallery/magnetic_field/images/sphx_glr_plot_magnetic_field_001.png
+.. image-sg:: /api/gallery/magnetic_field/images/sphx_glr_plot_magnetic_field_002.png
    :alt: Aharonov-Bohm ring: spectrum vs. enclosed flux
-   :srcset: /api/gallery/magnetic_field/images/sphx_glr_plot_magnetic_field_001.png
+   :srcset: /api/gallery/magnetic_field/images/sphx_glr_plot_magnetic_field_002.png
    :class: sphx-glr-single-img
 
 
@@ -163,7 +188,7 @@ formula, so that "one flux quantum" means exactly one period below.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.061 seconds)
+   **Total running time of the script:** (0 minutes 0.069 seconds)
 
 
 .. _sphx_glr_download_api_gallery_magnetic_field_plot_magnetic_field.py:

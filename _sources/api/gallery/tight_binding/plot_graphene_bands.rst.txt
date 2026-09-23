@@ -35,7 +35,7 @@ Graphene's honeycomb lattice is the running example throughout tbkit's
 corners, the massless-Dirac-fermion dispersion P. R. Wallace predicted in
 1947, fifty-seven years before the material itself was isolated.
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-27
+.. GENERATED FROM PYTHON SOURCE LINES 19-28
 
 .. code-block:: Python
 
@@ -44,6 +44,7 @@ corners, the massless-Dirac-fermion dispersion P. R. Wallace predicted in
 
     from tbkit.lattice import Lattice
     from tbkit.system import System
+    from tbkit.plot import Plot
     from tbkit.kspace import KSpace, reciprocal_vectors
 
 
@@ -54,14 +55,14 @@ corners, the massless-Dirac-fermion dispersion P. R. Wallace predicted in
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-32
+.. GENERATED FROM PYTHON SOURCE LINES 29-33
 
 Shared lattice geometry
 ------------------------------
 A two-atom hexagonal unit cell (sublattices ``a``, ``b``) with a single
 nearest-neighbor hopping ``t``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-38
+.. GENERATED FROM PYTHON SOURCE LINES 33-39
 
 .. code-block:: Python
 
@@ -78,7 +79,7 @@ nearest-neighbor hopping ``t``.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-44
+.. GENERATED FROM PYTHON SOURCE LINES 40-45
 
 Real space: a finite flake, diagonalized directly
 --------------------------------------------------------
@@ -86,7 +87,37 @@ Real space: a finite flake, diagonalized directly
 8x8-cell flake; :class:`~tbkit.system.System` then builds and
 diagonalizes its real-space Hamiltonian.
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-61
+.. GENERATED FROM PYTHON SOURCE LINES 45-55
+
+.. code-block:: Python
+
+
+    # The honeycomb lattice this builds: two orbitals ('a' and 'b', drawn in
+    # different colours) per unit cell, each with three nearest neighbors on
+    # the other sublattice.
+    lat_small = Lattice(unit_cell=unit_cell, prim_vec=prim_vec)
+    lat_small.get_lattice(n1=5, n2=4)
+    vis = System(lat_small)
+    vis.set_hopping([{'n': 1, 't': t}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_graphene_bands_001.png
+   :alt: plot graphene bands
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_graphene_bands_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 56-57
+
+The flake actually diagonalized:
+
+.. GENERATED FROM PYTHON SOURCE LINES 57-74
 
 .. code-block:: Python
 
@@ -110,9 +141,9 @@ diagonalizes its real-space Hamiltonian.
 
 
 
-.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_graphene_bands_001.png
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_graphene_bands_002.png
    :alt: Graphene flake: real-space spectrum
-   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_graphene_bands_001.png
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_graphene_bands_002.png
    :class: sphx-glr-single-img
 
 
@@ -125,7 +156,7 @@ diagonalizes its real-space Hamiltonian.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-68
+.. GENERATED FROM PYTHON SOURCE LINES 75-81
 
 Reciprocal space: the Bloch Hamiltonian H(k) and its band structure
 --------------------------------------------------------------------------
@@ -134,7 +165,7 @@ hopping into :math:`H(\mathbf{k})`, and :meth:`~tbkit.kspace.KSpace.k_path`
 / :meth:`~tbkit.kspace.KSpace.plot_bands` diagonalize it along a path
 through the high-symmetry points :math:`\Gamma`, K, M.
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-86
+.. GENERATED FROM PYTHON SOURCE LINES 81-99
 
 .. code-block:: Python
 
@@ -159,9 +190,9 @@ through the high-symmetry points :math:`\Gamma`, K, M.
 
 
 
-.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_graphene_bands_002.png
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_graphene_bands_003.png
    :alt: plot graphene bands
-   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_graphene_bands_002.png
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_graphene_bands_003.png
    :class: sphx-glr-single-img
 
 
@@ -174,7 +205,7 @@ through the high-symmetry points :math:`\Gamma`, K, M.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-94
+.. GENERATED FROM PYTHON SOURCE LINES 100-107
 
 Wallace's 1947 linear dispersion near K
 --------------------------------------------
@@ -184,7 +215,7 @@ gapless, it is *linear* (massless Dirac fermions),
 with :math:`a` the nearest-neighbor distance. See
 :doc:`/history` for the historical context.
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-103
+.. GENERATED FROM PYTHON SOURCE LINES 107-116
 
 .. code-block:: Python
 
@@ -216,7 +247,7 @@ with :math:`a` the nearest-neighbor distance. See
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.061 seconds)
+   **Total running time of the script:** (0 minutes 0.068 seconds)
 
 
 .. _sphx_glr_download_api_gallery_tight_binding_plot_graphene_bands.py:

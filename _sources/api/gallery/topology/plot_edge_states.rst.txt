@@ -35,7 +35,7 @@ classic examples:
    per edge. This is the original model of a 2D (Z2) topological
    insulator.
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-37
+.. GENERATED FROM PYTHON SOURCE LINES 19-39
 
 .. code-block:: Python
 
@@ -44,6 +44,8 @@ classic examples:
 
     from tbkit.lattice import Lattice
     from tbkit.kspace import ribbon, PAULI
+    from tbkit.system import System
+    from tbkit.plot import Plot
 
 
     DX, DY = 0.5 * 3 ** 0.5, 0.5
@@ -64,12 +66,51 @@ classic examples:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-40
+.. GENERATED FROM PYTHON SOURCE LINES 40-42
 
 Zigzag graphene ribbon: the E=0 edge flat band
 --------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-60
+.. GENERATED FROM PYTHON SOURCE LINES 42-61
+
+.. code-block:: Python
+
+
+    # A narrow version of the same ribbon, drawn: periodic left-to-right and
+    # open top and bottom. It is those two zigzag edges that carry the states
+    # found below.
+    rib_small = ribbon(lat, graphene_hop, width=6, direction=1)
+    # ribbon() stacks its rows along the other primitive vector, which here has
+    # a component along the periodic direction too, so tiling its cell as-is
+    # draws a slanted parallelogram. Sliding each site back by whole multiples
+    # of a1 is the same lattice, drawn as the strip one pictures.
+    a1 = np.array(rib_small.lat.prim_vec[0])
+    folded = [{'tag': d['tag'],
+                   'r0': tuple(np.array(d['r0']) - round(np.dot(d['r0'], a1)/(a1 @ a1))*a1)}
+                  for d in rib_small.lat.unit_cell]
+    lat_draw = Lattice(unit_cell=folded, prim_vec=rib_small.lat.prim_vec)
+    lat_draw.get_lattice(n1=9)
+    vis = System(lat_draw)
+    vis.set_hopping([{'n': 1, 't': t1}])
+    fig_rib = Plot(vis).lattice(plt_hop=True, ms=9, figsize=(8, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_edge_states_001.png
+   :alt: plot edge states
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_edge_states_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 62-63
+
+The ribbon actually diagonalized is 30 cells wide:
+
+.. GENERATED FROM PYTHON SOURCE LINES 63-83
 
 .. code-block:: Python
 
@@ -96,9 +137,9 @@ Zigzag graphene ribbon: the E=0 edge flat band
 
 
 
-.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_edge_states_001.png
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_edge_states_002.png
    :alt: Zigzag graphene ribbon (30 unit cells wide)
-   :srcset: /api/gallery/topology/images/sphx_glr_plot_edge_states_001.png
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_edge_states_002.png
    :class: sphx-glr-single-img
 
 
@@ -112,7 +153,7 @@ Zigzag graphene ribbon: the E=0 edge flat band
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-71
+.. GENERATED FROM PYTHON SOURCE LINES 84-94
 
 Kane-Mele ribbon: helical edge states inside a spin-orbit gap
 --------------------------------------------------------------------
@@ -125,7 +166,7 @@ the hallmark of a Z2 topological insulator (contrast with the zigzag
 ribbon above, where *nothing* protects the flat band from a generic
 perturbation).
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-99
+.. GENERATED FROM PYTHON SOURCE LINES 94-122
 
 .. code-block:: Python
 
@@ -160,9 +201,9 @@ perturbation).
 
 
 
-.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_edge_states_002.png
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_edge_states_003.png
    :alt: Kane-Mele ribbon: helical edge states in the bulk gap
-   :srcset: /api/gallery/topology/images/sphx_glr_plot_edge_states_002.png
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_edge_states_003.png
    :class: sphx-glr-single-img
 
 
@@ -180,7 +221,7 @@ perturbation).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.845 seconds)
+   **Total running time of the script:** (0 minutes 0.867 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_edge_states.py:

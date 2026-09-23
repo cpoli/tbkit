@@ -30,6 +30,7 @@
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -417,14 +418,17 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">get_propagation</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">ham</span><span class="p">:</span> <span class="n">sparse</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">,</span> <span class="n">psi_init</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">dz</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">norm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Get the time evolution.</span>
 
 <span class="sd">        :param ham: sparse.csr_matrix. Tight-Binding Hamilonian.</span>
 <span class="sd">        :param psi_init: np.ndarray. Initial state.</span>
 <span class="sd">        :param steps: Positive Integer. Number of steps.</span>
 <span class="sd">        :param dz: Positive number. Step.</span>
-<span class="sd">        :param norm: Boolean. Default value True. Normalize the norm to 1 at each step.</span>
+<span class="sd">        :param norm: Boolean. Default value False. Renormalize the state to</span>
+<span class="sd">            :math:`\sum_i|\psi_i|^2 = 1` at each step. The Crank-Nicolson</span>
+<span class="sd">            step is unitary, so this only matters for a non-Hermitian</span>
+<span class="sd">            Hamiltonian (gain/loss), where the norm is not conserved.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">empty_ham</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">psi_init</span><span class="p">,</span> <span class="s1">&#39;psi_init&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">sites</span><span class="p">)</span>
@@ -442,7 +446,7 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
             <span class="k">if</span> <span class="n">norm</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="Propagation.get_pumping">
@@ -450,14 +454,15 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">get_pumping</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">hams</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">sparse</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">],</span> <span class="n">psi_init</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">dz</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">norm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Get the time evolution with adiabatic pumpings.</span>
 
 <span class="sd">        :param hams: List of sparse.csr_matrices. Tight-Binding Hamilonians.</span>
 <span class="sd">        :param psi_init: np.ndarray. Initial state.</span>
 <span class="sd">        :param steps: Positive integer. Number of steps.</span>
 <span class="sd">        :param dz: Positive number. Step.</span>
-<span class="sd">        :param norm: Boolean. Default value True. Normalize the norm to 1 at each step.</span>
+<span class="sd">        :param norm: Boolean. Default value True. Renormalize the state to</span>
+<span class="sd">            :math:`\sum_i|\psi_i|^2 = 1` at each step.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">get_pump</span><span class="p">(</span><span class="n">hams</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">psi_init</span><span class="p">,</span> <span class="s1">&#39;psi_init&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">sites</span><span class="p">)</span>
@@ -478,8 +483,8 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
            <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
            <span class="k">if</span> <span class="n">norm</span><span class="p">:</span>
-               <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-      <span class="c1"># pumping</span>
+               <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
+        <span class="c1"># pumping</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">delta</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">no</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
@@ -490,13 +495,12 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span> <span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">delta</span><span class="o">+</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span>  <span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">delta</span><span class="o">+</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">norm</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span>  <span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">delta</span><span class="o">+</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> \
-                        <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span>  <span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">delta</span><span class="o">+</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> 
-      <span class="c1"># after pumping</span>
-        <span class="n">j</span> <span class="o">=</span> <span class="n">no</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span>  <span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">delta</span><span class="o">+</span><span class="n">i</span><span class="p">])</span>
+        <span class="c1"># after pumping</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span> <span class="o">-</span> <span class="n">no</span><span class="o">*</span><span class="n">delta</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span>  <span class="n">no</span><span class="o">*</span><span class="n">delta</span><span class="o">+</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span>  <span class="n">no</span><span class="o">*</span><span class="n">delta</span><span class="o">+</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
             <span class="k">if</span> <span class="n">norm</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span>  <span class="n">no</span><span class="o">*</span><span class="n">delta</span><span class="o">+</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span>  <span class="n">no</span><span class="o">*</span><span class="n">delta</span><span class="o">+</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span>  <span class="n">no</span><span class="o">*</span><span class="n">delta</span><span class="o">+</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">[:,</span>  <span class="n">no</span><span class="o">*</span><span class="n">delta</span><span class="o">+</span><span class="n">i</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="Propagation.plt_propagation_1d">

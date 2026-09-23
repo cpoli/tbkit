@@ -44,7 +44,7 @@ levels. Two flakes, two very different ladders:
      E_n = \mathrm{sign}(n)\, v_F\sqrt{2\hbar e B|n|}, \qquad
      n = 0, \pm1, \pm2,\dots
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-39
+.. GENERATED FROM PYTHON SOURCE LINES 28-40
 
 .. code-block:: Python
 
@@ -53,6 +53,7 @@ levels. Two flakes, two very different ladders:
 
     from tbkit.lattice import Lattice
     from tbkit.system import System
+    from tbkit.plot import Plot
     from tbkit.graphene import GrapheneLattice
 
 
@@ -66,7 +67,7 @@ levels. Two flakes, two very different ladders:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-47
+.. GENERATED FROM PYTHON SOURCE LINES 41-48
 
 Square lattice: the non-relativistic Landau fan
 -----------------------------------------------------
@@ -76,7 +77,56 @@ lattice looks exactly like a free particle of effective mass
 :math:`\omega_c = 2t\cdot B = 4\pi t\alpha` (:math:`\hbar=1`,
 :math:`\Phi_0=2\pi`, lattice constant 1).
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-83
+.. GENERATED FROM PYTHON SOURCE LINES 48-71
+
+.. code-block:: Python
+
+
+    # The two flakes the field is applied to, drawn small: a square lattice,
+    # whose parabolic band bottom gives the textbook ladder, and a graphene
+    # flake, whose Dirac cone gives the relativistic one. The flakes actually
+    # diagonalized below are much larger, so that the magnetic length fits
+    # comfortably inside them.
+    fig_lat, axes_lat = plt.subplots(1, 2, figsize=(9.5, 4.6))
+
+    lat_small = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}],
+                                  prim_vec=[(1., 0.), (0., 1.)])
+    lat_small.get_lattice(n1=10, n2=10)
+    sq_small = System(lat_small)
+    sq_small.set_hopping([{'n': 1, 't': t}])
+    Plot(sq_small).lattice(plt_hop=True, ms=8, ax=axes_lat[0])
+    axes_lat[0].set_title('square flake')
+
+    glat_small = GrapheneLattice()
+    glat_small.triangle_zigzag(n=8)
+    gsys_small = System(glat_small)
+    gsys_small.set_hopping([{'n': 1, 't': t}])
+    Plot(gsys_small).lattice(plt_hop=True, ms=8, ax=axes_lat[1])
+    axes_lat[1].set_title('graphene flake')
+
+
+
+
+.. image-sg:: /api/gallery/magnetic_field/images/sphx_glr_plot_landau_levels_001.png
+   :alt: square flake, graphene flake
+   :srcset: /api/gallery/magnetic_field/images/sphx_glr_plot_landau_levels_001.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    Text(0.5, 1.0, 'graphene flake')
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 72-73
+
+The square lattice at full size:
+
+.. GENERATED FROM PYTHON SOURCE LINES 73-109
 
 .. code-block:: Python
 
@@ -119,9 +169,9 @@ lattice looks exactly like a free particle of effective mass
 
 
 
-.. image-sg:: /api/gallery/magnetic_field/images/sphx_glr_plot_landau_levels_001.png
+.. image-sg:: /api/gallery/magnetic_field/images/sphx_glr_plot_landau_levels_002.png
    :alt: Square lattice (60x60): Landau staircase near the band bottom
-   :srcset: /api/gallery/magnetic_field/images/sphx_glr_plot_landau_levels_001.png
+   :srcset: /api/gallery/magnetic_field/images/sphx_glr_plot_landau_levels_002.png
    :class: sphx-glr-single-img
 
 
@@ -136,7 +186,7 @@ lattice looks exactly like a free particle of effective mass
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-91
+.. GENERATED FROM PYTHON SOURCE LINES 110-117
 
 Graphene: the relativistic Landau fan and the zero mode
 ----------------------------------------------------------------
@@ -146,7 +196,7 @@ the plateaus below so clean. (The cluster right at E=0 is a mix of
 the field-induced n=0 Landau level and the flake's own sublattice
 zero modes from Lieb's theorem -- see :doc:`/history`, 1989.)
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-128
+.. GENERATED FROM PYTHON SOURCE LINES 117-154
 
 .. code-block:: Python
 
@@ -190,9 +240,9 @@ zero modes from Lieb's theorem -- see :doc:`/history`, 1989.)
 
 
 
-.. image-sg:: /api/gallery/magnetic_field/images/sphx_glr_plot_landau_levels_002.png
+.. image-sg:: /api/gallery/magnetic_field/images/sphx_glr_plot_landau_levels_003.png
    :alt: Graphene (triangular zigzag flake, 1936 sites): relativistic $\sqrt{n}$ Landau fan
-   :srcset: /api/gallery/magnetic_field/images/sphx_glr_plot_landau_levels_002.png
+   :srcset: /api/gallery/magnetic_field/images/sphx_glr_plot_landau_levels_003.png
    :class: sphx-glr-single-img
 
 
@@ -212,7 +262,7 @@ zero modes from Lieb's theorem -- see :doc:`/history`, 1989.)
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.383 seconds)
+   **Total running time of the script:** (0 minutes 5.223 seconds)
 
 
 .. _sphx_glr_download_api_gallery_magnetic_field_plot_landau_levels.py:

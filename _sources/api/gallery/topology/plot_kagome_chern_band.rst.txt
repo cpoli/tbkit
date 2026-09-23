@@ -36,7 +36,7 @@ scalar spin chirality of a canted magnetic texture on the kagome
 lattice acts, for the itinerant electrons, exactly like this complex
 hopping (Ohgushi, Murakami, and Nagaosa, 2000).
 
-.. GENERATED FROM PYTHON SOURCE LINES 20-46
+.. GENERATED FROM PYTHON SOURCE LINES 20-48
 
 .. code-block:: Python
 
@@ -45,6 +45,8 @@ hopping (Ohgushi, Murakami, and Nagaosa, 2000).
 
     import tbkit.lattices as lattices
     from tbkit.kspace import KSpace, reciprocal_vectors
+    from tbkit.system import System
+    from tbkit.plot import Plot
 
 
     lat = lattices.kagome()
@@ -73,12 +75,43 @@ hopping (Ohgushi, Murakami, and Nagaosa, 2000).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-49
+.. GENERATED FROM PYTHON SOURCE LINES 49-54
+
+The kagome lattice
+---------------------------
+Corner-sharing triangles: three sites per unit cell ('a', 'b' and 'c',
+one per colour). The complex phase below is put on every one of the
+nearest-neighbor bonds drawn here.
+
+.. GENERATED FROM PYTHON SOURCE LINES 54-61
+
+.. code-block:: Python
+
+
+    patch = lattices.kagome()
+    patch.get_lattice(n1=4, n2=3)
+    vis = System(patch)
+    vis.set_hopping([{'n': 1, 't': 1.}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_kagome_chern_band_001.png
+   :alt: plot kagome chern band
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_kagome_chern_band_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 62-64
 
 phi=0: the flat band touches the middle band at Gamma
 ------------------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-55
+.. GENERATED FROM PYTHON SOURCE LINES 64-70
 
 .. code-block:: Python
 
@@ -101,12 +134,12 @@ phi=0: the flat band touches the middle band at Gamma
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-58
+.. GENERATED FROM PYTHON SOURCE LINES 71-73
 
 phi != 0: a real gap opens across the whole Brillouin zone
 ------------------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-73
+.. GENERATED FROM PYTHON SOURCE LINES 73-88
 
 .. code-block:: Python
 
@@ -138,7 +171,7 @@ phi != 0: a real gap opens across the whole Brillouin zone
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-82
+.. GENERATED FROM PYTHON SOURCE LINES 89-97
 
 Chern numbers: -1, 0, +1
 ------------------------------------------------------------------
@@ -149,7 +182,7 @@ Chern bands as a lattice route to fractional Chern insulators pushed
 this ratio far higher via additional further-neighbor terms). What
 does survive intact is the topology.
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-91
+.. GENERATED FROM PYTHON SOURCE LINES 97-106
 
 .. code-block:: Python
 
@@ -176,12 +209,12 @@ does survive intact is the topology.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-94
+.. GENERATED FROM PYTHON SOURCE LINES 107-109
 
 Berry curvature of the isolated lower band
 ------------------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-103
+.. GENERATED FROM PYTHON SOURCE LINES 109-118
 
 .. code-block:: Python
 
@@ -197,9 +230,9 @@ Berry curvature of the isolated lower band
 
 
 
-.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_kagome_chern_band_001.png
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_kagome_chern_band_002.png
    :alt: Berry curvature of the lower (Chern) band
-   :srcset: /api/gallery/topology/images/sphx_glr_plot_kagome_chern_band_001.png
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_kagome_chern_band_002.png
    :class: sphx-glr-single-img
 
 
@@ -208,16 +241,16 @@ Berry curvature of the isolated lower band
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x11292d2b0>
+    <matplotlib.colorbar.Colorbar object at 0x1162b34d0>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-106
+.. GENERATED FROM PYTHON SOURCE LINES 119-121
 
 Band structure: flat-and-touching vs. gapped-and-topological
 --------------------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 106-117
+.. GENERATED FROM PYTHON SOURCE LINES 121-132
 
 .. code-block:: Python
 
@@ -235,9 +268,9 @@ Band structure: flat-and-touching vs. gapped-and-topological
 
 
 
-.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_kagome_chern_band_002.png
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_kagome_chern_band_003.png
    :alt: $\phi=0$: flat band touches band 1, $\phi=0.3$: gapped, $C=-1$
-   :srcset: /api/gallery/topology/images/sphx_glr_plot_kagome_chern_band_002.png
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_kagome_chern_band_003.png
    :class: sphx-glr-single-img
 
 
@@ -247,7 +280,7 @@ Band structure: flat-and-touching vs. gapped-and-topological
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.487 seconds)
+   **Total running time of the script:** (0 minutes 0.498 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_kagome_chern_band.py:

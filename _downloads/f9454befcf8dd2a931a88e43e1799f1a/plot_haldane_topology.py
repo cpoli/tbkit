@@ -22,6 +22,8 @@ import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice
 from tbkit.kspace import KSpace, reciprocal_vectors
+from tbkit.system import System
+from tbkit.plot import Plot
 
 
 DX, DY = 0.5 * 3 ** 0.5, 0.5
@@ -48,6 +50,22 @@ def haldane(M):
     hal.set_onsite({'a': M, 'b': -M})
     return hal
 
+
+# %%
+# The lattice
+# --------------
+# The Haldane model lives on the plain honeycomb lattice -- two orbitals
+# per unit cell, drawn in two colours below, with the nearest-neighbor
+# bonds shown. What the model adds is invisible in this picture: a
+# *second*-neighbor hopping within each sublattice, complex and of
+# opposite chirality on the two, which is why it breaks time-reversal
+# symmetry without any net flux through the cell.
+
+patch = Lattice(unit_cell=unit_cell, prim_vec=prim_vec)
+patch.get_lattice(n1=5, n2=4)
+vis = System(patch)
+vis.set_hopping([{'n': 1, 't': t1}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # Chern number across the topological phase transition

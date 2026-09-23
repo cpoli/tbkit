@@ -30,6 +30,7 @@ import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice
 from tbkit.system import System
+from tbkit.plot import Plot
 from tbkit.graphene import GrapheneLattice
 
 
@@ -44,6 +45,31 @@ alpha = 0.02  # weak field: flux quanta per unit cell area
 # :math:`m^*=1/2t`, so weak-field Landau theory applies directly with
 # :math:`\omega_c = 2t\cdot B = 4\pi t\alpha` (:math:`\hbar=1`,
 # :math:`\Phi_0=2\pi`, lattice constant 1).
+
+# The two flakes the field is applied to, drawn small: a square lattice,
+# whose parabolic band bottom gives the textbook ladder, and a graphene
+# flake, whose Dirac cone gives the relativistic one. The flakes actually
+# diagonalized below are much larger, so that the magnetic length fits
+# comfortably inside them.
+fig_lat, axes_lat = plt.subplots(1, 2, figsize=(9.5, 4.6))
+
+lat_small = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}],
+                              prim_vec=[(1., 0.), (0., 1.)])
+lat_small.get_lattice(n1=10, n2=10)
+sq_small = System(lat_small)
+sq_small.set_hopping([{'n': 1, 't': t}])
+Plot(sq_small).lattice(plt_hop=True, ms=8, ax=axes_lat[0])
+axes_lat[0].set_title('square flake')
+
+glat_small = GrapheneLattice()
+glat_small.triangle_zigzag(n=8)
+gsys_small = System(glat_small)
+gsys_small.set_hopping([{'n': 1, 't': t}])
+Plot(gsys_small).lattice(plt_hop=True, ms=8, ax=axes_lat[1])
+axes_lat[1].set_title('graphene flake')
+
+# %%
+# The square lattice at full size:
 
 N1, N2 = 60, 60
 lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}], prim_vec=[(1., 0.), (0., 1.)])

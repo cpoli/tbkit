@@ -36,7 +36,7 @@ which is :math:`O(1/N)` for a state extended over all N sites, and
 :math:`O(1)` for a state localized on a handful of them --
 :meth:`tbkit.system.System.get_ipr` computes it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 20-48
+.. GENERATED FROM PYTHON SOURCE LINES 20-49
 
 .. code-block:: Python
 
@@ -45,15 +45,16 @@ which is :math:`O(1/N)` for a state extended over all N sites, and
 
     from tbkit.lattice import Lattice
     from tbkit.system import System
+    from tbkit.plot import Plot
 
 
     N = 200
 
 
-    def anderson_chain(alpha, seed):
+    def anderson_chain(alpha, seed, n=N):
         '''A 1D tight-binding chain with uniform onsite disorder of strength alpha.'''
         lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}], prim_vec=[(1., 0.)])
-        lat.get_lattice(n1=N)
+        lat.get_lattice(n1=n)
         sys = System(lat)
         sys.set_hopping([{'n': 1, 't': 1.}])
         sys.set_onsite({'a': 0.})
@@ -75,13 +76,57 @@ which is :math:`O(1/N)` for a state extended over all N sites, and
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-52
+.. GENERATED FROM PYTHON SOURCE LINES 50-57
+
+The chain
+------------
+A plain 1D chain with uniform nearest-neighbor hopping. Only a short
+stretch is drawn: at the full 200 sites the markers overlap into an
+unreadable solid bar. The disorder is added to the *onsite* energies,
+so the geometry never changes -- only what sits on each site, which is
+what the lower panel shows.
+
+.. GENERATED FROM PYTHON SOURCE LINES 57-75
+
+.. code-block:: Python
+
+
+    n_draw = 16
+    fig0, (ax_lat, ax_pot) = plt.subplots(2, 1, figsize=(8, 3.4),
+                                                      gridspec_kw={'height_ratios': [1, 2]})
+    Plot(anderson_chain(alpha=0., seed=0, n=n_draw)).lattice(plt_hop=True, ms=9,
+                                                                                      ax=ax_lat)
+    ax_lat.set_title('{} sites of the chain (of {})'.format(n_draw, N), fontsize=12)
+    ax_pot.axhline(0., color='C0', lw=1.5, label=r'$\alpha=0$ (clean)')
+    ax_pot.plot(np.arange(n_draw),
+                     anderson_chain(alpha=2., seed=0, n=n_draw).onsite.real,
+                     'o-', color='C3', ms=5, label=r'$\alpha=2$ (disordered)')
+    ax_pot.set_xlabel('site $i$')
+    ax_pot.set_ylabel('onsite $E_i$')
+    ax_pot.set_title('the disorder lives on the sites, not in the geometry',
+                            fontsize=12)
+    ax_pot.legend(fontsize=9)
+    fig0.tight_layout()
+
+
+
+
+.. image-sg:: /api/gallery/disorder/images/sphx_glr_plot_anderson_localization_001.png
+   :alt: 16 sites of the chain (of 200), the disorder lives on the sites, not in the geometry
+   :srcset: /api/gallery/disorder/images/sphx_glr_plot_anderson_localization_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 76-79
 
 Mean IPR grows sharply with disorder strength
 --------------------------------------------------
 Extended states become localized as the disorder strength grows.
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-70
+.. GENERATED FROM PYTHON SOURCE LINES 79-97
 
 .. code-block:: Python
 
@@ -106,9 +151,9 @@ Extended states become localized as the disorder strength grows.
 
 
 
-.. image-sg:: /api/gallery/disorder/images/sphx_glr_plot_anderson_localization_001.png
+.. image-sg:: /api/gallery/disorder/images/sphx_glr_plot_anderson_localization_002.png
    :alt: Anderson localization: IPR vs. disorder strength
-   :srcset: /api/gallery/disorder/images/sphx_glr_plot_anderson_localization_001.png
+   :srcset: /api/gallery/disorder/images/sphx_glr_plot_anderson_localization_002.png
    :class: sphx-glr-single-img
 
 
@@ -124,12 +169,12 @@ Extended states become localized as the disorder strength grows.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-73
+.. GENERATED FROM PYTHON SOURCE LINES 98-100
 
 Side by side: an extended state vs. a localized one
 --------------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-93
+.. GENERATED FROM PYTHON SOURCE LINES 100-120
 
 .. code-block:: Python
 
@@ -156,9 +201,9 @@ Side by side: an extended state vs. a localized one
 
 
 
-.. image-sg:: /api/gallery/disorder/images/sphx_glr_plot_anderson_localization_002.png
+.. image-sg:: /api/gallery/disorder/images/sphx_glr_plot_anderson_localization_003.png
    :alt: Clean chain: extended state (IPR = 0.0075), Disordered chain ($\alpha$=3): localized state (IPR = 0.3289)
-   :srcset: /api/gallery/disorder/images/sphx_glr_plot_anderson_localization_002.png
+   :srcset: /api/gallery/disorder/images/sphx_glr_plot_anderson_localization_003.png
    :class: sphx-glr-single-img
 
 
@@ -168,7 +213,7 @@ Side by side: an extended state vs. a localized one
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.370 seconds)
+   **Total running time of the script:** (0 minutes 0.421 seconds)
 
 
 .. _sphx_glr_download_api_gallery_disorder_plot_anderson_localization.py:

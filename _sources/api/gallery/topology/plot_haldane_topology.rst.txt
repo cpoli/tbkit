@@ -36,7 +36,7 @@ numerically below, rather than assumed): the lower band's Chern number,
 computed via :meth:`~tbkit.kspace.KSpace.chern_number`, is
 :math:`\pm 1` for :math:`|M|` below that, 0 above it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 20-52
+.. GENERATED FROM PYTHON SOURCE LINES 20-54
 
 .. code-block:: Python
 
@@ -45,6 +45,8 @@ computed via :meth:`~tbkit.kspace.KSpace.chern_number`, is
 
     from tbkit.lattice import Lattice
     from tbkit.kspace import KSpace, reciprocal_vectors
+    from tbkit.system import System
+    from tbkit.plot import Plot
 
 
     DX, DY = 0.5 * 3 ** 0.5, 0.5
@@ -79,12 +81,46 @@ computed via :meth:`~tbkit.kspace.KSpace.chern_number`, is
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-55
+.. GENERATED FROM PYTHON SOURCE LINES 55-63
+
+The lattice
+--------------
+The Haldane model lives on the plain honeycomb lattice -- two orbitals
+per unit cell, drawn in two colours below, with the nearest-neighbor
+bonds shown. What the model adds is invisible in this picture: a
+*second*-neighbor hopping within each sublattice, complex and of
+opposite chirality on the two, which is why it breaks time-reversal
+symmetry without any net flux through the cell.
+
+.. GENERATED FROM PYTHON SOURCE LINES 63-70
+
+.. code-block:: Python
+
+
+    patch = Lattice(unit_cell=unit_cell, prim_vec=prim_vec)
+    patch.get_lattice(n1=5, n2=4)
+    vis = System(patch)
+    vis.set_hopping([{'n': 1, 't': t1}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_haldane_topology_001.png
+   :alt: plot haldane topology
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_haldane_topology_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 71-73
 
 Chern number across the topological phase transition
 ------------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-73
+.. GENERATED FROM PYTHON SOURCE LINES 73-91
 
 .. code-block:: Python
 
@@ -109,9 +145,9 @@ Chern number across the topological phase transition
 
 
 
-.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_haldane_topology_001.png
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_haldane_topology_002.png
    :alt: Haldane model: topological phase transition
-   :srcset: /api/gallery/topology/images/sphx_glr_plot_haldane_topology_001.png
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_haldane_topology_002.png
    :class: sphx-glr-single-img
 
 
@@ -128,14 +164,14 @@ Chern number across the topological phase transition
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-78
+.. GENERATED FROM PYTHON SOURCE LINES 92-96
 
 Berry curvature in the topological phase
 ------------------------------------------------
 :meth:`~tbkit.kspace.KSpace.berry_curvature` concentrates near the Dirac
 points (where the gap is smallest), with total flux :math:`2\pi`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-88
+.. GENERATED FROM PYTHON SOURCE LINES 96-106
 
 .. code-block:: Python
 
@@ -152,9 +188,9 @@ points (where the gap is smallest), with total flux :math:`2\pi`.
 
 
 
-.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_haldane_topology_002.png
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_haldane_topology_003.png
    :alt: Berry curvature of the lower band
-   :srcset: /api/gallery/topology/images/sphx_glr_plot_haldane_topology_002.png
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_haldane_topology_003.png
    :class: sphx-glr-single-img
 
 
@@ -163,16 +199,16 @@ points (where the gap is smallest), with total flux :math:`2\pi`.
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x112bb5e80>
+    <matplotlib.colorbar.Colorbar object at 0x116056120>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-91
+.. GENERATED FROM PYTHON SOURCE LINES 107-109
 
 Band structure in the topological phase
 ------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-96
+.. GENERATED FROM PYTHON SOURCE LINES 109-114
 
 .. code-block:: Python
 
@@ -184,9 +220,9 @@ Band structure in the topological phase
 
 
 
-.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_haldane_topology_003.png
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_haldane_topology_004.png
    :alt: plot haldane topology
-   :srcset: /api/gallery/topology/images/sphx_glr_plot_haldane_topology_003.png
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_haldane_topology_004.png
    :class: sphx-glr-single-img
 
 
@@ -196,7 +232,7 @@ Band structure in the topological phase
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.100 seconds)
+   **Total running time of the script:** (0 minutes 1.102 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_haldane_topology.py:

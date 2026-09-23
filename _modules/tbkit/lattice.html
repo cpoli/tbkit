@@ -30,6 +30,7 @@
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -575,7 +576,7 @@
 <a class="viewcode-back" href="../../tbkit.html#tbkit.lattice.Lattice.shift_y">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">shift_y</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shift</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Shift by *delta_x* the x coordinates.</span>
+<span class="sd">        Shift the y coordinates.</span>
 
 <span class="sd">        :param shift: Real number. Shift value.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -632,7 +633,6 @@
 
 <span class="sd">            (x-x_0)^2/a^2+(y-y_0)^2/b^2 &lt; 1\,  .</span>
 
-<span class="sd">        :param list_hop: List of Dictionary (see set_hopping definition).</span>
 <span class="sd">        :param rx: Positive Real number. Radius along :math:`x`.</span>
 <span class="sd">        :param ry: Positive Real number. Radius along :math:`y`.</span>
 <span class="sd">        :param x0: Real number. :math:`x` center.</span>
@@ -659,7 +659,6 @@
 <span class="sd">            (x-x_0)^2/a^2+(y-y_0)^2/b^2 &gt; 1\,  .</span>
 
 
-<span class="sd">        :param list_hop: List of Dictionary (see set_hopping definition).</span>
 <span class="sd">        :param rx: Positive Real number. Radius along :math:`x`.</span>
 <span class="sd">        :param ry: Positive Real number. Radius along :math:`y`.</span>
 <span class="sd">        :param x0: Real number. :math:`x` center.</span>
@@ -690,18 +689,18 @@
 <a class="viewcode-back" href="../../tbkit.html#tbkit.lattice.Lattice.rotation">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Rotate the lattice structure by the angle :math:`\theta`.</span>
+<span class="sd">        Rotate the lattice structure about the origin by the angle</span>
+<span class="sd">        :math:`\theta`.</span>
 
 <span class="sd">        :param theta: Rotation angle in degrees.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">empty_coor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coor</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="s1">&#39;theta&#39;</span><span class="p">)</span>
-        <span class="n">theta</span> <span class="o">*=</span> <span class="n">PI</span> <span class="o">/</span> <span class="mi">360</span>
-        <span class="k">for</span> <span class="n">dic</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_cell</span><span class="p">:</span>
-            <span class="n">x</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">dic</span><span class="p">[</span><span class="s1">&#39;r0&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">y</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">dic</span><span class="p">[</span><span class="s1">&#39;r0&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">+</span> <span class="n">dic</span><span class="p">[</span><span class="s1">&#39;r0&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">+</span> <span class="n">dic</span><span class="p">[</span><span class="s1">&#39;r0&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span></div>
+        <span class="n">theta</span> <span class="o">*=</span> <span class="n">PI</span> <span class="o">/</span> <span class="mi">180</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Lattice.clean_coor">
@@ -795,10 +794,10 @@
         <span class="n">figsize</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Figure</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Plot lattice in hopping space.</span>
+<span class="sd">        Plot the lattice in real space.</span>
 
 <span class="sd">        :param ms: Positive number. Default value 20. Markersize.</span>
-<span class="sd">        :param fs: Positve number. Default value 20. Fontsize.</span>
+<span class="sd">        :param fs: Positive number. Default value 20. Fontsize.</span>
 <span class="sd">        :param plt_index: Boolean. Default value False. Plot site labels.</span>
 <span class="sd">        :param axis: Boolean. Default value False. Plot axis.</span>
 <span class="sd">        :param figsize: Tuple. Default value None. Figsize.</span>

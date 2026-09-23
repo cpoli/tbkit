@@ -18,6 +18,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.system import System
+from tbkit.plot import Plot
 from tbkit.kspace import KSpace, reciprocal_vectors
 
 
@@ -42,6 +44,32 @@ def lieb_kspace(t=1.):
                           {'i': 0, 'j': 2, 'R': (0, -1), 't': t}])
     return lb, lat
 
+
+# %%
+# The two lattices
+# ------------------------
+# Both flat bands come from the geometry: a unit cell with more sites than
+# there are independent ways for an electron to leave it, so some
+# combination of orbitals interferes destructively and cannot disperse.
+# The kagome lattice is corner-sharing triangles (three sites per cell,
+# one per colour); the Lieb lattice is a square lattice with an extra site
+# on every bond.
+
+
+def draw_lattice(build_lat, n1, n2, ax):
+    '''Draw a finite patch of the lattice, with its nearest-neighbor bonds.'''
+    patch = build_lat()
+    patch.get_lattice(n1=n1, n2=n2)
+    vis = System(patch)
+    vis.set_hopping([{'n': 1, 't': 1.}])
+    Plot(vis).lattice(plt_hop=True, ms=12, ax=ax)
+
+
+fig_lat, axes_lat = plt.subplots(1, 2, figsize=(11, 4.5))
+draw_lattice(lattices.kagome, n1=4, n2=3, ax=axes_lat[0])
+axes_lat[0].set_title('Kagome')
+draw_lattice(lattices.lieb, n1=3, n2=3, ax=axes_lat[1])
+axes_lat[1].set_title('Lieb')
 
 # %%
 # Band structures and flatness check

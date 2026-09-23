@@ -42,7 +42,7 @@ Because :math:`v(\phi)` and :math:`w(\phi)` only ever appear as
 any other -- no new machinery needed, just one extra "synthetic"
 reciprocal dimension.
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-62
+.. GENERATED FROM PYTHON SOURCE LINES 26-61
 
 .. code-block:: Python
 
@@ -51,6 +51,8 @@ reciprocal dimension.
 
     from tbkit.lattice import Lattice
     from tbkit.kspace import KSpace
+    from tbkit.system import System
+    from tbkit.plot import Plot
 
 
     unit_cell = [{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (0.5, 0.)}]
@@ -79,6 +81,67 @@ reciprocal dimension.
         return rm
 
 
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 62-68
+
+The chain being pumped
+------------------------------
+At each value of the pump parameter the model is an SSH-like chain: two
+sites per cell, with a dimerization that the cycle drives. Drawn here at
+the two extremes of the cycle, where the strong bond has swapped ends --
+which is exactly how one electron per cycle gets carried across.
+
+.. GENERATED FROM PYTHON SOURCE LINES 68-92
+
+.. code-block:: Python
+
+
+
+    def draw_chain(v, w, ax, n_cells=8):
+        '''Draw a finite real-space chain with the given dimerization.'''
+        lat = Lattice(unit_cell=unit_cell, prim_vec=[(1., 0.)])
+        lat.get_lattice(n1=n_cells)
+        sys = System(lat)
+        hop = {}
+        for n in range(n_cells):
+            hop[(2*n, 2*n + 1)] = v
+            if n < n_cells - 1:
+                hop[(2*n + 1, 2*n + 2)] = w
+        sys.set_hopping_manual(hop)
+        Plot(sys).lattice(plt_hop=True, ms=14, ax=ax)
+
+
+    fig_chain, axes_chain = plt.subplots(2, 1, figsize=(7.5, 3.4))
+    draw_chain(v=1.4, w=0.5, ax=axes_chain[0])
+    axes_chain[0].set_title(r'one end of the cycle', fontsize=12)
+    draw_chain(v=0.5, w=1.4, ax=axes_chain[1])
+    axes_chain[1].set_title(r'half a cycle later: the dimerization has reversed',
+                                      fontsize=12)
+    fig_chain.tight_layout()
+
+
+
+
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_thouless_pump_001.png
+   :alt: one end of the cycle, half a cycle later: the dimerization has reversed
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_thouless_pump_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 93-97
+
+.. code-block:: Python
+
+
     v0, delta, Delta = 1., 0.5, 0.6
 
 
@@ -89,7 +152,7 @@ reciprocal dimension.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-69
+.. GENERATED FROM PYTHON SOURCE LINES 98-104
 
 The pump is quantized only when the loop encircles the gap-closing point
 -----------------------------------------------------------------------------
@@ -98,7 +161,7 @@ SSH gap-closing point at the origin; offsetting the loop so it misses
 the origin entirely gives a trivial, unquantized (here, exactly zero)
 pump instead.
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-81
+.. GENERATED FROM PYTHON SOURCE LINES 104-116
 
 .. code-block:: Python
 
@@ -128,7 +191,7 @@ pump instead.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-88
+.. GENERATED FROM PYTHON SOURCE LINES 117-123
 
 The physical signature: polarization winds by exactly one lattice vector
 ------------------------------------------------------------------------------
@@ -137,7 +200,7 @@ phase at fixed phi, in units of the lattice constant) winds by exactly
 one full lattice vector over one pump cycle -- "one electron pumped
 through the bulk per cycle".
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-108
+.. GENERATED FROM PYTHON SOURCE LINES 123-143
 
 .. code-block:: Python
 
@@ -164,9 +227,9 @@ through the bulk per cycle".
 
 
 
-.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_thouless_pump_001.png
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_thouless_pump_002.png
    :alt: Thouless pump: polarization vs. pump parameter
-   :srcset: /api/gallery/topology/images/sphx_glr_plot_thouless_pump_001.png
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_thouless_pump_002.png
    :class: sphx-glr-single-img
 
 
@@ -183,7 +246,7 @@ through the bulk per cycle".
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.340 seconds)
+   **Total running time of the script:** (0 minutes 0.339 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_thouless_pump.py:

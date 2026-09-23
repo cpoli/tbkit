@@ -36,15 +36,64 @@ primitive vectors::
     lat = Lattice(unit_cell=unit_cell, prim_vec=prim_vec)
     lat.get_lattice(n1=6, n2=6)   # 6x6 unit cells -> 36 sites
 
+The unit cell is the motif; the primitive vectors say how to repeat it.
+Here one site per cell repeated on a square grid:
+
+.. plot::
+
+    from lattice_figures import plot_lattice
+    import tbkit.lattices as lattices
+
+    plot_lattice(lattices.square(), n1=4, n2=3,
+                      title='square: 1 site per unit cell')
+
+Throughout this page, the shaded parallelogram is the unit cell, the
+arrows are :math:`\mathbf{a}_1` and :math:`\mathbf{a}_2`, and the sites
+drawn solid and labelled are the cell's own orbitals -- every faded site
+is a copy of one of them, translated by some
+:math:`\mathbf{R}=n_1\mathbf{a}_1+n_2\mathbf{a}_2`.
+
 ``lat.coor`` now holds every site's position and tag. Sculpt the shape
 with methods like ``remove_sites``, ``ellipse_in``/``ellipse_out``,
 ``boundary_line``, or by adding/subtracting two lattices (``lat1 + lat2``).
 :mod:`tbkit.lattices` has a handful of common lattices (chain, square,
 triangular, honeycomb, kagome, Lieb) ready to use instead of writing out
-*unit_cell*/*prim_vec* by hand.
+*unit_cell*/*prim_vec* by hand. Their unit cells are what distinguishes
+them -- one site for the square and triangular lattices, two for the
+honeycomb, three for the kagome and Lieb:
+
+.. plot::
+
+    import matplotlib.pyplot as plt
+    from lattice_figures import plot_lattice
+    import tbkit.lattices as lattices
+
+    fig, axes = plt.subplots(2, 2, figsize=(10.5, 7.2))
+    for ax, (name, lat, n1, n2) in zip(axes.ravel(), [
+            ('triangular', lattices.triangular(), 4, 3),
+            ('honeycomb', lattices.honeycomb(), 4, 3),
+            ('kagome', lattices.kagome(), 4, 3),
+            ('lieb', lattices.lieb(), 3, 3)]):
+        plot_lattice(lat, n1=n1, n2=n2, title=name, ax=ax)
 
 See ``lat.plot()`` to look at what you built, and
 ``examples/examples_lattice.ipynb`` for many more shapes.
+
+Sculpting works on the finite patch. Cutting a disc out of a honeycomb
+sheet, for instance:
+
+.. plot::
+
+    import matplotlib.pyplot as plt
+    from lattice_figures import plot_flake
+    from tbkit.graphene import GrapheneLattice
+
+    fig, axes = plt.subplots(1, 2, figsize=(9.5, 4.6))
+    for ax, shape in zip(axes, ('hexagon_zigzag', 'circle')):
+        lat = GrapheneLattice()
+        getattr(lat, shape)(n=6)
+        plot_flake(lat.coor, title='{} ({} sites)'.format(shape, lat.sites),
+                        ax=ax, c=['#3b76af', '#ef8636'])
 
 
 Real space: build and solve a finite system
@@ -101,6 +150,19 @@ set of *intra-unit-cell* hoppings, each tagged by which neighboring cell
     gra.set_hopping([{'i': 0, 'j': 1, 'R': (0, 0), 't': 1.},
                             {'i': 0, 'j': 1, 'R': (-1, 0), 't': 1.},
                             {'i': 0, 'j': 1, 'R': (0, -1), 't': 1.}])
+
+Those three dictionaries are exactly the three bonds leaving the cell's
+``'a'`` site: one to the ``'b'`` in the same cell
+(:math:`\mathbf{R}=(0,0)`), and one each to the ``'b'`` of the cells at
+:math:`\mathbf{R}=(-1,0)` and :math:`\mathbf{R}=(0,-1)`.
+
+.. plot::
+
+    from lattice_figures import plot_lattice
+    import tbkit.lattices as lattices
+
+    plot_lattice(lattices.honeycomb(), n1=4, n2=3,
+                      title="honeycomb: 'a' and 'b' per unit cell")
 
 Only one representative of each bond is needed -- the reverse bond
 (:math:`j\to i`, :math:`\mathbf{R}\to-\mathbf{R}`) is added automatically

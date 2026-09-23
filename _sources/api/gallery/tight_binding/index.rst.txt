@@ -5,7 +5,9 @@
 Tight-Binding
 -------------
 
-The generic real-space and reciprocal-space machinery: a graphene flake
+The generic real-space and reciprocal-space machinery: the square
+lattice, whose single band is simple enough to check by hand, as the
+smallest complete illustration of Bloch's theorem; a graphene flake
 diagonalized directly and its Bloch band structure along a k-path,
 including Wallace's 1947 linear (Dirac) dispersion near the K point;
 and :class:`tbkit.plot.Plot`'s lattice, spectrum, density-of-states, and
@@ -42,6 +44,23 @@ eigenstate-intensity plots.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="The smallest complete illustration of Bloch&#x27;s theorem: one orbital per unit cell on a square lattice, nearest-neighbor hopping only. With a single orbital the Bloch Hamiltonian H(\mathbf{k}) is a 1\times1 matrix, so &quot;diagonalizing&quot; it is nothing but reading it off, and the whole band structure is one closed-form expression,">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_square_lattice_bands_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_square_lattice_bands`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Square Lattice: Bloch's Theorem in its Simplest Form</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Every other example in this gallery reaches straight for matplotlib to plot a spectrum or a band structure by hand. tbkit.plot.Plot instead wraps the handful of plots that come up for any real-space model, directly from a System instance: the lattice itself (with or without its hoppings drawn on), the spectrum (optionally colored by sublattice polarization), the density of states, and an eigenstate&#x27;s spatial intensity.">
 
 .. only:: html
@@ -68,5 +87,6 @@ eigenstate-intensity plots.
    :hidden:
 
    /api/gallery/tight_binding/plot_graphene_bands
+   /api/gallery/tight_binding/plot_square_lattice_bands
    /api/gallery/tight_binding/plot_visualizing_a_model
 

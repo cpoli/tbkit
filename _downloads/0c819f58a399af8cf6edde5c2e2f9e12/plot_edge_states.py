@@ -21,6 +21,8 @@ import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice
 from tbkit.kspace import ribbon, PAULI
+from tbkit.system import System
+from tbkit.plot import Plot
 
 
 DX, DY = 0.5 * 3 ** 0.5, 0.5
@@ -37,6 +39,27 @@ width = 30
 # %%
 # Zigzag graphene ribbon: the E=0 edge flat band
 # --------------------------------------------------------
+
+# A narrow version of the same ribbon, drawn: periodic left-to-right and
+# open top and bottom. It is those two zigzag edges that carry the states
+# found below.
+rib_small = ribbon(lat, graphene_hop, width=6, direction=1)
+# ribbon() stacks its rows along the other primitive vector, which here has
+# a component along the periodic direction too, so tiling its cell as-is
+# draws a slanted parallelogram. Sliding each site back by whole multiples
+# of a1 is the same lattice, drawn as the strip one pictures.
+a1 = np.array(rib_small.lat.prim_vec[0])
+folded = [{'tag': d['tag'],
+               'r0': tuple(np.array(d['r0']) - round(np.dot(d['r0'], a1)/(a1 @ a1))*a1)}
+              for d in rib_small.lat.unit_cell]
+lat_draw = Lattice(unit_cell=folded, prim_vec=rib_small.lat.prim_vec)
+lat_draw.get_lattice(n1=9)
+vis = System(lat_draw)
+vis.set_hopping([{'n': 1, 't': t1}])
+fig_rib = Plot(vis).lattice(plt_hop=True, ms=9, figsize=(8, 4.5))
+
+# %%
+# The ribbon actually diagonalized is 30 cells wide:
 
 rib = ribbon(lat, graphene_hop, width=width, direction=1)
 ks = np.linspace(-np.pi, np.pi, 400)

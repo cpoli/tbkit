@@ -31,6 +31,7 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -426,14 +427,34 @@ primitive vectors:</p>
 <span class="n">lat</span><span class="o">.</span><span class="n">get_lattice</span><span class="p">(</span><span class="n">n1</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n2</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>   <span class="c1"># 6x6 unit cells -&gt; 36 sites</span>
 </pre></div>
 </div>
+<p>The unit cell is the motif; the primitive vectors say how to repeat it.
+Here one site per cell repeated on a square grid:</p>
+<figure class="align-default">
+<img alt="_images/tutorial-1.png" class="plot-directive" src="_images/tutorial-1.png" />
+</figure>
+<p>Throughout this page, the shaded parallelogram is the unit cell, the
+arrows are <span class="math notranslate nohighlight">\(\mathbf{a}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{a}_2\)</span>, and the sites
+drawn solid and labelled are the cell’s own orbitals – every faded site
+is a copy of one of them, translated by some
+<span class="math notranslate nohighlight">\(\mathbf{R}=n_1\mathbf{a}_1+n_2\mathbf{a}_2\)</span>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">lat.coor</span></code> now holds every site’s position and tag. Sculpt the shape
 with methods like <code class="docutils literal notranslate"><span class="pre">remove_sites</span></code>, <code class="docutils literal notranslate"><span class="pre">ellipse_in</span></code>/<code class="docutils literal notranslate"><span class="pre">ellipse_out</span></code>,
 <code class="docutils literal notranslate"><span class="pre">boundary_line</span></code>, or by adding/subtracting two lattices (<code class="docutils literal notranslate"><span class="pre">lat1</span> <span class="pre">+</span> <span class="pre">lat2</span></code>).
 <a class="reference internal" href="tbkit.html#module-tbkit.lattices" title="tbkit.lattices"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.lattices</span></code></a> has a handful of common lattices (chain, square,
 triangular, honeycomb, kagome, Lieb) ready to use instead of writing out
-<em>unit_cell</em>/<em>prim_vec</em> by hand.</p>
+<em>unit_cell</em>/<em>prim_vec</em> by hand. Their unit cells are what distinguishes
+them – one site for the square and triangular lattices, two for the
+honeycomb, three for the kagome and Lieb:</p>
+<figure class="align-default">
+<img alt="_images/tutorial-2.png" class="plot-directive" src="_images/tutorial-2.png" />
+</figure>
 <p>See <code class="docutils literal notranslate"><span class="pre">lat.plot()</span></code> to look at what you built, and
 <code class="docutils literal notranslate"><span class="pre">examples/examples_lattice.ipynb</span></code> for many more shapes.</p>
+<p>Sculpting works on the finite patch. Cutting a disc out of a honeycomb
+sheet, for instance:</p>
+<figure class="align-default">
+<img alt="_images/tutorial-3.png" class="plot-directive" src="_images/tutorial-3.png" />
+</figure>
 </section>
 <section id="real-space-build-and-solve-a-finite-system">
 <h2>Real space: build and solve a finite system<a class="headerlink" href="#real-space-build-and-solve-a-finite-system" title="Link to this heading">#</a></h2>
@@ -488,6 +509,13 @@ set of <em>intra-unit-cell</em> hoppings, each tagged by which neighboring cell
                         <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}])</span>
 </pre></div>
 </div>
+<p>Those three dictionaries are exactly the three bonds leaving the cell’s
+<code class="docutils literal notranslate"><span class="pre">'a'</span></code> site: one to the <code class="docutils literal notranslate"><span class="pre">'b'</span></code> in the same cell
+(<span class="math notranslate nohighlight">\(\mathbf{R}=(0,0)\)</span>), and one each to the <code class="docutils literal notranslate"><span class="pre">'b'</span></code> of the cells at
+<span class="math notranslate nohighlight">\(\mathbf{R}=(-1,0)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{R}=(0,-1)\)</span>.</p>
+<figure class="align-default">
+<img alt="_images/tutorial-4.png" class="plot-directive" src="_images/tutorial-4.png" />
+</figure>
 <p>Only one representative of each bond is needed – the reverse bond
 (<span class="math notranslate nohighlight">\(j\to i\)</span>, <span class="math notranslate nohighlight">\(\mathbf{R}\to-\mathbf{R}\)</span>) is added automatically
 as its Hermitian conjugate. Diagonalize at a single k-point with

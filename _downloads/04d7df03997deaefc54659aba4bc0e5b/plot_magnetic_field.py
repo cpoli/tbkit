@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice, COOR_DTYPE
 from tbkit.system import System
+from tbkit.plot import Plot
 
 
 # %%
@@ -44,9 +45,15 @@ ring_order = np.argsort(angle)
 sys = System(lat)
 hop_dict = {(int(ring_order[k]), int(ring_order[(k + 1) % N])): t for k in range(N)}
 
+sys.set_hopping_manual(hop_dict)
+
+# The ring itself. The flux that matters below is the one enclosed by this
+# polygon, not by the circle of radius R the sites were placed on.
+fig_ring = Plot(sys).lattice(plt_hop=True, ms=12, figsize=(4.6, 4.6))
+
+# %%
 # Sanity check at zero field: a ring of N sites has the analytic spectrum
 # E_n = 2t cos(2 pi n / N).
-sys.set_hopping_manual(hop_dict)
 sys.get_ham()
 sys.get_eig()
 expected = np.sort(2 * t * np.cos(2 * np.pi * np.arange(N) / N))

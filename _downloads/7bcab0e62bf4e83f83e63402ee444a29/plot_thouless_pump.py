@@ -28,6 +28,8 @@ import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice
 from tbkit.kspace import KSpace
+from tbkit.system import System
+from tbkit.plot import Plot
 
 
 unit_cell = [{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (0.5, 0.)}]
@@ -55,6 +57,39 @@ def rice_mele(v0, delta, Delta, onsite_offset=0.):
         rm.set_onsite({'a': onsite_offset, 'b': -onsite_offset})
     return rm
 
+
+# %%
+# The chain being pumped
+# ------------------------------
+# At each value of the pump parameter the model is an SSH-like chain: two
+# sites per cell, with a dimerization that the cycle drives. Drawn here at
+# the two extremes of the cycle, where the strong bond has swapped ends --
+# which is exactly how one electron per cycle gets carried across.
+
+
+def draw_chain(v, w, ax, n_cells=8):
+    '''Draw a finite real-space chain with the given dimerization.'''
+    lat = Lattice(unit_cell=unit_cell, prim_vec=[(1., 0.)])
+    lat.get_lattice(n1=n_cells)
+    sys = System(lat)
+    hop = {}
+    for n in range(n_cells):
+        hop[(2*n, 2*n + 1)] = v
+        if n < n_cells - 1:
+            hop[(2*n + 1, 2*n + 2)] = w
+    sys.set_hopping_manual(hop)
+    Plot(sys).lattice(plt_hop=True, ms=14, ax=ax)
+
+
+fig_chain, axes_chain = plt.subplots(2, 1, figsize=(7.5, 3.4))
+draw_chain(v=1.4, w=0.5, ax=axes_chain[0])
+axes_chain[0].set_title(r'one end of the cycle', fontsize=12)
+draw_chain(v=0.5, w=1.4, ax=axes_chain[1])
+axes_chain[1].set_title(r'half a cycle later: the dimerization has reversed',
+                                  fontsize=12)
+fig_chain.tight_layout()
+
+# %%
 
 v0, delta, Delta = 1., 0.5, 0.6
 

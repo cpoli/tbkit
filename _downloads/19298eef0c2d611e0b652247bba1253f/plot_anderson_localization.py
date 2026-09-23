@@ -22,15 +22,16 @@ import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice
 from tbkit.system import System
+from tbkit.plot import Plot
 
 
 N = 200
 
 
-def anderson_chain(alpha, seed):
+def anderson_chain(alpha, seed, n=N):
     '''A 1D tight-binding chain with uniform onsite disorder of strength alpha.'''
     lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}], prim_vec=[(1., 0.)])
-    lat.get_lattice(n1=N)
+    lat.get_lattice(n1=n)
     sys = System(lat)
     sys.set_hopping([{'n': 1, 't': 1.}])
     sys.set_onsite({'a': 0.})
@@ -44,6 +45,32 @@ def anderson_chain(alpha, seed):
     sys.get_ipr()
     return sys
 
+
+# %%
+# The chain
+# ------------
+# A plain 1D chain with uniform nearest-neighbor hopping. Only a short
+# stretch is drawn: at the full 200 sites the markers overlap into an
+# unreadable solid bar. The disorder is added to the *onsite* energies,
+# so the geometry never changes -- only what sits on each site, which is
+# what the lower panel shows.
+
+n_draw = 16
+fig0, (ax_lat, ax_pot) = plt.subplots(2, 1, figsize=(8, 3.4),
+                                                  gridspec_kw={'height_ratios': [1, 2]})
+Plot(anderson_chain(alpha=0., seed=0, n=n_draw)).lattice(plt_hop=True, ms=9,
+                                                                                  ax=ax_lat)
+ax_lat.set_title('{} sites of the chain (of {})'.format(n_draw, N), fontsize=12)
+ax_pot.axhline(0., color='C0', lw=1.5, label=r'$\alpha=0$ (clean)')
+ax_pot.plot(np.arange(n_draw),
+                 anderson_chain(alpha=2., seed=0, n=n_draw).onsite.real,
+                 'o-', color='C3', ms=5, label=r'$\alpha=2$ (disordered)')
+ax_pot.set_xlabel('site $i$')
+ax_pot.set_ylabel('onsite $E_i$')
+ax_pot.set_title('the disorder lives on the sites, not in the geometry',
+                        fontsize=12)
+ax_pot.legend(fontsize=9)
+fig0.tight_layout()
 
 # %%
 # Mean IPR grows sharply with disorder strength

@@ -29,7 +29,7 @@ flux quantum. This script sweeps
 :meth:`~tbkit.system.System.set_magnetic_field` over a finite square-lattice
 flake and plots the resulting "butterfly".
 
-.. GENERATED FROM PYTHON SOURCE LINES 13-35
+.. GENERATED FROM PYTHON SOURCE LINES 13-36
 
 .. code-block:: Python
 
@@ -38,6 +38,7 @@ flake and plots the resulting "butterfly".
 
     from tbkit.lattice import Lattice
     from tbkit.system import System
+    from tbkit.plot import Plot
 
 
     N1, N2 = 16, 16  # flake size
@@ -62,7 +63,34 @@ flake and plots the resulting "butterfly".
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-49
+.. GENERATED FROM PYTHON SOURCE LINES 37-42
+
+The flake
+------------
+A square-lattice flake. The flux swept below threads each of its square
+plaquettes; the Peierls substitution multiplies the bonds drawn here by
+a phase, leaving their magnitude (and so this picture) unchanged.
+
+.. GENERATED FROM PYTHON SOURCE LINES 42-45
+
+.. code-block:: Python
+
+
+    fig0 = Plot(flake(alpha=0.)).lattice(plt_hop=True, ms=7, figsize=(5, 5))
+
+
+
+
+.. image-sg:: /api/gallery/magnetic_field/images/sphx_glr_plot_hofstadter_butterfly_001.png
+   :alt: plot hofstadter butterfly
+   :srcset: /api/gallery/magnetic_field/images/sphx_glr_plot_hofstadter_butterfly_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 46-59
 
 Sanity checks that hold at every flux
 --------------------------------------------
@@ -78,7 +106,7 @@ spectrum shape itself:
 3. The spectrum is periodic in :math:`\alpha` with period 1 (one flux
    quantum per plaquette is gauge-equivalent to no flux at all).
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-65
+.. GENERATED FROM PYTHON SOURCE LINES 59-75
 
 .. code-block:: Python
 
@@ -113,12 +141,12 @@ spectrum shape itself:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-68
+.. GENERATED FROM PYTHON SOURCE LINES 76-78
 
 The butterfly itself
 ---------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-75
+.. GENERATED FROM PYTHON SOURCE LINES 78-85
 
 .. code-block:: Python
 
@@ -132,9 +160,9 @@ The butterfly itself
 
 
 
-.. image-sg:: /api/gallery/magnetic_field/images/sphx_glr_plot_hofstadter_butterfly_001.png
+.. image-sg:: /api/gallery/magnetic_field/images/sphx_glr_plot_hofstadter_butterfly_002.png
    :alt: Hofstadter's butterfly (16x16 flake)
-   :srcset: /api/gallery/magnetic_field/images/sphx_glr_plot_hofstadter_butterfly_001.png
+   :srcset: /api/gallery/magnetic_field/images/sphx_glr_plot_hofstadter_butterfly_002.png
    :class: sphx-glr-single-img
 
 
@@ -150,7 +178,7 @@ The butterfly itself
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.889 seconds)
+   **Total running time of the script:** (0 minutes 0.937 seconds)
 
 
 .. _sphx_glr_download_api_gallery_magnetic_field_plot_hofstadter_butterfly.py:

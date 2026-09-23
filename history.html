@@ -31,6 +31,7 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -403,7 +404,8 @@
 have exactly the form of a modulated plane wave.” – F. Bloch, 1928</p>
 </div></blockquote>
 <p>A chronology of the breakthroughs behind Tight-Binding theory, from
-Bloch’s 1928 theorem to the topological insulators of the 2000s. Every
+Bloch’s 1928 theorem to the strain-engineered and non-Hermitian lattices
+of the 2010s. Every
 stop below has a pointer to the corresponding <strong>tbkit</strong> functionality and
 a short, runnable, numerically-verified example in <code class="docutils literal notranslate"><span class="pre">examples/</span></code> –
 nothing here is asserted without also being checked in code.</p>
@@ -411,7 +413,7 @@ nothing here is asserted without also being checked in code.</p>
 <p class="topic-title">Timeline</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#bloch-s-theorem-and-band-theory" id="id1">1928 – Bloch’s Theorem and Band Theory</a></p></li>
-<li><p><a class="reference internal" href="#bloch-oscillations-and-the-wannier-stark-ladder" id="id2">1929/1960 – Bloch Oscillations and the Wannier-Stark Ladder</a></p></li>
+<li><p><a class="reference internal" href="#bloch-oscillations-and-the-wannier-stark-ladder" id="id2">1928/1960 – Bloch Oscillations and the Wannier-Stark Ladder</a></p></li>
 <li><p><a class="reference internal" href="#the-peierls-substitution" id="id3">1933 – The Peierls Substitution</a></p></li>
 <li><p><a class="reference internal" href="#wallace-s-tight-binding-prediction-of-graphene" id="id4">1947 – Wallace’s Tight-Binding Prediction of Graphene</a></p></li>
 <li><p><a class="reference internal" href="#the-slater-koster-tight-binding-framework" id="id5">1954 – The Slater-Koster Tight-Binding Framework</a></p></li>
@@ -427,12 +429,14 @@ nothing here is asserted without also being checked in code.</p>
 <li><p><a class="reference internal" href="#a-topological-flat-band-on-the-kagome-lattice" id="id15">2000/2011 – A Topological Flat Band on the Kagome Lattice</a></p></li>
 <li><p><a class="reference internal" href="#isolation-of-graphene" id="id16">2004 – Isolation of Graphene</a></p></li>
 <li><p><a class="reference internal" href="#the-kane-mele-model-and-the-quantum-spin-hall-effect" id="id17">2005-2007 – The Kane-Mele Model and the Quantum Spin Hall Effect</a></p></li>
-<li><p><a class="reference internal" href="#see-also" id="id18">See Also</a></p></li>
+<li><p><a class="reference internal" href="#strain-as-a-gauge-field-pseudo-magnetic-fields" id="id18">2010 – Strain as a Gauge Field: Pseudo-Magnetic Fields</a></p></li>
+<li><p><a class="reference internal" href="#pt-symmetry-exceptional-points-and-gain-loss-lattices" id="id19">1998/2015 – PT Symmetry, Exceptional Points, and Gain-Loss Lattices</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id20">See Also</a></p></li>
 </ul>
 </nav>
 <section id="bloch-s-theorem-and-band-theory">
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">1928 – Bloch’s Theorem and Band Theory</a><a class="headerlink" href="#bloch-s-theorem-and-band-theory" title="Link to this heading">#</a></h2>
-<p>Felix Bloch showed that the eigenstates of a single electron in a
+<p>F. Bloch showed that the eigenstates of a single electron in a
 perfectly periodic crystal potential <span class="math notranslate nohighlight">\(V(\mathbf{r}) = V(\mathbf{r}
 + \mathbf{R})\)</span> take the form</p>
 <div class="math notranslate nohighlight">
@@ -444,6 +448,14 @@ u_{n\mathbf{k}}\)</span> at each crystal momentum <span class="math notranslate 
 the Brillouin zone torus. This single idea – that a crystal’s electronic
 structure decomposes into bands <span class="math notranslate nohighlight">\(E_n(\mathbf{k})\)</span> – is the
 foundation every model in <strong>tbkit</strong> is built on.</p>
+<p>Everything below starts from the same two ingredients: a <em>unit cell</em> (the
+motif, drawn solid and labelled) and the <em>primitive vectors</em>
+<span class="math notranslate nohighlight">\(\mathbf{a}_i\)</span> that repeat it. The shaded parallelogram is one unit
+cell; every faded site is a copy of a solid one, translated by some
+<span class="math notranslate nohighlight">\(\mathbf{R} = n_1\mathbf{a}_1 + n_2\mathbf{a}_2\)</span>.</p>
+<figure class="align-default">
+<img alt="_images/history-1.png" class="plot-directive" src="_images/history-1.png" />
+</figure>
 <p><em>Implementation:</em> <a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace</span></code></a> builds <span class="math notranslate nohighlight">\(H(\mathbf{k})\)</span>
 directly by Bloch-summing real-space hoppings tagged by which
 neighboring unit cell they connect to; <a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.get_bands" title="tbkit.kspace.KSpace.get_bands"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_bands()</span></code></a>,
@@ -454,16 +466,16 @@ vectors <span class="math notranslate nohighlight">\(\mathbf{b}_i\)</span> (<spa
 2\pi\delta_{ij}\)</span>) that the Brillouin zone is built from.</p>
 <p><em>References:</em> F. Bloch, “Uber die Quantenmechanik der Elektronen in
 Kristallgittern,” Z. Phys. 52, 555-600 (1929).</p>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A from-scratch walkthrough of tbkit&#x27;s two complementary ways of looking at a Tight-Binding model:"><img alt="" src="_images/sphx_glr_plot_graphene_bands_thumb.png" />
-<p><a class="reference internal" href="api/gallery/tight_binding/plot_graphene_bands.html"><span class="doc">Graphene: Real-Space Flake and Reciprocal-Space Bands</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Graphene: Real-Space Flake and Reciprocal-Space Bands</div>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The smallest complete illustration of Bloch&#x27;s theorem: one orbital per unit cell on a square lattice, nearest-neighbor hopping only. With a single orbital the Bloch Hamiltonian H(\mathbf{k}) is a 1\times1 matrix, so &quot;diagonalizing&quot; it is nothing but reading it off, and the whole band structure is one closed-form expression,"><img alt="" src="_images/sphx_glr_plot_square_lattice_bands_thumb.png" />
+<p><a class="reference internal" href="api/gallery/tight_binding/plot_square_lattice_bands.html"><span class="doc">The Square Lattice: Bloch’s Theorem in its Simplest Form</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Square Lattice: Bloch's Theorem in its Simplest Form</div>
 </div></div></section>
 <section id="bloch-oscillations-and-the-wannier-stark-ladder">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">1929/1960 – Bloch Oscillations and the Wannier-Stark Ladder</a><a class="headerlink" href="#bloch-oscillations-and-the-wannier-stark-ladder" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">1928/1960 – Bloch Oscillations and the Wannier-Stark Ladder</a><a class="headerlink" href="#bloch-oscillations-and-the-wannier-stark-ladder" title="Link to this heading">#</a></h2>
 <p>Bloch pointed out an immediate, counterintuitive consequence of his own
 theorem: a <em>uniform</em> force on an electron in a periodic lattice does not
 uniformly accelerate it, the way it would in free space. Instead, Bloch’s
-argument and its later formalization by Gregory Wannier show the electron
+argument and its later formalization by G. Wannier show the electron
 oscillates periodically in real space, with period <span class="math notranslate nohighlight">\(T_B =
 2\pi/F\)</span> (<span class="math notranslate nohighlight">\(\hbar=1\)</span>), while the spectrum of the tilted lattice
 collapses into an exactly evenly spaced ladder,</p>
@@ -476,6 +488,9 @@ on a timescale far shorter than <span class="math notranslate nohighlight">\(T_B
 unobserved for over 60 years; it took artificial semiconductor
 superlattices, with a far larger effective lattice constant and hence
 much shorter <span class="math notranslate nohighlight">\(T_B\)</span>, to see it directly.</p>
+<figure class="align-default">
+<img alt="_images/history-2.png" class="plot-directive" src="_images/history-2.png" />
+</figure>
 <p><em>Implementation:</em> a uniform force is exactly a linear onsite potential
 gradient, so no dedicated function is needed:
 <a class="reference internal" href="tbkit.html#tbkit.system.System.set_onsite_def" title="tbkit.system.System.set_onsite_def"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.system.System.set_onsite_def()</span></code></a> applies it directly, and
@@ -494,7 +509,7 @@ oscillations in a semiconductor superlattice,” Phys. Rev. Lett. 70,
 </div></div></section>
 <section id="the-peierls-substitution">
 <h2><a class="toc-backref" href="#id3" role="doc-backlink">1933 – The Peierls Substitution</a><a class="headerlink" href="#the-peierls-substitution" title="Link to this heading">#</a></h2>
-<p>Rudolf Peierls showed how to add a magnetic field to a tight-binding
+<p>R. Peierls showed how to add a magnetic field to a tight-binding
 model without abandoning the lattice: each hopping amplitude picks up a
 phase equal to the line integral of the vector potential along the bond,</p>
 <div class="math notranslate nohighlight">
@@ -522,8 +537,8 @@ Leitungselektronen,” Z. Phys. 80, 763-791 (1933).</p>
 </div></div></section>
 <section id="wallace-s-tight-binding-prediction-of-graphene">
 <h2><a class="toc-backref" href="#id4" role="doc-backlink">1947 – Wallace’s Tight-Binding Prediction of Graphene</a><a class="headerlink" href="#wallace-s-tight-binding-prediction-of-graphene" title="Link to this heading">#</a></h2>
-<p>Seventeen years before it had a name and fifty-seven years before it was
-isolated, graphene’s electronic structure was already known: P. R.
+<p>Thirty-nine years before it had a name and fifty-seven years before it
+was isolated, graphene’s electronic structure was already known: P. R.
 Wallace worked out the tight-binding band structure of a single
 honeycomb sheet of carbon (as a stepping stone to understanding bulk
 graphite) and found something no one had seen in a solid before. The two
@@ -537,6 +552,11 @@ to leading order,</p>
 behave as massless, relativistic (Dirac) particles with an effective
 speed of light <span class="math notranslate nohighlight">\(v_F = 3ta/2\)</span>, decades before “Dirac fermions in
 condensed matter” became a field in its own right.</p>
+<p>The two bands are the two orbitals of the honeycomb unit cell – one on
+each of the interpenetrating triangular sublattices <code class="docutils literal notranslate"><span class="pre">'a'</span></code> and <code class="docutils literal notranslate"><span class="pre">'b'</span></code>:</p>
+<figure class="align-default">
+<img alt="_images/history-3.png" class="plot-directive" src="_images/history-3.png" />
+</figure>
 <p><em>Implementation:</em> no new code – this is the same honeycomb
 <a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace</span></code></a> Hamiltonian used throughout this chronology,
 evaluated at momenta offset from <span class="math notranslate nohighlight">\(\mathbf{K}\)</span> by a small
@@ -549,7 +569,7 @@ evaluated at momenta offset from <span class="math notranslate nohighlight">\(\m
 </div></div></section>
 <section id="the-slater-koster-tight-binding-framework">
 <h2><a class="toc-backref" href="#id5" role="doc-backlink">1954 – The Slater-Koster Tight-Binding Framework</a><a class="headerlink" href="#the-slater-koster-tight-binding-framework" title="Link to this heading">#</a></h2>
-<p>John Slater and George Koster showed how to build realistic band
+<p>J. Slater and G. Koster showed how to build realistic band
 structures from a <em>minimal</em> empirical basis: a linear combination of
 atomic orbitals (LCAO), with hopping matrix elements between neighboring
 orbitals as fitting parameters rather than computed from first
@@ -575,12 +595,18 @@ the Periodic Potential Problem,” Phys. Rev. 94, 1498-1524 (1954).</p>
 </div></div></section>
 <section id="anderson-localization">
 <h2><a class="toc-backref" href="#id6" role="doc-backlink">1958 – Anderson Localization</a><a class="headerlink" href="#anderson-localization" title="Link to this heading">#</a></h2>
-<p>Philip Anderson showed that quenched, random disorder is not a small
+<p>P. Anderson showed that quenched, random disorder is not a small
 perturbative correction to a metal’s conductivity but can halt transport
 outright: interference between all the scattering paths off a random
-potential exponentially localizes <em>every</em> electronic eigenstate, at any
-nonzero disorder strength, in one and two dimensions. A localized state’s
-character is diagnosed by its Inverse Participation Ratio,</p>
+potential exponentially localizes the electronic eigenstates, turning a
+metal into an insulator with no gap and no broken symmetry. Anderson’s
+own argument established this for strong enough disorder; the scaling
+theory of Abrahams, Anderson, Licciardello, and Ramakrishnan sharpened
+it two decades later to the statement that in one and two dimensions
+<em>every</em> state localizes at <em>any</em> nonzero disorder strength, so that only
+in three dimensions is there a genuine metal-insulator transition at
+finite disorder. A localized state’s character is diagnosed by its
+Inverse Participation Ratio,</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{IPR}_n = \frac{\sum_i|\psi_i^{(n)}|^4}{\left(\sum_i|\psi_i^{(n)}|^2\right)^2}\, ,\]</div>
 <p>which is <span class="math notranslate nohighlight">\(O(1/N)\)</span> for a state spread over all <span class="math notranslate nohighlight">\(N\)</span> sites
@@ -591,14 +617,16 @@ character is diagnosed by its Inverse Participation Ratio,</p>
 the onsite energies/hoppings; <a class="reference internal" href="tbkit.html#tbkit.system.System.get_ipr" title="tbkit.system.System.get_ipr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_ipr()</span></code></a> computes
 <span class="math notranslate nohighlight">\(\mathrm{IPR}_n\)</span> for every eigenstate.</p>
 <p><em>References:</em> P. W. Anderson, “Absence of Diffusion in Certain Random
-Lattices,” Phys. Rev. 109, 1492-1505 (1958).</p>
+Lattices,” Phys. Rev. 109, 1492-1505 (1958); E. Abrahams, P. W. Anderson,
+D. C. Licciardello, and T. V. Ramakrishnan, “Scaling Theory of
+Localization,” Phys. Rev. Lett. 42, 673-676 (1979).</p>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="In a 1D (or 2D) tight-binding chain, any nonzero amount of uncorrelated onsite disorder exponentially localizes every eigenstate -- interference between all the scattering paths off the random potential, rather than merely reducing a mean free path. A state&#x27;s degree of localization is diagnosed by its Inverse Participation Ratio,"><img alt="" src="_images/sphx_glr_plot_anderson_localization_thumb.png" />
 <p><a class="reference internal" href="api/gallery/disorder/plot_anderson_localization.html"><span class="doc">Anderson Localization</span></a></p>
   <div class="sphx-glr-thumbnail-title">Anderson Localization</div>
 </div></div></section>
 <section id="the-aharonov-bohm-effect">
 <h2><a class="toc-backref" href="#id7" role="doc-backlink">1959 – The Aharonov-Bohm Effect</a><a class="headerlink" href="#the-aharonov-bohm-effect" title="Link to this heading">#</a></h2>
-<p>Yakir Aharonov and David Bohm pointed out a startling consequence of
+<p>Y. Aharonov and D. Bohm pointed out a startling consequence of
 quantum mechanics: a charged particle’s phase is affected by the vector
 potential <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> even in a region where the magnetic field
 <span class="math notranslate nohighlight">\(\mathbf{B}=\nabla\times\mathbf{A}\)</span> itself vanishes identically –
@@ -606,6 +634,11 @@ only the <em>enclosed flux</em> <span class="math notranslate nohighlight">\(\Ph
 matters, and only modulo the flux quantum <span class="math notranslate nohighlight">\(\Phi_0\)</span>. On a ring
 threaded by flux <span class="math notranslate nohighlight">\(\Phi\)</span>, this makes the energy spectrum exactly
 periodic in <span class="math notranslate nohighlight">\(\Phi\)</span> with period <span class="math notranslate nohighlight">\(\Phi_0\)</span>.</p>
+<p>A ring is not a Bravais lattice, so its sites are placed by hand – the
+flux that matters is the one enclosed by the polygon they span:</p>
+<figure class="align-default">
+<img alt="_images/history-4.png" class="plot-directive" src="_images/history-4.png" />
+</figure>
 <p><em>Implementation:</em> directly reproduced by
 <a class="reference internal" href="tbkit.html#tbkit.system.System.set_magnetic_field" title="tbkit.system.System.set_magnetic_field"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.system.System.set_magnetic_field()</span></code></a> (see 1933 above) applied to
 a ring-shaped <a class="reference internal" href="tbkit.html#tbkit.lattice.Lattice" title="tbkit.lattice.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a>.</p>
@@ -617,7 +650,7 @@ Potentials in the Quantum Theory,” Phys. Rev. 115, 485-491 (1959).</p>
 </div></div></section>
 <section id="landau-levels-from-free-electrons-to-graphene-s-dirac-fermions">
 <h2><a class="toc-backref" href="#id8" role="doc-backlink">1930/2005 – Landau Levels: From Free Electrons to Graphene’s Dirac Fermions</a><a class="headerlink" href="#landau-levels-from-free-electrons-to-graphene-s-dirac-fermions" title="Link to this heading">#</a></h2>
-<p>Lev Landau showed in 1930 that a charged particle confined to a plane
+<p>L. Landau showed in 1930 that a charged particle confined to a plane
 under a uniform perpendicular magnetic field has a spectrum that
 collapses from a continuum into a ladder of discrete, macroscopically
 degenerate levels – Landau levels – each level’s degeneracy set purely
@@ -628,9 +661,9 @@ near a band’s parabolic edge, evenly spaced by the cyclotron frequency
 <span class="math notranslate nohighlight">\(\omega_c = eB/m^*\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[E_n = E_0 + \hbar\omega_c\left(n+\tfrac12\right), \qquad n = 0, 1, 2, \dots\]</div>
-<p>Seventy-five years later, Konstantin Novoselov, Andre Geim, and
-coworkers, and independently Yuan Zhang, Yuanbo Tan, Horst Stormer, and
-Philip Kim, measured graphene’s Landau levels directly and found
+<p>Seventy-five years later, K. Novoselov, A. Geim, and
+coworkers, and independently Y. Zhang, Y.-W. Tan, H. Stormer,
+and P. Kim, measured graphene’s Landau levels directly and found
 something Landau’s original theory never anticipated: because
 graphene’s low-energy electrons obey Wallace’s linear (massless-Dirac)
 dispersion above rather than the usual parabolic one, the ladder is
@@ -641,6 +674,12 @@ sequence, that graphene’s charge carriers behave as massless Dirac
 fermions rather than ordinary electrons.</p>
 <div class="math notranslate nohighlight">
 \[E_n = \mathrm{sign}(n)\, v_F\sqrt{2\hbar e B|n|}, \qquad n = 0, \pm1, \pm2, \dots\]</div>
+<p>The two ladders below are the same field applied to two different finite
+flakes – a square lattice (parabolic band edge) and a graphene flake
+(linear Dirac cone):</p>
+<figure class="align-default">
+<img alt="_images/history-5.png" class="plot-directive" src="_images/history-5.png" />
+</figure>
 <p><em>Implementation:</em> both ladders come from exactly the same
 <a class="reference internal" href="tbkit.html#tbkit.system.System.set_magnetic_field" title="tbkit.system.System.set_magnetic_field"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.system.System.set_magnetic_field()</span></code></a> used throughout this
 chronology, applied to two different finite flakes: a square lattice
@@ -670,7 +709,7 @@ within 1%.</p>
 </div></div></section>
 <section id="hofstadter-s-butterfly">
 <h2><a class="toc-backref" href="#id9" role="doc-backlink">1976 – Hofstadter’s Butterfly</a><a class="headerlink" href="#hofstadter-s-butterfly" title="Link to this heading">#</a></h2>
-<p>Douglas Hofstadter solved the tight-binding square lattice threaded by a
+<p>D. Hofstadter solved the tight-binding square lattice threaded by a
 <em>continuously varying</em> flux per plaquette <span class="math notranslate nohighlight">\(\alpha = p/q\)</span> (in units
 of <span class="math notranslate nohighlight">\(\Phi_0\)</span>) and found a spectrum of startling, self-similar
 complexity: at each rational flux <span class="math notranslate nohighlight">\(p/q\)</span>, the band splits into
@@ -692,8 +731,8 @@ B 14, 2239-2249 (1976).</p>
 </div></div></section>
 <section id="the-su-schrieffer-heeger-ssh-model">
 <h2><a class="toc-backref" href="#id10" role="doc-backlink">1979 – The Su-Schrieffer-Heeger (SSH) Model</a><a class="headerlink" href="#the-su-schrieffer-heeger-ssh-model" title="Link to this heading">#</a></h2>
-<p>Su, Schrieffer, and Heeger showed that a 1D dimerized chain – alternating
-strong (intracell, <span class="math notranslate nohighlight">\(v\)</span>) and weak (intercell, <span class="math notranslate nohighlight">\(w\)</span>) bonds,
+<p>Su, Schrieffer, and Heeger showed that a 1D dimerized chain –
+alternating intracell (<span class="math notranslate nohighlight">\(v\)</span>) and intercell (<span class="math notranslate nohighlight">\(w\)</span>) bonds,
 modeling polyacetylene – hosts domain-wall solitons. Cut open into a
 finite chain, the same physics produces a pair of protected,
 exponentially localized zero-energy states, one at each end, whenever
@@ -703,6 +742,12 @@ theory: a bulk property predicting the existence of boundary modes.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}H(k) = \begin{pmatrix} 0 &amp; v + w\,e^{-ik} \\ v + w\,e^{ik} &amp; 0 \end{pmatrix},
 \qquad E_\pm(k) = \pm|v + w\,e^{-ik}|\, .\end{split}\]</div>
+<p>Which phase the chain is in is visible in the geometry: it is set by
+whether the chain is cut so that the <em>weak</em> bond or the <em>strong</em> one sits
+at the end.</p>
+<figure class="align-default">
+<img alt="_images/history-6.png" class="plot-directive" src="_images/history-6.png" />
+</figure>
 <p>The bulk gap <span class="math notranslate nohighlight">\(2\min_k|v+we^{-ik}| = 2|v-w|\)</span> closes only at
 <span class="math notranslate nohighlight">\(v=w\)</span>; for <span class="math notranslate nohighlight">\(v&lt;w\)</span> the chain is topological (protected
 zero-energy edge modes under open boundaries), and for <span class="math notranslate nohighlight">\(v&gt;w\)</span> it is
@@ -740,7 +785,8 @@ which needs no smooth gauge choice for <span class="math notranslate nohighlight
 <a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.chern_number" title="tbkit.kspace.KSpace.chern_number"><code class="xref py py-meth docutils literal notranslate"><span class="pre">chern_number()</span></code></a> is its sum divided by
 <span class="math notranslate nohighlight">\(2\pi\)</span>, returning an integer to within the mesh resolution.</p>
 <p><em>References:</em> D. J. Thouless, M. Kohmoto, M. P. Nightingale, and M. den
-Nijs, Phys. Rev. Lett. 49, 405-408 (1982).</p>
+Nijs, “Quantized Hall Conductance in a Two-Dimensional Periodic
+Potential,” Phys. Rev. Lett. 49, 405-408 (1982).</p>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The Haldane model is honeycomb graphene with a complex next-nearest-neighbor hopping t_2 e^{i\phi} (breaking time-reversal symmetry, e.g. via a staggered flux pattern with zero net flux) and a staggered sublattice onsite energy \pm M (breaking inversion symmetry). It is the first model shown to realize a Chern insulator -- a gapped phase with quantized Hall conductance and no net magnetic field."><img alt="" src="_images/sphx_glr_plot_haldane_topology_thumb.png" />
 <p><a class="reference internal" href="api/gallery/topology/plot_haldane_topology.html"><span class="doc">The Haldane Model: Berry Curvature and a Topological Phase Transition</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Haldane Model: Berry Curvature and a Topological Phase Transition</div>
@@ -777,7 +823,7 @@ Excitations of a Linearly Conjugated Diatomic Polymer,” Phys. Rev. Lett.
 </div></div></section>
 <section id="the-haldane-model">
 <h2><a class="toc-backref" href="#id13" role="doc-backlink">1988 – The Haldane Model</a><a class="headerlink" href="#the-haldane-model" title="Link to this heading">#</a></h2>
-<p>Duncan Haldane asked whether the integer quantum Hall effect requires a
+<p>D. Haldane asked whether the integer quantum Hall effect requires a
 net magnetic field at all – and showed it does not. His model threads
 complex second-neighbor hopping <span class="math notranslate nohighlight">\(t_2e^{i\phi}\)</span> through a honeycomb
 lattice in a pattern with zero <em>net</em> flux per unit cell (opposite
@@ -799,20 +845,28 @@ Landau Levels,” Phys. Rev. Lett. 61, 2015-2018 (1988).</p>
 </div></div></section>
 <section id="lieb-s-theorem-and-flat-band-lattices">
 <h2><a class="toc-backref" href="#id14" role="doc-backlink">1989 – Lieb’s Theorem and Flat-Band Lattices</a><a class="headerlink" href="#lieb-s-theorem-and-flat-band-lattices" title="Link to this heading">#</a></h2>
-<p>Elliott Lieb proved one of the few rigorous, non-perturbative results
+<p>E. Lieb proved one of the few rigorous, non-perturbative results
 about the many-body Hubbard problem: on a bipartite lattice with unequal
-numbers of sites on its two sublattices, the half-filled ground state is
-a ferromagnet, for <em>any</em> repulsion <span class="math notranslate nohighlight">\(U&gt;0\)</span>. The lattice Lieb used to
-prove it – a square lattice with one extra site per unit cell on every
-edge – turns out to have an exactly flat (dispersionless) single-particle
+numbers of sites on its two sublattices <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>, the
+half-filled ground state has total spin exactly
+<span class="math notranslate nohighlight">\(S = \bigl||A|-|B|\bigr|/2\)</span>, for <em>any</em> repulsion <span class="math notranslate nohighlight">\(U&gt;0\)</span> –
+ferrimagnetic order, with a net moment, derived without approximation.
+The lattice Lieb used to prove it – a square lattice with an extra site
+at the midpoint of every bond, so three sites per unit cell split two-to-one
+between the sublattices – turns out to have an exactly flat (dispersionless) single-particle
 band already at the <em>noninteracting</em> level, from destructive interference
 confining an eigenstate to a single 4-site plaquette with zero amplitude
 everywhere else; the kagome lattice shares the same flat-band mechanism
 on a different geometry. A flat band’s macroscopic, noninteracting
 degeneracy is exactly the extreme limit in which arbitrarily weak
 interactions dominate – the underlying reason flat-band lattices remain
-a active route to engineered strong correlation and (on kagome, with
+an active route to engineered strong correlation and (on kagome, with
 further ingredients) topological flat-band physics.</p>
+<p>Both lattices owe their flat band to the same thing – a unit cell with
+more sites than the number of independent ways an electron can leave it:</p>
+<figure class="align-default">
+<img alt="_images/history-7.png" class="plot-directive" src="_images/history-7.png" />
+</figure>
 <p><em>Implementation:</em> <a class="reference internal" href="tbkit.html#tbkit.lattices.lieb" title="tbkit.lattices.lieb"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.lattices.lieb()</span></code></a> and <a class="reference internal" href="tbkit.html#tbkit.lattices.kagome" title="tbkit.lattices.kagome"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.lattices.kagome()</span></code></a>
 provide both lattices’ unit cells directly, ready for
 <a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">KSpace</span></code></a>.</p>
@@ -824,7 +878,7 @@ Rev. Lett. 62, 1201-1204 (1989).</p>
 </div></div></section>
 <section id="a-topological-flat-band-on-the-kagome-lattice">
 <h2><a class="toc-backref" href="#id15" role="doc-backlink">2000/2011 – A Topological Flat Band on the Kagome Lattice</a><a class="headerlink" href="#a-topological-flat-band-on-the-kagome-lattice" title="Link to this heading">#</a></h2>
-<p>Kazuki Ohgushi, Shuichi Murakami, and Naoto Nagaosa showed in 2000 that
+<p>K. Ohgushi, S. Murakami, and N. Nagaosa showed in 2000 that
 a canted (non-coplanar) magnetic texture on the kagome lattice, via the
 scalar spin chirality its itinerant electrons pick up hopping around
 each elementary triangle, acts on those electrons exactly like a
@@ -867,7 +921,7 @@ zero, as they must.</p>
 </div></div></section>
 <section id="isolation-of-graphene">
 <h2><a class="toc-backref" href="#id16" role="doc-backlink">2004 – Isolation of Graphene</a><a class="headerlink" href="#isolation-of-graphene" title="Link to this heading">#</a></h2>
-<p>Andre Geim, Konstantin Novoselov, and coworkers mechanically exfoliated a
+<p>A. Geim, K. Novoselov, and coworkers mechanically exfoliated a
 single atomic layer of carbon from graphite, producing the first
 genuinely 2D crystal. Graphene’s low-energy quasiparticles obey a
 massless relativistic (Dirac) equation rather than the usual Schrodinger
@@ -879,6 +933,9 @@ condensed matter experiment into a laboratory for relativistic quantum
 phenomena, and putting the honeycomb lattice, and Haldane’s sixteen-year
 old model built on it, at the center of the field. Geim and Novoselov
 shared the 2010 Nobel Prize in Physics for this work.</p>
+<figure class="align-default">
+<img alt="_images/history-8.png" class="plot-directive" src="_images/history-8.png" />
+</figure>
 <p><em>Implementation:</em> <a class="reference internal" href="tbkit.html#tbkit.lattices.honeycomb" title="tbkit.lattices.honeycomb"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.lattices.honeycomb()</span></code></a>, or the equivalent
 hand-built unit cell used throughout this package’s graphene examples;
 <a class="reference internal" href="tbkit.html#tbkit.graphene.GrapheneLattice" title="tbkit.graphene.GrapheneLattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.graphene.GrapheneLattice</span></code></a> additionally provides ready-made
@@ -893,7 +950,7 @@ Effect in Atomically Thin Carbon Films,” Science 306, 666-669 (2004).</p>
 </div></div></section>
 <section id="the-kane-mele-model-and-the-quantum-spin-hall-effect">
 <h2><a class="toc-backref" href="#id17" role="doc-backlink">2005-2007 – The Kane-Mele Model and the Quantum Spin Hall Effect</a><a class="headerlink" href="#the-kane-mele-model-and-the-quantum-spin-hall-effect" title="Link to this heading">#</a></h2>
-<p>Charles Kane and Eugene Mele showed in 2005 that adding <em>intrinsic
+<p>C. Kane and E. Mele showed in 2005 that adding <em>intrinsic
 spin-orbit coupling</em> to graphene – two time-reversed copies of Haldane’s
 model, one per spin, with opposite Chern number so the <em>total</em> Chern
 number vanishes – produces a new, time-reversal-symmetric topological
@@ -906,6 +963,13 @@ has no same-momentum, same-spin partner to scatter into. Konig et al.
 observed exactly this two-terminal quantized conductance in HgTe/CdTe
 quantum wells in 2007, the first experimentally realized topological
 insulator of any kind.</p>
+<p>Edge states need an edge, so the model is cut into a ribbon: periodic
+along one primitive vector, finite along the other. The shaded column is
+the repeating unit; the ribbon is that column tiled sideways, and its two
+open edges are where the helical states live.</p>
+<figure class="align-default">
+<img alt="_images/history-9.png" class="plot-directive" src="_images/history-9.png" />
+</figure>
 <p><em>Implementation:</em> <a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace</span></code></a> constructed with
 <code class="docutils literal notranslate"><span class="pre">spin=True</span></code> gives every site a spin-1/2 degree of freedom, with
 <a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.set_hopping" title="tbkit.kspace.KSpace.set_hopping"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_hopping()</span></code></a>/<a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.set_onsite" title="tbkit.kspace.KSpace.set_onsite"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_onsite()</span></code></a>
@@ -923,8 +987,146 @@ in HgTe Quantum Wells,” Science 318, 766-770 (2007).</p>
 <p><a class="reference internal" href="api/gallery/topology/plot_edge_states.html"><span class="doc">Edge States on Ribbons</span></a></p>
   <div class="sphx-glr-thumbnail-title">Edge States on Ribbons</div>
 </div></div></section>
+<section id="strain-as-a-gauge-field-pseudo-magnetic-fields">
+<h2><a class="toc-backref" href="#id18" role="doc-backlink">2010 – Strain as a Gauge Field: Pseudo-Magnetic Fields</a><a class="headerlink" href="#strain-as-a-gauge-field-pseudo-magnetic-fields" title="Link to this heading">#</a></h2>
+<p>F. Guinea, M. Katsnelson, and A. Geim pointed out that
+graphene offers a way to build a magnetic field out of nothing but
+mechanical deformation. Straining the sheet changes its bond lengths and
+therefore its hopping amplitudes, and near the Dirac point a <em>smooth</em>
+modulation of the three nearest-neighbor hoppings enters the Dirac
+equation in precisely the slot a vector potential occupies: it displaces
+the Dirac cone in momentum space rather than shifting its energy. A
+<em>triaxial</em> strain whose modulation grows linearly with distance from the
+center therefore acts on the electrons as a uniform <strong>pseudo-magnetic
+field</strong>,</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{A} = \tfrac{1}{2}B_s(-y,\, x)\, ,\qquad B_s = \beta/2\, ,\]</div>
+<p>(<span class="math notranslate nohighlight">\(\beta\)</span> the strain strength in the convention below,
+<span class="math notranslate nohighlight">\(\hbar=e=a=1\)</span>), quantizing the spectrum into exactly the
+relativistic ladder <span class="math notranslate nohighlight">\(E_n = \mathrm{sign}(n)v_F\sqrt{2B_s|n|}\)</span> that
+a real field produces.</p>
+<p>What makes this more than an analogy is what is <em>missing</em>. Every hopping
+stays real, so the Hamiltonian is real, time-reversal symmetry is never
+broken – and a time-reversal-symmetric Hamiltonian cannot host a genuine
+magnetic field. The resolution is that the pseudo-field must point the
+<em>opposite</em> way at the second valley <span class="math notranslate nohighlight">\(\mathbf{K}'\)</span>: carriers in the
+two valleys bend in opposite directions, so the sample carries no net
+Hall current even while each valley is fully Landau-quantized. Nor is
+the effect bounded by what a laboratory magnet can deliver, since
+nothing is being magnetized: Levy and coworkers measured pseudo-Landau
+levels in strained graphene nanobubbles corresponding to fields above
+300 T, an order of magnitude beyond the strongest static fields
+available anywhere.</p>
+<p><em>Implementation:</em>
+<a class="reference internal" href="tbkit.html#tbkit.graphene.GrapheneSystem.set_hop_linear_strain" title="tbkit.graphene.GrapheneSystem.set_hop_linear_strain"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.graphene.GrapheneSystem.set_hop_linear_strain()</span></code></a> sets every
+nearest-neighbor bond to <span class="math notranslate nohighlight">\(t_{ij} = t(1 + \tfrac14\beta\,
+\hat{\boldsymbol\delta}_{ij}\cdot\mathbf{r}_{ij})\)</span>, with
+<span class="math notranslate nohighlight">\(\hat{\boldsymbol\delta}_{ij}\)</span> the bond direction and
+<span class="math notranslate nohighlight">\(\mathbf{r}_{ij}\)</span> its midpoint – linear triaxial strain, measured
+from the coordinate origin, so the flake must be centered on it.
+<a class="reference internal" href="tbkit.html#tbkit.graphene.GrapheneSystem.get_beta_lims" title="tbkit.graphene.GrapheneSystem.get_beta_lims"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_beta_lims()</span></code></a> returns the largest
+strain that still leaves every hopping positive, and
+<a class="reference internal" href="tbkit.html#tbkit.graphene.GrapheneSystem.get_butterfly" title="tbkit.graphene.GrapheneSystem.get_butterfly"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_butterfly()</span></code></a> sweeps
+<span class="math notranslate nohighlight">\(\beta\)</span> across that whole range – the strain analogue of
+Hofstadter’s flux sweep (1976, above).</p>
+<p><em>References:</em> F. Guinea, M. I. Katsnelson, and A. K. Geim, “Energy gaps
+and a zero-field quantum Hall effect in graphene by strain engineering,”
+Nature Physics 6, 30-33 (2010); N. Levy, S. A. Burke, K. L. Meaker, M.
+Panlasigui, A. Zettl, F. Guinea, A. H. Castro Neto, and M. F. Crommie,
+“Strain-Induced Pseudo-Magnetic Fields Greater Than 300 Tesla in
+Graphene Nanobubbles,” Science 329, 544-547 (2010); the strain gauge
+field itself goes back to H. Suzuura and T. Ando, “Phonons and
+electron-phonon scattering in carbon nanotubes,” Phys. Rev. B 65, 235412
+(2002).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/strain/plot_pseudo_magnetic_field.py</span></code> strains a
+1728-site circular graphene flake at <span class="math notranslate nohighlight">\(\beta=-0.05\)</span>, confirms the
+Hamiltonian is exactly real (unlike the complex, Peierls-substituted one
+it is compared against), and confirms that its bulk states nevertheless
+bunch onto the first four pseudo-Landau levels
+<span class="math notranslate nohighlight">\(E_n = \tfrac32 t\sqrt{\beta n}\)</span> to within 3%, with the
+<span class="math notranslate nohighlight">\(\sqrt{n}\)</span> spacing of a Dirac cone rather than the even spacing of
+a parabolic band. It then confirms that <span class="math notranslate nohighlight">\(E_1\)</span> tracks
+<span class="math notranslate nohighlight">\(\sqrt{\beta}\)</span> across a range of strains, and that a <em>real</em> field
+of the same strength, <span class="math notranslate nohighlight">\(\alpha = B_s/2\pi\)</span>, reproduces the same
+<span class="math notranslate nohighlight">\(E_1\)</span> to within 3% through a complex Hamiltonian.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Stretching graphene changes its bond lengths, and therefore its hopping amplitudes. Near the Dirac point a smooth modulation of the three nearest-neighbor hoppings enters the Dirac equation exactly the way a vector potential does -- it shifts the Dirac point in momentum space -- so a strain field whose modulation grows linearly with position acts on the electrons as a uniform magnetic field, and quantizes their spectrum into Landau levels."><img alt="" src="_images/sphx_glr_plot_pseudo_magnetic_field_thumb.png" />
+<p><a class="reference internal" href="api/gallery/strain/plot_pseudo_magnetic_field.html"><span class="doc">Strain as a Gauge Field: Pseudo-Landau Levels in Graphene</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Strain as a Gauge Field: Pseudo-Landau Levels in Graphene</div>
+</div></div></section>
+<section id="pt-symmetry-exceptional-points-and-gain-loss-lattices">
+<h2><a class="toc-backref" href="#id19" role="doc-backlink">1998/2015 – PT Symmetry, Exceptional Points, and Gain-Loss Lattices</a><a class="headerlink" href="#pt-symmetry-exceptional-points-and-gain-loss-lattices" title="Link to this heading">#</a></h2>
+<p>C. Bender and S. Boettcher overturned a piece of textbook folklore:
+Hermiticity is <em>sufficient</em> for a real spectrum, but it is not necessary.
+A Hamiltonian merely symmetric under the combined parity-time operation
+<span class="math notranslate nohighlight">\(\mathcal{PT}\)</span> can have an entirely real spectrum too. On a lattice
+this means balanced <strong>gain and loss</strong> – imaginary onsite energies
+<span class="math notranslate nohighlight">\(\pm i\gamma\)</span> placed symmetrically on the two sublattices – leaves
+every eigenvalue real up to a finite threshold in <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
+<p>At that threshold the eigenvalues do not cross; they collide and move off
+into the complex plane as conjugate pairs. The collision point is an
+<strong>exceptional point</strong>, and it is unlike any Hermitian degeneracy: the two
+<em>eigenvectors</em> coalesce as well, so the Hamiltonian loses a dimension of
+its eigenbasis and stops being diagonalizable altogether. How close a
+mode has come to that degeneracy is measured by the <strong>Petermann factor</strong>
+<span class="math notranslate nohighlight">\(K_n\)</span>, introduced decades earlier in laser physics to explain
+anomalously broad linewidths,</p>
+<div class="math notranslate nohighlight">
+\[K_n = \frac{\langle\psi_L^{n}|\psi_L^{n}\rangle
+            \langle\psi_R^{n}|\psi_R^{n}\rangle}
+           {|\langle\psi_L^{n}|\psi_R^{n}\rangle|^2}\, ,\]</div>
+<p>which equals 1 for an orthogonal (Hermitian) eigenbasis and diverges at
+an exceptional point. None of this is a formal game: gain and loss are
+the most accessible knobs an optics experimentalist has, and
+<span class="math notranslate nohighlight">\(\mathcal{PT}\)</span> symmetry breaking was seen directly in coupled
+optical waveguides in 2010.</p>
+<p>Combined with topology it produces an effect with no Hermitian
+counterpart at all. Chiral symmetry forces each of the SSH model’s zero
+modes (1979, above) to live entirely on <em>one</em> sublattice, so sublattice
+gain and loss is felt by them but not by the bulk states, which are
+spread evenly over both. The topological modes are therefore the <em>first</em>
+to leave the real axis, picking up energies <span class="math notranslate nohighlight">\(\pm i\gamma\)</span> at any
+gain at all, while the entire bulk stays real until <span class="math notranslate nohighlight">\(\gamma\)</span>
+reaches the bulk gap – a way to amplify a topological mode selectively,
+demonstrated in a chain of dielectric microwave resonators.</p>
+<figure class="align-default">
+<img alt="_images/history-10.png" class="plot-directive" src="_images/history-10.png" />
+</figure>
+<p><em>Implementation:</em> <a class="reference internal" href="tbkit.html#tbkit.system.System.set_onsite" title="tbkit.system.System.set_onsite"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.system.System.set_onsite()</span></code></a> accepts complex
+onsite energies, and <a class="reference internal" href="tbkit.html#tbkit.system.System.get_eig" title="tbkit.system.System.get_eig"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_eig()</span></code></a> detects a
+non-Hermitian Hamiltonian and switches to the general (non-symmetric)
+eigensolver, with <code class="docutils literal notranslate"><span class="pre">left=True</span></code> returning the left eigenvectors too;
+<a class="reference internal" href="tbkit.html#tbkit.system.System.get_petermann" title="tbkit.system.System.get_petermann"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_petermann()</span></code></a> builds <span class="math notranslate nohighlight">\(K_n\)</span> from both
+sets, and <a class="reference internal" href="tbkit.html#tbkit.plot.Plot.spectrum_complex" title="tbkit.plot.Plot.spectrum_complex"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.plot.Plot.spectrum_complex()</span></code></a> plots the real and
+imaginary parts of the spectrum together.</p>
+<p><em>References:</em> C. M. Bender and S. Boettcher, “Real Spectra in
+Non-Hermitian Hamiltonians Having PT Symmetry,” Phys. Rev. Lett. 80,
+5243-5246 (1998); K. Petermann, “Calculated spontaneous emission factor
+for double-heterostructure injection lasers with gain-induced
+waveguiding,” IEEE J. Quantum Electron. 15, 566-570 (1979); C. E. Ruter,
+K. G. Makris, R. El-Ganainy, D. N. Christodoulides, M. Segev, and D.
+Kip, “Observation of parity-time symmetry in optics,” Nature Physics 6,
+192-195 (2010); H. Schomerus, “Topologically protected midgap states in
+complex photonic lattices,” Opt. Lett. 38, 1912-1914 (2013); C. Poli, M.
+Bellec, U. Kuhl, F. Mortessagne, and H. Schomerus, “Selective
+enhancement of topologically induced interface states in a dielectric
+resonator chain,” Nat. Commun. 6, 6710 (2015).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/non_hermitian/plot_pt_symmetry.py</span></code> confirms, for a
+gain-loss dimer, that the spectrum is real and equal to
+<span class="math notranslate nohighlight">\(\pm\sqrt{t^2-\gamma^2}\)</span> below the exceptional point at
+<span class="math notranslate nohighlight">\(\gamma=t\)</span>, purely imaginary above it, and that the Petermann
+factor matches <span class="math notranslate nohighlight">\(1/(1-\gamma^2/t^2)\)</span> to machine precision before
+diverging at the exceptional point itself. It then applies the same
+gain-loss pattern to a 40-site topological SSH chain and confirms that
+exactly two states – the edge modes – acquire imaginary parts, at
+exactly <span class="math notranslate nohighlight">\(\pm i\gamma\)</span>, that the amplified one lies entirely on the
+gain sublattice and the damped one entirely on the loss sublattice, and
+that the bulk stays real until <span class="math notranslate nohighlight">\(\gamma\)</span> exceeds <span class="math notranslate nohighlight">\(|v-w|\)</span>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A lattice with balanced gain and loss -- imaginary onsite energies \pm i\gamma on the two sublattices -- has a non-Hermitian Hamiltonian, but it commutes with the combined parity-time operation \mathcal{PT}. Bender and Boettcher&#x27;s 1998 observation was that such a Hamiltonian can still have an entirely real spectrum, up to a threshold in \gamma at which eigenvalues collide pairwise and split into complex-conjugate pairs."><img alt="" src="_images/sphx_glr_plot_pt_symmetry_thumb.png" />
+<p><a class="reference internal" href="api/gallery/non_hermitian/plot_pt_symmetry.html"><span class="doc">PT Symmetry, Exceptional Points, and a Selectively Amplified Edge Mode</span></a></p>
+  <div class="sphx-glr-thumbnail-title">PT Symmetry, Exceptional Points, and a Selectively Amplified Edge Mode</div>
+</div></div></section>
 <section id="see-also">
-<h2><a class="toc-backref" href="#id18" role="doc-backlink">See Also</a><a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id20" role="doc-backlink">See Also</a><a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="tutorial.html"><span class="doc">Tutorial</span></a> – a narrative walkthrough of the same API used
 throughout this chronology.</p></li>
@@ -984,7 +1186,7 @@ time propagation, …).</p></li>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bloch-s-theorem-and-band-theory">1928 – Bloch’s Theorem and Band Theory</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bloch-oscillations-and-the-wannier-stark-ladder">1929/1960 – Bloch Oscillations and the Wannier-Stark Ladder</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bloch-oscillations-and-the-wannier-stark-ladder">1928/1960 – Bloch Oscillations and the Wannier-Stark Ladder</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-peierls-substitution">1933 – The Peierls Substitution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wallace-s-tight-binding-prediction-of-graphene">1947 – Wallace’s Tight-Binding Prediction of Graphene</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-slater-koster-tight-binding-framework">1954 – The Slater-Koster Tight-Binding Framework</a></li>
@@ -1000,6 +1202,8 @@ time propagation, …).</p></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-topological-flat-band-on-the-kagome-lattice">2000/2011 – A Topological Flat Band on the Kagome Lattice</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#isolation-of-graphene">2004 – Isolation of Graphene</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-kane-mele-model-and-the-quantum-spin-hall-effect">2005-2007 – The Kane-Mele Model and the Quantum Spin Hall Effect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#strain-as-a-gauge-field-pseudo-magnetic-fields">2010 – Strain as a Gauge Field: Pseudo-Magnetic Fields</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pt-symmetry-exceptional-points-and-gain-loss-lattices">1998/2015 – PT Symmetry, Exceptional Points, and Gain-Loss Lattices</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See Also</a></li>
 </ul>
   </nav></div>
