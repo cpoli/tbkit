@@ -97,6 +97,9 @@ class KSpace():
         self.norb = 2*self.n_sites if spin else self.n_sites
         self.tags = np.array([dic['tag'] for dic in lat.unit_cell])
         self.onsite = np.zeros(self.norb, 'c16')
+        # spin-off-diagonal onsite terms (in-plane Zeeman, onsite Rashba):
+        # they have no place on the diagonal `onsite` array.
+        self._onsite_offdiag = np.zeros((self.norb, self.norb), 'c16')
         self._hop = []  # list of (i, j, R_cartesian (np.ndarray), t)
         self.rec_vec = reciprocal_vectors(lat.prim_vec)
         self.ks = np.array([])  # k-points of the last band-structure calculation
@@ -109,24 +112,35 @@ class KSpace():
         Set the onsite energies, by sublattice tag.
 
         :param dict_onsite: Dictionary. key: tag, val: onsite energy
-            (a plain number), or, if ``spin=True``, either a plain number
-            (applied equally to both spins) or a pair ``(E_up, E_down)`` of
-            numbers (a spin splitting, e.g. a Zeeman term along z).
+            (a plain number), or, if ``spin=True``, a plain number (applied
+            equally to both spins), a pair ``(E_up, E_down)`` of numbers (a
+            spin splitting along z), or a 2x2 complex matrix (a general spin
+            structure, e.g. an in-plane Zeeman field built from :data:`PAULI`).
 
         Example usage::
 
             kag.set_onsite({'a': 1., 'b': -1.})
             # spinful: same onsite energy for both spins on 'a', a Zeeman
-            # splitting on 'b':
+            # splitting along z on 'b':
             kag_spin.set_onsite({'a': 1., 'b': (1., -1.)})
+            # spinful: an in-plane Zeeman field on 'a':
+            kag_spin.set_onsite({'a': Bx*PAULI['x']})
         '''
         error_handling.set_onsite_kspace(dict_onsite, self.lat.tags, self.spin)
         for tag, val in dict_onsite.items():
             sites = np.where(self.tags == tag)[0]
             if self.spin:
-                e_up, e_down = (val, val) if isinstance(val, (int, float, complex)) else val
-                self.onsite[2*sites] = e_up
-                self.onsite[2*sites + 1] = e_down
+                if isinstance(val, (int, float, complex)):
+                    block = val * PAULI['0']
+                elif np.ndim(val) == 2:
+                    block = np.asarray(val, 'c16')
+                else:
+                    block = np.diag(np.asarray(val, 'c16'))
+                self.onsite[2*sites] = block[0, 0]
+                self.onsite[2*sites + 1] = block[1, 1]
+                for site in sites:
+                    self._onsite_offdiag[2*site, 2*site + 1] = block[0, 1]
+                    self._onsite_offdiag[2*site + 1, 2*site] = block[1, 0]
             else:
                 self.onsite[sites] = val
 
@@ -187,16 +201,23 @@ class KSpace():
         r'''
         Get the dense Bloch Hamiltonian :math:`H(\mathbf{k})`.
 
-        :param k: Tuple/list/ndarray of one/two real numbers. :math:`\mathbf{k}` point,
-            in the same Cartesian frame as *prim_vec*.
+        :param k: Tuple/list/ndarray of one/two real numbers. In 2D, the
+            :math:`\mathbf{k}` point in the same Cartesian frame as *prim_vec*.
+            In 1D, the crystal momentum *along* the primitive vector (so the
+            Brillouin zone spans :math:`2\pi/|\mathbf{a}_1|`), which
+            coincides with :math:`k_x` for a chain aligned with :math:`x`.
 
         :returns:
             * **ham** -- Complex ndarray, shape (norb, norb).
         '''
         error_handling.k_vector(k, 'k', self.dim)
         k_cart = np.zeros(2)
-        k_cart[:self.dim] = k
-        ham = np.diag(self.onsite).astype('c16')
+        if self.dim == 1:
+            a1 = np.asarray(self.lat.prim_vec[0], dtype='f8')
+            k_cart = np.ravel(np.asarray(k, dtype='f8'))[0] * a1 / np.linalg.norm(a1)
+        else:
+            k_cart[:self.dim] = k
+        ham = np.diag(self.onsite).astype('c16') + self._onsite_offdiag
         for i, j, R_cart, t in self._hop:
             ham[i, j] += t * np.exp(1j * np.dot(k_cart, R_cart))
         return ham
@@ -283,7 +304,9 @@ class KSpace():
         rec_vec = [np.array(b) for b in self.rec_vec]
         if self.dim == 1:
             f1 = np.arange(nk[0]) / nk[0]
-            ks = f1[:, None] * rec_vec[0][None, :self.dim]
+            # k is the crystal momentum along the chain (see get_ham), so the
+            # zone spans |b1| = 2*pi/|a1|.
+            ks = f1[:, None] * np.linalg.norm(rec_vec[0])
             return [f1], ks
         f1, f2 = np.meshgrid(np.arange(nk[0])/nk[0], np.arange(nk[1])/nk[1], indexing='ij')
         ks = (f1.ravel()[:, None] * rec_vec[0][None, :]

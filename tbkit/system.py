@@ -43,7 +43,8 @@ class System():
         self.ln = np.array([], 'c16')  # Left eigenvectors:  <ln| H = en <ln|
         self.intensity = np.array([], 'f8')  # Intensities (|rn|**2)
         self.pola = np.array([], 'f8')  # sublattices polarisation (|rn^{(S)}|**2)
-        self.petermann = np.array([], 'f8')  # Inverse Participation Ratio
+        self.ipr = np.array([], 'f8')  # Inverse Participation Ratio
+        self.petermann = np.array([], 'f8')  # Petermann factors
         self.nmax = 0  # number of different hoppings
 
     def clear_hopping(self) -> None:
@@ -101,7 +102,7 @@ class System():
         '''
         Set onsite energies.
 
-        :param on:  Array. Sublattice onsite energies.
+        :param dict_onsite: Dictionary. key: sublattice tag, val: onsite energy.
 
         Example usage::
 
@@ -168,27 +169,30 @@ class System():
         Example usage::
 
             # fill upper part:
-            sys.set_hopping([{'n': 1, t: 1.}])
+            sys.set_hopping([{'n': 1, 't': 1.}])
             # fill lower part:
-            sys.set_hopping([{'n': 1, t: 1.}], upper_part=False)
+            sys.set_hopping([{'n': 1, 't': 1.}], upper_part=False)
             # fill upper part: specifying the angles:
-            sys.set_hopping([{'n': 1, 'ang': 0., t: 1.}, {'n': 1, 'ang': 90,  t: 2.}])
+            sys.set_hopping([{'n': 1, 'ang': 0., 't': 1.}, {'n': 1, 'ang': 90., 't': 2.}])
             # fill lower part:
-            sys.set_hopping([{'n': 1, 'ang': -180., t: 1.}, {'n': 1, 'ang': -90,  t: 2.}], upper_part=False)
+            sys.set_hopping([{'n': 1, 'ang': -180., 't': 1.}, {'n': 1, 'ang': -90., 't': 2.}],
+                                       upper_part=False)
             # fill upper part: specifying the tags:
-            sys.set_hopping([{'n': 1, 'tag': 'ab', t: 1.}, {'n': 1, 'tag': 'ba',  t: 2.}])
+            sys.set_hopping([{'n': 1, 'tag': 'ab', 't': 1.}, {'n': 1, 'tag': 'ba', 't': 2.}])
             # fill lower part:
-            sys.set_hopping([{'n': 1, 'tag': 'ab', t: 1.}, {'n': 1, 'tag': 'ba',  t: 2.}], upper_part=False)
+            sys.set_hopping([{'n': 1, 'tag': 'ab', 't': 1.}, {'n': 1, 'tag': 'ba', 't': 2.}],
+                                       upper_part=False)
             # fill upper part: specifying the angles and tags:
-            sys.set_hopping([{'n': 1, 'ang': 0., 'tag': 'ab', t: 1.}, 
-                                        {'n': 1, 'ang': 0., 'tag': 'ba',  t: 2.},
-                                        {'n': 1, 'ang': 90., 'tag': 'ab', t: 3.}, 
-                                        {'n': 1, 'ang': 90., 'tag': 'ba',  t: 4.}])
+            sys.set_hopping([{'n': 1, 'ang': 0., 'tag': 'ab', 't': 1.},
+                                        {'n': 1, 'ang': 0., 'tag': 'ba', 't': 2.},
+                                        {'n': 1, 'ang': 90., 'tag': 'ab', 't': 3.},
+                                        {'n': 1, 'ang': 90., 'tag': 'ba', 't': 4.}])
             # fill lower part:
-            sys.set_hopping([{'n': 1, 'ang': 0., 'tag': 'ab', t: 1.}, 
-                                        {'n': 1, 'ang': 0., 'tag': 'ba',  t: 2.},
-                                        {'n': 1, 'ang': 90., 'tag': 'ab', t: 3.}, 
-                                        {'n': 1, 'ang': 90., 'tag': 'ba',  t: 4.}]), upper_part=False)
+            sys.set_hopping([{'n': 1, 'ang': -180., 'tag': 'ab', 't': 1.},
+                                        {'n': 1, 'ang': -180., 'tag': 'ba', 't': 2.},
+                                        {'n': 1, 'ang': -90., 'tag': 'ab', 't': 3.},
+                                        {'n': 1, 'ang': -90., 'tag': 'ba', 't': 4.}],
+                                       upper_part=False)
 
         .. note::
 
@@ -242,11 +246,11 @@ class System():
                 else:
                     tag_store = dic['tag'][::-1]
                 size = np.sum(self.store_hop[dic['n']]['tag'] == tag_store)
-                mask = (self.hop['n'] == dic['n']) & (self.hop['tag'] == dic['tag'])
+                mask = ((self.hop['n'] == dic['n']) & (self.hop['tag'] == dic['tag']))
                 if upper_part:
-                    mask = self.hop['n'] == dic['n'] & (self.hop['tag'] == dic['tag']) & (self.hop['i'] < self.hop['j'])
+                    mask &= self.hop['i'] < self.hop['j']
                 else:
-                    mask = self.hop['n'] == dic['n'] & (self.hop['tag'] == dic['tag']) & (self.hop['i'] > self.hop['j'])
+                    mask &= self.hop['i'] > self.hop['j']
                 if np.sum(mask):
                     self.hop = self.hop[np.logical_not(mask)]
                 ind = self.store_hop[dic['n']]['tag'] == tag_store
@@ -295,7 +299,7 @@ class System():
 
         :param n: Integer. Hopping type.
         :param size: Integer. Number of hoppings.
-        :param doc: Dictionary. Hopping dictionary.
+        :param dic: Dictionary. Hopping dictionary.
         :param mask: np.ndarray. Mask.
         :param upper_part: Boolean. If True, self.hop['i'] < self.hop['j'].
         '''
@@ -397,7 +401,7 @@ class System():
             # A = (0, B x): captures the same physics as set_magnetic_field,
             # just in a different (equally valid) gauge.
             B = 0.05
-            sys.set_peierls_phase(lambda xi, yi, xj, yj: B * (xj - xi) * (xi + xj) / 2)
+            sys.set_peierls_phase(lambda xi, yi, xj, yj: B * (yj - yi) * (xi + xj) / 2)
         '''
         error_handling.empty_hop(self.hop)
         error_handling.is_callable(phase, 'phase')
@@ -455,7 +459,7 @@ class System():
 
         Example usage::
 
-            set_onsite_def(0: 1., 1: -1j)
+            sys.set_onsite_def({0: 1., 1: -1j})
         '''
         error_handling.empty_onsite(self.onsite)
         error_handling.set_onsite_def(onsite_def, self.lat.sites)
@@ -478,9 +482,6 @@ class System():
         for key, val in hopping_def.items():
             cond = (self.hop['i'] == key[0]) & (self.hop['j'] == key[1])
             self.hop['t'][cond] = val
-            self.hop['ang'] = self.vec_hop['ang'][key[0], key[1]]
-            self.hop['tag'] = npc.add(self.lat.coor['tag'][key[0]],
-                                                   self.lat.coor['tag'][key[1]])
 
     def set_new_hopping(self, list_hop: list[dict], ind: NDArray) -> None:
         '''
@@ -494,12 +495,14 @@ class System():
             if len(dic) == 2:
                 self.hop['t'][ind] = dic['t']
             elif len(dic) == 3 and 'ang' in dic:
-                self.hop['t'][ind & (self.hop['ang'] == dic['ang'])] = dic['t']
+                self.hop['t'][ind & np.isclose(self.hop['ang'], dic['ang'],
+                                                              atol=ATOL)] = dic['t']
             elif len(dic) == 3 and 'tag' in dic:
                 self.hop['t'][ind & (self.hop['tag'] == dic['tag'])] = dic['t']
             else:
                 self.hop['t'][ind & (self.hop['tag'] == dic['tag'])
-                                        & (self.hop['ang'] == dic['ang'])] = dic['t']
+                                        & np.isclose(self.hop['ang'], dic['ang'],
+                                                            atol=ATOL)] = dic['t']
 
     def find_square(self, xlims: tuple[float, float], ylims: tuple[float, float]) -> NDArray:
         '''
@@ -526,10 +529,10 @@ class System():
         Private method.
         Find hoppings within the ellipse.
 
-        :param rx: Positive Float. Radius along :math:`x`. 
+        :param rx: Positive Float. Radius along :math:`x`.
         :param ry: Positive Float. Radius along :math:`y`.
-        :param x0: Float. Defalut value 0. :math:`x` center. 
-        :param y0: Float. Defalut value 0. :math:`x` center.
+        :param x0: Float. Default value 0. :math:`x` center.
+        :param y0: Float. Default value 0. :math:`y` center.
         '''
         in1 = (self.lat.coor['x'][self.hop['i']] - x0) ** 2 / rx ** 2 + \
                  (self.lat.coor['y'][self.hop['i']] - y0) ** 2 / ry ** 2 <= 1.
@@ -567,7 +570,7 @@ class System():
         error_handling.empty_hop(self.hop)
         error_handling.set_hopping(list_hop, self.nmax)
         error_handling.positive_real(rx, 'rx')
-        error_handling.positive_real(ry, 'rx')
+        error_handling.positive_real(ry, 'ry')
         error_handling.real_number(x0, 'x0')
         error_handling.real_number(y0, 'y0')
         ind = self.find_ellipse(rx, ry, x0, y0)
@@ -635,12 +638,18 @@ class System():
         error_handling.empty_ham(self.ham)
         error_handling.boolean(eigenvec, 'eigenvec')
         error_handling.boolean(left, 'left')
+        # Drop any left eigenvectors from a previous call: they belong to the
+        # previous diagonalization and must not be re-sorted with this one's
+        # ordering (get_petermann would then pair the wrong vectors).
+        self.ln = np.array([], 'c16')
         if eigenvec:
             if (self.ham.conj().T != self.ham).nnz:
                 if not left:
                     self.en, self.rn = LA.eig(self.ham.toarray())
                 else:
-                    self.en, self.rn, self.ln = LA.eig(self.ham.toarray(), left=left)
+                    # scipy.linalg.eig returns (w, vl, vr) -- the LEFT
+                    # eigenvectors come back before the right ones.
+                    self.en, self.ln, self.rn = LA.eig(self.ham.toarray(), left=left)
                 ind = np.argsort(self.en.real)
                 self.en = self.en[ind]
                 self.rn = self.rn[:, ind]
@@ -666,7 +675,7 @@ class System():
 
         .. math:: 
 
-            IPR_n = |\sum_i\psi_i^{n}|^4\, .
+            IPR_n = \sum_i|\psi_i^{n}|^4\, .
         '''
         error_handling.empty_ndarray(self.rn, 'sys.get_eig(eigenvec=True)')
         self.ipr = np.sum(self.intensity ** 2, axis=0)
@@ -677,7 +686,7 @@ class System():
         
         .. math::
 
-            K_n = \frac{\langle\psi_L^{n}|\psi_L^{n}\rangle\langle\psi_R^{n}|\psi_R^{n}\rangle}{\langle\psi_L^{n}|\psi_R^{n}\rangle}\, .
+            K_n = \frac{\langle\psi_L^{n}|\psi_L^{n}\rangle\langle\psi_R^{n}|\psi_R^{n}\rangle}{|\langle\psi_L^{n}|\psi_R^{n}\rangle|^2}\, .
 
         .. note::
 
@@ -687,7 +696,10 @@ class System():
             self.petermann = np.ones(self.lat.sites)
             return
         error_handling.empty_ndarray(self.ln, 'sys.get_eig(eigenvec=True, left=True)')
-        left_right = np.sum(self.ln * np.conjugate(self.rn), axis=0).real
+        # LA.eig fixes each eigenvector's norm but not the relative phase
+        # between the left and right ones, so the overlap carries an
+        # arbitrary phase: take its modulus, not its real part.
+        left_right = np.abs(np.sum(self.ln * np.conjugate(self.rn), axis=0))
         self.petermann = 1. / left_right ** 2
 
     def get_intensity_pola_max(self, tag_pola: str) -> NDArray[np.float64]:
@@ -713,7 +725,7 @@ class System():
         :param tag_pola: One-character string. Sublattice tag.
 
         :returns:
-            * **intensity** -- Intensity of max polarized state on *tag*.
+            * **intensity** -- Intensity of min polarized state on *tag*.
         '''
         error_handling.empty_ndarray(self.rn, 'sys.get_eig(eigenvec=True)')
         error_handling.tag(tag_pola, self.lat.tags)

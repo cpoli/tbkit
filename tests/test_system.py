@@ -509,6 +509,26 @@ class TestSystem(unittest.TestCase):
         sys.get_petermann()
         self.assertTrue(np.allclose(sys.petermann, 1.))
 
+    def test_petermann_pt_dimer(self):
+        # PT-symmetric dimer: H = [[i*g, t], [t, -i*g]] has eigenvalues
+        # +/-sqrt(t^2-g^2) and Petermann factor 1/(1-g^2/t^2) for *both*
+        # modes. LA.eig leaves the relative left/right eigenvector phase
+        # arbitrary, so get_petermann must use |<L|R>|, not Re<L|R>.
+        t, gamma = 1., 0.5
+        unit_cell = [{'tag': 'a', 'r0': (0, 0)}, {'tag': 'b', 'r0': (0.5, 0)}]
+        lat = lattice(unit_cell=unit_cell, prim_vec=[(1., 0.)])
+        lat.get_lattice(n1=1)
+        sys = system(lat)
+        sys.set_onsite({'a': 1j*gamma, 'b': -1j*gamma})
+        sys.set_hopping_manual({(0, 1): t})
+        sys.get_ham()
+        sys.get_eig(eigenvec=True, left=True)
+        sys.get_petermann()
+        self.assertTrue(np.allclose(np.sort(sys.en.real),
+                                    [-np.sqrt(t**2 - gamma**2), np.sqrt(t**2 - gamma**2)]))
+        self.assertTrue(np.allclose(sys.en.imag, 0.))
+        self.assertTrue(np.allclose(sys.petermann, 1. / (1. - gamma**2 / t**2)))
+
     def test_set_peierls_phase_errors(self):
         sys = init()
         self.assertRaises(RuntimeError, sys.set_peierls_phase, lambda xi, yi, xj, yj: 0.)

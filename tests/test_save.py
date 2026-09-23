@@ -21,12 +21,20 @@ class TestSave(unittest.TestCase):
 
     def test_default_dir_main(self):
         sav = Save(dir_name='test1')
-        self.assertEqual(sav.dir_main, 'figs/')
+        self.assertEqual(sav.dir_main, 'figs')
+        self.assertEqual(sav.dir_name, os.path.join('figs', 'test1'))
         self.assertTrue(os.path.exists(sav.dir_name))
 
     def test_explicit_dir_main(self):
         sav = Save(dir_name='test2', dir_main='other/')
         self.assertEqual(sav.dir_main, 'other/')
+        self.assertEqual(sav.dir_name, os.path.join('other', 'test2'))
+        self.assertTrue(os.path.exists(sav.dir_name))
+
+    def test_dir_main_without_trailing_separator(self):
+        # used to concatenate into 'othertest3' instead of 'other/test3'
+        sav = Save(dir_name='test3', dir_main='other')
+        self.assertEqual(sav.dir_name, os.path.join('other', 'test3'))
         self.assertTrue(os.path.exists(sav.dir_name))
 
     def test_create_dir_idempotent(self):

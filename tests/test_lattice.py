@@ -1,5 +1,6 @@
 from tbkit.lattice import lattice
 import unittest
+from unittest import mock
 import numpy as np
 
 class TestLattice(unittest.TestCase):
@@ -285,7 +286,9 @@ class TestLattice(unittest.TestCase):
         self.assertEqual(fig.__class__.__name__, 'Figure')
         fig2 = lat.plot()
         self.assertEqual(fig2.__class__.__name__, 'Figure')
-        lat.show()
+        with mock.patch('matplotlib.pyplot.show') as shown:
+            lat.show()
+        shown.assert_called_once()
 
 
 if __name__ == '__main__':

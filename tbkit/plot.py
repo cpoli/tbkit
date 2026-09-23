@@ -34,12 +34,14 @@ class Plot:
         else:
             self.colors = colors
 
-    def plt_hopping(self, coor: NDArray, hop: NDArray, c: float) -> None:
+    def plt_hopping(self, coor: NDArray, hop: NDArray, c: float, ax: Axes | None = None) -> None:
         '''
         Private method called by *lattice_generic*.
         '''
+        if ax is None:
+            ax = plt.gca()
         for i in range(len(hop)):
-            plt.plot([coor['x'][hop['i'][i]],
+            ax.plot([coor['x'][hop['i'][i]],
                         coor['x'][hop['j'][i]]],
                         [coor['y'][hop['i'][i]],
                          coor['y'][hop['j'][i]]],
@@ -57,6 +59,7 @@ class Plot:
         plt_hop_low: bool,
         plt_index: bool,
         figsize: tuple[float, float] | None,
+        ax: Axes | None = None,
     ) -> Figure:
         '''
         Private method called by *lattice* and *lattice_hop*.
@@ -70,17 +73,20 @@ class Plot:
         error_handling.boolean(plt_hop_low, 'plt_hop_low')
         error_handling.boolean(plt_index, 'plt_index')
         error_handling.tuple_2elem(figsize, 'figsize')
-        fig, ax = plt.subplots(figsize=figsize)
+        if ax is None:
+            fig, ax = plt.subplots(figsize=figsize)
+        else:
+            fig = ax.figure
         # hoppings
         if plt_hop:
             error_handling.empty_ndarray(self.sys.hop, 'sys.hop')
-            self.plt_hopping(coor, self.sys.hop[self.sys.hop['ang']>=0], c)
+            self.plt_hopping(coor, self.sys.hop[self.sys.hop['ang']>=0], c, ax=ax)
         if plt_hop_low:
             error_handling.empty_ndarray(self.sys.hop, 'sys.hop')
-            self.plt_hopping(coor, self.sys.hop[self.sys.hop['ang']<0], c)
+            self.plt_hopping(coor, self.sys.hop[self.sys.hop['ang']<0], c, ax=ax)
         # plot sites
         for color, tag in zip(self.colors, self.sys.lat.tags):
-            plt.plot(coor['x'][coor['tag'] == tag],
+            ax.plot(coor['x'][coor['tag'] == tag],
                        coor['y'][coor['tag'] == tag],
                        'o', color=color, ms=ms, markeredgecolor='none')
         ax.set_aspect('equal')
@@ -92,9 +98,9 @@ class Plot:
         if plt_index:
             indices = ['{}'.format(i) for i in range(self.sys.lat.sites)]
             for l, x, y in zip(indices, coor['x'], coor['y']):
-                plt.annotate(l, xy=(x, y), xytext=(0, 0),
-                                    textcoords='offset points',
-                                    ha='right', va='bottom', size=fs)
+                ax.annotate(l, xy=(x, y), xytext=(0, 0),
+                                  textcoords='offset points',
+                                  ha='right', va='bottom', size=fs)
         plt.draw()
         return fig
 
@@ -109,6 +115,7 @@ class Plot:
         plt_hop_low: bool = False,
         plt_index: bool = False,
         figsize: tuple[float, float] | None = None,
+        ax: Axes | None = None,
     ) -> Figure:
         '''
         Plot lattice.
@@ -123,13 +130,16 @@ class Plot:
         :param plt_index: Boolean. Default value False. Plot site labels.
         :param axis: Boolean. Default value False. Plot axis.
         :param figsize: Tuple. Default value None. Figure size.
+        :param ax: Axes. Default value None. Draw on this axis instead of
+            creating a figure of its own -- to place several lattices side
+            by side in one figure. *figsize* is then ignored.
 
         :returns:
             * **fig** -- Figure.
         '''
         error_handling.empty_ndarray(self.sys.lat.coor, 'lat.get_lattice')
         return self.lattice_generic(self.sys.lat.coor, ms, lw, c, fs, axis, plt_hop,
-                                                 plt_hop_low, plt_index, figsize)
+                                                 plt_hop_low, plt_index, figsize, ax)
 
     def lattice_hop(
         self,
@@ -142,6 +152,7 @@ class Plot:
         plt_hop_low: bool = False,
         plt_index: bool = False,
         figsize: tuple[float, float] | None = None,
+        ax: Axes | None = None,
     ) -> Figure:
         '''
         Plot lattice in hopping space.
@@ -154,35 +165,37 @@ class Plot:
         :param plt_hop: Boolean. Default value False. Plot hoppings.
         :param plt_index: Boolean. Default value False. Plot site labels.
         :param figsize: Tuple. Default value None. Figure size.
+        :param ax: Axes. Default value None. Draw on this axis instead of
+            creating a figure of its own -- to place several lattices side
+            by side in one figure. *figsize* is then ignored.
 
         :returns:
             * **fig** -- Figure.
         '''
         error_handling.empty_ndarray(self.sys.coor_hop, 'sys.get_coor_hop')
         return self.lattice_generic(self.sys.coor_hop, ms, lw, c, fs, axis, plt_hop,
-                                                 plt_hop_low, plt_index, figsize)
+                                                 plt_hop_low, plt_index, figsize, ax)
 
 
     def spectrum_hist(self, nbr_bins: int = 61, fs: float = 20, lims: tuple[float, float] | None = None) -> None:
         """
         Plot the spectrum.
             
-        :param nbr_bins: Default value 101. Number of bins of the histogram.
+        :param nbr_bins: Default value 61. Number of bins of the histogram.
         :param lims: List, lims[0] energy min, lims[1] energy max.
         """
         error_handling.empty_ndarray(self.sys.en, 'sys.get_eig')
         error_handling.positive_real(nbr_bins, 'nbr_bins')
         error_handling.lims(lims)
         fig, ax = plt.subplots()
+        en_real = self.sys.en.real
         if lims is None:
-            en_max = np.max(self.sys.en.real)
             ind_en = np.ones(self.sys.lat.sites, bool)
-            ax.set_ylim([-en_max, en_max])
         else:
-            ind_en = np.argwhere((self.sys.en > lims[0]) & (self.sys.en < lims[1]))
+            ind_en = np.argwhere((en_real > lims[0]) & (en_real < lims[1]))
             ind_en = np.ravel(ind_en)
             ax.set_xlim(lims)
-        en = self.sys.en[ind_en]
+        en = en_real[ind_en]
         n, bins, patches = plt.hist(en, bins=nbr_bins, color='b', alpha=0.8)
         ax.set_title('Spectrum', fontsize=fs)
         ax.set_xlabel('$E$', fontsize=fs)
@@ -245,7 +258,7 @@ class Plot:
         lims: tuple[float, float] | None = None,
         tag_pola: str | None = None,
         ipr: bool | None = None,
-        peterman: bool | None = None,
+        petermann: bool | None = None,
     ) -> Figure:
         '''
         Plot spectrum (eigenenergies real part (blue circles),
@@ -255,7 +268,7 @@ class Plot:
         :param fs: Default value 20. Fontsize.
         :param lims: List, lims[0] energy min, lims[1] energy max.
         :param tag_pola: Default value None. One-character string. Tag of the sublattice.
-        :param ipr: Default value None. If True plot the Inverse Partitipation Ration.
+        :param ipr: Default value None. If True plot the Inverse Participation Ratio.
         :param petermann: Default value None. If True plot the Petermann factor.
 
         :returns:
@@ -273,7 +286,7 @@ class Plot:
             ax1.set_ylim([-en_max-0.2, en_max+0.2])
             ind = np.ones(self.sys.lat.sites, bool)
         else:
-            ind = (self.sys.en > lims[0]) & (self.sys.en < lims[1])
+            ind = (self.sys.en.real > lims[0]) & (self.sys.en.real < lims[1])
             ax1.set_ylim([lims[0]-0.1, lims[1]+0.1])
         ax1.plot(x[ind], self.sys.en.real[ind], 'ob', markersize=ms)
         ax1.set_title('Spectrum', fontsize=fs)
@@ -286,7 +299,7 @@ class Plot:
             fig, ax2 = self.polarization(fig=fig, ax1=ax1, ms=ms, fs=fs, tag_pola=tag_pola, ind=ind)
         elif ipr:
             fig, ax2 = self.ipr(fig=fig, ax1=ax1, ms=ms, fs=fs, ind=ind)
-        elif peterman:
+        elif petermann:
             fig, ax2 = self.petermann(fig=fig, ax1=ax1, ms=ms, fs=fs, ind=ind)
         for label in ax1.xaxis.get_majorticklabels():
             label.set_fontsize(fs)
@@ -335,7 +348,7 @@ class Plot:
                 ax2.set_ylim([-0.1, 1.1])
                 ind = np.ones(self.sys.lat.sites, bool)
             else:
-                ind = (self.sys.en > lims[0]) & (self.sys.en < lims[1])
+                ind = (self.sys.en.real > lims[0]) & (self.sys.en.real < lims[1])
                 ax2.set_ylim([lims[0]-0.1, lims[1]+0.1])
         else:
             ax2 = plt.twinx()
@@ -364,7 +377,7 @@ class Plot:
         ind: NDArray | None = None,
     ) -> tuple[Figure, Axes]:
         '''
-        Plot Inverse Participation Ration.
+        Plot the Inverse Participation Ratio.
 
         :param fig: Figure. Default value None. (used by the method spectrum).
         :param ax1: Axis. Default value None. (used by the method spectrum).
@@ -387,7 +400,7 @@ class Plot:
             if lims is None:
                 ind = np.ones(self.sys.lat.sites, bool)
             else:
-                ind = (self.sys.en > lims[0]) & (self.sys.en < lims[1])
+                ind = (self.sys.en.real > lims[0]) & (self.sys.en.real < lims[1])
         else:
             ax2 = plt.twinx()
         error_handling.empty_ndarray(self.sys.ipr, 'sys.get_ipr')
@@ -411,7 +424,7 @@ class Plot:
         ind: NDArray | None = None,
     ) -> tuple[Figure, Axes]:
         '''
-        Plot Peterman factor.
+        Plot the Petermann factor.
 
         :param fig: Figure. Default value None. (used by the method spectrum).
         :param ax1: Axis. Default value None. (used by the method spectrum).
@@ -425,7 +438,7 @@ class Plot:
         '''
         if fig is None:
             error_handling.sys(self.sys)
-            error_handling.empty_ndarray(self.sys.ipr, 'sys.get_petermann')
+            error_handling.empty_ndarray(self.sys.petermann, 'sys.get_petermann')
             error_handling.positive_real(ms, 'ms')
             error_handling.positive_real(fs, 'fs')
             error_handling.lims(lims)
@@ -434,10 +447,10 @@ class Plot:
             if lims is None:
                 ind = np.ones(self.sys.lat.sites, bool)
             else:
-                ind = (self.sys.en > lims[0]) & (self.sys.en < lims[1])
+                ind = (self.sys.en.real > lims[0]) & (self.sys.en.real < lims[1])
         else:
             ax2 = plt.twinx()
-        error_handling.empty_ndarray(self.sys.ipr, 'sys.get_ipr')
+        error_handling.empty_ndarray(self.sys.petermann, 'sys.get_petermann')
         x = np.arange(self.sys.lat.sites)
         ax2.plot(x[ind], self.sys.petermann[ind], 'or', markersize=(4*ms)//5)
         ax2.set_ylabel( 'K' , fontsize=fs, color='red')
@@ -472,7 +485,7 @@ class Plot:
             ax1.set_ylim([-en_max-0.2, en_max+0.2])
             ind = np.ones(self.sys.lat.sites, bool)
         else:
-            ind = (self.sys.en > lims[0]) & (self.sys.en < lims[1])
+            ind = (self.sys.en.real > lims[0]) & (self.sys.en.real < lims[1])
             ax1.set_ylim([lims[0]-0.1, lims[1]+0.1])
         ax1.plot(x[ind], self.sys.en.real[ind], 'ob', markersize=ms)
         ax1.plot(x[ind], self.sys.en.imag[ind], 'or', markersize=ms)

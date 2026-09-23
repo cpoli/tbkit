@@ -35,15 +35,15 @@ class Save():
         self.params = {} if params is None else params
         self.file_format = file_format
         if dir_main is None:
-            self.dir_main = 'figs/'
+            self.dir_main = 'figs'
         else:
             self.dir_main = dir_main
-        self.dir_name = self.dir_main + dir_name
+        self.dir_name = os.path.join(self.dir_main, dir_name)
         self.create_dir()
 
     def create_dir(self) -> None:
         '''
-        Create the directory to store the figures exists.
+        Create the directory the figures are stored in, if it does not exist.
         '''
         if not os.path.exists(self.dir_main):
             os.makedirs(self.dir_main)
@@ -71,7 +71,8 @@ class Save():
         '''
         error_handling.fig(fig)
         error_handling.string(name, 'name')
-        name_file = self.dir_name + '/' + name + self.file_name() + '.' + self.file_format
+        name_file = os.path.join(self.dir_name,
+                                              name + self.file_name() + '.' + self.file_format)
         fig.savefig(name_file, format=self.file_format)
 
     def fig_lat(self, fig: Figure, name: str) -> None:
@@ -83,14 +84,21 @@ class Save():
         '''
         error_handling.fig(fig)
         error_handling.string(name, 'name')
-        name_file = self.dir_name + '/' + name + '.' + self.file_format
+        name_file = os.path.join(self.dir_name, name + '.' + self.file_format)
         fig.savefig(name_file, format=self.file_format)
 
     def ani(self, ani: FuncAnimation, name: str, fps: int = 10) -> None:
+        '''
+        Save the animation, as MP4, in the directory defined by *dir_name*.
+
+        :param ani: Matplotlib FuncAnimation.
+        :param name: String. First part of the file name.
+        :param fps: Positive integer. Default value 10. Frames per second.
+        '''
         error_handling.ani(ani)
         error_handling.string(name, 'name')
         error_handling.positive_int(fps, 'fps')
-        name_file = self.dir_name + '/' + name + '.mp4'
+        name_file = os.path.join(self.dir_name, name + '.mp4')
         ani.save(name_file, fps=fps, extra_args=['-vcodec', 'libx264'])
 
 

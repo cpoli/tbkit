@@ -2,6 +2,7 @@ from tbkit.lattice import lattice
 from tbkit.kspace import KSpace, reciprocal_vectors, PAULI, ribbon
 from tbkit.system import system
 import unittest
+from unittest import mock
 import numpy as np
 from math import sqrt
 
@@ -133,7 +134,9 @@ class TestKSpace(unittest.TestCase):
         self.assertEqual(fig.__class__.__name__, 'Figure')
         fig2 = kag.plot_bands(node_labels=['G', 'K', 'M', 'G'], lims=[-4., 4.])
         self.assertEqual(fig2.__class__.__name__, 'Figure')
-        kag.show()
+        with mock.patch('matplotlib.pyplot.show') as shown:
+            kag.show()
+        shown.assert_called_once()
 
     def test_1d_chain_bands(self):
         lat = lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}], prim_vec=[(1., 0.)])

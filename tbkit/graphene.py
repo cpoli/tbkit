@@ -106,40 +106,74 @@ class GrapheneSystem(System):
     def __init__(self, lat: Lattice) -> None:
         System.__init__(self, lat)
 
-    def set_hop_linear_strain(self, t: complex, beta: float) -> None:
+    def _strain_projection(self) -> tuple[NDArray[np.int64], NDArray[np.float64], NDArray[np.float64]]:
+        r'''
+        Private method.
+
+        Get, for every nearest-neighbor bond, the projection
+
+        .. math::
+
+            s_{ij} = \hat{\boldsymbol\delta}_{ij}\cdot\mathbf{r}_{ij}
+
+        of its midpoint :math:`\mathbf{r}_{ij}` on its (outward-oriented)
+        direction :math:`\hat{\boldsymbol\delta}_{ij}`, so that the strained
+        hopping is :math:`t_{ij} = t(1 + \tfrac14\beta s_{ij})`.
+
+        :returns:
+            * **ind_up** -- Integer ndarray, shape (nbonds, 2). Bond indices.
+            * **ang** -- Real ndarray. Bond angles, in degrees.
+            * **s** -- Real ndarray. The projections above.
         '''
-        Set nearest neighbors hoppings according to the linear trixial strain. 
-        
+        self.get_distances()
+        ind = np.argwhere(np.isclose(self.dist_uni[1], self.vec_hop['dis'], atol=ATOL))
+        ind_up = ind[ind[:, 1] > ind[:, 0]]
+        ang = self.vec_hop['ang'][ind_up[:, 0], ind_up[:, 1]].copy()
+        # orient the three bond families consistently outwards
+        ang[np.isclose(30., ang, atol=ATOL)] = -150.
+        ang[np.isclose(150., ang, atol=ATOL)] = -30.
+        x_center = .5 * (self.lat.coor['x'][ind_up[:, 0]] + self.lat.coor['x'][ind_up[:, 1]])
+        y_center = .5 * (self.lat.coor['y'][ind_up[:, 0]] + self.lat.coor['y'][ind_up[:, 1]])
+        s = (np.cos(PI / 180 * ang) * x_center + np.sin(PI / 180 * ang) * y_center)
+        return ind_up, ang, s
+
+    def set_hop_linear_strain(self, t: complex, beta: float) -> None:
+        r'''
+        Set nearest-neighbor hoppings according to a linear triaxial strain:
+
+        .. math::
+
+            t_{ij} = t\left(1 + \tfrac14\beta\,
+                     \hat{\boldsymbol\delta}_{ij}\cdot\mathbf{r}_{ij}\right)
+
+        with :math:`\hat{\boldsymbol\delta}_{ij}` the bond direction and
+        :math:`\mathbf{r}_{ij}` its midpoint. The strain is measured from the
+        coordinate origin, so centre the flake on it (see *lattice.center*)
+        before calling this.
+
         :param t: Hopping value without strain.
-        :param beta: Strength of the strain.
+        :param beta: Strength of the strain. See *get_beta_lims* for the
+            range that keeps every hopping positive.
         '''
         error_handling.number(t, 't')
         error_handling.real_number(beta, 'beta')
-        self.get_distances()
-        ind = np.argwhere(np.isclose(self.dist_uni[1], self.vec_hop['dis'], atol=ATOL))
-        ind_up = ind[ind[:, 1] > ind[:, 0]]  
+        ind_up, ang, s = self._strain_projection()
         self.hop = np.zeros(len(ind_up), dtype=HOP_DTYPE)
         self.hop['n'] = 1
         self.hop['i'] = ind_up[:, 0]
         self.hop['j'] = ind_up[:, 1]
         self.hop['ang'] = self.vec_hop['ang'][ind_up[:, 0], ind_up[:, 1]]
-        # change angle (to get the correct strain)
-        self.hop['ang'][np.isclose(30., self.hop['ang'], ATOL)] = -150.
-        self.hop['ang'][np.isclose(150., self.hop['ang'], ATOL)] = - 30.
-        x_center = .5 * (self.lat.coor['x'][ind_up[:, 0]] + self.lat.coor['x'][ind_up[:, 1]])
-        y_center = .5 * (self.lat.coor['y'][ind_up[:, 0]] + self.lat.coor['y'][ind_up[:, 1]])
-        self.hop['t'] = t * (1. + 0.25 * beta * (np.cos(PI / 180 * self.hop['ang']) * x_center +
-                                                                np.sin(PI / 180 * self.hop['ang']) * y_center))
-        # back to the former angle
-        self.hop['ang'][np.isclose(-150., self.hop['ang'])] = 30.
-        self.hop['ang'][np.isclose(-30., self.hop['ang'])] = 150.
+        self.hop['tag'] = npc.add(self.lat.coor['tag'][ind_up[:, 0]],
+                                                self.lat.coor['tag'][ind_up[:, 1]])
+        self.hop['t'] = t * (1. + 0.25 * beta * s)
 
     def get_butterfly(self, t: complex, N: int) -> None:
-        ''''
+        '''
         Get energies depending on strain.
 
         :param t: Unstrained hopping value.
-        :param N: number of strain values between min and max strains.
+        :param N: Positive integer. Number of strain values between the
+            minimal and maximal strains given by *get_beta_lims*.
         '''
         error_handling.number(t, 't')
         error_handling.positive_int(N, 'N')
@@ -147,25 +181,29 @@ class GrapheneSystem(System):
         self.betas = np.linspace(beta_lims[0], beta_lims[1], N)
         self.butterfly = np.zeros((N, self.lat.sites))
         for i, beta in enumerate(self.betas):
-            self.set_hop_linear_strain(t=1, beta=beta)
+            self.set_hop_linear_strain(t=t, beta=beta)
             self.get_ham()
             self.butterfly[i] = LA.eigvalsh(self.ham.toarray())
 
     def get_beta_lims(self) -> NDArray[np.float64]:
+        r'''
+        Get the extremal strain values keeping every hopping positive.
+
+        Under *set_hop_linear_strain* a bond's amplitude is
+        :math:`t(1+\tfrac14\beta s_{ij})`, so it stays positive for every bond
+        iff :math:`-4/\max_{ij} s_{ij} < \beta < -4/\min_{ij} s_{ij}`.
+
+        :returns:
+            * **beta_lims** -- Real ndarray of length 2, ``[beta_min, beta_max]``
+              (ascending). A bound is infinite if the corresponding
+              :math:`s_{ij}` never takes that sign.
         '''
-        Get the extremal values of strain keeping positive hoppings.
-        '''
-        beta_lims = np.zeros(2)
-        yb_min_val = self.lat.coor['y'][self.lat.coor['tag'] == 'b'].min()
-        yb_min = self.lat.coor['y'][self.lat.coor['y'] == yb_min_val][0]
-        ym = 0.5 * (2 * yb_min + 1)
-        beta_lims[1] = -4. / ym + 1e-6
-        yb_max_val = self.lat.coor['y'][self.lat.coor['tag'] == 'a'].max()
-        yb_max = self.lat.coor['y'][self.lat.coor['y'] == yb_max_val][0]
-        ym = 0.5 * (2 * yb_max - 1)
-        beta_lims[0] = -4. / ym + 1e-6
-        print('Strain limits: {}'.format(beta_lims))
-        return beta_lims
+        _, _, s = self._strain_projection()
+        eps = 1e-6
+        s_min, s_max = s.min(), s.max()
+        beta_min = -4. / s_max + eps if s_max > 0 else -np.inf
+        beta_max = -4. / s_min - eps if s_min < 0 else np.inf
+        return np.array([beta_min, beta_max])
 
 
 # Backward-compatible camelCase aliases (pre-0.2 API).

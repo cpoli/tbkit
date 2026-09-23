@@ -29,6 +29,13 @@ Homepage = "https://github.com/cpoli/tbkit"
 test = ["pytest>=7", "pytest-cov>=4"]
 docs = ["sphinx>=7", "pydata-sphinx-theme>=0.15", "sphinx-gallery>=0.15"]
 
+[tool.pytest.ini_options]
+# The suite is warning-free; keep it that way. A warning from tbkit itself is
+# a defect (e.g. complex energies reaching matplotlib), and one from a test is
+# usually the test misusing an API. Add a targeted `ignore::` entry below if a
+# dependency ever emits something genuinely out of our control.
+filterwarnings = ["error"]
+
 [tool.setuptools.packages.find]
 include = ["tbkit*"]
 

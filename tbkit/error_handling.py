@@ -47,8 +47,8 @@ def positive_int_lim(var, var_name, nmax):
     if var < 1:
         raise ValueError('\n\nParameter {} must be a positive integer.\n'.format(var_name))
     if var > nmax:
-        raise ValueError('\n\nParameter {} must be a positive integer\n'\
-                                   'smaller than {}.\n'.format(var_name, nmax))
+        raise ValueError('\n\nParameter {} must be a positive integer '
+                                  'smaller than {}.\n'.format(var_name, nmax))
 
 
 def real_number(var, var_name):
@@ -84,7 +84,7 @@ def positive_real_zero(var, var_name):
     if not isinstance(var, (int, float)):
         raise TypeError('\n\nParameter {} must be a real number.\n'.format(var_name))
     if var < 0:
-        raise ValueError('\n\nParameter {} must be a positive number  or zero.\n'.format(var_name))
+        raise ValueError('\n\nParameter {} must be a positive number or zero.\n'.format(var_name))
 
 
 def negative_real(var, var_name):
@@ -187,7 +187,7 @@ def ndarray_empty(var, var_name):
     :raises ValueError: Parameter *var* must not be an emptynumpy ndarray.
     '''
     if var.size == 0:
-        raise ValueError('\n\nParameter {} must not be an emptynumpy ndarray.\n'.format(var_name))
+        raise ValueError('\n\nParameter {} must not be an empty numpy ndarray.\n'.format(var_name))
 
 
 def list_tuple_2elem(var, var_name):
@@ -200,7 +200,7 @@ def list_tuple_2elem(var, var_name):
     if var is None:
         return
     if not isinstance(var, (list, tuple)):
-        raise TypeError('\n\nParameter {} must be a list/tuple\n'.format(var_name))
+        raise TypeError('\n\nParameter {} must be a list/tuple.\n'.format(var_name))
     if len(var) != 2:
         raise ValueError('\n\nParameter {} must be a list/tuple of length two.\n'.format(var_name))
 
@@ -215,7 +215,7 @@ def tuple_2elem(var, var_name):
     if var is None:
         return
     if not isinstance(var, tuple):
-        raise TypeError('\n\nParameter {} must be a tuple\n'.format(var_name))
+        raise TypeError('\n\nParameter {} must be a tuple.\n'.format(var_name))
     if len(var) != 2:
         raise ValueError('\n\nParameter {} must be a list/tuple of length two.\n'.format(var_name))
 
@@ -284,18 +284,20 @@ def prim_vec(prim_vec):
     if not isinstance(prim_vec, list):
         raise TypeError('\n\nParameter prim_vec must be a list.\n')
     if not len(prim_vec) == 1 and not len(prim_vec) == 2:
-        raise ValueError('\n\nParameter prim_vec must be a list.\n'
-                                  'of length 1 for 1D lattices or length 2 fro 2D lattices.\n')
+        raise ValueError('\n\nParameter prim_vec must be a list of length 1 '
+                                  'for 1D lattices, or of length 2 for 2D lattices.\n')
     for coor in prim_vec:
         if not isinstance(coor, tuple):
-            raise TypeError('\n\nParameter prim_vec contain tuples\n')
+            raise TypeError('\n\nParameter prim_vec must contain tuples.\n')
         if len(coor) != 2:
-            raise ValueError('\n\nParameter prim_vec contain tuples of length 2.\n')
+            raise ValueError('\n\nParameter prim_vec must contain tuples of length 2.\n')
         if (not isinstance(coor[0], (int, float))) or \
            (not isinstance(coor[1], (int, float))):
-            raise ValueError('\n\ncoor must contain real numbers.\n')
+            raise ValueError('\n\nParameter prim_vec must contain tuples of '
+                                      'real numbers.\n')
         if coor[0] ** 2 + coor[1] ** 2 < 0.1:
-            raise ValueError('\n\nNorm of coor should be larger than 0.1.\n')
+            raise ValueError('\n\nEach primitive vector must have a norm larger '
+                                      'than 0.1.\n')
 
 
 def get_lattice(prim_vec, n1, n2):
@@ -372,22 +374,6 @@ def boundary_line(cx, cy, co):
         raise TypeError('\n\nParameter cy must be a real number.\n')
     if not isinstance(co, (int, float)):
         raise TypeError('\n\nParameter co must be a real number.\n')
-
-
-def ellipse(a, b):
-    '''
-    Check *ellipse_in* and *ellipse_out*.
-    :raises TypeError: Parameter a must be a positive number.
-    :raises TypeError: Parameter b must be a positive number.
-    '''
-    if not isinstance(a, (int, float)):
-        raise TypeError('\n\nParameter a must be a positive number.\n')
-    if not isinstance(b, (int, float)):
-        raise TypeError('\n\nParameter b must be a positive number.\n')
-    if a <= 0:
-        raise ValueError('\n\nParameter a must be a positive number.\n')
-    if b <= 0:
-        raise ValueError('\n\nParameter b must be a positive number.\n')
 
 
 def sites(sites):
@@ -471,7 +457,7 @@ def set_hopping(list_hop, n_max):
         if not isinstance(dic['n'], int):
             raise TypeError('\n\n"n" value must be an integer.\n')
         if not 0 < dic['n'] <= n_max:
-            raise ValueError('\n\n"n" value must be between 1 and nmax".\n')
+            raise ValueError('\n\n"n" value must be between 1 and {}.\n'.format(n_max))
         if not isinstance(dic['t'], (int, float, complex)):
             raise TypeError('\n\n"t" value must be a real or complex number.\n')
         if len(dic) == 3:
@@ -857,7 +843,8 @@ def set_hopping_kspace(list_hop, n_sites, ndim, spin=False):
         if not all(isinstance(n, int) for n in dic['R']):
             raise TypeError('\n\n"R" must be a tuple of integers.\n')
         if dic['i'] == dic['j'] and dic['R'] == (0,) * ndim:
-            raise ValueError('\n\nUse kspace.set_onsite for i == j and R == 0.\n')
+            raise ValueError('\n\nUse kspace.set_onsite for i == j and R == 0 '
+                                  '(it accepts a 2x2 spin matrix when spin=True).\n')
         if spin:
             spin_matrix(dic['t'], '"t"')
         elif not isinstance(dic['t'], (int, float, complex)):
@@ -871,7 +858,7 @@ def set_onsite_kspace(dict_onsite, tags, spin=False):
     :raises TypeError: Parameter *dict_onsite* must be a dictionary.
     :raises ValueError: keys must be tags.
     :raises TypeError: values must be real or complex numbers (or, if
-      *spin*, a pair of real/complex numbers).
+      *spin*, a pair of real/complex numbers, or a 2x2 matrix).
     '''
     if not isinstance(dict_onsite, dict):
         raise TypeError('\n\nParameter dict_onsite must be a dictionary.\n')
@@ -879,10 +866,13 @@ def set_onsite_kspace(dict_onsite, tags, spin=False):
         if tag not in tags:
             raise ValueError('\n\nParameter dict_onsite keys must be a tag.\n')
         if spin and not isinstance(val, (int, float, complex)):
-            if not (isinstance(val, (tuple, list)) and len(val) == 2
-                          and all(isinstance(v, (int, float, complex)) for v in val)):
+            is_pair = (isinstance(val, (tuple, list)) and len(val) == 2
+                            and all(isinstance(v, (int, float, complex)) for v in val))
+            is_mat = np.ndim(val) == 2 and np.shape(val) == (2, 2)
+            if not (is_pair or is_mat):
                 raise TypeError('\n\nParameter dict_onsite values must be a number, or, '
-                                           'if spin, a pair of numbers (E_up, E_down).\n')
+                                           'if spin, a pair of numbers (E_up, E_down) or a '
+                                           '2x2 matrix.\n')
         elif not spin and not isinstance(val, (int, float, complex)):
             raise TypeError('\n\nParameter dict_onsite values must be real and/or complex numbers.\n')
 

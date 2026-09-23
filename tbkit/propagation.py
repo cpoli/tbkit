@@ -34,14 +34,17 @@ class Propagation():
     def get_propagation(
         self, ham: sparse.spmatrix, psi_init: NDArray, steps: int, dz: float, norm: bool = False,
     ) -> None:
-        '''
+        r'''
         Get the time evolution.
 
         :param ham: sparse.csr_matrix. Tight-Binding Hamilonian.
         :param psi_init: np.ndarray. Initial state.
         :param steps: Positive Integer. Number of steps.
         :param dz: Positive number. Step.
-        :param norm: Boolean. Default value True. Normalize the norm to 1 at each step.
+        :param norm: Boolean. Default value False. Renormalize the state to
+            :math:`\sum_i|\psi_i|^2 = 1` at each step. The Crank-Nicolson
+            step is unitary, so this only matters for a non-Hermitian
+            Hamiltonian (gain/loss), where the norm is not conserved.
         '''
         error_handling.empty_ham(ham)
         error_handling.ndarray(psi_init, 'psi_init', self.lat.sites)
@@ -59,19 +62,20 @@ class Propagation():
         for i in range(1, self.steps):
             self.prop[:, i] = np.dot(mat, self.prop[:, i-1])
             if norm:
-                self.prop[:, i] /= np.abs(self.prop[:, i]).sum()
+                self.prop[:, i] /= np.linalg.norm(self.prop[:, i])
 
     def get_pumping(
         self, hams: list[sparse.spmatrix], psi_init: NDArray, steps: int, dz: float, norm: bool = True,
     ) -> None:
-        '''
+        r'''
         Get the time evolution with adiabatic pumpings.
 
         :param hams: List of sparse.csr_matrices. Tight-Binding Hamilonians.
         :param psi_init: np.ndarray. Initial state.
         :param steps: Positive integer. Number of steps.
         :param dz: Positive number. Step.
-        :param norm: Boolean. Default value True. Normalize the norm to 1 at each step.
+        :param norm: Boolean. Default value True. Renormalize the state to
+            :math:`\sum_i|\psi_i|^2 = 1` at each step.
         '''
         error_handling.get_pump(hams)
         error_handling.ndarray(psi_init, 'psi_init', self.lat.sites)
@@ -92,8 +96,8 @@ class Propagation():
         for i in range(1, delta):
            self.prop[:, i] = np.dot(mat, self.prop[:, i-1])
            if norm:
-               self.prop[:, i] /= np.abs(self.prop[:, i]).sum()
-      # pumping
+               self.prop[:, i] /= np.linalg.norm(self.prop[:, i])
+        # pumping
         c = np.linspace(0, 1, delta)
         for j in range(0, no-1):
             for i in range(0, delta):
@@ -104,13 +108,12 @@ class Propagation():
                 self.prop[:, (j+1)*delta+i] = np.dot(mat, self.prop[:,  (j+1)*delta+i-1])
                 if norm:
                     self.prop[:,  (j+1)*delta+i] /= \
-                        np.abs(self.prop[:,  (j+1)*delta+i]).sum() 
-      # after pumping
-        j = no
+                        np.linalg.norm(self.prop[:,  (j+1)*delta+i])
+        # after pumping
         for i in range(0, self.steps - no*delta):
             self.prop[:,  no*delta+i] = np.dot(mat, self.prop[:,  no*delta+i-1])
             if norm:
-                self.prop[:,  no*delta+i] /= np.abs(self.prop[:,  no*delta+i]).sum()
+                self.prop[:,  no*delta+i] /= np.linalg.norm(self.prop[:,  no*delta+i])
 
     def plt_propagation_1d(
         self, prop_type: str = 'real', fs: float = 20, figsize: tuple[float, float] | None = None,

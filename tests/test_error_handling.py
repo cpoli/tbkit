@@ -160,13 +160,6 @@ class TestLatticeChecks(unittest.TestCase):
         self.assertRaises(TypeError, eh.boundary_line, 1., 'a', 1.)
         self.assertRaises(TypeError, eh.boundary_line, 1., 1., 'a')
 
-    def test_ellipse(self):
-        eh.ellipse(1., 1.)
-        self.assertRaises(TypeError, eh.ellipse, 'a', 1.)
-        self.assertRaises(TypeError, eh.ellipse, 1., 'a')
-        self.assertRaises(ValueError, eh.ellipse, -1., 1.)
-        self.assertRaises(ValueError, eh.ellipse, 1., -1.)
-
     def test_sites(self):
         eh.sites(1)
         self.assertRaises(RuntimeError, eh.sites, 0)

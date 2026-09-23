@@ -177,7 +177,7 @@ class Lattice():
 
     def shift_y(self, shift: float) -> None:
         '''
-        Shift by *delta_x* the x coordinates.
+        Shift the y coordinates.
 
         :param shift: Real number. Shift value.
         '''
@@ -222,7 +222,6 @@ class Lattice():
 
             (x-x_0)^2/a^2+(y-y_0)^2/b^2 < 1\,  .
 
-        :param list_hop: List of Dictionary (see set_hopping definition).
         :param rx: Positive Real number. Radius along :math:`x`.
         :param ry: Positive Real number. Radius along :math:`y`.
         :param x0: Real number. :math:`x` center.
@@ -246,7 +245,6 @@ class Lattice():
             (x-x_0)^2/a^2+(y-y_0)^2/b^2 > 1\,  .
 
 
-        :param list_hop: List of Dictionary (see set_hopping definition).
         :param rx: Positive Real number. Radius along :math:`x`.
         :param ry: Positive Real number. Radius along :math:`y`.
         :param x0: Real number. :math:`x` center.
@@ -271,18 +269,18 @@ class Lattice():
 
     def rotation(self, theta: float) -> None:
         r'''
-        Rotate the lattice structure by the angle :math:`\theta`.
+        Rotate the lattice structure about the origin by the angle
+        :math:`\theta`.
 
         :param theta: Rotation angle in degrees.
         '''
         error_handling.empty_coor(self.coor)
         error_handling.real_number(theta, 'theta')
-        theta *= PI / 360
-        for dic in self.unit_cell:
-            x  = self.coor['x'] - dic['r0'][0]
-            y  = self.coor['y'] - dic['r0'][1]
-            self.coor['x'] = x * np.cos(theta) - y * np.sin(theta) + dic['r0'][0]
-            self.coor['y'] = y * np.cos(theta) + x* np.sin(theta) + dic['r0'][1]
+        theta *= PI / 180
+        x = self.coor['x'].copy()
+        y = self.coor['y'].copy()
+        self.coor['x'] = x * np.cos(theta) - y * np.sin(theta)
+        self.coor['y'] = y * np.cos(theta) + x * np.sin(theta)
 
     def clean_coor(self) -> None:
         '''
@@ -370,10 +368,10 @@ class Lattice():
         figsize: tuple[float, float] | None = None,
     ) -> Figure:
         '''
-        Plot lattice in hopping space.
+        Plot the lattice in real space.
 
         :param ms: Positive number. Default value 20. Markersize.
-        :param fs: Positve number. Default value 20. Fontsize.
+        :param fs: Positive number. Default value 20. Fontsize.
         :param plt_index: Boolean. Default value False. Plot site labels.
         :param axis: Boolean. Default value False. Plot axis.
         :param figsize: Tuple. Default value None. Figsize.

@@ -35,6 +35,21 @@ def build_propagated(norm=True, steps=20):
     return prop
 
 
+def draw_animation(ani):
+    """
+    Render the animation's first frame.
+
+    A FuncAnimation that is garbage-collected without ever having been drawn
+    warns ("Animation was deleted without rendering anything"), and the warning
+    surfaces under whichever test happens to be running when the collection
+    fires. Drawing the canvas fires the figure's draw_event, which starts the
+    animation -- and actually runs the per-frame callback, which these tests
+    otherwise never exercise.
+    """
+    ani._fig.canvas.draw()
+    plt.close(ani._fig)
+
+
 def build_dimer_propagated():
     unit_cell = [{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (1., 0.)}]
     prim_vec = [(2., 0.)]
@@ -94,6 +109,7 @@ class TestPropagation(unittest.TestCase):
         for prop_type in ('real', 'imag', 'norm'):
             ani = prop.get_animation(prop_type=prop_type)
             self.assertEqual(ani.__class__.__name__, 'FuncAnimation')
+            draw_animation(ani)
 
     def test_get_animation_non_posix(self):
         prop = build_propagated()
@@ -107,6 +123,7 @@ class TestPropagation(unittest.TestCase):
             mock_os.name = 'nt'
             ani = prop.get_animation()
         self.assertEqual(ani.__class__.__name__, 'FuncAnimation')
+        draw_animation(ani)
 
     def test_get_animation_nb(self):
         prop = build_propagated()
@@ -116,6 +133,7 @@ class TestPropagation(unittest.TestCase):
         ani.to_jshtml()
         ani2 = prop.get_animation_nb(prop_type='norm')
         self.assertEqual(ani2.__class__.__name__, 'FuncAnimation')
+        draw_animation(ani2)
 
     def test_plt_prop_dimer(self):
         prop = Propagation(build_chain().lat)

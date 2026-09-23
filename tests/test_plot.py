@@ -3,6 +3,7 @@ from tbkit.system import System
 from tbkit.plot import Plot, plot
 from tbkit.graphene import GrapheneLattice, GrapheneSystem
 import unittest
+from unittest import mock
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -93,10 +94,10 @@ class TestPlot(unittest.TestCase):
         fig = p.spectrum(ipr=True)
         self.assertEqual(fig.__class__.__name__, 'Figure')
 
-    def test_spectrum_peterman(self):
+    def test_spectrum_petermann(self):
         sys = build_system()
         p = Plot(sys)
-        fig = p.spectrum(peterman=True)
+        fig = p.spectrum(petermann=True)
         self.assertEqual(fig.__class__.__name__, 'Figure')
 
     def test_polarization_standalone(self):
@@ -167,7 +168,9 @@ class TestPlot(unittest.TestCase):
     def test_show(self):
         sys = build_system()
         p = Plot(sys)
-        p.show()
+        with mock.patch('matplotlib.pyplot.show') as shown:
+            p.show()
+        shown.assert_called_once()
 
     def test_dos(self):
         sys = build_system()
