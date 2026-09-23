@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice
 from tbkit.system import System
+from tbkit.plot import Plot
 
 
 N1, N2 = 16, 16  # flake size
@@ -31,6 +32,15 @@ def flake(alpha):
     sys.get_eig()
     return sys
 
+
+# %%
+# The flake
+# ------------
+# A square-lattice flake. The flux swept below threads each of its square
+# plaquettes; the Peierls substitution multiplies the bonds drawn here by
+# a phase, leaving their magnitude (and so this picture) unchanged.
+
+fig0 = Plot(flake(alpha=0.)).lattice(plt_hop=True, ms=7, figsize=(5, 5))
 
 # %%
 # Sanity checks that hold at every flux

@@ -21,6 +21,7 @@ import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice
 from tbkit.system import System
+from tbkit.plot import Plot
 from tbkit.kspace import KSpace, reciprocal_vectors
 
 
@@ -41,6 +42,18 @@ t = 1.
 # :meth:`~tbkit.lattice.Lattice.get_lattice` tiles the unit cell into an
 # 8x8-cell flake; :class:`~tbkit.system.System` then builds and
 # diagonalizes its real-space Hamiltonian.
+
+# The honeycomb lattice this builds: two orbitals ('a' and 'b', drawn in
+# different colours) per unit cell, each with three nearest neighbors on
+# the other sublattice.
+lat_small = Lattice(unit_cell=unit_cell, prim_vec=prim_vec)
+lat_small.get_lattice(n1=5, n2=4)
+vis = System(lat_small)
+vis.set_hopping([{'n': 1, 't': t}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+# %%
+# The flake actually diagonalized:
 
 lat = Lattice(unit_cell=unit_cell, prim_vec=prim_vec)
 lat.get_lattice(n1=8, n2=8)

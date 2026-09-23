@@ -23,6 +23,7 @@ import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice
 from tbkit.system import System
+from tbkit.plot import Plot
 from tbkit.propagation import Propagation
 
 
@@ -30,17 +31,38 @@ N = 161
 t = 1.
 
 
-def tilted_chain(F):
+def tilted_chain(F, n=N):
     '''A 1D tight-binding chain with a uniform onsite potential gradient F.'''
     lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}], prim_vec=[(1., 0.)])
-    lat.get_lattice(n1=N)
+    lat.get_lattice(n1=n)
     sys = System(lat)
     sys.set_hopping([{'n': 1, 't': t}])
     sys.set_onsite({'a': 0.})
-    sys.set_onsite_def({i: F*i for i in range(N)})
+    sys.set_onsite_def({i: F*i for i in range(n)})
     sys.get_ham()
     return sys
 
+
+# %%
+# The chain
+# ------------
+# The same plain 1D chain, with the uniform force applied as a linear
+# onsite potential gradient (again, the geometry is untouched). Only a
+# short stretch is drawn: at the full 161 sites the markers overlap into
+# an unreadable solid bar. What the force actually changes is not the
+# geometry but what sits on each site, so the onsite energies are drawn
+# below the lattice they belong to.
+
+n_draw = 16
+fig0, (ax_lat, ax_pot) = plt.subplots(2, 1, figsize=(8, 3.4),
+                                                  gridspec_kw={'height_ratios': [1, 2]})
+Plot(tilted_chain(F=0.3, n=n_draw)).lattice(plt_hop=True, ms=9, ax=ax_lat)
+ax_lat.set_title('{} sites of the chain (of {})'.format(n_draw, N), fontsize=12)
+ax_pot.plot(np.arange(n_draw), 0.3*np.arange(n_draw), 'o-', ms=5)
+ax_pot.set_xlabel('site $i$')
+ax_pot.set_ylabel('onsite $E_i$')
+ax_pot.set_title(r'the tilt: $E_i = F i$, here $F=0.3$', fontsize=12)
+fig0.tight_layout()
 
 # %%
 # The Wannier-Stark ladder

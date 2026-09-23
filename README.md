@@ -189,6 +189,7 @@ thumbnailed example gallery under `docs/source/api/gallery/`.
 
 | Script                                                                  | What it shows |
 |---------------------------------------------------------------------------|----------------|
+| [`tight_binding/plot_square_lattice_bands.py`](examples/tight_binding/plot_square_lattice_bands.py) | The square lattice: Bloch's theorem at its simplest, bands along Gamma-X-M-Gamma, the nested Fermi surface, and the van Hove singularity. |
 | [`tight_binding/plot_graphene_bands.py`](examples/tight_binding/plot_graphene_bands.py) | Real-space flake + reciprocal-space band structure; graphene's Dirac point and Wallace's 1947 linear dispersion. |
 | [`tight_binding/plot_visualizing_a_model.py`](examples/tight_binding/plot_visualizing_a_model.py) | `tbkit.plot.Plot`: lattice, spectrum with sublattice polarization, density of states, eigenstate intensity. |
 | [`magnetic_field/plot_magnetic_field.py`](examples/magnetic_field/plot_magnetic_field.py) | Peierls substitution; an Aharonov-Bohm ring's flux-periodic spectrum. |
@@ -202,6 +203,8 @@ thumbnailed example gallery under `docs/source/api/gallery/`.
 | [`topology/plot_edge_states.py`](examples/topology/plot_edge_states.py) | Zigzag graphene ribbon edge band; Kane-Mele helical edge states. |
 | [`dynamics/plot_bloch_oscillations.py`](examples/dynamics/plot_bloch_oscillations.py) | Wannier-Stark ladder, its localization, and Bloch oscillations under a uniform tilt. |
 | [`topology/plot_thouless_pump.py`](examples/topology/plot_thouless_pump.py) | The Rice-Mele model as a Thouless quantum pump: quantized Chern number and polarization winding. |
+| [`strain/plot_pseudo_magnetic_field.py`](examples/strain/plot_pseudo_magnetic_field.py) | Triaxial strain as a gauge field: pseudo-Landau levels in graphene from a purely real Hamiltonian. |
+| [`non_hermitian/plot_pt_symmetry.py`](examples/non_hermitian/plot_pt_symmetry.py) | PT symmetry, exceptional points, the Petermann factor, and a selectively amplified topological edge mode. |
 
 The `examples/` directory also has five older Jupyter notebooks (graphene
 flakes, kagome/Lieb/dumbbell lattices, disorder, strain, time propagation)

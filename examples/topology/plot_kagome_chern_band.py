@@ -22,6 +22,8 @@ import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
 from tbkit.kspace import KSpace, reciprocal_vectors
+from tbkit.system import System
+from tbkit.plot import Plot
 
 
 lat = lattices.kagome()
@@ -42,6 +44,19 @@ def kagome_chiral(phi):
                             {'i': 1, 'j': 2, 'R': (1, -1), 't': t}])
     return kag
 
+
+# %%
+# The kagome lattice
+# ---------------------------
+# Corner-sharing triangles: three sites per unit cell ('a', 'b' and 'c',
+# one per colour). The complex phase below is put on every one of the
+# nearest-neighbor bonds drawn here.
+
+patch = lattices.kagome()
+patch.get_lattice(n1=4, n2=3)
+vis = System(patch)
+vis.set_hopping([{'n': 1, 't': 1.}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # phi=0: the flat band touches the middle band at Gamma
