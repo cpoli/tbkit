@@ -1,5 +1,184 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+Bugs that produced silently wrong numbers:
+
+- `System.set_hopping_def()` assigned a scalar to `hop['ang']` and
+  `hop['tag']` without a mask, so setting one hopping's value flattened
+  *every* bond's angle and tag onto a single value. `get_coor_hop()` then
+  collapsed a square lattice onto a line. It also read `vec_hop`, which
+  `set_hopping_manual()` never fills.
+- `System.set_hopping()`'s tag branch relied on `self.hop['n'] == dic['n'] &
+  (...)`, but `&` binds tighter than `==`. The mask that clears previously-set
+  hoppings therefore misfired for every hopping order except `n == 1`:
+  re-setting an `n >= 2` hopping appended a duplicate instead of replacing it,
+  and `get_ham()` summed the two (t = 1 then t = 9 gave 10).
+- `Lattice.rotation()` converted degrees with `PI/360` instead of `PI/180`,
+  halving every rotation, and re-applied the rotation once per unit-cell site,
+  each about a different centre -- so a kagome lattice asked for 90 degrees was
+  turned by 135 and translated. It now rotates once, about the origin.
+- `KSpace` dropped the y-component of a 1D primitive vector, in both
+  `get_ham()` and `mesh_grid()`. A chain not aligned with x got a
+  k-independent (flat) Hamiltonian, and a honeycomb ribbon cut with
+  `direction=0` sampled only 25% of the Brillouin zone. In 1D, `k` is now the
+  crystal momentum along the primitive vector (identical to `k_x` for an
+  x-aligned chain, so x-aligned models are unaffected).
+- `Propagation`'s `norm=True` divided by `sum|psi|` (the L1 norm), leaving
+  `sum|psi|^2` far from 1 -- the Crank-Nicolson step is a Cayley transform and
+  already unitary, so the flag only did damage. It now uses the L2 norm.
+- `System.get_eig(eigenvec=True, left=False)` left the left eigenvectors from
+  an earlier `left=True` call in place and applied a second sort permutation to
+  them; `get_petermann()` then silently returned `inf`. `ln` is now cleared on
+  every call.
+- `System.change_hopping_square()` / `change_hopping_ellipse()` matched the
+  `'ang'` key with exact float equality. Angles come from `arctan2`
+  (29.999999999999996, ...), so on a honeycomb lattice these silently changed
+  no hoppings at all. They now use `np.isclose(..., atol=ATOL)`, as the rest of
+  the package does.
+- `GrapheneSystem.get_beta_lims()` derived the strain limits from one
+  sublattice's extreme y coordinate and ignored the x-dependence entirely, so
+  the range it returned did not keep the hoppings positive (for an uncentred
+  flake the second endpoint was off by more than an order of magnitude). It now
+  computes the bound from every bond's actual strain projection and returns
+  `[beta_min, beta_max]` ascending.
+- `GrapheneSystem.get_butterfly()` accepted a hopping `t` but hard-coded
+  `t = 1` in the sweep.
+- `System.get_petermann()` returned the wrong Petermann factor for some
+  eigenstates. `scipy.linalg.eig` normalizes the left and right
+  eigenvectors but does not fix their *relative phase*, so the overlap
+  `<L|R>` carries an arbitrary phase; taking its real part instead of
+  its modulus made `K_n` gauge-dependent, and it came out as `K_n^2`
+  for modes whose overlap happened to pick up a phase. For the
+  PT-symmetric dimer, where `K = 1/(1-g^2/t^2)` is known exactly, one
+  of the two modes was wrong at every `g > 0`.
+- `System.get_eig(eigenvec=True, left=True)` unpacked `scipy.linalg.eig`'s
+  `(w, vl, vr)` as `(en, rn, ln)`, so `rn` held the *left* eigenvectors and
+  `ln` the right ones. `get_petermann()` was unaffected (`|<L|R>|` is
+  symmetric under the swap), but `rn`, `intensity`, `pola` and `ipr`
+  described the wrong state. Only non-reciprocal models show it: for a
+  complex *symmetric* Hamiltonian (a PT-symmetric gain/loss chain) the left
+  eigenvectors are the conjugates of the right ones, so `|rn|^2` is the same
+  either way -- but for a Hatano-Nelson chain the skin mode came out
+  localized at the wrong end.
+- `System.get_ipr()`'s docstring wrote the inverse participation ratio
+  as `|sum_i psi_i|^4` instead of `sum_i |psi_i|^4`. The code was
+  already correct.
+
+Broken on correct usage:
+
+- `Plot.petermann()` guarded on `sys.ipr` rather than `sys.petermann`, raising
+  `AttributeError` even after a correct `get_eig(left=True)` +
+  `get_petermann()`. `System.__init__` now also initializes `ipr`, so its guard
+  gives a clean `RuntimeError` instead of `AttributeError`.
+- `Plot.spectrum()`'s keyword was spelled `peterman`; its docstring documented
+  `petermann`. Renamed to `petermann` (**breaking**: pass `petermann=True`).
+- `Save` built its path by string concatenation, so
+  `Save(dir_name='run', dir_main='out')` created `outrun/` instead of
+  `out/run/`. It now uses `os.path.join`, and the default `dir_main` is `figs`
+  rather than `figs/`.
+
+### Changed
+
+- `Plot.lattice()` and `Plot.lattice_hop()` accept an `ax` argument, drawing
+  onto a caller-supplied axis instead of always creating a figure of their own,
+  so several lattices can be placed side by side in one figure. `Plot`'s
+  lattice drawing now goes through that axis explicitly rather than through
+  pyplot's current-figure state; passing no `ax` behaves exactly as before.
+- `KSpace.set_onsite()` now accepts a 2x2 matrix when `spin=True`, so
+  spin-off-diagonal onsite terms (an in-plane Zeeman field, an onsite Rashba
+  term) can be expressed. Previously `set_hopping` refused `i == j` with
+  `R == 0` and pointed at `set_onsite`, which only took a number or an
+  `(E_up, E_down)` pair -- leaving no way to build such a term.
+- `error_handling.ellipse` removed: it was never called, and named its
+  parameters `a`/`b` while the methods it claimed to check use `rx`/`ry`.
+- `GrapheneSystem.get_beta_lims()` no longer prints to stdout.
+- Clearer error messages: `prim_vec` validation no longer reports the loop
+  variable name (`coor`) or splits a sentence across two messages ("...must be
+  a list.\nof length 1 ... fro 2D lattices"); the hopping-order message now
+  substitutes the actual maximum instead of the literal `nmax"`; assorted typos
+  ("emptynumpy", double spaces, missing full stops).
+- Documentation fixes: `set_peierls_phase`'s Landau-gauge example integrated
+  along the wrong coordinate, making it a pure gauge (zero field); the
+  `set_hopping` and `set_onsite_def` examples were not valid Python (`t: 1.`
+  instead of `'t': 1.`, missing braces); `System.set_onsite` documented a
+  parameter that does not exist; `get_propagation`'s and `spectrum_hist`'s
+  documented defaults contradicted their signatures; plus assorted copy-paste
+  leftovers (`shift_y` "shift the x coordinates", `Lattice.plot` "in hopping
+  space", a `:param list_hop:` on `ellipse_in`/`ellipse_out`, `find_ellipse`'s
+  `y0` described as the x centre, `get_intensity_pola_min` returning the "max"
+  state).
+
+- `Plot`'s `lims` filters compared the raw (complex) eigenenergies against the
+  limits, while plotting `en.real`. NumPy orders complex values
+  lexicographically, so the filter disagreed with the plotted axis at ties, and
+  `spectrum_hist` handed the complex array straight to `plt.hist`, which cast
+  it away with a `ComplexWarning`. All six `lims` comparisons, and the
+  histogram data, now use `.real`.
+
+### Added (docs)
+
+- The narrative pages and the gallery now *show* the lattice they are about.
+  `tutorial.rst` and `history.rst` grew fourteen figures, rendered at build
+  time by matplotlib's `.. plot::` directive from the docs-only helpers in
+  `docs/source/lattice_figures.py`: each draws the unit cell (solid, labelled
+  by tag), the primitive vectors, and a patch of the lattice they generate, so
+  the repeating motif is visible rather than only described. Thirteen gallery
+  examples gained a corresponding cell, built with the package's own
+  `Plot.lattice(plt_hop=True)` so the scripts stay self-contained and the bond
+  widths show the hopping amplitudes (the SSH and Rice-Mele dimerizations, for
+  instance, are now visible rather than asserted).
+- `examples/topology/plot_ssh_model.py` gained a section on the localized
+  state that lives *inside* the chain: with strong bonds terminating both
+  edges (so neither end is topological) and a defect where two weak bonds
+  meet, the odd site count leaves one unpaired sublattice site and chiral
+  symmetry pins a single exact zero mode to the defect, decaying by
+  -weak/strong per dimer on either side.
+- The 1D-chain figures in the Bloch-oscillation and Anderson-localization
+  examples drew all 161 / 200 sites at `set_aspect('equal')`, so the markers
+  merged into a featureless solid bar. They now draw a 16-site stretch, with
+  the onsite energies (the linear tilt, the disorder realization) plotted
+  underneath -- since in both examples the geometry is what stays fixed and
+  the onsite term is what the physics lives in.
+- `examples/tight_binding/plot_square_lattice_bands.py` -- the square
+  lattice as the smallest complete illustration of Bloch's theorem: a
+  one-orbital cell whose whole band structure is
+  `E(k) = -2t(cos kx a + cos ky a)`, checked against the Bloch sum at 200
+  random k-points, plotted along Gamma-X-M-Gamma and over the Brillouin
+  zone (the nested E=0 Fermi surface), with the van Hove singularity in its
+  density of states. The minigallery under "1928 -- Bloch's Theorem and
+  Band Theory" pointed at the graphene example; it now points here, matching
+  the square lattice that section already draws.
+- Ribbons are drawn as level strips. `ribbon()` stacks its rows along the
+  primitive vector that, for a honeycomb lattice, has a component along the
+  periodic direction too, so tiling its unit cell as-is draws a slanted
+  parallelogram. Sliding each site back by whole multiples of **a**\ :sub:`1`
+  -- the same site of the same cell, relabelled by a different **R** -- gives
+  the strip with two open zigzag edges that one actually pictures.
+
+### Added (tests)
+
+- `tests/test_regressions.py`, pinning each of the above bugs.
+- The test suite is now warning-free, and `filterwarnings = ["error"]` in
+  `pyproject.toml` keeps it that way. Two test-side sources were fixed rather
+  than silenced: `show()` is now patched out (there is nothing to show under
+  the Agg backend), and animations are drawn before being dropped, which also
+  runs `get_animation`'s per-frame callback for the first time.
+
+### Added
+- `examples/strain/plot_pseudo_magnetic_field.py` -- linear triaxial
+  strain as a pseudo-magnetic field, verified against graphene's
+  relativistic Landau ladder and against a real field of the same
+  strength.
+- `examples/non_hermitian/plot_pt_symmetry.py` -- PT symmetry breaking,
+  the exceptional point of a gain/loss dimer, the Petermann factor, and
+  the selective amplification of an SSH edge mode.
+- Two new entries in `docs/source/history.rst` (strain as a gauge
+  field, 2010; PT symmetry and exceptional points, 1998/2015).
+
+
 ## 0.2.1
 
 First release published to PyPI (`pip install tbkit`).

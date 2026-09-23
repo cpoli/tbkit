@@ -20,6 +20,9 @@ import os
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('../../'))
+# lattice_figures.py lives next to this file and is imported by the
+# ".. plot::" blocks in tutorial.rst / history.rst.
+sys.path.insert(0, os.path.abspath('.'))
 numpydoc_show_class_members = False
 # -- General configuration ------------------------------------------------
 
@@ -36,7 +39,21 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.intersphinx',
     'sphinx_gallery.gen_gallery',
+    'matplotlib.sphinxext.plot_directive',
 ]
+
+# ".. plot::" blocks render a figure from code executed at build time, so the
+# lattice pictures in the narrative pages cannot drift from the geometry the
+# package actually builds (and no binary images need committing). The code
+# itself is hidden: these blocks call the docs-only helpers in
+# lattice_figures.py, which are not part of the public tbkit API, and the
+# surrounding prose already shows the real tbkit calls.
+plot_include_source = False
+plot_html_show_source_link = False
+plot_html_show_formats = False
+plot_formats = [('png', 110)]
+plot_apply_rcparams = True
+plot_rcparams = {'savefig.bbox': 'tight', 'figure.autolayout': True}
 
 # Renders examples/<section>/plot_*.py (a Sphinx-Gallery-formatted RST
 # docstring followed by "# %%"-delimited narrative/code cells) into a
