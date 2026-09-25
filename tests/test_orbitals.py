@@ -348,8 +348,12 @@ class TestKSpaceOverlap(unittest.TestCase):
         g.set_onsite({'a': 0.1j, 'b': 0.})
         en = g.get_bands([[0.3, 0.2]]).ravel()
         k = [0.3, 0.2]
-        self.assertTrue(np.allclose(np.sort_complex(en),
-                                             np.sort_complex(LA.eigvals(g.get_ham(k), g.get_overlap(k)))))
+        ref = LA.eigvals(g.get_ham(k), g.get_overlap(k))
+        # same set of values; not via sort_complex, which orders two eigenvalues
+        # with equal real parts by rounding noise
+        dist = np.abs(en[:, None] - ref[None, :])
+        self.assertTrue(np.allclose(dist.min(axis=1), 0.))
+        self.assertEqual(sorted(dist.argmin(axis=1)), list(range(len(ref))))
 
 
 if __name__ == '__main__':

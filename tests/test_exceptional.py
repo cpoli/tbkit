@@ -199,7 +199,11 @@ class TestVorticityAndDiscriminant(unittest.TestCase):
         # the three eigenvalues permute cyclically
         _, _, en = ex.track_eigenvalues(m, lp)
         self.assertFalse(np.allclose(en[-1], en[0]))
-        self.assertTrue(np.allclose(np.sort_complex(en[-1]), np.sort_complex(en[0])))
+        # same set of values; not via sort_complex, which orders two eigenvalues
+        # with equal real parts by rounding noise
+        dist = np.abs(en[-1][:, None] - en[0][None, :])
+        self.assertTrue(np.allclose(dist.min(axis=1), 0.))
+        self.assertEqual(sorted(dist.argmin(axis=1)), [0, 1, 2])
         _, _, en3 = ex.track_eigenvalues(m, lp, n_loops=3)
         self.assertTrue(np.allclose(en3[-1], en3[0]))
 
