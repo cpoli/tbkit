@@ -27,7 +27,7 @@ classifiers = [
 Homepage = "https://github.com/cpoli/tbkit"
 
 [project.optional-dependencies]
-test = ["pytest>=7", "pytest-cov>=4"]
+test = ["pytest>=7", "pytest-cov>=4", "pytest-xdist>=3.2"]
 docs = ["sphinx>=7", "pydata-sphinx-theme>=0.15", "sphinx-gallery>=0.15"]
 
 [tool.pytest.ini_options]
@@ -36,6 +36,9 @@ docs = ["sphinx>=7", "pydata-sphinx-theme>=0.15", "sphinx-gallery>=0.15"]
 # usually the test misusing an API. Add a targeted `ignore::` entry below if a
 # dependency ever emits something genuinely out of our control.
 filterwarnings = ["error"]
+# Run in parallel; worksteal rebalances the few slow Floquet/Hall/KPM tests.
+# Pass -n0 to run a single test without the worker startup cost.
+addopts = "-n auto --dist worksteal"
 
 [tool.setuptools.packages.find]
 include = ["tbkit*"]
