@@ -10,7 +10,10 @@ __version__ = "0.3.0"
 
 __all__ = [
     "Lattice", "System", "Plot", "Propagation", "Save", "KSpace",
-    "reciprocal_vectors", "error_handling",
+    "reciprocal_vectors", "OrbitalSystem", "Transport", "FloquetKSpace",
+    "DrivenKSpace", "StepDrive", "step_drive",
+    "MeanFieldResult", "hubbard_mean_field", "ExceptionalPoints", "Encircling",
+    "find_exceptional_points", "error_handling",
 ]
 
 # NOTE: these are explicit imports, not `from tbkit.<module> import *`.
@@ -24,4 +27,9 @@ from tbkit.plot import Plot
 from tbkit.propagation import Propagation
 from tbkit.save import Save
 from tbkit.kspace import KSpace, reciprocal_vectors
+from tbkit.orbital import OrbitalSystem
+from tbkit.transport import Transport
+from tbkit.floquet import FloquetKSpace, DrivenKSpace, StepDrive, step_drive
+from tbkit.meanfield import MeanFieldResult, hubbard_mean_field
+from tbkit.exceptional import ExceptionalPoints, Encircling, find_exceptional_points
 import tbkit.error_handling

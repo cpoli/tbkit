@@ -4,11 +4,14 @@ import numpy as np
 from numpy.typing import NDArray
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
+from scipy.spatial import cKDTree
 import tbkit.error_handling as error_handling
 
 
 PI = np.pi
 COOR_DTYPE = [('x', 'f8'), ('y', 'f8'), ('tag', 'U1')]
+#: Site dtype of a lattice in 3D space (*unit_cell* and *prim_vec* given as 3-tuples).
+COOR_DTYPE_3D = [('x', 'f8'), ('y', 'f8'), ('z', 'f8'), ('tag', 'U1')]
 
 
 #################################
@@ -18,27 +21,33 @@ COOR_DTYPE = [('x', 'f8'), ('y', 'f8'), ('tag', 'U1')]
 
 class Lattice():
     r'''
-    Build up 1D or 2D lattice.
+    Build up 1D, 2D or 3D lattice.
     Lattice is defined by the discrete operation:
 
     .. math::
 
-        \mathbf{R} = n_1\mathbf{a}_1 + n_2\mathbf{a}_2
+        \mathbf{R} = n_1\mathbf{a}_1 + n_2\mathbf{a}_2 + n_3\mathbf{a}_3
 
-    where :math:`\mathbf{a}_1` and :math:`\mathbf{a}_2` are the two primitive
-    vectors and :math:`n_1` and :math:`n_2` are the number of unit cells along
-    :math:`\mathbf{a}_1` and :math:`\mathbf{a}_2`.
+    where :math:`\mathbf{a}_1`, :math:`\mathbf{a}_2`, :math:`\mathbf{a}_3` are the
+    primitive vectors and :math:`n_1`, :math:`n_2`, :math:`n_3` are the number of
+    unit cells along them.
 
     :param unit_cell: List of dictionaries.
      One dictionary per site within the unit cell. Each dictionary has two keys:
 
         * 'tag', one-character string. Label of the associated sublattice.
-        * 'r0', Tuple. Position.
+        * 'r0', Tuple. Position: :math:`(x, y)`, or :math:`(x, y, z)` for a
+          lattice in 3D space.
     :param prim_vec: List of tuples.
-     Define the primitive vectors. List of one/two tuples for 1D/2D respectively:
+     Define the primitive vectors. List of one/two/three tuples for 1D/2D/3D
+     lattices, each the cartesian coordinates of a primitive vector: 2-tuples
+     in the plane, or 3-tuples in 3D space (then *r0* must be 3-tuples too,
+     and *coor* gains a 'z' field, see :data:`COOR_DTYPE_3D`).
 
-        * Tuple, cartesian coordinate of the primitive vector :math:`\mathbf{a}_1`.
-        * Tuple, cartesian coordinate of the primitive vector :math:`\mathbf{a}_2`.
+    In 3D space, the geometry methods acting in the plane (*rotation*,
+    *ellipse_in*, *boundary_line*, ...) act on :math:`(x, y)` only (rotation
+    about the z axis, cylinders, vertical planes), and *plot* draws the
+    projection on the :math:`(x, y)` plane.
 
     Example usage::
 
@@ -51,21 +60,26 @@ class Lattice():
     def __init__(self, unit_cell: list[dict], prim_vec: list[tuple[float, float]]) -> None:
         error_handling.unit_cell(unit_cell)
         error_handling.prim_vec(prim_vec)
+        error_handling.space_dim(unit_cell, prim_vec)
         self.unit_cell = unit_cell
         self.prim_vec = prim_vec
         self.tags = np.unique(np.array([dic['tag'] for dic in self.unit_cell]))
-        self.n1, self.n2 = 0, 0
-        self.coor = np.array([], dtype=COOR_DTYPE)
+        self.space_dim = len(prim_vec[0])  # 2, or 3 for a lattice in 3D space
+        self.dtype = COOR_DTYPE if self.space_dim == 2 else COOR_DTYPE_3D
+        self.n1, self.n2, self.n3 = 0, 0, 0
+        self.coor = np.array([], dtype=self.dtype)
         self.sites = 0
 
-    def get_lattice(self, n1: int, n2: int = 1) -> None:
+    def get_lattice(self, n1: int, n2: int = 1, n3: int = 1) -> None:
         r'''
-        Get the lattice positions.
+        Get the lattice positions, sorted by (y, x) -- by (z, y, x) in 3D space.
 
         :param n1: Positive Integer.
             Number of unit cells along :math:`\mathbf{a}_1`.
         :param n2: Positive Integer. Default value 1.
             Number of unit cells along :math:`\mathbf{a}_2`.
+        :param n3: Positive Integer. Default value 1.
+            Number of unit cells along :math:`\mathbf{a}_3` (3D lattices only).
 
         Example usage::
 
@@ -75,32 +89,47 @@ class Lattice():
             lat = lattice(unit_cell=unit_cell, prim_vec=prim_vec)
             lat.get_lattice(n1=4, n2=5)
         '''
-        error_handling.get_lattice(self.prim_vec, n1, n2)
+        error_handling.get_lattice(self.prim_vec, n1, n2, n3)
         sites_uc = len(self.unit_cell)
-        sites_tag = n1*n2
+        sites_tag = n1*n2*n3
         self.sites = sites_uc * sites_tag
-        self.coor = np.empty(self.sites, dtype=COOR_DTYPE)
-        self.n1, self.n2 = n1, n2
-        x = self.prim_vec[0][0] * np.arange(n1, dtype='f8')
-        y = self.prim_vec[0][1] * np.arange(n1, dtype='f8')
-        xx = np.empty(n1*n2)
-        yy = np.empty(n1*n2)
-        xx[:n1] = x
-        yy[:n1] = y
-        for i in range(1, n2):
-            xx[i*n1: (i+1)*n1] = x + i * self.prim_vec[1][0]
-            yy[i*n1: (i+1)*n1] = y + i * self.prim_vec[1][1]
+        self.coor = np.empty(self.sites, dtype=self.dtype)
+        self.n1, self.n2, self.n3 = n1, n2, n3
+        # translations R = i1 a1 + i2 a2 (+ i3 a3), i1 running fastest
+        axes = [f for f in ('x', 'y', 'z')[:self.space_dim]]
+        trans = np.zeros((sites_tag, self.space_dim))
+        counts = (n1, n2, n3)
+        index = np.indices(counts[:max(len(self.prim_vec), 1)][::-1]).reshape(
+                                  max(len(self.prim_vec), 1), -1)[::-1]
+        for n, a in zip(index, self.prim_vec):
+            trans += n[:, None] * np.array(a, dtype='f8')[None, :]
         for i, dic in enumerate(self.unit_cell):
-            self.coor['x'][i*sites_tag: (i+1)*sites_tag] = xx + dic['r0'][0]
-            self.coor['y'][i*sites_tag: (i+1)*sites_tag] = yy + dic['r0'][1]
+            for c, f in enumerate(axes):
+                self.coor[f][i*sites_tag: (i+1)*sites_tag] = trans[:, c] + dic['r0'][c]
             self.coor['tag'][i*sites_tag: (i+1)*sites_tag] = dic['tag']
-        self.coor = np.sort(self.coor, order=('y', 'x'))
+        self.coor = np.sort(self.coor, order=self.sort_order())
+
+    def sort_order(self) -> tuple[str, ...]:
+        '''
+        Private method. Fields the sites are sorted by: ('y', 'x'), or
+        ('z', 'y', 'x') in 3D space.
+        '''
+        return ('y', 'x') if self.space_dim == 2 else ('z', 'y', 'x')
+
+    def distances(self) -> tuple[NDArray, ...]:
+        '''
+        Private method. Pairwise coordinate differences, *d[i, j]* from site
+        *i* to site *j*: (dx, dy), or (dx, dy, dz) in 3D space.
+        '''
+        return tuple(self.coor[f] - self.coor[f].reshape(self.sites, 1)
+                          for f in ('x', 'y', 'z')[:self.space_dim])
 
     def add_sites(self, coor: NDArray) -> None:
         '''
         Add sites.
 
-        :param coor: Structured array with keys: {'x', 'y', 'tag'}.
+        :param coor: Structured array with keys: {'x', 'y', 'tag'}
+            ({'x', 'y', 'z', 'tag'} for a lattice in 3D space).
 
         Example usage::
 
@@ -113,11 +142,11 @@ class Lattice():
                                       dtype=[('x', 'f8'), ('y', 'f8'), ('tag', 'U1')])
             lat.add_sites(coor)
         '''
-        error_handling.coor(coor)
+        error_handling.coor(coor, self.dtype)
         self.coor = np.concatenate([self.coor, coor])
         self.sites += len(coor)
         self.tags = np.unique(np.concatenate([self.tags, coor['tag']]))
-        self.coor = np.sort(self.coor, order=('y', 'x'))
+        self.coor = np.sort(self.coor, order=self.sort_order())
 
     def remove_sites(self, index: list[int]) -> None:
         '''
@@ -150,16 +179,15 @@ class Lattice():
         '''
         error_handling.empty_coor(self.coor)
         while True:
-            dif_x = self.coor['x'] - self.coor['x'].reshape(self.sites, 1)
-            dif_y = self.coor['y'] - self.coor['y'].reshape(self.sites, 1)
-            dis = np.sqrt(dif_x ** 2 + dif_y ** 2)
-            dis_unique = np.unique(dis)
-            len_hop = dis_unique[1]
-            ind = np.argwhere(np.isclose(dis, len_hop))
-            dang = []
-            for i in range(self.sites):
-                if (ind[:, 0] == i).sum() == 1:
-                    dang.append(i)
+            coords = np.stack([self.coor[f] for f in ('x', 'y', 'z')[:self.space_dim]], axis=1)
+            tree = cKDTree(coords)
+            near = tree.query(coords, k=min(self.sites, 8))[0][:, 1:]
+            len_hop = np.min(near[near > 0])  # the shortest distance between sites
+            pairs = tree.query_pairs(len_hop * (1. + 1e-5) + 1e-8, output_type='ndarray')
+            dis = np.linalg.norm(coords[pairs[:, 1]] - coords[pairs[:, 0]], axis=1)
+            pairs = pairs[np.isclose(dis, len_hop)]
+            degree = np.bincount(pairs.ravel(), minlength=self.sites)
+            dang = list(np.flatnonzero(degree == 1))
             self.coor = np.delete(self.coor, dang, axis=0)
             self.sites -= len(dang)
             if dang == []:
@@ -199,13 +227,47 @@ class Lattice():
         error_handling.empty_coor(self.coor)
         self.coor['y'] *= -1
 
+    def shift_z(self, shift: float) -> None:
+        '''
+        Shift the z coordinates (3D lattices only).
+
+        :param shift: Real number. Shift value.
+        '''
+        error_handling.empty_coor(self.coor)
+        error_handling.space_3d(self.space_dim)
+        error_handling.real_number(shift, 'shift')
+        self.coor['z'] += shift
+
+    def change_sign_z(self) -> None:
+        '''
+        Change z coordinates sign (3D lattices only).
+        '''
+        error_handling.empty_coor(self.coor)
+        error_handling.space_3d(self.space_dim)
+        self.coor['z'] *= -1
+
+    def slab(self, z_min: float, z_max: float) -> None:
+        r'''
+        Keep only the sites with :math:`z_{min} < z < z_{max}` (3D lattices only).
+
+        :param z_min: Real number.
+        :param z_max: Real number, larger than *z_min*.
+        '''
+        error_handling.empty_coor(self.coor)
+        error_handling.space_3d(self.space_dim)
+        error_handling.real_number(z_min, 'z_min')
+        error_handling.real_number(z_max, 'z_max')
+        error_handling.smaller(z_min, 'z_min', z_max, 'z_max')
+        self.coor = self.coor[(self.coor['z'] > z_min) & (self.coor['z'] < z_max)]
+        self.sites = len(self.coor)
+
     def boundary_line(self, cx: float, cy: float, co: float) -> None:
         r'''
-        Select sites according to :math:`c_yy+c_xx > c_0`.
+        Keep only the sites with :math:`c_yy+c_xx > c_0`.
 
-        :param cx: Real number. cx value.
-        :param cy: Real number. cy value.
-        :param co: Real number. co value.
+        :param cx: Real number. :math:`c_x` value.
+        :param cy: Real number. :math:`c_y` value.
+        :param co: Real number. :math:`c_0` value.
         '''
         error_handling.empty_coor(self.coor)
         error_handling.real_number(cx, 'cx')
@@ -220,7 +282,7 @@ class Lattice():
 
         .. math::
 
-            (x-x_0)^2/a^2+(y-y_0)^2/b^2 < 1\,  .
+            (x-x_0)^2/r_x^2+(y-y_0)^2/r_y^2 < 1\,  .
 
         :param rx: Positive Real number. Radius along :math:`x`.
         :param ry: Positive Real number. Radius along :math:`y`.
@@ -242,7 +304,7 @@ class Lattice():
 
         .. math::
 
-            (x-x_0)^2/a^2+(y-y_0)^2/b^2 > 1\,  .
+            (x-x_0)^2/r_x^2+(y-y_0)^2/r_y^2 > 1\,  .
 
 
         :param rx: Positive Real number. Radius along :math:`x`.
@@ -261,16 +323,16 @@ class Lattice():
 
     def center(self) -> None:
         '''
-        Fix the center of mass of the lattice at (0, 0).
+        Fix the center of mass of the lattice at (0, 0) -- (0, 0, 0) in 3D space.
         '''
         error_handling.empty_coor(self.coor)
-        self.coor['x'] -= np.mean(self.coor['x'])
-        self.coor['y'] -= np.mean(self.coor['y'])
+        for f in ('x', 'y', 'z')[:self.space_dim]:
+            self.coor[f] -= np.mean(self.coor[f])
 
     def rotation(self, theta: float) -> None:
         r'''
-        Rotate the lattice structure about the origin by the angle
-        :math:`\theta`.
+        Rotate the lattice structure about the origin (about the z axis, in
+        3D space) by the angle :math:`\theta`.
 
         :param theta: Rotation angle in degrees.
         '''
@@ -287,8 +349,10 @@ class Lattice():
         Keep only the sites with different coordinates.
         '''
         error_handling.empty_coor(self.coor)
-        coor = self.coor[['x', 'y']].copy()
-        coor['x'], coor['y'] = self.coor['x'].round(4), self.coor['y'].round(4)
+        fields = list(('x', 'y', 'z')[:self.space_dim])
+        coor = self.coor[fields].copy()
+        for f in fields:
+            coor[f] = self.coor[f].round(4)
         _, idx = np.unique(coor, return_index=True)
         self.coor = self.coor[idx]
         self.sites = len(self.coor)
@@ -331,9 +395,7 @@ class Lattice():
         error_handling.lat(other)
         error_handling.empty_coor(self.coor)
         error_handling.empty_coor(other.coor)
-        boo = np.zeros(self.sites, bool)
-        for c in other.coor:
-            boo += np.isclose(c['x'], self.coor['x']) & np.isclose(c['y'], self.coor['y'])
+        boo = self.overlaps(other)
         coor = self.coor[np.logical_not(boo)]
         lat = lattice(unit_cell=self.unit_cell, prim_vec=self.prim_vec)
         lat.add_sites(coor)
@@ -352,12 +414,24 @@ class Lattice():
         error_handling.lat(other)
         error_handling.empty_coor(self.coor)
         error_handling.empty_coor(other.coor)
-        boo = np.zeros(self.sites, bool)
-        for c in other.coor:
-            boo += np.isclose(c['x'], self.coor['x']) & np.isclose(c['y'], self.coor['y'])
+        boo = self.overlaps(other)
         self.coor = self.coor[np.logical_not(boo)]
         self.sites = int(np.sum(np.logical_not(boo)))
         return self
+
+    def overlaps(self, other: 'Lattice') -> NDArray[np.bool_]:
+        '''
+        Private method. Mask of the sites of *self* that coincide with a site
+        of *other*.
+        '''
+        fields = [f for f in ('x', 'y', 'z') if f in self.coor.dtype.names]
+        boo = np.zeros(self.sites, bool)
+        for c in other.coor:
+            match = np.ones(self.sites, bool)
+            for f in fields:
+                match &= np.isclose(c[f] if f in other.coor.dtype.names else 0., self.coor[f])
+            boo += match
+        return boo
 
     def plot(
         self,
@@ -368,7 +442,8 @@ class Lattice():
         figsize: tuple[float, float] | None = None,
     ) -> Figure:
         '''
-        Plot the lattice in real space.
+        Plot the lattice in real space (its projection on the (x, y) plane,
+        in 3D space).
 
         :param ms: Positive number. Default value 20. Markersize.
         :param fs: Positive number. Default value 20. Fontsize.

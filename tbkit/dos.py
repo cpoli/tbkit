@@ -7,6 +7,8 @@ from __future__ import annotations
 
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
+import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
 
 import tbkit.error_handling as error_handling
 
@@ -63,3 +65,34 @@ def density_of_states(
     else:
         weight = (broadening/np.pi) / (diff**2 + broadening**2)
     return e_grid, weight.sum(axis=1)
+
+
+def _plot_density_of_states(
+    energies: ArrayLike,
+    e_grid: ArrayLike | None,
+    broadening: float,
+    kernel: str,
+    fs: float,
+    lw: float,
+    figsize: tuple[float, float] | None,
+) -> Figure:
+    '''
+    Private function. Plot *density_of_states* (shared by *Plot.dos* and
+    *KSpace.plot_dos*, which validate the plotting parameters).
+    '''
+    e_grid, rho = density_of_states(energies, e_grid=e_grid, broadening=broadening, kernel=kernel)
+    fig, ax = plt.subplots(figsize=figsize)
+    ax.plot(e_grid, rho, 'b', lw=lw)
+    ax.fill_between(e_grid, rho, color='b', alpha=0.2)
+    ax.set_xlim([e_grid[0], e_grid[-1]])
+    ax.set_ylim([0., None])
+    ax.set_title('Density of states', fontsize=fs)
+    ax.set_xlabel('$E$', fontsize=fs)
+    ax.set_ylabel(r'$\rho(E)$', fontsize=fs)
+    for label in ax.xaxis.get_majorticklabels():
+        label.set_fontsize(fs)
+    for label in ax.yaxis.get_majorticklabels():
+        label.set_fontsize(fs)
+    fig.set_layout_engine('tight')
+    plt.draw()
+    return fig

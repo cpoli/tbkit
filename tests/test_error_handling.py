@@ -104,7 +104,10 @@ class TestLatticeChecks(unittest.TestCase):
         self.assertRaises(TypeError, eh.unit_cell, [{'tag': 0, 'r0': (0., 0.)}])
         self.assertRaises(ValueError, eh.unit_cell, [{'tag': 'ab', 'r0': (0., 0.)}])
         self.assertRaises(TypeError, eh.unit_cell, [{'tag': 'a', 'r0': [0., 0.]}])
-        self.assertRaises(ValueError, eh.unit_cell, [{'tag': 'a', 'r0': (0., 0., 0.)}])
+        self.assertRaises(ValueError, eh.unit_cell, [{'tag': 'a', 'r0': (0., 0., 0., 0.)}])
+        eh.unit_cell([{'tag': 'a', 'r0': (0., 0., 0.)}])  # 3D space
+        self.assertRaises(ValueError, eh.unit_cell, [{'tag': 'a', 'r0': (0., 0.)},
+                                                                         {'tag': 'b', 'r0': (0., 0., 1.)}])
         self.assertRaises(ValueError, eh.unit_cell, [{'tag': 'a', 'r0': (0., 'z')}])
 
     def test_prim_vec(self):
@@ -113,7 +116,11 @@ class TestLatticeChecks(unittest.TestCase):
         self.assertRaises(TypeError, eh.prim_vec, (1., 0.))
         self.assertRaises(ValueError, eh.prim_vec, [(1., 0.), (0., 1.), (1., 1.)])
         self.assertRaises(TypeError, eh.prim_vec, [[1., 0.]])
-        self.assertRaises(ValueError, eh.prim_vec, [(1., 0., 0.)])
+        self.assertRaises(ValueError, eh.prim_vec, [(1., 0., 0., 0.)])
+        eh.prim_vec([(1., 0., 0.)])  # a chain in 3D space
+        eh.prim_vec([(1., 0., 0.), (0., 1., 0.), (0., 0., 1.)])
+        self.assertRaises(ValueError, eh.prim_vec, [(1., 0.), (0., 1., 0.)])
+        self.assertRaises(ValueError, eh.prim_vec, [(1., 0., 0.)]*4)
         self.assertRaises(ValueError, eh.prim_vec, [(1., 'z')])
         self.assertRaises(ValueError, eh.prim_vec, [(0.01, 0.01)])
 
@@ -219,6 +226,9 @@ class TestSystemChecks(unittest.TestCase):
         self.assertRaises(ValueError, eh.set_hopping_def, None, {(-1, 1): 1.}, 5)
         self.assertRaises(ValueError, eh.set_hopping_def, None, {(0, 0): 1.}, 5)
         self.assertRaises(TypeError, eh.set_hopping_def, None, {(0, 1): 'a'}, 5)
+        # NumPy indices and values are accepted; (i, i) only with same_site
+        eh.set_hopping_def(None, {(np.int64(0), np.int64(1)): np.float32(1.)}, 5)
+        eh.set_hopping_def(None, {(0, 0): 1.}, 5, same_site=True)
 
     def test_set_onsite_def(self):
         eh.set_onsite_def({0: 1.}, 5)
@@ -242,8 +252,9 @@ class TestSystemChecks(unittest.TestCase):
         self.assertRaises(RuntimeError, eh.empty_hop, np.array([]))
 
     def test_hop_sites(self):
-        hop = np.array([(0,), (3,)], dtype=[('i', 'u4')])
+        hop = np.array([(0, 1), (3, 4)], dtype=[('i', 'u4'), ('j', 'u4')])
         eh.hop_sites(hop, 5)
+        self.assertRaises(ValueError, eh.hop_sites, hop, 4)  # j == 4 needs 5 sites
         self.assertRaises(ValueError, eh.hop_sites, hop, 2)
 
     def test_empty_ham(self):
@@ -328,6 +339,7 @@ class TestPropagationChecks(unittest.TestCase):
         ham_full = sparse.csr_matrix(np.array([[1., 0.], [0., 1.]]))
         eh.get_pump([ham_full])
         self.assertRaises(TypeError, eh.get_pump, 0)
+        self.assertRaises(TypeError, eh.get_pump, [])
         ham_empty = sparse.csr_matrix((2, 2))
         self.assertRaises(RuntimeError, eh.get_pump, [ham_empty])
 
@@ -390,6 +402,169 @@ class TestDosChecks(unittest.TestCase):
         eh.dos_kernel('lorentzian')
         self.assertRaises(TypeError, eh.dos_kernel, 0)
         self.assertRaises(ValueError, eh.dos_kernel, 'z')
+
+
+class TestExceptionalChecks(unittest.TestCase):
+    def test_ham_model(self):
+        from tbkit.kspace import KSpace
+        import tbkit.lattices as lattices
+        eh.ham_model(KSpace(lattices.square()), KSpace)
+        eh.ham_model(lambda p: np.eye(2), KSpace)
+        self.assertRaises(ValueError, eh.ham_model, KSpace(lattices.chain()), KSpace)
+        self.assertRaises(TypeError, eh.ham_model, 1., KSpace)
+
+    def test_ham_matrix(self):
+        eh.ham_matrix(np.eye(2))
+        self.assertRaises(ValueError, eh.ham_matrix, np.ones(2))
+        self.assertRaises(ValueError, eh.ham_matrix, np.ones((2, 3)))
+        self.assertRaises(ValueError, eh.ham_matrix, np.array([[np.nan]]))
+
+    def test_loop(self):
+        eh.loop(lambda s: (s, s))
+        eh.loop([(0., 0.), (1., 0.), (0., 1.)])
+        self.assertRaises(TypeError, eh.loop, 1.)
+        self.assertRaises(TypeError, eh.loop, 'abc')
+        self.assertRaises(ValueError, eh.loop, [(0., 0.), (1., 0.)])
+        self.assertRaises(ValueError, eh.loop, [(0., 0., 0.)] * 3)
+        eh.loop_point(np.zeros(2))
+        self.assertRaises(ValueError, eh.loop_point, np.zeros(3))
+        self.assertRaises(ValueError, eh.loop_point, np.array([np.inf, 0.]))
+        eh.closed_loop(np.eye(2), np.eye(2))
+        self.assertRaises(ValueError, eh.closed_loop, np.eye(2), 2 * np.eye(2))
+
+    def test_bands(self):
+        eh.band_pair((0, 1), 2)
+        self.assertRaises(TypeError, eh.band_pair, 0, 2)
+        self.assertRaises(TypeError, eh.band_pair, (0, 1.), 2)
+        self.assertRaises(ValueError, eh.band_pair, (1, 1), 2)
+        self.assertRaises(ValueError, eh.band_pair, (0, 2), 2)
+        eh.band_index(1, 2)
+        self.assertRaises(TypeError, eh.band_index, 1., 2)
+        self.assertRaises(ValueError, eh.band_index, 2, 2)
+
+    def test_failures(self):
+        self.assertRaises(ValueError, eh.tracking, np.zeros(2))
+        self.assertRaises(ValueError, eh.winding_path, np.zeros(2))
+        eh.discriminant_nonzero(1.)
+        self.assertRaises(ValueError, eh.discriminant_nonzero, 0.)
+
+    def test_line_gap(self):
+        eh.gap_kind('real')
+        eh.gap_kind('imaginary')
+        self.assertRaises(ValueError, eh.gap_kind, 'point')
+        for kind in ('LR', 'RL', 'RR', 'LL'):
+            eh.biorthogonal_kind(kind)
+        self.assertRaises(ValueError, eh.biorthogonal_kind, 'RLR')
+        keys = np.array([[-1., 1., 2.], [-0.5, 0.8, 3.]])
+        eh.line_gap(keys, [0], 'real')
+        eh.line_gap(keys, [0, 1], 'imaginary')
+        overlapping = np.array([[-1., 1., 2.], [1.2, 1.5, 3.]])  # band 0 reaches 1.2 > 1
+        self.assertRaises(ValueError, eh.line_gap, overlapping, [0], 'imaginary')
+        self.assertRaises(ValueError, eh.line_gap, overlapping, [1], 'real')
+        en = np.array([[-1., 1.], [1.1, -0.9]]).reshape(1, 2, 2) + 0j
+        eh.band_continuity(np.array([[-1., 1.], [-0.9, 1.1]]).reshape(1, 2, 2) + 0j, [0])
+        self.assertRaises(ValueError, eh.band_continuity, en, [0])  # label 0 jumps from -1 to 1.1
+        eh.no_overlap([])
+        self.assertRaises(ValueError, eh.no_overlap, [(0, 1, np.zeros(2), 0.1)])
+
+
+
+
+class TestHallChecks(unittest.TestCase):
+    def test_fermi_energies(self):
+        eh.fermi_energies(0.)
+        eh.fermi_energies([0, 1])
+        self.assertRaises(TypeError, eh.fermi_energies, 'a')
+        self.assertRaises(TypeError, eh.fermi_energies, 1j)
+        self.assertRaises(ValueError, eh.fermi_energies, [])
+        self.assertRaises(ValueError, eh.fermi_energies, [0., np.inf])
+
+    def test_hermitian_model(self):
+        eh.hermitian_model(True)
+        self.assertRaises(ValueError, eh.hermitian_model, False)
+
+    def test_k_fixed_hall(self):
+        eh.k_fixed_hall(None, 2)
+        eh.k_fixed_hall(None, 3)
+        eh.k_fixed_hall(0.5, 3, False)
+        self.assertRaises(TypeError, eh.k_fixed_hall, 'a', 3)
+        self.assertRaises(ValueError, eh.k_fixed_hall, None, 3, False)
+
+    def test_spin_axis(self):
+        eh.spin_axis('z')
+        self.assertRaises(ValueError, eh.spin_axis, 'w')
+
+    def test_refine_fraction(self):
+        eh.refine_fraction(1.)
+        self.assertRaises(TypeError, eh.refine_fraction, 'a')
+        self.assertRaises(ValueError, eh.refine_fraction, 0.)
+        self.assertRaises(ValueError, eh.refine_fraction, 1.5)
+
+    def test_velocity(self):
+        eh.velocity(np.eye(3), 3, 'vx')
+        eh.velocity(sparse.identity(3), 3, 'vx')
+        self.assertRaises(ValueError, eh.velocity, np.eye(2), 3, 'vx')
+        self.assertRaises(ValueError, eh.velocity, [1.], 3, 'vx')
+
+    def test_positive_overlap(self):
+        eh.positive_overlap(0.1)
+        self.assertRaises(ValueError, eh.positive_overlap, 0.)
+
+class TestFloquetChecks(unittest.TestCase):
+    def test_branch_cut(self):
+        eh.branch_cut(None)
+        eh.branch_cut(1.)
+        eh.branch_cut(np.float64(-2.))
+        self.assertRaises(TypeError, eh.branch_cut, 'a')
+        self.assertRaises(TypeError, eh.branch_cut, True)
+
+    def test_durations(self):
+        eh.durations([0.2, 0.3], 2)
+        eh.durations(np.array([1., 2.]), 2)
+        self.assertRaises(TypeError, eh.durations, 1., 1)
+        self.assertRaises(ValueError, eh.durations, [1.], 2)
+        self.assertRaises(TypeError, eh.durations, ['a'], 1)
+        self.assertRaises(ValueError, eh.durations, [0.], 1)
+
+    def test_step_models(self):
+        from tbkit.kspace import KSpace
+        from tbkit.system import System
+        import tbkit.lattices as lattices
+        ks = KSpace(lattices.square())
+        self.assertEqual(eh.step_models([ks, ks], KSpace, System), 'kspace')
+        self.assertEqual(eh.step_models([np.eye(2)], KSpace, System), 'matrix')
+        self.assertRaises(TypeError, eh.step_models, [], KSpace, System)
+        self.assertRaises(TypeError, eh.step_models, np.eye(2), KSpace, System)
+        self.assertRaises(TypeError, eh.step_models, [ks, 1.], KSpace, System)
+        self.assertRaises(ValueError, eh.step_models, [ks, KSpace(lattices.honeycomb())], KSpace, System)
+        lossy = KSpace(lattices.square())
+        lossy.set_onsite({'a': 1j})
+        self.assertRaises(ValueError, eh.step_models, [lossy], KSpace, System)
+        overlap = KSpace(lattices.square())
+        overlap.set_overlap([{'i': 0, 'j': 0, 'R': (1, 0), 't': 0.1}])
+        self.assertRaises(ValueError, eh.step_models, [overlap], KSpace, System)
+
+    def test_step_matrices(self):
+        eh.step_matrices([np.eye(2), np.eye(2)])
+        self.assertRaises(TypeError, eh.step_matrices, [])
+        self.assertRaises(ValueError, eh.step_matrices, [np.eye(2), np.eye(3)])
+        self.assertRaises(ValueError, eh.step_matrices, [np.ones((2, 3))])
+        self.assertRaises(ValueError, eh.step_matrices, [np.array([[0., 1.], [0., 0.]])])
+
+    def test_drive_matrix(self):
+        eh.drive_matrix(np.eye(2), 2)
+        self.assertRaises(ValueError, eh.drive_matrix, np.eye(3), 2)
+        self.assertRaises(ValueError, eh.drive_matrix, np.array([[0., 1j], [1j, 0.]]), 2)
+
+    def test_time_in_period(self):
+        eh.time_in_period(None, 1.)
+        eh.time_in_period(0.5, 1.)
+        self.assertRaises(TypeError, eh.time_in_period, 'a', 1.)
+        self.assertRaises(ValueError, eh.time_in_period, 1.5, 1.)
+
+    def test_nk_min(self):
+        eh.nk_min((4, 8), 4)
+        self.assertRaises(ValueError, eh.nk_min, (3, 8), 4)
 
 
 if __name__ == '__main__':

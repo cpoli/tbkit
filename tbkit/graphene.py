@@ -29,7 +29,7 @@ class GrapheneLattice(Lattice):
         '''
         Triangular flake with zigzag terminations.
 
-        :param: n. Int. Number of plackets along the edges. 
+        :param: n. Int. Number of plaquettes along the edges. 
         '''
         error_handling.positive_int(n, 'n')
         self.get_lattice(n1=n+2, n2=n+2)
@@ -39,7 +39,7 @@ class GrapheneLattice(Lattice):
         '''
         Hexagonal flake with zigzag terminations.
 
-        :param: n. Int. Number of plackets along the edges. 
+        :param: n. Int. Number of plaquettes along the edges. 
         '''
         error_handling.positive_int(n, 'n')
         self.get_lattice(n1=2*n, n2=2*n)
@@ -50,7 +50,7 @@ class GrapheneLattice(Lattice):
         '''
         Triangular flake with armchair terminations.
 
-        :param: n. Int. Number of plackets along the edges. 
+        :param: n. Int. Number of plaquettes along the edges. 
         '''
         error_handling.positive_int(n, 'n')
         self.get_lattice(n1=2*n, n2=2*n)
@@ -62,7 +62,7 @@ class GrapheneLattice(Lattice):
         '''
         Hexagonal flake with armchair terminations.
 
-        :param: n. Int. Number of plackets along each edge. 
+        :param: n. Int. Number of plaquettes along each edge. 
         '''
         error_handling.positive_int(n, 'n')
         nn = 3 * n - 2
@@ -79,7 +79,7 @@ class GrapheneLattice(Lattice):
         '''
         Squared flake.
 
-        :param: n. Int. Number of plackets along x. 
+        :param: n. Int. Number of plaquettes along x. 
         '''
         error_handling.positive_int(n, 'n')
         n2 = int(1.5*DX*n)
@@ -91,7 +91,7 @@ class GrapheneLattice(Lattice):
         '''
         Circular flake.
 
-        :param: n. Int. Number of plackets along the diameter. 
+        :param: n. Int. Number of plaquettes along the diameter. 
         '''
         error_handling.positive_int(n, 'n')
         self.get_lattice(n1=2*n, n2=2*n)
@@ -106,7 +106,9 @@ class GrapheneSystem(System):
     def __init__(self, lat: Lattice) -> None:
         System.__init__(self, lat)
 
-    def _strain_projection(self) -> tuple[NDArray[np.int64], NDArray[np.float64], NDArray[np.float64]]:
+    def _strain_projection(
+        self,
+    ) -> tuple[NDArray[np.int64], NDArray[np.int64], NDArray[np.float64], NDArray[np.float64]]:
         r'''
         Private method.
 
@@ -116,26 +118,26 @@ class GrapheneSystem(System):
 
             s_{ij} = \hat{\boldsymbol\delta}_{ij}\cdot\mathbf{r}_{ij}
 
-        of its midpoint :math:`\mathbf{r}_{ij}` on its (outward-oriented)
-        direction :math:`\hat{\boldsymbol\delta}_{ij}`, so that the strained
-        hopping is :math:`t_{ij} = t(1 + \tfrac14\beta s_{ij})`.
+        of its midpoint :math:`\mathbf{r}_{ij}` on its direction
+        :math:`\hat{\boldsymbol\delta}_{ij}`, oriented from its 'b' site to
+        its 'a' site (the same orientation for all three bond families), so
+        that the strained hopping is :math:`t_{ij} = t(1 + \tfrac14\beta s_{ij})`.
 
         :returns:
-            * **ind_up** -- Integer ndarray, shape (nbonds, 2). Bond indices.
-            * **ang** -- Real ndarray. Bond angles, in degrees.
+            * **i**, **j** -- Integer ndarrays. Bond end points, oriented as in
+              *System.get_bonds*.
+            * **ang** -- Real ndarray. Bond angles (from *i* to *j*), in degrees,
+              in [0, 180).
             * **s** -- Real ndarray. The projections above.
         '''
         self.get_distances()
-        ind = np.argwhere(np.isclose(self.dist_uni[1], self.vec_hop['dis'], atol=ATOL))
-        ind_up = ind[ind[:, 1] > ind[:, 0]]
-        ang = self.vec_hop['ang'][ind_up[:, 0], ind_up[:, 1]].copy()
-        # orient the three bond families consistently outwards
-        ang[np.isclose(30., ang, atol=ATOL)] = -150.
-        ang[np.isclose(150., ang, atol=ATOL)] = -30.
-        x_center = .5 * (self.lat.coor['x'][ind_up[:, 0]] + self.lat.coor['x'][ind_up[:, 1]])
-        y_center = .5 * (self.lat.coor['y'][ind_up[:, 0]] + self.lat.coor['y'][ind_up[:, 1]])
-        s = (np.cos(PI / 180 * ang) * x_center + np.sin(PI / 180 * ang) * y_center)
-        return ind_up, ang, s
+        i, j, ang = self.get_bonds(1)
+        # direction from the 'b' end to the 'a' end of each bond
+        ang_ba = np.where(self.lat.coor['tag'][i] == 'a', ang - 180., ang)
+        x_center = .5 * (self.lat.coor['x'][i] + self.lat.coor['x'][j])
+        y_center = .5 * (self.lat.coor['y'][i] + self.lat.coor['y'][j])
+        s = (np.cos(PI / 180 * ang_ba) * x_center + np.sin(PI / 180 * ang_ba) * y_center)
+        return i, j, ang, s
 
     def set_hop_linear_strain(self, t: complex, beta: float) -> None:
         r'''
@@ -146,7 +148,8 @@ class GrapheneSystem(System):
             t_{ij} = t\left(1 + \tfrac14\beta\,
                      \hat{\boldsymbol\delta}_{ij}\cdot\mathbf{r}_{ij}\right)
 
-        with :math:`\hat{\boldsymbol\delta}_{ij}` the bond direction and
+        with :math:`\hat{\boldsymbol\delta}_{ij}` the bond direction (from its
+        'b' site to its 'a' site) and
         :math:`\mathbf{r}_{ij}` its midpoint. The strain is measured from the
         coordinate origin, so centre the flake on it (see *lattice.center*)
         before calling this.
@@ -157,19 +160,20 @@ class GrapheneSystem(System):
         '''
         error_handling.number(t, 't')
         error_handling.real_number(beta, 'beta')
-        ind_up, ang, s = self._strain_projection()
-        self.hop = np.zeros(len(ind_up), dtype=HOP_DTYPE)
+        i, j, ang, s = self._strain_projection()
+        self.hop = np.zeros(len(i), dtype=HOP_DTYPE)
         self.hop['n'] = 1
-        self.hop['i'] = ind_up[:, 0]
-        self.hop['j'] = ind_up[:, 1]
-        self.hop['ang'] = self.vec_hop['ang'][ind_up[:, 0], ind_up[:, 1]]
-        self.hop['tag'] = npc.add(self.lat.coor['tag'][ind_up[:, 0]],
-                                                self.lat.coor['tag'][ind_up[:, 1]])
+        self.hop['i'] = i
+        self.hop['j'] = j
+        self.hop['ang'] = ang
+        self.hop['tag'] = npc.add(self.lat.coor['tag'][i], self.lat.coor['tag'][j])
         self.hop['t'] = t * (1. + 0.25 * beta * s)
 
     def get_butterfly(self, t: complex, N: int) -> None:
         '''
-        Get energies depending on strain.
+        Get the spectrum as a function of the strain *beta* (see
+        *set_hop_linear_strain*), stored in *sys.butterfly*, shape
+        (N, sites), with the strain values in *sys.betas*.
 
         :param t: Unstrained hopping value.
         :param N: Positive integer. Number of strain values between the
@@ -198,7 +202,7 @@ class GrapheneSystem(System):
               (ascending). A bound is infinite if the corresponding
               :math:`s_{ij}` never takes that sign.
         '''
-        _, _, s = self._strain_projection()
+        _, _, _, s = self._strain_projection()
         eps = 1e-6
         s_min, s_max = s.min(), s.max()
         beta_min = -4. / s_max + eps if s_max > 0 else -np.inf

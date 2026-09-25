@@ -19,9 +19,16 @@ from tbkit.lattice import Lattice
 
 
 class Propagation():
-    '''
-    Get lattice time evolution. Time dependent Schrodinger equation solved by
-    Crank-Nicolson method.
+    r'''
+    Get lattice time evolution. The time-dependent Schrodinger equation
+    :math:`i\,\partial_z\psi = H\psi` is solved by the Crank-Nicolson method,
+
+    .. math::
+
+        \psi(z+dz) = \left(1 + \tfrac{i}{2}H\,dz\right)^{-1}
+                     \left(1 - \tfrac{i}{2}H\,dz\right)\psi(z)\, ,
+
+    unitary for a Hermitian :math:`H`.
 
     :param lat: **lattice** class instance.
     '''
@@ -37,7 +44,7 @@ class Propagation():
         r'''
         Get the time evolution.
 
-        :param ham: sparse.csr_matrix. Tight-Binding Hamilonian.
+        :param ham: sparse.csr_matrix. Tight-Binding Hamiltonian.
         :param psi_init: np.ndarray. Initial state.
         :param steps: Positive Integer. Number of steps.
         :param dz: Positive number. Step.
@@ -70,12 +77,19 @@ class Propagation():
         r'''
         Get the time evolution with adiabatic pumpings.
 
-        :param hams: List of sparse.csr_matrices. Tight-Binding Hamilonians.
+        :param hams: List of sparse.csr_matrices. Tight-Binding Hamiltonians.
         :param psi_init: np.ndarray. Initial state.
         :param steps: Positive integer. Number of steps.
         :param dz: Positive number. Step.
         :param norm: Boolean. Default value True. Renormalize the state to
             :math:`\sum_i|\psi_i|^2 = 1` at each step.
+
+        The *steps* are split into ``len(hams) + 1`` equal stages: evolution
+        under ``hams[0]``, then ``len(hams) - 1`` stages each interpolating
+        linearly from ``hams[j]`` to ``hams[j+1]``, then evolution under
+        ``hams[-1]`` for the remaining steps. With fewer than
+        ``len(hams) + 1`` steps the stages are empty: the state evolves under
+        ``hams[-1]`` from the first step on.
         '''
         error_handling.get_pump(hams)
         error_handling.ndarray(psi_init, 'psi_init', self.lat.sites)
@@ -109,19 +123,30 @@ class Propagation():
                 if norm:
                     self.prop[:,  (j+1)*delta+i] /= \
                         np.linalg.norm(self.prop[:,  (j+1)*delta+i])
-        # after pumping
-        for i in range(0, self.steps - no*delta):
-            self.prop[:,  no*delta+i] = np.dot(mat, self.prop[:,  no*delta+i-1])
+        # after pumping, under hams[-1] (what the last pumping step ends on).
+        # Start at 1 at least: with delta == 0 there were no stages, and
+        # index no*delta - 1 = -1 would overwrite the initial state.
+        A = (sparse.diags(diag, 0) - 0.5 * self.dz * hams[-1]).toarray()
+        B = (sparse.diags(diag, 0) + 0.5 * self.dz * hams[-1]).toarray()
+        mat = (np.dot(LA.inv(A), B))
+        for i in range(max(no*delta, 1), self.steps):
+            self.prop[:, i] = np.dot(mat, self.prop[:, i-1])
             if norm:
-                self.prop[:,  no*delta+i] /= np.linalg.norm(self.prop[:,  no*delta+i])
+                self.prop[:, i] /= np.linalg.norm(self.prop[:, i])
 
     def plt_propagation_1d(
         self, prop_type: str = 'real', fs: float = 20, figsize: tuple[float, float] | None = None,
     ) -> Figure:
         '''
-        Plot time evolution for 1D systems. 
+        Plot time evolution for 1D systems.
 
-        :param fs: Default value 20. Fontsize.
+        :param prop_type: String. Default value 'real'. Plot the real part
+            ('real'), the imaginary part ('imag'), or the intensity ('norm').
+        :param fs: Positive number. Default value 20. Fontsize.
+        :param figsize: Tuple. Default value None. Figure size.
+
+        :returns:
+            * **fig** -- Figure.
         '''
         error_handling.empty_ndarray(self.prop, 'get_propagation or get_pumping')
         error_handling.positive_real(fs, 'fs')
@@ -171,7 +196,7 @@ class Propagation():
         Perform Gaussian interpolation :math:`e^{-a(x-x_i)^2}`,
 
         :param prop: Propagation.
-        :param a: Default value 15. Gaussian Parameter.
+        :param a: Default value 10. Gaussian Parameter.
         :param no: Default value 40. Number of points of each Gaussian.
 
         :returns:
@@ -193,8 +218,9 @@ class Propagation():
 
         :param s: Default value 300. Circle size.
         :param fs: Default value 20. Fontsize.
+        :param prop_type: String. Default value 'real'. Plot the real part
+            ('real'), the imaginary part ('imag'), or the intensity ('norm').
         :param figsize: Tuple. Default value None. Figsize.
-        :param prop_type: Default value None. Figsize.
 
         :returns:
           * **ani** -- Animation.
@@ -223,8 +249,8 @@ class Propagation():
             ticks = [0., np.max(color)]
             cmap = 'Reds'
         fig, ax = plt.subplots(figsize=figsize)
-        plt.xlim([self.lat.coor['x'][0]-1., self.lat.coor['x'][-1]+1.])
-        plt.ylim([self.lat.coor['y'][0]-1., self.lat.coor['y'][-1]+1.])
+        plt.xlim([np.min(self.lat.coor['x'])-1., np.max(self.lat.coor['x'])+1.])
+        plt.ylim([np.min(self.lat.coor['y'])-1., np.max(self.lat.coor['y'])+1.])
         scat = plt.scatter(self.lat.coor['x'], self.lat.coor['y'], c=color[:, 0],
                                    s=s, vmin=ticks[0], vmax=ticks[1],
                                    cmap=plt.get_cmap(cmap))
@@ -254,22 +280,14 @@ class Propagation():
         '''
         Get time evolution animation for iPython notebooks.
 
-        :param s: Default value 300. Circle shape.
+        :param s: Default value 300. Circle size.
         :param fs: Default value 20. Fontsize.
+        :param prop_type: String. Default value 'real'. Plot the real part
+            ('real'), the imaginary part ('imag'), or the intensity ('norm').
+        :param figsize: Tuple. Default value None. Figsize.
 
         :returns:
            * **ani** -- Animation.
-        '''
-        '''
-        Get time evolution animation.
-
-        :param s: Default value 300. Circle size.
-        :param fs: Default value 20. Fontsize.
-        :param figsize: Tuple. Default value None. Figsize.
-        :param prop_type: Default value None. Figsize.
-
-        :returns:
-          * **ani** -- Animation.
         '''
         error_handling.empty_ndarray(self.prop, 'get_propagation or get_pumping')
         error_handling.positive_real(s, 's')
@@ -277,15 +295,15 @@ class Propagation():
         error_handling.prop_type(prop_type)
         error_handling.tuple_2elem(figsize, 'figsize')
         if prop_type == 'real' or prop_type == 'imag':
-            color = self.prop.real
-            max_val = max(np.max(color[:, -1]), -np.min(color[:, -1]))
+            color = self.prop.real if prop_type == 'real' else self.prop.imag
+            max_val = max(np.max(color), -np.min(color))
             ticks = [-max_val, max_val]
             cmap = 'seismic'
         else:
             color = np.abs(self.prop) ** 2
             ticks = [0., np.max(color)]
             cmap = 'Reds'
-        fig = plt.figure()
+        fig = plt.figure(figsize=figsize)
         ax = plt.axes(xlim=(np.min(self.lat.coor['x']-.5), np.max(self.lat.coor['x']+.5)), 
                              ylim=(np.min(self.lat.coor['y']-.5), np.max(self.lat.coor['y']+.5)))
         ax.set_aspect('equal')
@@ -316,15 +334,16 @@ class Propagation():
     def plt_prop_dimer(self, lw: float = 5, fs: float = 20) -> Figure:
         '''
         Plot time evolution for dimers.
-        
-        :param lw: Default value 5. Linewidth.
-        :param fs: Default value 20. Fontsize.
+
+        :param lw: Positive number. Default value 5. Linewidth.
+        :param fs: Positive number. Default value 20. Fontsize.
 
         :returns:
            * **fig** -- Figure.
         '''
-        if not self.prop.any():
-            raise Exception('\n\nRun method get_prop() or get_pump() first.\n')
+        error_handling.empty_ndarray(self.prop, 'get_propagation or get_pumping')
+        error_handling.positive_real(lw, 'lw')
+        error_handling.positive_real(fs, 'fs')
         color = ['b', 'r']
         fig, ax = plt.subplots()
         z = self.dz * np.arange(self.steps)

@@ -1,5 +1,275 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+New physics, each with tests, a gallery example that asserts its claims, and
+an entry in `docs/source/history.rst`:
+
+- **Three dimensions.** `Lattice` accepts 3D positions and three primitive
+  vectors (`get_lattice(n1, n2, n3)`, `slab`, `shift_z`, `change_sign_z`,
+  `space_dim`); `System` finds 3D neighbours; `KSpace` takes
+  three-component `'R'`, `chern_number(..., plane=, k_fixed=)` works on any
+  plane of a 3D Brillouin zone, and `ribbon()` cuts slabs. Examples:
+  `three_dimensions/plot_anderson_transition.py` (the 3D metal-insulator
+  transition from level statistics) and
+  `three_dimensions/plot_weyl_semimetal.py` (Weyl points and Fermi arcs).
+- **Topology tools** on `KSpace`: `berry_phase` (Zak phase),
+  `wannier_centers`, `wannier_flow`, `z2_invariant` (Soluyanov-Vanderbilt
+  Wilson-loop flow), `parity_z2` (Fu-Kane), `orbital_positions`,
+  `quantum_geometric_tensor`, `symmetry_error`, `tenfold_class`; the
+  real-space `System.get_local_chern_marker` (Bianco-Resta); and
+  `kspace.magnetic_supercell` for rational fluxes `p/q` (TKNN). Examples in
+  `topology/`: `plot_zak_phase`, `plot_kane_mele_z2`, `plot_fu_kane_parity`,
+  `plot_tknn_hofstadter`, `plot_quantum_geometry`, `plot_tenfold_way`,
+  `plot_local_chern_marker`; and `magnetic_field/plot_peierls_substitution`.
+- **Non-Hermitian bands.** `KSpace.set_hopping(..., hermitian=False)` for
+  non-reciprocal hoppings, `is_hermitian`, `finite_ham` (open or periodic
+  finite samples), `get_ham_beta`, `spectral_winding`, and `gbz` (the
+  generalized Brillouin zone). Example: `non_hermitian/plot_skin_effect.py`.
+- **Green's functions and occupations.** `System.get_green`, `get_ldos`,
+  `get_fermi_level`, `get_occupations`, `get_charge_density`,
+  `get_total_energy`, `KSpace.get_fermi_level`, and the new
+  `tbkit.occupation` (`fermi_dirac`, `fermi_level`).
+- **Transport.** New `tbkit.transport`: `surface_green` (Sancho-Rubio
+  decimation), `lead_from_kspace`, and `Transport` (leads, self-energies,
+  Green's function, Caroli/Landauer transmission). Example:
+  `transport/plot_landauer_conductance.py` (quantized point-contact steps).
+- **Large lattices.** `System` finds neighbours with a k-d tree above
+  `System.dense_max` (5000) sites; `System.get_eig_sparse` (shift-invert);
+  new `tbkit.kpm` (kernel polynomial method: `dos`, `ldos`, `conductivity`,
+  `dos_from_levels`, Jackson and Lorentz kernels). Example:
+  `large_scale/plot_kernel_polynomial_method.py`.
+- **Several orbitals per site.** New `tbkit.slater_koster` (`sk_block`
+  for s, p and d orbitals, `sk_kspace`, `orbital_angular_momentum`),
+  overlap matrices (`KSpace.set_overlap`, generalized eigenproblems, Loewdin
+  orthogonalization for the topology tools), and the new
+  `tbkit.orbital.OrbitalSystem` for spinful multi-orbital real-space models
+  (Zeeman, atomic and Kane-Mele spin-orbit, Rashba, Peierls phases,
+  Slater-Koster hoppings). Example: `orbitals/plot_slater_koster.py`.
+- **Interactions.** New `tbkit.meanfield.hubbard_mean_field` (collinear
+  unrestricted Hartree-Fock). Examples:
+  `correlations/plot_hubbard_edge_magnetism.py` and
+  `correlations/plot_lieb_theorem.py`.
+- **Superconductivity.** New `tbkit.bdg` (`bdg_ham`, `pairing_bonds`,
+  `pairing_s_wave`, `bdg_kspace`, `particle_hole`). Example:
+  `superconductivity/plot_kitaev_chain.py`.
+- **Floquet.** New `tbkit.floquet` (`evolution_operator`, `quasienergies`,
+  `effective_hamiltonian`, `harmonics`, `sambe_hamiltonian`, and
+  `FloquetKSpace` for driven Bloch models); `KSpace.get_ham_peierls`.
+  Example: `floquet/plot_floquet_chern_insulator.py`.
+- **Anomalous Floquet phases.** `floquet.DrivenKSpace` (a driven Bloch
+  model from any `H(k, t)`; `FloquetKSpace` is now its subclass),
+  `floquet.step_drive` (piecewise-constant drives of `KSpace` models,
+  ribbons, `System` flakes or matrices, evolved exactly as a product of
+  step exponentials; `floquet.StepDrive` in real space),
+  `DrivenKSpace.winding_number` (the Rudner-Lindner-Berg-Levin invariant,
+  spectrally discretized, with its tolerance documented) and
+  `DrivenKSpace.edge_state_count` (chiral states of a driven ribbon, per
+  edge). `effective_hamiltonian`, `quasienergies` and `FloquetKSpace` take
+  an `epsilon` branch cut; the default (`None`) computes exactly what it
+  did before (pinned by a test). Example:
+  `floquet/plot_anomalous_floquet_phases.py`.
+- **Hall conductivities at any Fermi level.** `KSpace.hall_conductivity`:
+  the intrinsic anomalous Hall conductivity from the Kubo formula (the
+  finite-at-degeneracies form, with `dH/dk` built analytically from the
+  hoppings), in a gap or in a band, at zero or finite temperature, in 2D
+  (units `e^2/h`), on a plane of a 3D model, or as the full 3D Hall vector
+  (`e^2/(h length)`); `positions=True` (bond vectors `R + tau_j - tau_i`,
+  the physical velocity) or `False` (periodic gauge), which agree for full
+  bands only; Loewdin orthogonalization with an overlap; optional adaptive
+  mesh refinement (Wang, Yates, Souza and Vanderbilt 2006). In a gap it
+  equals `chern_number` (TKNN's sign; the Ohm's-law `sigma_xy` is its
+  negative, as stated in the docstring). `KSpace.spin_hall_conductivity`:
+  the spin current `{s, v_x}/2`, in units of `e/2pi`. `KSpace.finite_velocity`
+  (velocity operators from the bond vectors, valid on a torus) and
+  `finite_ham(..., sparse=True)`. `tbkit.kpm.hall_conductivity`: the
+  Kubo-Bastin Hall conductivity by the kernel polynomial method (Garcia,
+  Covaci and Rappoport 2015), its antisymmetric (Hall) part, at any Fermi
+  level and temperature. Examples: `hall_effects/plot_anomalous_hall_effect.py`,
+  `hall_effects/plot_anomalous_hall_disorder.py`,
+  `hall_effects/plot_intrinsic_spin_hall_effect.py`.
+- **Exceptional points of 2D bands.** New `tbkit.exceptional`, for a 2D
+  `KSpace` or any callable `H(p)` of a parameter plane:
+  - `track_eigenvalues` follows the eigenvalues around a loop by
+    continuation (adaptive steps, never sorting), and `vorticity` gives the
+    eigenvalue vorticity of Shen, Zhen and Fu (+-1/2 at an EP, 0 at a DP).
+  - `discriminant` computes `prod (E_m - E_n)^2` from the resultant of the
+    characteristic polynomial, without eigenvalues, and
+    `discriminant_winding` its winding (`W = -2 sum nu`).
+  - `find_exceptional_points` returns an `ExceptionalPoints` result:
+    plaquette windings refined by Newton's method, charges, Jordan-block
+    orders from the Petermann factor, exceptional rings when the
+    discriminant is real, and `total_charge` (zero by the doubling
+    theorem).
+  - `fermi_arcs`, `petermann_factors` and `circle`.
+  - `encircle` returns an `Encircling` result: biorthogonal parallel
+    transport, the state swap and the four-loop return at an EP, Berry
+    phase pi at a DP.
+
+  `KSpace.biorthogonal_berry_curvature` and `biorthogonal_chern_number`
+  give the LR, RL, RR and LL Chern numbers of a band separated by a real or
+  imaginary line gap. Examples: `topology/plot_diabolical_points.py`,
+  `non_hermitian/plot_exceptional_points_fermi_arcs.py`,
+  `non_hermitian/plot_exceptional_point_vorticity.py`,
+  `non_hermitian/plot_exceptional_point_encircling.py` and
+  `non_hermitian/plot_exceptional_points_chern_number.py`.
+- `tight_binding/plot_isolation_of_graphene.py`, so the 2004 graphene entry
+  of the history has an example of its own.
+- `tbkit` exports `OrbitalSystem`, `Transport`, `FloquetKSpace`,
+  `DrivenKSpace`, `StepDrive`, `step_drive`,
+  `MeanFieldResult`, `hubbard_mean_field`, `ExceptionalPoints`,
+  `Encircling` and `find_exceptional_points`; the API reference, tutorial,
+  index and README cover the new modules.
+- History entries: Landauer (1957/1988), Hubbard (1963), scaling theory of
+  localization (1979), quantum metric (1980), Zak phase (1989), skin effect
+  (1996/2018), tenfold way (1997), Kitaev chain (2001), kernel polynomial
+  method (2006), Fu-Kane (2007), Floquet topological insulators
+  (2009/2011), anomalous Floquet phases (2010-2013), anomalous Hall effect
+  (1954-2004), intrinsic spin Hall effect (2003/2004), local Chern marker (2011), Weyl semimetals (2011/2015),
+  diabolical points (1984), exceptional points in momentum space
+  (2015-2018). The
+  Peierls, Slater-Koster, TKNN and 2004 graphene entries now link examples
+  of their own, so no example is shared between two entries.
+
+### Fixed
+
+Bugs that produced silently wrong numbers:
+
+- `System.get_ham()` built a non-Hermitian Hamiltonian with half of its bonds
+  missing whenever the sites were not sorted by `(y, x)`: after
+  `Lattice.rotation()` (by 90 or -45 degrees, for example), `clean_coor()`, or
+  `lat += other`. `set_hopping` took "`i < j`" to mean "bond angle in
+  `[0, 180)`", which only sorted sites guarantee. Once the stored bonds had
+  mixed-sign angles, `get_ham` treated them as a deliberate non-Hermitian
+  upper + lower fill and skipped the Hermitian conjugate. A 3x3 honeycomb flake
+  rotated by 90 degrees got 21 nonzero entries instead of 42. Bonds are now
+  oriented by their angle (new private `System.get_bonds`), and the
+  "replace a previous hopping" masks test the angle sign instead of `i < j`.
+  Sorted lattices, including every lattice straight from `get_lattice`, get the
+  same bonds, in the same order, as before.
+- `GrapheneSystem.set_hop_linear_strain()` had the same site-order dependence.
+  It also oriented each bond "outwards" by matching the angles 30 and 150
+  degrees, so a rotated flake got a non-Hermitian Hamiltonian with the wrong
+  strain pattern. Bonds are now oriented from their `'b'` site to their `'a'`
+  site, which is what the angle matching did for an unrotated flake. A circular
+  flake rotated by 120 degrees now has exactly the spectrum of the unrotated one.
+- `KSpace.berry_curvature()` / `chern_number()` flipped sign for a left-handed
+  `prim_vec` (with `a1 x a2 < 0`), because the plaquette loop then runs
+  clockwise. The same Haldane model gave `C = +1` or `C = -1` depending only on
+  the order of its two primitive vectors. The flux is now multiplied by the
+  orientation of `prim_vec`.
+- The Haldane gallery example, and the Kane-Mele term in the edge-state
+  example and in the tutorial, put the complex second-neighbour hopping on
+  the vectors `a1, a2, a1 - a2`. That set is not related by 120-degree
+  rotations, so it breaks the lattice's C3 symmetry and opens a gap at K and
+  K' three times smaller than the model's: `2*sqrt(3)*t2` instead of Haldane's
+  `6*sqrt(3)*t2`. The example then "pinned down numerically" a critical mass of
+  `sqrt(3)*t2*|sin(phi)|` in place of Haldane's `3*sqrt(3)*t2*|sin(phi)|`. The
+  examples now use `a2, -a1, a1 - a2`, and the Haldane example asserts the gaps
+  `2|M +- 3 sqrt(3) t2|` at K and K'.
+- `KSpace.set_onsite()` accepted complex onsite energies (and non-Hermitian 2x2
+  blocks), but `get_bands` diagonalized with `eigvalsh`, which silently dropped
+  the imaginary part: a chain with onsite `1j` gave `E(k=0) = 2` instead of
+  `2 + 1j`. A non-Hermitian `H(k)` now goes to the general eigensolver:
+  `get_bands` returns complex energies sorted by real part, `berry_curvature`
+  uses the right eigenvectors, and `plot_bands` plots the real part. Hermitian
+  models still get real energies from `eigh` (new `KSpace.is_hermitian()`).
+- `System.set_hopping()` with both `'ang'` and `'tag'` selected bonds within
+  1 degree, but sized the result with the `1e-3` degree tolerance, so it crashed
+  when two bonds of the same order were less than a degree apart. Both now
+  use `ATOL`.
+- `System.set_hopping_def()` silently ignored a key given as `(j, i)` when
+  `sys.hop` stores the bond as `(i, j)`, which is always the case for a
+  Hermitian model built by `set_hopping`. It now sets `H_ji = val` (that is,
+  `t_ij = conj(val)`). A pair that is not a hopping at all is still ignored.
+- `Propagation.get_pumping()` with `steps < len(hams) + 1` gave every stage zero
+  steps, and its last loop overwrote the initial state `prop[:, 0]` with an
+  uninitialized column (`nan` with `norm=True`). The initial state is now kept,
+  and the state evolves under `hams[-1]`. With enough steps the result is
+  unchanged.
+- `Propagation.get_animation_nb(prop_type='imag')` animated the real part. It
+  also scaled the colormap by the last frame only, so earlier frames saturated.
+- `Propagation.get_animation()` took its axis limits from the first and last
+  site. Those are the extreme `y` of a `(y, x)`-sorted lattice, not the extreme
+  `x`, so sites of a hexagonal flake fell outside the frame.
+- `Plot.spectrum()` / `spectrum_complex()` defaulted to the y-range
+  `[-max(E), max(E)]`. An all-negative spectrum got an inverted range with
+  every point off screen. The range now spans `[min, max]`.
+- `System.get_intensity_en()` compared complex energies with the limits instead
+  of their real part (the same fix 0.3.0 made in `Plot`).
+
+Broken on correct usage:
+
+- `error_handling.hop_sites` compared `max(i)` with `max(i)`, never checking
+  `j`, and tested `sites < max` instead of `sites <= max`. After
+  `remove_sites`, stale hoppings reached scipy's `index 8 exceeds matrix
+  dimension 8` instead of the intended message, which also named a method that
+  does not exist (`clean_hopping`, not `clear_hopping`).
+- `KSpace.plot_dos()` (through `mesh_bands`) overwrote the band structure that
+  `k_path` had stored, so a later `plot_bands()` crashed on mismatched shapes.
+  `get_bands()` never set the distances that `plot_bands()` plots against,
+  despite `plot_bands` documenting it as a valid source. `mesh_bands` no longer
+  touches the stored bands, and `get_bands` stores the cumulative k-distance.
+- `Plot.butterfly()` read `sys.betas` instead of its own `betas` argument, so it
+  failed for anything but a `GrapheneSystem` that had run `get_butterfly`. Its
+  default title was also overwritten by the empty `title=''`.
+- `Plot.intensity_area()` ignored `figsize`, and `Plot.lattice(plt_hop=True)`
+  drew each bond with linewidth `c*Re(t)`, which is negative for negative
+  hoppings. It is now `c*|t|`.
+- `error_handling.hop_n1` tested `len(mask) == 0` (always the number of
+  hoppings) instead of whether any hopping has `n == 1`.
+- A four-key hopping dictionary needed only one of `'ang'`/`'tag'` to pass
+  validation, then crashed with a bare `KeyError`.
+
+### Changed
+
+- `KSpace.berry_curvature()` / `chern_number()` on a non-Hermitian model now
+  raise a ValueError when the chosen bands, ordered by Re E, are not
+  separated from the others by a real line gap. That covers an imaginary
+  line gap, and exceptional points or overlapping real parts, which the new
+  checks `line_gap` and `band_continuity` detect on the mesh. Before, the
+  labels jumped between bands and the result was a meaningless number:
+  - `i*H` of the Qi-Wu-Zhang model (C = 1) gave -3, -7 or 5 depending on
+    `nk`.
+  - QWZ plus `2.5i*sigma_z` gave 1, while the bands isolated by its
+    imaginary line gap have C = 0.
+
+  `biorthogonal_chern_number(..., gap='imaginary')` handles these.
+  Line-gapped non-Hermitian models, such as the Haldane model with gain or
+  loss, and every Hermitian model give bit-for-bit the same curvature as
+  before; this was checked against the previous implementation.
+- `System.set_hopping_manual()` now refuses the inputs that used to build a
+  malformed `hop` array and fail later (out-of-range or non-integer indices,
+  non-numeric values). Everything that worked before still does: NumPy
+  integer indices and NumPy values, `(i, i)` keys, a non-`bool` `upper_part`.
+  `error_handling.set_hopping_def` accepts NumPy integers and numbers too.
+  `KSpace.get_bands()` checks that `ks` has shape `(nk, dim)`.
+- No existing call breaks: the unmodified 0.3.0 test suite passes against this
+  version, except the two tests asserting that 3-tuple positions and
+  primitive vectors are rejected -- they are now valid 3D input.
+- Beyond `System.dense_max` sites, `get_distances` uses a k-d tree instead
+  of the dense distance matrix; smaller lattices take the unchanged path.
+- `Plot.spectrum_hist()` returns its figure, like the other plotting methods.
+- `KSpace` spin blocks accept NumPy scalars (`np.ndim(t) == 0`), not only
+  Python numbers.
+- Documentation fixes:
+  - `set_peierls_phase`'s Landau-gauge example called `2*pi*alpha` "B"
+    while claiming the same field as `set_magnetic_field(alpha=B)`.
+  - The strain formulas wrote `B_s = beta/2` and `sqrt(beta n)`. The gallery
+    uses `beta = -0.05`, so these are now `|beta|`.
+  - The tutorial claimed a real-space cross-check of the Kane-Mele edge states
+    that the example never performs.
+  - The negative-angle range in `print_distances` was mislabelled.
+  - `ellipse_in`/`ellipse_out` used radii `a`, `b` for parameters named
+    `rx`, `ry`.
+  - Assorted wrong defaults and missing parameters, plus typos ("plackets",
+    "stength", "conjugaison", "Fist").
+  - `Propagation` now states the Crank-Nicolson step it implements.
+- The test suite is back to 100% line coverage (`Plot.plt_hopping` without an
+  `ax` was untested).
+
 ## 0.3.0 -- 2026-09-23
 
 ### Fixed

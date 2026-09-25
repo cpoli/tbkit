@@ -45,7 +45,7 @@ class Plot:
                         coor['x'][hop['j'][i]]],
                         [coor['y'][hop['i'][i]],
                          coor['y'][hop['j'][i]]],
-                        'k', lw=c*hop['t'][i].real)
+                        'k', lw=c*np.abs(hop['t'][i]))
 
     def lattice_generic(
         self,
@@ -121,8 +121,8 @@ class Plot:
         Plot lattice.
 
         :param ms: Positive number. Default value 20. Markersize.
-        :param c: Positive number. Default value 3. 
-            Coefficient. Hopping linewidths given by c*hop['t'].
+        :param c: Positive number. Default value 3.
+            Coefficient. Hopping linewidths given by c*|hop['t']|.
         :param fs: Positive number. Default value 20. Fontsize.
         :param plt_hop: Boolean. Default value False. Plot hoppings.
         :param plt_hop_low: Boolean. Default value False. 
@@ -159,7 +159,7 @@ class Plot:
 
         :param ms: Positive Float. Default value 20. Markersize.
         :param c: Positive Float. Default value 3. Coefficient.
-            Hopping linewidths given by c*hop['t'].
+            Hopping linewidths given by c*|hop['t']|.
         :param fs: Positive Float. Default value 20. Fontsize.
         :param axis: Boolean. Default value False. Plot axis.
         :param plt_hop: Boolean. Default value False. Plot hoppings.
@@ -177,20 +177,25 @@ class Plot:
                                                  plt_hop_low, plt_index, figsize, ax)
 
 
-    def spectrum_hist(self, nbr_bins: int = 61, fs: float = 20, lims: tuple[float, float] | None = None) -> None:
+    def spectrum_hist(self, nbr_bins: int = 61, fs: float = 20, lims: tuple[float, float] | None = None) -> Figure:
         """
-        Plot the spectrum.
-            
-        :param nbr_bins: Default value 61. Number of bins of the histogram.
+        Plot the spectrum (real part of the eigenenergies) as a histogram.
+
+        :param nbr_bins: Positive integer. Default value 61. Number of bins of the histogram.
+        :param fs: Positive number. Default value 20. Fontsize.
         :param lims: List, lims[0] energy min, lims[1] energy max.
+
+        :returns:
+            * **fig** -- Figure.
         """
         error_handling.empty_ndarray(self.sys.en, 'sys.get_eig')
-        error_handling.positive_real(nbr_bins, 'nbr_bins')
+        error_handling.positive_int(nbr_bins, 'nbr_bins')
+        error_handling.positive_real(fs, 'fs')
         error_handling.lims(lims)
         fig, ax = plt.subplots()
         en_real = self.sys.en.real
         if lims is None:
-            ind_en = np.ones(self.sys.lat.sites, bool)
+            ind_en = np.ones(len(self.sys.en), bool)
         else:
             ind_en = np.argwhere((en_real > lims[0]) & (en_real < lims[1]))
             ind_en = np.ravel(ind_en)
@@ -205,6 +210,7 @@ class Plot:
             label.set_fontsize(fs)
         for label in ax.yaxis.get_majorticklabels():
             label.set_fontsize(fs)
+        return fig
 
     def dos(
         self,
@@ -233,23 +239,7 @@ class Plot:
         error_handling.positive_real(fs, 'fs')
         error_handling.positive_real(lw, 'lw')
         error_handling.tuple_2elem(figsize, 'figsize')
-        e_grid, rho = dos.density_of_states(self.sys.en, e_grid=e_grid,
-                                                                   broadening=broadening, kernel=kernel)
-        fig, ax = plt.subplots(figsize=figsize)
-        ax.plot(e_grid, rho, 'b', lw=lw)
-        ax.fill_between(e_grid, rho, color='b', alpha=0.2)
-        ax.set_xlim([e_grid[0], e_grid[-1]])
-        ax.set_ylim([0., None])
-        ax.set_title('Density of states', fontsize=fs)
-        ax.set_xlabel('$E$', fontsize=fs)
-        ax.set_ylabel(r'$\rho(E)$', fontsize=fs)
-        for label in ax.xaxis.get_majorticklabels():
-            label.set_fontsize(fs)
-        for label in ax.yaxis.get_majorticklabels():
-            label.set_fontsize(fs)
-        fig.set_layout_engine('tight')
-        plt.draw()
-        return fig
+        return dos._plot_density_of_states(self.sys.en, e_grid, broadening, kernel, fs, lw, figsize)
 
     def spectrum(
         self,
@@ -280,11 +270,10 @@ class Plot:
         error_handling.lims(lims)
         fig, ax1 = plt.subplots()
         ax1 = plt.gca()
-        x = np.arange(self.sys.lat.sites)
+        x = np.arange(len(self.sys.en))
         if lims is None:
-            en_max = np.max(self.sys.en.real)
-            ax1.set_ylim([-en_max-0.2, en_max+0.2])
-            ind = np.ones(self.sys.lat.sites, bool)
+            ax1.set_ylim([np.min(self.sys.en.real)-0.2, np.max(self.sys.en.real)+0.2])
+            ind = np.ones(len(self.sys.en), bool)
         else:
             ind = (self.sys.en.real > lims[0]) & (self.sys.en.real < lims[1])
             ax1.set_ylim([lims[0]-0.1, lims[1]+0.1])
@@ -346,7 +335,7 @@ class Plot:
             ax2 = plt.gca()
             if lims is None:
                 ax2.set_ylim([-0.1, 1.1])
-                ind = np.ones(self.sys.lat.sites, bool)
+                ind = np.ones(len(self.sys.en), bool)
             else:
                 ind = (self.sys.en.real > lims[0]) & (self.sys.en.real < lims[1])
                 ax2.set_ylim([lims[0]-0.1, lims[1]+0.1])
@@ -354,7 +343,7 @@ class Plot:
             ax2 = plt.twinx()
         error_handling.empty_ndarray(self.sys.pola, 'sys.get_pola')
         error_handling.tag(tag_pola, self.sys.lat.tags)
-        x = np.arange(self.sys.lat.sites)
+        x = np.arange(len(self.sys.en))
         i_tag = self.sys.lat.tags == tag_pola
         ax2.plot(x[ind], np.ravel(self.sys.pola[ind, i_tag]), 'or', markersize=(4*ms)//5)
         ylabel = '$<' + tag_pola.upper() + '|' + tag_pola.upper() + '>$'
@@ -398,13 +387,13 @@ class Plot:
             fig, ax2 = plt.subplots()
             ax2 = plt.gca()
             if lims is None:
-                ind = np.ones(self.sys.lat.sites, bool)
+                ind = np.ones(len(self.sys.en), bool)
             else:
                 ind = (self.sys.en.real > lims[0]) & (self.sys.en.real < lims[1])
         else:
             ax2 = plt.twinx()
         error_handling.empty_ndarray(self.sys.ipr, 'sys.get_ipr')
-        x = np.arange(self.sys.lat.sites)
+        x = np.arange(len(self.sys.en))
         ax2.plot(x[ind], self.sys.ipr[ind], 'or', markersize=(4*ms)//5)
         ax2.set_ylabel( 'IPR' , fontsize=fs, color='red')
         ax2.set_xlim(-0.5, x[ind][-1]+0.5)
@@ -445,13 +434,13 @@ class Plot:
             fig, ax2 = plt.subplots()
             ax2 = plt.gca()
             if lims is None:
-                ind = np.ones(self.sys.lat.sites, bool)
+                ind = np.ones(len(self.sys.en), bool)
             else:
                 ind = (self.sys.en.real > lims[0]) & (self.sys.en.real < lims[1])
         else:
             ax2 = plt.twinx()
         error_handling.empty_ndarray(self.sys.petermann, 'sys.get_petermann')
-        x = np.arange(self.sys.lat.sites)
+        x = np.arange(len(self.sys.en))
         ax2.plot(x[ind], self.sys.petermann[ind], 'or', markersize=(4*ms)//5)
         ax2.set_ylabel( 'K' , fontsize=fs, color='red')
         ax2.set_xlim(-0.5, x[ind][-1]+0.5)
@@ -466,7 +455,7 @@ class Plot:
         Plot complex value eigenenergies, real part (blue circles),
         and imaginary part (red circles).
 
-        :param ms: Positive Float. Default value 20. Markersize.
+        :param ms: Positive Float. Default value 10. Markersize.
         :param fs: Positive Float. Default value 20. Font size.
         :param lims: List. lims[0] energy min, lims[1] energy max.
 
@@ -479,11 +468,11 @@ class Plot:
         error_handling.lims(lims)
         fig, ax1 = plt.subplots()
         ax1 = plt.gca()
-        x = np.arange(self.sys.lat.sites)
+        x = np.arange(len(self.sys.en))
         if lims is None:
-            en_max = np.max(self.sys.en.real)
-            ax1.set_ylim([-en_max-0.2, en_max+0.2])
-            ind = np.ones(self.sys.lat.sites, bool)
+            ax1.set_ylim([min(np.min(self.sys.en.real), np.min(self.sys.en.imag))-0.2,
+                              max(np.max(self.sys.en.real), np.max(self.sys.en.imag))+0.2])
+            ind = np.ones(len(self.sys.en), bool)
         else:
             ind = (self.sys.en.real > lims[0]) & (self.sys.en.real < lims[1])
             ax1.set_ylim([lims[0]-0.1, lims[1]+0.1])
@@ -507,14 +496,17 @@ class Plot:
         self, intensity: NDArray, ms: float = 20., lw: float = 2., fs: float = 20.,
         title: str = r'$|\psi^{(j)}|^2$',
     ) -> Figure:
-        '''
+        r'''
         Plot intensity for 1D lattices.
 
         :param intensity: np.array. Field intensity.
         :param ms: Positive Float. Default value 20. Markersize.
         :param lw: Positive Float. Default value 2. Linewith, connect sublattice sites.
         :param fs: Positive Float. Default value 20. Font size.
-        :param title: String. Default value 'Intensity'. Figure title.
+        :param title: String. Default value '$|\psi^{(j)}|^2$'. Figure title.
+
+        :returns:
+            * **fig** -- Figure.
         '''
         error_handling.ndarray(intensity, 'intensity', self.sys.lat.sites)
         error_handling.empty_ndarray(self.sys.lat.coor, 'sys.get_lattice')
@@ -553,7 +545,7 @@ class Plot:
         :param fs: Default value 20. Font size.
         :param lims: List. Default value None. Colormap limits.
         :param figsize: Tuple. Default value None. Figure size.
-        :param title: String. Default value '$|\psi_n|^2$'. Title.
+        :param title: String. Default value '$|\psi|^2$'. Title.
 
         :returns:
             * **fig** -- Figure.
@@ -601,12 +593,12 @@ class Plot:
 
         :param intensity: np.array. Intensity.
         :param s: Positive Float. Default value 1000.
-            Circle size given by s * intensity.
+            Circle size given by 100 * s * intensity.
         :param lw: Positive Float. Default value 1. Hopping linewidths.
         :param fs: Positive Float. Default value 20. Fontsize.
         :param plt_hop: Boolean. Default value False. Plot hoppings.
         :param figsize: Tuple. Default value None. Figure size.
-        :param title: String. Default value '$|\psi_{ij}|^2$'. Figure title.
+        :param title: String. Default value '$|\psi|^2$'. Figure title.
 
         :returns:
             * **fig** -- Figure.
@@ -618,7 +610,7 @@ class Plot:
         error_handling.boolean(plt_hop, 'plt_hop')
         error_handling.tuple_2elem(figsize, 'figsize')
         error_handling.string(title, 'title')
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=figsize)
         ax.set_xlabel('$i$', fontsize=fs)
         ax.set_ylabel('$j$', fontsize=fs)
         ax.set_title(title, fontsize=fs)
@@ -653,14 +645,20 @@ class Plot:
         title: str = '',
     ) -> Figure:
         '''
-        Plot energies depending on a parameter.
+        Plot energies depending on the strain (see
+        *GrapheneSystem.get_butterfly*). The energy levels plotted are the
+        ones lying in *lims* at the smallest strain.
 
-        :param betas: np.array. Parameter values.
-        :param butterfly: np.array. Eigenvalues.
-        :param lw: Positive Float. Default value 1. Hopping linewidths.
+        :param betas: np.array. Strain values, shape (N,).
+        :param butterfly: np.array. Eigenvalues, shape (N, sites).
+        :param lw: Positive Float. Default value 1. Linewidths.
         :param fs: Positive Float. Default value 20. Fontsize.
         :param lims: List, lims[0] energy min, lims[1] energy max.
-        :param title: Default value ''. Figure title.
+        :param title: Default value ''. Figure title. If empty,
+            'Energies depending on strain'.
+
+        :returns:
+            * **fig** -- Figure.
         '''
         error_handling.ndarray_empty(betas, 'betas')
         error_handling.ndarray_empty(butterfly, 'butterfly')
@@ -675,13 +673,12 @@ class Plot:
                                             (butterfly[i_beta_min, :] < lims[1]))
         ind_en = np.ravel(ind_en)
         fig, ax = plt.subplots()
-        plt.title('Energies depending on strain', fontsize=fs)
         plt.xlabel(r'$\beta/\beta_{max}$', fontsize=fs)
         plt.ylabel('$E$', fontsize=fs)
-        ax.set_title(title, fontsize=fs)
+        ax.set_title(title if title else 'Energies depending on strain', fontsize=fs)
         plt.yticks(np.arange(lims[0], lims[1]+1, (lims[1]-lims[0])/4), fontsize=fs)
         plt.ylim(lims)
-        beta_max = max(self.sys.betas)
+        beta_max = np.max(np.abs(betas))
         plt.xticks([-beta_max, -0.5*beta_max, 0, 
                         0.5*beta_max, beta_max], fontsize=fs)
         ax.set_xticklabels(('-1', '-1/2', '0', '1/2', '1'))

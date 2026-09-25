@@ -64,10 +64,10 @@ class Save():
 
     def fig(self, fig: Figure, name: str) -> None:
         '''
-        Save the figure in the directory defined by the method *dir_name()*.
+        Save the figure in the directory *dir_name*.
 
         :param fig: Matplotlib fig.
-        :param name:  String. Fist part of the file name.
+        :param name:  String. First part of the file name.
         '''
         error_handling.fig(fig)
         error_handling.string(name, 'name')
@@ -77,7 +77,7 @@ class Save():
 
     def fig_lat(self, fig: Figure, name: str) -> None:
         '''
-        Save the figure in the directory defined by the method *dir_name()*.
+        Save the figure in the directory *dir_name*.
 
         :param fig: Matplotlib fig.
         :param name:  String. First part of the file name.
@@ -89,7 +89,7 @@ class Save():
 
     def ani(self, ani: FuncAnimation, name: str, fps: int = 10) -> None:
         '''
-        Save the animation, as MP4, in the directory defined by *dir_name*.
+        Save the animation, as MP4, in the directory *dir_name*.
 
         :param ani: Matplotlib FuncAnimation.
         :param name: String. First part of the file name.

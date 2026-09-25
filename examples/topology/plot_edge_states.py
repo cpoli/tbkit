@@ -94,7 +94,8 @@ ax.set_xlim([ks[0], ks[-1]])
 
 lam = 0.1
 kane_mele_hop = list(graphene_hop)
-for R in [(1, 0), (0, 1), (1, -1)]:
+# the same three C3-related second-neighbor vectors as the Haldane model
+for R in [(0, 1), (-1, 0), (1, -1)]:
     kane_mele_hop.append({'i': 0, 'j': 0, 'R': R, 't': 1j*lam*PAULI['z']})
     kane_mele_hop.append({'i': 1, 'j': 1, 'R': R, 't': -1j*lam*PAULI['z']})
 
