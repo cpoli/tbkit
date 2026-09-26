@@ -61,3 +61,5 @@ Sections
 - **floquet** -- periodically driven lattices: a Floquet Chern
   insulator made with circularly polarized light, and anomalous Floquet
   phases with edge states despite zero Chern numbers.
+- **optics** -- the optical response of Bloch bands: the Kubo-Greenwood
+  conductivity and graphene's universal absorption.

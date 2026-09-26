@@ -133,6 +133,18 @@ an entry in `docs/source/history.rst`:
   Peierls, Slater-Koster, TKNN and 2004 graphene entries now link examples
   of their own, so no example is shared between two entries.
 
+- **Optical conductivity.** New `tbkit.optics`: `optical_conductivity`
+  (the Kubo-Greenwood `sigma_xx`, `sigma_xy`, `sigma_yx`, `sigma_yy` of a
+  2D `KSpace` at any photon energy, Fermi level, temperature and
+  broadening `eta`, in `e^2/h`; interband, plus the intraband Drude term
+  at `T > 0`; velocities from `KSpace._bloch_derivatives`), `joint_dos`
+  and `cell_area`. Tested against graphene's universal
+  `sigma_0 = e^2/(4 hbar)` (`pi/4 e^2/h` per spin, to 0.5%), the
+  Dirac-cone joint density of states, Pauli blocking, the f-sum rule
+  (interband in an insulator, with the Drude weight in a metal), and the
+  DC limit `sigma_yx(0) = hall_conductivity` (TKNN sign). Example:
+  `optics/plot_graphene_universal_absorption.py` (absorbance `pi alpha`).
+  History entry: universal absorption of graphene (2008).
 ### Fixed
 
 Bugs that produced silently wrong numbers:

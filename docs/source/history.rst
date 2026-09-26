@@ -1612,6 +1612,58 @@ defined.
 
 .. minigallery:: ../../examples/non_hermitian/plot_exceptional_points_chern_number.py
 
+2008 -- The Universal Optical Absorption of Graphene
+-----------------------------------------------------------
+
+Nair et al. (2008) measured the transmission of white light through
+suspended graphene membranes: each layer absorbs
+:math:`\pi\alpha \approx 2.3\%`, with :math:`\alpha` the fine-structure
+constant, independent of wavelength over the visible range. The number is
+set by the Kubo-Greenwood optical conductivity of massless Dirac
+electrons,
+
+.. math::
+
+   \mathrm{Re}\,\sigma_{xx}(\omega) = \frac{e^2}{\hbar}\int\frac{d^2k}{(2\pi)^2}
+   \sum_{n\neq m}\frac{f_n - f_m}{E_m - E_n}\,|v^x_{nm}|^2\,
+   \pi\delta(\hbar\omega - E_m + E_n) = \sigma_0 = \frac{e^2}{4\hbar}\, ,
+
+(spin and both valleys counted) for :math:`2|E_F| < \hbar\omega \ll t`,
+the value predicted by Ando, Zheng and Suzuki (2002) and by Gusynin,
+Sharapov and Carbotte (2006): the joint density of states of the Dirac
+cones grows as :math:`\omega` and the weight of each transition falls as
+:math:`1/\omega`. A free-standing sheet absorbs
+:math:`\mathrm{Re}\,\sigma/\varepsilon_0c = \pi\alpha`. Doping blocks
+the transitions below :math:`2|E_F|` (Pauli blocking), and the lattice
+brings a van Hove peak at :math:`\hbar\omega = 2|t|`.
+
+*Implementation:* the new module :mod:`tbkit.optics`:
+:func:`~tbkit.optics.optical_conductivity` (the Kubo-Greenwood tensor
+:math:`\sigma_{ab}(\omega)` of a 2D :class:`~tbkit.kspace.KSpace`, with
+a broadening :math:`\eta`, interband and Drude parts, at any Fermi level
+and temperature; its static Hall part equals
+:meth:`~tbkit.kspace.KSpace.hall_conductivity`) and
+:func:`~tbkit.optics.joint_dos`.
+
+*References:* R. R. Nair, P. Blake, A. N. Grigorenko, K. S. Novoselov, T.
+J. Booth, T. Stauber, N. M. R. Peres, and A. K. Geim, "Fine Structure
+Constant Defines Visual Transparency of Graphene," Science 320, 1308
+(2008); T. Ando, Y. Zheng, and H. Suzuki, "Dynamical Conductivity and
+Zero-Mode Anomaly in Honeycomb Lattices," J. Phys. Soc. Jpn. 71, 1318
+(2002); V. P. Gusynin, S. G. Sharapov, and J. P. Carbotte, "Unusual
+Microwave Response of Dirac Quasiparticles in Graphene," Phys. Rev. Lett.
+96, 256802 (2006).
+
+*Example:* ``examples/optics/plot_graphene_universal_absorption.py``
+confirms that the tight-binding optical conductivity of graphene tends to
+:math:`e^2/4\hbar` (within 0.5%) as :math:`\hbar\omega\to0`, so that one
+layer absorbs :math:`\pi\alpha = 2.29\%`; that the joint density of
+states grows as :math:`A_c\hbar\omega/4\pi\hbar^2v_F^2`; that the
+absorption peaks at the van Hove energy :math:`2|t|`; and that doping to
+:math:`E_F` suppresses it below :math:`2|E_F|`.
+
+.. minigallery:: ../../examples/optics/plot_graphene_universal_absorption.py
+
 See Also
 --------
 

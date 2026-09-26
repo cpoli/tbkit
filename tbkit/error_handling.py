@@ -2193,3 +2193,54 @@ def nk_min(nk, n_min):
     '''
     if min(nk) < n_min:
         raise ValueError('\n\nParameter nk must be at least {}.\n'.format(n_min))
+
+
+####################################
+# OPTICAL RESPONSE AND TRANSPORT (tbkit.optics, tbkit.transport)
+####################################
+
+
+def frequencies(omega, var_name):
+    '''
+    Check photon energies (or energies): a real number, or a non-empty
+    array of finite real numbers.
+
+    :raises TypeError: Parameter must be a real number or an array of real numbers.
+    :raises ValueError: Parameter must contain at least one finite number.
+    '''
+    arr = np.asarray(omega)
+    if arr.dtype.kind not in 'iuf':
+        raise TypeError('\n\nParameter {} must be a real number or an array '
+                                  'of real numbers.\n'.format(var_name))
+    if arr.size == 0 or not np.all(np.isfinite(arr)):
+        raise ValueError('\n\nParameter {} must contain at least one finite '
+                                    'number.\n'.format(var_name))
+
+
+def tensor_component(component, order):
+    '''
+    Check a Cartesian tensor component of a 2D response: a string of
+    *order* letters among 'x' and 'y'. Returns the axis indices.
+
+    :raises TypeError: Parameter component must be a string.
+    :raises ValueError: Parameter component must have order letters among x, y.
+    '''
+    if not isinstance(component, str):
+        raise TypeError('\n\nParameter component must be a string.\n')
+    if len(component) != order or any(c not in 'xy' for c in component):
+        raise ValueError('\n\nParameter component must be {} letters among '
+                                    "'x' and 'y'.\n".format(order))
+    return tuple('xy'.index(c) for c in component)
+
+
+def band_derivatives(en, vel, w):
+    '''
+    Check the band energies (nk, n), velocities (2, nk, n, n) and second
+    derivatives (2, 2, nk, n, n) of *optics.generalized_derivative*.
+
+    :raises ValueError: Inconsistent shapes.
+    '''
+    if en.ndim != 2 or vel.shape != (2,) + en.shape + en.shape[-1:] or \
+            w.shape != (2,) + vel.shape:
+        raise ValueError('\n\nThe shapes must be en (nk, n), vel (2, nk, n, n) and '
+                                    'w (2, 2, nk, n, n).\n')
