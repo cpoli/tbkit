@@ -132,6 +132,20 @@ an entry in `docs/source/history.rst`:
   (2015-2018). The
   Peierls, Slater-Koster, TKNN and 2004 graphene entries now link examples
   of their own, so no example is shared between two entries.
+- **Higher-order topology.** New `tbkit.higher_order`: `bbh_model` (the
+  Benalcazar-Bernevig-Hughes quadrupole insulator), `wannier_bands`
+  (Wannier bands and Wannier-sector states from the Wilson loop at every
+  base point of a mesh diagonalized in one vectorized Bloch sum),
+  `wannier_sector_polarization` (the nested Wilson loop; a ValueError when
+  the sector has no Wannier gap), `quadrupole_moment`
+  (`q_xy = 2 p_y^{nu_x-} p_x^{nu_y-}`), `flake_positions` and
+  `corner_charges` (quadrant charges of a finite flake, `CornerCharges`).
+  Tested against the BBH values (`q_xy = p = 1/2` for `|gamma| < |lambda|`,
+  0 beyond), the exact spectrum of the dimerized limit, four zero modes
+  whose weight in the `r x r` corner cells is `(1 - (gamma/lambda)^(2r))^2`,
+  and corner charges `+-1/2`. Example:
+  `higher_order/plot_quadrupole_insulator.py`; history entry: quantized
+  electric multipole insulators (2017).
 
 ### Fixed
 

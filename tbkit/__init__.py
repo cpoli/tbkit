@@ -33,3 +33,7 @@ from tbkit.floquet import FloquetKSpace, DrivenKSpace, StepDrive, step_drive
 from tbkit.meanfield import MeanFieldResult, hubbard_mean_field
 from tbkit.exceptional import ExceptionalPoints, Encircling, find_exceptional_points
 import tbkit.error_handling
+
+# Higher-order topology, moire supercells, self-consistent interactions
+from tbkit.higher_order import CornerCharges, quadrupole_moment, corner_charges
+__all__ += ["CornerCharges", "quadrupole_moment", "corner_charges"]

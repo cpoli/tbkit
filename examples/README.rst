@@ -61,3 +61,6 @@ Sections
 - **floquet** -- periodically driven lattices: a Floquet Chern
   insulator made with circularly polarized light, and anomalous Floquet
   phases with edge states despite zero Chern numbers.
+- **higher_order** -- higher-order topology: the Benalcazar-Bernevig-Hughes
+  quadrupole insulator, its nested Wilson loop, zero-energy corner states
+  and fractional corner charges.

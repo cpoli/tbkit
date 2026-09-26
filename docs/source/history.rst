@@ -1612,6 +1612,56 @@ defined.
 
 .. minigallery:: ../../examples/non_hermitian/plot_exceptional_points_chern_number.py
 
+2017 -- Quantized Electric Multipole Insulators and Higher-Order Topology
+-------------------------------------------------------------------------------
+
+The topological insulators above all announce themselves by states one
+dimension below the bulk: edge states of a 2D insulator, surface states
+of a 3D one. W. A. Benalcazar, B. A. Bernevig and T. L. Hughes showed
+that a crystal can instead have *gapped* edges and protected states two
+dimensions down, at its corners. Their model -- four orbitals per square
+cell, intra- and inter-cell hoppings :math:`\gamma` and :math:`\lambda`,
+a :math:`\pi` flux per plaquette -- has no Chern number and no bulk
+dipole, but a quantized electric **quadrupole** moment
+:math:`q_{xy} = 1/2` for :math:`|\gamma| < |\lambda|`. The invariant
+lives in the Wannier functions: the Wilson loop along :math:`x` splits
+the occupied bands into two gapped *Wannier sectors*, and a second,
+*nested* Wilson loop of one sector along :math:`y` gives the
+Wannier-sector polarization :math:`p_y^{\nu_x^-} = 1/2`. On a finite
+square it binds a fractional charge :math:`\pm e/2` and a zero-energy
+state to each corner. Corner states were observed in 2018 in a phononic
+metamaterial, microwave circuits and topolectrical circuits, and
+higher-order topology has since been found in bismuth and in many
+crystalline insulators.
+
+*Implementation:* :mod:`tbkit.higher_order`:
+:func:`~tbkit.higher_order.bbh_model`,
+:func:`~tbkit.higher_order.wannier_bands` (Wannier bands and sector
+states from the Wilson loop at every base point, over a mesh
+diagonalized with one vectorized Bloch sum),
+:func:`~tbkit.higher_order.wannier_sector_polarization` (nested Wilson
+loop), :func:`~tbkit.higher_order.quadrupole_moment`, and
+:func:`~tbkit.higher_order.corner_charges` of a finite flake
+(:meth:`~tbkit.kspace.KSpace.finite_ham`).
+
+*References:* W. A. Benalcazar, B. A. Bernevig, and T. L. Hughes,
+"Quantized electric multipole insulators," Science 357, 61-66 (2017);
+"Electric multipole moments, topological multipole moment pumping, and
+chiral hinge states in crystalline insulators," Phys. Rev. B 96, 245115
+(2017); M. Serra-Garcia et al., Nature 555, 342-345 (2018); C. W.
+Peterson et al., Nature 555, 346-350 (2018); S. Imhof et al., Nat.
+Phys. 14, 925-929 (2018); F. Schindler et al., Nat. Phys. 14, 918-924
+(2018).
+
+*Example:* ``examples/higher_order/plot_quadrupole_insulator.py``
+confirms gapped Wannier sectors :math:`\pm\nu_x(k_y)`,
+:math:`p_y^{\nu_x^-} = q_{xy} = 1/2` for :math:`|\gamma| < |\lambda|`
+and 0 beyond, four zero-energy states in the gap of a :math:`16\times16`
+flake, and corner charges :math:`\pm 1/2` (to :math:`2\cdot10^{-3}`)
+that vanish in the trivial phase.
+
+.. minigallery:: ../../examples/higher_order/plot_quadrupole_insulator.py
+
 See Also
 --------
 

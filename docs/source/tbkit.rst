@@ -147,6 +147,14 @@ tbkit.floquet module
     :undoc-members:
     :show-inheritance:
 
+tbkit.higher_order module
+-------------------------
+
+.. automodule:: tbkit.higher_order
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 tbkit.error_handling module
 ---------------------------
 

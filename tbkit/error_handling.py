@@ -2193,3 +2193,37 @@ def nk_min(nk, n_min):
     '''
     if min(nk) < n_min:
         raise ValueError('\n\nParameter nk must be at least {}.\n'.format(n_min))
+
+
+####################################
+# HIGHER-ORDER TOPOLOGY, MOIRE SUPERCELLS, SELF-CONSISTENT INTERACTIONS
+####################################
+
+
+def wannier_gap(nu, sector, tol=1e-4):
+    '''
+    Check that a Wannier sector is separated from the other Wannier bands
+    over the mesh (*nu*, shape (n1, n2, nb), sorted at each k): at every k,
+    the smallest distance on the circle between a Wannier band of the
+    sector and one outside it (the Wannier gap) exceeds *tol*, and the
+    Wannier bands of the sector change between neighbouring k-points by
+    less than the smallest gap (otherwise two Wannier bands crossed between
+    them, or the sector wrapped around the circle).
+
+    :raises ValueError: The Wannier sector is not separated by a Wannier gap.
+    '''
+    nu = np.asarray(nu)
+    rest = [n for n in range(nu.shape[-1]) if n not in sector]
+    if not rest:
+        return
+
+    def circ(d):
+        d = np.abs(d) % 1.
+        return np.minimum(d, 1. - d)
+    gap = np.min(circ(nu[..., sector][..., :, None] - nu[..., rest][..., None, :]))
+    jump = max(np.max(circ(nu[..., sector] - np.roll(nu[..., sector], 1, axis=a)))
+                     for a in range(nu.ndim - 1))
+    if gap < tol or jump >= gap:
+        raise ValueError('\n\nThe Wannier sector is not separated from the other Wannier '
+                                    'bands by a Wannier gap (smallest distance {:.2e}, largest '
+                                    'step {:.2e}).\n'.format(gap, jump))
