@@ -567,5 +567,55 @@ class TestFloquetChecks(unittest.TestCase):
         self.assertRaises(ValueError, eh.nk_min, (3, 8), 4)
 
 
+class TestModelBuilding(unittest.TestCase):
+    '''Neighbour-order hoppings in k-space, bridges, tbkit.io.'''
+
+    def test_hopping_form(self):
+        self.assertTrue(eh.hopping_form([{'n': 1, 't': 1.}]))
+        self.assertFalse(eh.hopping_form([{'i': 0, 'j': 0, 'R': (1,), 't': 1.}]))
+        self.assertFalse(eh.hopping_form([]))
+        self.assertRaises(TypeError, eh.hopping_form, {'n': 1})
+        self.assertRaises(TypeError, eh.hopping_form, [1])
+        self.assertRaises(ValueError, eh.hopping_form,
+                                  [{'n': 1, 't': 1.}, {'i': 0, 'j': 0, 'R': (1,), 't': 1.}])
+
+    def test_set_hopping_neighbours(self):
+        eh.set_hopping_neighbours([{'n': 1, 'ang': 0, 'tag': 'ab', 't': 1j}])
+        eh.set_hopping_neighbours([{'n': 1, 't': np.eye(2)}], spin=True)
+        self.assertRaises(KeyError, eh.set_hopping_neighbours, [{'n': 1}])
+        self.assertRaises(KeyError, eh.set_hopping_neighbours, [{'n': 1, 't': 1., 'R': (0,)}])
+        self.assertRaises(TypeError, eh.set_hopping_neighbours, [{'n': 1., 't': 1.}])
+        self.assertRaises(TypeError, eh.set_hopping_neighbours, [{'n': True, 't': 1.}])
+        self.assertRaises(ValueError, eh.set_hopping_neighbours, [{'n': 0, 't': 1.}])
+        self.assertRaises(TypeError, eh.set_hopping_neighbours, [{'n': 1, 't': 'a'}])
+        self.assertRaises(TypeError, eh.set_hopping_neighbours, [{'n': 1, 't': np.eye(3)}], True)
+        self.assertRaises(TypeError, eh.set_hopping_neighbours, [{'n': 1, 't': 1., 'ang': '0'}])
+        self.assertRaises(ValueError, eh.set_hopping_neighbours, [{'n': 1, 't': 1., 'ang': 180.}])
+        self.assertRaises(TypeError, eh.set_hopping_neighbours, [{'n': 1, 't': 1., 'tag': 1}])
+        self.assertRaises(ValueError, eh.set_hopping_neighbours, [{'n': 1, 't': 1., 'tag': 'a'}])
+
+    def test_shell_angle(self):
+        eh.shell_angle(30., np.array([30., 90.]))
+        eh.shell_angle(-150., np.array([30., 90.]))
+        self.assertRaises(ValueError, eh.shell_angle, 45., np.array([30., 90.]))
+
+    def test_neighbour_hoppings_errors(self):
+        from tbkit import lattices
+        from tbkit.kspace import KSpace
+        from tbkit.neighbours import neighbour_hoppings, neighbour_bonds, neighbour_shells
+        lat = lattices.honeycomb()
+        self.assertRaises(TypeError, neighbour_shells, 'lat', 1)
+        self.assertRaises(ValueError, neighbour_shells, lat, 0)
+        self.assertRaises(ValueError, neighbour_bonds, lat, 0)
+        self.assertRaises(ValueError, neighbour_hoppings, lat, [{'n': 1, 'ang': 45., 't': 1.}])
+        self.assertRaises(ValueError, neighbour_hoppings, lat, [{'n': 1, 'tag': 'aa', 't': 1.}])
+        self.assertRaises(TypeError, neighbour_hoppings, lat, [{'n': 1, 't': 1.}], spin=1)
+        self.assertRaises(TypeError, neighbour_hoppings, lat, [{'n': 1, 't': 1.}], hermitian=1)
+        ks = KSpace(lat)
+        self.assertRaises(ValueError, ks.set_hopping, [{'n': 1, 't': 1.}, {'i': 0, 'j': 1, 'R': (0, 0), 't': 1.}])
+        self.assertRaises(TypeError, ks.set_hopping, [{'n': 1, 't': 1.}], hermitian=1)
+        self.assertRaises(ValueError, ks.set_overlap, [{'n': 1, 'tag': 'aa', 't': 0.1}])
+
+
 if __name__ == '__main__':
     unittest.main()

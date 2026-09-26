@@ -61,3 +61,6 @@ Sections
 - **floquet** -- periodically driven lattices: a Floquet Chern
   insulator made with circularly polarized light, and anomalous Floquet
   phases with edge states despite zero Chern numbers.
+- **models** -- building, bridging and saving models: hoppings by
+  neighbour order in k-space (third-nearest-neighbour graphene with
+  overlaps).

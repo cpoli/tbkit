@@ -132,6 +132,17 @@ an entry in `docs/source/history.rst`:
   (2015-2018). The
   Peierls, Slater-Koster, TKNN and 2004 graphene entries now link examples
   of their own, so no example is shared between two entries.
+- **Hoppings by neighbour order in k-space.** `KSpace.set_hopping` and
+  `KSpace.set_overlap` accept the selectors of `System.set_hopping`
+  (`{'n', 't'}`, optionally `'ang'` and `'tag'`, in 1D, 2D and 3D, with
+  spin): the bonds of the infinite lattice are found from `unit_cell` and
+  `prim_vec` by the new `tbkit.neighbours` (`neighbour_shells`,
+  `neighbour_bonds`, `neighbour_hoppings`), with the conventions of
+  `System` (bond orientation, angles, tags); a negative angle addresses
+  the reversed bonds (non-reciprocal models with `hermitian=False`). The
+  explicit `{'i', 'j', 'R', 't'}` form is unchanged. Example:
+  `models/plot_neighbour_hoppings.py` (third-nearest-neighbour graphene
+  with overlaps, checked against closed-form energies at Gamma and K).
 
 ### Fixed
 

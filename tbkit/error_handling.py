@@ -2193,3 +2193,81 @@ def nk_min(nk, n_min):
     '''
     if min(nk) < n_min:
         raise ValueError('\n\nParameter nk must be at least {}.\n'.format(n_min))
+
+
+####################################
+# MODEL BUILDING, BRIDGES AND I/O
+# (neighbour-order hoppings in k-space, System <-> KSpace, tbkit.io)
+####################################
+
+
+def hopping_form(list_hop):
+    '''
+    Tell the two forms of *KSpace.set_hopping* apart: the explicit one
+    (keys 'i', 'j', 'R', 't') and the neighbour-order one of
+    *System.set_hopping* (keys 'n', 't', and optionally 'ang', 'tag').
+
+    :raises TypeError: Parameter list_hop must be a list of dictionaries.
+    :raises ValueError: list_hop mixes the two forms.
+
+    :returns:
+        * **neighbour** -- Boolean. True for the neighbour-order form.
+    '''
+    if not isinstance(list_hop, list):
+        raise TypeError('\n\nParameter list_hop must be a list.\n')
+    if not all(isinstance(dic, dict) for dic in list_hop):
+        raise TypeError('\n\nParameter list_hop must be a list of dictionaries.\n')
+    by_order = ['n' in dic for dic in list_hop]
+    if any(by_order) and not all(by_order):
+        raise ValueError('\n\nParameter list_hop mixes explicit hoppings (keys "i", "j", "R", "t") '
+                                   'and neighbour-order ones (keys "n", "t", "ang", "tag"): '
+                                   'make one call per form.\n')
+    return bool(list_hop) and all(by_order)
+
+
+def set_hopping_neighbours(list_hop, spin=False):
+    '''
+    Check the neighbour-order form of *KSpace.set_hopping*.
+
+    :raises KeyError: "n" and "t" must be keys, and only "ang" and "tag" may be added.
+    :raises TypeError: "n" must be an integer, "t" a number (or, if *spin*,
+      a 2x2 matrix), "ang" a real number and "tag" a string.
+    :raises ValueError: "n" must be positive, "ang" in [-180, 180), "tag" of length 2.
+    '''
+    hopping_form(list_hop)
+    for dic in list_hop:
+        if 'n' not in dic or 't' not in dic:
+            raise KeyError('\n\n"n" and "t" must be dictionary keys.\n')
+        if not set(dic) <= {'n', 't', 'ang', 'tag'}:
+            raise KeyError('\n\nOnly the keys "n", "t", "ang" and "tag" are allowed.\n')
+        if isinstance(dic['n'], bool) or not isinstance(dic['n'], int):
+            raise TypeError('\n\n"n" value must be an integer.\n')
+        if dic['n'] < 1:
+            raise ValueError('\n\n"n" value must be a positive integer.\n')
+        if spin:
+            spin_matrix(dic['t'], '"t"')
+        elif not isinstance(dic['t'], (int, float, complex)):
+            raise TypeError('\n\n"t" value must be a real or complex number.\n')
+        if 'ang' in dic:
+            if not isinstance(dic['ang'], (int, float)):
+                raise TypeError('\n\n"ang" value must be a real number.\n')
+            if not -180. <= dic['ang'] < 180.:
+                raise ValueError('\n\n"ang" value must be in [-180, 180).\n')
+        if 'tag' in dic:
+            if not isinstance(dic['tag'], str):
+                raise TypeError('\n\n"tag" value must be a string.\n')
+            if len(dic['tag']) != 2:
+                raise ValueError('\n\n"tag" value must be a string of length 2.\n')
+
+
+def shell_angle(ang, angles):
+    '''
+    Check that a neighbour shell has bonds along the angle *ang* (in
+    degrees, either orientation: *angles* are those in [0, 180)).
+
+    :raises ValueError: No bond of the shell points along *ang*.
+    '''
+    if not np.any(np.isclose(ang, angles, atol=ATOL)) and \
+            not np.any(np.isclose(ang, angles - 180., atol=ATOL)):
+        raise ValueError('\n\nNo bond of this neighbour shell has angle {} (angles: {}).\n'
+                                   .format(ang, np.unique(angles.round(4))))
