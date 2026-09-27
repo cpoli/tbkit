@@ -2360,6 +2360,160 @@ def model_archive(data, fmt, version):
                                    'upgrade tbkit.\n'.format(int(data['version']), version))
 
 
+def hr_header(tokens):
+    '''
+    Check the header of a Wannier90 ``_hr.dat`` file: num_wann, nrpts and
+    the nrpts degeneracy weights, as positive integers.
+
+    :raises ValueError: Not a Wannier90 _hr.dat file.
+    '''
+    try:
+        num_wann, nrpts = int(tokens[0]), int(tokens[1])
+        weights = [int(w) for w in tokens[2:2 + nrpts]]
+    except (IndexError, ValueError):
+        raise ValueError('\n\nNot a Wannier90 _hr.dat file: expected num_wann, nrpts and '
+                                   'the degeneracy weights after the header line.\n') from None
+    if num_wann < 1 or nrpts < 1 or len(weights) != nrpts or min(weights) < 1:
+        raise ValueError('\n\nNot a Wannier90 _hr.dat file: num_wann, nrpts and the '
+                                   'degeneracy weights must be positive integers.\n')
+
+
+def hr_body(n_tokens, nrpts, num_wann):
+    '''
+    Check the number of entries of a Wannier90 ``_hr.dat`` file.
+
+    :raises ValueError: The file must have nrpts * num_wann**2 lines of 7 numbers.
+    '''
+    if n_tokens != 7 * nrpts * num_wann ** 2:
+        raise ValueError('\n\nThe _hr.dat file must have nrpts * num_wann**2 = {} lines '
+                                   '"R1 R2 R3 m n Re Im" after the weights.\n'.format(nrpts * num_wann ** 2))
+
+
+def hr_blocks(ok):
+    '''
+    Check that the lines of a ``_hr.dat`` file come in blocks of num_wann**2
+    with the same lattice vector.
+
+    :raises ValueError: Lines of a lattice vector must be consecutive.
+    '''
+    if not ok:
+        raise ValueError('\n\nThe _hr.dat lines of each lattice vector R must be consecutive '
+                                   '(num_wann**2 lines per R).\n')
+
+
+def win_block(found):
+    '''
+    Check that a ``.win`` file has a ``unit_cell_cart`` block.
+
+    :raises ValueError: No unit_cell_cart block.
+    '''
+    if not found:
+        raise ValueError('\n\nThe .win file has no "begin unit_cell_cart ... end unit_cell_cart" block.\n')
+
+
+def win_cell(cell):
+    '''
+    Check the ``unit_cell_cart`` block of a ``.win`` file: three lines of
+    three real numbers.
+
+    :raises ValueError: unit_cell_cart must hold three vectors of three numbers.
+    '''
+    try:
+        ok = len(cell) == 3 and all(len(v) == 3 for v in cell) and \
+            all(np.isfinite([float(c) for v in cell for c in v]))
+    except ValueError:
+        ok = False
+    if not ok:
+        raise ValueError('\n\nThe unit_cell_cart block must hold three vectors of three real numbers.\n')
+
+
+def centres_count(n, num_wann):
+    '''
+    Check that a ``_centres.xyz`` file lists num_wann Wannier centres (X).
+
+    :raises ValueError: Too few Wannier centres.
+    '''
+    if n < num_wann:
+        raise ValueError('\n\nThe _centres.xyz file lists {} Wannier centres ("X"), '
+                                   'not {}.\n'.format(n, num_wann))
+
+
+def wannier_dim(dim):
+    '''
+    Check the dimension of a Wannier90 model.
+
+    :raises ValueError: dim must be 2 or 3.
+    '''
+    if isinstance(dim, bool) or dim not in (2, 3):
+        raise ValueError('\n\nParameter dim must be 2 or 3.\n')
+
+
+def win_given(win):
+    '''
+    Check that the lattice vectors can be found.
+
+    :raises ValueError: Give prim_vec or win.
+    '''
+    if win is None:
+        raise ValueError('\n\nGive the primitive vectors: prim_vec, or the .win file (win).\n')
+
+
+def layer_cell(cell, dim):
+    '''
+    Check that, for a 2D model, a1 and a2 lie in the (x, y) plane.
+
+    :raises ValueError: a1 and a2 must have no z component.
+    '''
+    if dim == 2 and np.any(np.abs(cell[:2, 2]) > 1e-8):
+        raise ValueError('\n\nFor dim=2, the first two lattice vectors must lie in the (x, y) plane.\n')
+
+
+def wannier_prim_vec(prim_vec, dim):
+    '''
+    Check that the primitive vectors are *dim* vectors of *dim* components.
+
+    :raises ValueError: prim_vec must hold dim vectors of dim components.
+    '''
+    if len(prim_vec) != dim or len(prim_vec[0]) != dim:
+        raise ValueError('\n\nParameter prim_vec must hold {0} vectors of {0} components.\n'.format(dim))
+    independent(prim_vec)
+
+
+def wannier_positions(shape, num_wann, dim):
+    '''
+    Check the orbital positions of a Wannier90 model.
+
+    :raises ValueError: positions must have shape (num_wann, dim) or (num_wann, 3).
+    '''
+    if len(shape) != 2 or shape[0] != num_wann or shape[1] not in (dim, 3):
+        raise ValueError('\n\nParameter positions must have shape ({0}, {1}) or ({0}, 3).\n'
+                                   .format(num_wann, dim))
+
+
+def wannier_tags(tags, num_wann):
+    '''
+    Check the sublattice tags of a Wannier90 model.
+
+    :raises TypeError: tags must be a list of one-character strings.
+    :raises ValueError: tags must have num_wann elements.
+    '''
+    if not isinstance(tags, list) or not all(isinstance(t, str) and len(t) == 1 for t in tags):
+        raise TypeError('\n\nParameter tags must be a list of one-character strings.\n')
+    if len(tags) != num_wann:
+        raise ValueError('\n\nParameter tags must have {} elements.\n'.format(num_wann))
+
+
+def layer_hoppings(h_max, tol):
+    '''
+    Check that a 2D model has no hopping between layers (R3 != 0).
+
+    :raises ValueError: Hoppings with R3 != 0 must vanish for dim=2.
+    '''
+    if h_max > tol:
+        raise ValueError('\n\nFor dim=2, the matrix elements with R3 != 0 must vanish '
+                                   '(largest: {:.3g}).\n'.format(h_max))
+
+
 def spinless(spin):
     '''
     Check that a KSpace model has no spin.

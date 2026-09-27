@@ -1,0 +1,20 @@
+! graphene p_z Wannier functions (stand-in input for tbkit.io.read_wannier90)
+num_wann = 2
+mp_grid = 6 6 1
+
+begin unit_cell_cart
+ang
+  2.46000000 0.00000000 0.00000000
+  1.23000000 2.13042249 0.00000000
+  0.00000000 0.00000000 15.00000000
+end unit_cell_cart
+
+begin atoms_cart
+ang
+C  0.00000000 0.00000000 0.00000000
+C  1.23000000 0.71014083 0.00000000
+end atoms_cart
+
+begin projections
+C: pz
+end projections

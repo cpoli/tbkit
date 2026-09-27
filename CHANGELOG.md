@@ -162,6 +162,19 @@ an entry in `docs/source/history.rst`:
   reads it back; round-trip tests reproduce every Hamiltonian bit for bit.
   Example: `models/plot_save_load.py` (a spinful Kane-Mele model and a
   disordered flake, saved and reloaded).
+- **Wannier90 import (maximally localized Wannier functions).**
+  `tbkit.io.read_wannier90` turns `seedname_hr.dat` (with its degeneracy
+  weights) into a `KSpace`, with the lattice vectors of `seedname.win`
+  (Angstrom or bohr) or given ones, the orbital positions of
+  `seedname_centres.xyz` (or given ones), tags, 2D layers (`dim=2`), a
+  hopping cutoff, and non-Hermitian files; `read_hr`, `read_win_cell` and
+  `read_centres` read the files. Tests use hand-written `_hr.dat` files
+  with known bands (a cubic lattice with a hopping split over degenerate
+  Wigner-Seitz vectors, graphene, a Hatano-Nelson chain). Example:
+  `models/plot_maximally_localized_wannier_functions.py`, reading
+  Wannier90-format graphene files shipped with it. History entry:
+  maximally localized Wannier functions (1997/2008).
+- `tbkit` exports `save_model`, `load_model` and `read_wannier90`.
 
 ### Fixed
 

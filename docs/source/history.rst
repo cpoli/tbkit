@@ -951,6 +951,43 @@ Kane-Mele model (AII), and the Kitaev chain (BDI, or D).
 
 .. minigallery:: ../../examples/topology/plot_tenfold_way.py
 
+1997/2008 -- Maximally Localized Wannier Functions
+--------------------------------------------------------
+
+The Wannier functions of a band are defined only up to a gauge: a
+k-dependent unitary mixing of the Bloch states. N. Marzari and D.
+Vanderbilt fixed it by minimizing their spread, which gives maximally
+localized Wannier functions; I. Souza, N. Marzari and D. Vanderbilt
+extended the construction to entangled bands (2001). In this basis a
+first-principles Hamiltonian becomes an exact, short-ranged
+tight-binding model, :math:`H_{mn}(\mathbf{R}) = \langle m\mathbf{0}|H|n\mathbf{R}\rangle`,
+whose Fourier interpolation gives bands, Berry curvatures and transport
+at any k. The Wannier90 code (2008) made these models a routine output
+of density-functional calculations, and brought tight-binding back to
+materials-specific accuracy.
+
+*Implementation:* :func:`tbkit.io.read_wannier90` reads
+``seedname_hr.dat`` (with the degeneracy weights of the Wigner-Seitz
+supercell), the lattice vectors of ``seedname.win`` and the Wannier
+centres of ``seedname_centres.xyz`` into a
+:class:`~tbkit.kspace.KSpace`; :func:`~tbkit.io.read_hr`,
+:func:`~tbkit.io.read_win_cell` and :func:`~tbkit.io.read_centres` read
+the files themselves.
+
+*References:* N. Marzari and D. Vanderbilt, "Maximally localized
+generalized Wannier functions for composite energy bands," Phys. Rev. B
+56, 12847-12865 (1997); I. Souza, N. Marzari, and D. Vanderbilt, Phys.
+Rev. B 65, 035109 (2001); A. A. Mostofi et al., "wannier90: A tool for
+obtaining maximally-localised Wannier functions," Comput. Phys. Commun.
+178, 685-699 (2008); N. Marzari et al., Rev. Mod. Phys. 84, 1419 (2012).
+
+*Example:* ``examples/models/plot_maximally_localized_wannier_functions.py``
+imports graphene's :math:`p_z` bands from Wannier90-format files shipped
+with it, checks the degeneracy weights and the decay of the hoppings, and
+recovers the closed-form energies at :math:`\Gamma` and at the Dirac point.
+
+.. minigallery:: ../../examples/models/plot_maximally_localized_wannier_functions.py
+
 2000/2011 -- A Topological Flat Band on the Kagome Lattice
 ------------------------------------------------------------------
 
