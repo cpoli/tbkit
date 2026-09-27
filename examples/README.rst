@@ -64,4 +64,5 @@ Sections
 - **models** -- building, bridging and saving models: hoppings by
   neighbour order in k-space (third-nearest-neighbour graphene with
   overlaps), and bridges between the real-space and k-space pipelines
-  (the Haldane model on a torus).
+  (the Haldane model on a torus), and models saved to and reloaded from
+  disk.

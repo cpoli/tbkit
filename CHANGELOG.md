@@ -155,6 +155,13 @@ an entry in `docs/source/history.rst`:
   on an N1 x N2 (x N3) torus equals the KSpace bands on the same mesh.
   Example: `models/plot_pipeline_bridges.py` (the Haldane model, set up
   with the real-space selectors in both pipelines, on a 30 x 30 torus).
+- **Saving and loading models.** New `tbkit.io`: `save_model` writes a
+  `Lattice`, `System` or `KSpace` (onsite terms, hoppings, overlaps, spin,
+  non-reciprocal flag, sites) to a versioned `.npz` archive (format
+  `'tbkit-model'`, version 1, plain arrays, no pickle), and `load_model`
+  reads it back; round-trip tests reproduce every Hamiltonian bit for bit.
+  Example: `models/plot_save_load.py` (a spinful Kane-Mele model and a
+  disordered flake, saved and reloaded).
 
 ### Fixed
 

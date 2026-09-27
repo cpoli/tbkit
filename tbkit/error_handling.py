@@ -2325,6 +2325,41 @@ def torus_range(R, sizes):
                                    'a bond reaches half-way around it.\n'.format(tuple(int(n) for n in sizes)))
 
 
+def saveable_model(model, lattice_cls, system_cls, kspace_cls, orbital_cls):
+    '''
+    Check that *tbkit.io.save_model* can store *model*.
+
+    :raises TypeError: model must be a Lattice, System or KSpace instance
+      (not an OrbitalSystem).
+    '''
+    if isinstance(model, orbital_cls) or not isinstance(model, (lattice_cls, system_cls, kspace_cls)):
+        raise TypeError('\n\nParameter model must be a Lattice, System or KSpace instance '
+                                 '(an OrbitalSystem or a driven model cannot be saved).\n')
+
+
+def file_path(path, var_name):
+    '''
+    Check a file name.
+
+    :raises TypeError: Parameter var_name must be a string or a path.
+    '''
+    if not (isinstance(path, str) or hasattr(path, "__fspath__")):
+        raise TypeError('\n\nParameter {} must be a string or a path.\n'.format(var_name))
+
+
+def model_archive(data, fmt, version):
+    '''
+    Check an archive read by *tbkit.io.load_model*.
+
+    :raises ValueError: Not a tbkit model archive, or a newer version.
+    '''
+    if 'format' not in data.files or str(data['format']) != fmt:
+        raise ValueError('\n\nThis file is not a tbkit model archive (format {}).\n'.format(fmt))
+    if int(data['version']) > version:
+        raise ValueError('\n\nThis archive has version {}; this tbkit reads versions up to {}: '
+                                   'upgrade tbkit.\n'.format(int(data['version']), version))
+
+
 def spinless(spin):
     '''
     Check that a KSpace model has no spin.

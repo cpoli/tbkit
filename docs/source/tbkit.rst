@@ -163,6 +163,14 @@ tbkit.bridges module
     :undoc-members:
     :show-inheritance:
 
+tbkit.io module
+---------------
+
+.. automodule:: tbkit.io
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 tbkit.error_handling module
 ---------------------------
 

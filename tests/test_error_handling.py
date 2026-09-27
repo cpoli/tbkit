@@ -630,6 +630,22 @@ class TestModelBuilding(unittest.TestCase):
         eh.not_orbital_system(1, str)
         self.assertRaises(TypeError, eh.not_orbital_system, 'a', str)
 
+    def test_io(self):
+        import pathlib
+        eh.saveable_model(1, int, float, complex, str)
+        self.assertRaises(TypeError, eh.saveable_model, 'a', int, float, complex, str)
+        self.assertRaises(TypeError, eh.saveable_model, [], int, float, complex, str)
+        eh.file_path('a.npz', 'path')
+        eh.file_path(pathlib.Path('a.npz'), 'path')
+        self.assertRaises(TypeError, eh.file_path, 1, 'path')
+
+        class Archive(dict):
+            files = property(lambda self: list(self))
+        eh.model_archive(Archive(format=np.array('f'), version=np.array(1)), 'f', 1)
+        self.assertRaises(ValueError, eh.model_archive, Archive(), 'f', 1)
+        self.assertRaises(ValueError, eh.model_archive, Archive(format=np.array('g')), 'f', 1)
+        self.assertRaises(ValueError, eh.model_archive, Archive(format=np.array('f'), version=np.array(2)), 'f', 1)
+
 
 if __name__ == '__main__':
     unittest.main()
