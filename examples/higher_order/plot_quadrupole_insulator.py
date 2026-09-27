@@ -1,0 +1,126 @@
+r"""
+Quantized Electric Quadrupole Insulators: the Benalcazar-Bernevig-Hughes Model
+==================================================================================
+
+In 2017 W. Benalcazar, B. A. Bernevig and T. L. Hughes showed that a
+crystal can carry a quantized electric *quadrupole* moment while having no
+dipole moment at all. Their model (BBH) has four orbitals per square cell,
+intra-cell hoppings :math:`\gamma`, inter-cell hoppings :math:`\lambda`, and
+a :math:`\pi` flux through every plaquette. For :math:`|\gamma| < |\lambda|`:
+
+* the Wilson loop along :math:`x` splits the occupied bands into two gapped
+  *Wannier sectors* :math:`\nu_x^\pm(k_y)`;
+* the *nested* Wilson loop of one sector along :math:`y` gives the
+  Wannier-sector polarization :math:`p_y^{\nu_x^-} = 1/2` (and likewise
+  :math:`p_x^{\nu_y^-} = 1/2`), so the quadrupole moment
+  :math:`q_{xy} = 2p_y^{\nu_x^-}p_x^{\nu_y^-} = 1/2`;
+* a finite square flake has four zero-energy states in the gap, one at each
+  corner, and a fractional charge :math:`\pm e/2` bound to each corner --
+  the first *higher-order* topological insulator, seen in 2018 in phononic,
+  microwave and electric-circuit metamaterials.
+
+For :math:`|\gamma| > |\lambda|` all of these vanish. :mod:`tbkit.higher_order`
+computes each one: *bbh_model*, *wannier_bands*,
+*wannier_sector_polarization*, *quadrupole_moment* and *corner_charges*.
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy.linalg as LA
+
+from tbkit.higher_order import (bbh_model, corner_charges, flake_positions, quadrupole_moment,
+                                                    wannier_bands, wannier_sector_polarization)
+
+
+def circ(a, b):
+    '''Distance modulo 1.'''
+    d = abs(a - b) % 1.
+    return min(d, 1. - d)
+
+
+occ = [0, 1]  # half filling: the two lower bands
+
+# %%
+# Wannier bands: two gapped sectors
+# -----------------------------------
+# The hybrid Wannier centres :math:`\nu_x(k_y)` of the occupied bands come in
+# pairs :math:`\pm\nu_x`, separated by gaps at 0 and 1/2 in both phases: the
+# Wannier sectors are well defined.
+
+nk = 24
+fig, axes = plt.subplots(1, 2, figsize=(9, 3.5), sharey=True)
+for ax, gamma in zip(axes, (0.5, 1.5)):
+    nu, _ = wannier_bands(bbh_model(gamma, 1.), occ, nk)
+    ky = np.arange(nk) / nk
+    for j in range(2):
+        ax.plot(ky, nu[0, :, j], 'o-', ms=3)
+    np.testing.assert_allclose(nu[..., 0], -nu[..., 1], atol=1e-10)
+    assert nu[..., 1].min() > 0.05 and nu[..., 1].max() < 0.45
+    ax.set_xlabel(r'$k_y / 2\pi$')
+    ax.set_title(r'$\gamma/\lambda = {}$'.format(gamma))
+axes[0].set_ylabel(r'$\nu_x(k_y)$')
+axes[0].set_ylim(-0.5, 0.5)
+fig.tight_layout()
+
+# %%
+# The nested Wilson loop and the quadrupole moment
+# ---------------------------------------------------
+# :math:`p_y^{\nu_x^-}` and :math:`p_x^{\nu_y^-}` jump from 1/2 to 0 at
+# :math:`|\gamma| = |\lambda|`, where the bulk gap closes, and so does
+# :math:`q_{xy}`.
+
+gammas = np.array([-1.6, -1.2, -0.8, -0.4, 0., 0.4, 0.8, 1.2, 1.6])
+q = np.array([quadrupole_moment(bbh_model(g, 1.), occ, nk=20) for g in gammas])
+p_y = np.array([wannier_sector_polarization(bbh_model(g, 1.), occ, nk=20) for g in gammas])
+for g, qq, pp in zip(gammas, q, p_y):
+    target = 0.5 if abs(g) < 1 else 0.
+    assert circ(qq, target) < 1e-8 and circ(pp, target) < 1e-8
+    print('gamma/lambda = {:5.2f}:  p_y^(nu_x-) = {:.3f}   q_xy = {:.3f}'.format(g, pp % 1, qq % 1))
+
+# %%
+# Four corner states and the corner charges
+# ---------------------------------------------
+# A 16 x 16 flake at :math:`\gamma/\lambda = 1/2` has exactly four states at
+# zero energy (up to their exponentially small overlap), inside the gap of
+# the bulk and of the edges. A small :math:`\delta\Gamma_0` shifts two of
+# them to :math:`-\delta` and two to :math:`+\delta`; at half filling the
+# corners then carry :math:`\mp e/2` (the excess electron number of each
+# quadrant of the flake, over a neutralizing background).
+
+n = 16
+flake = bbh_model(0.5, 1.)
+en, vec = LA.eigh(flake.finite_ham(n))
+zero = np.abs(en) < 1e-4
+assert zero.sum() == 4 and np.sort(np.abs(en))[4] > 0.3
+pos = flake_positions(flake, n)
+weight = (np.abs(vec[:, zero]) ** 2).sum(axis=1)
+
+res = corner_charges(bbh_model(0.5, 1., 1e-3), n)
+assert np.allclose(np.abs(res.charges), 0.5, atol=2e-3)
+triv = corner_charges(bbh_model(1.5, 1., 1e-3), n)
+assert np.allclose(triv.charges, 0., atol=1e-3)
+print('Corner charges (quadrupole phase):\n', res.charges.round(3))
+print('Corner charges (trivial phase):\n', triv.charges.round(3))
+
+fig, axes = plt.subplots(1, 3, figsize=(13, 4.2))
+axes[0].plot(en, 'k.', ms=2)
+axes[0].plot(np.where(zero)[0], en[zero], 'ro', ms=5, label='corner states')
+axes[0].set_xlabel('state')
+axes[0].set_ylabel('$E/\\lambda$')
+axes[0].legend(loc='upper left')
+axes[0].set_title('flake spectrum')
+sc = axes[1].scatter(pos[:, 0], pos[:, 1], c=weight, s=12, cmap='viridis')
+axes[1].set_title('weight of the four zero modes')
+fig.colorbar(sc, ax=axes[1])
+excess = res.density - res.background
+sc = axes[2].scatter(pos[:, 0], pos[:, 1], c=excess, s=12, cmap='RdBu', vmin=-0.3, vmax=0.3)
+for a in (0, 1):
+    for b in (0, 1):
+        x = -1.5 if a == 0 else n - 0.5
+        y = -1.5 if b == 0 else n - 0.3
+        axes[2].text(x, y, '{:+.2f}'.format(res.charges[a, b]), ha='center', fontsize=11)
+axes[2].set_title('excess density, $\\delta = 10^{-3}$')
+fig.colorbar(sc, ax=axes[2])
+for ax in axes[1:]:
+    ax.set_aspect('equal')
+    ax.axis('off')
+fig.tight_layout()

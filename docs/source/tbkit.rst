@@ -155,6 +155,14 @@ tbkit.neighbours module
     :undoc-members:
     :show-inheritance:
 
+tbkit.higher_order module
+-------------------------
+
+.. automodule:: tbkit.higher_order
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 tbkit.bridges module
 --------------------
 
@@ -167,6 +175,14 @@ tbkit.io module
 ---------------
 
 .. automodule:: tbkit.io
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+tbkit.moire module
+------------------
+
+.. automodule:: tbkit.moire
     :members:
     :undoc-members:
     :show-inheritance:

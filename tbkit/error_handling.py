@@ -2523,3 +2523,153 @@ def spinless(spin):
     if spin:
         raise ValueError('\n\nThis needs a spinless model (spin=False): a System has one '
                                    'orbital per site; use bridges.finite_model for spinful models.\n')
+# HIGHER-ORDER TOPOLOGY, MOIRE SUPERCELLS, SELF-CONSISTENT INTERACTIONS
+####################################
+
+
+def wannier_gap(nu, sector, tol=1e-4):
+    '''
+    Check that a Wannier sector is separated from the other Wannier bands
+    over the mesh (*nu*, shape (n1, n2, nb), sorted at each k): at every k,
+    the smallest distance on the circle between a Wannier band of the
+    sector and one outside it (the Wannier gap) exceeds *tol*, and the
+    Wannier bands of the sector change between neighbouring k-points by
+    less than the smallest gap (otherwise two Wannier bands crossed between
+    them, or the sector wrapped around the circle).
+
+    :raises ValueError: The Wannier sector is not separated by a Wannier gap.
+    '''
+    nu = np.asarray(nu)
+    rest = [n for n in range(nu.shape[-1]) if n not in sector]
+    if not rest:
+        return
+
+    def circ(d):
+        d = np.abs(d) % 1.
+        return np.minimum(d, 1. - d)
+    gap = np.min(circ(nu[..., sector][..., :, None] - nu[..., rest][..., None, :]))
+    jump = max(np.max(circ(nu[..., sector] - np.roll(nu[..., sector], 1, axis=a)))
+                     for a in range(nu.ndim - 1))
+    if gap < tol or jump >= gap:
+        raise ValueError('\n\nThe Wannier sector is not separated from the other Wannier '
+                                    'bands by a Wannier gap (smallest distance {:.2e}, largest '
+                                    'step {:.2e}).\n'.format(gap, jump))
+
+
+def supercell_matrix(mat, dim):
+    '''
+    Check a supercell matrix: integers, shape (dim, dim), nonzero determinant.
+
+    :raises TypeError: The supercell matrix must contain integers.
+    :raises ValueError: The supercell matrix must be (dim, dim), with a nonzero determinant.
+    '''
+    if mat.shape != (dim, dim):
+        raise ValueError('\n\nThe supercell matrix must have the shape ({0}, {0}).\n'.format(dim))
+    if not np.issubdtype(mat.dtype, np.integer):
+        raise TypeError('\n\nThe supercell matrix must contain integers.\n')
+    if round(abs(np.linalg.det(mat))) == 0:
+        raise ValueError('\n\nThe supercell matrix must have a nonzero determinant.\n')
+
+
+def supercell_model(sc, cls):
+    '''
+    Check that *sc* is a supercell (made by *moire.supercell*).
+
+    :raises TypeError: Parameter sc must be a SupercellKSpace instance.
+    '''
+    if not isinstance(sc, cls):
+        raise TypeError('\n\nParameter sc must be a SupercellKSpace instance '
+                                  '(see tbkit.moire.supercell).\n')
+
+
+def bond_vectors(d):
+    '''
+    Check bond vectors: shape (n, 3), none of zero length.
+
+    :raises ValueError: Bond vectors must have the shape (n, 3) and a nonzero length.
+    '''
+    if d.ndim != 2 or d.shape[1] != 3:
+        raise ValueError('\n\nThe bond vectors must have the shape (n, 3).\n')
+    if np.any(np.linalg.norm(d, axis=1) == 0):
+        raise ValueError('\n\nThe bond vectors must have a nonzero length.\n')
+
+
+def twist_lattice(lattice):
+    '''
+    Check the layer lattice of a twisted bilayer.
+
+    :raises ValueError: Parameter lattice must be "honeycomb" or "square".
+    '''
+    if lattice not in ('honeycomb', 'square'):
+        raise ValueError('\n\nParameter lattice must be "honeycomb" or "square".\n')
+
+
+def commensurate(moire_1, moire_2):
+    '''
+    Check that the moire vectors of the two layers coincide.
+
+    :raises ValueError: The two layers do not share the moire cell.
+    '''
+    if not np.allclose(moire_1, moire_2, atol=1e-9 * max(1., np.abs(moire_1).max())):
+        raise ValueError('\n\nThe two layers do not share the moire cell.\n')
+
+
+def hopping_values(t, n):
+    '''
+    Check the output of a hopping function: n values.
+
+    :raises ValueError: The hopping function must return one value per bond vector.
+    '''
+    if np.shape(t) != (n,):
+        raise ValueError('\n\nThe hopping function must return one value per bond vector, '
+                                    'shape ({},).\n'.format(n))
+
+
+def even_dimension(n):
+    '''
+    Check that a spinful matrix has an even dimension (two spins per site).
+
+    :raises ValueError: A spinful Hamiltonian must have an even dimension.
+    '''
+    if n % 2:
+        raise ValueError('\n\nA spinful Hamiltonian must have an even dimension '
+                                    '(rows site-major, spin up then down).\n')
+
+
+def magnetization(mag, n):
+    '''
+    Check initial moments: a real array of shape (n, 3).
+
+    :raises ValueError: Parameter magnetization must have the shape (n, 3).
+    '''
+    if mag.shape != (n, 3):
+        raise ValueError('\n\nParameter magnetization must have the shape ({}, 3).\n'.format(n))
+
+
+def interaction(V, n):
+    '''
+    Check an attractive interaction: a positive number, or n non-negative numbers.
+
+    :raises ValueError: The interaction must be positive (or n non-negative values).
+    '''
+    V = np.asarray(V, dtype='f8')
+    if V.ndim == 0:
+        positive_real(float(V), 'V')
+        return
+    if V.shape != (n,) or np.any(V < 0):
+        raise ValueError('\n\nParameter V must be a positive number, or {} non-negative '
+                                    'numbers (one per site).\n'.format(n))
+
+
+def pairing_amplitudes(delta, n):
+    '''
+    Check initial pairing amplitudes: a number, or n numbers.
+
+    :raises ValueError: Parameter delta0 must be a number or n numbers.
+    '''
+    if np.ndim(delta) == 0:
+        number(delta, 'delta0')
+        return
+    if np.shape(delta) != (n,):
+        raise ValueError('\n\nParameter delta0 must be a number, or {} numbers '
+                                    '(one per site).\n'.format(n))

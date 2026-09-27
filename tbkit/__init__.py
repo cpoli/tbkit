@@ -36,3 +36,12 @@ import tbkit.error_handling
 # Model I/O (tbkit.io): appended here to keep the list above untouched.
 from tbkit.io import save_model, load_model, read_wannier90
 __all__ += ["save_model", "load_model", "read_wannier90"]
+
+# Higher-order topology, moire supercells, self-consistent interactions
+from tbkit.higher_order import CornerCharges, quadrupole_moment, corner_charges
+__all__ += ["CornerCharges", "quadrupole_moment", "corner_charges"]
+from tbkit.moire import SupercellKSpace, MoireKSpace, supercell, twisted_bilayer
+__all__ += ["SupercellKSpace", "MoireKSpace", "supercell", "twisted_bilayer"]
+from tbkit.meanfield import NonCollinearResult, hubbard_mean_field_noncollinear
+from tbkit.bdg import GapResult, s_wave_gap
+__all__ += ["NonCollinearResult", "hubbard_mean_field_noncollinear", "GapResult", "s_wave_gap"]

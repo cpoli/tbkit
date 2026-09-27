@@ -67,3 +67,9 @@ Sections
   (the Haldane model on a torus), models saved to and reloaded from
   disk, and maximally localized Wannier functions: graphene's pi bands
   imported from a Wannier90 file.
+- **higher_order** -- higher-order topology: the Benalcazar-Bernevig-Hughes
+  quadrupole insulator, its nested Wilson loop, zero-energy corner states
+  and fractional corner charges.
+- **moire** -- supercells, band unfolding and the spectral function of
+  disordered supercells, and twisted bilayers: the flat bands of
+  magic-angle twisted bilayer graphene.

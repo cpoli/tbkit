@@ -102,6 +102,8 @@ topology alongside superconductivity.
 | `tbkit.meanfield`           | The Hubbard model in (unrestricted Hartree-Fock) mean field. |
 | `tbkit.bdg`                 | Bogoliubov-de Gennes Hamiltonians and pairings.         |
 | `tbkit.exceptional`         | Exceptional and diabolical points of 2D bands: vorticity, discriminant winding, EP finder, Fermi arcs, encircling. |
+| `tbkit.higher_order`        | Higher-order topology: nested Wilson loops, Wannier-sector polarizations, the BBH quadrupole moment, corner charges. |
+| `tbkit.moire`               | Supercells, band unfolding and spectral functions, commensurate twisted bilayers. |
 | `tbkit.floquet`             | Floquet theory; `FloquetKSpace`/`DrivenKSpace` for driven Bloch models, `step_drive`, and the winding number of anomalous Floquet phases. |
 | `tbkit.neighbours`          | Neighbour shells of a periodic lattice; `KSpace.set_hopping` by neighbour order, angle and sublattice pair, as in `System`. |
 | `tbkit.bridges`             | Move a model between `System` and `KSpace` (open samples and tori). |
@@ -288,10 +290,20 @@ thumbnailed example gallery under `docs/source/api/gallery/`.
 | [`models/plot_pipeline_bridges.py`](examples/models/plot_pipeline_bridges.py) | From real space to k-space and back: the Haldane model's torus spectrum equals its mesh bands. |
 | [`models/plot_save_load.py`](examples/models/plot_save_load.py) | Saving and reloading models: identical Hamiltonians after a round trip through disk. |
 | [`models/plot_maximally_localized_wannier_functions.py`](examples/models/plot_maximally_localized_wannier_functions.py) | Maximally localized Wannier functions: graphene's pi bands from a Wannier90 `_hr.dat` file. |
+| [`higher_order/plot_quadrupole_insulator.py`](examples/higher_order/plot_quadrupole_insulator.py) | The BBH quadrupole insulator: nested Wilson loop, q_xy = 1/2, four corner states and corner charges +-1/2. |
+| [`moire/plot_band_unfolding.py`](examples/moire/plot_band_unfolding.py) | Band unfolding: exact for a pristine supercell, coherence factors, and A(k, omega) of a disordered graphene supercell. |
+| [`moire/plot_magic_angle_twisted_bilayer.py`](examples/moire/plot_magic_angle_twisted_bilayer.py) | Twisted bilayer graphene: Bistritzer-MacDonald velocity and flat bands at the magic alpha. |
+| [`superconductivity/plot_bcs_gap_equation.py`](examples/superconductivity/plot_bcs_gap_equation.py) | The real-space BCS gap equation: Delta(T), Delta(0)/T_c = 1.764, and the proximity effect. |
+| [`correlations/plot_noncollinear_120_degree_order.py`](examples/correlations/plot_noncollinear_120_degree_order.py) | Non-collinear mean field: the 120-degree order of the half-filled triangular Hubbard model. |
+| [`tight_binding/plot_building_finite_lattices.py`](examples/tight_binding/plot_building_finite_lattices.py) | Building finite lattices: cuts, dangling sites, lattice arithmetic, rotations. |
+| [`tight_binding/plot_defects_and_impurities.py`](examples/tight_binding/plot_defects_and_impurities.py) | A vacancy zero mode and an impurity bound state in a graphene flake. |
+| [`dynamics/plot_wavepacket_interference.py`](examples/dynamics/plot_wavepacket_interference.py) | Wave propagation: Aharonov-Bohm caging on a ring and a state trapped at a domain wall. |
 
-The `examples/` directory also has five older Jupyter notebooks (graphene
-flakes, kagome/Lieb/dumbbell lattices, disorder, strain, time propagation)
-predating the 0.2 API refresh below.
+The five pre-0.2 Jupyter notebooks were replaced by the gallery scripts
+`tight_binding/plot_building_finite_lattices.py`,
+`tight_binding/plot_defects_and_impurities.py` and
+`dynamics/plot_wavepacket_interference.py` (their other content is covered
+by the strain, correlations and non-Hermitian examples).
 
 ## Documentation
 
@@ -322,9 +334,7 @@ cleaned up the API:
 
 For continuity, the pre-0.2 lowercase class names (`lattice`, `system`,
 `plot`, `propagation`, `save`) remain available as aliases of the new
-classes, so `from tbkit.lattice import lattice` still works. Example
-notebooks predating 0.2 still use byte-string tags (`b'a'`) and will need
-that one mechanical change to run on the current version.
+classes, so `from tbkit.lattice import lattice` still works.
 
 ## License
 

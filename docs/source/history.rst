@@ -1649,6 +1649,188 @@ defined.
 
 .. minigallery:: ../../examples/non_hermitian/plot_exceptional_points_chern_number.py
 
+2017 -- Quantized Electric Multipole Insulators and Higher-Order Topology
+-------------------------------------------------------------------------------
+
+The topological insulators above all announce themselves by states one
+dimension below the bulk: edge states of a 2D insulator, surface states
+of a 3D one. W. A. Benalcazar, B. A. Bernevig and T. L. Hughes showed
+that a crystal can instead have *gapped* edges and protected states two
+dimensions down, at its corners. Their model -- four orbitals per square
+cell, intra- and inter-cell hoppings :math:`\gamma` and :math:`\lambda`,
+a :math:`\pi` flux per plaquette -- has no Chern number and no bulk
+dipole, but a quantized electric **quadrupole** moment
+:math:`q_{xy} = 1/2` for :math:`|\gamma| < |\lambda|`. The invariant
+lives in the Wannier functions: the Wilson loop along :math:`x` splits
+the occupied bands into two gapped *Wannier sectors*, and a second,
+*nested* Wilson loop of one sector along :math:`y` gives the
+Wannier-sector polarization :math:`p_y^{\nu_x^-} = 1/2`. On a finite
+square it binds a fractional charge :math:`\pm e/2` and a zero-energy
+state to each corner. Corner states were observed in 2018 in a phononic
+metamaterial, microwave circuits and topolectrical circuits, and
+higher-order topology has since been found in bismuth and in many
+crystalline insulators.
+
+*Implementation:* :mod:`tbkit.higher_order`:
+:func:`~tbkit.higher_order.bbh_model`,
+:func:`~tbkit.higher_order.wannier_bands` (Wannier bands and sector
+states from the Wilson loop at every base point, over a mesh
+diagonalized with one vectorized Bloch sum),
+:func:`~tbkit.higher_order.wannier_sector_polarization` (nested Wilson
+loop), :func:`~tbkit.higher_order.quadrupole_moment`, and
+:func:`~tbkit.higher_order.corner_charges` of a finite flake
+(:meth:`~tbkit.kspace.KSpace.finite_ham`).
+
+*References:* W. A. Benalcazar, B. A. Bernevig, and T. L. Hughes,
+"Quantized electric multipole insulators," Science 357, 61-66 (2017);
+"Electric multipole moments, topological multipole moment pumping, and
+chiral hinge states in crystalline insulators," Phys. Rev. B 96, 245115
+(2017); M. Serra-Garcia et al., Nature 555, 342-345 (2018); C. W.
+Peterson et al., Nature 555, 346-350 (2018); S. Imhof et al., Nat.
+Phys. 14, 925-929 (2018); F. Schindler et al., Nat. Phys. 14, 918-924
+(2018).
+
+*Example:* ``examples/higher_order/plot_quadrupole_insulator.py``
+confirms gapped Wannier sectors :math:`\pm\nu_x(k_y)`,
+:math:`p_y^{\nu_x^-} = q_{xy} = 1/2` for :math:`|\gamma| < |\lambda|`
+and 0 beyond, four zero-energy states in the gap of a :math:`16\times16`
+flake, and corner charges :math:`\pm 1/2` (to :math:`2\cdot10^{-3}`)
+that vanish in the trivial phase.
+
+.. minigallery:: ../../examples/higher_order/plot_quadrupole_insulator.py
+
+2010 -- Band Unfolding: Effective Band Structures of Supercells
+------------------------------------------------------------------
+
+Alloys, dopants, vacancies and disorder break the translation symmetry,
+and a calculation in a supercell folds the bands into a Brillouin zone
+:math:`N` times smaller, burying the band structure that photoemission
+actually measures. W. Ku, T. Berlijn and C.-C. Lee, and independently V.
+Popescu and A. Zunger, unfolded it: the weight of each supercell state
+:math:`|\mathbf{K}J\rangle` on the primitive Bloch states at every
+:math:`\mathbf{k}` folding onto :math:`\mathbf{K}` gives an *effective*
+spectral function :math:`A(\mathbf{k},\omega) = \sum_J W_J(\mathbf{k})
+\delta(\omega - E_J)` in the primitive zone: sharp bands where the
+crystal is ordered, broadened ones where disorder scatters the electrons.
+
+*Implementation:* :func:`tbkit.moire.supercell` (any integer supercell
+matrix, spinful models and overlaps included),
+:func:`tbkit.moire.unfold` and :func:`tbkit.moire.spectral_function`.
+
+*References:* W. Ku, T. Berlijn, and C.-C. Lee, "Unfolding First-Principles
+Band Structures," Phys. Rev. Lett. 104, 216401 (2010); V. Popescu and A.
+Zunger, "Extracting E versus k effective band structure from supercell
+calculations on alloys and impurities," Phys. Rev. B 85, 085201 (2012).
+
+*Example:* ``examples/moire/plot_band_unfolding.py`` confirms that a
+pristine :math:`3\times3` graphene supercell unfolds exactly onto the two
+graphene bands, the coherence factors :math:`(1\pm\epsilon_k/E_k)/2` of a
+staggered chain, the sum rule :math:`\int A\,d\omega = 2`, and a peak
+width that grows with the Anderson disorder of a :math:`6\times6`
+supercell.
+
+.. minigallery:: ../../examples/moire/plot_band_unfolding.py
+
+2011/2018 -- Magic-Angle Twisted Bilayer Graphene
+--------------------------------------------------------
+
+R. Bistritzer and A. H. MacDonald showed that two graphene layers twisted
+by a small angle :math:`\theta` form a moiré superlattice whose interlayer
+tunnelling :math:`w` renormalizes the Dirac velocity,
+:math:`v^*/v = (1-3\alpha^2)/(1+6\alpha^2)` with
+:math:`\alpha = w/\hbar vk_\theta`, and flattens the two bands at charge
+neutrality at a series of *magic angles*, the first near
+:math:`1.1°`. In 2018 Y. Cao, P. Jarillo-Herrero and co-workers found,
+in exactly those bands, correlated insulating states and
+superconductivity -- the start of "twistronics" and of moiré materials as
+tunable platforms for strong correlations.
+
+*Implementation:* :func:`tbkit.moire.twisted_bilayer` (commensurate moiré
+cells of honeycomb or square layers, every hopping a function of the bond
+vector, :func:`tbkit.moire.pz_hopping` by default),
+:func:`tbkit.moire.commensurate_angle`, and
+:func:`tbkit.moire.magic_angle_parameter` (:math:`w`, :math:`\alpha`,
+:math:`v^*/v` of the same model).
+
+*References:* R. Bistritzer and A. H. MacDonald, "Moire bands in twisted
+double-layer graphene," PNAS 108, 12233-12237 (2011); J. M. B. Lopes dos
+Santos, N. M. R. Peres, and A. H. Castro Neto, Phys. Rev. B 86, 155449
+(2012); P. Moon and M. Koshino, Phys. Rev. B 85, 195458 (2012); Y. Cao et
+al., Nature 556, 43-50 and 80-84 (2018).
+
+*Example:* ``examples/moire/plot_magic_angle_twisted_bilayer.py``
+confirms :math:`w \approx 110` meV and a first magic angle near
+:math:`1.1°` for the Moon-Koshino hoppings, a tight-binding Dirac velocity
+within 3% of Bistritzer-MacDonald at 9.4°, 6.0° and 4.4°, and -- at the
+magic value of :math:`\alpha`, reached at 6.0° by scaling the interlayer
+hoppings, since the 1.05° cell (11908 orbitals) is too large for dense
+Bloch matrices -- central bands more than 15 times narrower.
+
+.. minigallery:: ../../examples/moire/plot_magic_angle_twisted_bilayer.py
+
+1957 -- BCS Theory and the Self-Consistent Gap Equation
+-------------------------------------------------------------
+
+J. Bardeen, L. N. Cooper and J. R. Schrieffer explained superconductivity
+by a condensate of Cooper pairs, whose gap solves a self-consistent *gap
+equation*, :math:`1 = \frac{V}{N}\sum_{\mathbf{k}}\tanh(E_{\mathbf{k}}/2T)/2E_{\mathbf{k}}`.
+At weak coupling its solution is universal: :math:`\Delta(T)` vanishes
+as :math:`\sqrt{1-T/T_c}` at :math:`T_c`, with :math:`\Delta(0) =
+1.764\,k_BT_c` for every material. P.-G. de Gennes (1966) recast it in
+real space, as the self-consistency of the Bogoliubov-de Gennes
+Hamiltonian site by site, :math:`\Delta_i = V\langle c_{i\downarrow}c_{i\uparrow}\rangle`
+-- the tool of choice for vortices, interfaces, disorder and the
+proximity effect.
+
+*Implementation:* :func:`tbkit.bdg.s_wave_gap` (real-space s-wave gap
+equation, uniform or site-dependent attraction, any temperature).
+
+*References:* J. Bardeen, L. N. Cooper, and J. R. Schrieffer, "Theory of
+Superconductivity," Phys. Rev. 108, 1175-1204 (1957); P.-G. de Gennes,
+*Superconductivity of Metals and Alloys* (Benjamin, 1966).
+
+*Example:* ``examples/superconductivity/plot_bcs_gap_equation.py``
+confirms, on a clean :math:`12\times12` torus, a uniform real-space gap
+equal to the k-space BCS solution at every temperature, a :math:`T_c`
+(from the linear vanishing of :math:`\Delta^2`) within 1% of the
+linearized gap equation, :math:`\Delta(0)/T_c = 1.764` to 2%, and the
+proximity effect of a half-superconducting chain.
+
+.. minigallery:: ../../examples/superconductivity/plot_bcs_gap_equation.py
+
+1973/1988 -- Frustration and the 120-Degree Order of the Triangular Antiferromagnet
+-------------------------------------------------------------------------------------------
+
+On a triangle, three antiparallel spins cannot all be satisfied. G.
+Wannier (1950) showed that the Ising triangular antiferromagnet never
+orders; P. W. Anderson (1973) proposed that the quantum Heisenberg one is
+a resonating-valence-bond spin liquid; D. A. Huse and V. Elser (1988), and
+later numerical work, found that it orders after all, *non-collinearly*:
+the moments of the three sublattices point 120 degrees apart, with zero
+total moment. Frustration has remained the main route to spin liquids,
+and the half-filled triangular Hubbard model its simplest itinerant
+version.
+
+*Implementation:* :func:`tbkit.meanfield.hubbard_mean_field_noncollinear`
+(spin-rotation invariant Hartree-Fock: the whole onsite spin density
+matrix, moments in any direction, spin-orbit Hamiltonians accepted; with
+moments along :math:`z` it reduces to
+:func:`~tbkit.meanfield.hubbard_mean_field`).
+
+*References:* G. H. Wannier, Phys. Rev. 79, 357 (1950); P. W. Anderson,
+"Resonating valence bonds: A new kind of insulator?," Mater. Res. Bull. 8,
+153-160 (1973); D. A. Huse and V. Elser, Phys. Rev. Lett. 60, 2531
+(1988); H. R. Krishnamurthy, C. Jayaprakash, S. Sarker, and W. Wenzel,
+Phys. Rev. Lett. 64, 950 (1990).
+
+*Example:* ``examples/correlations/plot_noncollinear_120_degree_order.py``
+confirms the 120-degree state from random starts (neighbouring moments at
+:math:`\cos = -1/2`, zero total moment, coplanar), below the collinear
+up-up-down state, and the Heisenberg limit :math:`-1.5\,t^2/U` (versus
+:math:`-\frac43t^2/U`) per bond at :math:`U = 40t`.
+
+.. minigallery:: ../../examples/correlations/plot_noncollinear_120_degree_order.py
+
 See Also
 --------
 

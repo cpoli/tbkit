@@ -175,6 +175,73 @@ an entry in `docs/source/history.rst`:
   Wannier90-format graphene files shipped with it. History entry:
   maximally localized Wannier functions (1997/2008).
 - `tbkit` exports `save_model`, `load_model` and `read_wannier90`.
+- **Higher-order topology.** New `tbkit.higher_order`: `bbh_model` (the
+  Benalcazar-Bernevig-Hughes quadrupole insulator), `wannier_bands`
+  (Wannier bands and Wannier-sector states from the Wilson loop at every
+  base point of a mesh diagonalized in one vectorized Bloch sum),
+  `wannier_sector_polarization` (the nested Wilson loop; a ValueError when
+  the sector has no Wannier gap), `quadrupole_moment`
+  (`q_xy = 2 p_y^{nu_x-} p_x^{nu_y-}`), `flake_positions` and
+  `corner_charges` (quadrant charges of a finite flake, `CornerCharges`).
+  Tested against the BBH values (`q_xy = p = 1/2` for `|gamma| < |lambda|`,
+  0 beyond), the exact spectrum of the dimerized limit, four zero modes
+  whose weight in the `r x r` corner cells is `(1 - (gamma/lambda)^(2r))^2`,
+  and corner charges `+-1/2`. Example:
+  `higher_order/plot_quadrupole_insulator.py`; history entry: quantized
+  electric multipole insulators (2017).
+- **Supercells, band unfolding and moiré bilayers.** New `tbkit.moire`:
+  `supercell` (any integer supercell matrix of a `KSpace`, spinful and
+  with overlaps; a `SupercellKSpace`), `unfold` (Ku-Berlijn-Lee /
+  Popescu-Zunger weights) and `spectral_function` (unfolded
+  `A(k, omega)`, e.g. of a disordered supercell); `twisted_bilayer`
+  (commensurate moiré cells of honeycomb or square layers, hoppings from
+  any function of the bond vector, a `MoireKSpace`), `commensurate_angle`,
+  `pz_hopping` (Moon-Koshino Slater-Koster form) and
+  `magic_angle_parameter` (Bistritzer-MacDonald `w`, `alpha`, `v*/v`).
+  Tested: pristine supercells unfold exactly onto the primitive bands, the
+  coherence factors of a staggered chain, the sum rule, the commensurate
+  angles (1.05 degrees at `m = 31`), `w ~ 110` meV and a first magic angle
+  near 1.1 degrees, a tight-binding Dirac velocity within 1-1.5% of
+  Bistritzer-MacDonald at 9.4 and 6.0 degrees, and central bands 15 times
+  narrower at the magic `alpha`. The 1.05-degree cell (11908 orbitals) is
+  too large for dense Bloch matrices, so the flat bands are shown at 6.0
+  degrees with scaled interlayer hoppings (same `alpha`). Examples:
+  `moire/plot_band_unfolding.py`, `moire/plot_magic_angle_twisted_bilayer.py`;
+  history entries: band unfolding (2010), magic-angle twisted bilayer
+  graphene (2011/2018).
+- **Self-consistent interactions.** `meanfield.hubbard_mean_field_noncollinear`
+  (spin-rotation invariant Hartree-Fock, `V_i = U(n_i - rho_i)`, spinful
+  `(2N, 2N)` Hamiltonians accepted; `NonCollinearResult`), and
+  `bdg.s_wave_gap` (the real-space BCS/BdG gap equation, uniform or
+  site-dependent attraction, any temperature; `GapResult`). Tested: the
+  collinear limit reproduces `hubbard_mean_field` (energy to 1e-8), spin
+  rotation invariance, the 120-degree order of the half-filled triangular
+  model with the Heisenberg-limit energies `-1.5` and `-4/3 t^2/U` per bond
+  (120-degree and up-up-down); the clean-lattice gap equals the k-space BCS
+  solution, `T_c` within 1% of the linearized gap equation, and
+  `Delta(0)/T_c = 1.764` within 2%. Examples:
+  `superconductivity/plot_bcs_gap_equation.py`,
+  `correlations/plot_noncollinear_120_degree_order.py`; history entries:
+  BCS theory (1957), frustration and 120-degree order (1973/1988).
+  `hubbard_mean_field` and the existing BdG functions are unchanged.
+
+### Removed
+
+- The five pre-0.2 Jupyter notebooks (`examples_lattice`, `examples_system`,
+  `examples_graphene`, `examples_propagation`, `logo`). They were never run
+  by the tests or the gallery, used wildcard imports, the lowercase alias
+  classes, silenced warnings and wrote figures to disk, and asserted
+  nothing. Their content that no gallery example covered is now in three
+  asserted gallery scripts: `tight_binding/plot_building_finite_lattices.py`
+  (cuts, dangling sites, lattice arithmetic, `clean_coor`, rotations),
+  `tight_binding/plot_defects_and_impurities.py` (a vacancy zero mode on the
+  majority sublattice, an impurity bound state at `eps + 3t^2/eps`) and
+  `dynamics/plot_wavepacket_interference.py` (Aharonov-Bohm caging on a
+  hexagonal ring, a state trapped at a domain wall with the eigenstate
+  return probability). The rest (strained flakes and pseudo-Landau levels,
+  zigzag-triangle zero modes, non-Hermitian chains) was already covered by
+  the strain, correlations and non-Hermitian examples. The logo image stays
+  in `docs/source/_static`.
 
 ### Fixed
 

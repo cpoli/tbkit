@@ -161,3 +161,110 @@ def particle_hole(n: int) -> NDArray[np.float64]:
     '''
     error_handling.positive_int(n, 'n')
     return np.kron(np.array([[0., 1.], [1., 0.]]), np.eye(n))
+
+
+class GapResult():
+    r'''
+    Self-consistent s-wave pairing of *s_wave_gap*.
+
+    :ivar delta: Complex ndarray. Gap :math:`\Delta_i` on every site.
+    :ivar energies: Real ndarray, shape (2N,). Spectrum of the reduced BdG
+        Hamiltonian (symmetric, :math:`\pm E_n`).
+    :ivar states: Complex ndarray, shape (2N, 2N). Its eigenvectors
+        :math:`(u_n, v_n)` (columns).
+    :ivar iterations: Integer. Number of iterations.
+    '''
+
+    def __init__(self, delta, energies, states, iterations) -> None:
+        self.delta = delta
+        self.energies = energies
+        self.states = states
+        self.iterations = iterations
+
+    @property
+    def mean_gap(self) -> float:
+        r'''
+        Average :math:`|\Delta_i|` over the sites.
+        '''
+        return float(np.mean(np.abs(self.delta)))
+
+
+def s_wave_gap(
+    ham, V: float | NDArray, mu: float = 0., temperature: float = 0., delta0: complex | NDArray = 0.1,
+    mixing: float = 1., tol: float = 1e-8, max_iter: int = 10000,
+) -> GapResult:
+    r'''
+    Solve the real-space gap equation of an s-wave superconductor
+    self-consistently (the attractive Hubbard model
+    :math:`-\sum_iV_in_{i\uparrow}n_{i\downarrow}` in the BCS mean-field
+    approximation, de Gennes 1966). For a spin-independent *ham* the singlet
+    BdG Hamiltonian reduces to the Nambu basis
+    :math:`(c_{i\uparrow}, c^\dagger_{i\downarrow})`,
+
+    .. math::
+
+        H = \begin{pmatrix} h-\mu & \Delta\\ \Delta^* & -(h-\mu)^*\end{pmatrix}\, ,
+        \qquad \Delta = \mathrm{diag}(\Delta_i)\, ,
+
+    whose eigenvectors :math:`(u_n, v_n)`, :math:`E_n > 0`, give the gap
+    equation
+
+    .. math::
+
+        \Delta_i = V_i\,\langle c_{i\downarrow}c_{i\uparrow}\rangle
+        = V_i\sum_{E_n>0}u_n(i)\,v_n^*(i)\tanh\frac{E_n}{2T}\, ,
+
+    iterated (with linear mixing) until self-consistent. On a clean lattice
+    it is the BCS gap equation :math:`1 = \frac{V}{N}\sum_{\mathbf{k}}
+    \tanh(E_{\mathbf{k}}/2T)/2E_{\mathbf{k}}`, with
+    :math:`\Delta(T_c) = 0` at :math:`T_c \approx \Delta(0)/1.764` at weak
+    coupling. The chemical potential is fixed (the Hartree shift
+    :math:`-V_in_i/2` is left out, i.e. absorbed in :math:`\mu`). Near
+    :math:`T_c` the iteration slows down (the linearized map has an
+    eigenvalue close to 1): raise *max_iter* there.
+
+    :param ham: Square Hermitian matrix, (N, N), spin independent (e.g. *System.ham*).
+    :param V: Positive real, or array of N non-negative reals. Attraction.
+    :param mu: Real number. Default value 0. Chemical potential.
+    :param temperature: Positive real or zero. Default value 0.
+    :param delta0: Number, or array of N numbers. Default value 0.1.
+        Initial gap.
+    :param mixing: Real in (0, 1]. Default value 1 (plain iteration).
+    :param tol: Positive real. Default value 1e-8. Convergence threshold
+        on the largest change of :math:`\Delta_i`.
+    :param max_iter: Positive integer. Default value 10000.
+
+    :returns:
+        * **result** -- :class:`GapResult`.
+    '''
+    h = ham.toarray() if hasattr(ham, 'toarray') else np.asarray(ham)
+    error_handling.square_matrix(h, 'ham')
+    error_handling.hermitian_dense(h)
+    n = len(h)
+    error_handling.interaction(V, n)
+    error_handling.real_number(mu, 'mu')
+    error_handling.positive_real_zero(temperature, 'temperature')
+    error_handling.pairing_amplitudes(delta0, n)
+    error_handling.mixing(mixing)
+    error_handling.positive_real(tol, 'tol')
+    error_handling.positive_int(max_iter, 'max_iter')
+    V = np.broadcast_to(np.asarray(V, dtype='f8'), (n,))
+    delta = np.broadcast_to(np.asarray(delta0, dtype='c16'), (n,)).copy()
+    xi = h.astype('c16') - mu * np.eye(n)
+    big = np.zeros((2 * n, 2 * n), 'c16')
+    big[:n, :n], big[n:, n:] = xi, -xi.conj()
+    diag = np.arange(n)
+    for it in range(1, max_iter + 1):
+        big[diag, diag + n] = delta
+        big[diag + n, diag] = delta.conj()
+        en, vec = np.linalg.eigh(big)
+        pos = en > 0
+        weight = np.tanh(en[pos] / (2 * temperature)) if temperature > 0 else np.ones(pos.sum())
+        new = V * np.einsum('in,in,n->i', vec[:n, pos], vec[n:, pos].conj(), weight)
+        change = np.max(np.abs(new - delta))
+        delta = (1 - mixing) * delta + mixing * new
+        if change < tol:
+            break
+    else:
+        error_handling.converged(False, 's_wave_gap')
+    return GapResult(new, en, vec, it)
