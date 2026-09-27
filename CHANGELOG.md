@@ -146,6 +146,26 @@ an entry in `docs/source/history.rst`:
   and corner charges `+-1/2`. Example:
   `higher_order/plot_quadrupole_insulator.py`; history entry: quantized
   electric multipole insulators (2017).
+- **Supercells, band unfolding and moiré bilayers.** New `tbkit.moire`:
+  `supercell` (any integer supercell matrix of a `KSpace`, spinful and
+  with overlaps; a `SupercellKSpace`), `unfold` (Ku-Berlijn-Lee /
+  Popescu-Zunger weights) and `spectral_function` (unfolded
+  `A(k, omega)`, e.g. of a disordered supercell); `twisted_bilayer`
+  (commensurate moiré cells of honeycomb or square layers, hoppings from
+  any function of the bond vector, a `MoireKSpace`), `commensurate_angle`,
+  `pz_hopping` (Moon-Koshino Slater-Koster form) and
+  `magic_angle_parameter` (Bistritzer-MacDonald `w`, `alpha`, `v*/v`).
+  Tested: pristine supercells unfold exactly onto the primitive bands, the
+  coherence factors of a staggered chain, the sum rule, the commensurate
+  angles (1.05 degrees at `m = 31`), `w ~ 110` meV and a first magic angle
+  near 1.1 degrees, a tight-binding Dirac velocity within 1-1.5% of
+  Bistritzer-MacDonald at 9.4 and 6.0 degrees, and central bands 15 times
+  narrower at the magic `alpha`. The 1.05-degree cell (11908 orbitals) is
+  too large for dense Bloch matrices, so the flat bands are shown at 6.0
+  degrees with scaled interlayer hoppings (same `alpha`). Examples:
+  `moire/plot_band_unfolding.py`, `moire/plot_magic_angle_twisted_bilayer.py`;
+  history entries: band unfolding (2010), magic-angle twisted bilayer
+  graphene (2011/2018).
 
 ### Fixed
 

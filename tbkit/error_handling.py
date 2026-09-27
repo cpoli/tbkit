@@ -2227,3 +2227,72 @@ def wannier_gap(nu, sector, tol=1e-4):
         raise ValueError('\n\nThe Wannier sector is not separated from the other Wannier '
                                     'bands by a Wannier gap (smallest distance {:.2e}, largest '
                                     'step {:.2e}).\n'.format(gap, jump))
+
+
+def supercell_matrix(mat, dim):
+    '''
+    Check a supercell matrix: integers, shape (dim, dim), nonzero determinant.
+
+    :raises TypeError: The supercell matrix must contain integers.
+    :raises ValueError: The supercell matrix must be (dim, dim), with a nonzero determinant.
+    '''
+    if mat.shape != (dim, dim):
+        raise ValueError('\n\nThe supercell matrix must have the shape ({0}, {0}).\n'.format(dim))
+    if not np.issubdtype(mat.dtype, np.integer):
+        raise TypeError('\n\nThe supercell matrix must contain integers.\n')
+    if round(abs(np.linalg.det(mat))) == 0:
+        raise ValueError('\n\nThe supercell matrix must have a nonzero determinant.\n')
+
+
+def supercell_model(sc, cls):
+    '''
+    Check that *sc* is a supercell (made by *moire.supercell*).
+
+    :raises TypeError: Parameter sc must be a SupercellKSpace instance.
+    '''
+    if not isinstance(sc, cls):
+        raise TypeError('\n\nParameter sc must be a SupercellKSpace instance '
+                                  '(see tbkit.moire.supercell).\n')
+
+
+def bond_vectors(d):
+    '''
+    Check bond vectors: shape (n, 3), none of zero length.
+
+    :raises ValueError: Bond vectors must have the shape (n, 3) and a nonzero length.
+    '''
+    if d.ndim != 2 or d.shape[1] != 3:
+        raise ValueError('\n\nThe bond vectors must have the shape (n, 3).\n')
+    if np.any(np.linalg.norm(d, axis=1) == 0):
+        raise ValueError('\n\nThe bond vectors must have a nonzero length.\n')
+
+
+def twist_lattice(lattice):
+    '''
+    Check the layer lattice of a twisted bilayer.
+
+    :raises ValueError: Parameter lattice must be "honeycomb" or "square".
+    '''
+    if lattice not in ('honeycomb', 'square'):
+        raise ValueError('\n\nParameter lattice must be "honeycomb" or "square".\n')
+
+
+def commensurate(moire_1, moire_2):
+    '''
+    Check that the moire vectors of the two layers coincide.
+
+    :raises ValueError: The two layers do not share the moire cell.
+    '''
+    if not np.allclose(moire_1, moire_2, atol=1e-9 * max(1., np.abs(moire_1).max())):
+        raise ValueError('\n\nThe two layers do not share the moire cell.\n')
+
+
+def hopping_values(t, n):
+    '''
+    Check the output of a hopping function: n values.
+
+    :raises ValueError: The hopping function must return one value per bond vector.
+    '''
+    if np.shape(t) != (n,):
+        raise ValueError('\n\nThe hopping function must return one value per bond vector, '
+                                    'shape ({},).\n'.format(n))

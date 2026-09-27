@@ -37,3 +37,5 @@ import tbkit.error_handling
 # Higher-order topology, moire supercells, self-consistent interactions
 from tbkit.higher_order import CornerCharges, quadrupole_moment, corner_charges
 __all__ += ["CornerCharges", "quadrupole_moment", "corner_charges"]
+from tbkit.moire import SupercellKSpace, MoireKSpace, supercell, twisted_bilayer
+__all__ += ["SupercellKSpace", "MoireKSpace", "supercell", "twisted_bilayer"]

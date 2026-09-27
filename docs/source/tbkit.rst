@@ -155,6 +155,14 @@ tbkit.higher_order module
     :undoc-members:
     :show-inheritance:
 
+tbkit.moire module
+------------------
+
+.. automodule:: tbkit.moire
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 tbkit.error_handling module
 ---------------------------
 

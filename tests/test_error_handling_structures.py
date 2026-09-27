@@ -26,5 +26,31 @@ class TestHigherOrder(unittest.TestCase):
         self.assertRaises(ValueError, eh.wannier_gap, wrapped, [0])
 
 
+class TestMoire(unittest.TestCase):
+
+    def test_supercell_matrix(self):
+        eh.supercell_matrix(np.array([[2, 1], [0, 1]]), 2)
+        self.assertRaises(ValueError, eh.supercell_matrix, np.array([[2]]), 2)
+        self.assertRaises(TypeError, eh.supercell_matrix, np.array([[2., 0.], [0., 1.]]), 2)
+        self.assertRaises(ValueError, eh.supercell_matrix, np.array([[1, 1], [1, 1]]), 2)
+
+    def test_supercell_model(self):
+        eh.supercell_model(1, int)
+        self.assertRaises(TypeError, eh.supercell_model, 1., int)
+
+    def test_bond_vectors(self):
+        eh.bond_vectors(np.ones((2, 3)))
+        self.assertRaises(ValueError, eh.bond_vectors, np.ones((2, 2)))
+        self.assertRaises(ValueError, eh.bond_vectors, np.zeros((1, 3)))
+
+    def test_twist(self):
+        eh.twist_lattice('square')
+        self.assertRaises(ValueError, eh.twist_lattice, 'kagome')
+        eh.commensurate(np.eye(2), np.eye(2))
+        self.assertRaises(ValueError, eh.commensurate, np.eye(2), 1.01 * np.eye(2))
+        eh.hopping_values(np.zeros(3), 3)
+        self.assertRaises(ValueError, eh.hopping_values, np.zeros(2), 3)
+
+
 if __name__ == '__main__':
     unittest.main()

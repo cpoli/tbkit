@@ -1662,6 +1662,75 @@ that vanish in the trivial phase.
 
 .. minigallery:: ../../examples/higher_order/plot_quadrupole_insulator.py
 
+2010 -- Band Unfolding: Effective Band Structures of Supercells
+------------------------------------------------------------------
+
+Alloys, dopants, vacancies and disorder break the translation symmetry,
+and a calculation in a supercell folds the bands into a Brillouin zone
+:math:`N` times smaller, burying the band structure that photoemission
+actually measures. W. Ku, T. Berlijn and C.-C. Lee, and independently V.
+Popescu and A. Zunger, unfolded it: the weight of each supercell state
+:math:`|\mathbf{K}J\rangle` on the primitive Bloch states at every
+:math:`\mathbf{k}` folding onto :math:`\mathbf{K}` gives an *effective*
+spectral function :math:`A(\mathbf{k},\omega) = \sum_J W_J(\mathbf{k})
+\delta(\omega - E_J)` in the primitive zone: sharp bands where the
+crystal is ordered, broadened ones where disorder scatters the electrons.
+
+*Implementation:* :func:`tbkit.moire.supercell` (any integer supercell
+matrix, spinful models and overlaps included),
+:func:`tbkit.moire.unfold` and :func:`tbkit.moire.spectral_function`.
+
+*References:* W. Ku, T. Berlijn, and C.-C. Lee, "Unfolding First-Principles
+Band Structures," Phys. Rev. Lett. 104, 216401 (2010); V. Popescu and A.
+Zunger, "Extracting E versus k effective band structure from supercell
+calculations on alloys and impurities," Phys. Rev. B 85, 085201 (2012).
+
+*Example:* ``examples/moire/plot_band_unfolding.py`` confirms that a
+pristine :math:`3\times3` graphene supercell unfolds exactly onto the two
+graphene bands, the coherence factors :math:`(1\pm\epsilon_k/E_k)/2` of a
+staggered chain, the sum rule :math:`\int A\,d\omega = 2`, and a peak
+width that grows with the Anderson disorder of a :math:`6\times6`
+supercell.
+
+.. minigallery:: ../../examples/moire/plot_band_unfolding.py
+
+2011/2018 -- Magic-Angle Twisted Bilayer Graphene
+--------------------------------------------------------
+
+R. Bistritzer and A. H. MacDonald showed that two graphene layers twisted
+by a small angle :math:`\theta` form a moiré superlattice whose interlayer
+tunnelling :math:`w` renormalizes the Dirac velocity,
+:math:`v^*/v = (1-3\alpha^2)/(1+6\alpha^2)` with
+:math:`\alpha = w/\hbar vk_\theta`, and flattens the two bands at charge
+neutrality at a series of *magic angles*, the first near
+:math:`1.1°`. In 2018 Y. Cao, P. Jarillo-Herrero and co-workers found,
+in exactly those bands, correlated insulating states and
+superconductivity -- the start of "twistronics" and of moiré materials as
+tunable platforms for strong correlations.
+
+*Implementation:* :func:`tbkit.moire.twisted_bilayer` (commensurate moiré
+cells of honeycomb or square layers, every hopping a function of the bond
+vector, :func:`tbkit.moire.pz_hopping` by default),
+:func:`tbkit.moire.commensurate_angle`, and
+:func:`tbkit.moire.magic_angle_parameter` (:math:`w`, :math:`\alpha`,
+:math:`v^*/v` of the same model).
+
+*References:* R. Bistritzer and A. H. MacDonald, "Moire bands in twisted
+double-layer graphene," PNAS 108, 12233-12237 (2011); J. M. B. Lopes dos
+Santos, N. M. R. Peres, and A. H. Castro Neto, Phys. Rev. B 86, 155449
+(2012); P. Moon and M. Koshino, Phys. Rev. B 85, 195458 (2012); Y. Cao et
+al., Nature 556, 43-50 and 80-84 (2018).
+
+*Example:* ``examples/moire/plot_magic_angle_twisted_bilayer.py``
+confirms :math:`w \approx 110` meV and a first magic angle near
+:math:`1.1°` for the Moon-Koshino hoppings, a tight-binding Dirac velocity
+within 3% of Bistritzer-MacDonald at 9.4°, 6.0° and 4.4°, and -- at the
+magic value of :math:`\alpha`, reached at 6.0° by scaling the interlayer
+hoppings, since the 1.05° cell (11908 orbitals) is too large for dense
+Bloch matrices -- central bands more than 15 times narrower.
+
+.. minigallery:: ../../examples/moire/plot_magic_angle_twisted_bilayer.py
+
 See Also
 --------
 
