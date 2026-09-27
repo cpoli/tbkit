@@ -10,7 +10,8 @@ and its Zak phase, the Haldane model's Chern-number phase transition and
 Berry curvature, the TKNN quantized Hall conductance of the Hofstadter
 bands, zigzag graphene and Kane-Mele helical edge states cut from
 ribbons, the Kane-Mele Z2 invariant from Wannier-centre flow and the
-Fu-Kane parity criterion, the Thouless quantum pump's exactly quantized
+Fu-Kane parity criterion, the surface Dirac cone of a 3D topological
+insulator (surface spectral function of a semi-infinite crystal), the Thouless quantum pump's exactly quantized
 charge transport, a topological (Chern) flat band on the kagome lattice,
 the quantum metric of a Bloch band, the local Chern marker of a
 disordered flake, the tenfold-way classification of tight-binding
@@ -28,6 +29,23 @@ intersections with a Berry phase of pi) of a two-parameter family.
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In 2007 Fu, Kane and Mele, Moore and Balents, and Roy showed that the \mathbb{Z}_2 topology of the quantum spin Hall effect has a 3D sequel. A time-reversal-invariant insulator in three dimensions carries four \mathbb{Z}_2 indices, and the strong index \nu_0 -- with inversion symmetry, the product of the parities of the occupied Kramers pairs at all eight time-reversal-invariant momenta -- forces every surface to host an odd number of Dirac cones: metallic, spin-momentum-locked surface states that no time-reversal-invariant perturbation can gap. Hsieh et al. saw them by photoemission in Bi\ 1-x\ Sb\ x (2008), then Xia et al. and Zhang et al. found the simplest case, a single cone, in Bi\ 2\ Se\ 3 (2009).">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_3d_topological_insulator_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_3d_topological_insulator`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Three-Dimensional Topological Insulators: the Surface Dirac Cone</div>
+    </div>
+
 
 .. raw:: html
 
@@ -260,6 +278,7 @@ intersections with a Berry phase of pi) of a two-parameter family.
 .. toctree::
    :hidden:
 
+   /api/gallery/topology/plot_3d_topological_insulator
    /api/gallery/topology/plot_diabolical_points
    /api/gallery/topology/plot_edge_states
    /api/gallery/topology/plot_fu_kane_parity

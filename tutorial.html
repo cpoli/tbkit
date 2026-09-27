@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Tutorial &#8212; tbkit 0.4.1 documentation</title>
+    <title>Tutorial &#8212; tbkit 0.4.2 documentation</title>
   
   
   
@@ -31,7 +31,7 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="_static/documentation_options.js?v=bd778e0b"></script>
+    <script src="_static/documentation_options.js?v=9dc614e0"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -625,7 +625,19 @@ See <code class="docutils literal notranslate"><span class="pre">examples/topolo
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Cutting a periodic 2D model into a ribbon (periodic in one direction, finite/open in the other -- see tbkit.kspace.ribbon) is the standard way to see edge physics in a tight-binding band structure. Two classic examples:"><img alt="" src="_images/sphx_glr_plot_edge_states_thumb.png" />
 <p><a class="reference internal" href="api/gallery/topology/plot_edge_states.html"><span class="doc">Edge States on Ribbons</span></a></p>
   <div class="sphx-glr-thumbnail-title">Edge States on Ribbons</div>
-</div></div></section>
+</div></div><p>A ribbon or slab has two surfaces, and its width must beat the decay
+length of the surface states. <a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.surface_spectral_function" title="tbkit.kspace.KSpace.surface_spectral_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">surface_spectral_function()</span></code></a>
+avoids both: it gives the spectral function of the outermost cell of a
+<em>semi-infinite</em> crystal (the iterative surface Green’s function), the
+tight-binding picture of a photoemission map:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># (001) surface of a 3D model, along a path of k-points of the surface zone</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">surface_spectral_function</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">201</span><span class="p">),</span> <span class="n">direction</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">A_bulk</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">surface_spectral_function</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">201</span><span class="p">),</span> <span class="n">direction</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">bulk</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_3d_topological_insulator.py</span></code> for the
+surface Dirac cone of a 3D topological insulator.</p>
+</section>
 <section id="more-topology-berry-phases-wannier-centres-and-z2">
 <h2>More topology: Berry phases, Wannier centres, and Z2<a class="headerlink" href="#more-topology-berry-phases-wannier-centres-and-z2" title="Link to this heading">#</a></h2>
 <p>In one dimension (or along one direction of a 2D/3D model),

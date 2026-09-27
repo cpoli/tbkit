@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tbkit package &#8212; tbkit 0.4.1 documentation</title>
+    <title>tbkit package &#8212; tbkit 0.4.2 documentation</title>
   
   
   
@@ -31,7 +31,7 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="_static/documentation_options.js?v=bd778e0b"></script>
+    <script src="_static/documentation_options.js?v=9dc614e0"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -2657,6 +2657,64 @@ do not.</p></li>
 </p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tbkit.kspace.KSpace.surface_spectral_function">
+<span class="sig-name descname"><span class="pre">surface_spectral_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">side</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bulk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/kspace.html#KSpace.surface_spectral_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.kspace.KSpace.surface_spectral_function" title="Link to this definition">#</a></dt>
+<dd><p>Get the spectral function of the surface of a semi-infinite crystal,</p>
+<div class="math notranslate nohighlight">
+\[A_s(\mathbf{k}_\parallel, E) = -\frac{1}{\pi}\,
+\mathrm{Im}\,\mathrm{Tr}\, G_{00}(\mathbf{k}_\parallel, E + i\eta)\, ,\]</div>
+<p>with <span class="math notranslate nohighlight">\(G_{00}\)</span> the Green’s function of the outermost unit cell:
+the crystal fills the cells <span class="math notranslate nohighlight">\(n\,\mathbf{a}_d\)</span>,
+<span class="math notranslate nohighlight">\(n = 0, 1, 2, \dots\)</span> along the primitive vector
+<span class="math notranslate nohighlight">\(\mathbf{a}_d\)</span> (<code class="docutils literal notranslate"><span class="pre">lat.prim_vec[direction]</span></code>), times <em>side</em>, and
+is periodic along the others. It comes from the Lopez Sancho-Rubio
+decimation (see <em>transport.surface_green</em>) of the chain of principal
+layers (as many cells as the longest hopping along
+<span class="math notranslate nohighlight">\(\mathbf{a}_d\)</span> spans), so the crystal is truly semi-infinite: no
+finite slab, and no states of the opposite surface. It is the
+tight-binding picture of an ARPES map – surface states (edge states,
+in 2D; the end state of a 1D chain) show up as sharp lines inside the
+bulk gaps. With <em>bulk</em>, the same quantity for a unit cell deep inside
+the crystal: the bulk bands projected on the surface Brillouin zone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ks</strong> – Real array, shape (nk, dim). k-points, in the coordinates
+of <em>get_ham</em> (e.g. from a <em>k_path</em> of the surface Brillouin zone).
+Only <span class="math notranslate nohighlight">\(\mathbf{k}_\parallel\)</span> matters: the result does not
+depend on the component along the reciprocal vector
+<span class="math notranslate nohighlight">\(\mathbf{b}_d\)</span>.</p></li>
+<li><p><strong>energies</strong> – Real number or real array. Energies <span class="math notranslate nohighlight">\(E\)</span>.</p></li>
+<li><p><strong>direction</strong> – Integer, between 0 and dim-1. The primitive vector
+normal to the surface (the one along which the crystal is
+semi-infinite).</p></li>
+<li><p><strong>side</strong> – +1 or -1. Default value 1. The crystal extends along
+<span class="math notranslate nohighlight">\(+\mathbf{a}_d\)</span> (the surface faces <span class="math notranslate nohighlight">\(-\mathbf{a}_d\)</span>) or
+along <span class="math notranslate nohighlight">\(-\mathbf{a}_d\)</span> (the opposite surface).</p></li>
+<li><p><strong>eta</strong> – Positive real. Default value 1e-2. Broadening: the
+width of the lines, and the decay length (about <span class="math notranslate nohighlight">\(v/\eta\)</span>
+cells) over which the bulk is resolved.</p></li>
+<li><p><strong>bulk</strong> – Boolean. Default value False. If True, the spectral
+function of a bulk unit cell instead of the surface one.</p></li>
+<li><p><strong>max_iter</strong> – Positive integer. Default value 10000. Maximum
+number of decimation steps.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>A</strong> – Real ndarray, shape (nk, len(energies)).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p>Example usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># the (001) surface of a 3D model, along a path of the surface zone</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">surface_spectral_function</span><span class="p">(</span><span class="n">k_path</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">201</span><span class="p">),</span> <span class="n">direction</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -8838,6 +8896,17 @@ supported by the biorthogonal tools).</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="tbkit.error_handling.surface_side">
+<span class="sig-prename descclassname"><span class="pre">tbkit.error_handling.</span></span><span class="sig-name descname"><span class="pre">surface_side</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">side</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tbkit/error_handling.html#surface_side"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.error_handling.surface_side" title="Link to this definition">#</a></dt>
+<dd><p>Check parameter <em>side</em> of <em>KSpace.surface_spectral_function</em>: +1 or -1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – Parameter side must be +1 or -1.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="tbkit.error_handling.nearest_cells">
 <span class="sig-prename descclassname"><span class="pre">tbkit.error_handling.</span></span><span class="sig-name descname"><span class="pre">nearest_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tbkit/error_handling.html#nearest_cells"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.error_handling.nearest_cells" title="Link to this definition">#</a></dt>
 <dd><p>Check that a lead hopping reaches at most the neighbouring cells.</p>
@@ -10369,6 +10438,7 @@ counting each orbital once.</p></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.kspace.KSpace.symmetry_error"><code class="docutils literal notranslate"><span class="pre">KSpace.symmetry_error()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.kspace.KSpace.tenfold_class"><code class="docutils literal notranslate"><span class="pre">KSpace.tenfold_class()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.kspace.KSpace.quantum_geometric_tensor"><code class="docutils literal notranslate"><span class="pre">KSpace.quantum_geometric_tensor()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.kspace.KSpace.surface_spectral_function"><code class="docutils literal notranslate"><span class="pre">KSpace.surface_spectral_function()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.kspace.KSpace.plot_dos"><code class="docutils literal notranslate"><span class="pre">KSpace.plot_dos()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.kspace.KSpace.plot_bands"><code class="docutils literal notranslate"><span class="pre">KSpace.plot_bands()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.kspace.KSpace.show"><code class="docutils literal notranslate"><span class="pre">KSpace.show()</span></code></a></li>
@@ -10762,6 +10832,7 @@ counting each orbital once.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.lead"><code class="docutils literal notranslate"><span class="pre">lead()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.converged"><code class="docutils literal notranslate"><span class="pre">converged()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.lead_direction"><code class="docutils literal notranslate"><span class="pre">lead_direction()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.surface_side"><code class="docutils literal notranslate"><span class="pre">surface_side()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.nearest_cells"><code class="docutils literal notranslate"><span class="pre">nearest_cells()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.lead_coupling"><code class="docutils literal notranslate"><span class="pre">lead_coupling()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.lead_index"><code class="docutils literal notranslate"><span class="pre">lead_index()</span></code></a></li>

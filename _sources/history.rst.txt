@@ -1493,6 +1493,45 @@ Wannier-centre flow give the same :math:`\nu`.
 
 .. minigallery:: ../../examples/topology/plot_fu_kane_parity.py
 
+2007/2009 -- Three-Dimensional Topological Insulators
+------------------------------------------------------------
+
+L. Fu, C. Kane and E. Mele, J. Moore and L. Balents, and R. Roy showed
+that the :math:`\mathbb{Z}_2` topology of the quantum spin Hall effect
+survives in three dimensions: a time-reversal-invariant insulator has
+four :math:`\mathbb{Z}_2` indices, and an odd *strong* index
+:math:`\nu_0` forces an odd number of Dirac cones onto every surface --
+metallic, spin-momentum-locked surface states that no time-reversal
+invariant perturbation can gap. Hsieh et al. observed them by
+photoemission in Bi\ :sub:`1-x`\ Sb\ :sub:`x` (2008); Xia et al. and
+Zhang et al. then found a single cone in Bi\ :sub:`2`\ Se\ :sub:`3`
+(2009). The tight-binding counterpart of a photoemission map is the
+spectral function of the surface of a semi-infinite crystal, computed
+with the iterative surface Green's function of Lopez Sancho, Lopez
+Sancho and Rubio (1985) -- no finite slab, so the surface states are
+never mixed with those of an opposite surface.
+
+*Implementation:* :meth:`tbkit.kspace.KSpace.surface_spectral_function`
+(surface or bulk, either side, any primitive vector as surface normal);
+:meth:`~tbkit.kspace.KSpace.parity_z2` gives the strong index of 3D
+models.
+
+*References:* L. Fu, C. L. Kane, and E. J. Mele, "Topological Insulators
+in Three Dimensions," Phys. Rev. Lett. 98, 106803 (2007); J. E. Moore and
+L. Balents, Phys. Rev. B 75, 121306(R) (2007); R. Roy, Phys. Rev. B 79,
+195322 (2009); D. Hsieh et al., Nature 452, 970 (2008); Y. Xia et al.,
+Nat. Phys. 5, 398 (2009); H. Zhang et al., Nat. Phys. 5, 438 (2009); M.
+P. Lopez Sancho, J. M. Lopez Sancho, and J. Rubio, J. Phys. F 15, 851
+(1985).
+
+*Example:* ``examples/topology/plot_3d_topological_insulator.py``
+confirms the strong index of a cubic model across its phases, an empty
+bulk gap, a single surface Dirac cone of velocity 1 at
+:math:`\bar\Gamma` (at :math:`\bar{M}` when the band inversion moves to
+:math:`R`), and no surface state in the trivial phase.
+
+.. minigallery:: ../../examples/topology/plot_3d_topological_insulator.py
+
 2008 -- The Universal Optical Absorption of Graphene
 -----------------------------------------------------------
 

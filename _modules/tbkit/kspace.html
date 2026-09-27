@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tbkit.kspace &#8212; tbkit 0.4.1 documentation</title>
+    <title>tbkit.kspace &#8212; tbkit 0.4.2 documentation</title>
   
   
   
@@ -30,7 +30,7 @@
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../_static/documentation_options.js?v=bd778e0b"></script>
+    <script src="../../_static/documentation_options.js?v=9dc614e0"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -393,6 +393,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.occupation</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">occupation</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.neighbours</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">neighbours</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.lattice</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lattice</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.transport</span><span class="w"> </span><span class="kn">import</span> <span class="n">_green_surface_bulk</span>
 
 
 <span class="n">PI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
@@ -2363,6 +2364,104 @@
             <span class="n">dp</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">proj</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span> <span class="o">-</span> <span class="n">proj</span><span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="n">e</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">dk</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">p0</span> <span class="o">@</span> <span class="n">dp</span><span class="p">[</span><span class="n">mu</span><span class="p">]</span> <span class="o">@</span> <span class="n">dp</span><span class="p">[</span><span class="n">nu</span><span class="p">])</span> <span class="k">for</span> <span class="n">nu</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)]</span>
                                <span class="k">for</span> <span class="n">mu</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)])</span></div>
+
+
+<div class="viewcode-block" id="KSpace.surface_spectral_function">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.kspace.KSpace.surface_spectral_function">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">surface_spectral_function</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">direction</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">side</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="n">bulk</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the spectral function of the surface of a semi-infinite crystal,</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            A_s(\mathbf{k}_\parallel, E) = -\frac{1}{\pi}\,</span>
+<span class="sd">            \mathrm{Im}\,\mathrm{Tr}\, G_{00}(\mathbf{k}_\parallel, E + i\eta)\, ,</span>
+
+<span class="sd">        with :math:`G_{00}` the Green&#39;s function of the outermost unit cell:</span>
+<span class="sd">        the crystal fills the cells :math:`n\,\mathbf{a}_d`,</span>
+<span class="sd">        :math:`n = 0, 1, 2, \dots` along the primitive vector</span>
+<span class="sd">        :math:`\mathbf{a}_d` (``lat.prim_vec[direction]``), times *side*, and</span>
+<span class="sd">        is periodic along the others. It comes from the Lopez Sancho-Rubio</span>
+<span class="sd">        decimation (see *transport.surface_green*) of the chain of principal</span>
+<span class="sd">        layers (as many cells as the longest hopping along</span>
+<span class="sd">        :math:`\mathbf{a}_d` spans), so the crystal is truly semi-infinite: no</span>
+<span class="sd">        finite slab, and no states of the opposite surface. It is the</span>
+<span class="sd">        tight-binding picture of an ARPES map -- surface states (edge states,</span>
+<span class="sd">        in 2D; the end state of a 1D chain) show up as sharp lines inside the</span>
+<span class="sd">        bulk gaps. With *bulk*, the same quantity for a unit cell deep inside</span>
+<span class="sd">        the crystal: the bulk bands projected on the surface Brillouin zone.</span>
+
+<span class="sd">        :param ks: Real array, shape (nk, dim). k-points, in the coordinates</span>
+<span class="sd">            of *get_ham* (e.g. from a *k_path* of the surface Brillouin zone).</span>
+<span class="sd">            Only :math:`\mathbf{k}_\parallel` matters: the result does not</span>
+<span class="sd">            depend on the component along the reciprocal vector</span>
+<span class="sd">            :math:`\mathbf{b}_d`.</span>
+<span class="sd">        :param energies: Real number or real array. Energies :math:`E`.</span>
+<span class="sd">        :param direction: Integer, between 0 and dim-1. The primitive vector</span>
+<span class="sd">            normal to the surface (the one along which the crystal is</span>
+<span class="sd">            semi-infinite).</span>
+<span class="sd">        :param side: +1 or -1. Default value 1. The crystal extends along</span>
+<span class="sd">            :math:`+\mathbf{a}_d` (the surface faces :math:`-\mathbf{a}_d`) or</span>
+<span class="sd">            along :math:`-\mathbf{a}_d` (the opposite surface).</span>
+<span class="sd">        :param eta: Positive real. Default value 1e-2. Broadening: the</span>
+<span class="sd">            width of the lines, and the decay length (about :math:`v/\eta`</span>
+<span class="sd">            cells) over which the bulk is resolved.</span>
+<span class="sd">        :param bulk: Boolean. Default value False. If True, the spectral</span>
+<span class="sd">            function of a bulk unit cell instead of the surface one.</span>
+<span class="sd">        :param max_iter: Positive integer. Default value 10000. Maximum</span>
+<span class="sd">            number of decimation steps.</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **A** -- Real ndarray, shape (nk, len(energies)).</span>
+
+<span class="sd">        Example usage::</span>
+
+<span class="sd">            # the (001) surface of a 3D model, along a path of the surface zone</span>
+<span class="sd">            A = ks.surface_spectral_function(k_path, np.linspace(-1, 1, 201), direction=2)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">no_overlap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_overlap_hop</span><span class="p">)</span>
+        <span class="n">ks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">))</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">ks</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">frequencies</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="s1">&#39;energies&#39;</span><span class="p">)</span>
+        <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">))</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">direction</span><span class="p">(</span><span class="n">direction</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">surface_side</span><span class="p">(</span><span class="n">side</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span> <span class="s1">&#39;eta&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">bulk</span><span class="p">,</span> <span class="s1">&#39;bulk&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">max_iter</span><span class="p">,</span> <span class="s1">&#39;max_iter&#39;</span><span class="p">)</span>
+        <span class="c1"># H_m(k): the hoppings from a cell to the cell m a_d away, with the</span>
+        <span class="c1"># phase of their in-plane part only (independent of k along b_d)</span>
+        <span class="n">a_dir</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">prim_vec</span><span class="p">[</span><span class="n">direction</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+        <span class="n">layers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hop_cells</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hop</span><span class="p">):</span>
+            <span class="n">layers</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="n">direction</span><span class="p">],</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">R</span> <span class="o">-</span> <span class="n">n</span><span class="p">[</span><span class="n">direction</span><span class="p">]</span> <span class="o">*</span> <span class="n">a_dir</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
+        <span class="n">k_cart</span> <span class="o">=</span> <span class="n">ks</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_basis</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">blocks</span> <span class="o">=</span> <span class="p">{</span><span class="n">m</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bloch_sum</span><span class="p">(</span><span class="n">hops</span><span class="p">,</span> <span class="n">k_cart</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">hops</span> <span class="ow">in</span> <span class="n">layers</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">blocks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">onsite</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_onsite_offdiag</span><span class="p">)[</span><span class="kc">None</span><span class="p">]</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="nb">abs</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">layers</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">norb</span><span class="p">,</span> <span class="n">nk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">norb</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ks</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">layer</span><span class="p">(</span><span class="n">shift</span><span class="p">):</span>
+            <span class="c1"># block (p, q) couples cell p of a principal layer to cell q of</span>
+            <span class="c1"># the layer *shift* cells further into the crystal</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nk</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">norb</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">norb</span><span class="p">),</span> <span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="p">):</span>
+                    <span class="n">m</span> <span class="o">=</span> <span class="n">side</span> <span class="o">*</span> <span class="p">(</span><span class="n">q</span> <span class="o">-</span> <span class="n">p</span> <span class="o">+</span> <span class="n">shift</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">:</span>
+                        <span class="n">out</span><span class="p">[:,</span> <span class="n">p</span><span class="p">,</span> <span class="p">:,</span> <span class="n">q</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="n">width</span> <span class="o">*</span> <span class="n">norb</span><span class="p">,</span> <span class="n">width</span> <span class="o">*</span> <span class="n">norb</span><span class="p">)</span>
+        <span class="n">h0</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="n">layer</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">layer</span><span class="p">(</span><span class="n">width</span><span class="p">),</span> <span class="n">layer</span><span class="p">(</span><span class="o">-</span><span class="n">width</span><span class="p">)</span>
+        <span class="n">spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">nk</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nk</span><span class="p">):</span>
+            <span class="n">gs</span><span class="p">,</span> <span class="n">gb</span> <span class="o">=</span> <span class="n">_green_surface_bulk</span><span class="p">(</span><span class="n">energies</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">eta</span><span class="p">,</span> <span class="n">h0</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">alpha</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">beta</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="mf">1e-12</span><span class="p">,</span>
+                                                       <span class="n">max_iter</span><span class="p">,</span> <span class="s1">&#39;surface_spectral_function&#39;</span><span class="p">)</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">gb</span> <span class="k">if</span> <span class="n">bulk</span> <span class="k">else</span> <span class="n">gs</span>
+            <span class="n">spec</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">g</span><span class="p">[:,</span> <span class="p">:</span><span class="n">norb</span><span class="p">,</span> <span class="p">:</span><span class="n">norb</span><span class="p">],</span> <span class="n">axis1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis2</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">imag</span> <span class="o">/</span> <span class="n">PI</span>
+        <span class="k">return</span> <span class="n">spec</span></div>
 
 
 <div class="viewcode-block" id="KSpace.plot_dos">
