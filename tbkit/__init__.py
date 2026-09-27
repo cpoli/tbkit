@@ -6,7 +6,7 @@
 
 """tbkit: build and solve Tight-Binding models."""
 
-__version__ = "0.4.1"
+__version__ = "0.4.2"
 
 __all__ = [
     "Lattice", "System", "Plot", "Propagation", "Save", "KSpace",

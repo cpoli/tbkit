@@ -6,7 +6,8 @@ and its Zak phase, the Haldane model's Chern-number phase transition and
 Berry curvature, the TKNN quantized Hall conductance of the Hofstadter
 bands, zigzag graphene and Kane-Mele helical edge states cut from
 ribbons, the Kane-Mele Z2 invariant from Wannier-centre flow and the
-Fu-Kane parity criterion, the Thouless quantum pump's exactly quantized
+Fu-Kane parity criterion, the surface Dirac cone of a 3D topological
+insulator (surface spectral function of a semi-infinite crystal), the Thouless quantum pump's exactly quantized
 charge transport, a topological (Chern) flat band on the kagome lattice,
 the quantum metric of a Bloch band, the local Chern marker of a
 disordered flake, the tenfold-way classification of tight-binding

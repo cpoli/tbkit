@@ -69,6 +69,9 @@ topology alongside superconductivity.
   Kane-Mele) and Zeeman splitting.
 * **Edge states**: cut a ribbon (periodic in one direction, finite in the
   other) out of any periodic model, to see edge/surface physics.
+* **Surface spectral functions** of semi-infinite crystals (iterative
+  surface Green's function): edge and surface states, e.g. the surface
+  Dirac cone of a 3D topological insulator, without a finite slab.
 * **Density of states**, Gaussian- or Lorentzian-broadened, from either a
   real-space spectrum or a Brillouin-zone mesh.
 * A small library of ready-made lattices (chain, square, triangular,
@@ -88,7 +91,7 @@ topology alongside superconductivity.
 |----------------------------|---------------------------------------------------------|
 | `tbkit.Lattice`             | Define and manipulate site positions and sublattices.   |
 | `tbkit.System`              | Build the real-space Hamiltonian from a `Lattice` and solve it. |
-| `tbkit.KSpace`              | Build and solve the Bloch Hamiltonian of a periodic `Lattice`; bands, Berry curvature/Chern numbers, anomalous and spin Hall conductivities, ribbons, DOS. |
+| `tbkit.KSpace`              | Build and solve the Bloch Hamiltonian of a periodic `Lattice`; bands, Berry curvature/Chern numbers, anomalous and spin Hall conductivities, ribbons, surface spectral functions, DOS. |
 | `tbkit.Plot`                | Plot lattices, spectra, eigenstates, and the density of states. |
 | `tbkit.Propagation`         | Time-evolve a wavepacket.                               |
 | `tbkit.Save`                | Save figures/animations to disk.                        |
@@ -264,6 +267,7 @@ thumbnailed example gallery under `docs/source/api/gallery/`.
 | [`topology/plot_tknn_hofstadter.py`](examples/topology/plot_tknn_hofstadter.py) | TKNN: Chern numbers of the Hofstadter bands from magnetic supercells, and the Diophantine equation. |
 | [`topology/plot_kane_mele_z2.py`](examples/topology/plot_kane_mele_z2.py) | The Kane-Mele Z2 invariant from Wannier-centre flow. |
 | [`topology/plot_fu_kane_parity.py`](examples/topology/plot_fu_kane_parity.py) | The Fu-Kane parity criterion on the BHZ model, checked against the Wannier flow. |
+| [`topology/plot_3d_topological_insulator.py`](examples/topology/plot_3d_topological_insulator.py) | 3D topological insulators: the strong index and the surface Dirac cone, from the surface spectral function of a semi-infinite crystal. |
 | [`topology/plot_quantum_geometry.py`](examples/topology/plot_quantum_geometry.py) | The quantum metric and Berry curvature of a Bloch band. |
 | [`topology/plot_tenfold_way.py`](examples/topology/plot_tenfold_way.py) | Symmetry classes of tight-binding models: the tenfold way. |
 | [`topology/plot_local_chern_marker.py`](examples/topology/plot_local_chern_marker.py) | The local Chern marker of a finite, disordered Haldane flake. |
@@ -317,6 +321,8 @@ Rendered docs (tutorial, API reference, example gallery): https://cpoli.github.i
   each one linked to the corresponding **tbkit** functionality and example
   above.
 * `docs/source/tbkit.rst` -- the API reference (auto-generated from docstrings).
+* [`ROADMAP.md`](ROADMAP.md) -- what is planned next, and what tbkit
+  does not do yet (compared with Kwant and PythTB).
 
 Build the HTML docs with `cd docs && make html` (output in `docs/build/html`).
 

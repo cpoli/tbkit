@@ -77,33 +77,94 @@ def surface_green(
     error_handling.positive_real(eta, 'eta')
     error_handling.positive_real(tol, 'tol')
     error_handling.positive_int(max_iter, 'max_iter')
+    gs, _ = _green_surface_bulk(np.array([energy + 1j * eta]), h0, v, v.conj().T, tol, max_iter,
+                                             'surface_green')
+    return gs[0]
+
+
+def _green_surface_bulk(
+    z: NDArray[np.complex128], h0: NDArray[np.complex128], alpha: NDArray[np.complex128],
+    beta: NDArray[np.complex128], tol: float, max_iter: int, name: str,
+) -> tuple[NDArray[np.complex128], NDArray[np.complex128]]:
+    r'''
+    Private function. The surface and bulk Green's functions of one cell
+    of the semi-infinite chain of *_decimation* (*h0*, *alpha*, *beta* of
+    shape (m, m)) at the complex energies *z*, shapes (nz, m, m).
+
+    The first decimation step inverts :math:`z - h_0`: at an energy equal to
+    an eigenvalue of :math:`h_0` (E = 0 for a plain chain) that is
+    :math:`\sim1/\eta`, and the precision is lost. Regrouping n = 1, 2 or 3
+    cells into one (the same chain) moves those energies: at each energy,
+    the best-conditioned grouping is used.
+    '''
     m = len(h0)
-    # The first decimation step inverts E + i eta - h0: at an energy equal to
-    # an eigenvalue of h0 (E = 0 for a plain chain) that is ~1/eta, and the
-    # precision is lost. Regrouping n = 1, 2 or 3 cells into one (the same
-    # lead) moves those energies: use the best-conditioned grouping.
-    best = None
-    for n in (1, 2, 3):
-        hn = np.kron(np.eye(n), h0) + np.kron(np.eye(n, k=1), v) + np.kron(np.eye(n, k=-1), v.conj().T)
-        vn = np.kron(np.eye(n, k=1 - n), v) if n > 1 else v.copy()
-        smin = np.linalg.svd((energy + 1j * eta) * np.eye(n * m) - hn, compute_uv=False)[-1]
-        if best is None or smin > best[0] * (1. + 1e-12):
-            best = (smin, hn, vn)
-    _, hn, vn = best
-    z = (energy + 1j * eta) * np.eye(len(hn))
-    eps_s, eps = hn.copy(), hn.copy()
-    alpha, beta = vn.copy(), vn.conj().T.copy()
+    # Scaling cell n by r**n is a similarity transform that leaves the
+    # Green's function of every cell unchanged: balancing the couplings of a
+    # non-reciprocal chain keeps the renormalized ones from overflowing
+    # (r = 1 when beta = alpha^dagger).
+    n_a, n_b = np.linalg.norm(alpha), np.linalg.norm(beta)
+    if n_a > 0 and n_b > 0:
+        r = np.sqrt(n_b / n_a)
+        alpha, beta = alpha * r, beta / r
+    groups, best, choice = [], None, np.zeros(len(z), int)
+    for c, n in enumerate((1, 2, 3)):
+        hn = (np.kron(np.eye(n), h0) + np.kron(np.eye(n, k=1), alpha)
+               + np.kron(np.eye(n, k=-1), beta))
+        an = np.kron(np.eye(n, k=1 - n), alpha)
+        bn = np.kron(np.eye(n, k=n - 1), beta)
+        groups.append((hn, an, bn))
+        smin = np.linalg.svd(z[:, None, None] * np.eye(n * m)[None] - hn, compute_uv=False)[:, -1]
+        if best is None:
+            best = smin
+        else:
+            better = smin > best * (1. + 1e-12)
+            choice[better], best = c, np.where(better, smin, best)
+    gs, gb = np.empty((len(z), m, m), 'c16'), np.empty((len(z), m, m), 'c16')
+    for c, (hn, an, bn) in enumerate(groups):
+        sel = choice == c
+        if np.any(sel):
+            s_, b_ = _decimation(z[sel], hn, an, bn, tol, max_iter, name)
+            gs[sel], gb[sel] = s_[:, :m, :m], b_[:, :m, :m]
+    return gs, gb
+
+
+def _decimation(
+    z: NDArray[np.complex128], h0: NDArray[np.complex128], alpha: NDArray[np.complex128],
+    beta: NDArray[np.complex128], tol: float, max_iter: int, name: str,
+) -> tuple[NDArray[np.complex128], NDArray[np.complex128]]:
+    r'''
+    Private function. The Lopez Sancho-Rubio decimation of a semi-infinite
+    chain of cells :math:`0, 1, 2, \dots` (:math:`H_{nn} = h_0`,
+    :math:`H_{n,n+1} = \alpha`, :math:`H_{n+1,n} = \beta`, with
+    :math:`\beta = \alpha^\dagger` unless the chain is non-reciprocal) at
+    many complex energies *z* (shape (nz,)) at once; *h0*, *alpha* and *beta*
+    have shape (m, m) or (nz, m, m). Used by *surface_green* and
+    *KSpace.surface_spectral_function*, which validate the arguments. It
+    stops when the renormalized couplings are below *tol* at every energy
+    (a RuntimeError naming *name* after *max_iter* iterations).
+
+    :returns:
+        * **gs** -- Complex ndarray, shape (nz, m, m). Surface Green's function (cell 0).
+        * **gb** -- Complex ndarray, shape (nz, m, m). Bulk Green's function
+          (one cell of the infinite chain).
+    '''
+    m = h0.shape[-1]
+    zi = np.asarray(z, dtype='c16')[:, None, None] * np.eye(m)[None]
+    eps_s = np.broadcast_to(h0, zi.shape).astype('c16')
+    eps = eps_s.copy()
+    alpha = np.broadcast_to(alpha, zi.shape).astype('c16')
+    beta = np.broadcast_to(beta, zi.shape).astype('c16')
     for _ in range(max_iter):
-        g = LA.inv(z - eps)
+        g = np.linalg.inv(zi - eps)
         ag, bg = alpha @ g, beta @ g
         eps_s = eps_s + ag @ beta
         eps = eps + ag @ beta + bg @ alpha
         alpha, beta = ag @ alpha, bg @ beta
-        if np.linalg.norm(alpha) + np.linalg.norm(beta) < tol:
+        if np.all(np.linalg.norm(alpha, axis=(1, 2)) + np.linalg.norm(beta, axis=(1, 2)) < tol):
             break
     else:
-        error_handling.converged(False, 'surface_green')
-    return LA.inv(z - eps_s)[:m, :m]
+        error_handling.converged(False, name)
+    return np.linalg.inv(zi - eps_s), np.linalg.inv(zi - eps)
 
 
 def lead_from_kspace(ks, direction: int = 1) -> tuple[NDArray[np.complex128], NDArray[np.complex128]]:

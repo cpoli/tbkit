@@ -13,6 +13,7 @@ import tbkit.dos as dos
 import tbkit.occupation as occupation
 import tbkit.neighbours as neighbours
 from tbkit.lattice import Lattice
+from tbkit.transport import _green_surface_bulk
 
 
 PI = np.pi
@@ -1880,6 +1881,101 @@ class KSpace():
             dp.append((proj(k + e) - proj(k - e)) / (2 * dk))
         return np.array([[np.trace(p0 @ dp[mu] @ dp[nu]) for nu in range(self.dim)]
                                for mu in range(self.dim)])
+
+    def surface_spectral_function(
+        self, ks: ArrayLike, energies: ArrayLike, direction: int, side: int = 1,
+        eta: float = 1e-2, bulk: bool = False, max_iter: int = 10000,
+    ) -> NDArray[np.float64]:
+        r'''
+        Get the spectral function of the surface of a semi-infinite crystal,
+
+        .. math::
+
+            A_s(\mathbf{k}_\parallel, E) = -\frac{1}{\pi}\,
+            \mathrm{Im}\,\mathrm{Tr}\, G_{00}(\mathbf{k}_\parallel, E + i\eta)\, ,
+
+        with :math:`G_{00}` the Green's function of the outermost unit cell:
+        the crystal fills the cells :math:`n\,\mathbf{a}_d`,
+        :math:`n = 0, 1, 2, \dots` along the primitive vector
+        :math:`\mathbf{a}_d` (``lat.prim_vec[direction]``), times *side*, and
+        is periodic along the others. It comes from the Lopez Sancho-Rubio
+        decimation (see *transport.surface_green*) of the chain of principal
+        layers (as many cells as the longest hopping along
+        :math:`\mathbf{a}_d` spans), so the crystal is truly semi-infinite: no
+        finite slab, and no states of the opposite surface. It is the
+        tight-binding picture of an ARPES map -- surface states (edge states,
+        in 2D; the end state of a 1D chain) show up as sharp lines inside the
+        bulk gaps. With *bulk*, the same quantity for a unit cell deep inside
+        the crystal: the bulk bands projected on the surface Brillouin zone.
+
+        :param ks: Real array, shape (nk, dim). k-points, in the coordinates
+            of *get_ham* (e.g. from a *k_path* of the surface Brillouin zone).
+            Only :math:`\mathbf{k}_\parallel` matters: the result does not
+            depend on the component along the reciprocal vector
+            :math:`\mathbf{b}_d`.
+        :param energies: Real number or real array. Energies :math:`E`.
+        :param direction: Integer, between 0 and dim-1. The primitive vector
+            normal to the surface (the one along which the crystal is
+            semi-infinite).
+        :param side: +1 or -1. Default value 1. The crystal extends along
+            :math:`+\mathbf{a}_d` (the surface faces :math:`-\mathbf{a}_d`) or
+            along :math:`-\mathbf{a}_d` (the opposite surface).
+        :param eta: Positive real. Default value 1e-2. Broadening: the
+            width of the lines, and the decay length (about :math:`v/\eta`
+            cells) over which the bulk is resolved.
+        :param bulk: Boolean. Default value False. If True, the spectral
+            function of a bulk unit cell instead of the surface one.
+        :param max_iter: Positive integer. Default value 10000. Maximum
+            number of decimation steps.
+
+        :returns:
+            * **A** -- Real ndarray, shape (nk, len(energies)).
+
+        Example usage::
+
+            # the (001) surface of a 3D model, along a path of the surface zone
+            A = ks.surface_spectral_function(k_path, np.linspace(-1, 1, 201), direction=2)
+        '''
+        error_handling.no_overlap(self._overlap_hop)
+        ks = np.atleast_2d(np.asarray(ks, dtype='f8'))
+        error_handling.ks(ks, self.dim)
+        error_handling.frequencies(energies, 'energies')
+        energies = np.atleast_1d(np.asarray(energies, dtype='f8'))
+        error_handling.direction(direction, self.dim)
+        error_handling.surface_side(side)
+        error_handling.positive_real(eta, 'eta')
+        error_handling.boolean(bulk, 'bulk')
+        error_handling.positive_int(max_iter, 'max_iter')
+        # H_m(k): the hoppings from a cell to the cell m a_d away, with the
+        # phase of their in-plane part only (independent of k along b_d)
+        a_dir = np.array(self.lat.prim_vec[direction], dtype='f8')
+        layers = {}
+        for (i, j, n, t), (_, _, R, _) in zip(self._hop_cells(), self._hop):
+            layers.setdefault(n[direction], []).append((i, j, R - n[direction] * a_dir, t))
+        k_cart = ks @ self.k_basis.T
+        blocks = {m: self._bloch_sum(hops, k_cart)[0] for m, hops in layers.items()}
+        blocks[0] = blocks.get(0, 0.) + (np.diag(self.onsite) + self._onsite_offdiag)[None]
+        width = max([abs(m) for m in layers] + [1])
+        norb, nk = self.norb, len(ks)
+
+        def layer(shift):
+            # block (p, q) couples cell p of a principal layer to cell q of
+            # the layer *shift* cells further into the crystal
+            out = np.zeros((nk, width, norb, width, norb), 'c16')
+            for p in range(width):
+                for q in range(width):
+                    m = side * (q - p + shift)
+                    if m in blocks:
+                        out[:, p, :, q, :] = blocks[m]
+            return out.reshape(nk, width * norb, width * norb)
+        h0, alpha, beta = layer(0), layer(width), layer(-width)
+        spec = np.empty((nk, len(energies)))
+        for n in range(nk):
+            gs, gb = _green_surface_bulk(energies + 1j * eta, h0[n], alpha[n], beta[n], 1e-12,
+                                                       max_iter, 'surface_spectral_function')
+            g = gb if bulk else gs
+            spec[n] = -np.trace(g[:, :norb, :norb], axis1=1, axis2=2).imag / PI
+        return spec
 
     def plot_dos(
         self,

@@ -278,6 +278,19 @@ See ``examples/topology/plot_edge_states.py``, where both are checked numericall
 
 .. minigallery:: ../../examples/topology/plot_edge_states.py
 
+A ribbon or slab has two surfaces, and its width must beat the decay
+length of the surface states. :meth:`~tbkit.kspace.KSpace.surface_spectral_function`
+avoids both: it gives the spectral function of the outermost cell of a
+*semi-infinite* crystal (the iterative surface Green's function), the
+tight-binding picture of a photoemission map::
+
+    # (001) surface of a 3D model, along a path of k-points of the surface zone
+    A = ks.surface_spectral_function(path, np.linspace(-2, 2, 201), direction=2)
+    A_bulk = ks.surface_spectral_function(path, np.linspace(-2, 2, 201), direction=2, bulk=True)
+
+See ``examples/topology/plot_3d_topological_insulator.py`` for the
+surface Dirac cone of a 3D topological insulator.
+
 
 More topology: Berry phases, Wannier centres, and Z2
 -------------------------------------------------------

@@ -1546,6 +1546,16 @@ def lead_direction(direction):
         raise ValueError('\n\nParameter direction must be +1 or -1.\n')
 
 
+def surface_side(side):
+    '''
+    Check parameter *side* of *KSpace.surface_spectral_function*: +1 or -1.
+
+    :raises ValueError: Parameter side must be +1 or -1.
+    '''
+    if isinstance(side, bool) or side not in (1, -1):
+        raise ValueError('\n\nParameter side must be +1 or -1.\n')
+
+
 def nearest_cells(n):
     '''
     Check that a lead hopping reaches at most the neighbouring cells.
