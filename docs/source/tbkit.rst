@@ -147,6 +147,30 @@ tbkit.floquet module
     :undoc-members:
     :show-inheritance:
 
+tbkit.neighbours module
+-----------------------
+
+.. automodule:: tbkit.neighbours
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+tbkit.bridges module
+--------------------
+
+.. automodule:: tbkit.bridges
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+tbkit.io module
+---------------
+
+.. automodule:: tbkit.io
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 tbkit.error_handling module
 ---------------------------
 

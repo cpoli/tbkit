@@ -2193,3 +2193,333 @@ def nk_min(nk, n_min):
     '''
     if min(nk) < n_min:
         raise ValueError('\n\nParameter nk must be at least {}.\n'.format(n_min))
+
+
+####################################
+# MODEL BUILDING, BRIDGES AND I/O
+# (neighbour-order hoppings in k-space, System <-> KSpace, tbkit.io)
+####################################
+
+
+def hopping_form(list_hop):
+    '''
+    Tell the two forms of *KSpace.set_hopping* apart: the explicit one
+    (keys 'i', 'j', 'R', 't') and the neighbour-order one of
+    *System.set_hopping* (keys 'n', 't', and optionally 'ang', 'tag').
+
+    :raises TypeError: Parameter list_hop must be a list of dictionaries.
+    :raises ValueError: list_hop mixes the two forms.
+
+    :returns:
+        * **neighbour** -- Boolean. True for the neighbour-order form.
+    '''
+    if not isinstance(list_hop, list):
+        raise TypeError('\n\nParameter list_hop must be a list.\n')
+    if not all(isinstance(dic, dict) for dic in list_hop):
+        raise TypeError('\n\nParameter list_hop must be a list of dictionaries.\n')
+    by_order = ['n' in dic for dic in list_hop]
+    if any(by_order) and not all(by_order):
+        raise ValueError('\n\nParameter list_hop mixes explicit hoppings (keys "i", "j", "R", "t") '
+                                   'and neighbour-order ones (keys "n", "t", "ang", "tag"): '
+                                   'make one call per form.\n')
+    return bool(list_hop) and all(by_order)
+
+
+def set_hopping_neighbours(list_hop, spin=False):
+    '''
+    Check the neighbour-order form of *KSpace.set_hopping*.
+
+    :raises KeyError: "n" and "t" must be keys, and only "ang" and "tag" may be added.
+    :raises TypeError: "n" must be an integer, "t" a number (or, if *spin*,
+      a 2x2 matrix), "ang" a real number and "tag" a string.
+    :raises ValueError: "n" must be positive, "ang" in [-180, 180), "tag" of length 2.
+    '''
+    hopping_form(list_hop)
+    for dic in list_hop:
+        if 'n' not in dic or 't' not in dic:
+            raise KeyError('\n\n"n" and "t" must be dictionary keys.\n')
+        if not set(dic) <= {'n', 't', 'ang', 'tag'}:
+            raise KeyError('\n\nOnly the keys "n", "t", "ang" and "tag" are allowed.\n')
+        if isinstance(dic['n'], bool) or not isinstance(dic['n'], int):
+            raise TypeError('\n\n"n" value must be an integer.\n')
+        if dic['n'] < 1:
+            raise ValueError('\n\n"n" value must be a positive integer.\n')
+        if spin:
+            spin_matrix(dic['t'], '"t"')
+        elif not isinstance(dic['t'], (int, float, complex)):
+            raise TypeError('\n\n"t" value must be a real or complex number.\n')
+        if 'ang' in dic:
+            if not isinstance(dic['ang'], (int, float)):
+                raise TypeError('\n\n"ang" value must be a real number.\n')
+            if not -180. <= dic['ang'] < 180.:
+                raise ValueError('\n\n"ang" value must be in [-180, 180).\n')
+        if 'tag' in dic:
+            if not isinstance(dic['tag'], str):
+                raise TypeError('\n\n"tag" value must be a string.\n')
+            if len(dic['tag']) != 2:
+                raise ValueError('\n\n"tag" value must be a string of length 2.\n')
+
+
+def shell_angle(ang, angles):
+    '''
+    Check that a neighbour shell has bonds along the angle *ang* (in
+    degrees, either orientation: *angles* are those in [0, 180)).
+
+    :raises ValueError: No bond of the shell points along *ang*.
+    '''
+    if not np.any(np.isclose(ang, angles, atol=ATOL)) and \
+            not np.any(np.isclose(ang, angles - 180., atol=ATOL)):
+        raise ValueError('\n\nNo bond of this neighbour shell has angle {} (angles: {}).\n'
+                                   .format(ang, np.unique(angles.round(4))))
+
+
+def not_orbital_system(sys, orbital_cls):
+    '''
+    Check that a System is not an *OrbitalSystem* (several rows per site).
+
+    :raises TypeError: An OrbitalSystem is not supported.
+    '''
+    if isinstance(sys, orbital_cls):
+        raise TypeError('\n\nAn OrbitalSystem (several orbitals per site) is not supported: '
+                                 'build its KSpace with tbkit.slater_koster.sk_kspace.\n')
+
+
+def lattice_sites(matches):
+    '''
+    Check that every site of a finite lattice is a copy of exactly one
+    orbital of *unit_cell*, translated by a lattice vector (*matches*: the
+    number of such orbitals, per site).
+
+    :raises ValueError: A site is not on the periodic lattice.
+    '''
+    bad = np.flatnonzero(np.asarray(matches) != 1)
+    if len(bad):
+        raise ValueError('\n\nSite {} is not a translate of exactly one unit-cell site (same tag, '
+                                   'position r0 + n1 a1 + ...): was the lattice rotated, strained '
+                                   'or shifted?\n'.format(int(bad[0])))
+
+
+def translation_invariant(dev, tol):
+    '''
+    Check that equivalent matrix elements (same orbitals, same lattice
+    vector) are equal in every cell, within *tol*.
+
+    :raises ValueError: The model is not translation invariant.
+    '''
+    if dev > tol:
+        raise ValueError('\n\nThe Hamiltonian is not translation invariant: equivalent hoppings '
+                                   'or onsite energies differ by {:.3g} (> tol = {:.3g}), e.g. after '
+                                   'disorder, defects or a magnetic field.\n'.format(dev, tol))
+
+
+def torus_range(R, sizes):
+    '''
+    Check that the lattice vectors of a torus's bonds (shortest images, in
+    [-N/2, N/2)) are unambiguous: at least 3 cells along every direction,
+    and no bond reaching half-way around.
+
+    :raises ValueError: The torus is too small for the range of the model.
+    '''
+    if np.any(sizes < 3) or np.any(2 * R == -sizes[None, :]):
+        raise ValueError('\n\nThe torus ({} cells) is too small for the range of the model: '
+                                   'a bond reaches half-way around it.\n'.format(tuple(int(n) for n in sizes)))
+
+
+def saveable_model(model, lattice_cls, system_cls, kspace_cls, orbital_cls):
+    '''
+    Check that *tbkit.io.save_model* can store *model*.
+
+    :raises TypeError: model must be a Lattice, System or KSpace instance
+      (not an OrbitalSystem).
+    '''
+    if isinstance(model, orbital_cls) or not isinstance(model, (lattice_cls, system_cls, kspace_cls)):
+        raise TypeError('\n\nParameter model must be a Lattice, System or KSpace instance '
+                                 '(an OrbitalSystem or a driven model cannot be saved).\n')
+
+
+def file_path(path, var_name):
+    '''
+    Check a file name.
+
+    :raises TypeError: Parameter var_name must be a string or a path.
+    '''
+    if not (isinstance(path, str) or hasattr(path, "__fspath__")):
+        raise TypeError('\n\nParameter {} must be a string or a path.\n'.format(var_name))
+
+
+def model_archive(data, fmt, version):
+    '''
+    Check an archive read by *tbkit.io.load_model*.
+
+    :raises ValueError: Not a tbkit model archive, or a newer version.
+    '''
+    if 'format' not in data.files or str(data['format']) != fmt:
+        raise ValueError('\n\nThis file is not a tbkit model archive (format {}).\n'.format(fmt))
+    if int(data['version']) > version:
+        raise ValueError('\n\nThis archive has version {}; this tbkit reads versions up to {}: '
+                                   'upgrade tbkit.\n'.format(int(data['version']), version))
+
+
+def hr_header(tokens):
+    '''
+    Check the header of a Wannier90 ``_hr.dat`` file: num_wann, nrpts and
+    the nrpts degeneracy weights, as positive integers.
+
+    :raises ValueError: Not a Wannier90 _hr.dat file.
+    '''
+    try:
+        num_wann, nrpts = int(tokens[0]), int(tokens[1])
+        weights = [int(w) for w in tokens[2:2 + nrpts]]
+    except (IndexError, ValueError):
+        raise ValueError('\n\nNot a Wannier90 _hr.dat file: expected num_wann, nrpts and '
+                                   'the degeneracy weights after the header line.\n') from None
+    if num_wann < 1 or nrpts < 1 or len(weights) != nrpts or min(weights) < 1:
+        raise ValueError('\n\nNot a Wannier90 _hr.dat file: num_wann, nrpts and the '
+                                   'degeneracy weights must be positive integers.\n')
+
+
+def hr_body(n_tokens, nrpts, num_wann):
+    '''
+    Check the number of entries of a Wannier90 ``_hr.dat`` file.
+
+    :raises ValueError: The file must have nrpts * num_wann**2 lines of 7 numbers.
+    '''
+    if n_tokens != 7 * nrpts * num_wann ** 2:
+        raise ValueError('\n\nThe _hr.dat file must have nrpts * num_wann**2 = {} lines '
+                                   '"R1 R2 R3 m n Re Im" after the weights.\n'.format(nrpts * num_wann ** 2))
+
+
+def hr_blocks(ok):
+    '''
+    Check that the lines of a ``_hr.dat`` file come in blocks of num_wann**2
+    with the same lattice vector.
+
+    :raises ValueError: Lines of a lattice vector must be consecutive.
+    '''
+    if not ok:
+        raise ValueError('\n\nThe _hr.dat lines of each lattice vector R must be consecutive '
+                                   '(num_wann**2 lines per R).\n')
+
+
+def win_block(found):
+    '''
+    Check that a ``.win`` file has a ``unit_cell_cart`` block.
+
+    :raises ValueError: No unit_cell_cart block.
+    '''
+    if not found:
+        raise ValueError('\n\nThe .win file has no "begin unit_cell_cart ... end unit_cell_cart" block.\n')
+
+
+def win_cell(cell):
+    '''
+    Check the ``unit_cell_cart`` block of a ``.win`` file: three lines of
+    three real numbers.
+
+    :raises ValueError: unit_cell_cart must hold three vectors of three numbers.
+    '''
+    try:
+        ok = len(cell) == 3 and all(len(v) == 3 for v in cell) and \
+            all(np.isfinite([float(c) for v in cell for c in v]))
+    except ValueError:
+        ok = False
+    if not ok:
+        raise ValueError('\n\nThe unit_cell_cart block must hold three vectors of three real numbers.\n')
+
+
+def centres_count(n, num_wann):
+    '''
+    Check that a ``_centres.xyz`` file lists num_wann Wannier centres (X).
+
+    :raises ValueError: Too few Wannier centres.
+    '''
+    if n < num_wann:
+        raise ValueError('\n\nThe _centres.xyz file lists {} Wannier centres ("X"), '
+                                   'not {}.\n'.format(n, num_wann))
+
+
+def wannier_dim(dim):
+    '''
+    Check the dimension of a Wannier90 model.
+
+    :raises ValueError: dim must be 2 or 3.
+    '''
+    if isinstance(dim, bool) or dim not in (2, 3):
+        raise ValueError('\n\nParameter dim must be 2 or 3.\n')
+
+
+def win_given(win):
+    '''
+    Check that the lattice vectors can be found.
+
+    :raises ValueError: Give prim_vec or win.
+    '''
+    if win is None:
+        raise ValueError('\n\nGive the primitive vectors: prim_vec, or the .win file (win).\n')
+
+
+def layer_cell(cell, dim):
+    '''
+    Check that, for a 2D model, a1 and a2 lie in the (x, y) plane.
+
+    :raises ValueError: a1 and a2 must have no z component.
+    '''
+    if dim == 2 and np.any(np.abs(cell[:2, 2]) > 1e-8):
+        raise ValueError('\n\nFor dim=2, the first two lattice vectors must lie in the (x, y) plane.\n')
+
+
+def wannier_prim_vec(prim_vec, dim):
+    '''
+    Check that the primitive vectors are *dim* vectors of *dim* components.
+
+    :raises ValueError: prim_vec must hold dim vectors of dim components.
+    '''
+    if len(prim_vec) != dim or len(prim_vec[0]) != dim:
+        raise ValueError('\n\nParameter prim_vec must hold {0} vectors of {0} components.\n'.format(dim))
+    independent(prim_vec)
+
+
+def wannier_positions(shape, num_wann, dim):
+    '''
+    Check the orbital positions of a Wannier90 model.
+
+    :raises ValueError: positions must have shape (num_wann, dim) or (num_wann, 3).
+    '''
+    if len(shape) != 2 or shape[0] != num_wann or shape[1] not in (dim, 3):
+        raise ValueError('\n\nParameter positions must have shape ({0}, {1}) or ({0}, 3).\n'
+                                   .format(num_wann, dim))
+
+
+def wannier_tags(tags, num_wann):
+    '''
+    Check the sublattice tags of a Wannier90 model.
+
+    :raises TypeError: tags must be a list of one-character strings.
+    :raises ValueError: tags must have num_wann elements.
+    '''
+    if not isinstance(tags, list) or not all(isinstance(t, str) and len(t) == 1 for t in tags):
+        raise TypeError('\n\nParameter tags must be a list of one-character strings.\n')
+    if len(tags) != num_wann:
+        raise ValueError('\n\nParameter tags must have {} elements.\n'.format(num_wann))
+
+
+def layer_hoppings(h_max, tol):
+    '''
+    Check that a 2D model has no hopping between layers (R3 != 0).
+
+    :raises ValueError: Hoppings with R3 != 0 must vanish for dim=2.
+    '''
+    if h_max > tol:
+        raise ValueError('\n\nFor dim=2, the matrix elements with R3 != 0 must vanish '
+                                   '(largest: {:.3g}).\n'.format(h_max))
+
+
+def spinless(spin):
+    '''
+    Check that a KSpace model has no spin.
+
+    :raises ValueError: This needs a spinless model.
+    '''
+    if spin:
+        raise ValueError('\n\nThis needs a spinless model (spin=False): a System has one '
+                                   'orbital per site; use bridges.finite_model for spinful models.\n')

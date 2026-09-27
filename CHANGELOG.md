@@ -132,6 +132,49 @@ an entry in `docs/source/history.rst`:
   (2015-2018). The
   Peierls, Slater-Koster, TKNN and 2004 graphene entries now link examples
   of their own, so no example is shared between two entries.
+- **Hoppings by neighbour order in k-space.** `KSpace.set_hopping` and
+  `KSpace.set_overlap` accept the selectors of `System.set_hopping`
+  (`{'n', 't'}`, optionally `'ang'` and `'tag'`, in 1D, 2D and 3D, with
+  spin): the bonds of the infinite lattice are found from `unit_cell` and
+  `prim_vec` by the new `tbkit.neighbours` (`neighbour_shells`,
+  `neighbour_bonds`, `neighbour_hoppings`), with the conventions of
+  `System` (bond orientation, angles, tags); a negative angle addresses
+  the reversed bonds (non-reciprocal models with `hermitian=False`). The
+  explicit `{'i', 'j', 'R', 't'}` form is unchanged. Example:
+  `models/plot_neighbour_hoppings.py` (third-nearest-neighbour graphene
+  with overlaps, checked against closed-form energies at Gamma and K).
+- **Bridges between System and KSpace.** New `tbkit.bridges`:
+  `kspace_from_system` reads the Bloch model off a translation-invariant
+  `System` (open, or a torus with `periodic=True`; Hermitian or
+  non-reciprocal), `finite_model` returns the sparse Hamiltonian of a
+  finite sample of a `KSpace` model with its site positions and tags (spin
+  included), `finite_system` builds a ready-to-use `System` (open or
+  torus) whose `sys.hop` follows the conventions of `System.set_hopping`,
+  and `cell_orbitals` maps the sites of a finite lattice to unit-cell
+  orbitals and cells. Tests prove the round trip: the spectrum of a System
+  on an N1 x N2 (x N3) torus equals the KSpace bands on the same mesh.
+  Example: `models/plot_pipeline_bridges.py` (the Haldane model, set up
+  with the real-space selectors in both pipelines, on a 30 x 30 torus).
+- **Saving and loading models.** New `tbkit.io`: `save_model` writes a
+  `Lattice`, `System` or `KSpace` (onsite terms, hoppings, overlaps, spin,
+  non-reciprocal flag, sites) to a versioned `.npz` archive (format
+  `'tbkit-model'`, version 1, plain arrays, no pickle), and `load_model`
+  reads it back; round-trip tests reproduce every Hamiltonian bit for bit.
+  Example: `models/plot_save_load.py` (a spinful Kane-Mele model and a
+  disordered flake, saved and reloaded).
+- **Wannier90 import (maximally localized Wannier functions).**
+  `tbkit.io.read_wannier90` turns `seedname_hr.dat` (with its degeneracy
+  weights) into a `KSpace`, with the lattice vectors of `seedname.win`
+  (Angstrom or bohr) or given ones, the orbital positions of
+  `seedname_centres.xyz` (or given ones), tags, 2D layers (`dim=2`), a
+  hopping cutoff, and non-Hermitian files; `read_hr`, `read_win_cell` and
+  `read_centres` read the files. Tests use hand-written `_hr.dat` files
+  with known bands (a cubic lattice with a hopping split over degenerate
+  Wigner-Seitz vectors, graphene, a Hatano-Nelson chain). Example:
+  `models/plot_maximally_localized_wannier_functions.py`, reading
+  Wannier90-format graphene files shipped with it. History entry:
+  maximally localized Wannier functions (1997/2008).
+- `tbkit` exports `save_model`, `load_model` and `read_wannier90`.
 
 ### Fixed
 

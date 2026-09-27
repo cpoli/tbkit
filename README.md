@@ -103,6 +103,9 @@ topology alongside superconductivity.
 | `tbkit.bdg`                 | Bogoliubov-de Gennes Hamiltonians and pairings.         |
 | `tbkit.exceptional`         | Exceptional and diabolical points of 2D bands: vorticity, discriminant winding, EP finder, Fermi arcs, encircling. |
 | `tbkit.floquet`             | Floquet theory; `FloquetKSpace`/`DrivenKSpace` for driven Bloch models, `step_drive`, and the winding number of anomalous Floquet phases. |
+| `tbkit.neighbours`          | Neighbour shells of a periodic lattice; `KSpace.set_hopping` by neighbour order, angle and sublattice pair, as in `System`. |
+| `tbkit.bridges`             | Move a model between `System` and `KSpace` (open samples and tori). |
+| `tbkit.io`                  | Save and load `Lattice`/`System`/`KSpace` models (`.npz`); import Wannier90 `_hr.dat` models. |
 
 ## Install
 
@@ -281,6 +284,10 @@ thumbnailed example gallery under `docs/source/api/gallery/`.
 | [`hall_effects/plot_anomalous_hall_effect.py`](examples/hall_effects/plot_anomalous_hall_effect.py) | The anomalous Hall effect: sigma_xy(E_F) of the Haldane model, quantized at C in the gap, not in the bands. |
 | [`hall_effects/plot_anomalous_hall_disorder.py`](examples/hall_effects/plot_anomalous_hall_disorder.py) | The anomalous Hall plateau of a disordered Haldane torus, by the Kubo-Bastin kernel polynomial method. |
 | [`hall_effects/plot_intrinsic_spin_hall_effect.py`](examples/hall_effects/plot_intrinsic_spin_hall_effect.py) | The intrinsic spin Hall effect: the Kane-Mele plateau at e/2pi, and its departure from quantization under Rashba coupling. |
+| [`models/plot_neighbour_hoppings.py`](examples/models/plot_neighbour_hoppings.py) | Hoppings by neighbour order in k-space: third-nearest-neighbour graphene with overlaps. |
+| [`models/plot_pipeline_bridges.py`](examples/models/plot_pipeline_bridges.py) | From real space to k-space and back: the Haldane model's torus spectrum equals its mesh bands. |
+| [`models/plot_save_load.py`](examples/models/plot_save_load.py) | Saving and reloading models: identical Hamiltonians after a round trip through disk. |
+| [`models/plot_maximally_localized_wannier_functions.py`](examples/models/plot_maximally_localized_wannier_functions.py) | Maximally localized Wannier functions: graphene's pi bands from a Wannier90 `_hr.dat` file. |
 
 The `examples/` directory also has five older Jupyter notebooks (graphene
 flakes, kagome/Lieb/dumbbell lattices, disorder, strain, time propagation)

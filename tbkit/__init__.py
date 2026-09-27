@@ -33,3 +33,6 @@ from tbkit.floquet import FloquetKSpace, DrivenKSpace, StepDrive, step_drive
 from tbkit.meanfield import MeanFieldResult, hubbard_mean_field
 from tbkit.exceptional import ExceptionalPoints, Encircling, find_exceptional_points
 import tbkit.error_handling
+# Model I/O (tbkit.io): appended here to keep the list above untouched.
+from tbkit.io import save_model, load_model, read_wannier90
+__all__ += ["save_model", "load_model", "read_wannier90"]

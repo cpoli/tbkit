@@ -11,6 +11,7 @@ import scipy.sparse as sp
 import tbkit.error_handling as error_handling
 import tbkit.dos as dos
 import tbkit.occupation as occupation
+import tbkit.neighbours as neighbours
 from tbkit.lattice import Lattice
 
 
@@ -193,6 +194,16 @@ class KSpace():
               number (spin-independent hopping) or a 2x2 complex matrix (a
               general, possibly spin-mixing, hopping -- e.g. built from
               :data:`PAULI` for Rashba or intrinsic spin-orbit coupling).
+            *list_hop* may instead use the neighbour-order form of
+            *System.set_hopping*: dictionaries with keys ('n', 't') and
+            optionally 'ang' and/or 'tag' -- 'n' the neighbour order (1st,
+            2nd, ... shortest distance between orbitals of the infinite
+            lattice), 'ang' a bond angle in degrees, 'tag' a sublattice pair
+            such as ``'ab'``. The bonds are found from *unit_cell* and
+            *prim_vec* (in 1D, 2D and 3D) and turned into the explicit form
+            by *tbkit.neighbours.neighbour_hoppings* (see there for the bond
+            orientations; a negative angle addresses the reversed bonds).
+            A list uses one form or the other, not both.
         :param hermitian: Boolean. Default value True. If False, the Hermitian
             conjugates are *not* added: each dictionary is one matrix element
             :math:`H_{ij}(\mathbf{R})` only, so that non-reciprocal
@@ -200,6 +211,12 @@ class KSpace():
             explicitly, with its own amplitude.
 
         Example usage::
+
+            # graphene, by neighbour order: nearest (t) and next-nearest
+            # (t2) neighbours, as in System.set_hopping
+            gra.set_hopping([{'n': 1, 't': t}, {'n': 2, 't': t2}])
+            # square lattice, anisotropic nearest neighbours
+            sq.set_hopping([{'n': 1, 'ang': 0., 't': tx}, {'n': 1, 'ang': 90., 't': ty}])
 
             # 1D chain, nearest-neighbor hopping t between the only orbital
             # and its right neighbor:
@@ -209,8 +226,10 @@ class KSpace():
             chain_spin.set_hopping([{'i': 0, 'j': 0, 'R': (1,),
                                                     't': t*PAULI['0'] + 1j*alpha*PAULI['y']}])
         '''
-        error_handling.set_hopping_kspace(list_hop, self.n_sites, self.dim, self.spin)
         error_handling.boolean(hermitian, 'hermitian')
+        if error_handling.hopping_form(list_hop):
+            list_hop = neighbours.neighbour_hoppings(self.lat, list_hop, self.spin, hermitian)
+        error_handling.set_hopping_kspace(list_hop, self.n_sites, self.dim, self.spin)
         if not hermitian:
             self._nonreciprocal = True
         for dic in list_hop:
@@ -246,8 +265,11 @@ class KSpace():
         no longer symmetric about :math:`\epsilon`.) The topological tools use
         the Lowdin-orthonormalized states :math:`S^{1/2}v`.
 
-        :param list_hop: List of dictionaries ('i', 'j', 'R', 't'), see *set_hopping*.
+        :param list_hop: List of dictionaries ('i', 'j', 'R', 't'), or by
+            neighbour order ('n', 't', optionally 'ang', 'tag'), see *set_hopping*.
         '''
+        if error_handling.hopping_form(list_hop):
+            list_hop = neighbours.neighbour_hoppings(self.lat, list_hop, self.spin)
         error_handling.set_hopping_kspace(list_hop, self.n_sites, self.dim, self.spin)
         saved, self._hop = self._hop, []
         nonrec = self._nonreciprocal
