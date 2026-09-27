@@ -63,6 +63,22 @@ Sections
 - **floquet** -- periodically driven lattices: a Floquet Chern
   insulator made with circularly polarized light, and anomalous Floquet
   phases with edge states despite zero Chern numbers.
+- **models** -- building, bridging and saving models: hoppings by
+  neighbour order in k-space (third-nearest-neighbour graphene with
+  overlaps), and bridges between the real-space and k-space pipelines
+  (the Haldane model on a torus), models saved to and reloaded from
+  disk, and maximally localized Wannier functions: graphene's pi bands
+  imported from a Wannier90 file.
+- **higher_order** -- higher-order topology: the Benalcazar-Bernevig-Hughes
+  quadrupole insulator, its nested Wilson loop, zero-energy corner states
+  and fractional corner charges.
+- **moire** -- supercells, band unfolding and the spectral function of
+  disordered supercells, and twisted bilayers: the flat bands of
+  magic-angle twisted bilayer graphene.
+- **optics** -- the optical response of Bloch bands: the Kubo-Greenwood
+  conductivity and graphene's universal absorption, the Berry curvature
+  dipole of the nonlinear Hall effect, and the shift current of the bulk
+  photovoltaic effect.
 
 
 .. raw:: html
@@ -87,7 +103,9 @@ Correlations
 
 Interacting electrons, in the Hartree-Fock mean-field approximation of
 the Hubbard model: the magnetism of graphene's zigzag edges, and Lieb's
-theorem on the total spin of bipartite lattices.
+theorem on the total spin of bipartite lattices. The non-collinear
+mean field finds the 120-degree order of the frustrated triangular
+lattice.
 
 
 .. raw:: html
@@ -132,6 +150,23 @@ theorem on the total spin of bipartite lattices.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Lieb's Theorem: The Total Spin of Graphene Triangles</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="On a triangle, three antiparallel spins cannot all be satisfied: the antiferromagnet is frustrated. G. Wannier (1950) found that the Ising triangular antiferromagnet never orders; P. W. Anderson (1973) proposed that the quantum Heisenberg one is a spin liquid; the answer, settled numerically in the late 1980s (Huse and Elser 1988), is a compromise: the spins order non-collinearly, at 120 degrees from each other on the three sublattices, with zero total moment.">
+
+.. only:: html
+
+  .. image:: /api/gallery/correlations/images/thumb/sphx_glr_plot_noncollinear_120_degree_order_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/correlations/plot_noncollinear_120_degree_order`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Frustrated Magnetism: the 120-Degree Order of the Triangular Hubbard Model</div>
     </div>
 
 
@@ -214,6 +249,23 @@ Wannier-Stark ladder under a uniform lattice tilt.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Bloch Oscillations and the Wannier-Stark Ladder</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Propagation evolves a state in time (Crank-Nicolson, \hbar = 1). Two classic effects of lattice waves:">
+
+.. only:: html
+
+  .. image:: /api/gallery/dynamics/images/thumb/sphx_glr_plot_wavepacket_interference_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/dynamics/plot_wavepacket_interference`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Wave Propagation: Interference on a Ring and a Trapped Domain-Wall State</div>
     </div>
 
 
@@ -403,6 +455,48 @@ Kane-Mele model with its departure from quantization under Rashba coupling.
 
     </div>
 
+Higher-Order Topology
+---------------------
+
+Topological phases beyond dipoles: Wannier sectors, nested Wilson loops,
+the quantized quadrupole moment of the Benalcazar-Bernevig-Hughes model,
+and the zero-energy corner states and fractional corner charges it binds.
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In 2017 W. Benalcazar, B. A. Bernevig and T. L. Hughes showed that a crystal can carry a quantized electric quadrupole moment while having no dipole moment at all. Their model (BBH) has four orbitals per square cell, intra-cell hoppings \gamma, inter-cell hoppings \lambda, and a \pi flux through every plaquette. For |\gamma| &lt; |\lambda|:">
+
+.. only:: html
+
+  .. image:: /api/gallery/higher_order/images/thumb/sphx_glr_plot_quadrupole_insulator_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/higher_order/plot_quadrupole_insulator`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Quantized Electric Quadrupole Insulators: the Benalcazar-Bernevig-Hughes Model</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
 Large lattices
 --------------
 
@@ -531,6 +625,161 @@ fractal Hofstadter butterfly swept continuously in flux.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">The Peierls Substitution: Flux Through the Plaquettes, in Any Gauge</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+Building, Bridging and Saving Models
+------------------------------------
+
+Tools that make realistic models easy to build and move around: Bloch
+Hamiltonians set up by neighbour order (1st, 2nd, 3rd, ... neighbours) as
+in real space, bridges between the real-space :class:`~tbkit.system.System`
+and the reciprocal-space :class:`~tbkit.kspace.KSpace` pipelines, models
+saved to and loaded from disk, and tight-binding models imported from
+Wannier90's ``_hr.dat`` files.
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Marzari and Vanderbilt (1997) showed how to choose the gauge of the Bloch states so that their Fourier transforms, the Wannier functions |m\mathbf{R}\rangle, are as localized as possible. In that basis the first-principles Hamiltonian is a tight-binding model, H_{mn}(\mathbf{R}) = \langle m\mathbf{0}|H|n\mathbf{R}\rangle, whose hoppings decay quickly with distance. The Wannier90 code writes it to seedname_hr.dat, which tbkit.io.read_wannier90 turns into a KSpace, ready for every band and topology tool:">
+
+.. only:: html
+
+  .. image:: /api/gallery/models/images/thumb/sphx_glr_plot_maximally_localized_wannier_functions_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/models/plot_maximally_localized_wannier_functions`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Maximally Localized Wannier Functions: Graphene from a Wannier90 File</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Real-space models in tbkit address bonds by neighbour order: {&#x27;n&#x27;: 1} for nearest neighbours, {&#x27;n&#x27;: 2} for next-nearest ones, optionally narrowed by bond angle &#x27;ang&#x27; or sublattice pair &#x27;tag&#x27;. set_hopping (and set_overlap) accept the same selectors: the bonds of the infinite lattice are found from the unit cell and the primitive vectors (tbkit.neighbours.neighbour_bonds), and turned into the explicit {&#x27;i&#x27;, &#x27;j&#x27;, &#x27;R&#x27;, &#x27;t&#x27;} list (tbkit.neighbours.neighbour_hoppings).">
+
+.. only:: html
+
+  .. image:: /api/gallery/models/images/thumb/sphx_glr_plot_neighbour_hoppings_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/models/plot_neighbour_hoppings`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Hoppings by Neighbour Order in k-Space: Third-Nearest-Neighbour Graphene</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="tbkit has two pipelines: System diagonalizes a finite lattice in real space, KSpace the Bloch Hamiltonian H(\mathbf{k}) of the infinite one. tbkit.bridges moves a model between them:">
+
+.. only:: html
+
+  .. image:: /api/gallery/models/images/thumb/sphx_glr_plot_pipeline_bridges_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/models/plot_pipeline_bridges`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">From Real Space to k-Space and Back: the Haldane Model on a Torus</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="tbkit.io.save_model writes a Lattice, System or KSpace to a versioned .npz archive -- plain NumPy arrays, no pickle -- and tbkit.io.load_model reads it back. Onsite terms, hoppings, overlaps and spin are stored in binary, so the reloaded model reproduces the Hamiltonians bit for bit.">
+
+.. only:: html
+
+  .. image:: /api/gallery/models/images/thumb/sphx_glr_plot_save_load_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/models/plot_save_load`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Saving and Reloading Models: a Kane-Mele Model on Disk</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+Supercells and Moiré Structures
+-------------------------------
+
+Supercells of periodic models: band unfolding and the spectral function
+of disordered supercells, and the commensurate moiré cells of twisted
+bilayers, down to the flat bands of magic-angle twisted bilayer graphene.
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Disorder, defects and superstructures need a supercell, and a supercell folds the bands into a smaller Brillouin zone: N times more bands, most of them spectators. W. Ku, T. Berlijn and C.-C. Lee (2010), and V. Popescu and A. Zunger, unfolded them back: each supercell state |\mathbf{K}J\rangle gets the weight W_J(\mathbf{k}) = \sum_o|\langle\mathbf{k}o|\mathbf{K}J\rangle|^2 at every primitive \mathbf{k} folding onto \mathbf{K}, and the spectral function A(\mathbf{k},\omega) = \sum_J W_J(\mathbf{k}) \delta(\omega-E_J) -- what angle-resolved photoemission measures -- is drawn in the primitive zone again.">
+
+.. only:: html
+
+  .. image:: /api/gallery/moire/images/thumb/sphx_glr_plot_band_unfolding_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/moire/plot_band_unfolding`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Band Unfolding: the Effective Band Structure of a Disordered Supercell</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Twist two graphene sheets by a small angle \theta and a moiré pattern appears, with a period a/(2\sin\frac\theta2) of a hundred lattice constants. R. Bistritzer and A. H. MacDonald (2011) showed that the interlayer tunnelling w slows the Dirac electrons down,">
+
+.. only:: html
+
+  .. image:: /api/gallery/moire/images/thumb/sphx_glr_plot_magic_angle_twisted_bilayer_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/moire/plot_magic_angle_twisted_bilayer`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Magic-Angle Twisted Bilayer Graphene: Flat Moiré Bands</div>
     </div>
 
 
@@ -676,6 +925,83 @@ number of a line-gapped band.
 
     </div>
 
+Optics
+------
+
+Linear and nonlinear optical response of Bloch bands: the Kubo-Greenwood
+optical conductivity and the universal absorption of graphene, the Berry
+curvature dipole behind the nonlinear Hall effect, and the shift current
+of the bulk photovoltaic effect.
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A crystal without an inversion centre can turn light into a DC current with no junction: the bulk photovoltaic effect, seen in ferroelectrics since the 1970s (Glass, von der Linde and Negran 1974). Baltz and Kraut (1981), then Sipe and Shkrebtii (2000), traced its main part to a purely quantum-geometric mechanism: when light excites an electron from band n to band m, the electron&#x27;s centre of charge moves by the shift vector">
+
+.. only:: html
+
+  .. image:: /api/gallery/optics/images/thumb/sphx_glr_plot_bulk_photovoltaic_shift_current_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/optics/plot_bulk_photovoltaic_shift_current`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Bulk Photovoltaic Effect: the Shift Current of Gapped Graphene</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In 2008 Nair et al. held a suspended graphene membrane in front of a light source and found that one atomic layer absorbs \pi\alpha \approx 2.3\% of white light, with \alpha = e^2/4\pi\varepsilon_0\hbar c the fine-structure constant: no material parameter enters. The reason is graphene&#x27;s optical conductivity. Its massless Dirac electrons absorb at \hbar\omega through vertical transitions from -\hbar\omega/2 to +\hbar\omega/2, and the growing number of those transitions exactly compensates their weakening matrix elements, so">
+
+.. only:: html
+
+  .. image:: /api/gallery/optics/images/thumb/sphx_glr_plot_graphene_universal_absorption_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/optics/plot_graphene_universal_absorption`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Universal Absorption of Graphene: Opacity Defined by the Fine-Structure Constant</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A linear Hall response needs broken time-reversal symmetry: the Berry curvature \Omega(\mathbf{k}) is odd in \mathbf{k} and its integral over the occupied states vanishes. Sodemann and Fu (2015) noticed that its first moment need not vanish. In a DC field (or at frequency \omega), the shifted Fermi sea carries the Hall current">
+
+.. only:: html
+
+  .. image:: /api/gallery/optics/images/thumb/sphx_glr_plot_nonlinear_hall_berry_curvature_dipole_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/optics/plot_nonlinear_hall_berry_curvature_dipole`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Nonlinear Hall Effect: the Berry Curvature Dipole of a Tilted Dirac Cone</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
 Orbitals
 --------
 
@@ -765,7 +1091,8 @@ Superconductivity
 
 Superconductors in the Bogoliubov-de Gennes formalism: particle-hole
 symmetric spectra, and the Majorana zero modes at the ends of Kitaev's
-p-wave chain.
+p-wave chain. The self-consistent BCS gap equation in real space, with
+its universal ratio Delta(0)/T_c = 1.764 and the proximity effect.
 
 
 .. raw:: html
@@ -778,6 +1105,23 @@ p-wave chain.
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="J. Bardeen, L. Cooper and J. R. Schrieffer (1957) explained superconductivity by the pairing of electrons with opposite momenta and spins into a condensate, whose gap \Delta solves the self-consistent gap equation">
+
+.. only:: html
+
+  .. image:: /api/gallery/superconductivity/images/thumb/sphx_glr_plot_bcs_gap_equation_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/superconductivity/plot_bcs_gap_equation`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The BCS Gap Equation: Delta(T) and the Universal Ratio Delta(0)/T_c = 1.764</div>
+    </div>
+
 
 .. raw:: html
 
@@ -885,6 +1229,40 @@ eigenstate-intensity plots.
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Every real-space model starts from a finite set of sites. A Lattice repeats a unit cell along its primitive vectors (get_lattice), and the result can be cut and combined:">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_building_finite_lattices_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_building_finite_lattices`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Building Finite Lattices: Unit Cells, Cuts, and Lattice Arithmetic</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Local modifications of a finite model -- the business of remove_sites, set_onsite_def and change_hopping_ellipse -- and two exact consequences on a bipartite lattice:">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_defects_and_impurities_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_defects_and_impurities`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Defects and Impurities in a Graphene Flake: Vacancy Zero Modes and Bound States</div>
+    </div>
+
 
 .. raw:: html
 
@@ -1222,6 +1600,11 @@ leads: Landauer's formula, in which the conductance is a transmission
 probability, and the quantized conductance steps of a quantum point
 contact.
 
+Multi-terminal devices: Landauer-Buttiker conductance matrices and the
+quantized resistances of a Hall bar with its edge channels; bond
+currents; shot noise and the Fano factor; and the recursive Green's
+function for long wires.
+
 
 .. raw:: html
 
@@ -1233,6 +1616,23 @@ contact.
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Buttiker (1986) wrote the currents of a phase-coherent conductor with many leads as I_p = \frac{e^2}{h}\sum_q G_{pq}V_q, from the transmissions between leads, and treated voltage probes as leads that draw no net current. In 1988 he applied it to the quantum Hall effect: in a strong field the current flows in \nu chiral edge channels, one per filled Landau level, which carry electrons from each contact to the next one downstream without backscattering. The Landauer-Buttiker equations then give, for any sample shape and any probes,">
+
+.. only:: html
+
+  .. image:: /api/gallery/transport/images/thumb/sphx_glr_plot_hall_bar_edge_channels_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/transport/plot_hall_bar_edge_channels`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Buttiker's Edge Channels: the Quantized Resistances of a Hall Bar</div>
+    </div>
+
 
 .. raw:: html
 
@@ -1248,6 +1648,40 @@ contact.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">The Landauer Formula: Quantized Conductance of a Point Contact</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The Landauer transmission of a device needs its Green&#x27;s function between the two leads. Inverting the whole device matrix costs N^3 for N sites, which rules out the long samples in which localization shows. In 1981 Thouless and Kirkpatrick, Lee and Fisher, and MacKinnon and Kramer cut the sample into slices coupled only to their neighbours and added them one at a time,">
+
+.. only:: html
+
+  .. image:: /api/gallery/transport/images/thumb/sphx_glr_plot_recursive_green_function_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/transport/plot_recursive_green_function`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Recursive Green's Function: Localization Length of Long Disordered Wires</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A current made of discrete charges fluctuates: for independent electrons crossing a tunnel barrier, Schottky&#x27;s Poisson noise S = 2eI. In a phase-coherent conductor the Pauli principle correlates the electrons, and Lesovik (1989) and Buttiker (1990) found the zero-temperature noise from the transmission eigenvalues T_n of the scattering channels,">
+
+.. only:: html
+
+  .. image:: /api/gallery/transport/images/thumb/sphx_glr_plot_shot_noise_fano_factor_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/transport/plot_shot_noise_fano_factor`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Shot Noise: the Fano Factor of Ballistic, Tunnel and Diffusive Conductors</div>
     </div>
 
 
@@ -1269,9 +1703,13 @@ contact.
    /api/gallery/flat_bands/index.rst
    /api/gallery/floquet/index.rst
    /api/gallery/hall_effects/index.rst
+   /api/gallery/higher_order/index.rst
    /api/gallery/large_scale/index.rst
    /api/gallery/magnetic_field/index.rst
+   /api/gallery/models/index.rst
+   /api/gallery/moire/index.rst
    /api/gallery/non_hermitian/index.rst
+   /api/gallery/optics/index.rst
    /api/gallery/orbitals/index.rst
    /api/gallery/strain/index.rst
    /api/gallery/superconductivity/index.rst

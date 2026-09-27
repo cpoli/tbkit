@@ -1,0 +1,972 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tbkit.moire &#8212; tbkit 0.4.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+
+    <script src="../../_static/documentation_options.js?v=bd778e0b"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tbkit/moire';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../_static/js/force_light.js?v=8e7666d6"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.4" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../_static/tbkit_logo.png" class="logo__image only-light" alt="tbkit logo"/>
+    <img src="../../_static/tbkit_logo.png" class="logo__image only-dark pst-js-only" alt="tbkit logo"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tbkit.html">
+    tbkit package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tbkit.html">
+    tbkit package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tbkit.moire</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for tbkit.moire</h1><div class="highlight"><pre>
+<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Supercells, band unfolding and moiré bilayers.</span>
+
+<span class="sd">* :func:`supercell` repeats a periodic model (:class:`tbkit.kspace.KSpace`)</span>
+<span class="sd">  in a larger cell spanned by integer combinations of its primitive vectors,</span>
+<span class="sd">  :math:`\mathbf{A}_i = \sum_j M_{ij}\mathbf{a}_j`: the natural home of</span>
+<span class="sd">  disorder, defects and superstructures that the primitive cell cannot hold.</span>
+<span class="sd">* :func:`unfold` and :func:`spectral_function` project the supercell</span>
+<span class="sd">  eigenstates back onto the primitive Brillouin zone (Ku, Berlijn and Lee,</span>
+<span class="sd">  Phys. Rev. Lett. 104, 216401 (2010); Popescu and Zunger, Phys. Rev. B</span>
+<span class="sd">  85, 085201 (2012)): the weight of state :math:`|\mathbf{K}J\rangle` at the</span>
+<span class="sd">  primitive :math:`\mathbf{k}` (folding onto :math:`\mathbf{K}`) is</span>
+
+<span class="sd">  .. math::</span>
+
+<span class="sd">      W_J(\mathbf{k}) = \frac{1}{N}\sum_o\Big|\sum_{m=1}^{N}</span>
+<span class="sd">      e^{-i\mathbf{k}\cdot\mathbf{r}_m}\,\psi_J(m, o)\Big|^2\, ,</span>
+
+<span class="sd">  :math:`\mathbf{r}_m` the origins of the :math:`N` primitive cells in the</span>
+<span class="sd">  supercell and :math:`o` the primitive orbitals, so that</span>
+<span class="sd">  :math:`A(\mathbf{k},\omega) = \sum_J W_J(\mathbf{k})\,\delta(\omega - E_J)`.</span>
+<span class="sd">  A pristine supercell unfolds exactly onto the primitive bands</span>
+<span class="sd">  (:math:`W = 1` on them, 0 elsewhere); disorder smears them.</span>
+<span class="sd">* :func:`twisted_bilayer` builds the commensurate supercells of two</span>
+<span class="sd">  honeycomb (twisted bilayer graphene) or square layers twisted by</span>
+<span class="sd">  :math:`\theta`, with every hopping a function of the distance</span>
+<span class="sd">  (:func:`pz_hopping`, the Slater-Koster :math:`p_z` form of Moon and</span>
+<span class="sd">  Koshino, Phys. Rev. B 85, 195458 (2012), by default).</span>
+<span class="sd">  :func:`magic_angle_parameter` gives the Bistritzer-MacDonald</span>
+<span class="sd">  :math:`\alpha = w/\hbar v k_\theta` and Fermi velocity</span>
+<span class="sd">  :math:`v^*/v = (1-3\alpha^2)/(1+6\alpha^2)` of the same model.</span>
+
+<span class="sd">Every Bloch matrix comes from :meth:`KSpace._bloch_ham &lt;tbkit.kspace.KSpace&gt;`</span>
+<span class="sd">(the supercells are ordinary **KSpace** models: *k_path*, *mesh_bands*,</span>
+<span class="sd">*finite_ham*, the topology tools all apply).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">NDArray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">quad</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">cKDTree</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">j0</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.error_handling</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">error_handling</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">KSpace</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.lattice</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lattice</span>
+
+
+<span class="n">PI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+
+
+<div class="viewcode-block" id="SupercellKSpace">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.moire.SupercellKSpace">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SupercellKSpace</span><span class="p">(</span><span class="n">KSpace</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    A **KSpace** made of :math:`N` copies of a primitive model (see</span>
+<span class="sd">    *supercell*). Orbital *o* of primitive cell *m* is orbital</span>
+<span class="sd">    ``m*prim.norb + o``.</span>
+
+<span class="sd">    :ivar prim: **KSpace** instance. The primitive model.</span>
+<span class="sd">    :ivar matrix: Integer ndarray, shape (dim, dim). Supercell matrix *M*.</span>
+<span class="sd">    :ivar cells: Real ndarray, shape (N, space_dim). Origins</span>
+<span class="sd">        :math:`\mathbf{r}_m` of the primitive cells in the supercell.</span>
+<span class="sd">    :ivar n_cells: Integer. :math:`N = |\det M|`.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="n">Lattice</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">prim</span><span class="p">:</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">matrix</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">cells</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">spin</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prim</span> <span class="o">=</span> <span class="n">prim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cells</span> <span class="o">=</span> <span class="n">cells</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_cells</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="MoireKSpace">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.moire.MoireKSpace">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MoireKSpace</span><span class="p">(</span><span class="n">KSpace</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    A **KSpace** of a twisted bilayer (see *twisted_bilayer*): the orbitals</span>
+<span class="sd">    of layer 0 (tags &#39;a&#39;, &#39;b&#39;, rotated by :math:`-\theta/2`) then those of</span>
+<span class="sd">    layer 1 (tags &#39;c&#39;, &#39;d&#39;, rotated by :math:`+\theta/2`, a height *d*</span>
+<span class="sd">    above).</span>
+
+<span class="sd">    :ivar theta: Real number. Twist angle, in radians.</span>
+<span class="sd">    :ivar layer: Integer ndarray. Layer (0 or 1) of every orbital.</span>
+<span class="sd">    :ivar z: Real ndarray. Height of every orbital.</span>
+<span class="sd">    :ivar n_layer_cells: Integer. Primitive cells per layer in the supercell.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="n">Lattice</span><span class="p">,</span> <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">n_layer_cells</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_layer_cells</span> <span class="o">=</span> <span class="n">n_layer_cells</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_inner_cells</span><span class="p">(</span><span class="n">matrix</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Integer lattice points n (rows) inside the supercell</span>
+<span class="sd">    spanned by the rows of *matrix*: n M^-1 in [0, 1)^dim, sorted.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+    <span class="n">corners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="o">*</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="n">dim</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">matrix</span>
+    <span class="n">ranges</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">corners</span><span class="p">[:,</span> <span class="n">d</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">corners</span><span class="p">[:,</span> <span class="n">d</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)]</span>
+    <span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="o">*</span><span class="n">ranges</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">frac</span> <span class="o">=</span> <span class="n">pts</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-9</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">((</span><span class="n">frac</span> <span class="o">&gt;</span> <span class="o">-</span><span class="n">eps</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">frac</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">eps</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pts</span><span class="p">[</span><span class="n">keep</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="supercell">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.moire.supercell">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">supercell</span><span class="p">(</span><span class="n">ks</span><span class="p">:</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">matrix</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SupercellKSpace</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the supercell of a periodic model spanned by</span>
+<span class="sd">    :math:`\mathbf{A}_i = \sum_j M_{ij}\mathbf{a}_j`, a **KSpace** whose unit</span>
+<span class="sd">    cell holds the :math:`N = |\det M|` primitive cells inside it. The bands</span>
+<span class="sd">    of the supercell are those of the primitive model folded into the</span>
+<span class="sd">    smaller Brillouin zone; *unfold* undoes the folding. Break the</span>
+<span class="sd">    translation symmetry afterwards by changing the supercell&#39;s</span>
+<span class="sd">    ``onsite`` array (one entry per orbital), e.g. with random energies.</span>
+
+<span class="sd">    :param ks: **KSpace** instance (any dimension; spinful or not).</span>
+<span class="sd">    :param matrix: Integer array, shape (dim, dim), nonzero determinant</span>
+<span class="sd">        (an integer *n* in 1D is also accepted).</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **sc** -- :class:`SupercellKSpace` instance, ``N*ks.norb`` orbitals:</span>
+<span class="sd">          orbital *o* of cell *m* (origin ``sc.cells[m]``) is ``m*ks.norb + o``.</span>
+
+<span class="sd">    Example usage::</span>
+
+<span class="sd">        # a 3 x 3 supercell of graphene, 18 orbitals</span>
+<span class="sd">        sc = supercell(gra, [[3, 0], [0, 3]])</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">kspace</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">KSpace</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">matrix</span> <span class="o">=</span> <span class="p">[[</span><span class="n">matrix</span><span class="p">]]</span>
+    <span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">supercell_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">ks</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+    <span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">prim_vec</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+    <span class="n">cells</span> <span class="o">=</span> <span class="n">_inner_cells</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+    <span class="n">origins</span> <span class="o">=</span> <span class="n">cells</span> <span class="o">@</span> <span class="n">a</span>
+    <span class="n">cell</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">origins</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">dic</span> <span class="ow">in</span> <span class="n">ks</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">unit_cell</span><span class="p">:</span>
+            <span class="n">cell</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="n">dic</span><span class="p">[</span><span class="s1">&#39;tag&#39;</span><span class="p">],</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">&#39;r0&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="n">r</span><span class="p">)})</span>
+    <span class="n">big</span> <span class="o">=</span> <span class="n">matrix</span> <span class="o">@</span> <span class="n">a</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">Lattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="n">cell</span><span class="p">,</span> <span class="n">prim_vec</span><span class="o">=</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">big</span><span class="p">])</span>
+    <span class="n">sc</span> <span class="o">=</span> <span class="n">SupercellKSpace</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">ks</span><span class="o">.</span><span class="n">spin</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">origins</span><span class="p">)</span>
+    <span class="n">n_cells</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span>
+    <span class="n">lookup</span> <span class="o">=</span> <span class="p">{</span><span class="nb">tuple</span><span class="p">(</span><span class="n">c</span><span class="p">):</span> <span class="n">m</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cells</span><span class="p">)}</span>
+    <span class="n">inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+    <span class="n">rec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">rec_vec</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">fold</span><span class="p">(</span><span class="n">hops</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">R_cart</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">hops</span><span class="p">:</span>
+            <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">rec</span> <span class="o">@</span> <span class="n">R_cart</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">PI</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="n">cells</span> <span class="o">+</span> <span class="n">R</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="n">shift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">target</span> <span class="o">@</span> <span class="n">inv</span> <span class="o">+</span> <span class="mf">1e-9</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">inner</span> <span class="o">=</span> <span class="n">target</span> <span class="o">-</span> <span class="n">shift</span> <span class="o">@</span> <span class="n">matrix</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_cells</span><span class="p">):</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">m</span> <span class="o">*</span> <span class="n">ks</span><span class="o">.</span><span class="n">norb</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">lookup</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">inner</span><span class="p">[</span><span class="n">m</span><span class="p">])]</span> <span class="o">*</span> <span class="n">ks</span><span class="o">.</span><span class="n">norb</span> <span class="o">+</span> <span class="n">j</span><span class="p">,</span>
+                                 <span class="n">shift</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">@</span> <span class="n">big</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="n">sc</span><span class="o">.</span><span class="n">_hop</span> <span class="o">=</span> <span class="n">fold</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">_hop</span><span class="p">)</span>
+    <span class="n">sc</span><span class="o">.</span><span class="n">_overlap_hop</span> <span class="o">=</span> <span class="n">fold</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">_overlap_hop</span><span class="p">)</span>
+    <span class="n">sc</span><span class="o">.</span><span class="n">_nonreciprocal</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">_nonreciprocal</span>
+    <span class="n">sc</span><span class="o">.</span><span class="n">onsite</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">onsite</span><span class="p">,</span> <span class="n">n_cells</span><span class="p">)</span>
+    <span class="n">sc</span><span class="o">.</span><span class="n">_onsite_offdiag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n_cells</span><span class="p">),</span> <span class="n">ks</span><span class="o">.</span><span class="n">_onsite_offdiag</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sc</span></div>
+
+
+
+<div class="viewcode-block" id="unfold">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.moire.unfold">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">unfold</span><span class="p">(</span><span class="n">sc</span><span class="p">:</span> <span class="n">SupercellKSpace</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Unfold the bands of a supercell onto k-points of the primitive</span>
+<span class="sd">    Brillouin zone (see the module docstring): diagonalize the supercell</span>
+<span class="sd">    Hamiltonian at each primitive :math:`\mathbf{k}` (which folds onto</span>
+<span class="sd">    itself modulo the supercell reciprocal lattice), and weigh each</span>
+<span class="sd">    eigenstate by its overlap with the primitive Bloch states at</span>
+<span class="sd">    :math:`\mathbf{k}`. The weights at one :math:`\mathbf{k}` add up to the</span>
+<span class="sd">    number of primitive orbitals; for a pristine supercell they are 1 on</span>
+<span class="sd">    the primitive bands :math:`E_n(\mathbf{k})` and 0 on the others.</span>
+
+<span class="sd">    :param sc: :class:`SupercellKSpace` instance (Hermitian, without overlap).</span>
+<span class="sd">    :param ks: Real array, shape (nk, dim). Primitive k-points, in the</span>
+<span class="sd">        coordinates of ``sc.prim.get_ham``.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **en** -- Real ndarray, shape (nk, sc.norb). Supercell energies at each k.</span>
+<span class="sd">        * **weights** -- Real ndarray, shape (nk, sc.norb). Spectral weights :math:`W_J(\mathbf{k})`.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">supercell_model</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">SupercellKSpace</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">hermitian_kspace</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">is_hermitian</span><span class="p">(),</span> <span class="n">sc</span><span class="o">.</span><span class="n">_overlap_hop</span><span class="p">)</span>
+    <span class="n">ks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">))</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">ks</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+    <span class="n">k_cart</span> <span class="o">=</span> <span class="n">ks</span> <span class="o">@</span> <span class="n">sc</span><span class="o">.</span><span class="n">prim</span><span class="o">.</span><span class="n">k_basis</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">en</span><span class="p">,</span> <span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">_bloch_ham</span><span class="p">(</span><span class="n">k_cart</span><span class="p">))</span>
+    <span class="n">norb</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">prim</span><span class="o">.</span><span class="n">norb</span>
+    <span class="n">psi</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ks</span><span class="p">),</span> <span class="n">sc</span><span class="o">.</span><span class="n">n_cells</span><span class="p">,</span> <span class="n">norb</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">norb</span><span class="p">)</span>
+    <span class="n">phase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">k_cart</span> <span class="o">@</span> <span class="n">sc</span><span class="o">.</span><span class="n">cells</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>  <span class="c1"># (nk, N)</span>
+    <span class="n">amp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;km,kmos-&gt;kos&#39;</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">psi</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">amp</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">sc</span><span class="o">.</span><span class="n">n_cells</span>
+    <span class="k">return</span> <span class="n">en</span><span class="p">,</span> <span class="n">weights</span></div>
+
+
+
+<div class="viewcode-block" id="spectral_function">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.moire.spectral_function">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">spectral_function</span><span class="p">(</span>
+    <span class="n">sc</span><span class="p">:</span> <span class="n">SupercellKSpace</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">broadening</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">kernel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;lorentzian&#39;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the unfolded spectral function of a supercell,</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        A(\mathbf{k}, \omega) = \sum_J W_J(\mathbf{k})\, g(\omega - E_J)\, ,</span>
+
+<span class="sd">    with the weights of *unfold* and a normalized kernel *g* (Lorentzian or</span>
+<span class="sd">    Gaussian of width *broadening*), so that :math:`\int A\,d\omega` is</span>
+<span class="sd">    the number of primitive orbitals. For a disordered supercell, average</span>
+<span class="sd">    it over disorder configurations.</span>
+
+<span class="sd">    :param sc: :class:`SupercellKSpace` instance.</span>
+<span class="sd">    :param ks: Real array, shape (nk, dim). Primitive k-points.</span>
+<span class="sd">    :param energies: Real array. Energies :math:`\omega`.</span>
+<span class="sd">    :param broadening: Positive real. Default value 0.05. Kernel width.</span>
+<span class="sd">    :param kernel: &#39;lorentzian&#39; or &#39;gaussian&#39;. Default value &#39;lorentzian&#39;.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **A** -- Real ndarray, shape (nk, len(energies)).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">))</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray_empty</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="s1">&#39;energies&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">broadening</span><span class="p">,</span> <span class="s1">&#39;broadening&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">dos_kernel</span><span class="p">(</span><span class="n">kernel</span><span class="p">)</span>
+    <span class="n">en</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">unfold</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">ks</span><span class="p">)</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">energies</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">en</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="k">if</span> <span class="n">kernel</span> <span class="o">==</span> <span class="s1">&#39;gaussian&#39;</span><span class="p">:</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">diff</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">broadening</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">broadening</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">PI</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">broadening</span> <span class="o">/</span> <span class="n">PI</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">diff</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">broadening</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;kej,kj-&gt;ke&#39;</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="pz_hopping">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.moire.pz_hopping">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pz_hopping</span><span class="p">(</span>
+    <span class="n">d</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">t_pi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.7</span><span class="p">,</span> <span class="n">t_sigma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.48</span><span class="p">,</span> <span class="n">a0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.142</span><span class="p">,</span>
+    <span class="n">d0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.335</span><span class="p">,</span> <span class="n">delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0453</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the hopping between two :math:`p_z` orbitals a vector</span>
+<span class="sd">    :math:`\mathbf{d}` apart, in the Slater-Koster form of Moon and Koshino</span>
+<span class="sd">    (Phys. Rev. B 85, 195458 (2012)), used for twisted bilayer graphene:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        t(\mathbf{d}) = V_{pp\pi}(d)\Big[1-\Big(\frac{d_z}{d}\Big)^2\Big]</span>
+<span class="sd">        + V_{pp\sigma}(d)\Big(\frac{d_z}{d}\Big)^2\, ,\quad</span>
+<span class="sd">        V_{pp\pi} = t_\pi e^{-(d-a_0)/\delta}\, ,\quad</span>
+<span class="sd">        V_{pp\sigma} = t_\sigma e^{-(d-d_0)/\delta}\, .</span>
+
+<span class="sd">    In-plane it is :math:`t_\pi` between nearest neighbours and decays with</span>
+<span class="sd">    distance; between the layers of AA-stacked graphene it is</span>
+<span class="sd">    :math:`t_\sigma`. Defaults: graphene, in eV and nm (:math:`\delta =</span>
+<span class="sd">    0.184\,a`, :math:`a = 0.246` nm).</span>
+
+<span class="sd">    :param d: Real array, shape (n, 3). Bond vectors.</span>
+<span class="sd">    :param t_pi: Real number. Default value -2.7.</span>
+<span class="sd">    :param t_sigma: Real number. Default value 0.48.</span>
+<span class="sd">    :param a0: Positive real. Default value 0.142. In-plane nearest-neighbour distance.</span>
+<span class="sd">    :param d0: Positive real. Default value 0.335. Interlayer distance.</span>
+<span class="sd">    :param delta: Positive real. Default value 0.0453. Decay length.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **t** -- Real ndarray, shape (n,).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">))</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">bond_vectors</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">t_pi</span><span class="p">,</span> <span class="s1">&#39;t_pi&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">t_sigma</span><span class="p">,</span> <span class="s1">&#39;t_sigma&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">val</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">((</span><span class="n">a0</span><span class="p">,</span> <span class="s1">&#39;a0&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="s1">&#39;d0&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="s1">&#39;delta&#39;</span><span class="p">)):</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">c2</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="n">r</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">t_pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="n">a0</span><span class="p">)</span> <span class="o">/</span> <span class="n">delta</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">c2</span><span class="p">)</span> <span class="o">+</span> <span class="n">t_sigma</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="n">d0</span><span class="p">)</span> <span class="o">/</span> <span class="n">delta</span><span class="p">)</span> <span class="o">*</span> <span class="n">c2</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_twist_matrices</span><span class="p">(</span><span class="n">m</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">lattice</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Supercell matrices of the two layers: the rows are the</span>
+<span class="sd">    moire vectors in units of each layer&#39;s primitive vectors.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">lattice</span> <span class="o">==</span> <span class="s1">&#39;honeycomb&#39;</span><span class="p">:</span>  <span class="c1"># R60 a1 = a2, R60 a2 = a2 - a1</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]),</span>
+                  <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">m</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]))</span>
+    <span class="c1"># square: R90 a1 = a2, R90 a2 = -a1</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">m</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_layer_lattice</span><span class="p">(</span><span class="n">lattice</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Primitive vectors, orbital positions and tags of one layer.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">lattice</span> <span class="o">==</span> <span class="s1">&#39;honeycomb&#39;</span><span class="p">:</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">a</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">dx</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="n">dx</span><span class="p">,</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">a</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="n">dx</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">a</span><span class="p">]]),</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">a</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="n">a</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]]),</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="commensurate_angle">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.moire.commensurate_angle">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">commensurate_angle</span><span class="p">(</span><span class="n">m</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">lattice</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;honeycomb&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the commensurate twist angle :math:`\theta_m` of two layers: the</span>
+<span class="sd">    rotation that maps the lattice vector :math:`(m+1)\mathbf{a}_1 + m\mathbf{a}_2`</span>
+<span class="sd">    onto :math:`m\mathbf{a}_1 + (m+1)\mathbf{a}_2`,</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \cos\theta_m = \frac{3m^2+3m+1/2}{3m^2+3m+1}\ \text{(honeycomb)},\qquad</span>
+<span class="sd">        \cos\theta_m = \frac{2m(m+1)}{2m^2+2m+1}\ \text{(square)}</span>
+
+<span class="sd">    (Lopes dos Santos, Peres and Castro Neto, Phys. Rev. B 86, 155449</span>
+<span class="sd">    (2012)). The moiré cell holds :math:`3m^2+3m+1` (honeycomb) or</span>
+<span class="sd">    :math:`2m^2+2m+1` (square) primitive cells per layer; :math:`m = 31`</span>
+<span class="sd">    gives graphene&#39;s first magic angle, :math:`\theta \approx 1.05°`.</span>
+
+<span class="sd">    :param m: Positive integer.</span>
+<span class="sd">    :param lattice: &#39;honeycomb&#39; or &#39;square&#39;. Default value &#39;honeycomb&#39;.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **theta** -- Real number, in radians.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">twist_lattice</span><span class="p">(</span><span class="n">lattice</span><span class="p">)</span>
+    <span class="n">a1</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_twist_matrices</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">lattice</span><span class="p">)</span>
+    <span class="n">prim</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_layer_lattice</span><span class="p">(</span><span class="n">lattice</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
+    <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">a1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">@</span> <span class="n">prim</span><span class="p">,</span> <span class="n">a1</span><span class="p">[</span><span class="mi">0</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">@</span> <span class="n">prim</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span> <span class="o">@</span> <span class="n">w</span><span class="p">)))</span></div>
+
+
+
+<div class="viewcode-block" id="twisted_bilayer">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.moire.twisted_bilayer">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">twisted_bilayer</span><span class="p">(</span>
+    <span class="n">m</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">lattice</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;honeycomb&#39;</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.142</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.335</span><span class="p">,</span>
+    <span class="n">hopping</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">NDArray</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">interlayer_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MoireKSpace</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the commensurate twisted bilayer of two honeycomb or square layers,</span>
+<span class="sd">    twisted by :math:`\theta_m` (see *commensurate_angle*) about a common</span>
+<span class="sd">    site (AA stacking at the origin): a **KSpace** with the moiré cell as</span>
+<span class="sd">    unit cell, and every hopping, within a layer and between the layers,</span>
+<span class="sd">    given by the function *hopping* of the bond vector</span>
+<span class="sd">    :math:`\mathbf{d} = (d_x, d_y, d_z)`, for all bonds shorter than</span>
+<span class="sd">    *cutoff* (periodic images included).</span>
+
+<span class="sd">    Near the first magic angle (:math:`\theta \approx 1.05°` for graphene,</span>
+<span class="sd">    :math:`m = 31`, 11908 orbitals) the two bands at charge neutrality</span>
+<span class="sd">    become almost flat (Bistritzer and MacDonald, PNAS 108, 12233 (2011);</span>
+<span class="sd">    Cao et al., Nature 556, 43 (2018)). The physics depends on the ratio</span>
+<span class="sd">    :math:`\alpha = w/\hbar v k_\theta` only (see *magic_angle_parameter*),</span>
+<span class="sd">    so *interlayer_scale* (which multiplies every interlayer hopping)</span>
+<span class="sd">    moves the magic angle to larger angles and smaller cells.</span>
+
+<span class="sd">    :param m: Positive integer. See *commensurate_angle*.</span>
+<span class="sd">    :param lattice: &#39;honeycomb&#39; or &#39;square&#39;. Default value &#39;honeycomb&#39;.</span>
+<span class="sd">    :param a: Positive real. Default value 0.142 (graphene, nm). Nearest-neighbour distance.</span>
+<span class="sd">    :param d: Positive real. Default value 0.335 (nm). Interlayer distance.</span>
+<span class="sd">    :param hopping: Callable. Default value None (*pz_hopping*). Maps bond</span>
+<span class="sd">        vectors, shape (n, 3), to hoppings, shape (n,).</span>
+<span class="sd">    :param cutoff: Positive real. Default value None (3.8 *a*, between the</span>
+<span class="sd">        honeycomb neighbour shells at :math:`\sqrt{13}a` and :math:`4a`, so</span>
+<span class="sd">        that no shell is cut by rounding). Longest bond.</span>
+<span class="sd">    :param interlayer_scale: Positive real. Default value 1. Factor on the</span>
+<span class="sd">        interlayer hoppings.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **tbl** -- :class:`MoireKSpace` instance.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">twist_lattice</span><span class="p">(</span><span class="n">lattice</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">hopping</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">hopping</span> <span class="o">=</span> <span class="n">pz_hopping</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">is_callable</span><span class="p">(</span><span class="n">hopping</span><span class="p">,</span> <span class="s1">&#39;hopping&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cutoff</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cutoff</span> <span class="o">=</span> <span class="mf">3.8</span> <span class="o">*</span> <span class="n">a</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">cutoff</span><span class="p">,</span> <span class="s1">&#39;cutoff&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">interlayer_scale</span><span class="p">,</span> <span class="s1">&#39;interlayer_scale&#39;</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">commensurate_angle</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">lattice</span><span class="p">)</span>
+    <span class="n">prim</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">tags</span> <span class="o">=</span> <span class="n">_layer_lattice</span><span class="p">(</span><span class="n">lattice</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="n">mats</span> <span class="o">=</span> <span class="n">_twist_matrices</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">lattice</span><span class="p">)</span>
+    <span class="n">pos</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">cell_tags</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">sign</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">mats</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">))):</span>
+        <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">sign</span> <span class="o">*</span> <span class="n">theta</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">sign</span> <span class="o">*</span> <span class="n">theta</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">rot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span><span class="p">],</span> <span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="p">]])</span>
+        <span class="n">origins</span> <span class="o">=</span> <span class="n">_inner_cells</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span> <span class="o">@</span> <span class="n">prim</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="n">origins</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">tau</span><span class="p">[</span><span class="kc">None</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">@</span> <span class="n">rot</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">pos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">z</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">l</span> <span class="o">*</span> <span class="n">d</span><span class="p">))</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">l</span><span class="p">))</span>
+        <span class="n">cell_tags</span> <span class="o">+=</span> <span class="p">[</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">origins</span><span class="p">)</span>
+        <span class="n">big</span> <span class="o">=</span> <span class="n">mat</span> <span class="o">@</span> <span class="n">prim</span> <span class="o">@</span> <span class="n">rot</span><span class="o">.</span><span class="n">T</span>
+        <span class="k">if</span> <span class="n">l</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">moire</span> <span class="o">=</span> <span class="n">big</span>
+    <span class="n">pos</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">layer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">pos</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">z</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">commensurate</span><span class="p">(</span><span class="n">moire</span><span class="p">,</span> <span class="n">big</span><span class="p">)</span>
+    <span class="n">cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">))}</span> <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">cell_tags</span><span class="p">,</span> <span class="n">pos</span><span class="p">)]</span>
+    <span class="n">tbl</span> <span class="o">=</span> <span class="n">MoireKSpace</span><span class="p">(</span><span class="n">Lattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="n">cell</span><span class="p">,</span> <span class="n">prim_vec</span><span class="o">=</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">moire</span><span class="p">]),</span>
+                                 <span class="n">theta</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="o">//</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">tau</span><span class="p">)))</span>
+    <span class="c1"># bonds to the periodic images within the cutoff</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">moire</span><span class="p">))</span>
+    <span class="n">n_img</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">cutoff</span> <span class="o">/</span> <span class="p">(</span><span class="n">area</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">moire</span><span class="p">[</span><span class="mi">1</span> <span class="o">-</span> <span class="n">i</span><span class="p">]))))</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">cKDTree</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+    <span class="n">hops</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">l1</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">n_img</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">n_img</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">l2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">n_img</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_img</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="k">continue</span>  <span class="c1"># the conjugates of these are added below</span>
+            <span class="n">R</span> <span class="o">=</span> <span class="n">l1</span> <span class="o">*</span> <span class="n">moire</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">l2</span> <span class="o">*</span> <span class="n">moire</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">pairs</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">sparse_distance_matrix</span><span class="p">(</span><span class="n">cKDTree</span><span class="p">(</span><span class="n">pos</span> <span class="o">+</span> <span class="n">R</span><span class="p">),</span> <span class="n">cutoff</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s1">&#39;ndarray&#39;</span><span class="p">)</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">pairs</span><span class="p">[</span><span class="s1">&#39;i&#39;</span><span class="p">],</span> <span class="n">pairs</span><span class="p">[</span><span class="s1">&#39;j&#39;</span><span class="p">]</span>
+            <span class="n">keep</span> <span class="o">=</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">j</span> <span class="k">if</span> <span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="nb">bool</span><span class="p">)</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span> <span class="n">j</span><span class="p">[</span><span class="n">keep</span><span class="p">]</span>
+            <span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">pos</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">R</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">z</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+            <span class="n">short</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">cutoff</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">vec</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="n">short</span><span class="p">],</span> <span class="n">j</span><span class="p">[</span><span class="n">short</span><span class="p">],</span> <span class="n">vec</span><span class="p">[</span><span class="n">short</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">hopping</span><span class="p">(</span><span class="n">vec</span><span class="p">))</span>
+            <span class="n">error_handling</span><span class="o">.</span><span class="n">hopping_values</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vec</span><span class="p">))</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">layer</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">layer</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">interlayer_scale</span> <span class="o">*</span> <span class="n">t</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">jj</span><span class="p">,</span> <span class="n">tt</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+                <span class="n">hops</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">ii</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">jj</span><span class="p">),</span> <span class="n">R</span><span class="p">,</span> <span class="n">tt</span><span class="p">))</span>
+                <span class="n">hops</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">jj</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">ii</span><span class="p">),</span> <span class="o">-</span><span class="n">R</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">tt</span><span class="p">)))</span>
+    <span class="n">tbl</span><span class="o">.</span><span class="n">_hop</span> <span class="o">=</span> <span class="n">hops</span>
+    <span class="k">return</span> <span class="n">tbl</span></div>
+
+
+
+<div class="viewcode-block" id="magic_angle_parameter">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.moire.magic_angle_parameter">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">magic_angle_parameter</span><span class="p">(</span>
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.142</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.335</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.7</span><span class="p">,</span>
+    <span class="n">interlayer</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">NDArray</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">interlayer_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the Bistritzer-MacDonald parameters of twisted bilayer graphene</span>
+<span class="sd">    for a tight-binding model with nearest-neighbour hopping *t* and the</span>
+<span class="sd">    interlayer hopping *interlayer* (a function of the bond vector): the</span>
+<span class="sd">    interlayer tunnelling :math:`w = \frac{1}{\Omega}\int d^2r\,</span>
+<span class="sd">    t_\perp(\mathbf{r}, d)\,e^{-i\mathbf{K}\cdot\mathbf{r}}`</span>
+<span class="sd">    (:math:`\Omega = \sqrt3a_{\mathrm{lat}}^2/2` the cell area,</span>
+<span class="sd">    :math:`|\mathbf{K}| = 4\pi/3a_{\mathrm{lat}}`, :math:`a_{\mathrm{lat}} = \sqrt3 a`),</span>
+<span class="sd">    the Dirac velocity :math:`\hbar v = \frac32|t|a`, the ratio</span>
+<span class="sd">    :math:`\alpha = w/\hbar vk_\theta` (:math:`k_\theta = 2|\mathbf{K}|\sin\frac\theta2`),</span>
+<span class="sd">    and the renormalized velocity at the Dirac points of the moiré bands</span>
+<span class="sd">    (Bistritzer and MacDonald, PNAS 108, 12233 (2011)),</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \frac{v^*}{v} = \frac{1-3\alpha^2}{1+6\alpha^2}\, ,</span>
+
+<span class="sd">    which vanishes at the first magic angle, :math:`\alpha = 1/\sqrt3`.</span>
+
+<span class="sd">    :param theta: Positive real. Twist angle, in radians.</span>
+<span class="sd">    :param a: Positive real. Default value 0.142. Nearest-neighbour distance.</span>
+<span class="sd">    :param d: Positive real. Default value 0.335. Interlayer distance.</span>
+<span class="sd">    :param t: Real number. Default value -2.7. Nearest-neighbour hopping.</span>
+<span class="sd">    :param interlayer: Callable. Default value None (*pz_hopping*). Interlayer hopping.</span>
+<span class="sd">    :param interlayer_scale: Positive real. Default value 1. See *twisted_bilayer*.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **w** -- Real number. Interlayer tunnelling.</span>
+<span class="sd">        * **alpha** -- Real number.</span>
+<span class="sd">        * **v_ratio** -- Real number. :math:`v^*/v`.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="s1">&#39;theta&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">interlayer_scale</span><span class="p">,</span> <span class="s1">&#39;interlayer_scale&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">interlayer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">interlayer</span> <span class="o">=</span> <span class="n">pz_hopping</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">is_callable</span><span class="p">(</span><span class="n">interlayer</span><span class="p">,</span> <span class="s1">&#39;interlayer&#39;</span><span class="p">)</span>
+    <span class="n">a_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">a</span>
+    <span class="n">k_d</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">PI</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">a_lat</span><span class="p">)</span>
+    <span class="n">omega</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a_lat</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">integrand</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">r</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">interlayer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">r</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">d</span><span class="p">]]))[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">*</span> <span class="n">j0</span><span class="p">(</span><span class="n">k_d</span> <span class="o">*</span> <span class="n">r</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">interlayer_scale</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">PI</span> <span class="o">*</span> <span class="n">quad</span><span class="p">(</span><span class="n">integrand</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">d</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">200</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">omega</span>
+    <span class="n">k_theta</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k_d</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.5</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">a</span> <span class="o">*</span> <span class="n">k_theta</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">w</span><span class="p">)),</span> <span class="nb">float</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="nb">float</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2026, Charles Poli.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

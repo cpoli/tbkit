@@ -1,0 +1,70 @@
+
+
+.. _sphx_glr_api_gallery_moire:
+
+Supercells and Moiré Structures
+-------------------------------
+
+Supercells of periodic models: band unfolding and the spectral function
+of disordered supercells, and the commensurate moiré cells of twisted
+bilayers, down to the flat bands of magic-angle twisted bilayer graphene.
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Disorder, defects and superstructures need a supercell, and a supercell folds the bands into a smaller Brillouin zone: N times more bands, most of them spectators. W. Ku, T. Berlijn and C.-C. Lee (2010), and V. Popescu and A. Zunger, unfolded them back: each supercell state |\mathbf{K}J\rangle gets the weight W_J(\mathbf{k}) = \sum_o|\langle\mathbf{k}o|\mathbf{K}J\rangle|^2 at every primitive \mathbf{k} folding onto \mathbf{K}, and the spectral function A(\mathbf{k},\omega) = \sum_J W_J(\mathbf{k}) \delta(\omega-E_J) -- what angle-resolved photoemission measures -- is drawn in the primitive zone again.">
+
+.. only:: html
+
+  .. image:: /api/gallery/moire/images/thumb/sphx_glr_plot_band_unfolding_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/moire/plot_band_unfolding`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Band Unfolding: the Effective Band Structure of a Disordered Supercell</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Twist two graphene sheets by a small angle \theta and a moiré pattern appears, with a period a/(2\sin\frac\theta2) of a hundred lattice constants. R. Bistritzer and A. H. MacDonald (2011) showed that the interlayer tunnelling w slows the Dirac electrons down,">
+
+.. only:: html
+
+  .. image:: /api/gallery/moire/images/thumb/sphx_glr_plot_magic_angle_twisted_bilayer_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/moire/plot_magic_angle_twisted_bilayer`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Magic-Angle Twisted Bilayer Graphene: Flat Moiré Bands</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /api/gallery/moire/plot_band_unfolding
+   /api/gallery/moire/plot_magic_angle_twisted_bilayer
+

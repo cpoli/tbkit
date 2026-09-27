@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tbkit.meanfield &#8212; tbkit 0.4.0 documentation</title>
+    <title>tbkit.meanfield &#8212; tbkit 0.4.1 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../_static/documentation_options.js?v=1437fa6d"></script>
+    <script src="../../_static/documentation_options.js?v=bd778e0b"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -540,6 +540,144 @@
         <span class="n">error_handling</span><span class="o">.</span><span class="n">converged</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;hubbard_mean_field&#39;</span><span class="p">)</span>
     <span class="n">energy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f_up</span> <span class="o">*</span> <span class="n">en_up</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f_dn</span> <span class="o">*</span> <span class="n">en_dn</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">U</span> <span class="o">*</span> <span class="n">new_up</span> <span class="o">*</span> <span class="n">new_dn</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">MeanFieldResult</span><span class="p">(</span><span class="n">new_up</span><span class="p">,</span> <span class="n">new_dn</span><span class="p">,</span> <span class="n">en_up</span><span class="p">,</span> <span class="n">en_dn</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">it</span><span class="p">)</span></div>
+
+
+
+<span class="c1">#: Pauli matrices sigma_x, sigma_y, sigma_z.</span>
+<span class="n">_SIGMA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]],</span> <span class="p">[[</span><span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]],</span> <span class="p">[[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">]]],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="NonCollinearResult">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.meanfield.NonCollinearResult">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">NonCollinearResult</span><span class="p">():</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Self-consistent solution of *hubbard_mean_field_noncollinear*.</span>
+
+<span class="sd">    :ivar rho: Complex ndarray, shape (N, 2, 2). Onsite spin density</span>
+<span class="sd">        matrices :math:`\rho_{i,\alpha\beta} = \langle c^\dagger_{i\beta}c_{i\alpha}\rangle`.</span>
+<span class="sd">    :ivar density: Real ndarray. :math:`n_i = \mathrm{Tr}\,\rho_i`.</span>
+<span class="sd">    :ivar magnetization: Real ndarray, shape (N, 3).</span>
+<span class="sd">        :math:`\mathbf{m}_i = \mathrm{Tr}(\rho_i\boldsymbol\sigma)/2`.</span>
+<span class="sd">    :ivar energies: Real ndarray. Mean-field energies (2N).</span>
+<span class="sd">    :ivar states: Complex ndarray, shape (2N, 2N). Eigenvectors (columns),</span>
+<span class="sd">        rows site-major (spin up, down).</span>
+<span class="sd">    :ivar e_fermi: Real number. Fermi level.</span>
+<span class="sd">    :ivar energy: Real number. Mean-field ground-state energy</span>
+<span class="sd">        :math:`\sum f E - U\sum_i(\rho_{i\uparrow\uparrow}\rho_{i\downarrow\downarrow}</span>
+<span class="sd">        - |\rho_{i\uparrow\downarrow}|^2)`.</span>
+<span class="sd">    :ivar iterations: Integer. Number of iterations.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">e_fermi</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">iterations</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rho</span> <span class="o">=</span> <span class="n">rho</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">density</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">axis1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis2</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">magnetization</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;iab,sba-&gt;is&#39;</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">_SIGMA</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">energies</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">states</span> <span class="o">=</span> <span class="n">energies</span><span class="p">,</span> <span class="n">states</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">e_fermi</span> <span class="o">=</span> <span class="n">e_fermi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">energy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span> <span class="o">=</span> <span class="n">iterations</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">total_spin</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Total spin :math:`\sum_i\mathbf{m}_i`, shape (3,).</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">magnetization</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="hubbard_mean_field_noncollinear">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.meanfield.hubbard_mean_field_noncollinear">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">hubbard_mean_field_noncollinear</span><span class="p">(</span>
+    <span class="n">ham</span><span class="p">,</span> <span class="n">U</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">n_electrons</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span>
+    <span class="n">magnetization</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">spinful</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">mixing</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NonCollinearResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Solve the Hubbard model in the non-collinear (spin-rotation invariant)</span>
+<span class="sd">    Hartree-Fock approximation: the onsite spin density matrix</span>
+<span class="sd">    :math:`\rho_i` is kept whole, so the moments may point in any</span>
+<span class="sd">    direction (spirals, the 120-degree order of frustrated lattices,</span>
+<span class="sd">    moments canted by spin-orbit coupling). The Hartree and Fock terms of</span>
+<span class="sd">    :math:`Un_{i\uparrow}n_{i\downarrow}` add, on every site,</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        V_i = U\,(n_i\mathbb{1} - \rho_i) = U\begin{pmatrix}\rho_{\downarrow\downarrow} &amp; -\rho_{\uparrow\downarrow}\\</span>
+<span class="sd">        -\rho_{\downarrow\uparrow} &amp; \rho_{\uparrow\uparrow}\end{pmatrix}</span>
+<span class="sd">        = U\Big(\frac{n_i}{2}\mathbb{1} - \mathbf{m}_i\cdot\boldsymbol\sigma\Big)\, ,</span>
+
+<span class="sd">    iterated with linear mixing until :math:`\rho` is self-consistent. With</span>
+<span class="sd">    :math:`\rho_{\uparrow\downarrow} = 0` it is *hubbard_mean_field*</span>
+<span class="sd">    (collinear moments along :math:`z` stay collinear, and give the same</span>
+<span class="sd">    solution). As there, several starts should be compared by *energy*.</span>
+
+<span class="sd">    :param ham: Square Hermitian matrix: the single-particle Hamiltonian,</span>
+<span class="sd">        (N, N) spin independent, or, with ``spinful=True``, (2N, 2N) with</span>
+<span class="sd">        rows site-major (spin up, down) -- e.g. with spin-orbit coupling.</span>
+<span class="sd">    :param U: Real number, or array of one per site. Onsite repulsion.</span>
+<span class="sd">    :param n_electrons: Positive real, at most 2N. An integer at T = 0.</span>
+<span class="sd">    :param temperature: Positive real or zero. Default value 0.</span>
+<span class="sd">    :param magnetization: Real array, shape (N, 3). Default value None</span>
+<span class="sd">        (random directions of length 0.1). Initial moments, on top of a</span>
+<span class="sd">        uniform density.</span>
+<span class="sd">    :param spinful: Boolean. Default value False. See *ham*.</span>
+<span class="sd">    :param mixing: Real in (0, 1]. Default value 0.5.</span>
+<span class="sd">    :param tol: Positive real. Default value 1e-8. Convergence threshold on</span>
+<span class="sd">        the largest change of :math:`\rho`.</span>
+<span class="sd">    :param max_iter: Positive integer. Default value 20000.</span>
+<span class="sd">    :param seed: Default value None. Seed of the random initial moments.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **result** -- :class:`NonCollinearResult`.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">ham</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="s1">&#39;toarray&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">square_matrix</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="s1">&#39;ham&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">hermitian_dense</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">spinful</span><span class="p">,</span> <span class="s1">&#39;spinful&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">spinful</span><span class="p">:</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">even_dimension</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ham</span><span class="p">))</span>
+        <span class="n">h0</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">h0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">h0</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">U</span><span class="p">))</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">U</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">electrons</span><span class="p">(</span><span class="n">n_electrons</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">temperature</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">integer_electrons</span><span class="p">(</span><span class="n">n_electrons</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">mixing</span><span class="p">(</span><span class="n">mixing</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="s1">&#39;tol&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">max_iter</span><span class="p">,</span> <span class="s1">&#39;max_iter&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">magnetization</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="n">magnetization</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">vec</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="n">magnetization</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">magnetization</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">magnetization</span><span class="p">(</span><span class="n">magnetization</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="c1"># rho = n/2 + m.sigma (so that Tr(rho sigma)/2 = m)</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_electrons</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)[</span><span class="kc">None</span><span class="p">]</span>
+              <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;is,sab-&gt;iab&#39;</span><span class="p">,</span> <span class="n">magnetization</span><span class="p">,</span> <span class="n">_SIGMA</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">pot</span> <span class="o">=</span> <span class="n">U</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">axis1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis2</span><span class="o">=</span><span class="mi">2</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)[</span><span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">rho</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">h0</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+                <span class="n">h</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">blocks</span> <span class="o">+</span> <span class="n">a</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">blocks</span> <span class="o">+</span> <span class="n">b</span><span class="p">]</span> <span class="o">+=</span> <span class="n">pot</span><span class="p">[:,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">]</span>
+        <span class="n">en</span><span class="p">,</span> <span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">f</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">mu</span> <span class="o">=</span> <span class="n">_occupy</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="n">en</span><span class="p">[:</span><span class="mi">0</span><span class="p">],</span> <span class="n">n_electrons</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
+        <span class="n">full</span> <span class="o">=</span> <span class="p">(</span><span class="n">vec</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span> <span class="o">@</span> <span class="n">vec</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="n">full</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">)[</span><span class="n">blocks</span><span class="p">,</span> <span class="p">:,</span> <span class="n">blocks</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">change</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">new</span> <span class="o">-</span> <span class="n">rho</span><span class="p">))</span>
+        <span class="n">rho</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">mixing</span><span class="p">)</span> <span class="o">*</span> <span class="n">rho</span> <span class="o">+</span> <span class="n">mixing</span> <span class="o">*</span> <span class="n">new</span>
+        <span class="k">if</span> <span class="n">change</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">converged</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;hubbard_mean_field_noncollinear&#39;</span><span class="p">)</span>
+    <span class="n">double</span> <span class="o">=</span> <span class="n">U</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">new</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">new</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">new</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">energy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f</span> <span class="o">*</span> <span class="n">en</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">double</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">NonCollinearResult</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">en</span><span class="p">,</span> <span class="n">vec</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">it</span><span class="p">)</span></div>
 
 </pre></div>
 

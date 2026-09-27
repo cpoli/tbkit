@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tbkit.bdg &#8212; tbkit 0.4.0 documentation</title>
+    <title>tbkit.bdg &#8212; tbkit 0.4.1 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../_static/documentation_options.js?v=1437fa6d"></script>
+    <script src="../../_static/documentation_options.js?v=bd778e0b"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -555,6 +555,119 @@
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="GapResult">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.bdg.GapResult">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GapResult</span><span class="p">():</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Self-consistent s-wave pairing of *s_wave_gap*.</span>
+
+<span class="sd">    :ivar delta: Complex ndarray. Gap :math:`\Delta_i` on every site.</span>
+<span class="sd">    :ivar energies: Real ndarray, shape (2N,). Spectrum of the reduced BdG</span>
+<span class="sd">        Hamiltonian (symmetric, :math:`\pm E_n`).</span>
+<span class="sd">    :ivar states: Complex ndarray, shape (2N, 2N). Its eigenvectors</span>
+<span class="sd">        :math:`(u_n, v_n)` (columns).</span>
+<span class="sd">    :ivar iterations: Integer. Number of iterations.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">iterations</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="n">delta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">energies</span> <span class="o">=</span> <span class="n">energies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">states</span> <span class="o">=</span> <span class="n">states</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span> <span class="o">=</span> <span class="n">iterations</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mean_gap</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Average :math:`|\Delta_i|` over the sites.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="p">)))</span></div>
+
+
+
+<div class="viewcode-block" id="s_wave_gap">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.bdg.s_wave_gap">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">s_wave_gap</span><span class="p">(</span>
+    <span class="n">ham</span><span class="p">,</span> <span class="n">V</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">mu</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">delta0</span><span class="p">:</span> <span class="nb">complex</span> <span class="o">|</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">mixing</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GapResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Solve the real-space gap equation of an s-wave superconductor</span>
+<span class="sd">    self-consistently (the attractive Hubbard model</span>
+<span class="sd">    :math:`-\sum_iV_in_{i\uparrow}n_{i\downarrow}` in the BCS mean-field</span>
+<span class="sd">    approximation, de Gennes 1966). For a spin-independent *ham* the singlet</span>
+<span class="sd">    BdG Hamiltonian reduces to the Nambu basis</span>
+<span class="sd">    :math:`(c_{i\uparrow}, c^\dagger_{i\downarrow})`,</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        H = \begin{pmatrix} h-\mu &amp; \Delta\\ \Delta^* &amp; -(h-\mu)^*\end{pmatrix}\, ,</span>
+<span class="sd">        \qquad \Delta = \mathrm{diag}(\Delta_i)\, ,</span>
+
+<span class="sd">    whose eigenvectors :math:`(u_n, v_n)`, :math:`E_n &gt; 0`, give the gap</span>
+<span class="sd">    equation</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \Delta_i = V_i\,\langle c_{i\downarrow}c_{i\uparrow}\rangle</span>
+<span class="sd">        = V_i\sum_{E_n&gt;0}u_n(i)\,v_n^*(i)\tanh\frac{E_n}{2T}\, ,</span>
+
+<span class="sd">    iterated (with linear mixing) until self-consistent. On a clean lattice</span>
+<span class="sd">    it is the BCS gap equation :math:`1 = \frac{V}{N}\sum_{\mathbf{k}}</span>
+<span class="sd">    \tanh(E_{\mathbf{k}}/2T)/2E_{\mathbf{k}}`, with</span>
+<span class="sd">    :math:`\Delta(T_c) = 0` at :math:`T_c \approx \Delta(0)/1.764` at weak</span>
+<span class="sd">    coupling. The chemical potential is fixed (the Hartree shift</span>
+<span class="sd">    :math:`-V_in_i/2` is left out, i.e. absorbed in :math:`\mu`). Near</span>
+<span class="sd">    :math:`T_c` the iteration slows down (the linearized map has an</span>
+<span class="sd">    eigenvalue close to 1): raise *max_iter* there.</span>
+
+<span class="sd">    :param ham: Square Hermitian matrix, (N, N), spin independent (e.g. *System.ham*).</span>
+<span class="sd">    :param V: Positive real, or array of N non-negative reals. Attraction.</span>
+<span class="sd">    :param mu: Real number. Default value 0. Chemical potential.</span>
+<span class="sd">    :param temperature: Positive real or zero. Default value 0.</span>
+<span class="sd">    :param delta0: Number, or array of N numbers. Default value 0.1.</span>
+<span class="sd">        Initial gap.</span>
+<span class="sd">    :param mixing: Real in (0, 1]. Default value 1 (plain iteration).</span>
+<span class="sd">    :param tol: Positive real. Default value 1e-8. Convergence threshold</span>
+<span class="sd">        on the largest change of :math:`\Delta_i`.</span>
+<span class="sd">    :param max_iter: Positive integer. Default value 10000.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **result** -- :class:`GapResult`.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="s1">&#39;toarray&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">square_matrix</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="s1">&#39;ham&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">hermitian_dense</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">interaction</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="s1">&#39;mu&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">pairing_amplitudes</span><span class="p">(</span><span class="n">delta0</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">mixing</span><span class="p">(</span><span class="n">mixing</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="s1">&#39;tol&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">max_iter</span><span class="p">,</span> <span class="s1">&#39;max_iter&#39;</span><span class="p">)</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">n</span><span class="p">,))</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">delta0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">n</span><span class="p">,))</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">xi</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">big</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">),</span> <span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+    <span class="n">big</span><span class="p">[:</span><span class="n">n</span><span class="p">,</span> <span class="p">:</span><span class="n">n</span><span class="p">],</span> <span class="n">big</span><span class="p">[</span><span class="n">n</span><span class="p">:,</span> <span class="n">n</span><span class="p">:]</span> <span class="o">=</span> <span class="n">xi</span><span class="p">,</span> <span class="o">-</span><span class="n">xi</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span>
+    <span class="n">diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">big</span><span class="p">[</span><span class="n">diag</span><span class="p">,</span> <span class="n">diag</span> <span class="o">+</span> <span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">delta</span>
+        <span class="n">big</span><span class="p">[</span><span class="n">diag</span> <span class="o">+</span> <span class="n">n</span><span class="p">,</span> <span class="n">diag</span><span class="p">]</span> <span class="o">=</span> <span class="n">delta</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span>
+        <span class="n">en</span><span class="p">,</span> <span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">big</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">en</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">en</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">temperature</span><span class="p">))</span> <span class="k">if</span> <span class="n">temperature</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="n">V</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;in,in,n-&gt;i&#39;</span><span class="p">,</span> <span class="n">vec</span><span class="p">[:</span><span class="n">n</span><span class="p">,</span> <span class="n">pos</span><span class="p">],</span> <span class="n">vec</span><span class="p">[</span><span class="n">n</span><span class="p">:,</span> <span class="n">pos</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">weight</span><span class="p">)</span>
+        <span class="n">change</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">new</span> <span class="o">-</span> <span class="n">delta</span><span class="p">))</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">mixing</span><span class="p">)</span> <span class="o">*</span> <span class="n">delta</span> <span class="o">+</span> <span class="n">mixing</span> <span class="o">*</span> <span class="n">new</span>
+        <span class="k">if</span> <span class="n">change</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">converged</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;s_wave_gap&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">GapResult</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">en</span><span class="p">,</span> <span class="n">vec</span><span class="p">,</span> <span class="n">it</span><span class="p">)</span></div>
 
 </pre></div>
 

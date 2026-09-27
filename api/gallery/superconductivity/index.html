@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Superconductivity &#8212; tbkit 0.4.0 documentation</title>
+    <title>Superconductivity &#8212; tbkit 0.4.1 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../../_static/documentation_options.js?v=1437fa6d"></script>
+    <script src="../../../_static/documentation_options.js?v=bd778e0b"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -52,7 +52,7 @@
     <script src="../../../_static/js/force_light.js?v=8e7666d6"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="The Kitaev Chain: Majorana Zero Modes" href="plot_kitaev_chain.html" />
+    <link rel="next" title="The BCS Gap Equation: Delta(T) and the Universal Ratio Delta(0)/T_c = 1.764" href="plot_bcs_gap_equation.html" />
     <link rel="prev" title="Strain as a Gauge Field: Pseudo-Landau Levels in Graphene" href="../strain/plot_pseudo_magnetic_field.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -344,6 +344,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../correlations/index.html">Correlations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../correlations/plot_hubbard_edge_magnetism.html">The Hubbard Model: Magnetism of Graphene’s Zigzag Edges</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../correlations/plot_lieb_theorem.html">Lieb’s Theorem: The Total Spin of Graphene Triangles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../correlations/plot_noncollinear_120_degree_order.html">Frustrated Magnetism: the 120-Degree Order of the Triangular Hubbard Model</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../disorder/index.html">Disorder</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -352,6 +353,7 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../dynamics/index.html">Dynamics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../dynamics/plot_bloch_oscillations.html">Bloch Oscillations and the Wannier-Stark Ladder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dynamics/plot_wavepacket_interference.html">Wave Propagation: Interference on a Ring and a Trapped Domain-Wall State</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../flat_bands/index.html">Flat Bands</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -369,6 +371,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_intrinsic_spin_hall_effect.html">The Intrinsic Spin Hall Effect: Kane-Mele Plateau and Rashba Coupling</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../higher_order/index.html">Higher-Order Topology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../higher_order/plot_quadrupole_insulator.html">Quantized Electric Quadrupole Insulators: the Benalcazar-Bernevig-Hughes Model</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../large_scale/index.html">Large lattices</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_kernel_polynomial_method.html">The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites</a></li>
 </ul>
@@ -380,6 +386,18 @@
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_peierls_substitution.html">The Peierls Substitution: Flux Through the Plaquettes, in Any Gauge</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../models/index.html">Building, Bridging and Saving Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../models/plot_maximally_localized_wannier_functions.html">Maximally Localized Wannier Functions: Graphene from a Wannier90 File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/plot_neighbour_hoppings.html">Hoppings by Neighbour Order in k-Space: Third-Nearest-Neighbour Graphene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/plot_pipeline_bridges.html">From Real Space to k-Space and Back: the Haldane Model on a Torus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/plot_save_load.html">Saving and Reloading Models: a Kane-Mele Model on Disk</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../moire/index.html">Supercells and Moiré Structures</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../moire/plot_band_unfolding.html">Band Unfolding: the Effective Band Structure of a Disordered Supercell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../moire/plot_magic_angle_twisted_bilayer.html">Magic-Angle Twisted Bilayer Graphene: Flat Moiré Bands</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../non_hermitian/index.html">Non-Hermitian lattices</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../non_hermitian/plot_exceptional_point_encircling.html">Exceptional Points in Momentum Space: Encircling an EP versus a Dirac Point</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../non_hermitian/plot_exceptional_point_vorticity.html">Exceptional Points in Momentum Space: Vorticity and Exceptional Rings</a></li>
@@ -387,6 +405,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../non_hermitian/plot_exceptional_points_fermi_arcs.html">Exceptional Points in Momentum Space: Complex Bands and the Bulk Fermi Arc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../non_hermitian/plot_pt_symmetry.html">PT Symmetry, Exceptional Points, and a Selectively Amplified Edge Mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../non_hermitian/plot_skin_effect.html">The Non-Hermitian Skin Effect and the Generalized Brillouin Zone</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../optics/index.html">Optics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../optics/plot_bulk_photovoltaic_shift_current.html">The Bulk Photovoltaic Effect: the Shift Current of Gapped Graphene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optics/plot_graphene_universal_absorption.html">The Universal Absorption of Graphene: Opacity Defined by the Fine-Structure Constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optics/plot_nonlinear_hall_berry_curvature_dipole.html">The Nonlinear Hall Effect: the Berry Curvature Dipole of a Tilted Dirac Cone</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../orbitals/index.html">Orbitals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -398,6 +422,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Superconductivity</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="plot_bcs_gap_equation.html">The BCS Gap Equation: Delta(T) and the Universal Ratio Delta(0)/T_c = 1.764</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_kitaev_chain.html">The Kitaev Chain: Majorana Zero Modes</a></li>
 </ul>
 </details></li>
@@ -407,6 +432,8 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tight_binding/index.html">Tight-Binding</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_building_finite_lattices.html">Building Finite Lattices: Unit Cells, Cuts, and Lattice Arithmetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_defects_and_impurities.html">Defects and Impurities in a Graphene Flake: Vacancy Zero Modes and Bound States</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_graphene_bands.html">Graphene: Real-Space Flake and Reciprocal-Space Bands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_isolation_of_graphene.html">The Isolation of Graphene: Flakes, Edges, and a Berry Phase of pi</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_square_lattice_bands.html">The Square Lattice: Bloch’s Theorem in its Simplest Form</a></li>
@@ -430,7 +457,10 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../transport/index.html">Transport</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../transport/plot_hall_bar_edge_channels.html">Buttiker’s Edge Channels: the Quantized Resistances of a Hall Bar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transport/plot_landauer_conductance.html">The Landauer Formula: Quantized Conductance of a Point Contact</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transport/plot_recursive_green_function.html">The Recursive Green’s Function: Localization Length of Long Disordered Wires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transport/plot_shot_noise_fano_factor.html">Shot Noise: the Fano Factor of Ballistic, Tunnel and Diffusive Conductors</a></li>
 </ul>
 </details></li>
 </ul>
@@ -497,8 +527,12 @@
 <span id="sphx-glr-api-gallery-superconductivity"></span><h1>Superconductivity<a class="headerlink" href="#superconductivity" title="Link to this heading">#</a></h1>
 <p>Superconductors in the Bogoliubov-de Gennes formalism: particle-hole
 symmetric spectra, and the Majorana zero modes at the ends of Kitaev’s
-p-wave chain.</p>
-<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A. Kitaev (2001) wrote down the simplest topological superconductor: a chain of spinless fermions with nearest-neighbour hopping t and p-wave pairing \Delta,"><img alt="" src="../../../_images/sphx_glr_plot_kitaev_chain_thumb.png" />
+p-wave chain. The self-consistent BCS gap equation in real space, with
+its universal ratio Delta(0)/T_c = 1.764 and the proximity effect.</p>
+<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="J. Bardeen, L. Cooper and J. R. Schrieffer (1957) explained superconductivity by the pairing of electrons with opposite momenta and spins into a condensate, whose gap \Delta solves the self-consistent gap equation"><img alt="" src="../../../_images/sphx_glr_plot_bcs_gap_equation_thumb.png" />
+<p><a class="reference internal" href="plot_bcs_gap_equation.html"><span class="doc">The BCS Gap Equation: Delta(T) and the Universal Ratio Delta(0)/T_c = 1.764</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The BCS Gap Equation: Delta(T) and the Universal Ratio Delta(0)/T_c = 1.764</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="A. Kitaev (2001) wrote down the simplest topological superconductor: a chain of spinless fermions with nearest-neighbour hopping t and p-wave pairing \Delta,"><img alt="" src="../../../_images/sphx_glr_plot_kitaev_chain_thumb.png" />
 <p><a class="reference internal" href="plot_kitaev_chain.html"><span class="doc">The Kitaev Chain: Majorana Zero Modes</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Kitaev Chain: Majorana Zero Modes</div>
 </div></div><div class="toctree-wrapper compound">
@@ -525,11 +559,11 @@ p-wave chain.</p>
       </div>
     </a>
     <a class="right-next"
-       href="plot_kitaev_chain.html"
+       href="plot_bcs_gap_equation.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">The Kitaev Chain: Majorana Zero Modes</p>
+        <p class="prev-next-title">The BCS Gap Equation: Delta(T) and the Universal Ratio Delta(0)/T_c = 1.764</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

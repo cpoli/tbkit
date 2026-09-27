@@ -29,6 +29,40 @@ eigenstate-intensity plots.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Every real-space model starts from a finite set of sites. A Lattice repeats a unit cell along its primitive vectors (get_lattice), and the result can be cut and combined:">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_building_finite_lattices_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_building_finite_lattices`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Building Finite Lattices: Unit Cells, Cuts, and Lattice Arithmetic</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Local modifications of a finite model -- the business of remove_sites, set_onsite_def and change_hopping_ellipse -- and two exact consequences on a bipartite lattice:">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_defects_and_impurities_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_defects_and_impurities`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Defects and Impurities in a Graphene Flake: Vacancy Zero Modes and Bound States</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="A from-scratch walkthrough of tbkit&#x27;s two complementary ways of looking at a Tight-Binding model:">
 
 .. only:: html
@@ -105,6 +139,8 @@ eigenstate-intensity plots.
 .. toctree::
    :hidden:
 
+   /api/gallery/tight_binding/plot_building_finite_lattices
+   /api/gallery/tight_binding/plot_defects_and_impurities
    /api/gallery/tight_binding/plot_graphene_bands
    /api/gallery/tight_binding/plot_isolation_of_graphene
    /api/gallery/tight_binding/plot_square_lattice_bands

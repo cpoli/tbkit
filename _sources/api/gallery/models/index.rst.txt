@@ -1,0 +1,109 @@
+
+
+.. _sphx_glr_api_gallery_models:
+
+Building, Bridging and Saving Models
+------------------------------------
+
+Tools that make realistic models easy to build and move around: Bloch
+Hamiltonians set up by neighbour order (1st, 2nd, 3rd, ... neighbours) as
+in real space, bridges between the real-space :class:`~tbkit.system.System`
+and the reciprocal-space :class:`~tbkit.kspace.KSpace` pipelines, models
+saved to and loaded from disk, and tight-binding models imported from
+Wannier90's ``_hr.dat`` files.
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Marzari and Vanderbilt (1997) showed how to choose the gauge of the Bloch states so that their Fourier transforms, the Wannier functions |m\mathbf{R}\rangle, are as localized as possible. In that basis the first-principles Hamiltonian is a tight-binding model, H_{mn}(\mathbf{R}) = \langle m\mathbf{0}|H|n\mathbf{R}\rangle, whose hoppings decay quickly with distance. The Wannier90 code writes it to seedname_hr.dat, which tbkit.io.read_wannier90 turns into a KSpace, ready for every band and topology tool:">
+
+.. only:: html
+
+  .. image:: /api/gallery/models/images/thumb/sphx_glr_plot_maximally_localized_wannier_functions_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/models/plot_maximally_localized_wannier_functions`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Maximally Localized Wannier Functions: Graphene from a Wannier90 File</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Real-space models in tbkit address bonds by neighbour order: {&#x27;n&#x27;: 1} for nearest neighbours, {&#x27;n&#x27;: 2} for next-nearest ones, optionally narrowed by bond angle &#x27;ang&#x27; or sublattice pair &#x27;tag&#x27;. set_hopping (and set_overlap) accept the same selectors: the bonds of the infinite lattice are found from the unit cell and the primitive vectors (tbkit.neighbours.neighbour_bonds), and turned into the explicit {&#x27;i&#x27;, &#x27;j&#x27;, &#x27;R&#x27;, &#x27;t&#x27;} list (tbkit.neighbours.neighbour_hoppings).">
+
+.. only:: html
+
+  .. image:: /api/gallery/models/images/thumb/sphx_glr_plot_neighbour_hoppings_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/models/plot_neighbour_hoppings`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Hoppings by Neighbour Order in k-Space: Third-Nearest-Neighbour Graphene</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="tbkit has two pipelines: System diagonalizes a finite lattice in real space, KSpace the Bloch Hamiltonian H(\mathbf{k}) of the infinite one. tbkit.bridges moves a model between them:">
+
+.. only:: html
+
+  .. image:: /api/gallery/models/images/thumb/sphx_glr_plot_pipeline_bridges_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/models/plot_pipeline_bridges`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">From Real Space to k-Space and Back: the Haldane Model on a Torus</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="tbkit.io.save_model writes a Lattice, System or KSpace to a versioned .npz archive -- plain NumPy arrays, no pickle -- and tbkit.io.load_model reads it back. Onsite terms, hoppings, overlaps and spin are stored in binary, so the reloaded model reproduces the Hamiltonians bit for bit.">
+
+.. only:: html
+
+  .. image:: /api/gallery/models/images/thumb/sphx_glr_plot_save_load_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/models/plot_save_load`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Saving and Reloading Models: a Kane-Mele Model on Disk</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /api/gallery/models/plot_maximally_localized_wannier_functions
+   /api/gallery/models/plot_neighbour_hoppings
+   /api/gallery/models/plot_pipeline_bridges
+   /api/gallery/models/plot_save_load
+

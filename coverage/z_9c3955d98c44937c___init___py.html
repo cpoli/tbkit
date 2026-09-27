@@ -54,8 +54,8 @@
             </div>
         </aside>
         <h2>
-            <span class="text">14 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">14<span class="text"> run</span></button>
+            <span class="text">25 statements &nbsp;</span>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">25<span class="text"> run</span></button>
             <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">0<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
         </h2>
@@ -65,7 +65,7 @@
             <a id="nextFileLink" class="nav" href="z_9c3955d98c44937c_bdg_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.16.0">coverage.py v7.16.0</a>,
-            created at 2026-09-27 10:54 +0100
+            created at 2026-09-27 11:19 +0100
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -88,7 +88,7 @@
     <p class="pln"><span class="n"><a id="t6" href="#t6">6</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t7" href="#t7">7</a></span><span class="t"><span class="str">&quot;&quot;&quot;tbkit: build and solve Tight-Binding models.&quot;&quot;&quot;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t8" href="#t8">8</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t9" href="#t9">9</a></span><span class="t"><span class="nam">__version__</span> <span class="op">=</span> <span class="str">&quot;0.4.0&quot;</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t9" href="#t9">9</a></span><span class="t"><span class="nam">__version__</span> <span class="op">=</span> <span class="str">&quot;0.4.1&quot;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t10" href="#t10">10</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t11" href="#t11">11</a></span><span class="t"><span class="nam">__all__</span> <span class="op">=</span> <span class="op">[</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t12" href="#t12">12</a></span><span class="t">    <span class="str">&quot;Lattice&quot;</span><span class="op">,</span> <span class="str">&quot;System&quot;</span><span class="op">,</span> <span class="str">&quot;Plot&quot;</span><span class="op">,</span> <span class="str">&quot;Propagation&quot;</span><span class="op">,</span> <span class="str">&quot;Save&quot;</span><span class="op">,</span> <span class="str">&quot;KSpace&quot;</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
@@ -115,6 +115,20 @@
     <p class="run"><span class="n"><a id="t33" href="#t33">33</a></span><span class="t"><span class="key">from</span> <span class="nam">tbkit</span><span class="op">.</span><span class="nam">meanfield</span> <span class="key">import</span> <span class="nam">MeanFieldResult</span><span class="op">,</span> <span class="nam">hubbard_mean_field</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t34" href="#t34">34</a></span><span class="t"><span class="key">from</span> <span class="nam">tbkit</span><span class="op">.</span><span class="nam">exceptional</span> <span class="key">import</span> <span class="nam">ExceptionalPoints</span><span class="op">,</span> <span class="nam">Encircling</span><span class="op">,</span> <span class="nam">find_exceptional_points</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t35" href="#t35">35</a></span><span class="t"><span class="key">import</span> <span class="nam">tbkit</span><span class="op">.</span><span class="nam">error_handling</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t36" href="#t36">36</a></span><span class="t"><span class="com"># Model I/O (tbkit.io): appended here to keep the list above untouched.</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t37" href="#t37">37</a></span><span class="t"><span class="key">from</span> <span class="nam">tbkit</span><span class="op">.</span><span class="nam">io</span> <span class="key">import</span> <span class="nam">save_model</span><span class="op">,</span> <span class="nam">load_model</span><span class="op">,</span> <span class="nam">read_wannier90</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t38" href="#t38">38</a></span><span class="t"><span class="nam">__all__</span> <span class="op">+=</span> <span class="op">[</span><span class="str">&quot;save_model&quot;</span><span class="op">,</span> <span class="str">&quot;load_model&quot;</span><span class="op">,</span> <span class="str">&quot;read_wannier90&quot;</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t39" href="#t39">39</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t40" href="#t40">40</a></span><span class="t"><span class="com"># Higher-order topology, moire supercells, self-consistent interactions</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t41" href="#t41">41</a></span><span class="t"><span class="key">from</span> <span class="nam">tbkit</span><span class="op">.</span><span class="nam">higher_order</span> <span class="key">import</span> <span class="nam">CornerCharges</span><span class="op">,</span> <span class="nam">quadrupole_moment</span><span class="op">,</span> <span class="nam">corner_charges</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t42" href="#t42">42</a></span><span class="t"><span class="nam">__all__</span> <span class="op">+=</span> <span class="op">[</span><span class="str">&quot;CornerCharges&quot;</span><span class="op">,</span> <span class="str">&quot;quadrupole_moment&quot;</span><span class="op">,</span> <span class="str">&quot;corner_charges&quot;</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t43" href="#t43">43</a></span><span class="t"><span class="key">from</span> <span class="nam">tbkit</span><span class="op">.</span><span class="nam">moire</span> <span class="key">import</span> <span class="nam">SupercellKSpace</span><span class="op">,</span> <span class="nam">MoireKSpace</span><span class="op">,</span> <span class="nam">supercell</span><span class="op">,</span> <span class="nam">twisted_bilayer</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t44" href="#t44">44</a></span><span class="t"><span class="nam">__all__</span> <span class="op">+=</span> <span class="op">[</span><span class="str">&quot;SupercellKSpace&quot;</span><span class="op">,</span> <span class="str">&quot;MoireKSpace&quot;</span><span class="op">,</span> <span class="str">&quot;supercell&quot;</span><span class="op">,</span> <span class="str">&quot;twisted_bilayer&quot;</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t45" href="#t45">45</a></span><span class="t"><span class="key">from</span> <span class="nam">tbkit</span><span class="op">.</span><span class="nam">meanfield</span> <span class="key">import</span> <span class="nam">NonCollinearResult</span><span class="op">,</span> <span class="nam">hubbard_mean_field_noncollinear</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t46" href="#t46">46</a></span><span class="t"><span class="key">from</span> <span class="nam">tbkit</span><span class="op">.</span><span class="nam">bdg</span> <span class="key">import</span> <span class="nam">GapResult</span><span class="op">,</span> <span class="nam">s_wave_gap</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t47" href="#t47">47</a></span><span class="t"><span class="nam">__all__</span> <span class="op">+=</span> <span class="op">[</span><span class="str">&quot;NonCollinearResult&quot;</span><span class="op">,</span> <span class="str">&quot;hubbard_mean_field_noncollinear&quot;</span><span class="op">,</span> <span class="str">&quot;GapResult&quot;</span><span class="op">,</span> <span class="str">&quot;s_wave_gap&quot;</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t48" href="#t48">48</a></span><span class="t"><span class="key">from</span> <span class="nam">tbkit</span><span class="op">.</span><span class="nam">transport</span> <span class="key">import</span> <span class="nam">RecursiveTransport</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t49" href="#t49">49</a></span><span class="t"><span class="nam">__all__</span> <span class="op">+=</span> <span class="op">[</span><span class="str">&quot;RecursiveTransport&quot;</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -124,7 +138,7 @@
             <a class="nav" href="z_9c3955d98c44937c_bdg_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.16.0">coverage.py v7.16.0</a>,
-            created at 2026-09-27 10:54 +0100
+            created at 2026-09-27 11:19 +0100
         </p>
     </div>
 </footer>

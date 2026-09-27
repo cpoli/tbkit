@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tbkit.kspace &#8212; tbkit 0.4.0 documentation</title>
+    <title>tbkit.kspace &#8212; tbkit 0.4.1 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../_static/documentation_options.js?v=1437fa6d"></script>
+    <script src="../../_static/documentation_options.js?v=bd778e0b"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -391,6 +391,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.error_handling</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">error_handling</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.dos</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dos</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.occupation</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">occupation</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.neighbours</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">neighbours</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.lattice</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lattice</span>
 
 
@@ -583,6 +584,17 @@
 <span class="sd">              number (spin-independent hopping) or a 2x2 complex matrix (a</span>
 <span class="sd">              general, possibly spin-mixing, hopping -- e.g. built from</span>
 <span class="sd">              :data:`PAULI` for Rashba or intrinsic spin-orbit coupling).</span>
+
+<span class="sd">            *list_hop* may instead use the neighbour-order form of</span>
+<span class="sd">            *System.set_hopping*: dictionaries with keys (&#39;n&#39;, &#39;t&#39;) and</span>
+<span class="sd">            optionally &#39;ang&#39; and/or &#39;tag&#39; -- &#39;n&#39; the neighbour order (1st,</span>
+<span class="sd">            2nd, ... shortest distance between orbitals of the infinite</span>
+<span class="sd">            lattice), &#39;ang&#39; a bond angle in degrees, &#39;tag&#39; a sublattice pair</span>
+<span class="sd">            such as ``&#39;ab&#39;``. The bonds are found from *unit_cell* and</span>
+<span class="sd">            *prim_vec* (in 1D, 2D and 3D) and turned into the explicit form</span>
+<span class="sd">            by *tbkit.neighbours.neighbour_hoppings* (see there for the bond</span>
+<span class="sd">            orientations; a negative angle addresses the reversed bonds).</span>
+<span class="sd">            A list uses one form or the other, not both.</span>
 <span class="sd">        :param hermitian: Boolean. Default value True. If False, the Hermitian</span>
 <span class="sd">            conjugates are *not* added: each dictionary is one matrix element</span>
 <span class="sd">            :math:`H_{ij}(\mathbf{R})` only, so that non-reciprocal</span>
@@ -590,6 +602,12 @@
 <span class="sd">            explicitly, with its own amplitude.</span>
 
 <span class="sd">        Example usage::</span>
+
+<span class="sd">            # graphene, by neighbour order: nearest (t) and next-nearest</span>
+<span class="sd">            # (t2) neighbours, as in System.set_hopping</span>
+<span class="sd">            gra.set_hopping([{&#39;n&#39;: 1, &#39;t&#39;: t}, {&#39;n&#39;: 2, &#39;t&#39;: t2}])</span>
+<span class="sd">            # square lattice, anisotropic nearest neighbours</span>
+<span class="sd">            sq.set_hopping([{&#39;n&#39;: 1, &#39;ang&#39;: 0., &#39;t&#39;: tx}, {&#39;n&#39;: 1, &#39;ang&#39;: 90., &#39;t&#39;: ty}])</span>
 
 <span class="sd">            # 1D chain, nearest-neighbor hopping t between the only orbital</span>
 <span class="sd">            # and its right neighbor:</span>
@@ -599,8 +617,10 @@
 <span class="sd">            chain_spin.set_hopping([{&#39;i&#39;: 0, &#39;j&#39;: 0, &#39;R&#39;: (1,),</span>
 <span class="sd">                                                    &#39;t&#39;: t*PAULI[&#39;0&#39;] + 1j*alpha*PAULI[&#39;y&#39;]}])</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">error_handling</span><span class="o">.</span><span class="n">set_hopping_kspace</span><span class="p">(</span><span class="n">list_hop</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sites</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">hermitian</span><span class="p">,</span> <span class="s1">&#39;hermitian&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">error_handling</span><span class="o">.</span><span class="n">hopping_form</span><span class="p">(</span><span class="n">list_hop</span><span class="p">):</span>
+            <span class="n">list_hop</span> <span class="o">=</span> <span class="n">neighbours</span><span class="o">.</span><span class="n">neighbour_hoppings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">list_hop</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin</span><span class="p">,</span> <span class="n">hermitian</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">set_hopping_kspace</span><span class="p">(</span><span class="n">list_hop</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sites</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">hermitian</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_nonreciprocal</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">for</span> <span class="n">dic</span> <span class="ow">in</span> <span class="n">list_hop</span><span class="p">:</span>
@@ -639,8 +659,11 @@
 <span class="sd">        no longer symmetric about :math:`\epsilon`.) The topological tools use</span>
 <span class="sd">        the Lowdin-orthonormalized states :math:`S^{1/2}v`.</span>
 
-<span class="sd">        :param list_hop: List of dictionaries (&#39;i&#39;, &#39;j&#39;, &#39;R&#39;, &#39;t&#39;), see *set_hopping*.</span>
+<span class="sd">        :param list_hop: List of dictionaries (&#39;i&#39;, &#39;j&#39;, &#39;R&#39;, &#39;t&#39;), or by</span>
+<span class="sd">            neighbour order (&#39;n&#39;, &#39;t&#39;, optionally &#39;ang&#39;, &#39;tag&#39;), see *set_hopping*.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">error_handling</span><span class="o">.</span><span class="n">hopping_form</span><span class="p">(</span><span class="n">list_hop</span><span class="p">):</span>
+            <span class="n">list_hop</span> <span class="o">=</span> <span class="n">neighbours</span><span class="o">.</span><span class="n">neighbour_hoppings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">list_hop</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">set_hopping_kspace</span><span class="p">(</span><span class="n">list_hop</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sites</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin</span><span class="p">)</span>
         <span class="n">saved</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hop</span><span class="p">,</span> <span class="p">[]</span>
         <span class="n">nonrec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nonreciprocal</span>

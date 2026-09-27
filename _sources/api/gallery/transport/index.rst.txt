@@ -10,6 +10,11 @@ leads: Landauer's formula, in which the conductance is a transmission
 probability, and the quantized conductance steps of a quantum point
 contact.
 
+Multi-terminal devices: Landauer-Buttiker conductance matrices and the
+quantized resistances of a Hall bar with its edge channels; bond
+currents; shot noise and the Fano factor; and the recursive Green's
+function for long wires.
+
 
 .. raw:: html
 
@@ -21,6 +26,23 @@ contact.
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Buttiker (1986) wrote the currents of a phase-coherent conductor with many leads as I_p = \frac{e^2}{h}\sum_q G_{pq}V_q, from the transmissions between leads, and treated voltage probes as leads that draw no net current. In 1988 he applied it to the quantum Hall effect: in a strong field the current flows in \nu chiral edge channels, one per filled Landau level, which carry electrons from each contact to the next one downstream without backscattering. The Landauer-Buttiker equations then give, for any sample shape and any probes,">
+
+.. only:: html
+
+  .. image:: /api/gallery/transport/images/thumb/sphx_glr_plot_hall_bar_edge_channels_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/transport/plot_hall_bar_edge_channels`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Buttiker's Edge Channels: the Quantized Resistances of a Hall Bar</div>
+    </div>
+
 
 .. raw:: html
 
@@ -39,6 +61,40 @@ contact.
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The Landauer transmission of a device needs its Green&#x27;s function between the two leads. Inverting the whole device matrix costs N^3 for N sites, which rules out the long samples in which localization shows. In 1981 Thouless and Kirkpatrick, Lee and Fisher, and MacKinnon and Kramer cut the sample into slices coupled only to their neighbours and added them one at a time,">
+
+.. only:: html
+
+  .. image:: /api/gallery/transport/images/thumb/sphx_glr_plot_recursive_green_function_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/transport/plot_recursive_green_function`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Recursive Green's Function: Localization Length of Long Disordered Wires</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A current made of discrete charges fluctuates: for independent electrons crossing a tunnel barrier, Schottky&#x27;s Poisson noise S = 2eI. In a phase-coherent conductor the Pauli principle correlates the electrons, and Lesovik (1989) and Buttiker (1990) found the zero-temperature noise from the transmission eigenvalues T_n of the scattering channels,">
+
+.. only:: html
+
+  .. image:: /api/gallery/transport/images/thumb/sphx_glr_plot_shot_noise_fano_factor_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/transport/plot_shot_noise_fano_factor`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Shot Noise: the Fano Factor of Ballistic, Tunnel and Diffusive Conductors</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -49,5 +105,8 @@ contact.
 .. toctree::
    :hidden:
 
+   /api/gallery/transport/plot_hall_bar_edge_channels
    /api/gallery/transport/plot_landauer_conductance
+   /api/gallery/transport/plot_recursive_green_function
+   /api/gallery/transport/plot_shot_noise_fano_factor
 

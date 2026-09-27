@@ -79,7 +79,7 @@ honeycomb, three for the kagome and Lieb:
         plot_lattice(lat, n1=n1, n2=n2, title=name, ax=ax)
 
 See ``lat.plot()`` to look at what you built, and
-``examples/examples_lattice.ipynb`` for many more shapes.
+``examples/tight_binding/plot_building_finite_lattices.py`` for many more shapes.
 
 Sculpting works on the finite patch. Cutting a disc out of a honeycomb
 sheet, for instance:
@@ -566,7 +566,7 @@ Where next
 
 * :doc:`tbkit` -- the full API reference, generated from the source
   docstrings.
-* ``examples/`` in the repository -- runnable scripts and notebooks for
+* ``examples/`` in the repository -- runnable scripts for
   everything above, plus more (kagome, Lieb, propagation, ...).
 * ``tests/`` -- every claim above (flat bands, Chern numbers, Kramers
   degeneracy, flux periodicity, ...) is checked against an analytic or
