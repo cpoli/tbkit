@@ -1,5 +1,45 @@
 # Changelog
 
+## 0.4.2 -- 2026-09-27
+
+### Added
+
+- **Surface spectral functions of semi-infinite crystals.**
+  `KSpace.surface_spectral_function(ks, energies, direction, side=1,
+  eta=1e-2, bulk=False)` returns `A_s = -Im Tr G_00 / pi`
+  of the outermost unit cell of a crystal that is semi-infinite along
+  `prim_vec[direction]` (towards `+a_d` or `-a_d` with `side`) and periodic
+  along the other primitive vectors. With `bulk=True`, it returns the same
+  quantity for a cell deep in the bulk, i.e. the bulk bands projected onto
+  the surface zone. Hoppings that reach several cells along the surface
+  normal are grouped into principal layers. Spinful and non-reciprocal
+  (`hermitian=False`) models work; overlaps raise a ValueError. The result
+  depends only on the in-plane momentum. Tests: the semi-infinite chain
+  (analytic surface and bulk functions, including E = 0 at eta = 1e-9, and
+  the sum rule), agreement to 1e-10 with the outer cell of 120-200-cell
+  ribbons and slabs (a Haldane-like model with a two-cell bond, on both
+  edges and along both primitive vectors; a spinful 3D model along a2 and
+  a3), the Hatano-Nelson chain against the Hermitian chain with
+  t = sqrt(tR tL), and decoupled layers. Example:
+  `topology/plot_3d_topological_insulator.py`: the strong index of a
+  cubic 3D topological insulator across its phases, a single (001)
+  surface Dirac cone of velocity 1 at Gamma-bar (at M-bar for 8 < M < 12),
+  and an empty gap in the trivial phase. History entry: three-dimensional
+  topological insulators (2007/2009).
+- `ROADMAP.md`: the features still missing (scattering matrix and lead
+  modes, automatic lead attachment, conservation laws, parametrized
+  Hamiltonians, continuum discretization, Wannierization, performance,
+  interoperability), compared with Kwant and PythTB.
+
+### Changed
+
+- `transport.surface_green` now runs on the same vectorized decimation as
+  the surface spectral function (many energies at once). It still picks
+  the best-conditioned grouping of 1-3 cells, now per energy, and it
+  balances the couplings of non-reciprocal chains, which a scaling of
+  cell n by r^n does not change, so the renormalized couplings no longer
+  overflow. Its results are unchanged.
+
 ## 0.4.1 -- 2026-09-27
 
 ### Added
