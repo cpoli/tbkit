@@ -145,6 +145,18 @@ an entry in `docs/source/history.rst`:
   DC limit `sigma_yx(0) = hall_conductivity` (TKNN sign). Example:
   `optics/plot_graphene_universal_absorption.py` (absorbance `pi alpha`).
   History entry: universal absorption of graphene (2008).
+- **Nonlinear optical response.** `tbkit.optics.berry_curvature_dipole`
+  (the Sodemann-Fu dipole `D_a`, a Fermi-surface integral over the thermal
+  window, at any Fermi levels), `shift_current` (the Sipe-Shkrebtii
+  `sigma^abc(0; omega, -omega)` of any 2D component, Gaussian broadening)
+  and `generalized_derivative` (interband positions `r^b_nm` and their
+  covariant derivatives `r^b_nm;a` as a sum over states, with the exact
+  `d^2H/dk_a dk_b` from `KSpace._bloch_sum`). Tested against the analytic
+  dipole of the tilted massive Dirac cone (within 1.5%), a gauge-invariant
+  finite-difference shift vector, and the `C3v` and inversion selection
+  rules. Examples: `optics/plot_nonlinear_hall_berry_curvature_dipole.py`,
+  `optics/plot_bulk_photovoltaic_shift_current.py`. History entries: the
+  shift current (1981/2000) and the nonlinear Hall effect (2015/2019).
 ### Fixed
 
 Bugs that produced silently wrong numbers:

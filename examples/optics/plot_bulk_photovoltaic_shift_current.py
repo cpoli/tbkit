@@ -1,0 +1,97 @@
+r"""
+The Bulk Photovoltaic Effect: the Shift Current of Gapped Graphene
+======================================================================
+
+A crystal without an inversion centre can turn light into a DC current
+with no junction: the bulk photovoltaic effect, seen in ferroelectrics
+since the 1970s (Glass, von der Linde and Negran 1974). Baltz and Kraut
+(1981), then Sipe and Shkrebtii (2000), traced its main part to a purely
+quantum-geometric mechanism: when light excites an electron from band
+:math:`n` to band :math:`m`, the electron's centre of charge moves by the
+*shift vector*
+
+.. math::
+
+    R^{a,b}_{nm} = \partial_a\phi^b_{nm} - A^a_{nn} + A^a_{mm}\, ,
+
+(:math:`\phi^b_{nm}` the phase of the interband position :math:`r^b_{nm}`,
+:math:`A` the Berry connections), and the steady rate of such shifts is a
+current,
+
+.. math::
+
+    \sigma^{abb}(\omega) = -\frac{\pi e^3}{\hbar^2}\int\frac{d^2k}{(2\pi)^2}
+    \sum_{n,m}f_{nm}\,|r^b_{nm}|^2R^{a,b}_{nm}\,\delta(\omega_{mn} - \omega)\, .
+
+:func:`~tbkit.optics.shift_current` evaluates it with the gauge-covariant
+derivatives of :func:`~tbkit.optics.generalized_derivative` (a sum over
+states, with the exact second derivatives of :math:`H`). Graphene with a
+staggered potential :math:`\pm m` (hexagonal boron nitride's model) has
+lost its inversion centre, and has the :math:`C_{3v}` symmetry that leaves
+one independent component, :math:`\sigma^{yyy} = -\sigma^{yxx} = -\sigma^{xxy}`,
+with :math:`\sigma^{xxx} = 0` (mirror :math:`x\to-x`).
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+
+import tbkit.lattices as lattices
+from tbkit.kspace import KSpace
+from tbkit.optics import shift_current, optical_conductivity
+
+
+def gapped_graphene(m):
+    ks = KSpace(lattices.honeycomb())
+    ks.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': -1.} for R in [(0, 0), (-1, 0), (0, -1)]])
+    ks.set_onsite({'a': m, 'b': -m})
+    return ks
+
+
+m = 0.5
+hbn = gapped_graphene(m)
+omega = np.linspace(0.5, 7., 131)
+
+# %%
+# One independent component, and an absorption edge at the gap
+# ------------------------------------------------------------------
+# Nothing flows below the gap :math:`2m`: the current needs real
+# transitions.
+
+sigma = {c: shift_current(hbn, omega, eta=0.05, nk=150, component=c)
+             for c in ('yyy', 'yxx', 'xxy', 'xxx')}
+assert np.abs(sigma['yyy']).max() > 1e-2
+assert np.allclose(sigma['yxx'], -sigma['yyy'], atol=1e-8)
+assert np.allclose(sigma['xxy'], -sigma['yyy'], atol=1e-8)
+assert np.allclose(sigma['xxx'], 0., atol=1e-10)
+below = omega < 2 * m - 0.25
+assert np.abs(sigma['yyy'][below]).max() < 1e-8
+absorption = optical_conductivity(hbn, omega, eta=0.05, nk=150).real
+assert absorption[below].max() < 0.05 * absorption.max()
+print('max |sigma^yyy| = {:.4f} at hbar omega = {:.2f}'.format(
+    np.abs(sigma['yyy']).max(), omega[np.argmax(np.abs(sigma['yyy']))]))
+
+# %%
+# The current follows the broken inversion
+# ------------------------------------------------
+# Swapping the two sublattice potentials (:math:`m\to-m`) is the image of
+# the crystal under inversion: the current reverses. Without the
+# staggered potential graphene is centrosymmetric, and there is no shift
+# current at all.
+
+flipped = shift_current(gapped_graphene(-m), omega, eta=0.05, nk=150, component='yyy')
+assert np.allclose(flipped, -sigma['yyy'], atol=1e-8)
+centrosymmetric = shift_current(gapped_graphene(0.), omega, eta=0.05, nk=60, component='yyy')
+assert np.abs(centrosymmetric).max() < 1e-10
+
+fig, axes = plt.subplots(2, 1, figsize=(6, 6), sharex=True)
+axes[0].plot(omega, absorption, '-k')
+axes[0].set_ylabel(r'Re $\sigma_{xx}$ ($e^2/h$)')
+axes[0].axvline(2 * m, color='gray', ls=':')
+axes[1].plot(omega, sigma['yyy'], '-b', label=r'$\sigma^{yyy}$, $+m$')
+axes[1].plot(omega, flipped, '--r', label=r'$\sigma^{yyy}$, $-m$')
+axes[1].plot(omega, sigma['xxx'], '-', color='gray', label=r'$\sigma^{xxx}$')
+axes[1].axvline(2 * m, color='gray', ls=':')
+axes[1].set_xlabel(r'$\hbar\omega / |t|$')
+axes[1].set_ylabel(r'$\sigma^{abb}$ ($e^3a/\hbar|t|$)')
+axes[1].legend()
+axes[0].set_title('Shift current of gapped graphene (bulk photovoltaic effect)')
+fig.set_layout_engine('tight')

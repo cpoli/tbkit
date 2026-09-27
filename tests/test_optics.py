@@ -264,6 +264,9 @@ class TestShiftCurrent(unittest.TestCase):
         self.assertTrue(np.allclose(xxy, -yyy, atol=1e-8))
         self.assertTrue(np.allclose(xxx, 0., atol=1e-10))
         self.assertLess(abs(optics.shift_current(hbn, 0.3, eta=0.05, nk=40, component='yyy')), 1e-12)
+        # m -> -m is the inversion image of the crystal: the current reverses
+        flipped = optics.shift_current(graphene(mass=-0.4), omega, eta=0.1, nk=60, component='yyy')
+        self.assertTrue(np.allclose(flipped, -yyy, atol=1e-8))
         # unlike a Hall conductance, the shift current depends on where the
         # orbitals sit in the cell: all at the origin, it changes
         per = optics.shift_current(hbn, omega, eta=0.1, nk=60, component='yyy', positions=False)

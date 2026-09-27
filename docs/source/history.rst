@@ -1664,6 +1664,92 @@ absorption peaks at the van Hove energy :math:`2|t|`; and that doping to
 
 .. minigallery:: ../../examples/optics/plot_graphene_universal_absorption.py
 
+1981/2000 -- The Shift Current and the Bulk Photovoltaic Effect
+----------------------------------------------------------------------
+
+Ferroelectrics lit uniformly produce a DC current with no junction (Glass,
+von der Linde and Negran 1974): the bulk photovoltaic effect of crystals
+without an inversion centre. Baltz and Kraut (1981) identified its main
+part as a *shift current*, and Sipe and Shkrebtii (2000) gave it its
+modern form: an electron excited from band :math:`n` to band :math:`m`
+moves by the shift vector
+:math:`R^{a,b}_{nm} = \partial_a\phi^b_{nm} - A^a_{nn} + A^a_{mm}`, a
+difference of Berry connections, and
+
+.. math::
+
+   \sigma^{abb}(\omega) = -\frac{\pi e^3}{\hbar^2}\int\frac{d^2k}{(2\pi)^2}
+   \sum_{n,m}f_{nm}\,|r^b_{nm}|^2R^{a,b}_{nm}\,\delta(\omega_{mn}-\omega)\, .
+
+The current is thus a property of the band geometry, not only of the
+absorption, and it depends on where the orbitals sit in the cell
+(Ibanez-Azpiroz, Tsirkin and Souza 2018).
+
+*Implementation:* :func:`tbkit.optics.shift_current` (any component
+:math:`\sigma^{abc}` of a 2D :class:`~tbkit.kspace.KSpace`) and
+:func:`tbkit.optics.generalized_derivative` (the covariant derivatives
+:math:`r^b_{nm;a}` as a sum over states, with the exact second
+derivatives of :math:`H`).
+
+*References:* A. M. Glass, D. von der Linde, and T. J. Negran,
+"High-voltage bulk photovoltaic effect and the photorefractive process in
+LiNbO3," Appl. Phys. Lett. 25, 233 (1974); R. von Baltz and W. Kraut,
+"Theory of the bulk photovoltaic effect in pure crystals," Phys. Rev. B
+23, 5590 (1981); J. E. Sipe and A. I. Shkrebtii, "Second-order optical
+response in semiconductors," Phys. Rev. B 61, 5337 (2000); J.
+Ibanez-Azpiroz, S. S. Tsirkin, and I. Souza, "Ab initio calculation of the
+shift photocurrent by Wannier interpolation," Phys. Rev. B 97, 245143
+(2018).
+
+*Example:* ``examples/optics/plot_bulk_photovoltaic_shift_current.py``
+computes the shift current of graphene with a staggered potential
+(boron nitride's model) and confirms the :math:`C_{3v}` selection rules
+:math:`\sigma^{yyy} = -\sigma^{yxx} = -\sigma^{xxy}`,
+:math:`\sigma^{xxx} = 0`, that nothing flows below the gap, that the
+current reverses with the inversion image of the crystal
+(:math:`m\to-m`), and that it vanishes in centrosymmetric graphene.
+
+.. minigallery:: ../../examples/optics/plot_bulk_photovoltaic_shift_current.py
+
+2015/2019 -- The Nonlinear Hall Effect and the Berry Curvature Dipole
+--------------------------------------------------------------------------
+
+In a time-reversal-symmetric crystal the Berry curvature integrates to
+zero over the occupied states: no linear Hall effect. Sodemann and Fu
+(2015) showed that its first moment, the *Berry curvature dipole*
+
+.. math::
+
+   D_a = \int\frac{d^2k}{(2\pi)^2}\sum_nf_n\,\partial_a\Omega_n\, ,
+
+survives in crystals of low enough symmetry (at most one mirror line in
+2D), and drives a Hall current second order in the field,
+:math:`j_a = -\varepsilon_{adc}\frac{e^3\tau}{2\hbar^2(1+i\omega\tau)}D_{bd}E_bE_c`.
+For a tilted massive Dirac cone the dipole is, to first order in the tilt
+:math:`t`, :math:`D_x = -3tm(\mu^2-m^2)/8\pi\mu^4`. Ma et al. and Kang et
+al. (2019) observed the effect in bilayer and few-layer WTe\ :sub:`2`.
+
+*Implementation:* :func:`tbkit.optics.berry_curvature_dipole` (a
+Fermi-surface integral over the thermal window, with the Kubo-formula
+Berry curvature of :meth:`~tbkit.kspace.KSpace.hall_conductivity`).
+
+*References:* I. Sodemann and L. Fu, "Quantum Nonlinear Hall Effect
+Induced by Berry Curvature Dipole in Time-Reversal Invariant Materials,"
+Phys. Rev. Lett. 115, 216806 (2015); Q. Ma et al., "Observation of the
+nonlinear Hall effect under time-reversal-symmetric conditions," Nature
+565, 337 (2019); K. Kang, T. Li, E. Sohn, J. Shan, and K. F. Mak,
+"Nonlinear anomalous Hall effect in few-layer WTe2," Nat. Mater. 18, 324
+(2019).
+
+*Example:* ``examples/optics/plot_nonlinear_hall_berry_curvature_dipole.py``
+confirms, on a lattice regularization of the tilted massive Dirac cone,
+the Sodemann-Fu dipole within 1.5% across the conduction band (its
+thermal average), :math:`D_y = 0` by the mirror :math:`y\to-y`, a peak
+near :math:`\mu = \sqrt2 m`, and a dipole odd in the tilt that vanishes
+without it.
+
+.. minigallery:: ../../examples/optics/plot_nonlinear_hall_berry_curvature_dipole.py
+
 See Also
 --------
 
