@@ -10,6 +10,9 @@ Hall and optical response, non-Hermitian and Floquet models, mean field,
 moiré systems. What it lacks is mostly transport machinery and
 scalability. Items 1-4 would make tbkit credible for mesoscopic device
 work. Until they land, Kwant remains the right tool for serious transport.
+Items 10-13 are smaller. Section 12 (plotting and analysis) holds the
+cheapest wins, and section 10 the most valuable additions on the physics
+side.
 
 Each item lists why it matters, the current state, and a sketch of the
 approach. The project conventions (validation in `error_handling.py`, 100%
@@ -149,6 +152,82 @@ k-space topology works on dense matrices, looping over k.
 
 Transient currents and pulses through a device, like tkwant. This is
 niche, and it depends on items 1 and 4.
+
+## 10. Missing topological invariants
+
+**Why.** These are standard in the literature and in other codes, and each
+one reuses machinery tbkit already has (Wilson loops, BdG models,
+projectors).
+
+- **Spin Chern number**: the Chern number of the two sectors of the
+  projected spin operator P s_z P (Prodan 2009). It covers quantum spin
+  Hall systems where s_z is not conserved, for example Kane-Mele with
+  Rashba coupling.
+- **Mirror Chern numbers**: Chern numbers of the mirror-eigenvalue sectors
+  on a mirror-invariant plane, for topological crystalline insulators
+  (SnTe). It needs a `mirror` operator argument, like `parity_z2`'s
+  `inversion`.
+- **BdG topology**: the Pfaffian Z2 invariant and Kitaev's Majorana number
+  sign Pf[H(k=0)] Pf[H(k=pi)] in the Majorana basis. `bdg.py` builds the
+  Hamiltonians but computes no invariant.
+- **Bott index**: a real-space Chern number for disordered samples and
+  quasicrystals (Loring and Hastings 2010), complementing
+  `get_local_chern_marker`.
+- **All four 3D Z2 indices in one call**: `z2_indices_3d(bands)` returning
+  (nu0; nu1 nu2 nu3) from the six time-reversal-invariant planes. Today it
+  takes six `z2_invariant(..., k_fixed=...)` calls combined by hand, which
+  is how the weak phase of the 3D topological insulator example has to be
+  identified.
+- **Entanglement spectrum**: the eigenvalues of the correlation matrix
+  restricted to half of a ribbon or flake. It is a basis-independent
+  diagnostic of topology and cheap to compute.
+
+## 11. Berry-phase response beyond the Hall conductivity
+
+- **Orbital magnetization** in the modern theory (Thonhauser, Ceresoli,
+  Vanderbilt and Resta 2005), from the same Bloch derivatives as
+  `hall_conductivity`. It can be checked against the Streda formula
+  dM/dmu = sigma_xy on a `System`.
+- **Anomalous Nernst and thermal Hall conductivities**: energy-weighted
+  integrals of the Berry curvature (Xiao et al. 2006).
+- **Axion angle theta** of 3D insulators, for magnetic topological
+  insulators. Low priority.
+
+## 12. Analysis and plotting
+
+These are cheap wins, about a day each, and they remove a lot of
+boilerplate from the examples.
+
+- **Fat bands and spin textures**: `KSpace.plot_bands(weights=...)` coloring
+  or sizing the bands by orbital, sublattice or spin projection, and a
+  spin-texture arrow plot on a constant-energy contour. `KSpace` currently
+  plots only `plot_bands` and `plot_dos`.
+- **Fermi surfaces and constant-energy contours** in 2D (contours on a
+  mesh) and 3D (marching cubes, optional scikit-image). The Weyl semimetal
+  example builds its Fermi-arc map by hand.
+- **Automatic high-symmetry k-paths**: `high_symmetry_path(lat)` for the 2D
+  Bravais lattices and the cubic, hexagonal and tetragonal lattices, with
+  labels ready for `plot_bands(node_labels=...)`. Every example
+  hard-codes Gamma, K and M today.
+- **Tetrahedron-method density of states**: more accurate than Gaussian or
+  Lorentzian broadening at van Hove singularities and band edges.
+- **Plot helpers for the newer tools**: the surface spectral function, the
+  Wilson loop and Wannier-centre flow, and the Berry curvature map. The
+  examples draw all of these with raw matplotlib.
+
+## 13. Project infrastructure
+
+- **Docs and gallery in CI**: build the docs, which re-runs every asserted
+  example, on each push. Today a code change that breaks an example passes
+  CI and is only found at the next local docs build.
+- **Release automation**: a workflow triggered by a `v*` tag that builds
+  the wheel and sdist, publishes to PyPI with trusted publishing (no API
+  token), creates the GitHub Release from the CHANGELOG section, and
+  rebuilds gh-pages.
+- **A DOI**: connect the repository to Zenodo so each release gets a
+  citable DOI, and add it to `CITATION.cff` and the README.
+- **Static checks**: ruff for linting and mypy for the existing type hints,
+  as a CI job.
 
 ## Done
 
