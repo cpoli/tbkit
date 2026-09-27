@@ -616,6 +616,20 @@ class TestModelBuilding(unittest.TestCase):
         self.assertRaises(TypeError, ks.set_hopping, [{'n': 1, 't': 1.}], hermitian=1)
         self.assertRaises(ValueError, ks.set_overlap, [{'n': 1, 'tag': 'aa', 't': 0.1}])
 
+    def test_bridges(self):
+        eh.lattice_sites(np.array([1, 1]))
+        self.assertRaises(ValueError, eh.lattice_sites, np.array([1, 0]))
+        self.assertRaises(ValueError, eh.lattice_sites, np.array([2, 1]))
+        eh.translation_invariant(1e-12, 1e-9)
+        self.assertRaises(ValueError, eh.translation_invariant, 1e-3, 1e-9)
+        eh.torus_range(np.array([[1, -1]]), np.array([3, 4]))
+        self.assertRaises(ValueError, eh.torus_range, np.array([[0, -2]]), np.array([3, 4]))
+        self.assertRaises(ValueError, eh.torus_range, np.array([[0, 0]]), np.array([2, 4]))
+        eh.spinless(False)
+        self.assertRaises(ValueError, eh.spinless, True)
+        eh.not_orbital_system(1, str)
+        self.assertRaises(TypeError, eh.not_orbital_system, 'a', str)
+
 
 if __name__ == '__main__':
     unittest.main()

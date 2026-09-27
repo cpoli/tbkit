@@ -143,6 +143,18 @@ an entry in `docs/source/history.rst`:
   explicit `{'i', 'j', 'R', 't'}` form is unchanged. Example:
   `models/plot_neighbour_hoppings.py` (third-nearest-neighbour graphene
   with overlaps, checked against closed-form energies at Gamma and K).
+- **Bridges between System and KSpace.** New `tbkit.bridges`:
+  `kspace_from_system` reads the Bloch model off a translation-invariant
+  `System` (open, or a torus with `periodic=True`; Hermitian or
+  non-reciprocal), `finite_model` returns the sparse Hamiltonian of a
+  finite sample of a `KSpace` model with its site positions and tags (spin
+  included), `finite_system` builds a ready-to-use `System` (open or
+  torus) whose `sys.hop` follows the conventions of `System.set_hopping`,
+  and `cell_orbitals` maps the sites of a finite lattice to unit-cell
+  orbitals and cells. Tests prove the round trip: the spectrum of a System
+  on an N1 x N2 (x N3) torus equals the KSpace bands on the same mesh.
+  Example: `models/plot_pipeline_bridges.py` (the Haldane model, set up
+  with the real-space selectors in both pipelines, on a 30 x 30 torus).
 
 ### Fixed
 

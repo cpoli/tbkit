@@ -2271,3 +2271,66 @@ def shell_angle(ang, angles):
             not np.any(np.isclose(ang, angles - 180., atol=ATOL)):
         raise ValueError('\n\nNo bond of this neighbour shell has angle {} (angles: {}).\n'
                                    .format(ang, np.unique(angles.round(4))))
+
+
+def not_orbital_system(sys, orbital_cls):
+    '''
+    Check that a System is not an *OrbitalSystem* (several rows per site).
+
+    :raises TypeError: An OrbitalSystem is not supported.
+    '''
+    if isinstance(sys, orbital_cls):
+        raise TypeError('\n\nAn OrbitalSystem (several orbitals per site) is not supported: '
+                                 'build its KSpace with tbkit.slater_koster.sk_kspace.\n')
+
+
+def lattice_sites(matches):
+    '''
+    Check that every site of a finite lattice is a copy of exactly one
+    orbital of *unit_cell*, translated by a lattice vector (*matches*: the
+    number of such orbitals, per site).
+
+    :raises ValueError: A site is not on the periodic lattice.
+    '''
+    bad = np.flatnonzero(np.asarray(matches) != 1)
+    if len(bad):
+        raise ValueError('\n\nSite {} is not a translate of exactly one unit-cell site (same tag, '
+                                   'position r0 + n1 a1 + ...): was the lattice rotated, strained '
+                                   'or shifted?\n'.format(int(bad[0])))
+
+
+def translation_invariant(dev, tol):
+    '''
+    Check that equivalent matrix elements (same orbitals, same lattice
+    vector) are equal in every cell, within *tol*.
+
+    :raises ValueError: The model is not translation invariant.
+    '''
+    if dev > tol:
+        raise ValueError('\n\nThe Hamiltonian is not translation invariant: equivalent hoppings '
+                                   'or onsite energies differ by {:.3g} (> tol = {:.3g}), e.g. after '
+                                   'disorder, defects or a magnetic field.\n'.format(dev, tol))
+
+
+def torus_range(R, sizes):
+    '''
+    Check that the lattice vectors of a torus's bonds (shortest images, in
+    [-N/2, N/2)) are unambiguous: at least 3 cells along every direction,
+    and no bond reaching half-way around.
+
+    :raises ValueError: The torus is too small for the range of the model.
+    '''
+    if np.any(sizes < 3) or np.any(2 * R == -sizes[None, :]):
+        raise ValueError('\n\nThe torus ({} cells) is too small for the range of the model: '
+                                   'a bond reaches half-way around it.\n'.format(tuple(int(n) for n in sizes)))
+
+
+def spinless(spin):
+    '''
+    Check that a KSpace model has no spin.
+
+    :raises ValueError: This needs a spinless model.
+    '''
+    if spin:
+        raise ValueError('\n\nThis needs a spinless model (spin=False): a System has one '
+                                   'orbital per site; use bridges.finite_model for spinful models.\n')

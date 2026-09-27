@@ -90,13 +90,14 @@ def neighbour_shells(lat: Lattice, n_max: int) -> NDArray[np.float64]:
     return _shells(lat, n_max)[0]
 
 
-def _shells(lat: Lattice, n_max: int) -> tuple[NDArray, int]:
+def _shells(lat: Lattice, n_max: int, r_max: float | None = None) -> tuple[NDArray, int]:
     r'''
     Private function. The first *n_max* shell distances, and the cell range
     *m* whose candidates hold every bond of those shells: a bond of length
     :math:`|\mathbf{d}|` has :math:`|n_k| \le |\mathbf{b}_k|(|\mathbf{d}| + \max|\boldsymbol\tau_j-\boldsymbol\tau_i|)/2\pi`,
     so a box of half-width *m* is complete up to the radius
     :math:`2\pi m/\max_k|\mathbf{b}_k| - \max|\boldsymbol\tau_j-\boldsymbol\tau_i|`.
+    With *r_max*, every shell up to (at least) that radius instead.
     '''
     a, tau, _ = _geometry(lat)
     b_norm = np.linalg.norm(np.linalg.pinv(a), axis=0).max()  # max |b_k| / 2 pi
@@ -108,9 +109,25 @@ def _shells(lat: Lattice, n_max: int) -> tuple[NDArray, int]:
         radius = m / b_norm - dtau - 2 * ATOL
         uni = np.unique(dist[dist > ATOL].round(4))
         uni = uni[uni <= radius]
-        if len(uni) >= n_max:
+        if r_max is not None:
+            if radius > r_max:
+                return uni, m
+        elif len(uni) >= n_max:
             return uni[:n_max], m
         m += 1
+
+
+def shell_index(lat: Lattice, dist: NDArray[np.float64]) -> NDArray[np.int64]:
+    '''
+    Private function. Neighbour order of bond lengths *dist* (0 for a
+    length below ATOL, as *System*'s ``dist_uni[0]``).
+    '''
+    dist = np.asarray(dist, dtype='f8')
+    if not np.any(dist > ATOL):
+        return np.zeros(len(dist), dtype=int)
+    shells, _ = _shells(lat, 0, r_max=float(dist.max()) + ATOL)
+    n = np.argmin(np.abs(dist[:, None] - shells[None, :]), axis=1) + 1
+    return np.where(dist > ATOL, n, 0)
 
 
 def neighbour_bonds(lat: Lattice, n_max: int) -> NDArray:

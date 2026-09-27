@@ -63,4 +63,5 @@ Sections
   phases with edge states despite zero Chern numbers.
 - **models** -- building, bridging and saving models: hoppings by
   neighbour order in k-space (third-nearest-neighbour graphene with
-  overlaps).
+  overlaps), and bridges between the real-space and k-space pipelines
+  (the Haldane model on a torus).

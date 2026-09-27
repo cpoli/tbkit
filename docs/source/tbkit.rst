@@ -155,6 +155,14 @@ tbkit.neighbours module
     :undoc-members:
     :show-inheritance:
 
+tbkit.bridges module
+--------------------
+
+.. automodule:: tbkit.bridges
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 tbkit.error_handling module
 ---------------------------
 
