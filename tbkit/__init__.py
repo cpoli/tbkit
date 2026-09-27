@@ -39,3 +39,6 @@ from tbkit.higher_order import CornerCharges, quadrupole_moment, corner_charges
 __all__ += ["CornerCharges", "quadrupole_moment", "corner_charges"]
 from tbkit.moire import SupercellKSpace, MoireKSpace, supercell, twisted_bilayer
 __all__ += ["SupercellKSpace", "MoireKSpace", "supercell", "twisted_bilayer"]
+from tbkit.meanfield import NonCollinearResult, hubbard_mean_field_noncollinear
+from tbkit.bdg import GapResult, s_wave_gap
+__all__ += ["NonCollinearResult", "hubbard_mean_field_noncollinear", "GapResult", "s_wave_gap"]

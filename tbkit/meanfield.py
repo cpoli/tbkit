@@ -155,3 +155,135 @@ def hubbard_mean_field(
         error_handling.converged(False, 'hubbard_mean_field')
     energy = float(np.sum(f_up * en_up) + np.sum(f_dn * en_dn) - np.sum(U * new_up * new_dn))
     return MeanFieldResult(new_up, new_dn, en_up, en_dn, mu, energy, it)
+
+
+#: Pauli matrices sigma_x, sigma_y, sigma_z.
+_SIGMA = np.array([[[0., 1.], [1., 0.]], [[0., -1j], [1j, 0.]], [[1., 0.], [0., -1.]]], dtype='c16')
+
+
+class NonCollinearResult():
+    r'''
+    Self-consistent solution of *hubbard_mean_field_noncollinear*.
+
+    :ivar rho: Complex ndarray, shape (N, 2, 2). Onsite spin density
+        matrices :math:`\rho_{i,\alpha\beta} = \langle c^\dagger_{i\beta}c_{i\alpha}\rangle`.
+    :ivar density: Real ndarray. :math:`n_i = \mathrm{Tr}\,\rho_i`.
+    :ivar magnetization: Real ndarray, shape (N, 3).
+        :math:`\mathbf{m}_i = \mathrm{Tr}(\rho_i\boldsymbol\sigma)/2`.
+    :ivar energies: Real ndarray. Mean-field energies (2N).
+    :ivar states: Complex ndarray, shape (2N, 2N). Eigenvectors (columns),
+        rows site-major (spin up, down).
+    :ivar e_fermi: Real number. Fermi level.
+    :ivar energy: Real number. Mean-field ground-state energy
+        :math:`\sum f E - U\sum_i(\rho_{i\uparrow\uparrow}\rho_{i\downarrow\downarrow}
+        - |\rho_{i\uparrow\downarrow}|^2)`.
+    :ivar iterations: Integer. Number of iterations.
+    '''
+
+    def __init__(self, rho, energies, states, e_fermi, energy, iterations) -> None:
+        self.rho = rho
+        self.density = np.real(np.trace(rho, axis1=1, axis2=2))
+        self.magnetization = np.real(np.einsum('iab,sba->is', rho, _SIGMA)) / 2
+        self.energies, self.states = energies, states
+        self.e_fermi = e_fermi
+        self.energy = energy
+        self.iterations = iterations
+
+    @property
+    def total_spin(self) -> NDArray[np.float64]:
+        r'''
+        Total spin :math:`\sum_i\mathbf{m}_i`, shape (3,).
+        '''
+        return self.magnetization.sum(axis=0)
+
+
+def hubbard_mean_field_noncollinear(
+    ham, U: float | ArrayLike, n_electrons: float, temperature: float = 0.,
+    magnetization: ArrayLike | None = None, spinful: bool = False, mixing: float = 0.5,
+    tol: float = 1e-8, max_iter: int = 20000, seed=None,
+) -> NonCollinearResult:
+    r'''
+    Solve the Hubbard model in the non-collinear (spin-rotation invariant)
+    Hartree-Fock approximation: the onsite spin density matrix
+    :math:`\rho_i` is kept whole, so the moments may point in any
+    direction (spirals, the 120-degree order of frustrated lattices,
+    moments canted by spin-orbit coupling). The Hartree and Fock terms of
+    :math:`Un_{i\uparrow}n_{i\downarrow}` add, on every site,
+
+    .. math::
+
+        V_i = U\,(n_i\mathbb{1} - \rho_i) = U\begin{pmatrix}\rho_{\downarrow\downarrow} & -\rho_{\uparrow\downarrow}\\
+        -\rho_{\downarrow\uparrow} & \rho_{\uparrow\uparrow}\end{pmatrix}
+        = U\Big(\frac{n_i}{2}\mathbb{1} - \mathbf{m}_i\cdot\boldsymbol\sigma\Big)\, ,
+
+    iterated with linear mixing until :math:`\rho` is self-consistent. With
+    :math:`\rho_{\uparrow\downarrow} = 0` it is *hubbard_mean_field*
+    (collinear moments along :math:`z` stay collinear, and give the same
+    solution). As there, several starts should be compared by *energy*.
+
+    :param ham: Square Hermitian matrix: the single-particle Hamiltonian,
+        (N, N) spin independent, or, with ``spinful=True``, (2N, 2N) with
+        rows site-major (spin up, down) -- e.g. with spin-orbit coupling.
+    :param U: Real number, or array of one per site. Onsite repulsion.
+    :param n_electrons: Positive real, at most 2N. An integer at T = 0.
+    :param temperature: Positive real or zero. Default value 0.
+    :param magnetization: Real array, shape (N, 3). Default value None
+        (random directions of length 0.1). Initial moments, on top of a
+        uniform density.
+    :param spinful: Boolean. Default value False. See *ham*.
+    :param mixing: Real in (0, 1]. Default value 0.5.
+    :param tol: Positive real. Default value 1e-8. Convergence threshold on
+        the largest change of :math:`\rho`.
+    :param max_iter: Positive integer. Default value 20000.
+    :param seed: Default value None. Seed of the random initial moments.
+
+    :returns:
+        * **result** -- :class:`NonCollinearResult`.
+    '''
+    ham = ham.toarray() if hasattr(ham, 'toarray') else np.asarray(ham)
+    error_handling.square_matrix(ham, 'ham')
+    error_handling.hermitian_dense(ham)
+    error_handling.boolean(spinful, 'spinful')
+    if spinful:
+        error_handling.even_dimension(len(ham))
+        h0 = ham.astype('c16')
+    else:
+        h0 = np.kron(ham, np.eye(2)).astype('c16')
+    n = len(h0) // 2
+    U = np.full(n, float(U)) if np.ndim(U) == 0 else np.asarray(U, dtype='f8')
+    error_handling.ndarray(U, 'U', n)
+    error_handling.electrons(n_electrons, 2 * n)
+    error_handling.positive_real_zero(temperature, 'temperature')
+    if temperature == 0:
+        error_handling.integer_electrons(n_electrons)
+    error_handling.mixing(mixing)
+    error_handling.positive_real(tol, 'tol')
+    error_handling.positive_int(max_iter, 'max_iter')
+    if magnetization is None:
+        vec = np.random.default_rng(seed).normal(size=(n, 3))
+        magnetization = 0.1 * vec / np.linalg.norm(vec, axis=1)[:, None]
+    magnetization = np.asarray(magnetization, dtype='f8')
+    error_handling.magnetization(magnetization, n)
+    # rho = n/2 + m.sigma (so that Tr(rho sigma)/2 = m)
+    rho = (n_electrons / (2 * n) * np.eye(2)[None]
+              + np.einsum('is,sab->iab', magnetization, _SIGMA)).astype('c16')
+    blocks = np.arange(n)
+    for it in range(1, max_iter + 1):
+        pot = U[:, None, None] * (np.trace(rho, axis1=1, axis2=2)[:, None, None] * np.eye(2)[None] - rho)
+        h = h0.copy()
+        for a in range(2):
+            for b in range(2):
+                h[2 * blocks + a, 2 * blocks + b] += pot[:, a, b]
+        en, vec = np.linalg.eigh(h)
+        f, _, mu = _occupy(en, en[:0], n_electrons, temperature)
+        full = (vec * f[None, :]) @ vec.conj().T
+        new = full.reshape(n, 2, n, 2)[blocks, :, blocks, :]
+        change = np.max(np.abs(new - rho))
+        rho = (1 - mixing) * rho + mixing * new
+        if change < tol:
+            break
+    else:
+        error_handling.converged(False, 'hubbard_mean_field_noncollinear')
+    double = U * np.real(new[:, 0, 0] * new[:, 1, 1] - np.abs(new[:, 0, 1]) ** 2)
+    energy = float(np.sum(f * en) - np.sum(double))
+    return NonCollinearResult(new, en, vec, mu, energy, it)

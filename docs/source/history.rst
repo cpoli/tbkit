@@ -1731,6 +1731,69 @@ Bloch matrices -- central bands more than 15 times narrower.
 
 .. minigallery:: ../../examples/moire/plot_magic_angle_twisted_bilayer.py
 
+1957 -- BCS Theory and the Self-Consistent Gap Equation
+-------------------------------------------------------------
+
+J. Bardeen, L. N. Cooper and J. R. Schrieffer explained superconductivity
+by a condensate of Cooper pairs, whose gap solves a self-consistent *gap
+equation*, :math:`1 = \frac{V}{N}\sum_{\mathbf{k}}\tanh(E_{\mathbf{k}}/2T)/2E_{\mathbf{k}}`.
+At weak coupling its solution is universal: :math:`\Delta(T)` vanishes
+as :math:`\sqrt{1-T/T_c}` at :math:`T_c`, with :math:`\Delta(0) =
+1.764\,k_BT_c` for every material. P.-G. de Gennes (1966) recast it in
+real space, as the self-consistency of the Bogoliubov-de Gennes
+Hamiltonian site by site, :math:`\Delta_i = V\langle c_{i\downarrow}c_{i\uparrow}\rangle`
+-- the tool of choice for vortices, interfaces, disorder and the
+proximity effect.
+
+*Implementation:* :func:`tbkit.bdg.s_wave_gap` (real-space s-wave gap
+equation, uniform or site-dependent attraction, any temperature).
+
+*References:* J. Bardeen, L. N. Cooper, and J. R. Schrieffer, "Theory of
+Superconductivity," Phys. Rev. 108, 1175-1204 (1957); P.-G. de Gennes,
+*Superconductivity of Metals and Alloys* (Benjamin, 1966).
+
+*Example:* ``examples/superconductivity/plot_bcs_gap_equation.py``
+confirms, on a clean :math:`12\times12` torus, a uniform real-space gap
+equal to the k-space BCS solution at every temperature, a :math:`T_c`
+(from the linear vanishing of :math:`\Delta^2`) within 1% of the
+linearized gap equation, :math:`\Delta(0)/T_c = 1.764` to 2%, and the
+proximity effect of a half-superconducting chain.
+
+.. minigallery:: ../../examples/superconductivity/plot_bcs_gap_equation.py
+
+1973/1988 -- Frustration and the 120-Degree Order of the Triangular Antiferromagnet
+-------------------------------------------------------------------------------------------
+
+On a triangle, three antiparallel spins cannot all be satisfied. G.
+Wannier (1950) showed that the Ising triangular antiferromagnet never
+orders; P. W. Anderson (1973) proposed that the quantum Heisenberg one is
+a resonating-valence-bond spin liquid; D. A. Huse and V. Elser (1988), and
+later numerical work, found that it orders after all, *non-collinearly*:
+the moments of the three sublattices point 120 degrees apart, with zero
+total moment. Frustration has remained the main route to spin liquids,
+and the half-filled triangular Hubbard model its simplest itinerant
+version.
+
+*Implementation:* :func:`tbkit.meanfield.hubbard_mean_field_noncollinear`
+(spin-rotation invariant Hartree-Fock: the whole onsite spin density
+matrix, moments in any direction, spin-orbit Hamiltonians accepted; with
+moments along :math:`z` it reduces to
+:func:`~tbkit.meanfield.hubbard_mean_field`).
+
+*References:* G. H. Wannier, Phys. Rev. 79, 357 (1950); P. W. Anderson,
+"Resonating valence bonds: A new kind of insulator?," Mater. Res. Bull. 8,
+153-160 (1973); D. A. Huse and V. Elser, Phys. Rev. Lett. 60, 2531
+(1988); H. R. Krishnamurthy, C. Jayaprakash, S. Sarker, and W. Wenzel,
+Phys. Rev. Lett. 64, 950 (1990).
+
+*Example:* ``examples/correlations/plot_noncollinear_120_degree_order.py``
+confirms the 120-degree state from random starts (neighbouring moments at
+:math:`\cos = -1/2`, zero total moment, coplanar), below the collinear
+up-up-down state, and the Heisenberg limit :math:`-1.5\,t^2/U` (versus
+:math:`-\frac43t^2/U`) per bond at :math:`U = 40t`.
+
+.. minigallery:: ../../examples/correlations/plot_noncollinear_120_degree_order.py
+
 See Also
 --------
 

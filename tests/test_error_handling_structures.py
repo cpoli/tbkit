@@ -52,5 +52,22 @@ class TestMoire(unittest.TestCase):
         self.assertRaises(ValueError, eh.hopping_values, np.zeros(2), 3)
 
 
+class TestInteractions(unittest.TestCase):
+
+    def test_validators(self):
+        eh.even_dimension(4)
+        self.assertRaises(ValueError, eh.even_dimension, 3)
+        eh.magnetization(np.zeros((2, 3)), 2)
+        self.assertRaises(ValueError, eh.magnetization, np.zeros((2, 2)), 2)
+        eh.interaction(1., 3)
+        eh.interaction(np.array([0., 1., 2.]), 3)
+        self.assertRaises(ValueError, eh.interaction, 0., 3)
+        self.assertRaises(ValueError, eh.interaction, np.ones(2), 3)
+        eh.pairing_amplitudes(0.1j, 3)
+        eh.pairing_amplitudes(np.ones(3), 3)
+        self.assertRaises(TypeError, eh.pairing_amplitudes, 'a', 3)
+        self.assertRaises(ValueError, eh.pairing_amplitudes, np.ones(2), 3)
+
+
 if __name__ == '__main__':
     unittest.main()

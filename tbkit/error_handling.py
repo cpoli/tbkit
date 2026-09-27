@@ -2296,3 +2296,53 @@ def hopping_values(t, n):
     if np.shape(t) != (n,):
         raise ValueError('\n\nThe hopping function must return one value per bond vector, '
                                     'shape ({},).\n'.format(n))
+
+
+def even_dimension(n):
+    '''
+    Check that a spinful matrix has an even dimension (two spins per site).
+
+    :raises ValueError: A spinful Hamiltonian must have an even dimension.
+    '''
+    if n % 2:
+        raise ValueError('\n\nA spinful Hamiltonian must have an even dimension '
+                                    '(rows site-major, spin up then down).\n')
+
+
+def magnetization(mag, n):
+    '''
+    Check initial moments: a real array of shape (n, 3).
+
+    :raises ValueError: Parameter magnetization must have the shape (n, 3).
+    '''
+    if mag.shape != (n, 3):
+        raise ValueError('\n\nParameter magnetization must have the shape ({}, 3).\n'.format(n))
+
+
+def interaction(V, n):
+    '''
+    Check an attractive interaction: a positive number, or n non-negative numbers.
+
+    :raises ValueError: The interaction must be positive (or n non-negative values).
+    '''
+    V = np.asarray(V, dtype='f8')
+    if V.ndim == 0:
+        positive_real(float(V), 'V')
+        return
+    if V.shape != (n,) or np.any(V < 0):
+        raise ValueError('\n\nParameter V must be a positive number, or {} non-negative '
+                                    'numbers (one per site).\n'.format(n))
+
+
+def pairing_amplitudes(delta, n):
+    '''
+    Check initial pairing amplitudes: a number, or n numbers.
+
+    :raises ValueError: Parameter delta0 must be a number or n numbers.
+    '''
+    if np.ndim(delta) == 0:
+        number(delta, 'delta0')
+        return
+    if np.shape(delta) != (n,):
+        raise ValueError('\n\nParameter delta0 must be a number, or {} numbers '
+                                    '(one per site).\n'.format(n))

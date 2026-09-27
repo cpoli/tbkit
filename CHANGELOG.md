@@ -166,6 +166,21 @@ an entry in `docs/source/history.rst`:
   `moire/plot_band_unfolding.py`, `moire/plot_magic_angle_twisted_bilayer.py`;
   history entries: band unfolding (2010), magic-angle twisted bilayer
   graphene (2011/2018).
+- **Self-consistent interactions.** `meanfield.hubbard_mean_field_noncollinear`
+  (spin-rotation invariant Hartree-Fock, `V_i = U(n_i - rho_i)`, spinful
+  `(2N, 2N)` Hamiltonians accepted; `NonCollinearResult`), and
+  `bdg.s_wave_gap` (the real-space BCS/BdG gap equation, uniform or
+  site-dependent attraction, any temperature; `GapResult`). Tested: the
+  collinear limit reproduces `hubbard_mean_field` (energy to 1e-8), spin
+  rotation invariance, the 120-degree order of the half-filled triangular
+  model with the Heisenberg-limit energies `-1.5` and `-4/3 t^2/U` per bond
+  (120-degree and up-up-down); the clean-lattice gap equals the k-space BCS
+  solution, `T_c` within 1% of the linearized gap equation, and
+  `Delta(0)/T_c = 1.764` within 2%. Examples:
+  `superconductivity/plot_bcs_gap_equation.py`,
+  `correlations/plot_noncollinear_120_degree_order.py`; history entries:
+  BCS theory (1957), frustration and 120-degree order (1973/1988).
+  `hubbard_mean_field` and the existing BdG functions are unchanged.
 
 ### Fixed
 
