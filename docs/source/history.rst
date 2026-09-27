@@ -1750,6 +1750,120 @@ without it.
 
 .. minigallery:: ../../examples/optics/plot_nonlinear_hall_berry_curvature_dipole.py
 
+1981 -- The Recursive Green's Function Method
+---------------------------------------------------
+
+The transmission of a disordered sample needs its Green's function
+between the two leads, and a dense inversion costs :math:`N^3` for
+:math:`N` sites. Thouless and Kirkpatrick (1981), Lee and Fisher (1981)
+and MacKinnon and Kramer (1981, 1983) cut a quasi-1D sample into slices,
+each coupled to its neighbours only, and added them one at a time,
+
+.. math::
+
+   g_i = [E - H_{ii} - H_{i,i-1}g_{i-1}H_{i-1,i}]^{-1}\, ,\qquad
+   G_{i1} = g_iH_{i,i-1}G_{i-1,1}\, ,
+
+at a cost linear in the length. It made the conductance of long bars,
+and the localization lengths behind one-parameter scaling, computable,
+and it remains the workhorse of quantum-transport codes.
+
+*Implementation:* :class:`tbkit.transport.RecursiveTransport` (sparse
+Hamiltonians, :func:`~tbkit.transport.slices_from_positions`; the
+transmission, its eigenvalues and the Fano factor).
+
+*References:* D. J. Thouless and S. Kirkpatrick, "Conductivity of the
+disordered linear chain," J. Phys. C 14, 235 (1981); P. A. Lee and D. S.
+Fisher, "Anderson Localization in Two Dimensions," Phys. Rev. Lett. 47,
+882 (1981); A. MacKinnon and B. Kramer, "One-Parameter Scaling of
+Localization Length and Conductance in Disordered Systems," Phys. Rev.
+Lett. 47, 1546 (1981); A. MacKinnon, "The calculation of transport
+properties and density of states of disordered solids," Z. Phys. B 59,
+385 (1985); D. J. Thouless, in *Ill-Condensed Matter*, edited by R.
+Balian et al. (North-Holland, 1979).
+
+*Example:* ``examples/transport/plot_recursive_green_function.py``
+confirms that the recursive and the dense transmissions agree, finds the
+localization length of a disordered chain from :math:`\langle\ln T\rangle
+= -2L/\xi` within 10% of Thouless's :math:`24(4t^2-E^2)/W^2` (chains up
+to 500 sites, 300 samples each), and computes the transmission of a
+100 000-site wire whose dense matrix would not fit in memory.
+
+.. minigallery:: ../../examples/transport/plot_recursive_green_function.py
+
+1988 -- Buttiker's Edge Channels and the Quantized Hall Resistance
+-------------------------------------------------------------------------
+
+Buttiker (1986) wrote the currents of a phase-coherent conductor with any
+number of leads as :math:`I_p = \frac{e^2}{h}\sum_qG_{pq}V_q`, with
+:math:`G_{pq} = -T_{pq}` from the transmissions between leads, and
+described voltage probes as leads drawing no net current. In 1988 he
+applied it to the quantum Hall effect: :math:`\nu` chiral edge channels,
+one per filled Landau level, carry the electrons from each contact to the
+next one downstream without backscattering, and the four-terminal
+resistances are :math:`R_{xy} = h/\nu e^2` and :math:`R_{xx} = 0`
+exactly, whatever the shape of the sample and of its contacts. The
+picture explained the precision of von Klitzing's plateaus and guided the
+edge-state experiments that followed.
+
+*Implementation:* :meth:`tbkit.transport.Transport.conductance_matrix`,
+:meth:`~tbkit.transport.Transport.transmission_matrix`,
+:meth:`~tbkit.transport.Transport.four_terminal_resistance`,
+:meth:`~tbkit.transport.Transport.bond_currents` and
+:meth:`~tbkit.transport.Transport.local_currents`.
+
+*References:* M. Buttiker, "Four-Terminal Phase-Coherent Conductance,"
+Phys. Rev. Lett. 57, 1761 (1986); M. Buttiker, "Absence of backscattering
+in the quantum Hall effect in multiprobe conductors," Phys. Rev. B 38,
+9375 (1988); K. von Klitzing, G. Dorda, and M. Pepper, "New Method for
+High-Accuracy Determination of the Fine-Structure Constant Based on
+Quantized Hall Resistance," Phys. Rev. Lett. 45, 494 (1980).
+
+*Example:* ``examples/transport/plot_hall_bar_edge_channels.py`` builds a
+six-terminal square-lattice Hall bar in a field and confirms
+:math:`R_{xy} = h/\nu e^2` for :math:`\nu = 1, 2, 3` with
+:math:`R_{xx} = 0` (to :math:`10^{-5}`), current conservation of the
+conductance matrix, and that on the first plateau the current injected by
+the source flows along one edge.
+
+.. minigallery:: ../../examples/transport/plot_hall_bar_edge_channels.py
+
+1989-1992 -- Shot Noise and the Fano Factor
+-----------------------------------------------
+
+The discreteness of charge makes a current fluctuate; for independent
+electrons the noise is Schottky's Poissonian :math:`S = 2eI`. In a
+phase-coherent conductor the Pauli principle correlates them: Lesovik
+(1989) and Buttiker (1990) expressed the zero-temperature noise through
+the transmission eigenvalues, :math:`S = 2e|V|\frac{e^2}{h}\sum_nT_n(1-T_n)`,
+so that open channels are noiseless and a ballistic conductor has a Fano
+factor :math:`F = S/2eI = 0`. Beenakker and Buttiker (1992) found the
+universal :math:`F = 1/3` of diffusive wires, from the bimodal
+distribution of their transmission eigenvalues, later measured by
+Steinbach, Martinis and Devoret (1996) and Henny et al. (1999).
+
+*Implementation:* :meth:`tbkit.transport.Transport.transmission_eigenvalues`,
+:meth:`~tbkit.transport.Transport.shot_noise`,
+:meth:`~tbkit.transport.Transport.fano_factor`, and
+:meth:`tbkit.transport.RecursiveTransport.fano_factor`.
+
+*References:* G. B. Lesovik, "Excess quantum noise in 2D ballistic point
+contacts," JETP Lett. 49, 592 (1989); M. Buttiker, "Scattering theory of
+thermal and excess noise in open conductors," Phys. Rev. Lett. 65, 2901
+(1990); C. W. J. Beenakker and M. Buttiker, "Suppression of shot noise in
+metallic diffusive conductors," Phys. Rev. B 46, 1889 (1992); A. H.
+Steinbach, J. M. Martinis, and M. H. Devoret, Phys. Rev. Lett. 76, 3806
+(1996); M. Henny, S. Oberholzer, C. Strunk, and C. Schonenberger, Phys.
+Rev. B 59, 2871 (1999).
+
+*Example:* ``examples/transport/plot_shot_noise_fano_factor.py`` confirms
+:math:`F = 0` for a ballistic chain, :math:`F > 0.98` for a tunnel
+junction, and :math:`F = 1/3` within 0.03 for disordered square-lattice
+wires (20 samples, recursive Green's function), whose transmission
+eigenvalues pile up near 0 and 1.
+
+.. minigallery:: ../../examples/transport/plot_shot_noise_fano_factor.py
+
 See Also
 --------
 

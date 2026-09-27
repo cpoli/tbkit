@@ -2244,3 +2244,66 @@ def band_derivatives(en, vel, w):
             w.shape != (2,) + vel.shape:
         raise ValueError('\n\nThe shapes must be en (nk, n), vel (2, nk, n, n) and '
                                     'w (2, 2, nk, n, n).\n')
+
+
+def lead_pair(pair, n_leads, var_name, distinct):
+    '''
+    Check a pair of lead indices (and, with *distinct*, that they differ).
+
+    :raises TypeError: Parameter must be a tuple/list of two lead indices.
+    :raises ValueError: No such lead, or the two leads must differ.
+    '''
+    if not isinstance(pair, (tuple, list)) or len(pair) != 2:
+        raise TypeError('\n\nParameter {} must be a tuple of two lead indices.\n'.format(var_name))
+    for lead in pair:
+        lead_index(lead, n_leads)
+    if distinct and pair[0] == pair[1]:
+        raise ValueError('\n\nThe two leads of parameter {} must differ.\n'.format(var_name))
+
+
+def site_positions(positions, n_sites):
+    '''
+    Check site positions: a real array of shape (n_sites, d).
+
+    :raises ValueError: Parameter positions must have shape (n_sites, d).
+    '''
+    if positions.ndim != 2 or len(positions) != n_sites:
+        raise ValueError('\n\nParameter positions must have shape ({}, d).\n'.format(n_sites))
+
+
+def slices(slices, n_sites):
+    '''
+    Check a partition of the device sites into non-empty slices.
+
+    :raises TypeError: Parameter slices must be a list of lists of integers.
+    :raises ValueError: The slices must contain every site exactly once.
+    '''
+    if not isinstance(slices, list) or not all(
+            isinstance(s, (list, tuple)) and len(s) > 0
+            and all(isinstance(i, (int, np.integer)) for i in s) for s in slices):
+        raise TypeError('\n\nParameter slices must be a list of non-empty lists of integers.\n')
+    flat = sorted(int(i) for s in slices for i in s)
+    if flat != list(range(n_sites)):
+        raise ValueError('\n\nThe slices must contain every site (0 to {}) exactly '
+                                    'once.\n'.format(n_sites - 1))
+
+
+def block_tridiagonal(max_distance):
+    '''
+    Check that hoppings only couple a slice to itself or to its neighbours.
+
+    :raises ValueError: Hoppings must connect neighbouring slices only.
+    '''
+    if max_distance > 1:
+        raise ValueError('\n\nThe Hamiltonian couples slices that are not neighbours: '
+                                    'use thicker slices.\n')
+
+
+def lead_tuple(lead):
+    '''
+    Check a lead given as a tuple (h0, v, coupling).
+
+    :raises TypeError: A lead must be a tuple (h0, v, coupling).
+    '''
+    if not isinstance(lead, (tuple, list)) or len(lead) != 3:
+        raise TypeError('\n\nA lead must be a tuple (h0, v, coupling).\n')

@@ -157,6 +157,25 @@ an entry in `docs/source/history.rst`:
   rules. Examples: `optics/plot_nonlinear_hall_berry_curvature_dipole.py`,
   `optics/plot_bulk_photovoltaic_shift_current.py`. History entries: the
   shift current (1981/2000) and the nonlinear Hall effect (2015/2019).
+- **Richer transport.** New methods of `tbkit.transport.Transport`:
+  `transmission_matrix` and `conductance_matrix` (Landauer-Buttiker, for
+  any number of leads), `four_terminal_resistance` (source, drain and
+  voltage probes), `bond_currents` and `local_currents` (the current
+  injected by one lead, per unit energy), `transmission_eigenvalues`,
+  `shot_noise` and `fano_factor`. New `tbkit.transport.RecursiveTransport`
+  (the recursive Green's function: two-terminal transmission, eigenvalues
+  and Fano factor of long quasi-1D devices from slice-sized inversions,
+  sparse input, linear cost in the length) and `slices_from_positions`;
+  `tbkit` exports `RecursiveTransport`. Tested against the dense
+  `Transport` (to 1e-9), quantized Hall-bar plateaus `R_xy = h/(nu e^2)`
+  with `R_xx = 0` (nu = 1, 2), current conservation, the ballistic Fano
+  factor 0 and `F = 1 - T` for one channel. Examples:
+  `transport/plot_hall_bar_edge_channels.py`,
+  `transport/plot_shot_noise_fano_factor.py` (ballistic 0, tunnel 1,
+  diffusive 1/3) and `transport/plot_recursive_green_function.py`
+  (Thouless's 1D localization length, a 100 000-site wire). History
+  entries: the recursive Green's function (1981), Buttiker's edge channels
+  (1988) and shot noise (1989-1992).
 ### Fixed
 
 Bugs that produced silently wrong numbers:

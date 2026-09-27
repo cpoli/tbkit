@@ -33,3 +33,5 @@ from tbkit.floquet import FloquetKSpace, DrivenKSpace, StepDrive, step_drive
 from tbkit.meanfield import MeanFieldResult, hubbard_mean_field
 from tbkit.exceptional import ExceptionalPoints, Encircling, find_exceptional_points
 import tbkit.error_handling
+from tbkit.transport import RecursiveTransport
+__all__ += ["RecursiveTransport"]
