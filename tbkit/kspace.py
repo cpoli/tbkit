@@ -194,6 +194,7 @@ class KSpace():
               number (spin-independent hopping) or a 2x2 complex matrix (a
               general, possibly spin-mixing, hopping -- e.g. built from
               :data:`PAULI` for Rashba or intrinsic spin-orbit coupling).
+
             *list_hop* may instead use the neighbour-order form of
             *System.set_hopping*: dictionaries with keys ('n', 't') and
             optionally 'ang' and/or 'tag' -- 'n' the neighbour order (1st,

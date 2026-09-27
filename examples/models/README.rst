@@ -1,5 +1,5 @@
 Building, Bridging and Saving Models
------------------------------------
+------------------------------------
 
 Tools that make realistic models easy to build and move around: Bloch
 Hamiltonians set up by neighbour order (1st, 2nd, 3rd, ... neighbours) as
