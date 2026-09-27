@@ -182,6 +182,24 @@ an entry in `docs/source/history.rst`:
   BCS theory (1957), frustration and 120-degree order (1973/1988).
   `hubbard_mean_field` and the existing BdG functions are unchanged.
 
+### Removed
+
+- The five pre-0.2 Jupyter notebooks (`examples_lattice`, `examples_system`,
+  `examples_graphene`, `examples_propagation`, `logo`). They were never run
+  by the tests or the gallery, used wildcard imports, the lowercase alias
+  classes, silenced warnings and wrote figures to disk, and asserted
+  nothing. Their content that no gallery example covered is now in three
+  asserted gallery scripts: `tight_binding/plot_building_finite_lattices.py`
+  (cuts, dangling sites, lattice arithmetic, `clean_coor`, rotations),
+  `tight_binding/plot_defects_and_impurities.py` (a vacancy zero mode on the
+  majority sublattice, an impurity bound state at `eps + 3t^2/eps`) and
+  `dynamics/plot_wavepacket_interference.py` (Aharonov-Bohm caging on a
+  hexagonal ring, a state trapped at a domain wall with the eigenstate
+  return probability). The rest (strained flakes and pseudo-Landau levels,
+  zigzag-triangle zero modes, non-Hermitian chains) was already covered by
+  the strain, correlations and non-Hermitian examples. The logo image stays
+  in `docs/source/_static`.
+
 ### Fixed
 
 Bugs that produced silently wrong numbers:
