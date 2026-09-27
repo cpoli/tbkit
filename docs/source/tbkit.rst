@@ -195,3 +195,11 @@ tbkit.error_handling module
     :undoc-members:
     :show-inheritance:
 
+
+tbkit.optics module
+-------------------
+
+.. automodule:: tbkit.optics
+    :members:
+    :undoc-members:
+    :show-inheritance:

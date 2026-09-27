@@ -1,5 +1,165 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- **Hoppings by neighbour order in k-space.** `KSpace.set_hopping` and
+  `KSpace.set_overlap` accept the selectors of `System.set_hopping`
+  (`{'n', 't'}`, optionally `'ang'` and `'tag'`, in 1D, 2D and 3D, with
+  spin): the bonds of the infinite lattice are found from `unit_cell` and
+  `prim_vec` by the new `tbkit.neighbours` (`neighbour_shells`,
+  `neighbour_bonds`, `neighbour_hoppings`), with the conventions of
+  `System` (bond orientation, angles, tags); a negative angle addresses
+  the reversed bonds (non-reciprocal models with `hermitian=False`). The
+  explicit `{'i', 'j', 'R', 't'}` form is unchanged. Example:
+  `models/plot_neighbour_hoppings.py` (third-nearest-neighbour graphene
+  with overlaps, checked against closed-form energies at Gamma and K).
+- **Bridges between System and KSpace.** New `tbkit.bridges`:
+  `kspace_from_system` reads the Bloch model off a translation-invariant
+  `System` (open, or a torus with `periodic=True`; Hermitian or
+  non-reciprocal), `finite_model` returns the sparse Hamiltonian of a
+  finite sample of a `KSpace` model with its site positions and tags (spin
+  included), `finite_system` builds a ready-to-use `System` (open or
+  torus) whose `sys.hop` follows the conventions of `System.set_hopping`,
+  and `cell_orbitals` maps the sites of a finite lattice to unit-cell
+  orbitals and cells. Tests prove the round trip: the spectrum of a System
+  on an N1 x N2 (x N3) torus equals the KSpace bands on the same mesh.
+  Example: `models/plot_pipeline_bridges.py` (the Haldane model, set up
+  with the real-space selectors in both pipelines, on a 30 x 30 torus).
+- **Saving and loading models.** New `tbkit.io`: `save_model` writes a
+  `Lattice`, `System` or `KSpace` (onsite terms, hoppings, overlaps, spin,
+  non-reciprocal flag, sites) to a versioned `.npz` archive (format
+  `'tbkit-model'`, version 1, plain arrays, no pickle), and `load_model`
+  reads it back; round-trip tests reproduce every Hamiltonian bit for bit.
+  Example: `models/plot_save_load.py` (a spinful Kane-Mele model and a
+  disordered flake, saved and reloaded).
+- **Wannier90 import (maximally localized Wannier functions).**
+  `tbkit.io.read_wannier90` turns `seedname_hr.dat` (with its degeneracy
+  weights) into a `KSpace`, with the lattice vectors of `seedname.win`
+  (Angstrom or bohr) or given ones, the orbital positions of
+  `seedname_centres.xyz` (or given ones), tags, 2D layers (`dim=2`), a
+  hopping cutoff, and non-Hermitian files; `read_hr`, `read_win_cell` and
+  `read_centres` read the files. Tests use hand-written `_hr.dat` files
+  with known bands (a cubic lattice with a hopping split over degenerate
+  Wigner-Seitz vectors, graphene, a Hatano-Nelson chain). Example:
+  `models/plot_maximally_localized_wannier_functions.py`, reading
+  Wannier90-format graphene files shipped with it. History entry:
+  maximally localized Wannier functions (1997/2008).
+- `tbkit` exports `save_model`, `load_model` and `read_wannier90`.
+- **Higher-order topology.** New `tbkit.higher_order`: `bbh_model` (the
+  Benalcazar-Bernevig-Hughes quadrupole insulator), `wannier_bands`
+  (Wannier bands and Wannier-sector states from the Wilson loop at every
+  base point of a mesh diagonalized in one vectorized Bloch sum),
+  `wannier_sector_polarization` (the nested Wilson loop; a ValueError when
+  the sector has no Wannier gap), `quadrupole_moment`
+  (`q_xy = 2 p_y^{nu_x-} p_x^{nu_y-}`), `flake_positions` and
+  `corner_charges` (quadrant charges of a finite flake, `CornerCharges`).
+  Tested against the BBH values (`q_xy = p = 1/2` for `|gamma| < |lambda|`,
+  0 beyond), the exact spectrum of the dimerized limit, four zero modes
+  whose weight in the `r x r` corner cells is `(1 - (gamma/lambda)^(2r))^2`,
+  and corner charges `+-1/2`. Example:
+  `higher_order/plot_quadrupole_insulator.py`; history entry: quantized
+  electric multipole insulators (2017).
+- **Supercells, band unfolding and moiré bilayers.** New `tbkit.moire`:
+  `supercell` (any integer supercell matrix of a `KSpace`, spinful and
+  with overlaps; a `SupercellKSpace`), `unfold` (Ku-Berlijn-Lee /
+  Popescu-Zunger weights) and `spectral_function` (unfolded
+  `A(k, omega)`, e.g. of a disordered supercell); `twisted_bilayer`
+  (commensurate moiré cells of honeycomb or square layers, hoppings from
+  any function of the bond vector, a `MoireKSpace`), `commensurate_angle`,
+  `pz_hopping` (Moon-Koshino Slater-Koster form) and
+  `magic_angle_parameter` (Bistritzer-MacDonald `w`, `alpha`, `v*/v`).
+  Tested: pristine supercells unfold exactly onto the primitive bands, the
+  coherence factors of a staggered chain, the sum rule, the commensurate
+  angles (1.05 degrees at `m = 31`), `w ~ 110` meV and a first magic angle
+  near 1.1 degrees, a tight-binding Dirac velocity within 1-1.5% of
+  Bistritzer-MacDonald at 9.4 and 6.0 degrees, and central bands 15 times
+  narrower at the magic `alpha`. The 1.05-degree cell (11908 orbitals) is
+  too large for dense Bloch matrices, so the flat bands are shown at 6.0
+  degrees with scaled interlayer hoppings (same `alpha`). Examples:
+  `moire/plot_band_unfolding.py`, `moire/plot_magic_angle_twisted_bilayer.py`;
+  history entries: band unfolding (2010), magic-angle twisted bilayer
+  graphene (2011/2018).
+- **Self-consistent interactions.** `meanfield.hubbard_mean_field_noncollinear`
+  (spin-rotation invariant Hartree-Fock, `V_i = U(n_i - rho_i)`, spinful
+  `(2N, 2N)` Hamiltonians accepted; `NonCollinearResult`), and
+  `bdg.s_wave_gap` (the real-space BCS/BdG gap equation, uniform or
+  site-dependent attraction, any temperature; `GapResult`). Tested: the
+  collinear limit reproduces `hubbard_mean_field` (energy to 1e-8), spin
+  rotation invariance, the 120-degree order of the half-filled triangular
+  model with the Heisenberg-limit energies `-1.5` and `-4/3 t^2/U` per bond
+  (120-degree and up-up-down); the clean-lattice gap equals the k-space BCS
+  solution, `T_c` within 1% of the linearized gap equation, and
+  `Delta(0)/T_c = 1.764` within 2%. Examples:
+  `superconductivity/plot_bcs_gap_equation.py`,
+  `correlations/plot_noncollinear_120_degree_order.py`; history entries:
+  BCS theory (1957), frustration and 120-degree order (1973/1988).
+  `hubbard_mean_field` and the existing BdG functions are unchanged.
+
+- **Optical conductivity.** New `tbkit.optics`: `optical_conductivity`
+  (the Kubo-Greenwood `sigma_xx`, `sigma_xy`, `sigma_yx`, `sigma_yy` of a
+  2D `KSpace` at any photon energy, Fermi level, temperature and
+  broadening `eta`, in `e^2/h`; interband, plus the intraband Drude term
+  at `T > 0`; velocities from `KSpace._bloch_derivatives`), `joint_dos`
+  and `cell_area`. Tested against graphene's universal
+  `sigma_0 = e^2/(4 hbar)` (`pi/4 e^2/h` per spin, to 0.5%), the
+  Dirac-cone joint density of states, Pauli blocking, the f-sum rule
+  (interband in an insulator, with the Drude weight in a metal), and the
+  DC limit `sigma_yx(0) = hall_conductivity` (TKNN sign). Example:
+  `optics/plot_graphene_universal_absorption.py` (absorbance `pi alpha`).
+  History entry: universal absorption of graphene (2008).
+- **Nonlinear optical response.** `tbkit.optics.berry_curvature_dipole`
+  (the Sodemann-Fu dipole `D_a`, a Fermi-surface integral over the thermal
+  window, at any Fermi levels), `shift_current` (the Sipe-Shkrebtii
+  `sigma^abc(0; omega, -omega)` of any 2D component, Gaussian broadening)
+  and `generalized_derivative` (interband positions `r^b_nm` and their
+  covariant derivatives `r^b_nm;a` as a sum over states, with the exact
+  `d^2H/dk_a dk_b` from `KSpace._bloch_sum`). Tested against the analytic
+  dipole of the tilted massive Dirac cone (within 1.5%), a gauge-invariant
+  finite-difference shift vector, the Rice-Mele closed form of Fregoso,
+  Morimoto and Moore (Phys. Rev. B 96, 075421 (2017)), and the `C3v` and
+  inversion selection rules. Examples: `optics/plot_nonlinear_hall_berry_curvature_dipole.py`,
+  `optics/plot_bulk_photovoltaic_shift_current.py`. History entries: the
+  shift current (1981/2000) and the nonlinear Hall effect (2015/2019).
+- **Richer transport.** New methods of `tbkit.transport.Transport`:
+  `transmission_matrix` and `conductance_matrix` (Landauer-Buttiker, for
+  any number of leads), `four_terminal_resistance` (source, drain and
+  voltage probes), `bond_currents` and `local_currents` (the current
+  injected by one lead, per unit energy), `transmission_eigenvalues`,
+  `shot_noise` and `fano_factor`. New `tbkit.transport.RecursiveTransport`
+  (the recursive Green's function: two-terminal transmission, eigenvalues
+  and Fano factor of long quasi-1D devices from slice-sized inversions,
+  sparse input, linear cost in the length) and `slices_from_positions`;
+  `tbkit` exports `RecursiveTransport`. Tested against the dense
+  `Transport` (to 1e-9), quantized Hall-bar plateaus `R_xy = h/(nu e^2)`
+  with `R_xx = 0` (nu = 1, 2), current conservation, the ballistic Fano
+  factor 0 and `F = 1 - T` for one channel. Examples:
+  `transport/plot_hall_bar_edge_channels.py`,
+  `transport/plot_shot_noise_fano_factor.py` (ballistic 0, tunnel 1,
+  diffusive 1/3) and `transport/plot_recursive_green_function.py`
+  (Thouless's 1D localization length, a 100 000-site wire). History
+  entries: the recursive Green's function (1981), Buttiker's edge channels
+  (1988) and shot noise (1989-1992).
+
+### Removed
+
+- The five pre-0.2 Jupyter notebooks (`examples_lattice`, `examples_system`,
+  `examples_graphene`, `examples_propagation`, `logo`). They were never run
+  by the tests or the gallery, used wildcard imports, the lowercase alias
+  classes, silenced warnings and wrote figures to disk, and asserted
+  nothing. Their content that no gallery example covered is now in three
+  asserted gallery scripts: `tight_binding/plot_building_finite_lattices.py`
+  (cuts, dangling sites, lattice arithmetic, `clean_coor`, rotations),
+  `tight_binding/plot_defects_and_impurities.py` (a vacancy zero mode on the
+  majority sublattice, an impurity bound state at `eps + 3t^2/eps`) and
+  `dynamics/plot_wavepacket_interference.py` (Aharonov-Bohm caging on a
+  hexagonal ring, a state trapped at a domain wall with the eigenstate
+  return probability). The rest (strained flakes and pseudo-Landau levels,
+  zigzag-triangle zero modes, non-Hermitian chains) was already covered by
+  the strain, correlations and non-Hermitian examples. The logo image stays
+  in `docs/source/_static`.
+
 ## 0.4.0 -- 2026-09-27
 
 ### Added
@@ -132,116 +292,6 @@ an entry in `docs/source/history.rst`:
   (2015-2018). The
   Peierls, Slater-Koster, TKNN and 2004 graphene entries now link examples
   of their own, so no example is shared between two entries.
-- **Hoppings by neighbour order in k-space.** `KSpace.set_hopping` and
-  `KSpace.set_overlap` accept the selectors of `System.set_hopping`
-  (`{'n', 't'}`, optionally `'ang'` and `'tag'`, in 1D, 2D and 3D, with
-  spin): the bonds of the infinite lattice are found from `unit_cell` and
-  `prim_vec` by the new `tbkit.neighbours` (`neighbour_shells`,
-  `neighbour_bonds`, `neighbour_hoppings`), with the conventions of
-  `System` (bond orientation, angles, tags); a negative angle addresses
-  the reversed bonds (non-reciprocal models with `hermitian=False`). The
-  explicit `{'i', 'j', 'R', 't'}` form is unchanged. Example:
-  `models/plot_neighbour_hoppings.py` (third-nearest-neighbour graphene
-  with overlaps, checked against closed-form energies at Gamma and K).
-- **Bridges between System and KSpace.** New `tbkit.bridges`:
-  `kspace_from_system` reads the Bloch model off a translation-invariant
-  `System` (open, or a torus with `periodic=True`; Hermitian or
-  non-reciprocal), `finite_model` returns the sparse Hamiltonian of a
-  finite sample of a `KSpace` model with its site positions and tags (spin
-  included), `finite_system` builds a ready-to-use `System` (open or
-  torus) whose `sys.hop` follows the conventions of `System.set_hopping`,
-  and `cell_orbitals` maps the sites of a finite lattice to unit-cell
-  orbitals and cells. Tests prove the round trip: the spectrum of a System
-  on an N1 x N2 (x N3) torus equals the KSpace bands on the same mesh.
-  Example: `models/plot_pipeline_bridges.py` (the Haldane model, set up
-  with the real-space selectors in both pipelines, on a 30 x 30 torus).
-- **Saving and loading models.** New `tbkit.io`: `save_model` writes a
-  `Lattice`, `System` or `KSpace` (onsite terms, hoppings, overlaps, spin,
-  non-reciprocal flag, sites) to a versioned `.npz` archive (format
-  `'tbkit-model'`, version 1, plain arrays, no pickle), and `load_model`
-  reads it back; round-trip tests reproduce every Hamiltonian bit for bit.
-  Example: `models/plot_save_load.py` (a spinful Kane-Mele model and a
-  disordered flake, saved and reloaded).
-- **Wannier90 import (maximally localized Wannier functions).**
-  `tbkit.io.read_wannier90` turns `seedname_hr.dat` (with its degeneracy
-  weights) into a `KSpace`, with the lattice vectors of `seedname.win`
-  (Angstrom or bohr) or given ones, the orbital positions of
-  `seedname_centres.xyz` (or given ones), tags, 2D layers (`dim=2`), a
-  hopping cutoff, and non-Hermitian files; `read_hr`, `read_win_cell` and
-  `read_centres` read the files. Tests use hand-written `_hr.dat` files
-  with known bands (a cubic lattice with a hopping split over degenerate
-  Wigner-Seitz vectors, graphene, a Hatano-Nelson chain). Example:
-  `models/plot_maximally_localized_wannier_functions.py`, reading
-  Wannier90-format graphene files shipped with it. History entry:
-  maximally localized Wannier functions (1997/2008).
-- `tbkit` exports `save_model`, `load_model` and `read_wannier90`.
-- **Higher-order topology.** New `tbkit.higher_order`: `bbh_model` (the
-  Benalcazar-Bernevig-Hughes quadrupole insulator), `wannier_bands`
-  (Wannier bands and Wannier-sector states from the Wilson loop at every
-  base point of a mesh diagonalized in one vectorized Bloch sum),
-  `wannier_sector_polarization` (the nested Wilson loop; a ValueError when
-  the sector has no Wannier gap), `quadrupole_moment`
-  (`q_xy = 2 p_y^{nu_x-} p_x^{nu_y-}`), `flake_positions` and
-  `corner_charges` (quadrant charges of a finite flake, `CornerCharges`).
-  Tested against the BBH values (`q_xy = p = 1/2` for `|gamma| < |lambda|`,
-  0 beyond), the exact spectrum of the dimerized limit, four zero modes
-  whose weight in the `r x r` corner cells is `(1 - (gamma/lambda)^(2r))^2`,
-  and corner charges `+-1/2`. Example:
-  `higher_order/plot_quadrupole_insulator.py`; history entry: quantized
-  electric multipole insulators (2017).
-- **Supercells, band unfolding and moiré bilayers.** New `tbkit.moire`:
-  `supercell` (any integer supercell matrix of a `KSpace`, spinful and
-  with overlaps; a `SupercellKSpace`), `unfold` (Ku-Berlijn-Lee /
-  Popescu-Zunger weights) and `spectral_function` (unfolded
-  `A(k, omega)`, e.g. of a disordered supercell); `twisted_bilayer`
-  (commensurate moiré cells of honeycomb or square layers, hoppings from
-  any function of the bond vector, a `MoireKSpace`), `commensurate_angle`,
-  `pz_hopping` (Moon-Koshino Slater-Koster form) and
-  `magic_angle_parameter` (Bistritzer-MacDonald `w`, `alpha`, `v*/v`).
-  Tested: pristine supercells unfold exactly onto the primitive bands, the
-  coherence factors of a staggered chain, the sum rule, the commensurate
-  angles (1.05 degrees at `m = 31`), `w ~ 110` meV and a first magic angle
-  near 1.1 degrees, a tight-binding Dirac velocity within 1-1.5% of
-  Bistritzer-MacDonald at 9.4 and 6.0 degrees, and central bands 15 times
-  narrower at the magic `alpha`. The 1.05-degree cell (11908 orbitals) is
-  too large for dense Bloch matrices, so the flat bands are shown at 6.0
-  degrees with scaled interlayer hoppings (same `alpha`). Examples:
-  `moire/plot_band_unfolding.py`, `moire/plot_magic_angle_twisted_bilayer.py`;
-  history entries: band unfolding (2010), magic-angle twisted bilayer
-  graphene (2011/2018).
-- **Self-consistent interactions.** `meanfield.hubbard_mean_field_noncollinear`
-  (spin-rotation invariant Hartree-Fock, `V_i = U(n_i - rho_i)`, spinful
-  `(2N, 2N)` Hamiltonians accepted; `NonCollinearResult`), and
-  `bdg.s_wave_gap` (the real-space BCS/BdG gap equation, uniform or
-  site-dependent attraction, any temperature; `GapResult`). Tested: the
-  collinear limit reproduces `hubbard_mean_field` (energy to 1e-8), spin
-  rotation invariance, the 120-degree order of the half-filled triangular
-  model with the Heisenberg-limit energies `-1.5` and `-4/3 t^2/U` per bond
-  (120-degree and up-up-down); the clean-lattice gap equals the k-space BCS
-  solution, `T_c` within 1% of the linearized gap equation, and
-  `Delta(0)/T_c = 1.764` within 2%. Examples:
-  `superconductivity/plot_bcs_gap_equation.py`,
-  `correlations/plot_noncollinear_120_degree_order.py`; history entries:
-  BCS theory (1957), frustration and 120-degree order (1973/1988).
-  `hubbard_mean_field` and the existing BdG functions are unchanged.
-
-### Removed
-
-- The five pre-0.2 Jupyter notebooks (`examples_lattice`, `examples_system`,
-  `examples_graphene`, `examples_propagation`, `logo`). They were never run
-  by the tests or the gallery, used wildcard imports, the lowercase alias
-  classes, silenced warnings and wrote figures to disk, and asserted
-  nothing. Their content that no gallery example covered is now in three
-  asserted gallery scripts: `tight_binding/plot_building_finite_lattices.py`
-  (cuts, dangling sites, lattice arithmetic, `clean_coor`, rotations),
-  `tight_binding/plot_defects_and_impurities.py` (a vacancy zero mode on the
-  majority sublattice, an impurity bound state at `eps + 3t^2/eps`) and
-  `dynamics/plot_wavepacket_interference.py` (Aharonov-Bohm caging on a
-  hexagonal ring, a state trapped at a domain wall with the eigenstate
-  return probability). The rest (strained flakes and pseudo-Landau levels,
-  zigzag-triangle zero modes, non-Hermitian chains) was already covered by
-  the strain, correlations and non-Hermitian examples. The logo image stays
-  in `docs/source/_static`.
 
 ### Fixed
 

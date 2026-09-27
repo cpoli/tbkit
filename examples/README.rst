@@ -73,3 +73,7 @@ Sections
 - **moire** -- supercells, band unfolding and the spectral function of
   disordered supercells, and twisted bilayers: the flat bands of
   magic-angle twisted bilayer graphene.
+- **optics** -- the optical response of Bloch bands: the Kubo-Greenwood
+  conductivity and graphene's universal absorption, the Berry curvature
+  dipole of the nonlinear Hall effect, and the shift current of the bulk
+  photovoltaic effect.
