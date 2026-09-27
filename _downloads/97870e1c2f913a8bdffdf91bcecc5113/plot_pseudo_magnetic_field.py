@@ -26,7 +26,7 @@ with :math:`\hat{\boldsymbol\delta}_{ij}` the bond's direction and
 
 .. math::
 
-    B_s = \beta/2 \qquad (\hbar = e = a = 1),
+    B_s = |\beta|/2 \qquad (\hbar = e = a = 1),
 
 so graphene's relativistic Landau ladder (see
 :doc:`/api/gallery/magnetic_field/plot_landau_levels`) should appear at
@@ -34,7 +34,7 @@ so graphene's relativistic Landau ladder (see
 .. math::
 
     E_n = \mathrm{sign}(n)\, v_F\sqrt{2 B_s |n|}
-        = \mathrm{sign}(n)\,\tfrac{3}{2}t\sqrt{\beta |n|}\, ,
+        = \mathrm{sign}(n)\,\tfrac{3}{2}t\sqrt{|\beta n|}\, ,
         \qquad v_F = \tfrac32 t\, .
 
 The catch -- and the whole point -- is that *no magnetic field is
@@ -105,8 +105,8 @@ print('Hamiltonian is exactly real: time-reversal symmetry is unbroken.')
 # %%
 # The spectrum nevertheless collapses onto a relativistic Landau ladder
 # -------------------------------------------------------------------------
-# With :math:`B_s = \beta/2`, the predicted levels are
-# :math:`E_n = \tfrac32 t\sqrt{\beta n}`. The bulk states bunch onto them
+# With :math:`B_s = |\beta|/2`, the predicted levels are
+# :math:`E_n = \tfrac32 t\sqrt{|\beta| n}`. The bulk states bunch onto them
 # to within a couple of percent.
 
 gsys.get_eig(eigenvec=True)

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Tutorial &#8212; tbkit 0.2.1 documentation</title>
+    <title>Tutorial &#8212; tbkit 0.4.0 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="_static/documentation_options.js?v=3ca669d2"></script>
+    <script src="_static/documentation_options.js?v=1437fa6d"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -57,7 +57,7 @@
     <link rel="prev" title="tbkit" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2" />
+  <meta name="docsearch:version" content="0.4" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -403,7 +403,9 @@
 them: define a lattice, build a real-space Tight-Binding model and
 diagonalize it, build the same model’s Bloch Hamiltonian in reciprocal
 space, then layer on more physics (disorder, strain, a magnetic field,
-spin-orbit coupling, topology, edge states). Runnable versions of most of
+spin-orbit coupling, topology, edge states), and on to three dimensions,
+several orbitals per site, large lattices, transport, interactions,
+superconductivity, and non-Hermitian and driven systems. Runnable versions of most of
 this live in the <code class="docutils literal notranslate"><span class="pre">examples/</span></code> directory, referenced throughout.</p>
 <p>A Tight-Binding Hamiltonian describes electrons hopping between localized
 orbitals:</p>
@@ -477,7 +479,8 @@ see <a class="reference internal" href="tbkit.html#tbkit.system.System.set_hoppi
 mini-language. For anything that doesn’t fit that pattern, <code class="docutils literal notranslate"><span class="pre">i,j</span></code>-indexed
 hoppings work directly on the actual real-space site indices printed by
 <code class="docutils literal notranslate"><span class="pre">lat.plot(plt_index=True)</span></code>. Hamiltonians can be Hermitian or, if you fill
-in both the <em>i&lt;j</em> and <em>i&gt;j</em> parts independently, non-Hermitian.</p>
+in both the upper and the lower parts independently (<code class="docutils literal notranslate"><span class="pre">upper_part=True</span></code>
+and <code class="docutils literal notranslate"><span class="pre">upper_part=False</span></code>), non-Hermitian.</p>
 <p><code class="docutils literal notranslate"><span class="pre">tbkit.plot.Plot</span></code> plots the lattice, the spectrum, sublattice
 polarization, eigenstate intensities, and the density of states
 (<a class="reference internal" href="tbkit.html#tbkit.plot.Plot.dos" title="tbkit.plot.Plot.dos"><code class="xref py py-meth docutils literal notranslate"><span class="pre">dos()</span></code></a>):</p>
@@ -568,8 +571,10 @@ spectrum is checked to be exactly periodic in the enclosed flux.</p>
 <span class="n">kmele</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
                           <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
                           <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}])</span>
-<span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]:</span>
-    <span class="n">kmele</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">lam</span><span class="o">*</span><span class="n">PAULI</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]}])</span>   <span class="c1"># intrinsic SOC</span>
+<span class="c1"># intrinsic SOC, along the three second-neighbor vectors a2, -a1, a1-a2</span>
+<span class="c1"># (120 degrees apart, as the lattice&#39;s C3 symmetry requires)</span>
+<span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]:</span>
+    <span class="n">kmele</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">lam</span><span class="o">*</span><span class="n">PAULI</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]}])</span>
     <span class="n">kmele</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">lam</span><span class="o">*</span><span class="n">PAULI</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]}])</span>
 </pre></div>
 </div>
@@ -616,12 +621,282 @@ periodic model, keeping its hoppings intact:</p>
 <p>For a zigzag graphene ribbon this reproduces the famous zero-energy edge
 flat band; cutting a ribbon from the Kane-Mele model above instead shows
 helical edge states crossing the bulk gap, protected by Kramers’ theorem.
-See <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_edge_states.py</span></code>, where both are checked numerically (the
-second also against a large real-space flake, as an independent
-cross-check).</p>
+See <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_edge_states.py</span></code>, where both are checked numerically.</p>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Cutting a periodic 2D model into a ribbon (periodic in one direction, finite/open in the other -- see tbkit.kspace.ribbon) is the standard way to see edge physics in a tight-binding band structure. Two classic examples:"><img alt="" src="_images/sphx_glr_plot_edge_states_thumb.png" />
 <p><a class="reference internal" href="api/gallery/topology/plot_edge_states.html"><span class="doc">Edge States on Ribbons</span></a></p>
   <div class="sphx-glr-thumbnail-title">Edge States on Ribbons</div>
+</div></div></section>
+<section id="more-topology-berry-phases-wannier-centres-and-z2">
+<h2>More topology: Berry phases, Wannier centres, and Z2<a class="headerlink" href="#more-topology-berry-phases-wannier-centres-and-z2" title="Link to this heading">#</a></h2>
+<p>In one dimension (or along one direction of a 2D/3D model),
+<a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.berry_phase" title="tbkit.kspace.KSpace.berry_phase"><code class="xref py py-meth docutils literal notranslate"><span class="pre">berry_phase()</span></code></a> gives the Zak phase of a group
+of bands – a Wilson loop across the Brillouin zone – and
+<a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.wannier_centers" title="tbkit.kspace.KSpace.wannier_centers"><code class="xref py py-meth docutils literal notranslate"><span class="pre">wannier_centers()</span></code></a> the positions, in units of
+the lattice constant, of the corresponding hybrid Wannier functions. For
+the SSH chain the Wannier centre sits at the middle of the strong bond,
+inside the cell (0.25 here) or between two cells (0.75):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.lattice</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lattice</span>
+
+<span class="n">lat_ssh</span> <span class="o">=</span> <span class="n">Lattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="p">[{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)},</span> <span class="p">{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)}],</span>
+                  <span class="n">prim_vec</span><span class="o">=</span><span class="p">[(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)])</span>
+<span class="n">ssh</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">lat_ssh</span><span class="p">)</span>
+<span class="n">ssh</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}])</span>
+<span class="n">zak</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">berry_phase</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nk</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>       <span class="c1"># -pi/2: Wannier centre at 0.75</span>
+<span class="n">centre</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">wannier_centers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nk</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>By default the orbital positions inside the cell enter the Bloch phases
+(<code class="docutils literal notranslate"><span class="pre">positions=True</span></code>), so the result is a physical polarization; pass
+<code class="docutils literal notranslate"><span class="pre">positions=False</span></code> for the periodic-gauge value, which inversion
+symmetry quantizes to 0 or <span class="math notranslate nohighlight">\(\pi\)</span> (here <span class="math notranslate nohighlight">\(\pi\)</span>). With time-reversal
+symmetry, <a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.wannier_flow" title="tbkit.kspace.KSpace.wannier_flow"><code class="xref py py-meth docutils literal notranslate"><span class="pre">wannier_flow()</span></code></a> follows the Wannier
+centres across half the Brillouin zone and
+<a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.z2_invariant" title="tbkit.kspace.KSpace.z2_invariant"><code class="xref py py-meth docutils literal notranslate"><span class="pre">z2_invariant()</span></code></a> counts how often they wind –
+the Kane-Mele <span class="math notranslate nohighlight">\(\mathbb{Z}_2\)</span> invariant – while, for an
+inversion-symmetric model, <a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.parity_z2" title="tbkit.kspace.KSpace.parity_z2"><code class="xref py py-meth docutils literal notranslate"><span class="pre">parity_z2()</span></code></a> gets
+the same number from the Fu-Kane parities at the time-reversal-invariant
+momenta:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nu</span> <span class="o">=</span> <span class="n">kmele</span><span class="o">.</span><span class="n">z2_invariant</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">nk</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">nk_perp</span><span class="o">=</span><span class="mi">41</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.symmetry_error" title="tbkit.kspace.KSpace.symmetry_error"><code class="xref py py-meth docutils literal notranslate"><span class="pre">symmetry_error()</span></code></a> checks whether a unitary or
+antiunitary operator is a symmetry of the Bloch Hamiltonian, and
+<a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.tenfold_class" title="tbkit.kspace.KSpace.tenfold_class"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tenfold_class()</span></code></a> names the Altland-Zirnbauer
+class; <a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.quantum_geometric_tensor" title="tbkit.kspace.KSpace.quantum_geometric_tensor"><code class="xref py py-meth docutils literal notranslate"><span class="pre">quantum_geometric_tensor()</span></code></a> gives the
+quantum metric (its real part) and Berry curvature (its imaginary part)
+at one k-point. <a class="reference internal" href="tbkit.html#tbkit.kspace.magnetic_supercell" title="tbkit.kspace.magnetic_supercell"><code class="xref py py-func docutils literal notranslate"><span class="pre">magnetic_supercell()</span></code></a> builds the
+magnetic Bloch Hamiltonian of a rational flux <span class="math notranslate nohighlight">\(p/q\)</span> per unit cell,
+whose Chern numbers are the TKNN Hall conductances. Topology survives
+without translation invariance: on a finite, even disordered, flake
+<a class="reference internal" href="tbkit.html#tbkit.system.System.get_local_chern_marker" title="tbkit.system.System.get_local_chern_marker"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_local_chern_marker()</span></code></a> is the Chern number
+site by site. See <code class="docutils literal notranslate"><span class="pre">examples/topology/</span></code>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="J. Zak showed in 1989 that the Berry phase acquired by a Bloch state carried once across the Brillouin zone,"><img alt="" src="_images/sphx_glr_plot_zak_phase_thumb.png" />
+<p><a class="reference internal" href="api/gallery/topology/plot_zak_phase.html"><span class="doc">The Zak Phase: Where the SSH Chain’s Electrons Sit</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Zak Phase: Where the SSH Chain's Electrons Sit</div>
+</div></div></section>
+<section id="hall-conductivities-at-any-fermi-level">
+<h2>Hall conductivities at any Fermi level<a class="headerlink" href="#hall-conductivities-at-any-fermi-level" title="Link to this heading">#</a></h2>
+<p>The Chern number is the Hall conductance of a filled group of bands. At
+any Fermi level – in a gap, inside a band, at finite temperature –
+<a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.hall_conductivity" title="tbkit.kspace.KSpace.hall_conductivity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">hall_conductivity()</span></code></a> sums the Berry curvature
+of the occupied states with the Kubo formula, in units of <span class="math notranslate nohighlight">\(e^2/h\)</span>
+in 2D (for a 3D model, on a plane, or as the full Hall vector in
+<span class="math notranslate nohighlight">\(e^2/(h\cdot\mathrm{length})\)</span>). One mesh diagonalization serves a
+whole array of Fermi energies; for the Haldane model <code class="docutils literal notranslate"><span class="pre">hal</span></code> of
+<code class="docutils literal notranslate"><span class="pre">examples/topology/plot_haldane_topology.py</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">e_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mi">301</span><span class="p">)</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">hal</span><span class="o">.</span><span class="n">hall_conductivity</span><span class="p">(</span><span class="n">e_f</span><span class="p">,</span> <span class="n">nk</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>   <span class="c1"># = chern_number in the gap</span>
+<span class="n">sigma_t</span> <span class="o">=</span> <span class="n">hal</span><span class="o">.</span><span class="n">hall_conductivity</span><span class="p">(</span><span class="n">e_f</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">nk</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">refine</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In a gap it equals <a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.chern_number" title="tbkit.kspace.KSpace.chern_number"><code class="xref py py-meth docutils literal notranslate"><span class="pre">chern_number()</span></code></a> (the sign of
+TKNN; the docstring relates it to the Ohm’s-law tensor). <code class="docutils literal notranslate"><span class="pre">refine</span></code>
+resamples the hot spots of the curvature on a finer submesh.
+<a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.spin_hall_conductivity" title="tbkit.kspace.KSpace.spin_hall_conductivity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">spin_hall_conductivity()</span></code></a> does the same for the
+spin current <span class="math notranslate nohighlight">\(\{s_z, v_x\}/2\)</span> of a spinful model, in units of
+<span class="math notranslate nohighlight">\(e/2\pi\)</span> – 1 in the gap of the Kane-Mele model:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sigma_s</span> <span class="o">=</span> <span class="n">kmele</span><span class="o">.</span><span class="n">spin_hall_conductivity</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">nk</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For large, disordered samples, <a class="reference internal" href="tbkit.html#tbkit.kpm.hall_conductivity" title="tbkit.kpm.hall_conductivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.kpm.hall_conductivity()</span></code></a>
+computes the Kubo-Bastin Hall conductivity in real space, on a torus
+built by <a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.finite_ham" title="tbkit.kspace.KSpace.finite_ham"><code class="xref py py-meth docutils literal notranslate"><span class="pre">finite_ham()</span></code></a> with the velocities of
+<a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.finite_velocity" title="tbkit.kspace.KSpace.finite_velocity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">finite_velocity()</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.kpm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">kpm</span>
+
+<span class="n">ham</span> <span class="o">=</span> <span class="n">hal</span><span class="o">.</span><span class="n">finite_ham</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">periodic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">vx</span><span class="p">,</span> <span class="n">vy</span> <span class="o">=</span> <span class="n">hal</span><span class="o">.</span><span class="n">finite_velocity</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">periodic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">area</span> <span class="o">=</span> <span class="mi">100</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hal</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">prim_vec</span><span class="p">)))</span>
+<span class="n">energies</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">kpm</span><span class="o">.</span><span class="n">hall_conductivity</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">vx</span><span class="p">,</span> <span class="n">vy</span><span class="p">,</span> <span class="n">n_moments</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See <code class="docutils literal notranslate"><span class="pre">examples/hall_effects/</span></code>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="In 1954 Karplus and Luttinger found that the electrons of a ferromagnet acquire an anomalous velocity transverse to an applied electric field, a Hall current with no magnetic field. Half a century later it was recognized as a Berry-phase effect (Jungwirth, Niu and MacDonald 2002; Haldane 2004): a band&#x27;s velocity picks up -\dot{\mathbf{k}}\times \boldsymbol\Omega_n(\mathbf{k}), and the intrinsic Hall conductivity is the Berry curvature summed over the occupied states,"><img alt="" src="_images/sphx_glr_plot_anomalous_hall_effect_thumb.png" />
+<p><a class="reference internal" href="api/gallery/hall_effects/plot_anomalous_hall_effect.html"><span class="doc">The Anomalous Hall Effect: from the Anomalous Velocity to the Berry Phase</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Anomalous Hall Effect: from the Anomalous Velocity to the Berry Phase</div>
+</div></div></section>
+<section id="three-dimensions">
+<h2>Three dimensions<a class="headerlink" href="#three-dimensions" title="Link to this heading">#</a></h2>
+<p>Give the unit cell 3D positions and three primitive vectors and every
+tool above works in 3D: <code class="docutils literal notranslate"><span class="pre">get_lattice(n1,</span> <span class="pre">n2,</span> <span class="pre">n3)</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Lattice.slab</span></code> in real space, three-component <code class="docutils literal notranslate"><span class="pre">'R'</span></code> in <em>KSpace</em>,
+and <code class="docutils literal notranslate"><span class="pre">chern_number(...,</span> <span class="pre">plane=(0,</span> <span class="pre">1),</span> <span class="pre">k_fixed=kz)</span></code> on a plane of the
+Brillouin zone – the way to find Weyl points, where it jumps:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cubic</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)]</span>
+<span class="n">lat</span> <span class="o">=</span> <span class="n">Lattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="p">[{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)}],</span> <span class="n">prim_vec</span><span class="o">=</span><span class="n">cubic</span><span class="p">)</span>
+<span class="n">lat</span><span class="o">.</span><span class="n">get_lattice</span><span class="p">(</span><span class="n">n1</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n2</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n3</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="tbkit.html#tbkit.kspace.ribbon" title="tbkit.kspace.ribbon"><code class="xref py py-func docutils literal notranslate"><span class="pre">ribbon()</span></code></a> then cuts a slab (finite along one
+direction, periodic along the other two). See
+<code class="docutils literal notranslate"><span class="pre">examples/three_dimensions/</span></code>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A 3D band touching where two bands meet linearly in every direction, H \approx \mathbf{v}\cdot\mathbf{q}\,\boldsymbol\sigma, is a Weyl point: a source or sink of Berry curvature, of charge \pm1. Wan, Turner, Vishwanath and Savrasov (2011) predicted Weyl semimetals in real materials, and in 2015 Xu et al. and Lv et al. observed them in TaAs by photoemission -- through their unmistakable surface signature, open Fermi arcs."><img alt="" src="_images/sphx_glr_plot_weyl_semimetal_thumb.png" />
+<p><a class="reference internal" href="api/gallery/three_dimensions/plot_weyl_semimetal.html"><span class="doc">Weyl Semimetals: Monopoles of Berry Curvature and Fermi Arcs</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Weyl Semimetals: Monopoles of Berry Curvature and Fermi Arcs</div>
+</div></div></section>
+<section id="several-orbitals-per-site-and-slater-koster-integrals">
+<h2>Several orbitals per site, and Slater-Koster integrals<a class="headerlink" href="#several-orbitals-per-site-and-slater-koster-integrals" title="Link to this heading">#</a></h2>
+<p><a class="reference internal" href="tbkit.html#tbkit.slater_koster.sk_kspace" title="tbkit.slater_koster.sk_kspace"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.slater_koster.sk_kspace()</span></code></a> builds a <em>KSpace</em> with several
+orbitals per site (s, p, d) from Slater-Koster bond integrals, keyed by
+neighbour order; an optional <code class="docutils literal notranslate"><span class="pre">overlap</span></code> gives a non-orthogonal basis,
+and the bands then solve the generalized eigenproblem
+<span class="math notranslate nohighlight">\(H\psi = ES\psi\)</span>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.slater_koster</span><span class="w"> </span><span class="kn">import</span> <span class="n">sk_kspace</span>
+
+<span class="n">orbitals</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;px&#39;</span><span class="p">,</span> <span class="s1">&#39;py&#39;</span><span class="p">,</span> <span class="s1">&#39;pz&#39;</span><span class="p">],</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;px&#39;</span><span class="p">,</span> <span class="s1">&#39;py&#39;</span><span class="p">,</span> <span class="s1">&#39;pz&#39;</span><span class="p">]}</span>
+<span class="n">graphene</span> <span class="o">=</span> <span class="n">sk_kspace</span><span class="p">(</span><span class="n">lattices</span><span class="o">.</span><span class="n">honeycomb</span><span class="p">(),</span> <span class="n">orbitals</span><span class="p">,</span>
+                     <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;ss_sigma&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.77</span><span class="p">,</span> <span class="s1">&#39;sp_sigma&#39;</span><span class="p">:</span> <span class="mf">5.58</span><span class="p">,</span>
+                          <span class="s1">&#39;pp_sigma&#39;</span><span class="p">:</span> <span class="mf">5.04</span><span class="p">,</span> <span class="s1">&#39;pp_pi&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.03</span><span class="p">}},</span>
+                     <span class="n">onsite</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">8.87</span><span class="p">},</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">8.87</span><span class="p">}})</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="tbkit.html#tbkit.orbital.OrbitalSystem" title="tbkit.orbital.OrbitalSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.orbital.OrbitalSystem</span></code></a> is the real-space counterpart, with
+spin: Zeeman, atomic and Kane-Mele spin-orbit coupling, Rashba coupling
+and Peierls phases on multi-orbital flakes. See <code class="docutils literal notranslate"><span class="pre">examples/orbitals/</span></code>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="J. Slater and G. Koster (1954) turned the linear combination of atomic orbitals into a practical band-structure method: the hopping between orbital \alpha on one atom and \beta on a neighbour along \hat{\mathbf{d}} = (l, m, n) follows from a few bond integrals V_{ss\sigma}, V_{sp\sigma}, V_{pp\sigma}, V_{pp\pi}, \dots through the geometry alone, e.g."><img alt="" src="_images/sphx_glr_plot_slater_koster_thumb.png" />
+<p><a class="reference internal" href="api/gallery/orbitals/plot_slater_koster.html"><span class="doc">The Slater-Koster Method: Graphene’s sigma and pi Bands</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Slater-Koster Method: Graphene's sigma and pi Bands</div>
+</div></div></section>
+<section id="large-lattices-sparse-solvers-and-the-kernel-polynomial-method">
+<h2>Large lattices: sparse solvers and the kernel polynomial method<a class="headerlink" href="#large-lattices-sparse-solvers-and-the-kernel-polynomial-method" title="Link to this heading">#</a></h2>
+<p>Above <code class="docutils literal notranslate"><span class="pre">System.dense_max</span></code> sites, <em>System</em> finds neighbours with a
+k-d tree instead of a dense distance matrix, and
+<a class="reference internal" href="tbkit.html#tbkit.system.System.get_eig_sparse" title="tbkit.system.System.get_eig_sparse"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_eig_sparse()</span></code></a> finds a few eigenstates near
+an energy by shift-invert. For spectral quantities of hundreds of
+thousands of sites, <a class="reference internal" href="tbkit.html#module-tbkit.kpm" title="tbkit.kpm"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.kpm</span></code></a> expands them in Chebyshev
+polynomials – density of states, local density of states and the
+Kubo-Greenwood conductivity – at the cost of a few hundred sparse
+matrix-vector products:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.kpm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">kpm</span>
+
+<span class="n">energies</span><span class="p">,</span> <span class="n">rho</span> <span class="o">=</span> <span class="n">kpm</span><span class="o">.</span><span class="n">dos</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">ham</span><span class="p">,</span> <span class="n">n_moments</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">n_random</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See <code class="docutils literal notranslate"><span class="pre">examples/large_scale/</span></code>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Diagonalizing N sites costs N^3 operations and N^2 memory: a few thousand sites at most. The kernel polynomial method (Silver and Roder, 1994; reviewed by Weisse, Wellein, Alvermann and Fehske, Rev. Mod. Phys. 78, 275 (2006)) never diagonalizes. It expands the spectral density in Chebyshev polynomials of the rescaled Hamiltonian,"><img alt="" src="_images/sphx_glr_plot_kernel_polynomial_method_thumb.png" />
+<p><a class="reference internal" href="api/gallery/large_scale/plot_kernel_polynomial_method.html"><span class="doc">The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites</div>
+</div></div></section>
+<section id="green-s-functions-occupations-and-transport">
+<h2>Green’s functions, occupations, and transport<a class="headerlink" href="#green-s-functions-occupations-and-transport" title="Link to this heading">#</a></h2>
+<p><a class="reference internal" href="tbkit.html#tbkit.system.System.get_green" title="tbkit.system.System.get_green"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_green()</span></code></a> and
+<a class="reference internal" href="tbkit.html#tbkit.system.System.get_ldos" title="tbkit.system.System.get_ldos"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_ldos()</span></code></a> give the retarded Green’s function
+and local density of states; <a class="reference internal" href="tbkit.html#tbkit.system.System.get_fermi_level" title="tbkit.system.System.get_fermi_level"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_fermi_level()</span></code></a>,
+<code class="docutils literal notranslate"><span class="pre">get_occupations</span></code> and <code class="docutils literal notranslate"><span class="pre">get_charge_density</span></code> fill the levels with a
+given number of electrons, at zero or finite temperature
+(<a class="reference internal" href="tbkit.html#module-tbkit.occupation" title="tbkit.occupation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.occupation</span></code></a>). <a class="reference internal" href="tbkit.html#tbkit.transport.Transport" title="tbkit.transport.Transport"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.transport.Transport</span></code></a> attaches
+semi-infinite leads to a finite device (their surface Green’s functions
+by Sancho-Rubio decimation, <a class="reference internal" href="tbkit.html#tbkit.transport.lead_from_kspace" title="tbkit.transport.lead_from_kspace"><code class="xref py py-func docutils literal notranslate"><span class="pre">lead_from_kspace()</span></code></a>
+making a lead from any <em>KSpace</em> model) and returns the Landauer
+transmission:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.transport</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transport</span><span class="p">,</span> <span class="n">lead_from_kspace</span>
+
+<span class="c1"># strip: a KSpace ribbon, the cross-section of the leads</span>
+<span class="n">h_left</span><span class="p">,</span> <span class="n">v_left</span> <span class="o">=</span> <span class="n">lead_from_kspace</span><span class="p">(</span><span class="n">strip</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>    <span class="c1"># continued to -x</span>
+<span class="n">h_right</span><span class="p">,</span> <span class="n">v_right</span> <span class="o">=</span> <span class="n">lead_from_kspace</span><span class="p">(</span><span class="n">strip</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># continued to +x</span>
+<span class="n">tr</span> <span class="o">=</span> <span class="n">Transport</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">ham</span><span class="p">)</span>
+<span class="n">tr</span><span class="o">.</span><span class="n">add_lead</span><span class="p">(</span><span class="n">h_left</span><span class="p">,</span> <span class="n">v_left</span><span class="p">,</span> <span class="n">coupling</span><span class="p">,</span> <span class="n">left_sites</span><span class="p">)</span>
+<span class="n">tr</span><span class="o">.</span><span class="n">add_lead</span><span class="p">(</span><span class="n">h_right</span><span class="p">,</span> <span class="n">v_right</span><span class="p">,</span> <span class="n">coupling</span><span class="p">,</span> <span class="n">right_sites</span><span class="p">)</span>
+<span class="n">conductance</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">transmission</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>   <span class="c1"># in units of e^2/h</span>
+</pre></div>
+</div>
+<p>See <code class="docutils literal notranslate"><span class="pre">examples/transport/</span></code>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="R. Landauer (1957), then M. Buttiker (1986), recast electrical conductance as a scattering problem: a phase-coherent conductor between two reservoirs has, at zero temperature and bias,"><img alt="" src="_images/sphx_glr_plot_landauer_conductance_thumb.png" />
+<p><a class="reference internal" href="api/gallery/transport/plot_landauer_conductance.html"><span class="doc">The Landauer Formula: Quantized Conductance of a Point Contact</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Landauer Formula: Quantized Conductance of a Point Contact</div>
+</div></div></section>
+<section id="interactions-and-superconductivity">
+<h2>Interactions and superconductivity<a class="headerlink" href="#interactions-and-superconductivity" title="Link to this heading">#</a></h2>
+<p><a class="reference internal" href="tbkit.html#tbkit.meanfield.hubbard_mean_field" title="tbkit.meanfield.hubbard_mean_field"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.meanfield.hubbard_mean_field()</span></code></a> solves the Hubbard model in
+the unrestricted Hartree-Fock approximation, self-consistently, from
+any single-particle Hamiltonian:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.meanfield</span><span class="w"> </span><span class="kn">import</span> <span class="n">hubbard_mean_field</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">hubbard_mean_field</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">ham</span><span class="p">,</span> <span class="n">U</span><span class="o">=</span><span class="mf">2.</span><span class="p">,</span> <span class="n">n_electrons</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">sites</span><span class="p">)</span>
+<span class="n">result</span><span class="o">.</span><span class="n">magnetization</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">total_spin</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">energy</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="tbkit.html#module-tbkit.bdg" title="tbkit.bdg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.bdg</span></code></a> builds Bogoliubov-de Gennes Hamiltonians, in real space
+(<code class="docutils literal notranslate"><span class="pre">bdg_ham</span></code> with the pairings <code class="docutils literal notranslate"><span class="pre">pairing_bonds</span></code>/<code class="docutils literal notranslate"><span class="pre">pairing_s_wave</span></code>) and
+in reciprocal space (<code class="docutils literal notranslate"><span class="pre">bdg_kspace</span></code>, a <em>KSpace</em> whose extra orbitals are
+the holes, so all the topology tools above apply to it). See
+<code class="docutils literal notranslate"><span class="pre">examples/correlations/</span></code> and <code class="docutils literal notranslate"><span class="pre">examples/superconductivity/</span></code>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A. Kitaev (2001) wrote down the simplest topological superconductor: a chain of spinless fermions with nearest-neighbour hopping t and p-wave pairing \Delta,"><img alt="" src="_images/sphx_glr_plot_kitaev_chain_thumb.png" />
+<p><a class="reference internal" href="api/gallery/superconductivity/plot_kitaev_chain.html"><span class="doc">The Kitaev Chain: Majorana Zero Modes</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Kitaev Chain: Majorana Zero Modes</div>
+</div></div></section>
+<section id="non-hermitian-bands-and-floquet-driving">
+<h2>Non-Hermitian bands and Floquet driving<a class="headerlink" href="#non-hermitian-bands-and-floquet-driving" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">KSpace.set_hopping(...,</span> <span class="pre">hermitian=False)</span></code> stores a hopping without
+its conjugate, for non-reciprocal models (the Hatano-Nelson chain);
+<a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.spectral_winding" title="tbkit.kspace.KSpace.spectral_winding"><code class="xref py py-meth docutils literal notranslate"><span class="pre">spectral_winding()</span></code></a> gives the point-gap
+winding number that predicts the skin effect,
+<a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.finite_ham" title="tbkit.kspace.KSpace.finite_ham"><code class="xref py py-meth docutils literal notranslate"><span class="pre">finite_ham()</span></code></a> an open or closed finite chain,
+and <a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.gbz" title="tbkit.kspace.KSpace.gbz"><code class="xref py py-meth docutils literal notranslate"><span class="pre">gbz()</span></code></a> the generalized Brillouin zone.</p>
+<p>In two dimensions, bands touch at <strong>diabolical points</strong> (Hermitian
+degeneracies, such as graphene’s Dirac points) or at <strong>exceptional
+points</strong>, where the eigenvectors coalesce as well. <a class="reference internal" href="tbkit.html#module-tbkit.exceptional" title="tbkit.exceptional"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.exceptional</span></code></a>
+tells them apart. Its functions take a 2D <em>KSpace</em>, or any callable
+returning a matrix for a point of a parameter plane, and a closed loop
+(<a class="reference internal" href="tbkit.html#tbkit.exceptional.circle" title="tbkit.exceptional.circle"><code class="xref py py-func docutils literal notranslate"><span class="pre">circle()</span></code></a>, or polygon vertices):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.exceptional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ex</span>
+
+<span class="c1"># graphene with a non-Hermitian coupling i*gamma between the sublattices</span>
+<span class="n">gra</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="n">j</span><span class="p">},</span>
+                 <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="n">j</span><span class="p">}],</span> <span class="n">hermitian</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">eps</span> <span class="o">=</span> <span class="n">ex</span><span class="o">.</span><span class="n">find_exceptional_points</span><span class="p">(</span><span class="n">gra</span><span class="p">,</span> <span class="n">nk</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>   <span class="c1"># positions, charges, orders</span>
+<span class="n">eps</span><span class="o">.</span><span class="n">total_charge</span>                                <span class="c1"># 0: EPs come in pairs</span>
+<span class="n">loop</span> <span class="o">=</span> <span class="n">ex</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">eps</span><span class="o">.</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.05</span><span class="p">)</span>
+<span class="n">ex</span><span class="o">.</span><span class="n">vorticity</span><span class="p">(</span><span class="n">gra</span><span class="p">,</span> <span class="n">loop</span><span class="p">)</span>                         <span class="c1"># +-1/2 (0 around a Dirac point)</span>
+<span class="n">ex</span><span class="o">.</span><span class="n">discriminant_winding</span><span class="p">(</span><span class="n">gra</span><span class="p">,</span> <span class="n">loop</span><span class="p">)</span>              <span class="c1"># -+1, no band tracking needed</span>
+<span class="n">ex</span><span class="o">.</span><span class="n">encircle</span><span class="p">(</span><span class="n">gra</span><span class="p">,</span> <span class="n">loop</span><span class="p">,</span> <span class="n">n_loops</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">phase</span>         <span class="c1"># pi: back after 2 loops, sign flipped</span>
+<span class="n">arcs</span> <span class="o">=</span> <span class="n">ex</span><span class="o">.</span><span class="n">fermi_arcs</span><span class="p">(</span><span class="n">gra</span><span class="p">,</span> <span class="n">nk</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>                <span class="c1"># Re E_+ = Re E_- between the EPs</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.biorthogonal_chern_number" title="tbkit.kspace.KSpace.biorthogonal_chern_number"><code class="xref py py-meth docutils literal notranslate"><span class="pre">biorthogonal_chern_number()</span></code></a> gives the Chern
+number of a non-Hermitian band from its left and right eigenvectors (the
+LR, RL, RR and LL definitions agree) when a real or imaginary line gap
+isolates it. <a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.chern_number" title="tbkit.kspace.KSpace.chern_number"><code class="xref py py-meth docutils literal notranslate"><span class="pre">chern_number()</span></code></a> raises a
+ValueError for a non-Hermitian band without a real line gap. See
+<code class="docutils literal notranslate"><span class="pre">examples/non_hermitian/plot_exceptional_point*.py</span></code> and
+<code class="docutils literal notranslate"><span class="pre">examples/topology/plot_diabolical_points.py</span></code>.</p>
+<p><a class="reference internal" href="tbkit.html#module-tbkit.floquet" title="tbkit.floquet"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.floquet</span></code></a> handles time-periodic Hamiltonians: the evolution
+operator over a period, quasienergies, the Floquet Hamiltonian and the
+Sambe (extended-space) Hamiltonian. <a class="reference internal" href="tbkit.html#tbkit.floquet.FloquetKSpace" title="tbkit.floquet.FloquetKSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.floquet.FloquetKSpace</span></code></a>
+drives a <em>KSpace</em> with a vector potential <span class="math notranslate nohighlight">\(\mathbf{A}(t)\)</span> and
+behaves as the static <em>KSpace</em> of its Floquet Hamiltonian – bands,
+Chern numbers and all:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.floquet</span><span class="w"> </span><span class="kn">import</span> <span class="n">FloquetKSpace</span>
+
+<span class="n">omega</span><span class="p">,</span> <span class="n">a0</span> <span class="o">=</span> <span class="mf">12.</span><span class="p">,</span> <span class="mf">0.6</span>
+<span class="n">light</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="p">(</span><span class="n">a0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">omega</span> <span class="o">*</span> <span class="n">t</span><span class="p">),</span> <span class="n">a0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">omega</span> <span class="o">*</span> <span class="n">t</span><span class="p">))</span>
+<span class="n">driven</span> <span class="o">=</span> <span class="n">FloquetKSpace</span><span class="p">(</span><span class="n">gra</span><span class="p">,</span> <span class="n">light</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">omega</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">chern</span> <span class="o">=</span> <span class="n">driven</span><span class="o">.</span><span class="n">chern_number</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nk</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The Chern numbers of <span class="math notranslate nohighlight">\(H_F\)</span> do not always count a driven system’s
+edge states: in <em>anomalous</em> Floquet phases every band has <span class="math notranslate nohighlight">\(C = 0\)</span>
+while chiral edge states cross every gap. <a class="reference internal" href="tbkit.html#tbkit.floquet.step_drive" title="tbkit.floquet.step_drive"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.floquet.step_drive()</span></code></a>
+builds a piecewise-constant drive from a list of models (<strong>KSpace</strong>
+models, ribbons, or <strong>System</strong> flakes), evolved exactly;
+<a class="reference internal" href="tbkit.html#tbkit.floquet.DrivenKSpace.winding_number" title="tbkit.floquet.DrivenKSpace.winding_number"><code class="xref py py-meth docutils literal notranslate"><span class="pre">winding_number()</span></code></a> gives the winding
+number of Rudner et al. in the gap at <em>epsilon</em>, and
+<a class="reference internal" href="tbkit.html#tbkit.floquet.DrivenKSpace.edge_state_count" title="tbkit.floquet.DrivenKSpace.edge_state_count"><code class="xref py py-meth docutils literal notranslate"><span class="pre">edge_state_count()</span></code></a> counts the edge
+states of a driven ribbon:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.floquet</span><span class="w"> </span><span class="kn">import</span> <span class="n">step_drive</span>
+
+<span class="c1"># models[s]: the KSpace of step s (hopping along one bond direction)</span>
+<span class="n">drive</span> <span class="o">=</span> <span class="n">step_drive</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="p">[</span><span class="n">T</span> <span class="o">/</span> <span class="mi">5</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">drive</span><span class="o">.</span><span class="n">winding_number</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">T</span><span class="p">)</span>      <span class="c1"># 1 at perfect transfer</span>
+</pre></div>
+</div>
+<p>See <code class="docutils literal notranslate"><span class="pre">examples/non_hermitian/plot_skin_effect.py</span></code> and <code class="docutils literal notranslate"><span class="pre">examples/floquet/</span></code>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="T. Oka and H. Aoki (2009) predicted that graphene illuminated by circularly polarized light becomes a Hall insulator; Kitagawa, Oka, Brataas, Fu and Demler (2011) showed it is a Floquet realization of Haldane&#x27;s model. A time-periodic drive H(t+T) = H(t) acts, stroboscopically, as the static Floquet Hamiltonian H_F, e^{-iH_FT} = \mathcal{T}e^{-i\int_0^TH(t)dt}. Light enters the hoppings through the Peierls phase of its vector potential, t_{ij} \to t_{ij}e^{i\mathbf{A}(t)\cdot\mathbf{d}_{ij}} with \mathbf{A}(t) = A_0(\cos\omega t, \sin\omega t). At high frequency,"><img alt="" src="_images/sphx_glr_plot_floquet_chern_insulator_thumb.png" />
+<p><a class="reference internal" href="api/gallery/floquet/plot_floquet_chern_insulator.html"><span class="doc">Floquet Engineering: A Chern Insulator From Circularly Polarized Light</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Floquet Engineering: A Chern Insulator From Circularly Polarized Light</div>
 </div></div></section>
 <section id="where-next">
 <h2>Where next<a class="headerlink" href="#where-next" title="Link to this heading">#</a></h2>
@@ -693,6 +968,14 @@ made concrete.</p></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spin-and-spin-orbit-coupling">Spin and spin-orbit coupling</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topology-berry-curvature-and-chern-numbers">Topology: Berry curvature and Chern numbers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#edge-states-cutting-a-ribbon">Edge states: cutting a ribbon</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-topology-berry-phases-wannier-centres-and-z2">More topology: Berry phases, Wannier centres, and Z2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hall-conductivities-at-any-fermi-level">Hall conductivities at any Fermi level</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#three-dimensions">Three dimensions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#several-orbitals-per-site-and-slater-koster-integrals">Several orbitals per site, and Slater-Koster integrals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#large-lattices-sparse-solvers-and-the-kernel-polynomial-method">Large lattices: sparse solvers and the kernel polynomial method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#green-s-functions-occupations-and-transport">Green’s functions, occupations, and transport</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interactions-and-superconductivity">Interactions and superconductivity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#non-hermitian-bands-and-floquet-driving">Non-Hermitian bands and Floquet driving</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-next">Where next</a></li>
 </ul>
   </nav></div>

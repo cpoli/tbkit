@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Non-Hermitian lattices &#8212; tbkit 0.2.1 documentation</title>
+    <title>Non-Hermitian lattices &#8212; tbkit 0.4.0 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../../_static/documentation_options.js?v=3ca669d2"></script>
+    <script src="../../../_static/documentation_options.js?v=1437fa6d"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -52,11 +52,11 @@
     <script src="../../../_static/js/force_light.js?v=8e7666d6"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="PT Symmetry, Exceptional Points, and a Selectively Amplified Edge Mode" href="plot_pt_symmetry.html" />
-    <link rel="prev" title="Aharonov-Bohm Ring: A Magnetic Field on a Lattice" href="../magnetic_field/plot_magnetic_field.html" />
+    <link rel="next" title="Exceptional Points in Momentum Space: Encircling an EP versus a Dirac Point" href="plot_exceptional_point_encircling.html" />
+    <link rel="prev" title="The Peierls Substitution: Flux Through the Plaquettes, in Any Gauge" href="../magnetic_field/plot_peierls_substitution.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2" />
+  <meta name="docsearch:version" content="0.4" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -341,6 +341,11 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../correlations/index.html">Correlations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../correlations/plot_hubbard_edge_magnetism.html">The Hubbard Model: Magnetism of Graphene’s Zigzag Edges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../correlations/plot_lieb_theorem.html">Lieb’s Theorem: The Total Spin of Graphene Triangles</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../disorder/index.html">Disorder</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../disorder/plot_anderson_localization.html">Anderson Localization</a></li>
 </ul>
@@ -353,32 +358,79 @@
 <li class="toctree-l2"><a class="reference internal" href="../flat_bands/plot_flat_bands.html">Flat-Band Lattices: Kagome and Lieb</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../floquet/index.html">Floquet</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../floquet/plot_anomalous_floquet_phases.html">Anomalous Floquet Topological Phases: Edge States With Zero Chern Numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../floquet/plot_floquet_chern_insulator.html">Floquet Engineering: A Chern Insulator From Circularly Polarized Light</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../hall_effects/index.html">Hall effects</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_anomalous_hall_disorder.html">The Anomalous Hall Effect in Real Space: a Disordered Chern Insulator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_anomalous_hall_effect.html">The Anomalous Hall Effect: from the Anomalous Velocity to the Berry Phase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_intrinsic_spin_hall_effect.html">The Intrinsic Spin Hall Effect: Kane-Mele Plateau and Rashba Coupling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../large_scale/index.html">Large lattices</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_kernel_polynomial_method.html">The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../magnetic_field/index.html">Magnetic Field</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_hofstadter_butterfly.html">Hofstadter’s Butterfly</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_landau_levels.html">Landau Levels: Square Lattice vs. Graphene</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_magnetic_field.html">Aharonov-Bohm Ring: A Magnetic Field on a Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_peierls_substitution.html">The Peierls Substitution: Flux Through the Plaquettes, in Any Gauge</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Non-Hermitian lattices</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="plot_exceptional_point_encircling.html">Exceptional Points in Momentum Space: Encircling an EP versus a Dirac Point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_exceptional_point_vorticity.html">Exceptional Points in Momentum Space: Vorticity and Exceptional Rings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_exceptional_points_chern_number.html">Exceptional Points in Momentum Space: the Chern Number until the Line Gap Closes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_exceptional_points_fermi_arcs.html">Exceptional Points in Momentum Space: Complex Bands and the Bulk Fermi Arc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_pt_symmetry.html">PT Symmetry, Exceptional Points, and a Selectively Amplified Edge Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_skin_effect.html">The Non-Hermitian Skin Effect and the Generalized Brillouin Zone</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../orbitals/index.html">Orbitals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../orbitals/plot_slater_koster.html">The Slater-Koster Method: Graphene’s sigma and pi Bands</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../strain/index.html">Strain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../strain/plot_pseudo_magnetic_field.html">Strain as a Gauge Field: Pseudo-Landau Levels in Graphene</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../superconductivity/index.html">Superconductivity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_kitaev_chain.html">The Kitaev Chain: Majorana Zero Modes</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../three_dimensions/index.html">Three dimensions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../three_dimensions/plot_anderson_transition.html">The Scaling Theory of Localization: the 3D Anderson Transition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../three_dimensions/plot_weyl_semimetal.html">Weyl Semimetals: Monopoles of Berry Curvature and Fermi Arcs</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tight_binding/index.html">Tight-Binding</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_graphene_bands.html">Graphene: Real-Space Flake and Reciprocal-Space Bands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_isolation_of_graphene.html">The Isolation of Graphene: Flakes, Edges, and a Berry Phase of pi</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_square_lattice_bands.html">The Square Lattice: Bloch’s Theorem in its Simplest Form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_visualizing_a_model.html">Visualizing a Model: tbkit.plot.Plot</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../topology/index.html">Topology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_diabolical_points.html">Diabolical Points: Conical Intersections in a Two-Parameter Family</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_edge_states.html">Edge States on Ribbons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_fu_kane_parity.html">The Fu-Kane Parity Criterion: Z2 from Inversion Eigenvalues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_haldane_topology.html">The Haldane Model: Berry Curvature and a Topological Phase Transition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_kagome_chern_band.html">A Topological Flat Band on the Kagome Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_kane_mele_z2.html">The Kane-Mele Z2 Invariant from Wannier-Centre Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_local_chern_marker.html">The Local Chern Marker: Topology Without a Brillouin Zone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_quantum_geometry.html">The Quantum Metric: The Geometry of a Bloch Band</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_ssh_model.html">The SSH Model: Bulk-Boundary Correspondence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_tenfold_way.html">The Tenfold Way: Symmetry Classes of Tight-Binding Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_thouless_pump.html">The Thouless Quantum Pump (Rice-Mele Model)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_tknn_hofstadter.html">TKNN: The Quantized Hall Conductance of the Hofstadter Bands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_zak_phase.html">The Zak Phase: Where the SSH Chain’s Electrons Sit</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../transport/index.html">Transport</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../transport/plot_landauer_conductance.html">The Landauer Formula: Quantized Conductance of a Point Contact</a></li>
 </ul>
 </details></li>
 </ul>
@@ -447,10 +499,32 @@
 real up to a threshold, the exceptional points at which eigenvalues
 <em>and</em> eigenvectors coalesce, the Petermann factor that measures how far
 the eigenbasis has been skewed, and the selective amplification of a
-topological edge mode.</p>
-<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A lattice with balanced gain and loss -- imaginary onsite energies \pm i\gamma on the two sublattices -- has a non-Hermitian Hamiltonian, but it commutes with the combined parity-time operation \mathcal{PT}. Bender and Boettcher&#x27;s 1998 observation was that such a Hamiltonian can still have an entirely real spectrum, up to a threshold in \gamma at which eigenvalues collide pairwise and split into complex-conjugate pairs."><img alt="" src="../../../_images/sphx_glr_plot_pt_symmetry_thumb.png" />
+topological edge mode. With non-reciprocal hoppings: the non-Hermitian
+skin effect, its spectral winding number, and the generalized Brillouin
+zone that restores the bulk-boundary correspondence. In two dimensions:
+exceptional points in momentum space, their charges (eigenvalue
+vorticity and discriminant winding), the pair of EPs and the bulk Fermi
+arc into which a Dirac point splits, exceptional rings, encircling an EP
+(the state swap and the four-loop return), and the biorthogonal Chern
+number of a line-gapped band.</p>
+<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A loop in the Brillouin zone around a band touching tells what kind of touching it is."><img alt="" src="../../../_images/sphx_glr_plot_exceptional_point_encircling_thumb.png" />
+<p><a class="reference internal" href="plot_exceptional_point_encircling.html"><span class="doc">Exceptional Points in Momentum Space: Encircling an EP versus a Dirac Point</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Exceptional Points in Momentum Space: Encircling an EP versus a Dirac Point</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="What becomes of a Dirac point when a Hermitian crystal is made non-Hermitian? It depends on the non-Hermitian term, and the answer is organized by a conserved quantity, the eigenvalue vorticity of Shen, Zhen and Fu (Phys. Rev. Lett. 120, 146402 (2018)),"><img alt="" src="../../../_images/sphx_glr_plot_exceptional_point_vorticity_thumb.png" />
+<p><a class="reference internal" href="plot_exceptional_point_vorticity.html"><span class="doc">Exceptional Points in Momentum Space: Vorticity and Exceptional Rings</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Exceptional Points in Momentum Space: Vorticity and Exceptional Rings</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="A non-Hermitian band has two eigenvectors, a right one H|R\rangle = E|R\rangle and a left one H^\dagger|L\rangle = E^*|L\rangle, so there are four Berry connections i\langle u^\alpha|\nabla u^\beta\rangle, \alpha,\beta\in\{L,R\}. Shen, Zhen and Fu (Phys. Rev. Lett. 120, 146402 (2018)) showed that their Chern numbers C^{LR}, C^{RL}, C^{RR}, C^{LL} are one and the same integer, as long as the band stays separated from the others -- here by a line gap, a line \mathrm{Re}\,E = 0 that no band crosses. The gap can close only at exceptional points; until then the Chern number cannot change."><img alt="" src="../../../_images/sphx_glr_plot_exceptional_points_chern_number_thumb.png" />
+<p><a class="reference internal" href="plot_exceptional_points_chern_number.html"><span class="doc">Exceptional Points in Momentum Space: the Chern Number until the Line Gap Closes</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Exceptional Points in Momentum Space: the Chern Number until the Line Gap Closes</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="In a Hermitian 2D crystal, two bands touch at isolated diabolical points, such as graphene&#x27;s Dirac points. Add a non-Hermitian term (gain, loss, radiation into the environment) and each Dirac point is replaced by a pair of exceptional points (EPs), where the two eigenvalues and their eigenvectors coalesce. The complex bands E_\pm(\mathbf{k}) are then the two sheets of a square root, E_\pm = \pm\sqrt{\Delta/4}, and the EPs are its branch points. Each carries a topological charge: the winding of the discriminant \Delta(\mathbf{k}) = (E_+ - E_-)^2 around it, \pm1, or equivalently the eigenvalue vorticity \mp1/2."><img alt="" src="../../../_images/sphx_glr_plot_exceptional_points_fermi_arcs_thumb.png" />
+<p><a class="reference internal" href="plot_exceptional_points_fermi_arcs.html"><span class="doc">Exceptional Points in Momentum Space: Complex Bands and the Bulk Fermi Arc</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Exceptional Points in Momentum Space: Complex Bands and the Bulk Fermi Arc</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="A lattice with balanced gain and loss -- imaginary onsite energies \pm i\gamma on the two sublattices -- has a non-Hermitian Hamiltonian, but it commutes with the combined parity-time operation \mathcal{PT}. Bender and Boettcher&#x27;s 1998 observation was that such a Hamiltonian can still have an entirely real spectrum, up to a threshold in \gamma at which eigenvalues collide pairwise and split into complex-conjugate pairs."><img alt="" src="../../../_images/sphx_glr_plot_pt_symmetry_thumb.png" />
 <p><a class="reference internal" href="plot_pt_symmetry.html"><span class="doc">PT Symmetry, Exceptional Points, and a Selectively Amplified Edge Mode</span></a></p>
   <div class="sphx-glr-thumbnail-title">PT Symmetry, Exceptional Points, and a Selectively Amplified Edge Mode</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Hatano and Nelson (1996) studied a chain whose hoppings to the right and to the left differ, (H\psi)_n = t_R\psi_{n+1} + t_L\psi_{n-1} -- a non-reciprocal, non-Hermitian lattice. Twenty years later it became the paradigm of a phenomenon with no Hermitian counterpart, the skin effect (Yao and Wang; Kunst, Edvardsson, Budich and Bergholtz, 2018):"><img alt="" src="../../../_images/sphx_glr_plot_skin_effect_thumb.png" />
+<p><a class="reference internal" href="plot_skin_effect.html"><span class="doc">The Non-Hermitian Skin Effect and the Generalized Brillouin Zone</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Non-Hermitian Skin Effect and the Generalized Brillouin Zone</div>
 </div></div><div class="toctree-wrapper compound">
 </div>
 </section>
@@ -466,20 +540,20 @@ topological edge mode.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../magnetic_field/plot_magnetic_field.html"
+       href="../magnetic_field/plot_peierls_substitution.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Aharonov-Bohm Ring: A Magnetic Field on a Lattice</p>
+        <p class="prev-next-title">The Peierls Substitution: Flux Through the Plaquettes, in Any Gauge</p>
       </div>
     </a>
     <a class="right-next"
-       href="plot_pt_symmetry.html"
+       href="plot_exceptional_point_encircling.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">PT Symmetry, Exceptional Points, and a Selectively Amplified Edge Mode</p>
+        <p class="prev-next-title">Exceptional Points in Momentum Space: Encircling an EP versus a Dirac Point</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

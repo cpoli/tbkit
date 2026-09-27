@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tbkit.plot &#8212; tbkit 0.2.1 documentation</title>
+    <title>tbkit.plot &#8212; tbkit 0.4.0 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../_static/documentation_options.js?v=3ca669d2"></script>
+    <script src="../../_static/documentation_options.js?v=1437fa6d"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2" />
+  <meta name="docsearch:version" content="0.4" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -429,7 +429,7 @@
                         <span class="n">coor</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;j&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]]],</span>
                         <span class="p">[</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;i&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]],</span>
                          <span class="n">coor</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;j&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]]],</span>
-                        <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="n">c</span><span class="o">*</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">)</span></div>
+                        <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="n">c</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span></div>
 
 
 <div class="viewcode-block" id="Plot.lattice_generic">
@@ -511,8 +511,8 @@
 <span class="sd">        Plot lattice.</span>
 
 <span class="sd">        :param ms: Positive number. Default value 20. Markersize.</span>
-<span class="sd">        :param c: Positive number. Default value 3. </span>
-<span class="sd">            Coefficient. Hopping linewidths given by c*hop[&#39;t&#39;].</span>
+<span class="sd">        :param c: Positive number. Default value 3.</span>
+<span class="sd">            Coefficient. Hopping linewidths given by c*|hop[&#39;t&#39;]|.</span>
 <span class="sd">        :param fs: Positive number. Default value 20. Fontsize.</span>
 <span class="sd">        :param plt_hop: Boolean. Default value False. Plot hoppings.</span>
 <span class="sd">        :param plt_hop_low: Boolean. Default value False. </span>
@@ -552,7 +552,7 @@
 
 <span class="sd">        :param ms: Positive Float. Default value 20. Markersize.</span>
 <span class="sd">        :param c: Positive Float. Default value 3. Coefficient.</span>
-<span class="sd">            Hopping linewidths given by c*hop[&#39;t&#39;].</span>
+<span class="sd">            Hopping linewidths given by c*|hop[&#39;t&#39;]|.</span>
 <span class="sd">        :param fs: Positive Float. Default value 20. Fontsize.</span>
 <span class="sd">        :param axis: Boolean. Default value False. Plot axis.</span>
 <span class="sd">        :param plt_hop: Boolean. Default value False. Plot hoppings.</span>
@@ -573,20 +573,25 @@
 
 <div class="viewcode-block" id="Plot.spectrum_hist">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.plot.Plot.spectrum_hist">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">spectrum_hist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nbr_bins</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">61</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">lims</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">spectrum_hist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nbr_bins</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">61</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">lims</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Figure</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Plot the spectrum.</span>
-<span class="sd">            </span>
-<span class="sd">        :param nbr_bins: Default value 61. Number of bins of the histogram.</span>
+<span class="sd">        Plot the spectrum (real part of the eigenenergies) as a histogram.</span>
+
+<span class="sd">        :param nbr_bins: Positive integer. Default value 61. Number of bins of the histogram.</span>
+<span class="sd">        :param fs: Positive number. Default value 20. Fontsize.</span>
 <span class="sd">        :param lims: List, lims[0] energy min, lims[1] energy max.</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **fig** -- Figure.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">empty_ndarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="p">,</span> <span class="s1">&#39;sys.get_eig&#39;</span><span class="p">)</span>
-        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">nbr_bins</span><span class="p">,</span> <span class="s1">&#39;nbr_bins&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">nbr_bins</span><span class="p">,</span> <span class="s1">&#39;nbr_bins&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="s1">&#39;fs&#39;</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">lims</span><span class="p">(</span><span class="n">lims</span><span class="p">)</span>
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
         <span class="n">en_real</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">real</span>
         <span class="k">if</span> <span class="n">lims</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">ind_en</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">sites</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+            <span class="n">ind_en</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="p">),</span> <span class="nb">bool</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ind_en</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">((</span><span class="n">en_real</span> <span class="o">&gt;</span> <span class="n">lims</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">en_real</span> <span class="o">&lt;</span> <span class="n">lims</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
             <span class="n">ind_en</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">ind_en</span><span class="p">)</span>
@@ -600,7 +605,8 @@
         <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">get_majorticklabels</span><span class="p">():</span>
             <span class="n">label</span><span class="o">.</span><span class="n">set_fontsize</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">get_majorticklabels</span><span class="p">():</span>
-            <span class="n">label</span><span class="o">.</span><span class="n">set_fontsize</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span></div>
+            <span class="n">label</span><span class="o">.</span><span class="n">set_fontsize</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fig</span></div>
 
 
 <div class="viewcode-block" id="Plot.dos">
@@ -632,23 +638,7 @@
         <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="s1">&#39;fs&#39;</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">lw</span><span class="p">,</span> <span class="s1">&#39;lw&#39;</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">tuple_2elem</span><span class="p">(</span><span class="n">figsize</span><span class="p">,</span> <span class="s1">&#39;figsize&#39;</span><span class="p">)</span>
-        <span class="n">e_grid</span><span class="p">,</span> <span class="n">rho</span> <span class="o">=</span> <span class="n">dos</span><span class="o">.</span><span class="n">density_of_states</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="p">,</span> <span class="n">e_grid</span><span class="o">=</span><span class="n">e_grid</span><span class="p">,</span>
-                                                                   <span class="n">broadening</span><span class="o">=</span><span class="n">broadening</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="n">kernel</span><span class="p">)</span>
-        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_grid</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">e_grid</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="n">e_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e_grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Density of states&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$E$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\rho(E)$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">get_majorticklabels</span><span class="p">():</span>
-            <span class="n">label</span><span class="o">.</span><span class="n">set_fontsize</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">get_majorticklabels</span><span class="p">():</span>
-            <span class="n">label</span><span class="o">.</span><span class="n">set_fontsize</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
-        <span class="n">fig</span><span class="o">.</span><span class="n">set_layout_engine</span><span class="p">(</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">fig</span></div>
+        <span class="k">return</span> <span class="n">dos</span><span class="o">.</span><span class="n">_plot_density_of_states</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="p">,</span> <span class="n">e_grid</span><span class="p">,</span> <span class="n">broadening</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">lw</span><span class="p">,</span> <span class="n">figsize</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Plot.spectrum">
@@ -682,11 +672,10 @@
         <span class="n">error_handling</span><span class="o">.</span><span class="n">lims</span><span class="p">(</span><span class="n">lims</span><span class="p">)</span>
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
         <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">sites</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">lims</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">en_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
-            <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="n">en_max</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">en_max</span><span class="o">+</span><span class="mf">0.2</span><span class="p">])</span>
-            <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">sites</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">real</span><span class="p">)</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">real</span><span class="p">)</span><span class="o">+</span><span class="mf">0.2</span><span class="p">])</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="p">),</span> <span class="nb">bool</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ind</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">real</span> <span class="o">&gt;</span> <span class="n">lims</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">real</span> <span class="o">&lt;</span> <span class="n">lims</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="n">lims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">lims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mf">0.1</span><span class="p">])</span>
@@ -751,7 +740,7 @@
             <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">lims</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">])</span>
-                <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">sites</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+                <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="p">),</span> <span class="nb">bool</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">ind</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">real</span> <span class="o">&gt;</span> <span class="n">lims</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">real</span> <span class="o">&lt;</span> <span class="n">lims</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
                 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="n">lims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">lims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mf">0.1</span><span class="p">])</span>
@@ -759,7 +748,7 @@
             <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">empty_ndarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">pola</span><span class="p">,</span> <span class="s1">&#39;sys.get_pola&#39;</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">tag_pola</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">tags</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">sites</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="p">))</span>
         <span class="n">i_tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">tags</span> <span class="o">==</span> <span class="n">tag_pola</span>
         <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">ind</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">pola</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">i_tag</span><span class="p">]),</span> <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">ms</span><span class="p">)</span><span class="o">//</span><span class="mi">5</span><span class="p">)</span>
         <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;$&lt;&#39;</span> <span class="o">+</span> <span class="n">tag_pola</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;|&#39;</span> <span class="o">+</span> <span class="n">tag_pola</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;&gt;$&#39;</span>
@@ -806,13 +795,13 @@
             <span class="n">fig</span><span class="p">,</span> <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
             <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">lims</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">sites</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+                <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="p">),</span> <span class="nb">bool</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">ind</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">real</span> <span class="o">&gt;</span> <span class="n">lims</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">real</span> <span class="o">&lt;</span> <span class="n">lims</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">empty_ndarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">ipr</span><span class="p">,</span> <span class="s1">&#39;sys.get_ipr&#39;</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">sites</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="p">))</span>
         <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">ind</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">ipr</span><span class="p">[</span><span class="n">ind</span><span class="p">],</span> <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">ms</span><span class="p">)</span><span class="o">//</span><span class="mi">5</span><span class="p">)</span>
         <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span> <span class="s1">&#39;IPR&#39;</span> <span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
         <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="n">ind</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span>
@@ -856,13 +845,13 @@
             <span class="n">fig</span><span class="p">,</span> <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
             <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">lims</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">sites</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+                <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="p">),</span> <span class="nb">bool</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">ind</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">real</span> <span class="o">&gt;</span> <span class="n">lims</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">real</span> <span class="o">&lt;</span> <span class="n">lims</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">empty_ndarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">petermann</span><span class="p">,</span> <span class="s1">&#39;sys.get_petermann&#39;</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">sites</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="p">))</span>
         <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">ind</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">petermann</span><span class="p">[</span><span class="n">ind</span><span class="p">],</span> <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">ms</span><span class="p">)</span><span class="o">//</span><span class="mi">5</span><span class="p">)</span>
         <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span> <span class="s1">&#39;K&#39;</span> <span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
         <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="n">ind</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span>
@@ -880,7 +869,7 @@
 <span class="sd">        Plot complex value eigenenergies, real part (blue circles),</span>
 <span class="sd">        and imaginary part (red circles).</span>
 
-<span class="sd">        :param ms: Positive Float. Default value 20. Markersize.</span>
+<span class="sd">        :param ms: Positive Float. Default value 10. Markersize.</span>
 <span class="sd">        :param fs: Positive Float. Default value 20. Font size.</span>
 <span class="sd">        :param lims: List. lims[0] energy min, lims[1] energy max.</span>
 
@@ -893,11 +882,11 @@
         <span class="n">error_handling</span><span class="o">.</span><span class="n">lims</span><span class="p">(</span><span class="n">lims</span><span class="p">)</span>
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
         <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">sites</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">lims</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">en_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
-            <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="n">en_max</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">en_max</span><span class="o">+</span><span class="mf">0.2</span><span class="p">])</span>
-            <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">sites</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="nb">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">real</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">imag</span><span class="p">))</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span>
+                              <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">real</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">imag</span><span class="p">))</span><span class="o">+</span><span class="mf">0.2</span><span class="p">])</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="p">),</span> <span class="nb">bool</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ind</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">real</span> <span class="o">&gt;</span> <span class="n">lims</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">real</span> <span class="o">&lt;</span> <span class="n">lims</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="n">lims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">lims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mf">0.1</span><span class="p">])</span>
@@ -924,14 +913,17 @@
         <span class="bp">self</span><span class="p">,</span> <span class="n">intensity</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">ms</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">20.</span><span class="p">,</span> <span class="n">lw</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">20.</span><span class="p">,</span>
         <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;$|\psi^{(j)}|^2$&#39;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Figure</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Plot intensity for 1D lattices.</span>
 
 <span class="sd">        :param intensity: np.array. Field intensity.</span>
 <span class="sd">        :param ms: Positive Float. Default value 20. Markersize.</span>
 <span class="sd">        :param lw: Positive Float. Default value 2. Linewith, connect sublattice sites.</span>
 <span class="sd">        :param fs: Positive Float. Default value 20. Font size.</span>
-<span class="sd">        :param title: String. Default value &#39;Intensity&#39;. Figure title.</span>
+<span class="sd">        :param title: String. Default value &#39;$|\psi^{(j)}|^2$&#39;. Figure title.</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **fig** -- Figure.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">intensity</span><span class="p">,</span> <span class="s1">&#39;intensity&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">sites</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">empty_ndarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">,</span> <span class="s1">&#39;sys.get_lattice&#39;</span><span class="p">)</span>
@@ -973,7 +965,7 @@
 <span class="sd">        :param fs: Default value 20. Font size.</span>
 <span class="sd">        :param lims: List. Default value None. Colormap limits.</span>
 <span class="sd">        :param figsize: Tuple. Default value None. Figure size.</span>
-<span class="sd">        :param title: String. Default value &#39;$|\psi_n|^2$&#39;. Title.</span>
+<span class="sd">        :param title: String. Default value &#39;$|\psi|^2$&#39;. Title.</span>
 
 <span class="sd">        :returns:</span>
 <span class="sd">            * **fig** -- Figure.</span>
@@ -1024,12 +1016,12 @@
 
 <span class="sd">        :param intensity: np.array. Intensity.</span>
 <span class="sd">        :param s: Positive Float. Default value 1000.</span>
-<span class="sd">            Circle size given by s * intensity.</span>
+<span class="sd">            Circle size given by 100 * s * intensity.</span>
 <span class="sd">        :param lw: Positive Float. Default value 1. Hopping linewidths.</span>
 <span class="sd">        :param fs: Positive Float. Default value 20. Fontsize.</span>
 <span class="sd">        :param plt_hop: Boolean. Default value False. Plot hoppings.</span>
 <span class="sd">        :param figsize: Tuple. Default value None. Figure size.</span>
-<span class="sd">        :param title: String. Default value &#39;$|\psi_{ij}|^2$&#39;. Figure title.</span>
+<span class="sd">        :param title: String. Default value &#39;$|\psi|^2$&#39;. Figure title.</span>
 
 <span class="sd">        :returns:</span>
 <span class="sd">            * **fig** -- Figure.</span>
@@ -1041,7 +1033,7 @@
         <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">plt_hop</span><span class="p">,</span> <span class="s1">&#39;plt_hop&#39;</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">tuple_2elem</span><span class="p">(</span><span class="n">figsize</span><span class="p">,</span> <span class="s1">&#39;figsize&#39;</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">string</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">)</span>
-        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$i$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$j$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span>
@@ -1079,14 +1071,20 @@
         <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Figure</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Plot energies depending on a parameter.</span>
+<span class="sd">        Plot energies depending on the strain (see</span>
+<span class="sd">        *GrapheneSystem.get_butterfly*). The energy levels plotted are the</span>
+<span class="sd">        ones lying in *lims* at the smallest strain.</span>
 
-<span class="sd">        :param betas: np.array. Parameter values.</span>
-<span class="sd">        :param butterfly: np.array. Eigenvalues.</span>
-<span class="sd">        :param lw: Positive Float. Default value 1. Hopping linewidths.</span>
+<span class="sd">        :param betas: np.array. Strain values, shape (N,).</span>
+<span class="sd">        :param butterfly: np.array. Eigenvalues, shape (N, sites).</span>
+<span class="sd">        :param lw: Positive Float. Default value 1. Linewidths.</span>
 <span class="sd">        :param fs: Positive Float. Default value 20. Fontsize.</span>
 <span class="sd">        :param lims: List, lims[0] energy min, lims[1] energy max.</span>
-<span class="sd">        :param title: Default value &#39;&#39;. Figure title.</span>
+<span class="sd">        :param title: Default value &#39;&#39;. Figure title. If empty,</span>
+<span class="sd">            &#39;Energies depending on strain&#39;.</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **fig** -- Figure.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray_empty</span><span class="p">(</span><span class="n">betas</span><span class="p">,</span> <span class="s1">&#39;betas&#39;</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray_empty</span><span class="p">(</span><span class="n">butterfly</span><span class="p">,</span> <span class="s1">&#39;butterfly&#39;</span><span class="p">)</span>
@@ -1101,13 +1099,12 @@
                                             <span class="p">(</span><span class="n">butterfly</span><span class="p">[</span><span class="n">i_beta_min</span><span class="p">,</span> <span class="p">:]</span> <span class="o">&lt;</span> <span class="n">lims</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
         <span class="n">ind_en</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">ind_en</span><span class="p">)</span>
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Energies depending on strain&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\beta/\beta_</span><span class="si">{max}</span><span class="s1">$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$E$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span> <span class="k">if</span> <span class="n">title</span> <span class="k">else</span> <span class="s1">&#39;Energies depending on strain&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">lims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">lims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">lims</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="mi">4</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">lims</span><span class="p">)</span>
-        <span class="n">beta_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">betas</span><span class="p">)</span>
+        <span class="n">beta_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">betas</span><span class="p">))</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([</span><span class="o">-</span><span class="n">beta_max</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="n">beta_max</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> 
                         <span class="mf">0.5</span><span class="o">*</span><span class="n">beta_max</span><span class="p">,</span> <span class="n">beta_max</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">((</span><span class="s1">&#39;-1&#39;</span><span class="p">,</span> <span class="s1">&#39;-1/2&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;1/2&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">))</span>

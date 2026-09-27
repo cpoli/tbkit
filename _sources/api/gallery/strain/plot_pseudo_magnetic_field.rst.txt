@@ -45,7 +45,7 @@ with :math:`\hat{\boldsymbol\delta}_{ij}` the bond's direction and
 
 .. math::
 
-    B_s = \beta/2 \qquad (\hbar = e = a = 1),
+    B_s = |\beta|/2 \qquad (\hbar = e = a = 1),
 
 so graphene's relativistic Landau ladder (see
 :doc:`/api/gallery/magnetic_field/plot_landau_levels`) should appear at
@@ -53,7 +53,7 @@ so graphene's relativistic Landau ladder (see
 .. math::
 
     E_n = \mathrm{sign}(n)\, v_F\sqrt{2 B_s |n|}
-        = \mathrm{sign}(n)\,\tfrac{3}{2}t\sqrt{\beta |n|}\, ,
+        = \mathrm{sign}(n)\,\tfrac{3}{2}t\sqrt{|\beta n|}\, ,
         \qquad v_F = \tfrac32 t\, .
 
 The catch -- and the whole point -- is that *no magnetic field is
@@ -157,8 +157,8 @@ stays real symmetric.
 
 The spectrum nevertheless collapses onto a relativistic Landau ladder
 -------------------------------------------------------------------------
-With :math:`B_s = \beta/2`, the predicted levels are
-:math:`E_n = \tfrac32 t\sqrt{\beta n}`. The bulk states bunch onto them
+With :math:`B_s = |\beta|/2`, the predicted levels are
+:math:`E_n = \tfrac32 t\sqrt{|\beta| n}`. The bulk states bunch onto them
 to within a couple of percent.
 
 .. GENERATED FROM PYTHON SOURCE LINES 111-128
@@ -395,14 +395,14 @@ Each bond is colored by its hopping amplitude: the threefold
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x1177ba3c0>
+    <matplotlib.colorbar.Colorbar object at 0x1190fa510>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.578 seconds)
+   **Total running time of the script:** (0 minutes 6.079 seconds)
 
 
 .. _sphx_glr_download_api_gallery_strain_plot_pseudo_magnetic_field.py:

@@ -5,11 +5,17 @@
 Topology
 --------
 
-Topological band theory: the SSH model's bulk-boundary correspondence,
-the Haldane model's Chern-number phase transition and Berry curvature,
-zigzag graphene and Kane-Mele helical edge states cut from ribbons, the
-Thouless quantum pump's exactly quantized charge transport, and a
-topological (Chern) flat band on the kagome lattice.
+Topological band theory: the SSH model's bulk-boundary correspondence
+and its Zak phase, the Haldane model's Chern-number phase transition and
+Berry curvature, the TKNN quantized Hall conductance of the Hofstadter
+bands, zigzag graphene and Kane-Mele helical edge states cut from
+ribbons, the Kane-Mele Z2 invariant from Wannier-centre flow and the
+Fu-Kane parity criterion, the Thouless quantum pump's exactly quantized
+charge transport, a topological (Chern) flat band on the kagome lattice,
+the quantum metric of a Bloch band, the local Chern marker of a
+disordered flake, the tenfold-way classification of tight-binding
+models by their symmetries, and the diabolical points (conical
+intersections with a Berry phase of pi) of a two-parameter family.
 
 
 .. raw:: html
@@ -25,6 +31,23 @@ topological (Chern) flat band on the kagome lattice.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Berry and Wilkinson (1984) asked when two energy levels of a real symmetric Hamiltonian -- the quantum billiard in a triangle, in their case -- can be degenerate. The answer goes back to von Neumann and Wigner: a real symmetric 2\times2 block has two conditions for degeneracy (equal diagonal elements, vanishing off-diagonal one), so without a symmetry one parameter is not enough. Levels avoid crossing along any one-parameter path, and meet only at isolated points of a two-parameter plane. There the two sheets of the spectrum touch like the tips of two cones -- a double cone, the &quot;diabolo&quot; that gave diabolical points their name.">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_diabolical_points_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_diabolical_points`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Diabolical Points: Conical Intersections in a Two-Parameter Family</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Cutting a periodic 2D model into a ribbon (periodic in one direction, finite/open in the other -- see tbkit.kspace.ribbon) is the standard way to see edge physics in a tight-binding band structure. Two classic examples:">
 
 .. only:: html
@@ -37,6 +60,23 @@ topological (Chern) flat band on the kagome lattice.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Edge States on Ribbons</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="L. Fu and C. Kane showed in 2007 that for a crystal with inversion symmetry the \mathbb{Z}_2 invariant needs no Wilson loop at all: it is fixed by the parities \xi = \pm1 of the occupied Kramers pairs at the four time-reversal-invariant momenta \Gamma_i,">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_fu_kane_parity_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_fu_kane_parity`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Fu-Kane Parity Criterion: Z2 from Inversion Eigenvalues</div>
     </div>
 
 
@@ -76,6 +116,57 @@ topological (Chern) flat band on the kagome lattice.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Kane and Mele&#x27;s quantum spin Hall insulator has zero Chern number -- its two spins carry opposite ones -- yet it is topological: it carries a \mathbb{Z}_2 invariant \nu, protected by time reversal, that survives even when spin-orbit terms mix the two spins.">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_kane_mele_z2_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_kane_mele_z2`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Kane-Mele Z2 Invariant from Wannier-Centre Flow</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A Chern number is an integral over the Brillouin zone -- but a disordered, amorphous or finite sample has none. R. Bianco and R. Resta (2011) showed that it is nevertheless a local property: the marker">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_local_chern_marker_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_local_chern_marker`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Local Chern Marker: Topology Without a Brillouin Zone</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="J. P. Provost and G. Vallee (1980) showed that the manifold of quantum states carries a natural metric -- how distinguishable two nearby states are -- which, together with the Berry curvature, forms the quantum geometric tensor">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_quantum_geometry_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_quantum_geometry`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Quantum Metric: The Geometry of a Bloch Band</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="A 1D dimerized chain -- alternating intracell hopping v and intercell hopping w -- is the earliest and simplest example of a topological insulator: for w &gt; v the chain is topological and an open finite chain hosts a pair of exponentially localized, near-zero-energy edge modes, one per end. For v &gt; w it is trivial and no such modes exist. The bulk gap (2|v-w|) closes exactly at the transition, v = w.">
 
 .. only:: html
@@ -88,6 +179,23 @@ topological (Chern) flat band on the kagome lattice.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">The SSH Model: Bulk-Boundary Correspondence</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A. Altland and M. Zirnbauer (1997) completed Dyson&#x27;s classification of random matrices: a Hamiltonian&#x27;s non-spatial symmetries -- time reversal T = U_T\mathcal{K}, particle-hole C = U_C\mathcal{K} (each squaring to +1 or -1, or absent) and their product, the chiral symmetry S -- sort it into exactly ten classes. Schnyder, Ryu, Furusaki and Ludwig, and Kitaev, then showed (2008-2009) that the class and the dimension alone decide which topological invariant a gapped phase can carry: the periodic table of topological insulators and superconductors. In 1D, for instance, classes AIII and BDI carry an integer winding number, D a \mathbb{Z}_2; in 2D, classes A and D carry a Chern number, AII a \mathbb{Z}_2.">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_tenfold_way_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_tenfold_way`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Tenfold Way: Symmetry Classes of Tight-Binding Models</div>
     </div>
 
 
@@ -108,6 +216,40 @@ topological (Chern) flat band on the kagome lattice.
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Thouless, Kohmoto, Nightingale and den Nijs (1982) computed the Hall conductance of electrons on a lattice in a magnetic field, and found it to be a topological integer -- the first Chern number of the occupied bands. For a flux \alpha = p/q per plaquette, the square lattice&#x27;s band splits into q Hofstadter subbands, and the Hall conductance with r bands filled, \sigma_{xy} = t_r\,e^2/h, solves the Diophantine equation">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_tknn_hofstadter_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_tknn_hofstadter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">TKNN: The Quantized Hall Conductance of the Hofstadter Bands</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="J. Zak showed in 1989 that the Berry phase acquired by a Bloch state carried once across the Brillouin zone,">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_zak_phase_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_zak_phase`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Zak Phase: Where the SSH Chain's Electrons Sit</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -118,9 +260,17 @@ topological (Chern) flat band on the kagome lattice.
 .. toctree::
    :hidden:
 
+   /api/gallery/topology/plot_diabolical_points
    /api/gallery/topology/plot_edge_states
+   /api/gallery/topology/plot_fu_kane_parity
    /api/gallery/topology/plot_haldane_topology
    /api/gallery/topology/plot_kagome_chern_band
+   /api/gallery/topology/plot_kane_mele_z2
+   /api/gallery/topology/plot_local_chern_marker
+   /api/gallery/topology/plot_quantum_geometry
    /api/gallery/topology/plot_ssh_model
+   /api/gallery/topology/plot_tenfold_way
    /api/gallery/topology/plot_thouless_pump
+   /api/gallery/topology/plot_tknn_hofstadter
+   /api/gallery/topology/plot_zak_phase
 

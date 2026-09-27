@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Magnetic Field &#8212; tbkit 0.2.1 documentation</title>
+    <title>Magnetic Field &#8212; tbkit 0.4.0 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../../_static/documentation_options.js?v=3ca669d2"></script>
+    <script src="../../../_static/documentation_options.js?v=1437fa6d"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,10 +53,10 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Hofstadter’s Butterfly" href="plot_hofstadter_butterfly.html" />
-    <link rel="prev" title="Flat-Band Lattices: Kagome and Lieb" href="../flat_bands/plot_flat_bands.html" />
+    <link rel="prev" title="The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites" href="../large_scale/plot_kernel_polynomial_method.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2" />
+  <meta name="docsearch:version" content="0.4" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -341,6 +341,11 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../correlations/index.html">Correlations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../correlations/plot_hubbard_edge_magnetism.html">The Hubbard Model: Magnetism of Graphene’s Zigzag Edges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../correlations/plot_lieb_theorem.html">Lieb’s Theorem: The Total Spin of Graphene Triangles</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../disorder/index.html">Disorder</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../disorder/plot_anderson_localization.html">Anderson Localization</a></li>
 </ul>
@@ -353,32 +358,79 @@
 <li class="toctree-l2"><a class="reference internal" href="../flat_bands/plot_flat_bands.html">Flat-Band Lattices: Kagome and Lieb</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../floquet/index.html">Floquet</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../floquet/plot_anomalous_floquet_phases.html">Anomalous Floquet Topological Phases: Edge States With Zero Chern Numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../floquet/plot_floquet_chern_insulator.html">Floquet Engineering: A Chern Insulator From Circularly Polarized Light</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../hall_effects/index.html">Hall effects</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_anomalous_hall_disorder.html">The Anomalous Hall Effect in Real Space: a Disordered Chern Insulator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_anomalous_hall_effect.html">The Anomalous Hall Effect: from the Anomalous Velocity to the Berry Phase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_intrinsic_spin_hall_effect.html">The Intrinsic Spin Hall Effect: Kane-Mele Plateau and Rashba Coupling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../large_scale/index.html">Large lattices</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_kernel_polynomial_method.html">The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Magnetic Field</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="plot_hofstadter_butterfly.html">Hofstadter’s Butterfly</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_landau_levels.html">Landau Levels: Square Lattice vs. Graphene</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_magnetic_field.html">Aharonov-Bohm Ring: A Magnetic Field on a Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_peierls_substitution.html">The Peierls Substitution: Flux Through the Plaquettes, in Any Gauge</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../non_hermitian/index.html">Non-Hermitian lattices</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../non_hermitian/plot_exceptional_point_encircling.html">Exceptional Points in Momentum Space: Encircling an EP versus a Dirac Point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../non_hermitian/plot_exceptional_point_vorticity.html">Exceptional Points in Momentum Space: Vorticity and Exceptional Rings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../non_hermitian/plot_exceptional_points_chern_number.html">Exceptional Points in Momentum Space: the Chern Number until the Line Gap Closes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../non_hermitian/plot_exceptional_points_fermi_arcs.html">Exceptional Points in Momentum Space: Complex Bands and the Bulk Fermi Arc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../non_hermitian/plot_pt_symmetry.html">PT Symmetry, Exceptional Points, and a Selectively Amplified Edge Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../non_hermitian/plot_skin_effect.html">The Non-Hermitian Skin Effect and the Generalized Brillouin Zone</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../orbitals/index.html">Orbitals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../orbitals/plot_slater_koster.html">The Slater-Koster Method: Graphene’s sigma and pi Bands</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../strain/index.html">Strain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../strain/plot_pseudo_magnetic_field.html">Strain as a Gauge Field: Pseudo-Landau Levels in Graphene</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../superconductivity/index.html">Superconductivity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_kitaev_chain.html">The Kitaev Chain: Majorana Zero Modes</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../three_dimensions/index.html">Three dimensions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../three_dimensions/plot_anderson_transition.html">The Scaling Theory of Localization: the 3D Anderson Transition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../three_dimensions/plot_weyl_semimetal.html">Weyl Semimetals: Monopoles of Berry Curvature and Fermi Arcs</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tight_binding/index.html">Tight-Binding</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_graphene_bands.html">Graphene: Real-Space Flake and Reciprocal-Space Bands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_isolation_of_graphene.html">The Isolation of Graphene: Flakes, Edges, and a Berry Phase of pi</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_square_lattice_bands.html">The Square Lattice: Bloch’s Theorem in its Simplest Form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_visualizing_a_model.html">Visualizing a Model: tbkit.plot.Plot</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../topology/index.html">Topology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_diabolical_points.html">Diabolical Points: Conical Intersections in a Two-Parameter Family</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_edge_states.html">Edge States on Ribbons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_fu_kane_parity.html">The Fu-Kane Parity Criterion: Z2 from Inversion Eigenvalues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_haldane_topology.html">The Haldane Model: Berry Curvature and a Topological Phase Transition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_kagome_chern_band.html">A Topological Flat Band on the Kagome Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_kane_mele_z2.html">The Kane-Mele Z2 Invariant from Wannier-Centre Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_local_chern_marker.html">The Local Chern Marker: Topology Without a Brillouin Zone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_quantum_geometry.html">The Quantum Metric: The Geometry of a Bloch Band</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_ssh_model.html">The SSH Model: Bulk-Boundary Correspondence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_tenfold_way.html">The Tenfold Way: Symmetry Classes of Tight-Binding Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_thouless_pump.html">The Thouless Quantum Pump (Rice-Mele Model)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_tknn_hofstadter.html">TKNN: The Quantized Hall Conductance of the Hofstadter Bands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_zak_phase.html">The Zak Phase: Where the SSH Chain’s Electrons Sit</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../transport/index.html">Transport</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../transport/plot_landauer_conductance.html">The Landauer Formula: Quantized Conductance of a Point Contact</a></li>
 </ul>
 </details></li>
 </ul>
@@ -443,9 +495,10 @@
                   
   <section id="magnetic-field">
 <span id="sphx-glr-api-gallery-magnetic-field"></span><h1>Magnetic Field<a class="headerlink" href="#magnetic-field" title="Link to this heading">#</a></h1>
-<p>The Peierls substitution on a lattice: an Aharonov-Bohm ring’s
-flux-periodic spectrum, and the self-similar, fractal Hofstadter butterfly
-swept continuously in flux.</p>
+<p>The Peierls substitution on a lattice: gauge-invariant flux through the
+plaquettes, an Aharonov-Bohm ring’s flux-periodic spectrum, Landau
+levels of the square lattice and of graphene, and the self-similar,
+fractal Hofstadter butterfly swept continuously in flux.</p>
 <div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Sweeping the flux per plaquette continuously (rather than fixing it, as the Aharonov-Bohm ring example does) reveals a self-similar, fractal spectrum: at rational flux p/q, each Landau-level-like band splits into q sub-bands, and the whole pattern is periodic in the flux with period one flux quantum. This script sweeps set_magnetic_field over a finite square-lattice flake and plots the resulting &quot;butterfly&quot;."><img alt="" src="../../../_images/sphx_glr_plot_hofstadter_butterfly_thumb.png" />
 <p><a class="reference internal" href="plot_hofstadter_butterfly.html"><span class="doc">Hofstadter’s Butterfly</span></a></p>
   <div class="sphx-glr-thumbnail-title">Hofstadter's Butterfly</div>
@@ -455,6 +508,9 @@ swept continuously in flux.</p>
 </div><div class="sphx-glr-thumbcontainer" tooltip="tbkit applies a magnetic field via the Peierls substitution (~tbkit.system.System.set_peierls_phase / set_magnetic_field): each hopping amplitude gets multiplied by a phase equal to the line integral of the vector potential along the bond. This script builds a simple N-site ring threaded by a perpendicular field and reproduces the textbook Aharonov-Bohm result: the energy spectrum is periodic in the flux threading the ring, with period exactly one flux quantum."><img alt="" src="../../../_images/sphx_glr_plot_magnetic_field_thumb.png" />
 <p><a class="reference internal" href="plot_magnetic_field.html"><span class="doc">Aharonov-Bohm Ring: A Magnetic Field on a Lattice</span></a></p>
   <div class="sphx-glr-thumbnail-title">Aharonov-Bohm Ring: A Magnetic Field on a Lattice</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="R. Peierls (1933) put a magnetic field on a lattice by attaching to each hopping the line integral of the vector potential along its bond,"><img alt="" src="../../../_images/sphx_glr_plot_peierls_substitution_thumb.png" />
+<p><a class="reference internal" href="plot_peierls_substitution.html"><span class="doc">The Peierls Substitution: Flux Through the Plaquettes, in Any Gauge</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Peierls Substitution: Flux Through the Plaquettes, in Any Gauge</div>
 </div></div><div class="toctree-wrapper compound">
 </div>
 </section>
@@ -470,12 +526,12 @@ swept continuously in flux.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../flat_bands/plot_flat_bands.html"
+       href="../large_scale/plot_kernel_polynomial_method.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Flat-Band Lattices: Kagome and Lieb</p>
+        <p class="prev-next-title">The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites</p>
       </div>
     </a>
     <a class="right-next"

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tbkit &#8212; tbkit 0.2.1 documentation</title>
+    <title>tbkit &#8212; tbkit 0.4.0 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="_static/documentation_options.js?v=3ca669d2"></script>
+    <script src="_static/documentation_options.js?v=1437fa6d"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
     <link rel="next" title="Tutorial" href="tutorial.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2" />
+  <meta name="docsearch:version" content="0.4" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -365,6 +365,11 @@ written in fully vectorized <strong>NumPy</strong>. It’s built for physics stu
 working through a textbook problem, curious learners exploring a topic
 on their own, and educators building a demonstration.</p>
 <p>Start with the <a class="reference internal" href="tutorial.html"><span class="doc">Tutorial</span></a>, browse the <a class="reference internal" href="api/gallery/index.html"><span class="doc">example gallery</span></a>, or jump straight to the <a class="reference internal" href="tbkit.html"><span class="doc">tbkit package</span></a> API reference.</p>
+<p>For computational physics beyond tight-binding – quantum mechanics,
+classical mechanics, statistical physics, general relativity, and more
+– see <a class="reference external" href="https://cpoli.github.io/physicskit/">physicskit</a>, whose
+<code class="docutils literal notranslate"><span class="pre">physicskit.condensed</span></code> subpackage covers tight-binding band theory and
+topology alongside superconductivity.</p>
 <p><strong>tbkit</strong> is composed of the following classes and modules:</p>
 <blockquote>
 <div><ul class="simple">
@@ -374,14 +379,22 @@ on their own, and educators building a demonstration.</p>
 <li><p>Plot</p></li>
 <li><p>Propagation</p></li>
 <li><p>Save</p></li>
+<li><p>OrbitalSystem (orbital)</p></li>
+<li><p>Transport (transport)</p></li>
 <li><p>lattices</p></li>
 <li><p>dos</p></li>
+<li><p>occupation</p></li>
+<li><p>kpm</p></li>
+<li><p>slater_koster</p></li>
+<li><p>meanfield</p></li>
+<li><p>bdg</p></li>
+<li><p>floquet</p></li>
 </ul>
 </div></blockquote>
 <p><strong>tbkit</strong> main features:</p>
 <blockquote>
 <div><ul>
-<li><p>Complex lattice structures.</p></li>
+<li><p>Complex lattice structures, in 1D, 2D and 3D.</p></li>
 <li><p>Complex-valued onsite energies and hoppings.</p></li>
 <li><p>Hermitian and non-Hermitian Tight-Binding Hamiltonians.</p></li>
 <li><p>Sublattices.</p></li>
@@ -412,6 +425,28 @@ on their own, and educators building a demonstration.</p>
 <li><p>An optional spin-1/2 degree of freedom, for spin-orbit coupling and
 Zeeman terms.</p></li>
 <li><p>Ribbons (edge states) cut from any periodic model.</p></li>
+<li><p>Zak/Berry phases, Wannier centres and their flow, the Z2 invariant
+(Wilson loops and Fu-Kane parities), the quantum metric, symmetry
+checks and the tenfold way, and the local Chern marker.</p></li>
+<li><p>Magnetic supercells (Hofstadter bands, TKNN Chern numbers).</p></li>
+<li><p>Anomalous and spin Hall conductivities at any Fermi level (Kubo
+formula over the Brillouin zone), and the real-space Kubo-Bastin Hall
+conductivity of large disordered samples (kernel polynomial method).</p></li>
+<li><p>Non-reciprocal models: spectral winding, the skin effect, and the
+generalized Brillouin zone.</p></li>
+<li><p>Exceptional points of 2D non-Hermitian bands: eigenvalue vorticity,
+discriminant winding, an EP finder (charges, orders, exceptional
+rings, bulk Fermi arcs), encircling EPs and diabolical points, and
+biorthogonal Chern numbers of line-gapped bands.</p></li>
+<li><p>Several orbitals per site: Slater-Koster integrals, non-orthogonal
+bases, and spinful multi-orbital real-space models.</p></li>
+<li><p>Sparse eigensolvers, sparse neighbour search, and the kernel
+polynomial method for very large lattices.</p></li>
+<li><p>Green’s functions, Fermi levels and occupations, and Landauer
+transport through a device between semi-infinite leads.</p></li>
+<li><p>Hubbard mean field, and Bogoliubov-de Gennes superconductivity.</p></li>
+<li><p>Floquet theory of periodically driven lattices, and the winding
+number of anomalous Floquet phases.</p></li>
 <li><p>Broadened density of states.</p></li>
 <li><p>A small library of ready-made lattices.</p></li>
 <li><p>Time propagation.</p></li>

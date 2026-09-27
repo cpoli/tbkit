@@ -10,7 +10,9 @@ lattice, whose single band is simple enough to check by hand, as the
 smallest complete illustration of Bloch's theorem; a graphene flake
 diagonalized directly and its Bloch band structure along a k-path,
 including Wallace's 1947 linear (Dirac) dispersion near the K point;
-and :class:`tbkit.plot.Plot`'s lattice, spectrum, density-of-states, and
+the physics behind the 2004 isolation of graphene -- flakes, edge
+states, and the Berry phase of pi of its Dirac cones; and
+:class:`tbkit.plot.Plot`'s lattice, spectrum, density-of-states, and
 eigenstate-intensity plots.
 
 
@@ -39,6 +41,23 @@ eigenstate-intensity plots.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Graphene: Real-Space Flake and Reciprocal-Space Bands</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="When Novoselov, Geim and coworkers isolated graphene in 2004, the tight-binding picture was ready: two Dirac cones, at the inequivalent corners K and K&#x27; of the Brillouin zone. The experiments of 2005 (Novoselov et al.; Zhang, Tan, Stormer and Kim) confirmed its most striking prediction through the anomalous quantum Hall effect: the Bloch states carry a sublattice pseudospin that winds once around each Dirac point -- in opposite senses at the two valleys -- so an electron circling either one picks up a Berry phase of \pi.">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_isolation_of_graphene_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_isolation_of_graphene`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Isolation of Graphene: Flakes, Edges, and a Berry Phase of pi</div>
     </div>
 
 
@@ -87,6 +106,7 @@ eigenstate-intensity plots.
    :hidden:
 
    /api/gallery/tight_binding/plot_graphene_bands
+   /api/gallery/tight_binding/plot_isolation_of_graphene
    /api/gallery/tight_binding/plot_square_lattice_bands
    /api/gallery/tight_binding/plot_visualizing_a_model
 

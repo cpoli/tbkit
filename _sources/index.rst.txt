@@ -22,6 +22,12 @@ on their own, and educators building a demonstration.
 Start with the :doc:`tutorial`, browse the :doc:`example gallery
 </api/gallery/index>`, or jump straight to the :doc:`tbkit` API reference.
 
+For computational physics beyond tight-binding -- quantum mechanics,
+classical mechanics, statistical physics, general relativity, and more
+-- see `physicskit <https://cpoli.github.io/physicskit/>`_, whose
+``physicskit.condensed`` subpackage covers tight-binding band theory and
+topology alongside superconductivity.
+
 **tbkit** is composed of the following classes and modules:
 
     * Lattice
@@ -30,13 +36,21 @@ Start with the :doc:`tutorial`, browse the :doc:`example gallery
     * Plot
     * Propagation
     * Save
+    * OrbitalSystem (orbital)
+    * Transport (transport)
     * lattices
     * dos
+    * occupation
+    * kpm
+    * slater_koster
+    * meanfield
+    * bdg
+    * floquet
 
 
 **tbkit** main features:
 
-    * Complex lattice structures.
+    * Complex lattice structures, in 1D, 2D and 3D.
     * Complex-valued onsite energies and hoppings.
     * Hermitian and non-Hermitian Tight-Binding Hamiltonians.
     * Sublattices.
@@ -61,6 +75,28 @@ Start with the :doc:`tutorial`, browse the :doc:`example gallery
     * An optional spin-1/2 degree of freedom, for spin-orbit coupling and
       Zeeman terms.
     * Ribbons (edge states) cut from any periodic model.
+    * Zak/Berry phases, Wannier centres and their flow, the Z2 invariant
+      (Wilson loops and Fu-Kane parities), the quantum metric, symmetry
+      checks and the tenfold way, and the local Chern marker.
+    * Magnetic supercells (Hofstadter bands, TKNN Chern numbers).
+    * Anomalous and spin Hall conductivities at any Fermi level (Kubo
+      formula over the Brillouin zone), and the real-space Kubo-Bastin Hall
+      conductivity of large disordered samples (kernel polynomial method).
+    * Non-reciprocal models: spectral winding, the skin effect, and the
+      generalized Brillouin zone.
+    * Exceptional points of 2D non-Hermitian bands: eigenvalue vorticity,
+      discriminant winding, an EP finder (charges, orders, exceptional
+      rings, bulk Fermi arcs), encircling EPs and diabolical points, and
+      biorthogonal Chern numbers of line-gapped bands.
+    * Several orbitals per site: Slater-Koster integrals, non-orthogonal
+      bases, and spinful multi-orbital real-space models.
+    * Sparse eigensolvers, sparse neighbour search, and the kernel
+      polynomial method for very large lattices.
+    * Green's functions, Fermi levels and occupations, and Landauer
+      transport through a device between semi-infinite leads.
+    * Hubbard mean field, and Bogoliubov-de Gennes superconductivity.
+    * Floquet theory of periodically driven lattices, and the winding
+      number of anomalous Floquet phases.
     * Broadened density of states.
     * A small library of ready-made lattices.
     * Time propagation.

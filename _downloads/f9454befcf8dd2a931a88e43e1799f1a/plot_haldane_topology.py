@@ -9,13 +9,12 @@ onsite energy :math:`\pm M` (breaking inversion symmetry). It is the first
 model shown to realize a Chern insulator -- a gapped phase with quantized
 Hall conductance and no net magnetic field.
 
-The topological/trivial phase boundary sits at
-:math:`|M| = \sqrt{3}\,t_2\,|\sin\phi|` (for this particular choice of
-which 3 next-nearest-neighbor vectors carry the phase :math:`+\phi` vs.
-:math:`-\phi` -- the prefactor is convention-dependent and was pinned down
-numerically below, rather than assumed): the lower band's Chern number,
-computed via :meth:`~tbkit.kspace.KSpace.chern_number`, is
-:math:`\pm 1` for :math:`|M|` below that, 0 above it.
+At the Dirac points :math:`K` and :math:`K'` the complex hopping opens
+gaps of :math:`2|M \pm 3\sqrt{3}\,t_2\sin\phi|`, so the topological/trivial
+phase boundary sits at Haldane's :math:`|M| = 3\sqrt{3}\,t_2\,|\sin\phi|`:
+the lower band's Chern number, computed via
+:meth:`~tbkit.kspace.KSpace.chern_number`, is :math:`\pm 1` for :math:`|M|`
+below that (:math:`+1` here, with :math:`\phi=\pi/2`), 0 above it.
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -30,7 +29,7 @@ DX, DY = 0.5 * 3 ** 0.5, 0.5
 unit_cell = [{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (DX, DY)}]
 prim_vec = [(2*DX, 0.), (DX, 1.5)]
 t1, t2, phi = 1., 0.2, np.pi / 2
-M_c = np.sqrt(3) * t2 * abs(np.sin(phi))  # critical mass (see module docstring)
+M_c = 3 * np.sqrt(3) * t2 * abs(np.sin(phi))  # critical mass (see module docstring)
 
 
 def haldane(M):
@@ -40,11 +39,14 @@ def haldane(M):
     hal.set_hopping([{'i': 0, 'j': 1, 'R': (0, 0), 't': t1},
                             {'i': 0, 'j': 1, 'R': (-1, 0), 't': t1},
                             {'i': 0, 'j': 1, 'R': (0, -1), 't': t1}])
-    # next-nearest-neighbor hopping: same 3 lattice vectors for both
+    # next-nearest-neighbor hopping t2*exp(+i*phi) along the three
+    # second-neighbor vectors a2, -a1, a1-a2 (120 degrees apart, so the
+    # model keeps the lattice's C3 symmetry; the reverse bonds, added as
+    # Hermitian conjugates, carry exp(-i*phi)). Same 3 vectors for both
     # sublattices, but with opposite chirality (t2*exp(+-i*phi)) -- this
     # circulating "staggered flux" is what breaks time-reversal symmetry
     # without any net magnetic field through the unit cell.
-    for R in [(1, 0), (0, 1), (1, -1)]:
+    for R in [(0, 1), (-1, 0), (1, -1)]:
         hal.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': t2*np.exp(1j*phi)}])
         hal.set_hopping([{'i': 1, 'j': 1, 'R': R, 't': t2*np.exp(-1j*phi)}])
     hal.set_onsite({'a': M, 'b': -M})
@@ -74,7 +76,17 @@ fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 masses = np.linspace(0., 2*M_c, 21)
 chern = [haldane(M).chern_number(bands=[0], nk=40) for M in masses]
 
-print('Critical mass M_c = sqrt(3)*t2*sin(phi) = {:.4f}'.format(M_c))
+# The gaps at K and K' are 2|M + M_c| and 2|M - M_c|: Haldane's formula,
+# checked directly. The one at K' closes at M = M_c.
+b1, b2 = (np.array(v) for v in reciprocal_vectors(prim_vec))
+K_pt = (b1 - b2) / 3
+for M in [0., 0.5*M_c, 1.5*M_c]:
+    en_K = np.linalg.eigvalsh(haldane(M).get_ham(K_pt))
+    en_Kp = np.linalg.eigvalsh(haldane(M).get_ham(-K_pt))
+    assert np.isclose(en_K[1] - en_K[0], 2*abs(M + M_c), atol=1e-10)
+    assert np.isclose(en_Kp[1] - en_Kp[0], 2*abs(M - M_c), atol=1e-10)
+
+print('Critical mass M_c = 3*sqrt(3)*t2*sin(phi) = {:.4f}'.format(M_c))
 print('Chern number at M=0            (topological): {:.4f}'.format(chern[0]))
 print('Chern number at M=2*M_c        (trivial):      {:.4f}'.format(chern[-1]))
 assert np.isclose(chern[0], 1., atol=1e-2)
@@ -107,7 +119,6 @@ fig2.colorbar(im, ax=ax2)
 # Band structure in the topological phase
 # ------------------------------------------------
 
-b1, b2 = (np.array(v) for v in reciprocal_vectors(prim_vec))
-Gamma, K, M_pt = np.zeros(2), (b1 - b2) / 3, b1 / 2
+Gamma, K, M_pt = np.zeros(2), K_pt, b1 / 2
 hal_topological.k_path([Gamma, K, M_pt, Gamma], nk=60)
 fig3 = hal_topological.plot_bands(node_labels=[r'$\Gamma$', 'K', 'M', r'$\Gamma$'])

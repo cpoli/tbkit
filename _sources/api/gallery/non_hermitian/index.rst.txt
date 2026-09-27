@@ -9,7 +9,14 @@ Lattices with balanced gain and loss: PT-symmetric spectra that stay
 real up to a threshold, the exceptional points at which eigenvalues
 *and* eigenvectors coalesce, the Petermann factor that measures how far
 the eigenbasis has been skewed, and the selective amplification of a
-topological edge mode.
+topological edge mode. With non-reciprocal hoppings: the non-Hermitian
+skin effect, its spectral winding number, and the generalized Brillouin
+zone that restores the bulk-boundary correspondence. In two dimensions:
+exceptional points in momentum space, their charges (eigenvalue
+vorticity and discriminant winding), the pair of EPs and the bulk Fermi
+arc into which a Dirac point splits, exceptional rings, encircling an EP
+(the state swap and the four-loop return), and the biorthogonal Chern
+number of a line-gapped band.
 
 
 .. raw:: html
@@ -22,6 +29,74 @@ topological edge mode.
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A loop in the Brillouin zone around a band touching tells what kind of touching it is.">
+
+.. only:: html
+
+  .. image:: /api/gallery/non_hermitian/images/thumb/sphx_glr_plot_exceptional_point_encircling_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/non_hermitian/plot_exceptional_point_encircling`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Exceptional Points in Momentum Space: Encircling an EP versus a Dirac Point</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="What becomes of a Dirac point when a Hermitian crystal is made non-Hermitian? It depends on the non-Hermitian term, and the answer is organized by a conserved quantity, the eigenvalue vorticity of Shen, Zhen and Fu (Phys. Rev. Lett. 120, 146402 (2018)),">
+
+.. only:: html
+
+  .. image:: /api/gallery/non_hermitian/images/thumb/sphx_glr_plot_exceptional_point_vorticity_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/non_hermitian/plot_exceptional_point_vorticity`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Exceptional Points in Momentum Space: Vorticity and Exceptional Rings</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A non-Hermitian band has two eigenvectors, a right one H|R\rangle = E|R\rangle and a left one H^\dagger|L\rangle = E^*|L\rangle, so there are four Berry connections i\langle u^\alpha|\nabla u^\beta\rangle, \alpha,\beta\in\{L,R\}. Shen, Zhen and Fu (Phys. Rev. Lett. 120, 146402 (2018)) showed that their Chern numbers C^{LR}, C^{RL}, C^{RR}, C^{LL} are one and the same integer, as long as the band stays separated from the others -- here by a line gap, a line \mathrm{Re}\,E = 0 that no band crosses. The gap can close only at exceptional points; until then the Chern number cannot change.">
+
+.. only:: html
+
+  .. image:: /api/gallery/non_hermitian/images/thumb/sphx_glr_plot_exceptional_points_chern_number_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/non_hermitian/plot_exceptional_points_chern_number`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Exceptional Points in Momentum Space: the Chern Number until the Line Gap Closes</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In a Hermitian 2D crystal, two bands touch at isolated diabolical points, such as graphene&#x27;s Dirac points. Add a non-Hermitian term (gain, loss, radiation into the environment) and each Dirac point is replaced by a pair of exceptional points (EPs), where the two eigenvalues and their eigenvectors coalesce. The complex bands E_\pm(\mathbf{k}) are then the two sheets of a square root, E_\pm = \pm\sqrt{\Delta/4}, and the EPs are its branch points. Each carries a topological charge: the winding of the discriminant \Delta(\mathbf{k}) = (E_+ - E_-)^2 around it, \pm1, or equivalently the eigenvalue vorticity \mp1/2.">
+
+.. only:: html
+
+  .. image:: /api/gallery/non_hermitian/images/thumb/sphx_glr_plot_exceptional_points_fermi_arcs_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/non_hermitian/plot_exceptional_points_fermi_arcs`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Exceptional Points in Momentum Space: Complex Bands and the Bulk Fermi Arc</div>
+    </div>
+
 
 .. raw:: html
 
@@ -40,6 +115,23 @@ topological edge mode.
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Hatano and Nelson (1996) studied a chain whose hoppings to the right and to the left differ, (H\psi)_n = t_R\psi_{n+1} + t_L\psi_{n-1} -- a non-reciprocal, non-Hermitian lattice. Twenty years later it became the paradigm of a phenomenon with no Hermitian counterpart, the skin effect (Yao and Wang; Kunst, Edvardsson, Budich and Bergholtz, 2018):">
+
+.. only:: html
+
+  .. image:: /api/gallery/non_hermitian/images/thumb/sphx_glr_plot_skin_effect_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/non_hermitian/plot_skin_effect`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Non-Hermitian Skin Effect and the Generalized Brillouin Zone</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -50,5 +142,10 @@ topological edge mode.
 .. toctree::
    :hidden:
 
+   /api/gallery/non_hermitian/plot_exceptional_point_encircling
+   /api/gallery/non_hermitian/plot_exceptional_point_vorticity
+   /api/gallery/non_hermitian/plot_exceptional_points_chern_number
+   /api/gallery/non_hermitian/plot_exceptional_points_fermi_arcs
    /api/gallery/non_hermitian/plot_pt_symmetry
+   /api/gallery/non_hermitian/plot_skin_effect
 

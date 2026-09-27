@@ -1,0 +1,1362 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tbkit.exceptional &#8212; tbkit 0.4.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+
+    <script src="../../_static/documentation_options.js?v=1437fa6d"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tbkit/exceptional';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../_static/js/force_light.js?v=8e7666d6"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.4" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../_static/tbkit_logo.png" class="logo__image only-light" alt="tbkit logo"/>
+    <img src="../../_static/tbkit_logo.png" class="logo__image only-dark pst-js-only" alt="tbkit logo"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tbkit.html">
+    tbkit package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tbkit.html">
+    tbkit package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tbkit.exceptional</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for tbkit.exceptional</h1><div class="highlight"><pre>
+<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Band touchings of two-dimensional (non-Hermitian) Bloch bands:</span>
+<span class="sd">**diabolical points** (DPs), Hermitian degeneracies such as graphene&#39;s</span>
+<span class="sd">Dirac points, where two eigenvalues meet but their eigenvectors stay</span>
+<span class="sd">distinct; and **exceptional points** (EPs), where the eigenvalues *and*</span>
+<span class="sd">the eigenvectors coalesce, so that :math:`H(\mathbf{k})` stops being</span>
+<span class="sd">diagonalizable (a Jordan block).</span>
+
+<span class="sd">The tools below tell them apart and compute their invariants. Each takes a</span>
+<span class="sd">*model*: a 2D **KSpace** (the plane is the Brillouin zone, in the k</span>
+<span class="sd">coordinates of *get_ham*), or any callable ``model(p)`` returning a square</span>
+<span class="sd">matrix for a point ``p`` of a two-parameter plane.</span>
+
+<span class="sd">* **Eigenvalue vorticity** of a pair of bands around a closed loop</span>
+<span class="sd">  :math:`\Gamma` (Shen, Zhen and Fu, Phys. Rev. Lett. 120, 146402 (2018)),</span>
+
+<span class="sd">  .. math::</span>
+
+<span class="sd">      \nu_{mn}(\Gamma) = -\frac{1}{2\pi}\oint_\Gamma</span>
+<span class="sd">      \nabla_{\mathbf{k}}\arg\left[E_m(\mathbf{k}) - E_n(\mathbf{k})\right]\cdot d\mathbf{k}\, .</span>
+
+<span class="sd">  Band labels are not single-valued around an EP (the two eigenvalues swap</span>
+<span class="sd">  after one loop), so *vorticity* follows the eigenvalues by continuation</span>
+<span class="sd">  along the loop (*track_eigenvalues*), never by sorting. A second-order EP</span>
+<span class="sd">  has :math:`\nu = \pm1/2`, a DP :math:`\nu = 0`.</span>
+<span class="sd">* **Discriminant winding** (Yang, Schnyder, Hu and Chiu, Phys. Rev. Lett.</span>
+<span class="sd">  126, 086401 (2021)): the discriminant</span>
+<span class="sd">  :math:`\Delta(\mathbf{k}) = \prod_{m&lt;n}(E_m - E_n)^2` is a polynomial in the</span>
+<span class="sd">  matrix elements, computed from the characteristic polynomial without any</span>
+<span class="sd">  eigenvalue, and its winding</span>
+<span class="sd">  :math:`W(\Gamma) = \frac{1}{2\pi}\oint_\Gamma \nabla_{\mathbf{k}}\arg\Delta\cdot d\mathbf{k}`</span>
+<span class="sd">  counts the EPs inside :math:`\Gamma` with their charges. With the two sign</span>
+<span class="sd">  conventions above, :math:`W = -2\sum_{m&lt;n}\nu_{mn}`: :math:`W = -2\nu = \mp1`</span>
+<span class="sd">  for a second-order EP of a two-band model.</span>
+<span class="sd">* **EP finder** (*find_exceptional_points*): zeros of :math:`\Delta` with</span>
+<span class="sd">  :math:`W \neq 0` on a plaquette mesh of the Brillouin zone, refined by</span>
+<span class="sd">  Newton&#39;s method, with their charge and their order (the size of the Jordan</span>
+<span class="sd">  block, from the Petermann factors, which diverge at an EP). Since</span>
+<span class="sd">  :math:`\Delta` is periodic, the charges sum to zero over the zone: EPs come in</span>
+<span class="sd">  pairs of opposite charge (the doubling theorem). When a symmetry makes</span>
+<span class="sd">  :math:`\Delta` real, EPs form lines instead (exceptional rings, Zhen et al.,</span>
+<span class="sd">  Nature 525, 354 (2015)), which the finder also returns; *fermi_arcs* draws</span>
+<span class="sd">  the bulk Fermi arcs :math:`\mathrm{Re}(E_m - E_n) = 0` that join a pair of</span>
+<span class="sd">  EPs (Kozii and Fu, arXiv:1708.05841 (2017); Zhou et al., Science 359, 1009</span>
+<span class="sd">  (2018)).</span>
+<span class="sd">* **Encircling** (*encircle*): parallel transport of an eigenvector around</span>
+<span class="sd">  a loop. Around a DP one loop returns the state with a Berry phase</span>
+<span class="sd">  :math:`\pi`; around a second-order EP one loop swaps the two eigenstates,</span>
+<span class="sd">  two loops return the state with a sign flip, and four loops restore it</span>
+<span class="sd">  (Heiss, Phys. Rev. E 61, 929 (2000); Dembowski et al., Phys. Rev. Lett.</span>
+<span class="sd">  86, 787 (2001)).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">NDArray</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.linalg</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">LA</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">linear_sum_assignment</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.error_handling</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">error_handling</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">KSpace</span>
+
+
+<span class="n">PI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+<span class="n">_HALVINGS</span> <span class="o">=</span> <span class="mi">30</span>  <span class="c1"># a continuation step may be halved this many times</span>
+<span class="n">_ARG_STEP</span> <span class="o">=</span> <span class="n">PI</span> <span class="o">/</span> <span class="mi">4</span>  <span class="c1"># largest phase change of an eigenvalue difference per step</span>
+<span class="n">_MESH_SHIFT</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.3183098861837907</span><span class="p">,</span> <span class="mf">0.2718281828459045</span><span class="p">)</span>  <span class="c1"># keeps mesh edges off symmetry lines</span>
+
+
+<span class="c1">#################################</span>
+<span class="c1"># MODELS AND LOOPS</span>
+<span class="c1">#################################</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. The matrix-valued function p -&gt; H(p) of a validated model.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">ham_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">KSpace</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">KSpace</span><span class="p">):</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">no_overlap</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">_overlap_hop</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">get_ham</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">ham</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)))</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">ham_matrix</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">h</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ham</span>
+
+
+<div class="viewcode-block" id="circle">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.exceptional.circle">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">circle</span><span class="p">(</span><span class="n">center</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get a circular loop, run counterclockwise:</span>
+<span class="sd">    :math:`\mathbf{k}(s) = \mathbf{k}_0 + r(\cos 2\pi s, \sin 2\pi s)`,</span>
+<span class="sd">    :math:`s\in[0, 1]`.</span>
+
+<span class="sd">    :param center: Tuple/list/ndarray of 2 real numbers. :math:`\mathbf{k}_0`.</span>
+<span class="sd">    :param radius: Positive real. :math:`r`.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **loop** -- Callable of s, returning a real ndarray of shape (2,).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">k_vector</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="s1">&#39;radius&#39;</span><span class="p">)</span>
+    <span class="n">k0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">loop</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">k0</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">PI</span> <span class="o">*</span> <span class="n">s</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">PI</span> <span class="o">*</span> <span class="n">s</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">loop</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. The callable s -&gt; k(s), s in [0, 1], of a validated loop</span>
+<span class="sd">    (a callable, or the vertices of a polygon, each side covering an equal</span>
+<span class="sd">    range of s).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">loop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">loop</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">path</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">loop</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+            <span class="n">error_handling</span><span class="o">.</span><span class="n">loop_point</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">p</span>
+        <span class="k">return</span> <span class="n">path</span>
+    <span class="n">vert</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">loop</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+    <span class="n">closed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">vert</span><span class="p">,</span> <span class="n">vert</span><span class="p">[:</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vert</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">path</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span> <span class="o">%</span> <span class="mf">1.</span><span class="p">)</span> <span class="o">*</span> <span class="n">m</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">closed</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">closed</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">closed</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">path</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_closed</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Check that the loop is closed (H at its end equals H at</span>
+<span class="sd">    its start, which allows loops across the zone), and return norb.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">h0</span> <span class="o">=</span> <span class="n">ham</span><span class="p">(</span><span class="n">path</span><span class="p">(</span><span class="mf">0.</span><span class="p">))</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">closed_loop</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">ham</span><span class="p">(</span><span class="n">path</span><span class="p">(</span><span class="mf">1.</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">h0</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="c1">#################################</span>
+<span class="c1"># EIGENVALUE CONTINUATION</span>
+<span class="c1">#################################</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_eig</span><span class="p">(</span><span class="n">h</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">vectors</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Eigenvalues, right and left eigenvectors (as kets:</span>
+<span class="sd">    columns of vl with vl^H H = E vl^H) of the general eigenproblem.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">vectors</span><span class="p">:</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">vl</span><span class="p">,</span> <span class="n">vr</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">w</span><span class="p">,</span> <span class="n">vr</span><span class="p">,</span> <span class="n">vl</span>
+    <span class="k">return</span> <span class="n">LA</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_match</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">w_old</span><span class="p">,</span> <span class="n">w_new</span><span class="p">,</span> <span class="n">vr_old</span><span class="p">,</span> <span class="n">vr_new</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Permutation of *w_new* continuing *w_old* (predicted</span>
+<span class="sd">    at *pred*), or None if the step is ambiguous: a matched eigenvalue must</span>
+<span class="sd">    be four times closer to its prediction than to any other eigenvalue,</span>
+<span class="sd">    no eigenvalue difference may turn by more than pi/4, and (with vectors)</span>
+<span class="sd">    each eigenvector must stay close to its predecessor. Eigenvalues equal to</span>
+<span class="sd">    rounding precision form a cluster and do not make the step ambiguous.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">perm</span> <span class="o">=</span> <span class="n">linear_sum_assignment</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pred</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">w_new</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]))</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">w_new</span><span class="p">[</span><span class="n">perm</span><span class="p">]</span>
+    <span class="n">deg</span> <span class="o">=</span> <span class="mf">1e-9</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">w</span><span class="p">))))</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">w</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">w</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+    <span class="n">single</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">deg</span>  <span class="c1"># no partner equal to rounding precision</span>
+    <span class="n">dist</span><span class="p">[</span><span class="n">dist</span> <span class="o">&lt;</span> <span class="n">deg</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">w</span> <span class="o">-</span> <span class="n">pred</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">dist</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">d_old</span> <span class="o">=</span> <span class="n">w_old</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">w_old</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">d_new</span> <span class="o">=</span> <span class="n">w</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">w</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">d_old</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">deg</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">d_new</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">deg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">d_new</span><span class="p">[</span><span class="n">keep</span><span class="p">]</span> <span class="o">/</span> <span class="n">d_old</span><span class="p">[</span><span class="n">keep</span><span class="p">]))</span> <span class="o">&gt;</span> <span class="n">_ARG_STEP</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">vr_old</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># within a degenerate cluster the eigenvectors are arbitrary</span>
+        <span class="n">overlap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">vr_old</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span> <span class="o">*</span> <span class="n">vr_new</span><span class="p">[:,</span> <span class="n">perm</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">overlap</span><span class="p">[</span><span class="n">single</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.9</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">perm</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_track</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">s_end</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">vectors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Follow the eigenvalues of H(path(s)) by continuation</span>
+<span class="sd">    from s = 0 to *s_end* (loops are evaluated at s modulo 1): steps of at</span>
+<span class="sd">    most 1/nk, halved while a step is ambiguous (see *_match*), with a</span>
+<span class="sd">    linear prediction from the previous step. The labels are those of the</span>
+<span class="sd">    eigenvalues at s = 0 sorted by real part.</span>
+
+<span class="sd">    Returns s (n,), en (n, norb), and, with *vectors*, the right and left</span>
+<span class="sd">    eigenvectors (n, norb, norb), column m following label m.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">ds_max</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">nk</span>
+    <span class="n">ds_min</span> <span class="o">=</span> <span class="n">ds_max</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">_HALVINGS</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">vr</span><span class="p">,</span> <span class="n">vl</span> <span class="o">=</span> <span class="n">_eig</span><span class="p">(</span><span class="n">ham</span><span class="p">(</span><span class="n">path</span><span class="p">(</span><span class="mf">0.</span><span class="p">)),</span> <span class="n">vectors</span><span class="p">)</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;stable&#39;</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">vectors</span><span class="p">:</span>
+        <span class="n">vr</span><span class="p">,</span> <span class="n">vl</span> <span class="o">=</span> <span class="n">vr</span><span class="p">[:,</span> <span class="n">order</span><span class="p">],</span> <span class="n">vl</span><span class="p">[:,</span> <span class="n">order</span><span class="p">]</span>
+    <span class="n">s_list</span><span class="p">,</span> <span class="n">w_list</span><span class="p">,</span> <span class="n">vr_list</span><span class="p">,</span> <span class="n">vl_list</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="n">w</span><span class="p">],</span> <span class="p">[</span><span class="n">vr</span><span class="p">],</span> <span class="p">[</span><span class="n">vl</span><span class="p">]</span>
+    <span class="n">slope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">ds</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">ds_max</span>
+    <span class="k">while</span> <span class="n">s</span> <span class="o">&lt;</span> <span class="n">s_end</span><span class="p">:</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="n">ds</span> <span class="o">&gt;=</span> <span class="n">s_end</span> <span class="o">-</span> <span class="n">s</span>
+        <span class="n">s_new</span> <span class="o">=</span> <span class="n">s_end</span> <span class="k">if</span> <span class="n">last</span> <span class="k">else</span> <span class="n">s</span> <span class="o">+</span> <span class="n">ds</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="n">s_new</span> <span class="o">-</span> <span class="n">s</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="n">s_new</span> <span class="o">%</span> <span class="mf">1.</span> <span class="k">if</span> <span class="n">s_new</span> <span class="o">!=</span> <span class="n">s_end</span> <span class="ow">or</span> <span class="n">s_end</span> <span class="o">%</span> <span class="mf">1.</span> <span class="k">else</span> <span class="mf">1.</span><span class="p">)</span>
+        <span class="n">w_new</span><span class="p">,</span> <span class="n">vr_new</span><span class="p">,</span> <span class="n">vl_new</span> <span class="o">=</span> <span class="n">_eig</span><span class="p">(</span><span class="n">ham</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">vectors</span><span class="p">)</span>
+        <span class="n">perm</span> <span class="o">=</span> <span class="n">_match</span><span class="p">(</span><span class="n">w</span> <span class="o">+</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">step</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">w_new</span><span class="p">,</span> <span class="n">vr</span><span class="p">,</span> <span class="n">vr_new</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">perm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="n">ds_min</span><span class="p">:</span>
+                <span class="n">error_handling</span><span class="o">.</span><span class="n">tracking</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">step</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="k">continue</span>
+        <span class="n">slope</span> <span class="o">=</span> <span class="p">(</span><span class="n">w_new</span><span class="p">[</span><span class="n">perm</span><span class="p">]</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">step</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">w_new</span><span class="p">[</span><span class="n">perm</span><span class="p">],</span> <span class="n">s_new</span>
+        <span class="k">if</span> <span class="n">vectors</span><span class="p">:</span>
+            <span class="n">vr</span><span class="p">,</span> <span class="n">vl</span> <span class="o">=</span> <span class="n">vr_new</span><span class="p">[:,</span> <span class="n">perm</span><span class="p">],</span> <span class="n">vl_new</span><span class="p">[:,</span> <span class="n">perm</span><span class="p">]</span>
+        <span class="n">s_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">w_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+        <span class="n">vr_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vr</span><span class="p">)</span>
+        <span class="n">vl_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vl</span><span class="p">)</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">step</span><span class="p">,</span> <span class="n">ds_max</span><span class="p">)</span>
+    <span class="n">s_arr</span><span class="p">,</span> <span class="n">en</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">s_list</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">w_list</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">vectors</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">s_arr</span><span class="p">,</span> <span class="n">en</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vr_list</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vl_list</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">s_arr</span><span class="p">,</span> <span class="n">en</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="track_eigenvalues">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.exceptional.track_eigenvalues">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">track_eigenvalues</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span> <span class="n">loop</span><span class="p">,</span> <span class="n">n_loops</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Follow the (complex) eigenvalues of :math:`H(\mathbf{k})` continuously</span>
+<span class="sd">    around a closed loop, *n_loops* times. Each step (at most 1/nk of the</span>
+<span class="sd">    loop) matches the new eigenvalues to a linear prediction from the</span>
+<span class="sd">    previous ones, and is halved while that matching is ambiguous; nothing</span>
+<span class="sd">    depends on how the eigensolver orders its output. Label :math:`m` is the</span>
+<span class="sd">    :math:`m`-th eigenvalue at the start of the loop, sorted by real part.</span>
+<span class="sd">    After one loop around a second-order exceptional point the labels come</span>
+<span class="sd">    back swapped: ``en[-1]`` is then a permutation of ``en[0]``.</span>
+
+<span class="sd">    :param model: 2D **KSpace**, or callable of a point of a plane returning</span>
+<span class="sd">        a square matrix.</span>
+<span class="sd">    :param loop: Closed loop: a callable of :math:`s\in[0, 1]` returning a</span>
+<span class="sd">        point (e.g. *circle*), or an array of polygon vertices, shape (m, 2).</span>
+<span class="sd">        For a **KSpace**, points are k in the coordinates of *get_ham*, and a</span>
+<span class="sd">        loop may close up to a reciprocal lattice vector.</span>
+<span class="sd">    :param n_loops: Positive integer. Default value 1. Number of turns.</span>
+<span class="sd">    :param nk: Positive integer. Default value 100. Steps per turn before</span>
+<span class="sd">        refinement.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **s** -- Real ndarray, shape (n,). Loop parameter, from 0 to *n_loops*.</span>
+<span class="sd">        * **k** -- Real ndarray, shape (n, 2). Points of the loop.</span>
+<span class="sd">        * **en** -- Complex ndarray, shape (n, norb). Eigenvalues, en[:, m]</span>
+<span class="sd">          continuous in s.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">ham</span> <span class="o">=</span> <span class="n">_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n_loops</span><span class="p">,</span> <span class="s1">&#39;n_loops&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="s1">&#39;nk&#39;</span><span class="p">)</span>
+    <span class="n">_closed</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">en</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_track</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">n_loops</span><span class="p">),</span> <span class="n">nk</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">s</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">path</span><span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="mf">1.</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">s</span><span class="p">]),</span> <span class="n">en</span></div>
+
+
+
+<div class="viewcode-block" id="vorticity">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.exceptional.vorticity">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">vorticity</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">loop</span><span class="p">,</span> <span class="n">bands</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the eigenvalue vorticity of a pair of bands around a closed loop</span>
+<span class="sd">    :math:`\Gamma` (Shen, Zhen and Fu, Phys. Rev. Lett. 120, 146402 (2018)),</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \nu_{mn}(\Gamma) = -\frac{1}{2\pi}\oint_\Gamma</span>
+<span class="sd">        \nabla_{\mathbf{k}}\arg\left[E_m(\mathbf{k}) - E_n(\mathbf{k})\right]</span>
+<span class="sd">        \cdot d\mathbf{k}\, ,</span>
+
+<span class="sd">    with the eigenvalues followed by continuation (see *track_eigenvalues*).</span>
+<span class="sd">    :math:`\nu_{mn} = \pm1/2` around a second-order exceptional point, where</span>
+<span class="sd">    :math:`E_m - E_n \propto \sqrt{\mathbf{k}-\mathbf{k}_{EP}}` changes sign</span>
+<span class="sd">    after one loop; :math:`\pm1/3` for each pair of a third-order one;</span>
+<span class="sd">    0 around a diabolical point, or a loop enclosing no degeneracy.</span>
+<span class="sd">    :math:`\nu_{mn} = \nu_{nm}`.</span>
+
+<span class="sd">    :param model: See *track_eigenvalues*.</span>
+<span class="sd">    :param loop: See *track_eigenvalues*. Counterclockwise for the sign above.</span>
+<span class="sd">    :param bands: Pair of distinct integers. Default value (0, 1). Band labels</span>
+<span class="sd">        :math:`(m, n)` at the start of the loop, sorted by real part.</span>
+<span class="sd">    :param nk: Positive integer. Default value 100. See *track_eigenvalues*.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **nu** -- Real number, a multiple of 1/2 around second-order EPs.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">ham</span> <span class="o">=</span> <span class="n">_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="s1">&#39;nk&#39;</span><span class="p">)</span>
+    <span class="n">norb</span> <span class="o">=</span> <span class="n">_closed</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">band_pair</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="n">norb</span><span class="p">)</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">en</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_track</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">nk</span><span class="p">)</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">en</span><span class="p">[:,</span> <span class="n">bands</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">-</span> <span class="n">en</span><span class="p">[:,</span> <span class="n">bands</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">diff</span> <span class="o">==</span> <span class="mf">0.</span><span class="p">):</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">tracking</span><span class="p">(</span><span class="n">path</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">diff</span><span class="p">))]</span> <span class="o">%</span> <span class="mf">1.</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">diff</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">/</span> <span class="n">diff</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">PI</span><span class="p">))</span></div>
+
+
+
+<span class="c1">#################################</span>
+<span class="c1"># DISCRIMINANT</span>
+<span class="c1">#################################</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_charpoly</span><span class="p">(</span><span class="n">h</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Coefficients, highest degree first, of the monic</span>
+<span class="sd">    characteristic polynomial :math:`p(z) = \det(z - H)`, from its values</span>
+<span class="sd">    at N+1 points of a circle of radius :math:`\|H\|_F` (a discrete Fourier</span>
+<span class="sd">    transform; no eigenvalues).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="ow">or</span> <span class="mf">1.</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="n">j</span> <span class="o">*</span> <span class="n">PI</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">LA</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">zz</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="n">h</span><span class="p">)</span> <span class="k">for</span> <span class="n">zz</span> <span class="ow">in</span> <span class="n">z</span><span class="p">])</span>
+    <span class="n">coef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">r</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">coef</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
+    <span class="k">return</span> <span class="n">coef</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_discriminant</span><span class="p">(</span><span class="n">h</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">complex</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. :math:`\Delta = (-1)^{N(N-1)/2}\,\mathrm{Res}(p, p&#39;)`</span>
+<span class="sd">    of the monic characteristic polynomial, from the determinant of the</span>
+<span class="sd">    Sylvester matrix, computed for :math:`H/\|H\|_F` and rescaled.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">1.</span> <span class="o">+</span> <span class="mi">0</span><span class="n">j</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="mf">0.</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="n">j</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">_charpoly</span><span class="p">(</span><span class="n">h</span> <span class="o">/</span> <span class="n">r</span><span class="p">)</span>
+    <span class="n">dc</span> <span class="o">=</span> <span class="n">c</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">syl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">syl</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">syl</span><span class="p">[</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">dc</span>
+    <span class="k">return</span> <span class="nb">complex</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">LA</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">syl</span><span class="p">)</span> <span class="o">*</span> <span class="n">r</span> <span class="o">**</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)))</span>
+
+
+<div class="viewcode-block" id="discriminant">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.exceptional.discriminant">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">discriminant</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">complex</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the discriminant of :math:`H(\mathbf{k})`,</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \Delta(\mathbf{k}) = \prod_{m&lt;n}\left[E_m(\mathbf{k}) - E_n(\mathbf{k})\right]^2</span>
+<span class="sd">        = (-1)^{N(N-1)/2}\,\mathrm{Res}(p, p&#39;)\, ,</span>
+
+<span class="sd">    computed as the resultant of the characteristic polynomial</span>
+<span class="sd">    :math:`p(E) = \det[E - H(\mathbf{k})]` and its derivative (the determinant</span>
+<span class="sd">    of their Sylvester matrix), without the eigenvalues. It is a polynomial</span>
+<span class="sd">    in the matrix elements, hence smooth and single-valued, and it vanishes</span>
+<span class="sd">    exactly where two eigenvalues meet. For a two-band model</span>
+<span class="sd">    :math:`H = d_0 + \mathbf{d}\cdot\boldsymbol\sigma`,</span>
+<span class="sd">    :math:`\Delta = 4\,\mathbf{d}\cdot\mathbf{d}`.</span>
+
+<span class="sd">    :param model: See *track_eigenvalues*.</span>
+<span class="sd">    :param k: Tuple/list/ndarray of 2 real numbers. Point of the plane.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **delta** -- Complex number, in units of energy^(N(N-1)) (1 if N = 1).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">ham</span> <span class="o">=</span> <span class="n">_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">k_vector</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_discriminant</span><span class="p">(</span><span class="n">ham</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)))</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_arg_change</span><span class="p">(</span><span class="n">disc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">s_a</span><span class="p">,</span> <span class="n">s_b</span><span class="p">,</span> <span class="n">d_a</span><span class="p">,</span> <span class="n">d_b</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Change of arg(Delta) from path(s_a) to path(s_b),</span>
+<span class="sd">    bisecting until each piece turns by at most pi/4.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">d_a</span> <span class="o">==</span> <span class="mf">0.</span> <span class="ow">or</span> <span class="n">d_b</span> <span class="o">==</span> <span class="mf">0.</span> <span class="ow">or</span> <span class="n">depth</span> <span class="o">&gt;</span> <span class="mi">40</span><span class="p">:</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">winding_path</span><span class="p">(</span><span class="n">path</span><span class="p">(</span><span class="n">s_b</span> <span class="k">if</span> <span class="n">d_b</span> <span class="o">==</span> <span class="mf">0.</span> <span class="k">else</span> <span class="n">s_a</span><span class="p">))</span>
+    <span class="n">step</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">d_b</span> <span class="o">/</span> <span class="n">d_a</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">_ARG_STEP</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">step</span>
+    <span class="n">s_m</span> <span class="o">=</span> <span class="p">(</span><span class="n">s_a</span> <span class="o">+</span> <span class="n">s_b</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">d_m</span> <span class="o">=</span> <span class="n">disc</span><span class="p">(</span><span class="n">path</span><span class="p">(</span><span class="n">s_m</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">_arg_change</span><span class="p">(</span><span class="n">disc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">s_a</span><span class="p">,</span> <span class="n">s_m</span><span class="p">,</span> <span class="n">d_a</span><span class="p">,</span> <span class="n">d_m</span><span class="p">,</span> <span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="o">+</span> <span class="n">_arg_change</span><span class="p">(</span><span class="n">disc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">s_m</span><span class="p">,</span> <span class="n">s_b</span><span class="p">,</span> <span class="n">d_m</span><span class="p">,</span> <span class="n">d_b</span><span class="p">,</span> <span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_winding</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Winding of the discriminant along path(s), s in [0, 1].</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disc</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_discriminant</span><span class="p">(</span><span class="n">ham</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">nk</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="n">disc</span><span class="p">(</span><span class="n">path</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">s</span><span class="p">]</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">_arg_change</span><span class="p">(</span><span class="n">disc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nk</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">total</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">PI</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="discriminant_winding">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.exceptional.discriminant_winding">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">discriminant_winding</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">loop</span><span class="p">,</span> <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the winding number of the discriminant (see *discriminant*) around a</span>
+<span class="sd">    closed loop :math:`\Gamma` (Yang, Schnyder, Hu and Chiu, Phys. Rev. Lett.</span>
+<span class="sd">    126, 086401 (2021)),</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        W(\Gamma) = \frac{1}{2\pi}\oint_\Gamma \nabla_{\mathbf{k}}\arg\Delta(\mathbf{k})</span>
+<span class="sd">        \cdot d\mathbf{k} = -2\sum_{m&lt;n}\nu_{mn}(\Gamma)\, ,</span>
+
+<span class="sd">    the total charge of the exceptional points inside :math:`\Gamma`</span>
+<span class="sd">    (:math:`\pm1` for a second-order EP, where :math:`\Delta` vanishes</span>
+<span class="sd">    linearly). It needs no eigenvalue tracking. A diabolical point has</span>
+<span class="sd">    :math:`W = 0`: :math:`\Delta \geq 0` for a Hermitian model. The relation to</span>
+<span class="sd">    the vorticities *vorticity* holds with the signs as written, the minus</span>
+<span class="sd">    sign coming from Shen, Zhen and Fu&#39;s definition of :math:`\nu`.</span>
+
+<span class="sd">    :param model: See *track_eigenvalues*.</span>
+<span class="sd">    :param loop: See *track_eigenvalues*. Counterclockwise for the sign above.</span>
+<span class="sd">    :param nk: Positive integer. Default value 100. Points on the loop; a</span>
+<span class="sd">        step along which :math:`\arg\Delta` turns by more than :math:`\pi/4`</span>
+<span class="sd">        is bisected.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **W** -- Real number, close to an integer.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">ham</span> <span class="o">=</span> <span class="n">_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="s1">&#39;nk&#39;</span><span class="p">)</span>
+    <span class="n">_closed</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">_winding</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">nk</span><span class="p">))</span></div>
+
+
+
+<span class="c1">#################################</span>
+<span class="c1"># EXCEPTIONAL POINTS</span>
+<span class="c1">#################################</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_petermann</span><span class="p">(</span><span class="n">h</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Eigenvalues (sorted by real part) and Petermann factors.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">vl</span><span class="p">,</span> <span class="n">vr</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;stable&#39;</span><span class="p">)</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">vl</span><span class="p">,</span> <span class="n">vr</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">vl</span><span class="p">[:,</span> <span class="n">order</span><span class="p">],</span> <span class="n">vr</span><span class="p">[:,</span> <span class="n">order</span><span class="p">]</span>
+    <span class="n">norms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">vl</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">vr</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">pair</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">vl</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span> <span class="o">*</span> <span class="n">vr</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">w</span><span class="p">,</span> <span class="n">norms</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">pair</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">tiny</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="petermann_factors">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.exceptional.petermann_factors">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">petermann_factors</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the eigenvalues of :math:`H(\mathbf{k})` and their Petermann factors</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        K_n = \frac{\langle L_n|L_n\rangle\langle R_n|R_n\rangle}{|\langle L_n|R_n\rangle|^2}</span>
+<span class="sd">        \geq 1\, ,</span>
+
+<span class="sd">    with :math:`|R_n\rangle`, :math:`|L_n\rangle` the right and left</span>
+<span class="sd">    eigenvectors: 1 for a normal (e.g. Hermitian) matrix, diverging at an</span>
+<span class="sd">    exceptional point, where :math:`\langle L_n|R_n\rangle \to 0`</span>
+<span class="sd">    (as :math:`|\mathbf{k}-\mathbf{k}_{EP}|^{-1}` near a second-order one).</span>
+
+<span class="sd">    :param model: See *track_eigenvalues*.</span>
+<span class="sd">    :param k: Tuple/list/ndarray of 2 real numbers.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **en** -- Complex ndarray, shape (norb,). Eigenvalues, sorted by real part.</span>
+<span class="sd">        * **K** -- Real ndarray, shape (norb,). Petermann factors.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">ham</span> <span class="o">=</span> <span class="n">_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">k_vector</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_petermann</span><span class="p">(</span><span class="n">ham</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)))</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_order</span><span class="p">(</span><span class="n">h</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">k_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">complex</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Order of the exceptional point at H: the number of</span>
+<span class="sd">    eigenvalues whose Petermann factor exceeds sqrt(max K) (the coalescing</span>
+<span class="sd">    ones, all of order max K), 1 if max K &lt; k_min (no EP); with max K and</span>
+<span class="sd">    the mean coalescing eigenvalue.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">kp</span> <span class="o">=</span> <span class="n">_petermann</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+    <span class="n">k_max</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">kp</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">k_max</span> <span class="o">&lt;</span> <span class="n">k_min</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">,</span> <span class="n">k_max</span><span class="p">,</span> <span class="nb">complex</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">kp</span><span class="p">)])</span>
+    <span class="n">big</span> <span class="o">=</span> <span class="n">kp</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">k_max</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">big</span><span class="p">)),</span> <span class="n">k_max</span><span class="p">,</span> <span class="nb">complex</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="n">big</span><span class="p">]))</span>
+
+
+<div class="viewcode-block" id="ExceptionalPoints">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.exceptional.ExceptionalPoints">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExceptionalPoints</span><span class="p">():</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Exceptional points of a 2D model, see *find_exceptional_points*.</span>
+
+<span class="sd">    :ivar k: Real ndarray, shape (n, 2). Isolated exceptional points.</span>
+<span class="sd">    :ivar charge: Integer ndarray, shape (n,). Discriminant winding around each</span>
+<span class="sd">        one (see *discriminant_winding*): :math:`\pm1` for a second-order EP.</span>
+<span class="sd">    :ivar order: Integer ndarray, shape (n,). Number of coalescing eigenvalues</span>
+<span class="sd">        (the size of the Jordan block): 2, 3, ...</span>
+<span class="sd">    :ivar petermann: Real ndarray, shape (n,). Largest Petermann factor at</span>
+<span class="sd">        each point (divergent at an EP: about :math:`10^{8}` or more once refined).</span>
+<span class="sd">    :ivar energy: Complex ndarray, shape (n,). The coalescing eigenvalue.</span>
+<span class="sd">    :ivar lines: Real ndarray, shape (m, 2). Points on exceptional lines</span>
+<span class="sd">        (rings), when a symmetry makes the discriminant real; empty otherwise.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">charge</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">petermann</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">lines</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="n">charge</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="n">order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">petermann</span> <span class="o">=</span> <span class="n">petermann</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">energy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="n">lines</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">total_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sum of the charges: zero over a whole Brillouin zone (doubling theorem).</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">))</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_mesh</span><span class="p">(</span><span class="n">ks</span><span class="p">:</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Shifted nk x nk mesh of the zone: node k-points,</span>
+<span class="sd">    shape (nk + 1, nk + 1, 2) (the last row/column repeat the first ones</span>
+<span class="sd">    shifted by a reciprocal vector), and the plaquette size.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">fr</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nk</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">_MESH_SHIFT</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span> <span class="o">/</span> <span class="n">nk</span>
+    <span class="n">fracs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">fr</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">fr</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">ks</span><span class="o">.</span><span class="n">rec_vec_k</span><span class="p">)</span> <span class="o">/</span> <span class="n">nk</span>
+    <span class="k">return</span> <span class="n">fracs</span> <span class="o">@</span> <span class="n">ks</span><span class="o">.</span><span class="n">rec_vec_k</span><span class="p">,</span> <span class="n">size</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_edges</span><span class="p">(</span><span class="n">nk</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Mesh edges ((i, j), (i&#39;, j&#39;)) along b1 then along b2.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="p">([((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nk</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nk</span><span class="p">)]</span>
+                <span class="o">+</span> <span class="p">[((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nk</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nk</span><span class="p">)])</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_bisect</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">k_a</span><span class="p">,</span> <span class="n">k_b</span><span class="p">,</span> <span class="n">f_a</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">60</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Root of the real function *func* on the segment</span>
+<span class="sd">    [k_a, k_b], across which it changes sign (f_a = func(k_a)).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter</span><span class="p">):</span>
+        <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">f_m</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">k_a</span> <span class="o">+</span> <span class="n">mid</span> <span class="o">*</span> <span class="p">(</span><span class="n">k_b</span> <span class="o">-</span> <span class="n">k_a</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">f_m</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">f_a</span><span class="p">):</span>
+            <span class="n">lo</span><span class="p">,</span> <span class="n">f_a</span> <span class="o">=</span> <span class="n">mid</span><span class="p">,</span> <span class="n">f_m</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">hi</span> <span class="o">=</span> <span class="n">mid</span>
+    <span class="k">return</span> <span class="n">k_a</span> <span class="o">+</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">k_b</span> <span class="o">-</span> <span class="n">k_a</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_newton</span><span class="p">(</span><span class="n">disc</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">mult</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">tol</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Newton&#39;s method on (Re Delta, Im Delta) = 0, with a</span>
+<span class="sd">    central-difference Jacobian; the step is multiplied by the multiplicity</span>
+<span class="sd">    *mult* of the zero (Delta ~ L(k)^mult, L complex linear, as at a</span>
+<span class="sd">    higher-order exceptional point).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">k0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">disc</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">jac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">mu</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">e</span><span class="p">[</span><span class="n">mu</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">disc</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span> <span class="o">-</span> <span class="n">disc</span><span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="n">e</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span>
+            <span class="n">jac</span><span class="p">[:,</span> <span class="n">mu</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">imag</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="n">mult</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">jac</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">f</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">imag</span><span class="p">]),</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">k</span> <span class="o">-</span> <span class="n">step</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">return</span> <span class="n">k</span>
+
+
+<div class="viewcode-block" id="find_exceptional_points">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.exceptional.find_exceptional_points">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_exceptional_points</span><span class="p">(</span>
+    <span class="n">ks</span><span class="p">:</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-12</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExceptionalPoints</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Locate the exceptional points of a 2D model over its Brillouin zone.</span>
+
+<span class="sd">    1. The discriminant :math:`\Delta(\mathbf{k})` (see *discriminant*) is</span>
+<span class="sd">       computed on an :math:`nk\times nk` mesh of the zone (shifted off the</span>
+<span class="sd">       high-symmetry lines), and its winding around every plaquette from the</span>
+<span class="sd">       phase changes along the mesh edges (bisected where :math:`\arg\Delta`</span>
+<span class="sd">       turns by more than :math:`\pi/4`). A plaquette with a nonzero winding</span>
+<span class="sd">       :math:`w` holds an EP.</span>
+<span class="sd">    2. Each one is refined by Newton&#39;s method on</span>
+<span class="sd">       :math:`(\mathrm{Re}\,\Delta, \mathrm{Im}\,\Delta) = 0` from the plaquette</span>
+<span class="sd">       centre (the step multiplied by :math:`|w|`, the multiplicity of the zero).</span>
+<span class="sd">    3. Its charge is the winding of :math:`\Delta` around a small circle</span>
+<span class="sd">       (a quarter of a plaquette), and its order the number of eigenvalues</span>
+<span class="sd">       whose Petermann factor diverges there (see *petermann_factors*).</span>
+
+<span class="sd">    If a symmetry makes :math:`\Delta` real everywhere (up to a constant</span>
+<span class="sd">    phase), EPs are not isolated: they form lines, exceptional rings, where</span>
+<span class="sd">    :math:`\Delta` changes sign. The lines are then sampled where they cross</span>
+<span class="sd">    the mesh edges (bisection to machine precision), and no isolated point is</span>
+<span class="sd">    returned. A Hermitian model has :math:`\Delta \geq 0`, and no EP.</span>
+
+<span class="sd">    Since :math:`\Delta` is periodic, the charges add up to zero</span>
+<span class="sd">    (*total_charge*): EPs come in pairs of opposite charge. The mesh must be</span>
+<span class="sd">    fine enough that no plaquette holds two EPs of opposite charge.</span>
+
+<span class="sd">    :param ks: **KSpace** instance with two primitive vectors.</span>
+<span class="sd">    :param nk: Positive integer. Default value 40. Mesh points along each</span>
+<span class="sd">        reciprocal vector.</span>
+<span class="sd">    :param tol: Positive real. Default value 1e-12. Newton&#39;s method stops</span>
+<span class="sd">        when a step is shorter than *tol* (units of k).</span>
+<span class="sd">    :param max_iter: Positive integer. Default value 50. Newton iterations.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **eps** -- **ExceptionalPoints** instance (positions *k*, *charge*,</span>
+<span class="sd">          *order*, *petermann*, *energy*, and the exceptional *lines*).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">kspace</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">KSpace</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">dim_exact</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">ham</span> <span class="o">=</span> <span class="n">_model</span><span class="p">(</span><span class="n">ks</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="s1">&#39;nk&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="s1">&#39;tol&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">max_iter</span><span class="p">,</span> <span class="s1">&#39;max_iter&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">disc</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_discriminant</span><span class="p">(</span><span class="n">ham</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+
+    <span class="n">kmesh</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">_mesh</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">nk</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">disc</span><span class="p">(</span><span class="n">kmesh</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nk</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nk</span><span class="p">)])</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;wrap&#39;</span><span class="p">)</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">d</span><span class="p">)))</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">discriminant_nonzero</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
+    <span class="n">phase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">d</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)))</span>
+    <span class="n">empty</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="n">phase</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">imag</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="mf">1e-8</span> <span class="o">*</span> <span class="n">scale</span><span class="p">:</span>
+        <span class="c1"># a real discriminant: exceptional lines where it changes sign</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">_bisect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="p">(</span><span class="n">phase</span> <span class="o">*</span> <span class="n">disc</span><span class="p">(</span><span class="n">k</span><span class="p">))</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">kmesh</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">kmesh</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="p">(</span><span class="n">phase</span> <span class="o">*</span> <span class="n">d</span><span class="p">[</span><span class="n">a</span><span class="p">])</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
+                     <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">_edges</span><span class="p">(</span><span class="n">nk</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">phase</span> <span class="o">*</span> <span class="n">d</span><span class="p">[</span><span class="n">a</span><span class="p">])</span><span class="o">.</span><span class="n">real</span> <span class="o">*</span> <span class="p">(</span><span class="n">phase</span> <span class="o">*</span> <span class="n">d</span><span class="p">[</span><span class="n">b</span><span class="p">])</span><span class="o">.</span><span class="n">real</span> <span class="o">&lt;</span> <span class="mf">0.</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">ExceptionalPoints</span><span class="p">(</span><span class="n">empty</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                                                <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;c16&#39;</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="c1"># phase change along the edge leaving node (i, j) along b1 (axis 0) or b2</span>
+    <span class="c1"># (axis 1); Delta is periodic, so the last row/column repeat the first ones</span>
+    <span class="n">edge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">nk</span><span class="p">,</span> <span class="n">nk</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">_edges</span><span class="p">(</span><span class="n">nk</span><span class="p">):</span>
+        <span class="n">edge</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])][</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">_arg_change</span><span class="p">(</span>
+            <span class="n">disc</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">:</span> <span class="n">kmesh</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">+</span> <span class="n">s</span> <span class="o">*</span> <span class="p">(</span><span class="n">kmesh</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">-</span> <span class="n">kmesh</span><span class="p">[</span><span class="n">a</span><span class="p">]),</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="n">b</span><span class="p">])</span>
+    <span class="n">b1</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">rec_vec_k</span>
+    <span class="n">orient</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">b1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">b2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">b1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">b2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nk</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nk</span><span class="p">):</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">nk</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+                   <span class="o">-</span> <span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">nk</span><span class="p">]</span> <span class="o">-</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">PI</span><span class="p">)</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">orient</span> <span class="o">*</span> <span class="n">w</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">w</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">kmesh</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">kmesh</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="n">k_ep</span> <span class="o">=</span> <span class="n">_newton</span><span class="p">(</span><span class="n">disc</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="mf">1e-5</span> <span class="o">*</span> <span class="n">size</span><span class="p">,</span> <span class="n">tol</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">k_ep</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">size</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">points</span><span class="p">):</span>
+                <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k_ep</span><span class="p">)</span>
+    <span class="n">charge</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">peter</span><span class="p">,</span> <span class="n">energy</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+        <span class="n">charge</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">_winding</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">circle</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">size</span><span class="p">),</span> <span class="mi">16</span><span class="p">))))</span>
+        <span class="n">o</span><span class="p">,</span> <span class="n">kp</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">_order</span><span class="p">(</span><span class="n">ham</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+        <span class="n">order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+        <span class="n">peter</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kp</span><span class="p">)</span>
+        <span class="n">energy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ExceptionalPoints</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">points</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">charge</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span>
+                                            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">peter</span><span class="p">),</span>
+                                            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="s1">&#39;c16&#39;</span><span class="p">),</span> <span class="n">empty</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="fermi_arcs">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.exceptional.fermi_arcs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fermi_arcs</span><span class="p">(</span><span class="n">ks</span><span class="p">:</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the bulk Fermi arcs of a 2D non-Hermitian model: the curves where</span>
+<span class="sd">    two eigenvalues have equal real parts but different imaginary parts,</span>
+<span class="sd">    :math:`\mathrm{Re}(E_m - E_n) = 0`, :math:`\mathrm{Im}(E_m - E_n) \neq 0`.</span>
+<span class="sd">    Such an arc joins two exceptional points of opposite charge (for a</span>
+<span class="sd">    two-band model it is where :math:`\Delta` is real and negative, see</span>
+<span class="sd">    *discriminant*); it is what a Hermitian Dirac point turns into when a</span>
+<span class="sd">    non-Hermitian term splits it into an EP pair (Kozii and Fu 2017; Zhou et</span>
+<span class="sd">    al., Science 359, 1009 (2018)).</span>
+
+<span class="sd">    Along every edge of an :math:`nk\times nk` mesh of the zone the</span>
+<span class="sd">    eigenvalues are followed by continuation (see *track_eigenvalues*), and</span>
+<span class="sd">    where :math:`\mathrm{Re}(E_m - E_n)` changes sign, the crossing is found by</span>
+<span class="sd">    bisection. Regions where the real parts coincide over an area (inside an</span>
+<span class="sd">    exceptional ring) show no sign change and are not reported, and neither</span>
+<span class="sd">    are edges that cross an exceptional point or line, along which the</span>
+<span class="sd">    eigenvalues cannot be followed.</span>
+
+<span class="sd">    :param ks: **KSpace** instance with two primitive vectors.</span>
+<span class="sd">    :param nk: Positive integer. Default value 60. Mesh points along each</span>
+<span class="sd">        reciprocal vector.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **points** -- Real ndarray, shape (m, 2). Points on the arcs.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">kspace</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">KSpace</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">dim_exact</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">ham</span> <span class="o">=</span> <span class="n">_model</span><span class="p">(</span><span class="n">ks</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="s1">&#39;nk&#39;</span><span class="p">)</span>
+    <span class="n">kmesh</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_mesh</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">nk</span><span class="p">)</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">_edges</span><span class="p">(</span><span class="n">nk</span><span class="p">):</span>
+        <span class="n">k_a</span><span class="p">,</span> <span class="n">k_b</span> <span class="o">=</span> <span class="n">kmesh</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">kmesh</span><span class="p">[</span><span class="n">b</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">s</span><span class="p">,</span> <span class="n">en</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_track</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">k_a</span> <span class="o">+</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="n">k_b</span> <span class="o">-</span> <span class="n">k_a</span><span class="p">),</span> <span class="mf">1.</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">continue</span>  <span class="c1"># the edge crosses an exceptional point (or line)</span>
+        <span class="n">noise</span> <span class="o">=</span> <span class="mf">1e-10</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">en</span><span class="p">))))</span>
+        <span class="n">norb</span> <span class="o">=</span> <span class="n">en</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">norb</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">norb</span><span class="p">):</span>
+                <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">en</span><span class="p">[:,</span> <span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="n">en</span><span class="p">[:,</span> <span class="n">n</span><span class="p">])</span><span class="o">.</span><span class="n">real</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">((</span><span class="n">g</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">g</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">&lt;</span> <span class="mf">0.</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">g</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">noise</span><span class="p">)</span>
+                                                <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">g</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">&gt;</span> <span class="n">noise</span><span class="p">))[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="n">k_lo</span> <span class="o">=</span> <span class="n">k_a</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">k_b</span> <span class="o">-</span> <span class="n">k_a</span><span class="p">)</span>
+                    <span class="n">k_hi</span> <span class="o">=</span> <span class="n">k_a</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">k_b</span> <span class="o">-</span> <span class="n">k_a</span><span class="p">)</span>
+                    <span class="n">k_arc</span> <span class="o">=</span> <span class="n">_arc_point</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">k_lo</span><span class="p">,</span> <span class="n">k_hi</span><span class="p">,</span> <span class="n">en</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+                    <span class="c1"># not a degeneracy (an EP at the end of the arc)</span>
+                    <span class="n">e</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">ham</span><span class="p">(</span><span class="n">k_arc</span><span class="p">))</span>
+                    <span class="n">sep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">e</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">e</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">sep</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">noise</span><span class="p">:</span>
+                        <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k_arc</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">points</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_arc_point</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">k_lo</span><span class="p">,</span> <span class="n">k_hi</span><span class="p">,</span> <span class="n">w_lo</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Bisection for Re(E_m - E_n) = 0 between k_lo and k_hi,</span>
+<span class="sd">    the labels carried along by matching to the eigenvalues at the lower end.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">g_lo</span> <span class="o">=</span> <span class="p">(</span><span class="n">w_lo</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="n">w_lo</span><span class="p">[</span><span class="n">n</span><span class="p">])</span><span class="o">.</span><span class="n">real</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter</span><span class="p">):</span>
+        <span class="n">k_mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">k_lo</span> <span class="o">+</span> <span class="n">k_hi</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">ham</span><span class="p">(</span><span class="n">k_mid</span><span class="p">))</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">perm</span> <span class="o">=</span> <span class="n">linear_sum_assignment</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">w_lo</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">w</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]))</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="n">perm</span><span class="p">]</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="n">w</span><span class="p">[</span><span class="n">n</span><span class="p">])</span><span class="o">.</span><span class="n">real</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">g_lo</span><span class="p">):</span>
+            <span class="n">k_lo</span><span class="p">,</span> <span class="n">w_lo</span><span class="p">,</span> <span class="n">g_lo</span> <span class="o">=</span> <span class="n">k_mid</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">g</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">k_hi</span> <span class="o">=</span> <span class="n">k_mid</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">k_lo</span> <span class="o">+</span> <span class="n">k_hi</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+
+<span class="c1">#################################</span>
+<span class="c1"># ENCIRCLING</span>
+<span class="c1">#################################</span>
+
+
+<div class="viewcode-block" id="Encircling">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.exceptional.Encircling">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Encircling</span><span class="p">():</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    An eigenstate carried around a loop by parallel transport, see *encircle*.</span>
+
+<span class="sd">    :ivar s: Real ndarray, shape (n,). Loop parameter, from 0 to *n_loops*.</span>
+<span class="sd">    :ivar k: Real ndarray, shape (n, 2). Points of the loop.</span>
+<span class="sd">    :ivar en: Complex ndarray, shape (n, norb). All eigenvalues, followed by</span>
+<span class="sd">        continuation (see *track_eigenvalues*).</span>
+<span class="sd">    :ivar vector: Complex ndarray, shape (n, norb). The transported right</span>
+<span class="sd">        eigenvector :math:`|R(s)\rangle` of the followed state.</span>
+<span class="sd">    :ivar band: Integer. Label of the state at the start.</span>
+<span class="sd">    :ivar final_band: Integer. Label, at the start, of the eigenvalue the state</span>
+<span class="sd">        ends on (different from *band* after an odd number of loops around a</span>
+<span class="sd">        second-order EP: the states swap).</span>
+<span class="sd">    :ivar overlap: Complex number. :math:`c = \langle L_{f}(0)|R(\mathrm{end})\rangle`,</span>
+<span class="sd">        with :math:`f` = *final_band* and :math:`\langle L_f(0)|R_f(0)\rangle = 1`:</span>
+<span class="sd">        the transported state is :math:`c\,|R_f(0)\rangle`. If *final_band* is</span>
+<span class="sd">        *band*, :math:`c = e^{i\gamma}` (times a modulus that is 1 for a</span>
+<span class="sd">        Hermitian model), :math:`\gamma` the geometric phase; otherwise its</span>
+<span class="sd">        phase depends on the (arbitrary) phase of :math:`|R_f(0)\rangle`.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">en</span><span class="p">,</span> <span class="n">vector</span><span class="p">,</span> <span class="n">band</span><span class="p">,</span> <span class="n">final_band</span><span class="p">,</span> <span class="n">overlap</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">en</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">en</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vector</span> <span class="o">=</span> <span class="n">vector</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">band</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_band</span> <span class="o">=</span> <span class="n">band</span><span class="p">,</span> <span class="n">final_band</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">=</span> <span class="n">overlap</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">phase</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Accumulated phase :math:`\arg c` in :math:`(-\pi, \pi]` (the Berry</span>
+<span class="sd">        phase when the state returns to itself).</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="encircle">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.exceptional.encircle">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">encircle</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">loop</span><span class="p">,</span> <span class="n">band</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n_loops</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Encircling</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Carry an eigenstate around a closed loop *n_loops* times, by parallel</span>
+<span class="sd">    transport of its right eigenvector :math:`|R\rangle`, with the left one</span>
+<span class="sd">    :math:`\langle L|` normalized by :math:`\langle L|R\rangle = 1`:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \langle L(\mathbf{k})|\partial_s R(\mathbf{k})\rangle = 0\, ,</span>
+
+<span class="sd">    discretized symmetrically between successive points,</span>
+<span class="sd">    :math:`\langle L_j + L_{j+1}|R_{j+1} - R_j\rangle = 0` (second order in</span>
+<span class="sd">    the step; the eigenvalue is followed by continuation, see</span>
+<span class="sd">    *track_eigenvalues*). For a Hermitian model :math:`L = R`, the norm is</span>
+<span class="sd">    kept exactly, and this is the usual parallel transport: the state comes</span>
+<span class="sd">    back as :math:`e^{i\gamma}|R\rangle`,</span>
+<span class="sd">    :math:`\gamma = \oint i\langle u|\nabla_{\mathbf{k}}u\rangle\cdot d\mathbf{k}` the</span>
+<span class="sd">    Berry phase (the convention of *KSpace.berry_phase*), :math:`\pi` around</span>
+<span class="sd">    a diabolical point. Around a second-order exceptional point:</span>
+
+<span class="sd">    * one loop swaps the two eigenstates (*final_band* differs from *band*);</span>
+<span class="sd">    * two loops bring the state back with a sign flip, :math:`\gamma = \pi`;</span>
+<span class="sd">    * four loops restore it.</span>
+
+<span class="sd">    :param model: See *track_eigenvalues*.</span>
+<span class="sd">    :param loop: See *track_eigenvalues*.</span>
+<span class="sd">    :param band: Integer. Default value 0. Label of the state at the start of</span>
+<span class="sd">        the loop (by real part of the eigenvalue).</span>
+<span class="sd">    :param n_loops: Positive integer. Default value 1. Number of turns.</span>
+<span class="sd">    :param nk: Positive integer. Default value 100. Steps per turn before</span>
+<span class="sd">        refinement.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **result** -- **Encircling** instance (*en*, the transported</span>
+<span class="sd">          *vector*, *final_band*, *overlap* and *phase*).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">ham</span> <span class="o">=</span> <span class="n">_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n_loops</span><span class="p">,</span> <span class="s1">&#39;n_loops&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="s1">&#39;nk&#39;</span><span class="p">)</span>
+    <span class="n">norb</span> <span class="o">=</span> <span class="n">_closed</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">band_index</span><span class="p">(</span><span class="n">band</span><span class="p">,</span> <span class="n">norb</span><span class="p">)</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">en</span><span class="p">,</span> <span class="n">vr</span><span class="p">,</span> <span class="n">vl</span> <span class="o">=</span> <span class="n">_track</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">n_loops</span><span class="p">),</span> <span class="n">nk</span><span class="p">,</span> <span class="n">vectors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># biorthonormal pairs at the start: &lt;L_b|R_b&gt; = 1</span>
+    <span class="n">left0</span> <span class="o">=</span> <span class="n">vl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">vl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span> <span class="o">*</span> <span class="n">vr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="n">vector</span> <span class="o">=</span> <span class="p">[</span><span class="n">vr</span><span class="p">[</span><span class="mi">0</span><span class="p">][:,</span> <span class="n">band</span><span class="p">]]</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)):</span>
+        <span class="c1"># &lt;L_j + L_j+1|R_j+1 - R_j&gt; = 0 with &lt;L|R&gt; = 1 at both ends, for</span>
+        <span class="c1"># R_j+1 = c R_raw: c^2 = b/a (the root closest to the first-order 1/a).</span>
+        <span class="c1"># Second order in the step; |c| = 1 for a Hermitian model.</span>
+        <span class="n">bra</span> <span class="o">=</span> <span class="n">vl</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][:,</span> <span class="n">band</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span>
+        <span class="n">bra</span> <span class="o">=</span> <span class="n">bra</span> <span class="o">/</span> <span class="p">(</span><span class="n">bra</span> <span class="o">@</span> <span class="n">vector</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">raw</span><span class="p">,</span> <span class="n">raw_bra</span> <span class="o">=</span> <span class="n">vr</span><span class="p">[</span><span class="n">j</span><span class="p">][:,</span> <span class="n">band</span><span class="p">],</span> <span class="n">vl</span><span class="p">[</span><span class="n">j</span><span class="p">][:,</span> <span class="n">band</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">bra</span> <span class="o">@</span> <span class="n">raw</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">raw_bra</span> <span class="o">@</span> <span class="n">vector</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">raw_bra</span> <span class="o">@</span> <span class="n">raw</span><span class="p">)</span> <span class="o">/</span> <span class="n">a</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">c</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">a</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">a</span><span class="p">):</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="n">c</span>
+        <span class="n">vector</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">raw</span><span class="p">)</span>
+    <span class="n">final</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">en</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">en</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">band</span><span class="p">])))</span>
+    <span class="k">return</span> <span class="n">Encircling</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">path</span><span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="mf">1.</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">s</span><span class="p">]),</span> <span class="n">en</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vector</span><span class="p">),</span> <span class="n">band</span><span class="p">,</span> <span class="n">final</span><span class="p">,</span>
+                             <span class="nb">complex</span><span class="p">(</span><span class="n">left0</span><span class="p">[</span><span class="n">final</span><span class="p">]</span> <span class="o">@</span> <span class="n">vector</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2026, Charles Poli.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

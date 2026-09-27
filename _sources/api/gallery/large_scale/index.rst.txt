@@ -1,0 +1,53 @@
+
+
+.. _sphx_glr_api_gallery_large_scale:
+
+Large lattices
+--------------
+
+Lattices far beyond dense diagonalization: sparse neighbour search,
+shift-invert eigensolvers, and the kernel polynomial method, which
+turns spectral densities and conductivities of hundreds of thousands of
+sites into a few hundred sparse matrix-vector products.
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Diagonalizing N sites costs N^3 operations and N^2 memory: a few thousand sites at most. The kernel polynomial method (Silver and Roder, 1994; reviewed by Weisse, Wellein, Alvermann and Fehske, Rev. Mod. Phys. 78, 275 (2006)) never diagonalizes. It expands the spectral density in Chebyshev polynomials of the rescaled Hamiltonian,">
+
+.. only:: html
+
+  .. image:: /api/gallery/large_scale/images/thumb/sphx_glr_plot_kernel_polynomial_method_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/large_scale/plot_kernel_polynomial_method`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /api/gallery/large_scale/plot_kernel_polynomial_method
+

@@ -1,0 +1,91 @@
+
+
+.. _sphx_glr_api_gallery_hall_effects:
+
+Hall effects
+------------
+
+Hall responses at any Fermi level, from the Berry curvature of the bands:
+the anomalous Hall conductivity of the Haldane model (its quantized
+plateau in the gap, and its non-quantized value in the bands), the same
+plateau surviving disorder in a real-space Kubo-Bastin (kernel polynomial)
+calculation on a torus, and the intrinsic spin Hall conductivity of the
+Kane-Mele model with its departure from quantization under Rashba coupling.
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The Berry-phase theory of the anomalous Hall effect is a statement about Bloch bands, but a real sample has impurities, and no Brillouin zone. The Kubo-Bastin formula needs neither: it is a trace over the whole sample,">
+
+.. only:: html
+
+  .. image:: /api/gallery/hall_effects/images/thumb/sphx_glr_plot_anomalous_hall_disorder_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/hall_effects/plot_anomalous_hall_disorder`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Anomalous Hall Effect in Real Space: a Disordered Chern Insulator</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In 1954 Karplus and Luttinger found that the electrons of a ferromagnet acquire an anomalous velocity transverse to an applied electric field, a Hall current with no magnetic field. Half a century later it was recognized as a Berry-phase effect (Jungwirth, Niu and MacDonald 2002; Haldane 2004): a band&#x27;s velocity picks up -\dot{\mathbf{k}}\times \boldsymbol\Omega_n(\mathbf{k}), and the intrinsic Hall conductivity is the Berry curvature summed over the occupied states,">
+
+.. only:: html
+
+  .. image:: /api/gallery/hall_effects/images/thumb/sphx_glr_plot_anomalous_hall_effect_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/hall_effects/plot_anomalous_hall_effect`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Anomalous Hall Effect: from the Anomalous Velocity to the Berry Phase</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="An electric field along y can drive a spin current along x with no charge current at all: up and down spins are deflected to opposite sides. Murakami, Nagaosa and Zhang (2003) and Sinova et al. (2004) showed that spin-orbit coupling alone produces it, as a property of the band structure -- the spin analogue of the intrinsic anomalous Hall effect. With the spin current j^s_x = \{s_z, v_x\}/2, the Kubo formula gives the spin Hall conductivity (~tbkit.kspace.KSpace.spin_hall_conductivity), in units of e/2\pi.">
+
+.. only:: html
+
+  .. image:: /api/gallery/hall_effects/images/thumb/sphx_glr_plot_intrinsic_spin_hall_effect_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/hall_effects/plot_intrinsic_spin_hall_effect`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Intrinsic Spin Hall Effect: Kane-Mele Plateau and Rashba Coupling</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /api/gallery/hall_effects/plot_anomalous_hall_disorder
+   /api/gallery/hall_effects/plot_anomalous_hall_effect
+   /api/gallery/hall_effects/plot_intrinsic_spin_hall_effect
+

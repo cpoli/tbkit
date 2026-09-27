@@ -1,0 +1,700 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tbkit.transport &#8212; tbkit 0.4.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+
+    <script src="../../_static/documentation_options.js?v=1437fa6d"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tbkit/transport';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../_static/js/force_light.js?v=8e7666d6"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.4" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../_static/tbkit_logo.png" class="logo__image only-light" alt="tbkit logo"/>
+    <img src="../../_static/tbkit_logo.png" class="logo__image only-dark pst-js-only" alt="tbkit logo"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tbkit.html">
+    tbkit package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tbkit.html">
+    tbkit package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tbkit.transport</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for tbkit.transport</h1><div class="highlight"><pre>
+<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Quantum transport through a finite Tight-Binding device attached to</span>
+<span class="sd">semi-infinite leads: the Landauer-Buttiker picture, in which the (linear,</span>
+<span class="sd">zero-temperature) conductance between two leads is the transmission</span>
+<span class="sd">probability at the Fermi energy,</span>
+
+<span class="sd">.. math::</span>
+
+<span class="sd">    G = \frac{e^2}{h}\,T(E_F)\, ,\qquad</span>
+<span class="sd">    T(E) = \mathrm{Tr}\left[\Gamma_{out}\,G^r\,\Gamma_{in}\,G^a\right]\, ,</span>
+
+<span class="sd">(the Caroli formula) with :math:`G^r = [E + i\eta - H - \sum_l\Sigma_l]^{-1}`</span>
+<span class="sd">the device&#39;s retarded Green&#39;s function, :math:`\Sigma_l` the self-energy of</span>
+<span class="sd">lead :math:`l` and :math:`\Gamma_l = i(\Sigma_l - \Sigma_l^\dagger)`.</span>
+
+<span class="sd">A lead is a semi-infinite repetition of a unit cell with Hamiltonian</span>
+<span class="sd">:math:`h_0`, each cell coupled to the next one (away from the device) by</span>
+<span class="sd">:math:`v`; its surface cell is coupled to some device sites by</span>
+<span class="sd">:math:`\tau`. Its surface Green&#39;s function comes from the decimation</span>
+<span class="sd">algorithm of Lopez Sancho, Lopez Sancho and Rubio (J. Phys. F 15, 851</span>
+<span class="sd">(1985)), and :math:`\Sigma = \tau\, g_s\,\tau^\dagger`.</span>
+
+<span class="sd">Example usage::</span>
+
+<span class="sd">    # a perfect chain of 10 sites between two chain leads: T = 1 in the band</span>
+<span class="sd">    tr = Transport(sys.ham)</span>
+<span class="sd">    h0, v = np.zeros((1, 1)), np.ones((1, 1))</span>
+<span class="sd">    tr.add_lead(h0, v, coupling=np.ones((1, 1)), sites=[0])</span>
+<span class="sd">    tr.add_lead(h0, v, coupling=np.ones((1, 1)), sites=[9])</span>
+<span class="sd">    T = tr.transmission(np.linspace(-1.9, 1.9, 50))</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">NDArray</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.linalg</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">LA</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.error_handling</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">error_handling</span>
+
+
+<div class="viewcode-block" id="surface_green">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.transport.surface_green">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">surface_green</span><span class="p">(</span>
+    <span class="n">h0</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-12</span><span class="p">,</span>
+    <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the surface Green&#39;s function of a semi-infinite lead: cells</span>
+<span class="sd">    :math:`0, 1, 2, \dots`, with :math:`H_{nn} = h_0` and</span>
+<span class="sd">    :math:`H_{n,n+1} = v`, :math:`H_{n+1,n} = v^\dagger`, by the</span>
+<span class="sd">    Lopez Sancho-Rubio decimation (each iteration doubles the number of</span>
+<span class="sd">    cells accounted for, so it converges in a few tens of steps inside the</span>
+<span class="sd">    bands, as :math:`\eta\to0^+`).</span>
+
+<span class="sd">    :param h0: Square complex array. Cell Hamiltonian.</span>
+<span class="sd">    :param v: Square complex array, same shape. Coupling of a cell to the next one.</span>
+<span class="sd">    :param energy: Real number. Energy.</span>
+<span class="sd">    :param eta: Positive real. Default value 1e-9. Broadening.</span>
+<span class="sd">    :param tol: Positive real. Default value 1e-12. Convergence threshold on</span>
+<span class="sd">        the norm of the renormalized couplings.</span>
+<span class="sd">    :param max_iter: Positive integer. Default value 10000.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **gs** -- Complex ndarray, same shape as *h0*: :math:`g_s = [E+i\eta - h_0 - \Sigma_{bulk}]^{-1}`.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">h0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">))</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">))</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">lead</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span> <span class="s1">&#39;eta&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="s1">&#39;tol&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">max_iter</span><span class="p">,</span> <span class="s1">&#39;max_iter&#39;</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">h0</span><span class="p">)</span>
+    <span class="c1"># The first decimation step inverts E + i eta - h0: at an energy equal to</span>
+    <span class="c1"># an eigenvalue of h0 (E = 0 for a plain chain) that is ~1/eta, and the</span>
+    <span class="c1"># precision is lost. Regrouping n = 1, 2 or 3 cells into one (the same</span>
+    <span class="c1"># lead) moves those energies: use the best-conditioned grouping.</span>
+    <span class="n">best</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="n">hn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">h0</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="n">v</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">vn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span> <span class="o">-</span> <span class="n">n</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">v</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">smin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">((</span><span class="n">energy</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">eta</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">m</span><span class="p">)</span> <span class="o">-</span> <span class="n">hn</span><span class="p">,</span> <span class="n">compute_uv</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">best</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">smin</span> <span class="o">&gt;</span> <span class="n">best</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">+</span> <span class="mf">1e-12</span><span class="p">):</span>
+            <span class="n">best</span> <span class="o">=</span> <span class="p">(</span><span class="n">smin</span><span class="p">,</span> <span class="n">hn</span><span class="p">,</span> <span class="n">vn</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">hn</span><span class="p">,</span> <span class="n">vn</span> <span class="o">=</span> <span class="n">best</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">energy</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">eta</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">hn</span><span class="p">))</span>
+    <span class="n">eps_s</span><span class="p">,</span> <span class="n">eps</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">hn</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="n">vn</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">vn</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="n">eps</span><span class="p">)</span>
+        <span class="n">ag</span><span class="p">,</span> <span class="n">bg</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">@</span> <span class="n">g</span><span class="p">,</span> <span class="n">beta</span> <span class="o">@</span> <span class="n">g</span>
+        <span class="n">eps_s</span> <span class="o">=</span> <span class="n">eps_s</span> <span class="o">+</span> <span class="n">ag</span> <span class="o">@</span> <span class="n">beta</span>
+        <span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span> <span class="o">+</span> <span class="n">ag</span> <span class="o">@</span> <span class="n">beta</span> <span class="o">+</span> <span class="n">bg</span> <span class="o">@</span> <span class="n">alpha</span>
+        <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="n">ag</span> <span class="o">@</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">bg</span> <span class="o">@</span> <span class="n">beta</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">converged</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;surface_green&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">LA</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="n">eps_s</span><span class="p">)[:</span><span class="n">m</span><span class="p">,</span> <span class="p">:</span><span class="n">m</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="lead_from_kspace">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.transport.lead_from_kspace">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">lead_from_kspace</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">direction</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the cell Hamiltonian :math:`h_0` and coupling :math:`v` of a lead</span>
+<span class="sd">    from a 1D periodic model (e.g. a ribbon, see *kspace.ribbon*), whose</span>
+<span class="sd">    hoppings reach at most the neighbouring cells.</span>
+
+<span class="sd">    :param ks: **KSpace** instance, 1D.</span>
+<span class="sd">    :param direction: +1 or -1. Default value 1. Direction, along the</span>
+<span class="sd">        model&#39;s primitive vector, in which the lead extends away from the</span>
+<span class="sd">        device: :math:`v` gathers the hoppings to the cell at</span>
+<span class="sd">        :math:`\mathbf{R} = \pm\mathbf{a}_1`.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **h0** -- Complex ndarray, shape (norb, norb).</span>
+<span class="sd">        * **v** -- Complex ndarray, shape (norb, norb).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">dim_exact</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_direction</span><span class="p">(</span><span class="n">direction</span><span class="p">)</span>
+    <span class="n">h0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">onsite</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">ks</span><span class="o">.</span><span class="n">_onsite_offdiag</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ks</span><span class="o">.</span><span class="n">norb</span><span class="p">,</span> <span class="n">ks</span><span class="o">.</span><span class="n">norb</span><span class="p">),</span> <span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,),</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ks</span><span class="o">.</span><span class="n">_hop_cells</span><span class="p">():</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">nearest_cells</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">h0</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">t</span>
+        <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="n">direction</span><span class="p">:</span>
+            <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">t</span>
+    <span class="k">return</span> <span class="n">h0</span><span class="p">,</span> <span class="n">v</span></div>
+
+
+
+<div class="viewcode-block" id="Transport">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Transport</span><span class="p">():</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    A finite device, of Hamiltonian *ham* (e.g. *System.ham*), to which</span>
+<span class="sd">    semi-infinite leads are attached with *add_lead*; *transmission* then</span>
+<span class="sd">    gives the Landauer transmission between two of them.</span>
+
+<span class="sd">    :param ham: Square matrix (sparse or dense). Device Hamiltonian.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ham</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ham</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="s1">&#39;toarray&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">square_matrix</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="s1">&#39;ham&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ham</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">leads</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># list of (h0, v, coupling, sites)</span>
+
+<div class="viewcode-block" id="Transport.add_lead">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.add_lead">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_lead</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h0</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">coupling</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">sites</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Attach a semi-infinite lead (see *surface_green*).</span>
+
+<span class="sd">        :param h0: Square complex array, shape (m, m). Lead cell Hamiltonian.</span>
+<span class="sd">        :param v: Square complex array, shape (m, m). Coupling of a lead cell</span>
+<span class="sd">            to the next one, away from the device.</span>
+<span class="sd">        :param coupling: Complex array, shape (len(sites), m). Hoppings</span>
+<span class="sd">            :math:`\tau` between the device *sites* and the lead&#39;s surface cell.</span>
+<span class="sd">        :param sites: List of device site (row) indices the lead touches.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">h0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">))</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">))</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">lead</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="n">coupling</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">coupling</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">))</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_coupling</span><span class="p">(</span><span class="n">coupling</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">h0</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ham</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">h0</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">coupling</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">sites</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="Transport.self_energy">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.self_energy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">self_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lead</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the self-energy :math:`\Sigma = \tau g_s \tau^\dagger` of a lead,</span>
+<span class="sd">        embedded in the device space.</span>
+
+<span class="sd">        :param lead: Integer. Lead index (in the order of *add_lead*).</span>
+<span class="sd">        :param energy: Real number.</span>
+<span class="sd">        :param eta: Positive real. Default value 1e-9.</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **sigma** -- Complex ndarray, shape of *ham*.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_index</span><span class="p">(</span><span class="n">lead</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">))</span>
+        <span class="n">h0</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">[</span><span class="n">lead</span><span class="p">]</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ham</span><span class="p">)</span>
+        <span class="n">sigma</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">sites</span><span class="p">,</span> <span class="n">sites</span><span class="p">)]</span> <span class="o">=</span> <span class="n">tau</span> <span class="o">@</span> <span class="n">surface_green</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span> <span class="o">@</span> <span class="n">tau</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+        <span class="k">return</span> <span class="n">sigma</span></div>
+
+
+<div class="viewcode-block" id="Transport.get_green">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.get_green">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_green</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the retarded Green&#39;s function of the device with all its leads,</span>
+<span class="sd">        :math:`G^r = [E + i\eta - H - \sum_l \Sigma_l]^{-1}`.</span>
+
+<span class="sd">        :param energy: Real number.</span>
+<span class="sd">        :param eta: Positive real. Default value 1e-9.</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **G** -- Complex ndarray, shape of *ham*.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span> <span class="s1">&#39;eta&#39;</span><span class="p">)</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">self_energy</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">))),</span>
+                            <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ham</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">LA</span><span class="o">.</span><span class="n">inv</span><span class="p">((</span><span class="n">energy</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">eta</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ham</span><span class="p">))</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ham</span> <span class="o">-</span> <span class="n">sigma</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Transport.transmission">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.transmission">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">transmission</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the transmission :math:`T(E) = \mathrm{Tr}[\Gamma_{out} G^r</span>
+<span class="sd">        \Gamma_{in} G^a]` from lead *lead_in* to lead *lead_out*: the</span>
+<span class="sd">        two-terminal conductance in units of :math:`e^2/h` (per spin, for a</span>
+<span class="sd">        spinless model).</span>
+
+<span class="sd">        :param energies: Real array. Energies.</span>
+<span class="sd">        :param lead_in: Integer. Default value 0.</span>
+<span class="sd">        :param lead_out: Integer. Default value 1.</span>
+<span class="sd">        :param eta: Positive real. Default value 1e-9.</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **T** -- Real ndarray, same length as *energies*.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_index</span><span class="p">(</span><span class="n">lead_in</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">))</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_index</span><span class="p">(</span><span class="n">lead_out</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">))</span>
+        <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">))</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">energies</span><span class="p">):</span>
+            <span class="n">sig_in</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">self_energy</span><span class="p">(</span><span class="n">lead_in</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+            <span class="n">sig_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">self_energy</span><span class="p">(</span><span class="n">lead_out</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+            <span class="n">gam_in</span> <span class="o">=</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">sig_in</span> <span class="o">-</span> <span class="n">sig_in</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="n">gam_out</span> <span class="o">=</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">sig_out</span> <span class="o">-</span> <span class="n">sig_out</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_green</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">gam_out</span> <span class="o">@</span> <span class="n">g</span> <span class="o">@</span> <span class="n">gam_in</span> <span class="o">@</span> <span class="n">g</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2026, Charles Poli.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

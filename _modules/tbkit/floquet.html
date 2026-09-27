@@ -1,0 +1,1354 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tbkit.floquet &#8212; tbkit 0.4.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+
+    <script src="../../_static/documentation_options.js?v=1437fa6d"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tbkit/floquet';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../_static/js/force_light.js?v=8e7666d6"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.4" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../_static/tbkit_logo.png" class="logo__image only-light" alt="tbkit logo"/>
+    <img src="../../_static/tbkit_logo.png" class="logo__image only-dark pst-js-only" alt="tbkit logo"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tbkit.html">
+    tbkit package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tbkit.html">
+    tbkit package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tbkit.floquet</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for tbkit.floquet</h1><div class="highlight"><pre>
+<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Floquet theory of periodically driven Tight-Binding models,</span>
+<span class="sd">:math:`H(t + T) = H(t)`, :math:`\omega = 2\pi/T` (:math:`\hbar = 1`).</span>
+
+<span class="sd">The evolution over one period, :math:`U(T) = \mathcal{T}e^{-i\int_0^TH(t)dt}</span>
+<span class="sd">= e^{-iH_FT}`, defines the Floquet Hamiltonian :math:`H_F`, whose</span>
+<span class="sd">eigenvalues -- the quasienergies :math:`\epsilon`, defined modulo</span>
+<span class="sd">:math:`\omega` -- replace the energies of a static model: the driven</span>
+<span class="sd">system, observed once per period, behaves as if it were static with</span>
+<span class="sd">Hamiltonian :math:`H_F`. Driving can therefore *engineer* band structures</span>
+<span class="sd">and their topology: circularly polarized light turns graphene into a</span>
+<span class="sd">Chern insulator (Oka and Aoki, Phys. Rev. B 79, 081406 (2009); Kitagawa,</span>
+<span class="sd">Oka, Brataas, Fu and Demler, Phys. Rev. B 84, 235108 (2011)).</span>
+
+<span class="sd">Two routes give the quasienergies, checked against each other in the tests:</span>
+
+<span class="sd">* the time-ordered product of short-time propagators (*evolution_operator*,</span>
+<span class="sd">  *quasienergies*, *effective_hamiltonian*);</span>
+<span class="sd">* the Sambe (extended) space of the harmonics</span>
+<span class="sd">  :math:`H(t) = \sum_m H_m e^{-im\omega t}`, a static eigenvalue problem</span>
+<span class="sd">  (*harmonics*, *sambe_hamiltonian*).</span>
+
+<span class="sd">:class:`FloquetKSpace` makes a driven **KSpace** model: its *get_ham* is</span>
+<span class="sd">the Floquet Hamiltonian :math:`H_F(\mathbf{k})`, so its bands, Berry</span>
+<span class="sd">curvature and Chern numbers are the driven ones.</span>
+
+<span class="sd">Anomalous Floquet phases. The quasienergies are defined modulo</span>
+<span class="sd">:math:`\omega`, so :math:`H_F` depends on where the branch cut of the</span>
+<span class="sd">logarithm is put (the *epsilon* arguments). The Chern numbers of the</span>
+<span class="sd">Floquet bands no longer count the edge states: every band can have</span>
+<span class="sd">:math:`C = 0` while chiral edge states cross every gap (Kitagawa, Berg,</span>
+<span class="sd">Rudner and Demler, Phys. Rev. B 82, 235114 (2010)). The winding number of</span>
+<span class="sd">Rudner, Lindner, Berg and Levin (Phys. Rev. X 3, 031005 (2013)), which</span>
+<span class="sd">uses the evolution at *all* times of the period, does</span>
+<span class="sd">(*DrivenKSpace.winding_number*):</span>
+
+<span class="sd">* :class:`DrivenKSpace` makes a driven Bloch model out of any</span>
+<span class="sd">  time-dependent :math:`H(\mathbf{k}, t)`;</span>
+<span class="sd">* *step_drive* builds a piecewise-constant drive from a list of models</span>
+<span class="sd">  (**KSpace** models, ribbons made by *kspace.ribbon*, real-space</span>
+<span class="sd">  **System** instances, or matrices), evolved exactly as a product of</span>
+<span class="sd">  step exponentials (:class:`StepDrive` in real space);</span>
+<span class="sd">* *DrivenKSpace.edge_state_count* counts the chiral edge states of a</span>
+<span class="sd">  driven ribbon, independently of the bulk winding number.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">NDArray</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.linalg</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">LA</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.error_handling</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">error_handling</span>
+
+
+<div class="viewcode-block" id="evolution_operator">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.evolution_operator">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">evolution_operator</span><span class="p">(</span><span class="n">ham_t</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">period</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the one-period evolution operator</span>
+<span class="sd">    :math:`U(T) = \prod_m e^{-iH(t_m)\,\delta t}` (later times on the left,</span>
+<span class="sd">    midpoints :math:`t_m = (m + 1/2)\delta t`, error :math:`O(\delta t^2)`).</span>
+
+<span class="sd">    :param ham_t: Callable. ``ham_t(t)`` returns the Hamiltonian at time t (a square matrix).</span>
+<span class="sd">    :param period: Positive real. :math:`T`.</span>
+<span class="sd">    :param n_steps: Positive integer. Default value 100. Time steps per period.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **U** -- Complex ndarray, the shape of the Hamiltonian.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">is_callable</span><span class="p">(</span><span class="n">ham_t</span><span class="p">,</span> <span class="s1">&#39;ham_t&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="s1">&#39;period&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n_steps</span><span class="p">,</span> <span class="s1">&#39;n_steps&#39;</span><span class="p">)</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="n">period</span> <span class="o">/</span> <span class="n">n_steps</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_steps</span><span class="p">):</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ham_t</span><span class="p">((</span><span class="n">m</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">expm</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">step</span> <span class="k">if</span> <span class="n">u</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">step</span> <span class="o">@</span> <span class="n">u</span>
+    <span class="k">return</span> <span class="n">u</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_fold</span><span class="p">(</span><span class="n">eps</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">period</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Quasienergies folded into [epsilon - 2 pi/T, epsilon).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">omega</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">period</span>
+    <span class="n">rest</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">eps</span> <span class="o">-</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span>
+    <span class="n">rest</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">rest</span> <span class="o">&gt;=</span> <span class="n">omega</span><span class="p">,</span> <span class="n">rest</span> <span class="o">-</span> <span class="n">omega</span><span class="p">,</span> <span class="n">rest</span><span class="p">)</span>  <span class="c1"># np.mod may round up to omega</span>
+    <span class="k">return</span> <span class="n">epsilon</span> <span class="o">-</span> <span class="n">omega</span> <span class="o">+</span> <span class="n">rest</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_floquet</span><span class="p">(</span>
+    <span class="n">u</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">period</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Quasienergies (sorted, in [-pi/T, pi/T), or in</span>
+<span class="sd">    [epsilon - 2 pi/T, epsilon)) and Floquet states of a unitary</span>
+<span class="sd">    U = exp(-i H_F T), from its complex Schur form.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">tri</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">schur</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;complex&#39;</span><span class="p">)</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">tri</span><span class="p">))</span> <span class="o">/</span> <span class="n">period</span>
+    <span class="k">if</span> <span class="n">epsilon</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">eps</span> <span class="o">=</span> <span class="n">_fold</span><span class="p">(</span><span class="n">eps</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">eps</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;stable&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">eps</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">z</span><span class="p">[:,</span> <span class="n">order</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_heff</span><span class="p">(</span><span class="n">u</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">period</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. The Floquet Hamiltonian (i/T) ln U, branch cut at epsilon.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">eps</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">_floquet</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
+    <span class="n">h_f</span> <span class="o">=</span> <span class="n">z</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">eps</span><span class="p">)</span> <span class="o">@</span> <span class="n">z</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">h_f</span> <span class="o">+</span> <span class="n">h_f</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+
+<div class="viewcode-block" id="quasienergies">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.quasienergies">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">quasienergies</span><span class="p">(</span>
+    <span class="n">ham_t</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">period</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the quasienergies :math:`\epsilon`, eigenvalues of the Floquet</span>
+<span class="sd">    Hamiltonian, in the first Floquet zone :math:`[-\omega/2, \omega/2)`,</span>
+<span class="sd">    or in :math:`[\epsilon_{cut} - \omega, \epsilon_{cut})`.</span>
+
+<span class="sd">    :param ham_t: Callable. See *evolution_operator*.</span>
+<span class="sd">    :param period: Positive real.</span>
+<span class="sd">    :param n_steps: Positive integer. Default value 100.</span>
+<span class="sd">    :param epsilon: Real number. Default value None (the zone</span>
+<span class="sd">        :math:`[-\omega/2, \omega/2)`). Branch cut, see *effective_hamiltonian*.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **eps** -- Real ndarray, sorted.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">is_callable</span><span class="p">(</span><span class="n">ham_t</span><span class="p">,</span> <span class="s1">&#39;ham_t&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="s1">&#39;period&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n_steps</span><span class="p">,</span> <span class="s1">&#39;n_steps&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">branch_cut</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_floquet</span><span class="p">(</span><span class="n">evolution_operator</span><span class="p">(</span><span class="n">ham_t</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">),</span> <span class="n">period</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="effective_hamiltonian">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.effective_hamiltonian">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">effective_hamiltonian</span><span class="p">(</span>
+    <span class="n">ham_t</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">period</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the Floquet Hamiltonian :math:`H_F = \frac{i}{T}\ln U(T)`, with its</span>
+<span class="sd">    quasienergies in the first Floquet zone (Hermitian for a Hermitian drive).</span>
+
+<span class="sd">    The logarithm is defined up to multiples of :math:`\omega` on each</span>
+<span class="sd">    eigenvalue: *epsilon* puts its branch cut at the quasienergy</span>
+<span class="sd">    :math:`\epsilon_{cut}` (the phase :math:`e^{-i\epsilon_{cut}T}` of</span>
+<span class="sd">    :math:`U`), so that the quasienergies lie in</span>
+<span class="sd">    :math:`[\epsilon_{cut} - \omega, \epsilon_{cut})`. The default, the zone</span>
+<span class="sd">    :math:`[-\omega/2, \omega/2)`, is the cut :math:`\epsilon_{cut} = \omega/2`.</span>
+<span class="sd">    Rudner et al. (2013) take :math:`(\epsilon_{cut}, \epsilon_{cut} + \omega]`</span>
+<span class="sd">    instead: :math:`H_F` shifted by :math:`\omega` (the same projectors,</span>
+<span class="sd">    so the same Chern numbers and winding numbers).</span>
+
+<span class="sd">    :param ham_t: Callable. See *evolution_operator*.</span>
+<span class="sd">    :param period: Positive real.</span>
+<span class="sd">    :param n_steps: Positive integer. Default value 100.</span>
+<span class="sd">    :param epsilon: Real number. Default value None (:math:`\epsilon_{cut} = \omega/2`,</span>
+<span class="sd">        computed exactly as before this option existed). Branch cut,</span>
+<span class="sd">        best placed in a quasienergy gap.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **H_F** -- Complex ndarray.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">is_callable</span><span class="p">(</span><span class="n">ham_t</span><span class="p">,</span> <span class="s1">&#39;ham_t&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="s1">&#39;period&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n_steps</span><span class="p">,</span> <span class="s1">&#39;n_steps&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">branch_cut</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_heff</span><span class="p">(</span><span class="n">evolution_operator</span><span class="p">(</span><span class="n">ham_t</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">),</span> <span class="n">period</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="harmonics">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.harmonics">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">harmonics</span><span class="p">(</span><span class="n">ham_t</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">period</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">n_harmonics</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the Fourier components :math:`H_m = \frac1T\int_0^T H(t)\,e^{im\omega t}\,dt`</span>
+<span class="sd">    of the drive, :math:`H(t) = \sum_m H_m e^{-im\omega t}`, for</span>
+<span class="sd">    :math:`|m| \le` *n_harmonics* (exact for a drive with no higher harmonics).</span>
+
+<span class="sd">    :param ham_t: Callable. See *evolution_operator*.</span>
+<span class="sd">    :param period: Positive real.</span>
+<span class="sd">    :param n_harmonics: Positive integer or zero.</span>
+<span class="sd">    :param n_samples: Positive integer. Default value None (4 n_harmonics + 16).</span>
+<span class="sd">        Time samples per period.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **H_m** -- Dictionary {m: complex ndarray}.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">is_callable</span><span class="p">(</span><span class="n">ham_t</span><span class="p">,</span> <span class="s1">&#39;ham_t&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="s1">&#39;period&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int_zero</span><span class="p">(</span><span class="n">n_harmonics</span><span class="p">,</span> <span class="s1">&#39;n_harmonics&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n_samples</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">n_samples</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">n_harmonics</span> <span class="o">+</span> <span class="mi">16</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="s1">&#39;n_samples&#39;</span><span class="p">)</span>
+    <span class="n">omega</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">period</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">period</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_samples</span>
+    <span class="n">hams</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ham_t</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ts</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">m</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">hams</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">m</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">ts</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+               <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">n_harmonics</span><span class="p">,</span> <span class="n">n_harmonics</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span></div>
+
+
+
+<div class="viewcode-block" id="sambe_hamiltonian">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.sambe_hamiltonian">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">sambe_hamiltonian</span><span class="p">(</span><span class="n">harm</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">omega</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">n_max</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the Sambe-space Floquet Hamiltonian, truncated to the photon</span>
+<span class="sd">    sectors :math:`n = -n_{max}, \dots, n_{max}`:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        (\mathcal{H})_{nn&#39;} = H_{n-n&#39;} + n\omega\,\delta_{nn&#39;}\, .</span>
+
+<span class="sd">    Its eigenvalues are the quasienergies, repeated in every Floquet zone</span>
+<span class="sd">    (shifted by multiples of :math:`\omega`); those of the central zone</span>
+<span class="sd">    converge fastest as *n_max* grows.</span>
+
+<span class="sd">    :param harm: Dictionary {m: square complex array}, see *harmonics*.</span>
+<span class="sd">    :param omega: Positive real. Driving frequency.</span>
+<span class="sd">    :param n_max: Positive integer or zero.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **H** -- Complex ndarray, shape ((2 n_max + 1) d, (2 n_max + 1) d).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">harmonics</span><span class="p">(</span><span class="n">harm</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="s1">&#39;omega&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int_zero</span><span class="p">(</span><span class="n">n_max</span><span class="p">,</span> <span class="s1">&#39;n_max&#39;</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">harm</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n_max</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">size</span> <span class="o">*</span> <span class="n">d</span><span class="p">,</span> <span class="n">size</span> <span class="o">*</span> <span class="n">d</span><span class="p">),</span> <span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">n_max</span><span class="p">,</span> <span class="n">n_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">b</span><span class="p">,</span> <span class="n">n2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">n_max</span><span class="p">,</span> <span class="n">n_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)):</span>
+            <span class="n">block</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">harm</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">n2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">))),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="n">n2</span><span class="p">:</span>
+                <span class="n">block</span> <span class="o">=</span> <span class="n">block</span> <span class="o">+</span> <span class="n">n</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">a</span><span class="o">*</span><span class="n">d</span><span class="p">:(</span><span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">d</span><span class="p">,</span> <span class="n">b</span><span class="o">*</span><span class="n">d</span><span class="p">:(</span><span class="n">b</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">block</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1"># Piecewise-constant (step) drives</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_step_evolution</span><span class="p">(</span><span class="n">steps</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. The exact evolution of a piecewise-constant drive,</span>
+<span class="sd">    *steps* = [(H_1, dt_1), (H_2, dt_2), ...] in time order:</span>
+<span class="sd">    U(t) = exp(-i H_n (t - t_{n-1})) ... exp(-i H_1 dt_1), U(T) if t is None.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">steps</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+    <span class="n">elapsed</span> <span class="o">=</span> <span class="mf">0.</span>
+    <span class="k">for</span> <span class="n">h</span><span class="p">,</span> <span class="n">dt</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">:</span>
+        <span class="n">tau</span> <span class="o">=</span> <span class="n">dt</span> <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">min</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">t</span> <span class="o">-</span> <span class="n">elapsed</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tau</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">expm</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span> <span class="o">@</span> <span class="n">u</span>
+        <span class="n">elapsed</span> <span class="o">+=</span> <span class="n">dt</span>
+    <span class="k">return</span> <span class="n">u</span>
+
+
+<div class="viewcode-block" id="StepDrive">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.StepDrive">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">StepDrive</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    A finite (real-space) system driven by a piecewise-constant</span>
+<span class="sd">    Hamiltonian: :math:`H(t) = H_n` for</span>
+<span class="sd">    :math:`t_{n-1} \le t &lt; t_n = \delta t_1 + \dots + \delta t_n`, repeated</span>
+<span class="sd">    with period :math:`T = \sum_n \delta t_n`. The evolution is exact, a</span>
+<span class="sd">    product of step exponentials,</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        U(t) = e^{-iH_n(t - t_{n-1})}\,e^{-iH_{n-1}\delta t_{n-1}}\cdots e^{-iH_1\delta t_1}\, ,</span>
+
+<span class="sd">    with no time grid. Built by *step_drive* from **System** instances or</span>
+<span class="sd">    matrices (see *DrivenKSpace* for Bloch models and ribbons).</span>
+
+<span class="sd">    :param hams: List of square complex ndarrays, one Hermitian matrix per step (all of one shape).</span>
+<span class="sd">    :param durations: List of positive reals, the step durations :math:`\delta t_n`.</span>
+<span class="sd">    :param epsilon: Real number. Default value None. Default branch cut of</span>
+<span class="sd">        *quasienergies* and *effective_hamiltonian*.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hams</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">durations</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">step_matrices</span><span class="p">(</span><span class="n">hams</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">durations</span><span class="p">(</span><span class="n">durations</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">hams</span><span class="p">))</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">branch_cut</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hams</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">hams</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">durations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">durations</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">durations</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="n">epsilon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_sites</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hams</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<div class="viewcode-block" id="StepDrive.get_ham">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.StepDrive.get_ham">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_ham</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the Hamiltonian :math:`H(t)` (periodic in :math:`T`).</span>
+
+<span class="sd">        :param t: Real number. Time.</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **H** -- Complex ndarray.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">durations</span><span class="p">),</span> <span class="n">t</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hams</span><span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hams</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="StepDrive.evolution_operator">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.StepDrive.evolution_operator">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evolution_operator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the exact evolution operator :math:`U(t)` from time 0.</span>
+
+<span class="sd">        :param t: Real number in :math:`[0, T]`. Default value None (one period, :math:`U(T)`).</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **U** -- Complex ndarray.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">time_in_period</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_step_evolution</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hams</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">durations</span><span class="p">)),</span> <span class="n">t</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="StepDrive.quasienergies">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.StepDrive.quasienergies">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">quasienergies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the quasienergies, sorted, in :math:`[-\omega/2, \omega/2)` or</span>
+<span class="sd">        :math:`[\epsilon_{cut} - \omega, \epsilon_{cut})` (see *effective_hamiltonian*).</span>
+
+<span class="sd">        :param epsilon: Real number. Default value None (the *epsilon* of the drive).</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **eps** -- Real ndarray.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">branch_cut</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="k">if</span> <span class="n">epsilon</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">epsilon</span>
+        <span class="k">return</span> <span class="n">_floquet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">evolution_operator</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="StepDrive.effective_hamiltonian">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.StepDrive.effective_hamiltonian">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">effective_hamiltonian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the Floquet Hamiltonian :math:`H_F = \frac{i}{T}\ln U(T)`, branch</span>
+<span class="sd">        cut at *epsilon* (see *tbkit.floquet.effective_hamiltonian*).</span>
+
+<span class="sd">        :param epsilon: Real number. Default value None (the *epsilon* of the drive).</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **H_F** -- Complex ndarray.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">branch_cut</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="k">if</span> <span class="n">epsilon</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">epsilon</span>
+        <span class="k">return</span> <span class="n">_heff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">evolution_operator</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="StepDrive.evolve">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.StepDrive.evolve">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evolve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">psi</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">n_periods</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Evolve a state stroboscopically, :math:`\psi(nT) = U(T)^n\psi(0)`.</span>
+
+<span class="sd">        :param psi: Complex ndarray, the initial state (one amplitude per site).</span>
+<span class="sd">        :param n_periods: Positive integer or zero.</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **psi_n** -- Complex ndarray, shape (n_periods + 1, n_sites):</span>
+<span class="sd">              the state after 0, 1, ..., n_periods periods.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="s1">&#39;psi&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sites</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int_zero</span><span class="p">(</span><span class="n">n_periods</span><span class="p">,</span> <span class="s1">&#39;n_periods&#39;</span><span class="p">)</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evolution_operator</span><span class="p">()</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_periods</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sites</span><span class="p">),</span> <span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+        <span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">psi</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_periods</span><span class="p">):</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span> <span class="o">@</span> <span class="n">out</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="step_drive">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.step_drive">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">step_drive</span><span class="p">(</span><span class="n">models</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">durations</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Build a piecewise-constant drive: the Hamiltonian of ``models[n]`` acts</span>
+<span class="sd">    for ``durations[n]``, in order, and the cycle repeats with period</span>
+<span class="sd">    :math:`T = \sum_n \delta t_n`. The evolution is exact (a product of step</span>
+<span class="sd">    exponentials, no time grid, see *StepDrive*).</span>
+
+<span class="sd">    :param models: List of models of one size, all of one kind:</span>
+
+<span class="sd">        * **KSpace** instances (including ribbons made by *kspace.ribbon*)</span>
+<span class="sd">          -- returns a *DrivenKSpace*, whose *get_ham* is the Floquet</span>
+<span class="sd">          Hamiltonian :math:`H_F(\mathbf{k})`;</span>
+<span class="sd">        * **System** instances (their *get_ham* is called) or square</span>
+<span class="sd">          matrices (dense or scipy.sparse) -- returns a *StepDrive*.</span>
+
+<span class="sd">        Each must be Hermitian; KSpace models need an orthogonal basis.</span>
+<span class="sd">    :param durations: List of positive reals. :math:`\delta t_n`, one per model.</span>
+<span class="sd">    :param epsilon: Real number. Default value None. Branch cut of the</span>
+<span class="sd">        Floquet Hamiltonian (see *effective_hamiltonian*).</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **drive** -- *DrivenKSpace* or *StepDrive*.</span>
+
+<span class="sd">    Example usage::</span>
+
+<span class="sd">        # Rudner et al. (2013): hopping along one bond direction per step</span>
+<span class="sd">        drive = step_drive([ks1, ks2, ks3, ks4, ks5], [T/5] * 5)</span>
+<span class="sd">        w = drive.winding_number(epsilon=np.pi / T)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">KSpace</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.system</span><span class="w"> </span><span class="kn">import</span> <span class="n">System</span>
+    <span class="n">kind</span> <span class="o">=</span> <span class="n">error_handling</span><span class="o">.</span><span class="n">step_models</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">System</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">durations</span><span class="p">(</span><span class="n">durations</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">models</span><span class="p">))</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">branch_cut</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;kspace&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">DrivenKSpace</span><span class="o">.</span><span class="n">_from_steps</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">durations</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
+    <span class="n">hams</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">get_ham</span><span class="p">()</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">ham</span>
+        <span class="n">hams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s1">&#39;toarray&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">StepDrive</span><span class="p">(</span><span class="n">hams</span><span class="p">,</span> <span class="n">durations</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1"># Driven Bloch models</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_bloch_grid</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">a</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. The Bloch Hamiltonians of a static **KSpace** at many</span>
+<span class="sd">    k-points at once, shape (nk, norb, norb): *get_ham* (or, with a vector</span>
+<span class="sd">    potential *a*, *get_ham_peierls*) vectorized over k. A model whose class</span>
+<span class="sd">    redefines these methods is evaluated point by point.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">KSpace</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="n">get_ham</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">KSpace</span><span class="o">.</span><span class="n">get_ham</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="n">get_ham_peierls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">KSpace</span><span class="o">.</span><span class="n">get_ham_peierls</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">model</span><span class="o">.</span><span class="n">get_ham</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">ks</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">model</span><span class="o">.</span><span class="n">get_ham_peierls</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">ks</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">_bloch_ham</span><span class="p">(</span><span class="n">ks</span> <span class="o">@</span> <span class="n">model</span><span class="o">.</span><span class="n">k_basis</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_spectral_derivative</span><span class="p">(</span><span class="n">u</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Derivative of a function sampled on a uniform grid</span>
+<span class="sd">    of one period [0, 1) along *axis* (exact for a trigonometric</span>
+<span class="sd">    polynomial, exponentially accurate for an analytic periodic function).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fftfreq</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">m</span><span class="p">[</span><span class="n">n</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>  <span class="c1"># the Nyquist mode has no odd derivative</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">ndim</span>
+    <span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_winding_density</span><span class="p">(</span><span class="n">u</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">a_t</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Brillouin-zone average of</span>
+<span class="sd">    Tr(A_t [A_1, A_2]), A_i = U^-1 d U / d f_i along the fractional</span>
+<span class="sd">    coordinates f_1, f_2 (u has shape (n1, n2, N, N)).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">u_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">a1</span> <span class="o">=</span> <span class="n">u_inv</span> <span class="o">@</span> <span class="n">_spectral_derivative</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">a2</span> <span class="o">=</span> <span class="n">u_inv</span> <span class="o">@</span> <span class="n">_spectral_derivative</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">a_t</span> <span class="o">@</span> <span class="p">(</span><span class="n">a1</span> <span class="o">@</span> <span class="n">a2</span> <span class="o">-</span> <span class="n">a2</span> <span class="o">@</span> <span class="n">a1</span><span class="p">),</span> <span class="n">axis1</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis2</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="DrivenKSpace">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.DrivenKSpace">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DrivenKSpace</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    A periodic model driven by any time-periodic Bloch Hamiltonian</span>
+<span class="sd">    :math:`H(\mathbf{k}, t + T) = H(\mathbf{k}, t)`.</span>
+
+<span class="sd">    It is a copy of the **KSpace** model whose *get_ham* returns the Floquet</span>
+<span class="sd">    Hamiltonian :math:`H_F(\mathbf{k}) = \frac{i}{T}\ln U(\mathbf{k}, T)`</span>
+<span class="sd">    (branch cut at *epsilon*, see *effective_hamiltonian*), so *get_bands*,</span>
+<span class="sd">    *k_path*, *berry_curvature*, *chern_number*, ... describe the driven</span>
+<span class="sd">    system, and *winding_number* gives its anomalous topology. The</span>
+<span class="sd">    evolution :math:`U(\mathbf{k}, T)` is the product of *n_steps*</span>
+<span class="sd">    midpoint propagators (see *evolution_operator*); drives built by</span>
+<span class="sd">    *step_drive* are evolved exactly. Real-space methods that need static</span>
+<span class="sd">    hoppings (*finite_ham*, *get_ham_beta*, *gbz*) are not available.</span>
+
+<span class="sd">    :param ks: **KSpace** instance. The model driven: its lattice, orbitals</span>
+<span class="sd">        and k-space conventions (periodic gauge) are those of the driven model.</span>
+<span class="sd">    :param ham_kt: Callable. ``ham_kt(k, t)`` returns the Hermitian Bloch</span>
+<span class="sd">        Hamiltonian :math:`H(\mathbf{k}, t)`, shape (norb, norb), in the</span>
+<span class="sd">        periodic gauge of *ks* (:math:`H(\mathbf{k} + \mathbf{G}, t) = H(\mathbf{k}, t)`).</span>
+<span class="sd">    :param period: Positive real. :math:`T`.</span>
+<span class="sd">    :param n_steps: Positive integer. Default value 100. Time steps per period.</span>
+<span class="sd">    :param epsilon: Real number. Default value None (quasienergies in</span>
+<span class="sd">        :math:`[-\omega/2, \omega/2)`). Branch cut of *get_ham*.</span>
+
+<span class="sd">    Example usage::</span>
+
+<span class="sd">        # a sublattice mass switched on and off</span>
+<span class="sd">        drive = DrivenKSpace(ks, lambda k, t: ks.get_ham(k) + m * np.cos(w * t) * sz, 2 * np.pi / w)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">ham_kt</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">period</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">KSpace</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">kspace</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">KSpace</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">is_callable</span><span class="p">(</span><span class="n">ham_kt</span><span class="p">,</span> <span class="s1">&#39;ham_kt&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="s1">&#39;period&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n_steps</span><span class="p">,</span> <span class="s1">&#39;n_steps&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">branch_cut</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">drive_matrix</span><span class="p">(</span><span class="n">ham_kt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span> <span class="mf">0.</span><span class="p">),</span> <span class="n">ks</span><span class="o">.</span><span class="n">norb</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_copy</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">ham_kt</span> <span class="o">=</span> <span class="n">ham_kt</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">n_steps</span> <span class="o">=</span> <span class="n">n_steps</span>
+        <span class="k">return</span> <span class="n">obj</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">ham_kt</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_copy</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">period</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Private method. A copy of *ks* whose class also derives from *cls*.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">driven_cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">ks</span><span class="p">)),</span> <span class="p">{})</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">driven_cls</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">))</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">static</span> <span class="o">=</span> <span class="n">ks</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">period</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="n">epsilon</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">steps</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">obj</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_from_steps</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">models</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">durations</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Private method. The drive of *step_drive*: models[n] for durations[n].</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_copy</span><span class="p">(</span><span class="n">models</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">durations</span><span class="p">)),</span> <span class="n">epsilon</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">steps</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">models</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">durations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">durations</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">n_steps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">models</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">ham_kt</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">_step_ham</span>
+        <span class="k">return</span> <span class="n">obj</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_step_ham</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Private method. H(k, t) of a step drive.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">durations</span><span class="p">),</span> <span class="n">t</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">get_ham</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_step_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Private method. The drive at k as steps [(H_n(k), dt_n)]: exact for</span>
+<span class="sd">        a step drive, the midpoint propagators otherwise.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[(</span><span class="n">m</span><span class="o">.</span><span class="n">get_ham</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">durations</span><span class="p">)]</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_steps</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ham_kt</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">),</span> <span class="n">dt</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_steps</span><span class="p">)]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_grid_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="nb">list</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Private method. The steps of *_step_list* at many k-points at once:</span>
+<span class="sd">        the Hamiltonians, shape (nk, n_steps, norb, norb), and the durations.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">_bloch_grid</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">ks</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">durations</span><span class="p">)</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_steps</span>
+        <span class="n">hams</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_list</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">ks</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">hams</span><span class="p">,</span> <span class="p">[</span><span class="n">dt</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_steps</span>
+
+<div class="viewcode-block" id="DrivenKSpace.get_evolution">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.DrivenKSpace.get_evolution">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_evolution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the evolution operator :math:`U(\mathbf{k}, t) = \mathcal{T}e^{-i\int_0^tH(\mathbf{k},t&#39;)dt&#39;}`.</span>
+
+<span class="sd">        :param k: k point (see *KSpace.get_ham*).</span>
+<span class="sd">        :param t: Real number in :math:`[0, T]`. Default value None (one</span>
+<span class="sd">            period: the Floquet operator :math:`U(\mathbf{k}, T)`).</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **U** -- Complex ndarray, shape (norb, norb).</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">k_vector</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">time_in_period</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">)</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">evolution_operator</span><span class="p">(</span><span class="k">lambda</span> <span class="n">tt</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ham_kt</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">tt</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_steps</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_step_evolution</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_step_list</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">t</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DrivenKSpace.get_ham">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.DrivenKSpace.get_ham">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_ham</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the Floquet Hamiltonian :math:`H_F(\mathbf{k})`, quasienergies in</span>
+<span class="sd">        :math:`[\epsilon_{cut} - \omega, \epsilon_{cut})` (default</span>
+<span class="sd">        :math:`[-\omega/2, \omega/2)`).</span>
+
+<span class="sd">        :param k: k point (see *KSpace.get_ham*).</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **H_F** -- Complex ndarray, shape (norb, norb).</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">k_vector</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_heff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_evolution</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DrivenKSpace.is_hermitian">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.DrivenKSpace.is_hermitian">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_hermitian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        The Floquet Hamiltonian of a Hermitian drive is Hermitian.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_hop_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">not_floquet</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_static</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">not_floquet</span><span class="p">()</span>
+
+<div class="viewcode-block" id="DrivenKSpace.winding_number">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.DrivenKSpace.winding_number">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">winding_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">48</span><span class="p">,</span> <span class="n">n_t</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">40</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the winding number of Rudner, Lindner, Berg and Levin (Phys. Rev.</span>
+<span class="sd">        X 3, 031005 (2013)), the number of chiral edge states in the</span>
+<span class="sd">        quasienergy gap at *epsilon*:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            W[U_\epsilon] = \frac{1}{8\pi^2}\int_0^T dt\int_{BZ} dk_x dk_y\,</span>
+<span class="sd">            \mathrm{Tr}\left(U_\epsilon^{-1}\partial_tU_\epsilon</span>
+<span class="sd">            \left[U_\epsilon^{-1}\partial_{k_x}U_\epsilon, U_\epsilon^{-1}\partial_{k_y}U_\epsilon\right]\right),</span>
+
+<span class="sd">        of the loop :math:`U_\epsilon(\mathbf{k}, t) = U(\mathbf{k}, 2t)` for</span>
+<span class="sd">        :math:`t \le T/2`, then :math:`V_\epsilon(\mathbf{k}, 2T - 2t)`, with</span>
+<span class="sd">        the return map :math:`V_\epsilon(\mathbf{k}, t) = e^{-iH_F^\epsilon(\mathbf{k})t}`</span>
+<span class="sd">        and :math:`H_F^\epsilon` the Floquet Hamiltonian with its branch cut</span>
+<span class="sd">        at *epsilon* (see *effective_hamiltonian*). As the integrand is a</span>
+<span class="sd">        3-form, this is the winding of :math:`U` over :math:`[0, T]` minus</span>
+<span class="sd">        that of :math:`V_\epsilon` over :math:`[0, T]`.</span>
+
+<span class="sd">        Signs. :math:`W` counts the chiral edge states in the gap:</span>
+<span class="sd">        :math:`W = n_{lower} = -n_{upper}` of *edge_state_count*, so</span>
+<span class="sd">        :math:`W &gt; 0` means states moving along :math:`+\mathbf{a}_1` on</span>
+<span class="sd">        the edge of a ribbon on the side of :math:`-\hat{z}\times\mathbf{a}_1`</span>
+<span class="sd">        (the bottom edge of a ribbon along x). Across a group of Floquet bands,</span>
+<span class="sd">        :math:`W[U_{\epsilon&#39;}] - W[U_\epsilon] = -\sum_n C_n` for</span>
+<span class="sd">        :math:`\epsilon &lt; \epsilon&#39;`, the sum over the bands between the two</span>
+<span class="sd">        gaps, with the Chern numbers :math:`C_n` of *chern_number* (the</span>
+<span class="sd">        paper&#39;s :math:`\mathcal{C}_n = -\frac{1}{2\pi}\int\nabla\times\mathcal{A}_n`</span>
+<span class="sd">        is minus ours, so there :math:`W&#39; - W = +\sum\mathcal{C}`). A</span>
+<span class="sd">        static model (whose bands fit in the zone below the cut) has</span>
+<span class="sd">        :math:`W = 0` at the zone edge, and :math:`W = -\sum C` of the</span>
+<span class="sd">        bands below any other gap. The anomalous phases are those with</span>
+<span class="sd">        :math:`W \ne 0` in every gap while all the :math:`C_n = 0`.</span>
+
+<span class="sd">        Discretization: :math:`U(\mathbf{k}, t)` on a uniform</span>
+<span class="sd">        :math:`n_1\times n_2` Brillouin-zone grid, differentiated spectrally</span>
+<span class="sd">        in :math:`\mathbf{k}` (exponentially accurate: both :math:`U` and,</span>
+<span class="sd">        while the gap at *epsilon* is open, :math:`V_\epsilon` are analytic</span>
+<span class="sd">        and periodic in :math:`\mathbf{k}`), and :math:`\partial_tU = -iHU`</span>
+<span class="sd">        exactly, integrated by Gauss-Legendre quadrature on each time step</span>
+<span class="sd">        (*n_t* nodes per period in total, at least 2 per step) and over</span>
+<span class="sd">        :math:`[0, T]` for the return map. Step drives are exact; a</span>
+<span class="sd">        continuous drive is replaced by its *n_steps* midpoint steps, whose</span>
+<span class="sd">        loop has the same :math:`W` as long as the gap stays open.</span>
+
+<span class="sd">        Tolerance. The result is returned raw. Its error falls off</span>
+<span class="sd">        exponentially with *nk*, at a rate set by the k-width of the</span>
+<span class="sd">        region where :math:`V_\epsilon` varies fast, gap / band velocity</span>
+<span class="sd">        near the smallest gap at *epsilon* (the Berry curvature is</span>
+<span class="sd">        concentrated there). For the five-step model</span>
+<span class="sd">        (:math:`\delta_{AB} = 0.5\pi/T`) the error is below</span>
+<span class="sd">        :math:`10^{-12}` at perfect transfer; with a gap of</span>
+<span class="sd">        :math:`0.067\omega` it is :math:`2\times10^{-5}` at the default</span>
+<span class="sd">        *nk* = 48; with a gap of :math:`0.021\omega` it is</span>
+<span class="sd">        :math:`10^{-2}` at *nk* = 48 and :math:`4\times10^{-4}` at</span>
+<span class="sd">        *nk* = 96. Circularly driven graphene (gap :math:`0.01\omega` at K)</span>
+<span class="sd">        needs *nk* = 96 for :math:`3\times10^{-3}`. Rounding to the nearest</span>
+<span class="sd">        integer is trustworthy when :math:`|W - \mathrm{round}(W)| &lt; 0.01` and the</span>
+<span class="sd">        value is unchanged within that tolerance when *nk* is doubled; a</span>
+<span class="sd">        value far from an integer means the gap is too small for the grid</span>
+<span class="sd">        (or closed).</span>
+
+<span class="sd">        :param epsilon: Real number. Quasienergy of the gap (branch cut).</span>
+<span class="sd">        :param nk: Positive integer (at least 4), or tuple of 2. Default</span>
+<span class="sd">            value 48. k-points along each reciprocal vector.</span>
+<span class="sd">        :param n_t: Positive integer. Default value 40. Gauss-Legendre</span>
+<span class="sd">            nodes per period (at least 2 per step; 2 n_t, and at least 24,</span>
+<span class="sd">            for the return map).</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **W** -- Real number, close to an integer.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">dim_exact</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="s1">&#39;epsilon&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">nk</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">nk</span> <span class="o">=</span> <span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="n">nk</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">nk_min</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n_t</span><span class="p">,</span> <span class="s1">&#39;n_t&#39;</span><span class="p">)</span>
+        <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span> <span class="o">=</span> <span class="n">nk</span>
+        <span class="n">fracs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span> <span class="o">/</span> <span class="n">n1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span> <span class="o">/</span> <span class="n">n2</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">ks</span> <span class="o">=</span> <span class="n">fracs</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec_vec_k</span>
+        <span class="n">hams</span><span class="p">,</span> <span class="n">durations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grid_steps</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">hams</span> <span class="o">=</span> <span class="n">hams</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">durations</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">norb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">norb</span><span class="p">)</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">legendre</span><span class="o">.</span><span class="n">leggauss</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="n">n_t</span> <span class="o">//</span> <span class="nb">len</span><span class="p">(</span><span class="n">durations</span><span class="p">))))</span>
+        <span class="c1"># the driven evolution U(k, t), 0 &lt;= t &lt;= T</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">norb</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">norb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">norb</span><span class="p">))</span>
+        <span class="n">integral</span> <span class="o">=</span> <span class="mf">0.</span>
+        <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">dt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">durations</span><span class="p">):</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">hams</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">s</span><span class="p">]</span>
+            <span class="n">e</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+            <span class="n">qh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">xj</span><span class="p">,</span> <span class="n">wj</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+                <span class="n">ut</span> <span class="o">=</span> <span class="p">(</span><span class="n">q</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">e</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">xj</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:])</span> <span class="o">@</span> <span class="n">qh</span> <span class="o">@</span> <span class="n">u</span>
+                <span class="n">a_t</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">ut</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">))</span> <span class="o">@</span> <span class="n">h</span> <span class="o">@</span> <span class="n">ut</span>
+                <span class="n">integral</span> <span class="o">+=</span> <span class="n">wj</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">_winding_density</span><span class="p">(</span><span class="n">ut</span><span class="p">,</span> <span class="n">a_t</span><span class="p">)</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="p">(</span><span class="n">q</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">e</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:])</span> <span class="o">@</span> <span class="n">qh</span> <span class="o">@</span> <span class="n">u</span>
+        <span class="c1"># the return map V(k, t) = exp(-i H_F t), 0 &lt;= t &lt;= T, run backwards</span>
+        <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">norb</span><span class="p">))</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">norb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">norb</span><span class="p">),</span> <span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i1</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n2</span><span class="p">):</span>
+                <span class="n">eps</span><span class="p">[</span><span class="n">i1</span><span class="p">,</span> <span class="n">i2</span><span class="p">],</span> <span class="n">z</span><span class="p">[</span><span class="n">i1</span><span class="p">,</span> <span class="n">i2</span><span class="p">]</span> <span class="o">=</span> <span class="n">_floquet</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="n">i1</span><span class="p">,</span> <span class="n">i2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
+        <span class="n">zh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">h_f</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span> <span class="o">*</span> <span class="n">eps</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:])</span> <span class="o">@</span> <span class="n">zh</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">legendre</span><span class="o">.</span><span class="n">leggauss</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n_t</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">xj</span><span class="p">,</span> <span class="n">wj</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+            <span class="n">tau</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">xj</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">tau</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:])</span> <span class="o">@</span> <span class="n">zh</span>
+            <span class="n">integral</span> <span class="o">-=</span> <span class="n">wj</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">_winding_density</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">h_f</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane_orientation</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">integral</span> <span class="o">/</span> <span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DrivenKSpace.edge_state_count">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.DrivenKSpace.edge_state_count">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">edge_state_count</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">window</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Count the chiral edge states of a driven ribbon (a 1D model, e.g.</span>
+<span class="sd">        made by *step_drive* from *kspace.ribbon* models) crossing the</span>
+<span class="sd">        quasienergy gap at *epsilon*, on each of its two edges.</span>
+
+<span class="sd">        Following the quasienergies :math:`\epsilon_n(k)` over the</span>
+<span class="sd">        Brillouin zone (:math:`k` along :math:`\mathbf{a}_1`, *nk* points), a</span>
+<span class="sd">        state crossing *epsilon* upwards (:math:`d\epsilon/dk &gt; 0`) counts</span>
+<span class="sd">        +1, downwards -1, weighted by its probability on each half of the</span>
+<span class="sd">        ribbon (the halves below and above its middle line, along</span>
+<span class="sd">        :math:`\hat{z}\times\mathbf{a}_1`). States are followed from one k to</span>
+<span class="sd">        the next by their largest overlap. Only states within *window* of</span>
+<span class="sd">        *epsilon* are followed; bulk states do not cross a gap, so only</span>
+<span class="sd">        edge states contribute. The counts are integers, :math:`\pm1` per</span>
+<span class="sd">        chiral mode, up to the tail of the edge states on the other half</span>
+<span class="sd">        (exponentially small in the width) and the two edges sum to zero.</span>
+<span class="sd">        With the conventions of *winding_number*,</span>
+<span class="sd">        ``n_upper = -n_lower = W`` (checked in the tests and examples).</span>
+
+<span class="sd">        :param epsilon: Real number. Quasienergy of the gap.</span>
+<span class="sd">        :param nk: Positive integer (at least 4). Default value 200. k-points,</span>
+<span class="sd">            fine enough that a state moves by less than *window* between two.</span>
+<span class="sd">        :param window: Positive real. Default value None (:math:`\omega/8`).</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **n_lower** -- Real number. Signed count on the lower edge.</span>
+<span class="sd">            * **n_upper** -- Real number. Signed count on the upper edge.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">dim_exact</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="s1">&#39;epsilon&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="s1">&#39;nk&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">nk_min</span><span class="p">((</span><span class="n">nk</span><span class="p">,),</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">omega</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span>
+        <span class="k">if</span> <span class="n">window</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">window</span> <span class="o">=</span> <span class="n">omega</span> <span class="o">/</span> <span class="mi">8</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="s1">&#39;window&#39;</span><span class="p">)</span>
+        <span class="n">a1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">prim_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">normal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">a1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">a1</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">a1</span><span class="p">)</span>
+        <span class="n">across</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dic</span><span class="p">[</span><span class="s1">&#39;r0&#39;</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">dic</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">unit_cell</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span> <span class="o">@</span> <span class="n">normal</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin</span><span class="p">:</span>
+            <span class="n">across</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">across</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">middle</span> <span class="o">=</span> <span class="p">(</span><span class="n">across</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">+</span> <span class="n">across</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">lower</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">across</span> <span class="o">&lt;</span> <span class="n">middle</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">across</span> <span class="o">&gt;</span> <span class="n">middle</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+        <span class="n">ks</span> <span class="o">=</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nk</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">/</span> <span class="n">nk</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec_vec_k</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">states</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">ks</span><span class="p">:</span>
+            <span class="n">eps</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">_floquet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_evolution</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">,</span> <span class="n">epsilon</span> <span class="o">+</span> <span class="n">omega</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">states</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">eps</span> <span class="o">-</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
+        <span class="n">n_lower</span> <span class="o">=</span> <span class="n">n_upper</span> <span class="o">=</span> <span class="mf">0.</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nk</span><span class="p">):</span>
+            <span class="n">x1</span><span class="p">,</span> <span class="n">z1</span> <span class="o">=</span> <span class="n">states</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">x2</span><span class="p">,</span> <span class="n">z2</span> <span class="o">=</span> <span class="n">states</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">nk</span><span class="p">]</span>
+            <span class="n">overlap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">z1</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">z2</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">window</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">overlap</span><span class="p">[</span><span class="n">a</span><span class="p">])</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x2</span><span class="p">[</span><span class="n">b</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">window</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">x1</span><span class="p">[</span><span class="n">a</span><span class="p">])</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">x2</span><span class="p">[</span><span class="n">b</span><span class="p">]):</span>
+                    <span class="n">direction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">x2</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">-</span> <span class="n">x1</span><span class="p">[</span><span class="n">a</span><span class="p">])</span>
+                    <span class="n">w_low</span> <span class="o">=</span> <span class="p">(</span><span class="n">lower</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">z1</span><span class="p">[:,</span> <span class="n">a</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">lower</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">z2</span><span class="p">[:,</span> <span class="n">b</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+                    <span class="n">n_lower</span> <span class="o">+=</span> <span class="n">direction</span> <span class="o">*</span> <span class="n">w_low</span>
+                    <span class="n">n_upper</span> <span class="o">+=</span> <span class="n">direction</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">w_low</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">n_lower</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">n_upper</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="FloquetKSpace">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.FloquetKSpace">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FloquetKSpace</span><span class="p">(</span><span class="n">DrivenKSpace</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    A periodic model driven by a uniform, time-periodic vector potential</span>
+<span class="sd">    :math:`\mathbf{A}(t)` (e.g. circularly polarized light,</span>
+<span class="sd">    :math:`\mathbf{A}(t) = A_0(\cos\omega t, \sin\omega t)`), coupled through</span>
+<span class="sd">    the Peierls phases of its bonds (see *KSpace.get_ham_peierls*).</span>
+
+<span class="sd">    It is a copy of the **KSpace** model whose *get_ham* returns the Floquet</span>
+<span class="sd">    Hamiltonian :math:`H_F(\mathbf{k})` (see *effective_hamiltonian*), so</span>
+<span class="sd">    *get_bands*, *k_path*, *berry_curvature*, *chern_number*,</span>
+<span class="sd">    *wannier_centers*, ... describe the driven system (quasienergies in the</span>
+<span class="sd">    first Floquet zone: for Chern numbers, pick bands separated by gaps</span>
+<span class="sd">    that do not wrap around the zone edge, or move the zone edge with</span>
+<span class="sd">    *epsilon*). It is a *DrivenKSpace*, with</span>
+<span class="sd">    :math:`H(\mathbf{k}, t)` = ``ks.get_ham_peierls(k, vector_potential(t))``,</span>
+<span class="sd">    so *winding_number* applies. Real-space methods that need</span>
+<span class="sd">    static hoppings (*finite_ham*, *get_ham_beta*, *gbz*) are not available.</span>
+
+<span class="sd">    :param ks: **KSpace** instance (the static model).</span>
+<span class="sd">    :param vector_potential: Callable. ``vector_potential(t)`` returns</span>
+<span class="sd">        :math:`\mathbf{A}(t)` (space_dim components).</span>
+<span class="sd">    :param period: Positive real. :math:`T`.</span>
+<span class="sd">    :param n_steps: Positive integer. Default value 100. Time steps per period.</span>
+<span class="sd">    :param epsilon: Real number. Default value None (quasienergies in</span>
+<span class="sd">        :math:`[-\omega/2, \omega/2)`, as before this option existed).</span>
+<span class="sd">        Branch cut of *get_ham*, see *effective_hamiltonian*.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">vector_potential</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">period</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+                     <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">KSpace</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">kspace</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">KSpace</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">is_callable</span><span class="p">(</span><span class="n">vector_potential</span><span class="p">,</span> <span class="s1">&#39;vector_potential&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="s1">&#39;period&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n_steps</span><span class="p">,</span> <span class="s1">&#39;n_steps&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">branch_cut</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_copy</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">vector_potential</span> <span class="o">=</span> <span class="n">vector_potential</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">n_steps</span> <span class="o">=</span> <span class="n">n_steps</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">ham_kt</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">static</span><span class="o">.</span><span class="n">get_ham_peierls</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">vector_potential</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">obj</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">vector_potential</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_grid_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="nb">list</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Private method. The midpoint Hamiltonians at many k-points at once (see *DrivenKSpace*).</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_steps</span>
+        <span class="n">hams</span> <span class="o">=</span> <span class="p">[</span><span class="n">_bloch_grid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_potential</span><span class="p">((</span><span class="n">m</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">))</span>
+                   <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_steps</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">hams</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="p">[</span><span class="n">dt</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_steps</span>
+
+<div class="viewcode-block" id="FloquetKSpace.is_hermitian">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.floquet.FloquetKSpace.is_hermitian">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_hermitian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        The Floquet Hamiltonian of a Hermitian drive is Hermitian.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">static</span><span class="o">.</span><span class="n">is_hermitian</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2026, Charles Poli.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
