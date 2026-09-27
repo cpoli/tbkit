@@ -9,6 +9,12 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    # One BLAS thread per pytest-xdist worker: the matrices are small, and
+    # OpenBLAS's default of one thread per core oversubscribes the runner.
+    env:
+      OMP_NUM_THREADS: 1
+      OPENBLAS_NUM_THREADS: 1
+      MKL_NUM_THREADS: 1
     strategy:
       matrix:
         python-version: ["3.10", "3.11", "3.12", "3.13"]
