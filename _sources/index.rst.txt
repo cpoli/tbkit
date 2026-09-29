@@ -19,6 +19,10 @@ written in fully vectorized **NumPy**. It's built for physics students
 working through a textbook problem, curious learners exploring a topic
 on their own, and educators building a demonstration.
 
+.. image:: _static/images/readme_hero.png
+   :alt: Graphene's Dirac cone, Hofstadter's butterfly, and helical edge states of a Kane-Mele ribbon, all computed with tbkit
+   :width: 100%
+
 Start with the :doc:`tutorial`, browse the :doc:`example gallery
 </api/gallery/index>`, or jump straight to the :doc:`tbkit` API reference.
 
