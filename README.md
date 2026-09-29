@@ -14,6 +14,8 @@ models — lattices, hoppings, Hamiltonians, spectra, band structures —
 explicit and easy to inspect, so it works as well for teaching as for
 research prototyping.
 
+![Graphene's Dirac cone, Hofstadter's butterfly, and helical edge states of a Kane-Mele ribbon, all computed with tbkit](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_hero.png)
+
 For computational physics beyond tight-binding — quantum mechanics,
 classical mechanics, statistical physics, general relativity, and more —
 see [physicskit](https://github.com/cpoli/physicskit), whose
