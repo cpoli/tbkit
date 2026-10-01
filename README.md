@@ -22,97 +22,43 @@ see [physicskit](https://github.com/cpoli/physicskit), whose
 `physicskit.condensed` subpackage covers tight-binding band theory and
 topology alongside superconductivity.
 
-## Features
+## Examples
 
-* **Real space**: build arbitrarily complex finite lattices (flakes,
-  ribbons, disordered structures, defects) site by site or via boolean
-  selections (ellipses, half-planes, unions/differences of lattices), then
-  diagonalize the resulting Hamiltonian directly.
-* **Reciprocal space**: build the Bloch Hamiltonian `H(k)` of the infinite
-  periodic lattice from a small set of intra-unit-cell hoppings, and compute
-  band structures along a k-path through high-symmetry points.
-* **Topology**: Berry curvature and Chern numbers of a group of bands, by
-  the gauge-invariant Fukui-Hatsugai-Suzuki lattice method; Zak/Berry
-  phases, Wannier centres and their flow, the Z2 invariant (Wilson loops
-  and Fu-Kane parities), the quantum geometric tensor, symmetry checks and
-  the tenfold way, magnetic supercells (TKNN), and the real-space local
-  Chern marker.
-* **Hall conductivities**: the intrinsic anomalous Hall conductivity at
-  any Fermi level (Kubo formula over the Brillouin zone, in 2D and 3D,
-  with adaptive mesh refinement), the spin Hall conductivity, and the
-  real-space Kubo-Bastin Hall conductivity of large disordered samples by
-  the kernel polynomial method.
-* **3D**: lattices, slabs, and Bloch Hamiltonians in three dimensions
-  (Anderson transition, Weyl semimetals).
-* **Orbitals**: several orbitals per site with Slater-Koster bond
-  integrals (s, p, d), non-orthogonal bases, and spinful multi-orbital
-  real-space models (`OrbitalSystem`: atomic/Kane-Mele spin-orbit,
-  Rashba, Zeeman, Peierls phases).
-* **Large lattices**: sparse neighbour search, shift-invert sparse
-  eigensolvers, and the kernel polynomial method (DOS, LDOS, Kubo-Greenwood
-  conductivity).
-* **Green's functions and transport**: retarded Green's functions, LDOS,
-  Fermi levels and occupations, and Landauer transmission through a device
-  between semi-infinite leads.
-* **Interactions and superconductivity**: the Hubbard model in mean field,
-  and Bogoliubov-de Gennes Hamiltonians in real and reciprocal space.
-* **Non-Hermitian bands**: non-reciprocal hoppings, spectral winding, the
-  skin effect, and the generalized Brillouin zone.
-* **Exceptional points** of 2D bands: eigenvalue vorticity, discriminant
-  winding, an EP finder (charges, Jordan-block orders, exceptional rings,
-  bulk Fermi arcs, the doubling theorem), encircling exceptional versus
-  diabolical points, and biorthogonal Chern numbers of line-gapped bands.
-* **Floquet**: quasienergies, Floquet and Sambe Hamiltonians, driven
-  Bloch models (`FloquetKSpace`, `DrivenKSpace`), exact step drives of
-  Bloch models, ribbons and flakes (`step_drive`), and anomalous Floquet
-  phases: the Rudner winding number and edge-state counts.
-* **Spin**: optional spin-1/2 degree of freedom on every site, with 2x2
-  (Pauli-matrix) hoppings/onsite terms, for spin-orbit coupling (Rashba,
-  Kane-Mele) and Zeeman splitting.
-* **Edge states**: cut a ribbon (periodic in one direction, finite in the
-  other) out of any periodic model, to see edge/surface physics.
-* **Surface spectral functions** of semi-infinite crystals (iterative
-  surface Green's function): edge and surface states, e.g. the surface
-  Dirac cone of a 3D topological insulator, without a finite slab.
-* **Density of states**, Gaussian- or Lorentzian-broadened, from either a
-  real-space spectrum or a Brillouin-zone mesh.
-* A small library of ready-made lattices (chain, square, triangular,
-  honeycomb, kagome, Lieb).
-* Complex-valued onsite energies and hoppings; **Hermitian and non-Hermitian**
-  Tight-Binding Hamiltonians.
-* Multiple sublattices, with hoppings addressed by neighbor order (1st,
-  2nd, 3rd-nearest neighbor, ...), by angle, or by sublattice-pair tag.
-* Built-in patterns for onsite disorder, hopping disorder, dimerization,
-  strain, and an orbital magnetic field (Peierls substitution).
-* Time propagation of a wavepacket under the Tight-Binding Hamiltonian
-  (Crank-Nicolson).
+### Building and solving models
 
-**tbkit** is organized as a small set of composable classes and modules:
+Finite lattices, defects, several orbitals per site, real space to k-space and back, saved models and Wannier90 imports, and solvers for very large lattices.
 
-| Class / module            | Purpose                                                |
-|----------------------------|---------------------------------------------------------|
-| `tbkit.Lattice`             | Define and manipulate site positions and sublattices.   |
-| `tbkit.System`              | Build the real-space Hamiltonian from a `Lattice` and solve it. |
-| `tbkit.KSpace`              | Build and solve the Bloch Hamiltonian of a periodic `Lattice`; bands, Berry curvature/Chern numbers, anomalous and spin Hall conductivities, ribbons, surface spectral functions, DOS. |
-| `tbkit.Plot`                | Plot lattices, spectra, eigenstates, and the density of states. |
-| `tbkit.Propagation`         | Time-evolve a wavepacket.                               |
-| `tbkit.Save`                | Save figures/animations to disk.                        |
-| `tbkit.lattices`            | Ready-made common lattices.                              |
-| `tbkit.dos`                 | Broadened density of states from a set of eigenenergies. |
-| `tbkit.OrbitalSystem`       | Real-space models with several orbitals and spin per site (`tbkit.orbital`). |
-| `tbkit.Transport`           | Landauer transmission through a device between leads (`tbkit.transport`). |
-| `tbkit.occupation`          | Fermi-Dirac occupations and Fermi levels.               |
-| `tbkit.kpm`                 | Kernel polynomial method: DOS, LDOS, longitudinal and Hall conductivities of very large lattices. |
-| `tbkit.slater_koster`       | Slater-Koster bond integrals and multi-orbital `KSpace` models. |
-| `tbkit.meanfield`           | The Hubbard model in (unrestricted Hartree-Fock) mean field. |
-| `tbkit.bdg`                 | Bogoliubov-de Gennes Hamiltonians and pairings.         |
-| `tbkit.exceptional`         | Exceptional and diabolical points of 2D bands: vorticity, discriminant winding, EP finder, Fermi arcs, encircling. |
-| `tbkit.higher_order`        | Higher-order topology: nested Wilson loops, Wannier-sector polarizations, the BBH quadrupole moment, corner charges. |
-| `tbkit.moire`               | Supercells, band unfolding and spectral functions, commensurate twisted bilayers. |
-| `tbkit.floquet`             | Floquet theory; `FloquetKSpace`/`DrivenKSpace` for driven Bloch models, `step_drive`, and the winding number of anomalous Floquet phases. |
-| `tbkit.neighbours`          | Neighbour shells of a periodic lattice; `KSpace.set_hopping` by neighbour order, angle and sublattice pair, as in `System`. |
-| `tbkit.bridges`             | Move a model between `System` and `KSpace` (open samples and tori). |
-| `tbkit.io`                  | Save and load `Lattice`/`System`/`KSpace` models (`.npz`); import Wannier90 `_hr.dat` models. |
+![An impurity bound state, Slater-Koster sp3 graphene bands with overlaps, and the kernel polynomial method on 45,000 sites](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_models.png)
+
+### Fields, strain and disorder
+
+What happens to a lattice under a magnetic field (Peierls substitution), under strain, and with disorder.
+
+![Graphene's sqrt(n) Landau ladder, triaxial strain as a pseudo-magnetic field, and Anderson localization](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_fields.png)
+
+### Band topology
+
+Chern numbers, Berry phases, the Z2 invariant, quantum geometry, symmetry classes, higher-order and 3D topological phases.
+
+![Berry curvature of the Haldane model, the Kane-Mele Z2 Wannier flow, and the four corner states of a quadrupole insulator](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_topology.png)
+
+### Response and transport
+
+Hall conductivities at any Fermi level, Landauer transport between leads, and linear and nonlinear optical response.
+
+![The anomalous Hall conductivity of the Haldane model, the conductance steps of a quantum point contact, and graphene's universal absorption](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_response.png)
+
+### Flat bands and interactions
+
+Flat bands from lattice geometry and from a moiré twist, the Hubbard model in mean field, and superconductivity.
+
+![The flat bands of twisted bilayer graphene, magnetic zigzag edges in Hubbard mean field, and the Majorana end modes of a Kitaev chain](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_interactions.png)
+
+### Driven and open systems
+
+Wavepacket dynamics, periodically driven (Floquet) lattices, and non-Hermitian bands with exceptional points.
+
+![Bloch oscillations in a tilted chain, the Floquet bands of graphene in circularly polarized light, and the non-Hermitian skin effect](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_driven.png)
 
 ## Install
 
@@ -233,83 +179,6 @@ fig = rib.plot_bands()
 See [`examples/topology/plot_edge_states.py`](examples/topology/plot_edge_states.py) for the zigzag
 graphene ribbon's zero-energy edge band, and the Kane-Mele ribbon's helical
 edge states crossing a spin-orbit gap.
-
-## Examples
-
-`examples/` is organized as a [Sphinx-Gallery](https://sphinx-gallery.github.io/)
-source tree, one topic per subfolder, each with a `README.rst` blurb. Every
-`plot_*.py` script is self-contained and runnable directly
-(`python examples/<section>/<script>.py`), and checks its own key numeric
-claims with `assert` before plotting -- nothing is asserted in the docs
-that isn't also verified in code. Building the docs (`pip install -e ".[docs]"`
-then `cd docs && make html`) renders these same scripts into an executed,
-thumbnailed example gallery under `docs/source/api/gallery/`.
-
-| Script                                                                  | What it shows |
-|---------------------------------------------------------------------------|----------------|
-| [`tight_binding/plot_square_lattice_bands.py`](examples/tight_binding/plot_square_lattice_bands.py) | The square lattice: Bloch's theorem at its simplest, bands along Gamma-X-M-Gamma, the nested Fermi surface, and the van Hove singularity. |
-| [`tight_binding/plot_graphene_bands.py`](examples/tight_binding/plot_graphene_bands.py) | Real-space flake + reciprocal-space band structure; graphene's Dirac point and Wallace's 1947 linear dispersion. |
-| [`tight_binding/plot_visualizing_a_model.py`](examples/tight_binding/plot_visualizing_a_model.py) | `tbkit.plot.Plot`: lattice, spectrum with sublattice polarization, density of states, eigenstate intensity. |
-| [`magnetic_field/plot_magnetic_field.py`](examples/magnetic_field/plot_magnetic_field.py) | Peierls substitution; an Aharonov-Bohm ring's flux-periodic spectrum. |
-| [`magnetic_field/plot_hofstadter_butterfly.py`](examples/magnetic_field/plot_hofstadter_butterfly.py) | The fractal spectrum of a lattice threaded by a continuously swept flux. |
-| [`magnetic_field/plot_landau_levels.py`](examples/magnetic_field/plot_landau_levels.py) | Landau levels: a square lattice's non-relativistic ladder vs. graphene's relativistic sqrt(n) ladder and zero mode. |
-| [`topology/plot_ssh_model.py`](examples/topology/plot_ssh_model.py) | The SSH model: bulk gap closing and topologically protected edge states. |
-| [`disorder/plot_anderson_localization.py`](examples/disorder/plot_anderson_localization.py) | Anderson localization: IPR vs. disorder strength, extended vs. localized states. |
-| [`topology/plot_haldane_topology.py`](examples/topology/plot_haldane_topology.py) | The Haldane model: Berry curvature, Chern number, topological phase transition. |
-| [`flat_bands/plot_flat_bands.py`](examples/flat_bands/plot_flat_bands.py) | Exactly flat bands on the kagome and Lieb lattices. |
-| [`topology/plot_kagome_chern_band.py`](examples/topology/plot_kagome_chern_band.py) | Gapping the kagome flat band into a Chern insulator (C=-1) with complex nearest-neighbor hopping. |
-| [`topology/plot_edge_states.py`](examples/topology/plot_edge_states.py) | Zigzag graphene ribbon edge band; Kane-Mele helical edge states. |
-| [`dynamics/plot_bloch_oscillations.py`](examples/dynamics/plot_bloch_oscillations.py) | Wannier-Stark ladder, its localization, and Bloch oscillations under a uniform tilt. |
-| [`topology/plot_thouless_pump.py`](examples/topology/plot_thouless_pump.py) | The Rice-Mele model as a Thouless quantum pump: quantized Chern number and polarization winding. |
-| [`strain/plot_pseudo_magnetic_field.py`](examples/strain/plot_pseudo_magnetic_field.py) | Triaxial strain as a gauge field: pseudo-Landau levels in graphene from a purely real Hamiltonian. |
-| [`non_hermitian/plot_pt_symmetry.py`](examples/non_hermitian/plot_pt_symmetry.py) | PT symmetry, exceptional points, the Petermann factor, and a selectively amplified topological edge mode. |
-| [`tight_binding/plot_isolation_of_graphene.py`](examples/tight_binding/plot_isolation_of_graphene.py) | The physics behind the isolation of graphene: flakes, zigzag edge states, and the Dirac cones' Berry phase of pi. |
-| [`magnetic_field/plot_peierls_substitution.py`](examples/magnetic_field/plot_peierls_substitution.py) | The Peierls substitution: gauge-invariant plaquette fluxes, in two different gauges. |
-| [`topology/plot_zak_phase.py`](examples/topology/plot_zak_phase.py) | The SSH chain's Zak phase and Wannier centres. |
-| [`topology/plot_tknn_hofstadter.py`](examples/topology/plot_tknn_hofstadter.py) | TKNN: Chern numbers of the Hofstadter bands from magnetic supercells, and the Diophantine equation. |
-| [`topology/plot_kane_mele_z2.py`](examples/topology/plot_kane_mele_z2.py) | The Kane-Mele Z2 invariant from Wannier-centre flow. |
-| [`topology/plot_fu_kane_parity.py`](examples/topology/plot_fu_kane_parity.py) | The Fu-Kane parity criterion on the BHZ model, checked against the Wannier flow. |
-| [`topology/plot_3d_topological_insulator.py`](examples/topology/plot_3d_topological_insulator.py) | 3D topological insulators: the strong index and the surface Dirac cone, from the surface spectral function of a semi-infinite crystal. |
-| [`topology/plot_quantum_geometry.py`](examples/topology/plot_quantum_geometry.py) | The quantum metric and Berry curvature of a Bloch band. |
-| [`topology/plot_tenfold_way.py`](examples/topology/plot_tenfold_way.py) | Symmetry classes of tight-binding models: the tenfold way. |
-| [`topology/plot_local_chern_marker.py`](examples/topology/plot_local_chern_marker.py) | The local Chern marker of a finite, disordered Haldane flake. |
-| [`three_dimensions/plot_anderson_transition.py`](examples/three_dimensions/plot_anderson_transition.py) | The 3D Anderson metal-insulator transition from level statistics. |
-| [`three_dimensions/plot_weyl_semimetal.py`](examples/three_dimensions/plot_weyl_semimetal.py) | A Weyl semimetal: Chern number jumps across Weyl points, and Fermi arcs on a slab. |
-| [`orbitals/plot_slater_koster.py`](examples/orbitals/plot_slater_koster.py) | Slater-Koster sp3 graphene: the decoupled pi bands, a non-orthogonal basis, and the same model in real space. |
-| [`large_scale/plot_kernel_polynomial_method.py`](examples/large_scale/plot_kernel_polynomial_method.py) | The kernel polynomial method on a very large (disordered) graphene flake. |
-| [`transport/plot_landauer_conductance.py`](examples/transport/plot_landauer_conductance.py) | Landauer conductance, and the quantized steps of a quantum point contact. |
-| [`correlations/plot_hubbard_edge_magnetism.py`](examples/correlations/plot_hubbard_edge_magnetism.py) | Hubbard mean field: magnetism of graphene's zigzag edges. |
-| [`correlations/plot_lieb_theorem.py`](examples/correlations/plot_lieb_theorem.py) | Lieb's theorem: the total spin of bipartite Hubbard lattices. |
-| [`superconductivity/plot_kitaev_chain.py`](examples/superconductivity/plot_kitaev_chain.py) | The Kitaev chain: BdG bands, the topological phase, and Majorana end modes. |
-| [`non_hermitian/plot_skin_effect.py`](examples/non_hermitian/plot_skin_effect.py) | The non-Hermitian skin effect, the spectral winding, and the generalized Brillouin zone. |
-| [`topology/plot_diabolical_points.py`](examples/topology/plot_diabolical_points.py) | Diabolical points: an accidental conical intersection in a two-parameter family, avoided crossings, and the eigenvector's sign change. |
-| [`non_hermitian/plot_exceptional_points_fermi_arcs.py`](examples/non_hermitian/plot_exceptional_points_fermi_arcs.py) | Exceptional points in momentum space: Re E and Im E, EP charges, and the bulk Fermi arc. |
-| [`non_hermitian/plot_exceptional_point_vorticity.py`](examples/non_hermitian/plot_exceptional_point_vorticity.py) | A Dirac point splits into an EP pair (vorticity conserved), or becomes an exceptional ring. |
-| [`non_hermitian/plot_exceptional_point_encircling.py`](examples/non_hermitian/plot_exceptional_point_encircling.py) | Encircling an EP (state swap, four-loop return) versus a Dirac point (Berry phase pi). |
-| [`non_hermitian/plot_exceptional_points_chern_number.py`](examples/non_hermitian/plot_exceptional_points_chern_number.py) | Biorthogonal Chern numbers (LR = RL = RR = LL) until the line gap closes at exceptional points. |
-| [`floquet/plot_floquet_chern_insulator.py`](examples/floquet/plot_floquet_chern_insulator.py) | A Floquet Chern insulator from circularly polarized light on graphene. |
-| [`floquet/plot_anomalous_floquet_phases.py`](examples/floquet/plot_anomalous_floquet_phases.py) | Anomalous Floquet phases: edge states with zero Chern numbers, the winding number, and the five-step model. |
-| [`hall_effects/plot_anomalous_hall_effect.py`](examples/hall_effects/plot_anomalous_hall_effect.py) | The anomalous Hall effect: sigma_xy(E_F) of the Haldane model, quantized at C in the gap, not in the bands. |
-| [`hall_effects/plot_anomalous_hall_disorder.py`](examples/hall_effects/plot_anomalous_hall_disorder.py) | The anomalous Hall plateau of a disordered Haldane torus, by the Kubo-Bastin kernel polynomial method. |
-| [`hall_effects/plot_intrinsic_spin_hall_effect.py`](examples/hall_effects/plot_intrinsic_spin_hall_effect.py) | The intrinsic spin Hall effect: the Kane-Mele plateau at e/2pi, and its departure from quantization under Rashba coupling. |
-| [`models/plot_neighbour_hoppings.py`](examples/models/plot_neighbour_hoppings.py) | Hoppings by neighbour order in k-space: third-nearest-neighbour graphene with overlaps. |
-| [`models/plot_pipeline_bridges.py`](examples/models/plot_pipeline_bridges.py) | From real space to k-space and back: the Haldane model's torus spectrum equals its mesh bands. |
-| [`models/plot_save_load.py`](examples/models/plot_save_load.py) | Saving and reloading models: identical Hamiltonians after a round trip through disk. |
-| [`models/plot_maximally_localized_wannier_functions.py`](examples/models/plot_maximally_localized_wannier_functions.py) | Maximally localized Wannier functions: graphene's pi bands from a Wannier90 `_hr.dat` file. |
-| [`higher_order/plot_quadrupole_insulator.py`](examples/higher_order/plot_quadrupole_insulator.py) | The BBH quadrupole insulator: nested Wilson loop, q_xy = 1/2, four corner states and corner charges +-1/2. |
-| [`moire/plot_band_unfolding.py`](examples/moire/plot_band_unfolding.py) | Band unfolding: exact for a pristine supercell, coherence factors, and A(k, omega) of a disordered graphene supercell. |
-| [`moire/plot_magic_angle_twisted_bilayer.py`](examples/moire/plot_magic_angle_twisted_bilayer.py) | Twisted bilayer graphene: Bistritzer-MacDonald velocity and flat bands at the magic alpha. |
-| [`superconductivity/plot_bcs_gap_equation.py`](examples/superconductivity/plot_bcs_gap_equation.py) | The real-space BCS gap equation: Delta(T), Delta(0)/T_c = 1.764, and the proximity effect. |
-| [`correlations/plot_noncollinear_120_degree_order.py`](examples/correlations/plot_noncollinear_120_degree_order.py) | Non-collinear mean field: the 120-degree order of the half-filled triangular Hubbard model. |
-| [`tight_binding/plot_building_finite_lattices.py`](examples/tight_binding/plot_building_finite_lattices.py) | Building finite lattices: cuts, dangling sites, lattice arithmetic, rotations. |
-| [`tight_binding/plot_defects_and_impurities.py`](examples/tight_binding/plot_defects_and_impurities.py) | A vacancy zero mode and an impurity bound state in a graphene flake. |
-| [`dynamics/plot_wavepacket_interference.py`](examples/dynamics/plot_wavepacket_interference.py) | Wave propagation: Aharonov-Bohm caging on a ring and a state trapped at a domain wall. |
-
-The five pre-0.2 Jupyter notebooks were replaced by the gallery scripts
-`tight_binding/plot_building_finite_lattices.py`,
-`tight_binding/plot_defects_and_impurities.py` and
-`dynamics/plot_wavepacket_interference.py` (their other content is covered
-by the strain, correlations and non-Hermitian examples).
 
 ## Documentation
 
