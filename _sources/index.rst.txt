@@ -24,33 +24,13 @@ on their own, and educators building a demonstration.
    :width: 100%
 
 Start with the :doc:`tutorial`, browse the :doc:`example gallery
-</api/gallery/index>`, or jump straight to the :doc:`tbkit` API reference.
+</api/gallery/index>`, or jump straight to the :doc:`API reference <tbkit>`.
 
 For computational physics beyond tight-binding -- quantum mechanics,
 classical mechanics, statistical physics, general relativity, and more
 -- see `physicskit <https://cpoli.github.io/physicskit/>`_, whose
 ``physicskit.condensed`` subpackage covers tight-binding band theory and
 topology alongside superconductivity.
-
-**tbkit** is composed of the following classes and modules:
-
-    * Lattice
-    * System
-    * KSpace
-    * Plot
-    * Propagation
-    * Save
-    * OrbitalSystem (orbital)
-    * Transport (transport)
-    * lattices
-    * dos
-    * occupation
-    * kpm
-    * slater_koster
-    * meanfield
-    * bdg
-    * floquet
-
 
 **tbkit** main features:
 
@@ -104,9 +84,6 @@ topology alongside superconductivity.
     * Broadened density of states.
     * A small library of ready-made lattices.
     * Time propagation.
-
-**tbkit** is available at https://github.com/cpoli/tbkit and on PyPI at
-https://pypi.org/project/tbkit/
 
 
 To use **tbkit**:
