@@ -1,5 +1,5 @@
-tbkit package
-=============
+API
+===
 
 
 tbkit.lattice module
