@@ -168,11 +168,10 @@ class Propagation():
         else:
             color = self.prop_smooth_1d(np.abs(self.prop) ** 2)
             ticks = [0., np.max(color[:, -1])]
-            cmap = plt.cm.hot
+            cmap = 'hot'
         extent = (-0, self.steps*self.dz, self.lat.sites-.5, -.5)
-        aspect = 'auto'
         interpolation = 'nearest'
-        im = plt.imshow(color, cmap=cmap, aspect=aspect,
+        im = plt.imshow(color, cmap=cmap, aspect='auto',
                                   interpolation=interpolation, extent=extent,
                                   vmin=ticks[0], vmax=ticks[-1])
         for label in ax.xaxis.get_majorticklabels():
@@ -249,14 +248,14 @@ class Propagation():
             ticks = [0., np.max(color)]
             cmap = 'Reds'
         fig, ax = plt.subplots(figsize=figsize)
-        plt.xlim([np.min(self.lat.coor['x'])-1., np.max(self.lat.coor['x'])+1.])
-        plt.ylim([np.min(self.lat.coor['y'])-1., np.max(self.lat.coor['y'])+1.])
+        plt.xlim(np.min(self.lat.coor['x'])-1., np.max(self.lat.coor['x'])+1.)
+        plt.ylim(np.min(self.lat.coor['y'])-1., np.max(self.lat.coor['y'])+1.)
         scat = plt.scatter(self.lat.coor['x'], self.lat.coor['y'], c=color[:, 0],
                                    s=s, vmin=ticks[0], vmax=ticks[1],
                                    cmap=plt.get_cmap(cmap))
         frame = plt.gca()
-        frame.axes.get_xaxis().set_ticks([])
-        frame.axes.get_yaxis().set_ticks([])
+        frame.get_xaxis().set_ticks([])
+        frame.get_yaxis().set_ticks([])
         ax.set_aspect('equal')
         if prop_type == 'norm':
             cbar = fig.colorbar(scat, ticks=ticks)
@@ -308,8 +307,8 @@ class Propagation():
                              ylim=(np.min(self.lat.coor['y']-.5), np.max(self.lat.coor['y']+.5)))
         ax.set_aspect('equal')
         frame = plt.gca()
-        frame.axes.get_xaxis().set_ticks([])
-        frame.axes.get_yaxis().set_ticks([])
+        frame.get_xaxis().set_ticks([])
+        frame.get_yaxis().set_ticks([])
         scat = plt.scatter(self.lat.coor['x'], self.lat.coor['y'], c=color[:, 0],
                                     s=s, vmin=ticks[0], vmax=ticks[1],
                                     cmap=cmap)
@@ -352,7 +351,7 @@ class Propagation():
         plt.title('Intensity', fontsize=fs)
         plt.xlabel('$z$', fontsize=fs)
         plt.ylabel(r'$|\psi_j|^2$', fontsize=fs)
-        plt.xlim([0, z[-1]])
+        plt.xlim(0, z[-1])
         return fig
 
 

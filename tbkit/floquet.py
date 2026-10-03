@@ -46,13 +46,17 @@ uses the evolution at *all* times of the period, does
 from __future__ import annotations
 
 import copy
-from typing import Callable
+from typing import TYPE_CHECKING, Callable
 
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
 import scipy.linalg as LA
 
 import tbkit.error_handling as error_handling
+
+if TYPE_CHECKING:
+    from tbkit.kspace import KSpace
+    from tbkit.lattice import Lattice
 
 
 def evolution_operator(ham_t: Callable, period: float, n_steps: int = 100) -> NDArray[np.complex128]:
@@ -72,11 +76,10 @@ def evolution_operator(ham_t: Callable, period: float, n_steps: int = 100) -> ND
     error_handling.positive_real(period, 'period')
     error_handling.positive_int(n_steps, 'n_steps')
     dt = period / n_steps
-    u = None
-    for m in range(n_steps):
+    u = LA.expm(-1j * dt * np.asarray(ham_t(0.5 * dt), dtype='c16'))
+    for m in range(1, n_steps):
         h = np.asarray(ham_t((m + 0.5) * dt), dtype='c16')
-        step = LA.expm(-1j * dt * h)
-        u = step if u is None else step @ u
+        u = LA.expm(-1j * dt * h) @ u
     return u
 
 
@@ -299,7 +302,7 @@ class StepDrive:
             * **H** -- Complex ndarray.
         '''
         error_handling.real_number(t, 't')
-        n = np.searchsorted(np.cumsum(self.durations), t % self.period, side='right')
+        n = int(np.searchsorted(np.cumsum(self.durations), t % self.period, side='right'))
         return self.hams[min(n, len(self.hams) - 1)]
 
     def evolution_operator(self, t: float | None = None) -> NDArray[np.complex128]:
@@ -443,7 +446,7 @@ def _spectral_derivative(u: NDArray[np.complex128], axis: int) -> NDArray[np.com
     return np.fft.ifft(np.fft.fft(u, axis=axis) * (2j * np.pi * m).reshape(shape), axis=axis)
 
 
-def _winding_density(u: NDArray[np.complex128], a_t: NDArray[np.complex128]) -> float:
+def _winding_density(u: NDArray[np.complex128], a_t: NDArray[np.complexfloating]) -> float:
     r'''
     Private function. Brillouin-zone average of
     Tr(A_t [A_1, A_2]), A_i = U^-1 d U / d f_i along the fractional
@@ -486,6 +489,22 @@ class DrivenKSpace:
         drive = DrivenKSpace(ks, lambda k, t: ks.get_ham(k) + m * np.cos(w * t) * sz, 2 * np.pi / w)
     '''
 
+    # Set by _copy (and _from_steps or __new__) on an instance whose class
+    # also derives from type(ks): the rest is the copied KSpace's.
+    static: KSpace
+    period: float
+    epsilon: float | None
+    steps: list | None
+    durations: NDArray[np.float64]
+    n_steps: int
+    ham_kt: Callable
+    lat: Lattice
+    dim: int
+    norb: int
+    spin: bool
+    rec_vec_k: NDArray[np.float64]
+    _plane_orientation: Callable
+
     def __new__(cls, ks, ham_kt: Callable, period: float, n_steps: int = 100, epsilon: float | None = None):
         from tbkit.kspace import KSpace
         error_handling.kspace(ks, KSpace)
@@ -508,7 +527,7 @@ class DrivenKSpace:
         Private method. A copy of *ks* whose class also derives from *cls*.
         '''
         driven_cls = type(cls.__name__, (cls, type(ks)), {})
-        obj = object.__new__(driven_cls)
+        obj: DrivenKSpace = object.__new__(driven_cls)
         obj.__dict__.update(copy.deepcopy(ks.__dict__))
         obj.static = ks
         obj.period = period
@@ -521,9 +540,10 @@ class DrivenKSpace:
         '''
         Private method. The drive of *step_drive*: models[n] for durations[n].
         '''
-        obj = cls._copy(models[0], float(np.sum(durations)), epsilon)
+        durations = np.array(durations, dtype='f8')
+        obj = cls._copy(models[0], float(durations.sum()), epsilon)
         obj.steps = list(models)
-        obj.durations = np.array(durations, dtype='f8')
+        obj.durations = durations
         obj.n_steps = len(models)
         obj.ham_kt = obj._step_ham
         return obj
@@ -532,8 +552,9 @@ class DrivenKSpace:
         '''
         Private method. H(k, t) of a step drive.
         '''
-        n = np.searchsorted(np.cumsum(self.durations), t % self.period, side='right')
-        return self.steps[min(n, len(self.steps) - 1)].get_ham(k)
+        steps = self.steps or []  # set by _from_steps, the only caller
+        n = int(np.searchsorted(np.cumsum(self.durations), t % self.period, side='right'))
+        return steps[min(n, len(steps) - 1)].get_ham(k)
 
     def _step_list(self, k: NDArray[np.float64]) -> list:
         '''
@@ -806,6 +827,8 @@ class FloquetKSpace(DrivenKSpace):
         :math:`[-\omega/2, \omega/2)`, as before this option existed).
         Branch cut of *get_ham*, see *effective_hamiltonian*.
     '''
+
+    vector_potential: Callable
 
     def __new__(cls, ks, vector_potential: Callable, period: float, n_steps: int = 100,
                      epsilon: float | None = None):

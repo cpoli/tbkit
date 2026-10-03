@@ -297,7 +297,8 @@ def find_weyl_points(
         if shift != (1, 1, 1):
             is_min &= gap <= np.roll(gap, np.array(shift) - 1, axis=(0, 1, 2))
     inv = np.linalg.inv(ks.rec_vec_k)
-    points, gaps = [], []
+    points: list = []
+    gaps: list = []
     for idx in np.argwhere(is_min):
         k, g = _newton(ks, kmesh[np.ravel_multi_index(idx, gap.shape)], n,
                                 1e-5 * step, tol, max_iter)

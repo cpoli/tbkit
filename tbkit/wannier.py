@@ -205,7 +205,8 @@ def _shells(rec: NDArray[np.float64], nk: tuple[int, ...]) -> tuple[NDArray, NDA
     radii = np.unique(np.round(length / length.min(), 8))
     upper = np.triu_indices(dim)
     target = np.eye(dim)[upper]
-    chosen, columns = [], []
+    chosen: list = []
+    columns: list = []
     for r in radii:
         shell = np.abs(length / length.min() - r) < 1e-6
         column = np.einsum('ba,bc->ac', b[shell], b[shell])[upper]

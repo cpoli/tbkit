@@ -61,7 +61,7 @@ def evaluate(func: Callable, args: tuple, params: dict, size: int, spin: bool = 
     if not spin:
         return np.broadcast_to(val, (size,))
     if val.ndim <= 1:
-        return np.broadcast_to(val, (size,))[:, None, None] * np.eye(2)
+        return np.broadcast_to(val, (size,))[:, None, None] * np.eye(2, dtype='c16')
     return np.broadcast_to(val, (size, 2, 2))
 
 

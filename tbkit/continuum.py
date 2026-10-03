@@ -124,7 +124,7 @@ def _discretize(sympy, hamiltonian, dim: int | None):
     momenta = [sympy.Symbol(k, real=True) for k in MOMENTA[:dim]]
     a = sympy.Symbol('a')
     norb = ham.shape[0]
-    hops = {}
+    hops: dict = {}
     for i, j in itertools.product(range(norb), repeat=2):
         entry = sympy.expand(ham[i, j])
         error_handling.continuum_polynomial((i, j), entry.is_polynomial(*momenta))

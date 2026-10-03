@@ -17,12 +17,13 @@ Example usage::
 from __future__ import annotations
 
 from math import sqrt
+from typing import Sequence
 
 from tbkit.lattice import Lattice
 import tbkit.error_handling as error_handling
 
 
-def _lat(unit_cell: list[dict], prim_vec: list[tuple[float, float]]) -> Lattice:
+def _lat(unit_cell: list[dict], prim_vec: Sequence[tuple[float, ...]]) -> Lattice:
     return Lattice(unit_cell=unit_cell, prim_vec=prim_vec)
 
 

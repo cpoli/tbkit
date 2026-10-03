@@ -389,20 +389,23 @@ def twisted_bilayer(
     theta = commensurate_angle(m, lattice)
     prim, tau, tags = _layer_lattice(lattice, a)
     mats = _twist_matrices(m, lattice)
-    pos, z, layer, cell_tags = [], [], [], []
+    pos_parts: list = []
+    z_parts: list = []
+    layer_parts: list = []
+    cell_tags: list[str] = []
     for l, (mat, sign) in enumerate(zip(mats, (-1., 1.))):
         c, s = np.cos(sign * theta / 2), np.sin(sign * theta / 2)
         rot = np.array([[c, -s], [s, c]])
         origins = _inner_cells(mat) @ prim
         p = (origins[:, None, :] + tau[None]).reshape(-1, 2) @ rot.T
-        pos.append(p)
-        z.append(np.full(len(p), l * d))
-        layer.append(np.full(len(p), l))
+        pos_parts.append(p)
+        z_parts.append(np.full(len(p), l * d))
+        layer_parts.append(np.full(len(p), l))
         cell_tags += [chr(ord(t) + 2 * l) for t in tags] * len(origins)
         big = mat @ prim @ rot.T
         if l == 0:
             moire = big
-    pos, z, layer = np.concatenate(pos), np.concatenate(z), np.concatenate(layer)
+    pos, z, layer = np.concatenate(pos_parts), np.concatenate(z_parts), np.concatenate(layer_parts)
     error_handling.commensurate(moire, big)
     cell = [{'tag': t, 'r0': (float(x), float(y))} for t, (x, y) in zip(cell_tags, pos)]
     tbl = MoireKSpace(Lattice(unit_cell=cell, prim_vec=[tuple(float(c) for c in v) for v in moire]),

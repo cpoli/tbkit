@@ -94,7 +94,9 @@ def lorentz_kernel(n_moments: int, lam: float = 4.) -> NDArray[np.float64]:
     return np.sinh(lam * (1. - np.arange(n_moments) / n_moments)) / np.sinh(lam)
 
 
-def _setup(ham, n_moments, kernel, bounds, e_grid, n_grid=1001):
+def _setup(
+    ham, n_moments, kernel, bounds, e_grid, n_grid=1001,
+) -> tuple[sparse.csr_matrix, NDArray[np.float64], NDArray[np.float64], float, float]:
     '''
     Private function. Validate, rescale the Hamiltonian, and build the
     coefficients c_m(E) (shape (n_moments, len(e_grid))).

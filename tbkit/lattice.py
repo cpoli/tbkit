@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Sequence
+
 import numpy as np
 from numpy.typing import NDArray
 import matplotlib.pyplot as plt
@@ -57,7 +59,7 @@ class Lattice():
         lat = lattice(unit_cell=unit_cell, prim_vec=prim_vec)
     '''
 
-    def __init__(self, unit_cell: list[dict], prim_vec: list[tuple[float, float]]) -> None:
+    def __init__(self, unit_cell: list[dict], prim_vec: Sequence[tuple[float, ...]]) -> None:
         error_handling.unit_cell(unit_cell)
         error_handling.prim_vec(prim_vec)
         error_handling.space_dim(unit_cell, prim_vec)
@@ -424,12 +426,13 @@ class Lattice():
         Private method. Mask of the sites of *self* that coincide with a site
         of *other*.
         '''
-        fields = [f for f in ('x', 'y', 'z') if f in self.coor.dtype.names]
+        names = self.coor.dtype.names or ()
+        fields = [f for f in ('x', 'y', 'z') if f in names]
         boo = np.zeros(self.sites, bool)
         for c in other.coor:
             match = np.ones(self.sites, bool)
             for f in fields:
-                match &= np.isclose(c[f] if f in other.coor.dtype.names else 0., self.coor[f])
+                match &= np.isclose(c[f] if f in (other.coor.dtype.names or ()) else 0., self.coor[f])
             boo += match
         return boo
 
@@ -472,8 +475,8 @@ class Lattice():
                         self.coor['y'][self.coor['tag'] == tag],
                        'o', color=color, ms=ms, markeredgecolor='none')
         ax.set_aspect('equal')
-        ax.set_xlim([np.min(self.coor['x'])-1., np.max(self.coor['x'])+1.])
-        ax.set_ylim([np.min(self.coor['y'])-1., np.max(self.coor['y'])+1.])
+        ax.set_xlim(np.min(self.coor['x'])-1., np.max(self.coor['x'])+1.)
+        ax.set_ylim(np.min(self.coor['y'])-1., np.max(self.coor['y'])+1.)
         if not axis:
             ax.axis('off')
         # plot indices

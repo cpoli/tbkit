@@ -144,8 +144,8 @@ def _green_surface_bulk(
 
 
 def _decimation(
-    z: NDArray[np.complex128], h0: NDArray[np.complex128], alpha: NDArray[np.complex128],
-    beta: NDArray[np.complex128], tol: float, max_iter: int, name: str,
+    z: NDArray[np.complex128], h0: NDArray[np.complexfloating], alpha: NDArray[np.complexfloating],
+    beta: NDArray[np.complexfloating], tol: float, max_iter: int, name: str,
 ) -> tuple[NDArray[np.complex128], NDArray[np.complex128]]:
     r'''
     Private function. The Lopez Sancho-Rubio decimation of a semi-infinite
@@ -317,20 +317,20 @@ def _lead_modes(
     if law is not None:
         # the incoming modes of every block, then the outgoing ones, then
         # the evanescent ones: the order of the single-block case
-        phi, k, vel, block, out0, out1, ev0, ev1 = ([] for _ in range(8))
-        for b, p in enumerate(law):
+        phi_parts, k_parts, vel_parts, block, out0, out1, ev0, ev1 = ([] for _ in range(8))
+        for ib, p in enumerate(law):
             md, n, u0, u1 = _lead_modes(p.conj().T @ h0 @ p, p.conj().T @ v @ p, energy, None, tol)
-            phi.append((p @ md.wave_functions[:, :n], p @ md.wave_functions[:, n:]))
-            k.append((md.momenta[:n], md.momenta[n:]))
-            vel.append((md.velocities[:n], md.velocities[n:]))
-            block.append(np.full(n, b))
+            phi_parts.append((p @ md.wave_functions[:, :n], p @ md.wave_functions[:, n:]))
+            k_parts.append((md.momenta[:n], md.momenta[n:]))
+            vel_parts.append((md.velocities[:n], md.velocities[n:]))
+            block.append(np.full(n, ib))
             out0.append(p @ u0[:, :n])
             out1.append(p @ u1[:, :n])
             ev0.append(p @ u0[:, n:])
             ev1.append(p @ u1[:, n:])
-        modes = LeadModes(np.hstack([f[0] for f in phi] + [f[1] for f in phi]),
-                          np.concatenate([f[0] for f in k] + [f[1] for f in k]),
-                          np.concatenate([f[0] for f in vel] + [f[1] for f in vel]),
+        modes = LeadModes(np.hstack([f[0] for f in phi_parts] + [f[1] for f in phi_parts]),
+                          np.concatenate([f[0] for f in k_parts] + [f[1] for f in k_parts]),
+                          np.concatenate([f[0] for f in vel_parts] + [f[1] for f in vel_parts]),
                           np.concatenate(block * 2))
         return modes, sum(len(b) for b in block), np.hstack(out0 + ev0), np.hstack(out1 + ev1)
     error_handling.hermitian_operator(h0)
@@ -344,7 +344,9 @@ def _lead_modes(
     decay = np.abs(alpha) < (1 - tol) * np.abs(beta)
     unit = ~decay & (np.abs(np.abs(alpha) - np.abs(beta)) <= tol * np.abs(beta)) & (beta != 0)
     lams = alpha[unit] / beta[unit]
-    phis, ks, vels = [], [], []
+    phi_cols: list = []
+    k_list: list = []
+    vel_list: list = []
     left = list(range(len(lams)))
     while left:
         # a group of degenerate lambdas: its modes span the kernel of the
@@ -358,11 +360,11 @@ def _lead_modes(
         vel, rot = np.linalg.eigh(1j * (lam * phi.conj().T @ v @ phi
                                         - np.conj(lam) * phi.conj().T @ v.conj().T @ phi))
         error_handling.lead_band_edge(np.min(np.abs(vel)) > tol, energy)
-        phis.append(phi @ rot / np.sqrt(np.abs(vel)))
-        ks += [np.angle(lam)] * len(group)
-        vels.append(vel)
-    phis = np.hstack(phis) if phis else np.zeros((m, 0), 'c16')
-    ks, vels = np.array(ks), np.concatenate(vels) if vels else np.zeros(0)
+        phi_cols.append(phi @ rot / np.sqrt(np.abs(vel)))
+        k_list += [np.angle(lam)] * len(group)
+        vel_list.append(vel)
+    phis = np.hstack(phi_cols) if phi_cols else np.zeros((m, 0), 'c16')
+    ks, vels = np.array(k_list), np.concatenate(vel_list) if vel_list else np.zeros(0)
     order = np.lexsort((ks, vels > 0))  # incoming (v < 0) first, then by momentum
     phis, ks, vels = phis[:, order], ks[order], vels[order]
     n_in, n_dec = int(np.sum(vels < 0)), int(np.sum(decay))
@@ -475,9 +477,9 @@ class Transport():
         ham = sp.csr_matrix(ham, dtype='c16')
         error_handling.square_matrix(ham, 'ham')
         self._ham = ham
-        self._dense = None
-        self.leads = []  # list of (h0, v, coupling, sites)
-        self._laws = []  # eigenspaces of each lead's conservation law, or None
+        self._dense: NDArray[np.complex128] | None = None
+        self.leads: list = []  # list of (h0, v, coupling, sites)
+        self._laws: list = []  # eigenspaces of each lead's conservation law, or None
 
     @property
     def ham(self) -> NDArray[np.complex128]:
@@ -706,7 +708,8 @@ class Transport():
             cols.append(cc.ravel())
             vals.append(values.ravel())
 
-        rhs, a = [], n
+        rhs_cols: list = []
+        a = n
         for l, ((h0, v, tau, sites), (modes, n_in, u0, u1)) in enumerate(zip(self.leads, found)):
             m = len(h0)
             lead = np.arange(a, a + m)
@@ -719,9 +722,9 @@ class Transport():
                 col = np.zeros((size, n_in), 'c16')
                 col[sites] = tau @ phi
                 col[a:a + m] = -(e_h0 @ phi - v @ phi * np.exp(1j * modes.momenta[:n_in]))
-                rhs.append(col)
+                rhs_cols.append(col)
             a += m
-        rhs = np.hstack(rhs) if rhs else np.zeros((size, 0), 'c16')
+        rhs = np.hstack(rhs_cols) if rhs_cols else np.zeros((size, 0), 'c16')
         if rhs.shape[1] == 0:
             return [f[0] for f in found], rhs
         mat = sp.csc_matrix((np.concatenate(vals), (np.concatenate(rows), np.concatenate(cols))),

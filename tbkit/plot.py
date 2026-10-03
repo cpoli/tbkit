@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 from numpy.typing import NDArray, ArrayLike
 import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
+from matplotlib.figure import Figure, SubFigure
 from matplotlib.axes import Axes
 import tbkit.error_handling as error_handling
 import tbkit.dos as dos
@@ -59,7 +59,7 @@ class Plot:
         plt_index: bool,
         figsize: tuple[float, float] | None,
         ax: Axes | None = None,
-    ) -> Figure:
+    ) -> Figure | SubFigure:
         '''
         Private method called by *lattice* and *lattice_hop*.
         '''
@@ -72,6 +72,7 @@ class Plot:
         error_handling.boolean(plt_hop_low, 'plt_hop_low')
         error_handling.boolean(plt_index, 'plt_index')
         error_handling.tuple_2elem(figsize, 'figsize')
+        fig: Figure | SubFigure
         if ax is None:
             fig, ax = plt.subplots(figsize=figsize)
         else:
@@ -89,8 +90,8 @@ class Plot:
                        coor['y'][coor['tag'] == tag],
                        'o', color=color, ms=ms, markeredgecolor='none')
         ax.set_aspect('equal')
-        ax.set_xlim([np.min(coor['x'])-1., np.max(coor['x'])+1.])
-        ax.set_ylim([np.min(coor['y'])-1., np.max(coor['y'])+1.])
+        ax.set_xlim(np.min(coor['x'])-1., np.max(coor['x'])+1.)
+        ax.set_ylim(np.min(coor['y'])-1., np.max(coor['y'])+1.)
         if not axis:
             ax.axis('off')
         # plot indices
@@ -115,7 +116,7 @@ class Plot:
         plt_index: bool = False,
         figsize: tuple[float, float] | None = None,
         ax: Axes | None = None,
-    ) -> Figure:
+    ) -> Figure | SubFigure:
         '''
         Plot lattice.
 
@@ -152,7 +153,7 @@ class Plot:
         plt_index: bool = False,
         figsize: tuple[float, float] | None = None,
         ax: Axes | None = None,
-    ) -> Figure:
+    ) -> Figure | SubFigure:
         '''
         Plot lattice in hopping space.
 
@@ -196,15 +197,14 @@ class Plot:
         if lims is None:
             ind_en = np.ones(len(self.sys.en), bool)
         else:
-            ind_en = np.argwhere((en_real > lims[0]) & (en_real < lims[1]))
-            ind_en = np.ravel(ind_en)
+            ind_en = np.ravel(np.argwhere((en_real > lims[0]) & (en_real < lims[1])))
             ax.set_xlim(lims)
         en = en_real[ind_en]
         n, bins, patches = plt.hist(en, bins=nbr_bins, color='b', alpha=0.8)
         ax.set_title('Spectrum', fontsize=fs)
         ax.set_xlabel('$E$', fontsize=fs)
         ax.set_ylabel('number of states', fontsize=fs)
-        ax.set_ylim([0, np.max(n)+1])
+        ax.set_ylim(0, np.max(n)+1)
         for label in ax.xaxis.get_majorticklabels():
             label.set_fontsize(fs)
         for label in ax.yaxis.get_majorticklabels():
@@ -271,11 +271,11 @@ class Plot:
         ax1 = plt.gca()
         x = np.arange(len(self.sys.en))
         if lims is None:
-            ax1.set_ylim([np.min(self.sys.en.real)-0.2, np.max(self.sys.en.real)+0.2])
+            ax1.set_ylim(np.min(self.sys.en.real)-0.2, np.max(self.sys.en.real)+0.2)
             ind = np.ones(len(self.sys.en), bool)
         else:
             ind = (self.sys.en.real > lims[0]) & (self.sys.en.real < lims[1])
-            ax1.set_ylim([lims[0]-0.1, lims[1]+0.1])
+            ax1.set_ylim(lims[0]-0.1, lims[1]+0.1)
         ax1.plot(x[ind], self.sys.en.real[ind], 'ob', markersize=ms)
         ax1.set_title('Spectrum', fontsize=fs)
         ax1.set_xlabel('$n$', fontsize=fs)
@@ -294,7 +294,7 @@ class Plot:
         for label in ax1.yaxis.get_majorticklabels():
             label.set_fontsize(fs)
         xa = ax1.get_xaxis()
-        ax1.set_xlim([x[ind][0]-0.5, x[ind][-1]+0.5])
+        ax1.set_xlim(x[ind][0]-0.5, x[ind][-1]+0.5)
         xa.set_major_locator(plt.MaxNLocator(integer=True))
         fig.set_layout_engine('tight')
         plt.draw()
@@ -331,23 +331,22 @@ class Plot:
             error_handling.positive_real(fs, 'fs')
             error_handling.lims(lims)
             fig, ax2 = plt.subplots()
-            ax2 = plt.gca()
             if lims is None:
-                ax2.set_ylim([-0.1, 1.1])
+                ax2.set_ylim(-0.1, 1.1)
                 ind = np.ones(len(self.sys.en), bool)
             else:
                 ind = (self.sys.en.real > lims[0]) & (self.sys.en.real < lims[1])
-                ax2.set_ylim([lims[0]-0.1, lims[1]+0.1])
+                ax2.set_ylim(lims[0]-0.1, lims[1]+0.1)
         else:
-            ax2 = plt.twinx()
+            ax2 = plt.gca().twinx()
         error_handling.empty_ndarray(self.sys.pola, 'sys.get_pola')
         error_handling.tag(tag_pola, self.sys.lat.tags)
         x = np.arange(len(self.sys.en))
         i_tag = self.sys.lat.tags == tag_pola
         ax2.plot(x[ind], np.ravel(self.sys.pola[ind, i_tag]), 'or', markersize=(4*ms)//5)
-        ylabel = '$<' + tag_pola.upper() + '|' + tag_pola.upper() + '>$'
+        ylabel = '$<' + str(tag_pola).upper() + '|' + str(tag_pola).upper() + '>$'
         ax2.set_ylabel(ylabel, fontsize=fs, color='red')
-        ax2.set_ylim([-0.1, 1.1])
+        ax2.set_ylim(-0.1, 1.1)
         ax2.set_xlim(-0.5, x[ind][-1]+0.5)
         for tick in ax2.xaxis.get_major_ticks():
             tick.label1.set_fontsize(fs)
@@ -384,13 +383,12 @@ class Plot:
             error_handling.positive_real(fs, 'fs')
             error_handling.lims(lims)
             fig, ax2 = plt.subplots()
-            ax2 = plt.gca()
             if lims is None:
                 ind = np.ones(len(self.sys.en), bool)
             else:
                 ind = (self.sys.en.real > lims[0]) & (self.sys.en.real < lims[1])
         else:
-            ax2 = plt.twinx()
+            ax2 = plt.gca().twinx()
         error_handling.empty_ndarray(self.sys.ipr, 'sys.get_ipr')
         x = np.arange(len(self.sys.en))
         ax2.plot(x[ind], self.sys.ipr[ind], 'or', markersize=(4*ms)//5)
@@ -431,13 +429,12 @@ class Plot:
             error_handling.positive_real(fs, 'fs')
             error_handling.lims(lims)
             fig, ax2 = plt.subplots()
-            ax2 = plt.gca()
             if lims is None:
                 ind = np.ones(len(self.sys.en), bool)
             else:
                 ind = (self.sys.en.real > lims[0]) & (self.sys.en.real < lims[1])
         else:
-            ax2 = plt.twinx()
+            ax2 = plt.gca().twinx()
         error_handling.empty_ndarray(self.sys.petermann, 'sys.get_petermann')
         x = np.arange(len(self.sys.en))
         ax2.plot(x[ind], self.sys.petermann[ind], 'or', markersize=(4*ms)//5)
@@ -469,12 +466,12 @@ class Plot:
         ax1 = plt.gca()
         x = np.arange(len(self.sys.en))
         if lims is None:
-            ax1.set_ylim([min(np.min(self.sys.en.real), np.min(self.sys.en.imag))-0.2,
-                              max(np.max(self.sys.en.real), np.max(self.sys.en.imag))+0.2])
+            ax1.set_ylim(min(np.min(self.sys.en.real), np.min(self.sys.en.imag))-0.2,
+                             max(np.max(self.sys.en.real), np.max(self.sys.en.imag))+0.2)
             ind = np.ones(len(self.sys.en), bool)
         else:
             ind = (self.sys.en.real > lims[0]) & (self.sys.en.real < lims[1])
-            ax1.set_ylim([lims[0]-0.1, lims[1]+0.1])
+            ax1.set_ylim(lims[0]-0.1, lims[1]+0.1)
         ax1.plot(x[ind], self.sys.en.real[ind], 'ob', markersize=ms)
         ax1.plot(x[ind], self.sys.en.imag[ind], 'or', markersize=ms)
         ax1.set_title('Spectrum', fontsize=fs)
@@ -485,7 +482,7 @@ class Plot:
         for label in ax1.yaxis.get_majorticklabels():
             label.set_fontsize(fs)
         xa = ax1.get_xaxis()
-        ax1.set_xlim([x[ind][0]-0.1, x[ind][-1]+0.1])
+        ax1.set_xlim(x[ind][0]-0.1, x[ind][-1]+0.1)
         xa.set_major_locator(plt.MaxNLocator(integer=True))
         fig.set_layout_engine('tight')
         plt.draw()
@@ -521,8 +518,8 @@ class Plot:
             plt.plot(self.sys.lat.coor['x'][self.sys.lat.coor['tag'] == t],
                         intensity[self.sys.lat.coor['tag'] == t],
                         '-o', color=c, ms=ms, lw=lw)
-        plt.xlim([-1., self.sys.lat.sites])
-        plt.ylim([0., np.max(intensity)+.05])
+        plt.xlim(-1., self.sys.lat.sites)
+        plt.ylim(0., np.max(intensity)+.05)
         fig.set_layout_engine('tight')
         plt.draw()
         return fig
@@ -559,10 +556,10 @@ class Plot:
         plt.title(title, fontsize=fs+5)
         map_red = plt.get_cmap('Reds')
         if lims is None:
-            lims = [0., np.max(intensity)]
+            lims = (0., np.max(intensity))
             y_ticks = ['0', 'max']
         else:
-            y_ticks = lims
+            y_ticks = [str(v) for v in lims]
         plt.scatter(self.sys.lat.coor['x'], self.sys.lat.coor['y'], c=intensity, s=s,
                          cmap=map_red, vmin=lims[0], vmax=lims[1])
         cbar = plt.colorbar(ticks=lims)
@@ -628,8 +625,8 @@ class Plot:
                         c=color, alpha=0.5)
         ax.set_aspect('equal')
         ax.axis('off')
-        x_lim = [np.min(self.sys.lat.coor['x'])-2., np.max(self.sys.lat.coor['x'])+2.]
-        y_lim = [np.min(self.sys.lat.coor['y'])-2., np.max(self.sys.lat.coor['y'])+2.]
+        x_lim = (np.min(self.sys.lat.coor['x'])-2., np.max(self.sys.lat.coor['x'])+2.)
+        y_lim = (np.min(self.sys.lat.coor['y'])-2., np.max(self.sys.lat.coor['y'])+2.)
         ax.set_xlim(x_lim)
         ax.set_ylim(y_lim)
         fig.set_layout_engine('tight')
@@ -669,10 +666,9 @@ class Plot:
         error_handling.string(title, 'title')
         i_beta_min = np.argmin(np.abs(betas))
         if lims is None:
-            lims = [butterfly[i_beta_min, 0], butterfly[i_beta_min, -1]]
-        ind_en = np.argwhere((butterfly[i_beta_min, :] > lims[0]) & 
-                                            (butterfly[i_beta_min, :] < lims[1]))
-        ind_en = np.ravel(ind_en)
+            lims = (butterfly[i_beta_min, 0], butterfly[i_beta_min, -1])
+        ind_en = np.ravel(np.argwhere((butterfly[i_beta_min, :] > lims[0]) &
+                                                       (butterfly[i_beta_min, :] < lims[1])))
         fig, ax = plt.subplots()
         plt.xlabel(r'$\beta/\beta_{max}$', fontsize=fs)
         plt.ylabel('$E$', fontsize=fs)
@@ -683,7 +679,7 @@ class Plot:
         plt.xticks([-beta_max, -0.5*beta_max, 0, 
                         0.5*beta_max, beta_max], fontsize=fs)
         ax.set_xticklabels(('-1', '-1/2', '0', '1/2', '1'))
-        plt.xlim([betas[0], betas[-1]])
+        plt.xlim(betas[0], betas[-1])
         for i in ind_en:
             plt.plot(betas, butterfly[:, i], 'b', lw=lw)
         fig.set_layout_engine('tight')

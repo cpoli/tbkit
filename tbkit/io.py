@@ -30,6 +30,7 @@ Archive layout (format ``'tbkit-model'``, version :data:`VERSION`):
 from __future__ import annotations
 
 import os
+from typing import Any, cast
 
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
@@ -96,20 +97,20 @@ def save_model(model: Lattice | System | KSpace, path: str | os.PathLike) -> str
     kind = 'System' if isinstance(model, System) else 'KSpace' if isinstance(model, KSpace) else 'Lattice'
     # only what needs version 2 (a periodic System) is written as such, so
     # that older tbkit versions keep reading everything else
-    data = {'format': np.array(FORMAT), 'version': np.array(1), 'kind': np.array(kind),
+    data: dict[str, Any] = {'format': np.array(FORMAT), 'version': np.array(1), 'kind': np.array(kind),
                 'tbkit_version': np.array(tbkit.__version__),
                 'uc_tag': np.array([dic['tag'] for dic in lat.unit_cell], dtype='U1'),
                 'uc_r0': np.array([dic['r0'] for dic in lat.unit_cell], dtype='f8'),
                 'prim_vec': np.array(lat.prim_vec, dtype='f8'),
                 'coor': lat.coor,
                 'n_cells': np.array([lat.n1, lat.n2, lat.n3], dtype='i8')}
-    if kind == 'System':
+    if isinstance(model, System):
         data['onsite'] = np.asarray(model.onsite, dtype='c16')
         data['hop'] = model.hop
         if any(model.periodic):
             data['periodic'] = np.array(model.periodic, dtype=bool)
             data['version'] = np.array(VERSION)
-    elif kind == 'KSpace':
+    elif isinstance(model, KSpace):
         data.update({'spin': np.array(model.spin), 'onsite': model.onsite,
                           'onsite_offdiag': model._onsite_offdiag,
                           'nonreciprocal': np.array(model._nonreciprocal)})
@@ -324,7 +325,7 @@ def read_wannier90(
     num_wann, R, ndegen, ham = read_hr(hr)
     if prim_vec is None:
         error_handling.win_given(win)
-        cell = read_win_cell(win)
+        cell = read_win_cell(cast('str | os.PathLike', win))
         error_handling.layer_cell(cell, dim)
         prim_vec = [tuple(float(c) for c in a[:dim]) for a in cell[:dim]]
     error_handling.prim_vec(prim_vec)
@@ -364,7 +365,7 @@ def _hr_kspace(
     index = {tuple(r): p for p, r in enumerate(R.tolist())}
     partner = [index.get(tuple(-c for c in r)) for r in R.tolist()]
     hermitian = None not in partner and bool(
-        np.abs(ham - ham[partner].conj().transpose(0, 2, 1)).max() <= tol)
+        np.abs(ham - ham[np.array(partner)].conj().transpose(0, 2, 1)).max() <= tol)
     list_hop = []
     for r, h in zip(R.tolist(), ham):
         nonzero = [c for c in r if c != 0]

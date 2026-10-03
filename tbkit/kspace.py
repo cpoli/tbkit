@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor
 from itertools import product
-from typing import Sequence
+from typing import Literal, Sequence, overload
 
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
@@ -42,7 +42,7 @@ PAULI = {
 #################################
 
 
-def reciprocal_vectors(prim_vec: list[tuple[float, ...]]) -> list[tuple[float, ...]]:
+def reciprocal_vectors(prim_vec: Sequence[tuple[float, ...]]) -> list[tuple[float, ...]]:
     r'''
     Get the reciprocal lattice vectors :math:`\mathbf{b}_i` such that
     :math:`\mathbf{a}_i\cdot\mathbf{b}_j = 2\pi\delta_{ij}`, lying in the
@@ -122,14 +122,14 @@ class KSpace():
         # spin-off-diagonal onsite terms (in-plane Zeeman, onsite Rashba):
         # they have no place on the diagonal `onsite` array.
         self._onsite_offdiag = np.zeros((self.norb, self.norb), 'c16')
-        self._hop_const = []  # list of (i, j, R_cartesian (np.ndarray), t)
+        self._hop_const: list = []  # list of (i, j, R_cartesian (np.ndarray), t)
         # value functions (see tbkit.values): (i, j, R_cartesian, function,
         # hermitian), with arrays of sites i, j and bond vectors R
-        self._hop_values = []
+        self._hop_values: list = []
         #: Parameters of the value functions (see *set_params*).
-        self.params = {}
+        self.params: dict = {}
         self._nonreciprocal = False  # set_hopping(hermitian=False) was used
-        self._overlap_hop = []  # overlaps, as _hop: list of (i, j, R_cartesian, s)
+        self._overlap_hop: list = []  # overlaps, as _hop: list of (i, j, R_cartesian, s)
         self.rec_vec = reciprocal_vectors(lat.prim_vec)
         # Orthonormal basis (columns) of the span of prim_vec, in which k is
         # given: the identity when the lattice fills its space, a1/|a1| for a
@@ -314,11 +314,11 @@ class KSpace():
         error_handling.set_hopping_kspace(list_hop, self.n_sites, self.dim, self.spin, values=True)
         if not hermitian:
             self._nonreciprocal = True
-        funcs = {}  # the bonds of each value function: id -> (function, [(i, j, R_cart)])
+        funcs: dict = {}  # the bonds of each value function: id -> (function, [(i, j, R_cart)])
         for dic in list_hop:
             R_cart = np.zeros(self.space_dim)
-            for n, a in zip(dic['R'], self.lat.prim_vec):
-                R_cart += n * np.array(a)
+            for n, vec in zip(dic['R'], self.lat.prim_vec):
+                R_cart += n * np.array(vec)
             i, j, t = dic['i'], dic['j'], dic['t']
             if callable(t):
                 funcs.setdefault(id(t), (t, []))[1].append((i, j, R_cart))
@@ -474,11 +474,24 @@ class KSpace():
         error_handling.ks(ks, self.dim)
         out = self._diagonalize(ks, eigenvec)
         self.ks = ks
-        self.en = out[0] if eigenvec else out
+        self.en = out[0] if isinstance(out, tuple) else out
         steps = np.linalg.norm(np.diff(ks, axis=0), axis=1)
         self.ks_dist = np.concatenate([[0.], np.cumsum(steps)])[:len(ks)]
-        self.nodes = []
+        self.nodes = np.array([])
         return out
+
+    @overload
+    def _diagonalize(
+        self, ks: NDArray[np.float64], eigenvec: Literal[False] = ...,
+    ) -> NDArray[np.float64]: ...
+    @overload
+    def _diagonalize(
+        self, ks: NDArray[np.float64], eigenvec: Literal[True],
+    ) -> tuple[NDArray[np.float64], NDArray[np.complex128]]: ...
+    @overload
+    def _diagonalize(
+        self, ks: NDArray[np.float64], eigenvec: bool,
+    ) -> NDArray[np.float64] | tuple[NDArray[np.float64], NDArray[np.complex128]]: ...
 
     def _diagonalize(
         self, ks: NDArray[np.float64], eigenvec: bool = False,
@@ -524,6 +537,17 @@ class KSpace():
         '''
         return np.eye(self.norb) + self._bloch_sum(self._overlap_hop, ks @ self.k_basis.T)[0]
 
+    @overload
+    def _eigs(self, ks: NDArray[np.float64], eigenvec: Literal[False] = ...) -> NDArray: ...
+    @overload
+    def _eigs(
+        self, ks: NDArray[np.float64], eigenvec: Literal[True],
+    ) -> tuple[NDArray, NDArray[np.complex128]]: ...
+    @overload
+    def _eigs(
+        self, ks: NDArray[np.float64], eigenvec: bool,
+    ) -> NDArray | tuple[NDArray, NDArray[np.complex128]]: ...
+
     def _eigs(
         self, ks: NDArray[np.float64], eigenvec: bool = False,
     ) -> NDArray | tuple[NDArray, NDArray[np.complex128]]:
@@ -560,6 +584,8 @@ class KSpace():
         '''
         ham = self._hams(ks)
         hermitian = self.is_hermitian()
+        en: NDArray
+        vn: NDArray
         if self._overlap_hop and hermitian:
             l_inv = np.linalg.inv(np.linalg.cholesky(self._overlaps(ks)))
             l_inv_h = l_inv.conj().transpose(0, 2, 1)
@@ -614,12 +640,12 @@ class KSpace():
         error_handling.k_path_points(points, self.dim)
         error_handling.positive_int(nk, 'nk')
         ks, _, nodes = _path(points, nk)
-        en = self.get_bands(ks)
-        self.nodes = nodes
-        return self.ks_dist, en
+        self.get_bands(ks)
+        self.nodes = np.array(nodes)
+        return self.ks_dist, self.en
 
     def mesh_grid(
-        self, nk: int | tuple[int, int],
+        self, nk: int | tuple[int, ...],
     ) -> tuple[list[NDArray[np.float64]], NDArray[np.float64]]:
         '''
         Private method. Build a uniform grid of fractional coordinates
@@ -643,7 +669,7 @@ class KSpace():
             return [fracs[0]], ks
         return list(fracs), ks
 
-    def mesh_bands(self, nk: int | tuple[int, int]) -> NDArray[np.float64]:
+    def mesh_bands(self, nk: int | tuple[int, ...]) -> NDArray[np.float64]:
         '''
         Diagonalize :math:`H(\\mathbf{k})` over a uniform mesh spanning the
         Brillouin zone. Unlike *get_bands*, it leaves the band structure kept
@@ -1907,10 +1933,10 @@ class KSpace():
             return sp.coo_matrix((np.concatenate(vals), (np.concatenate(rows), np.concatenate(cols))),
                                            shape=(n, n)).tocsr()
         ham = np.zeros((n_tot * self.norb, n_tot * self.norb), 'c16')
-        for c in range(n_tot):
-            ham[c*self.norb:(c+1)*self.norb, c*self.norb:(c+1)*self.norb] += onsite
-        for rows, cols, _, _, _, _, t in entries:
-            np.add.at(ham, (rows, cols), t)
+        for cell in range(n_tot):
+            ham[cell*self.norb:(cell+1)*self.norb, cell*self.norb:(cell+1)*self.norb] += onsite
+        for r, c, _, _, _, _, t in entries:
+            np.add.at(ham, (r, c), t)
         return ham
 
     def finite_velocity(
@@ -2513,9 +2539,9 @@ class KSpace():
         # two of the three imply the third: C = S T, T = S C
         if chiral is not None and (u_t is None) != (u_c is None):
             u_s = self._operator(chiral, k0)
-            if u_c is None:
+            if u_t is not None:
                 u_c = u_s @ u_t
-            else:
+            elif u_c is not None:
                 u_t = u_s @ u_c
         squares = []
         for u in (u_t, u_c):
@@ -2654,11 +2680,11 @@ class KSpace():
         # H_m(k): the hoppings from a cell to the cell m a_d away, with the
         # phase of their in-plane part only (independent of k along b_d)
         a_dir = np.array(self.lat.prim_vec[direction], dtype='f8')
-        layers = {}
-        for (i, j, n, t), (_, _, R, _) in zip(self._hop_cells(), self._hop):
-            layers.setdefault(n[direction], []).append((i, j, R - n[direction] * a_dir, t))
+        layers: dict[int, list] = {}
+        for (i, j, cell, t), (_, _, R, _) in zip(self._hop_cells(), self._hop):
+            layers.setdefault(cell[direction], []).append((i, j, R - cell[direction] * a_dir, t))
         k_cart = ks @ self.k_basis.T
-        blocks = {m: self._bloch_sum(hops, k_cart)[0] for m, hops in layers.items()}
+        blocks: dict[int, NDArray] = {m: self._bloch_sum(hops, k_cart)[0] for m, hops in layers.items()}
         blocks[0] = blocks.get(0, 0.) + (np.diag(self.onsite) + self._onsite_offdiag)[None]
         width = max([abs(m) for m in layers] + [1])
         norb, nk = self.norb, len(ks)
@@ -2928,7 +2954,7 @@ class KSpace():
             ax = fig.add_subplot()
             for n, (band, segs) in enumerate(zip(bands, surfaces)):
                 if len(segs):
-                    ax.add_collection(LineCollection(segs, colors='C{}'.format(n % 10), lw=lw,
+                    ax.add_collection(LineCollection(list(segs), colors='C{}'.format(n % 10), lw=lw,
                                                                    label='band {}'.format(band)))
             self._zone_axes(ax, fs)
         else:
@@ -2998,7 +3024,7 @@ class KSpace():
                 keep.append(i)
         spin = self.spin_texture(mids[keep], band)
         fig, ax = plt.subplots(figsize=figsize)
-        ax.add_collection(LineCollection(segs, colors='0.6', lw=lw))
+        ax.add_collection(LineCollection(list(segs), colors='0.6', lw=lw))
         arrows = ax.quiver(mids[keep, 0], mids[keep, 1], spin[:, 0], spin[:, 1], spin[:, 2],
                                   cmap=cmap, norm=Normalize(-1., 1.), pivot='mid', edgecolor='k',
                                   linewidth=0.5, angles='xy', scale_units='xy', scale=1.25 / spacing)
@@ -3184,7 +3210,7 @@ class KSpace():
 
     def plot_dos(
         self,
-        nk: int | tuple[int, int] = 30,
+        nk: int | tuple[int, ...] = 30,
         broadening: float = 0.05,
         kernel: str = 'gaussian',
         e_grid: ArrayLike | None = None,
@@ -3282,7 +3308,7 @@ class KSpace():
             self._plot_fat_bands(fig, ax, weights, style, cmap, c, lw, ms)
         for node in self.nodes:
             ax.axvline(node, color='k', lw=0.5)
-        ax.set_xlim([self.ks_dist[0], self.ks_dist[-1]])
+        ax.set_xlim(self.ks_dist[0], self.ks_dist[-1])
         if lims is not None:
             ax.set_ylim(lims)
         if node_labels is not None:
@@ -3317,7 +3343,7 @@ class KSpace():
         cmap = cmap or ('RdBu_r' if signed else 'viridis')
         for n in range(self.norb):
             pts = np.stack([self.ks_dist, self.en[:, n].real], axis=-1)
-            lines = LineCollection(np.stack([pts[:-1], pts[1:]], axis=1), cmap=cmap, norm=norm, lw=lw)
+            lines = LineCollection(list(np.stack([pts[:-1], pts[1:]], axis=1)), cmap=cmap, norm=norm, lw=lw)
             lines.set_array((weights[:-1, n] + weights[1:, n]) / 2)
             ax.add_collection(lines)
         ax.autoscale_view()
@@ -3539,11 +3565,11 @@ def _path(
     segment, the last point included), their cumulative distance, and the
     positions of the nodes along it.
     '''
-    points = np.atleast_2d(np.asarray(points, dtype='f8'))
-    ks = np.concatenate([np.linspace(points[i], points[i+1], nk, endpoint=False)
-                                  for i in range(len(points) - 1)] + [points[-1:]])
+    pts = np.atleast_2d(np.asarray(points, dtype='f8'))
+    ks = np.concatenate([np.linspace(pts[i], pts[i+1], nk, endpoint=False)
+                                  for i in range(len(pts) - 1)] + [pts[-1:]])
     dist = np.concatenate([[0.], np.cumsum(np.linalg.norm(np.diff(ks, axis=0), axis=1))])
-    return ks, dist, dist[::nk][:len(points)-1].tolist() + [dist[-1]]
+    return ks, dist, dist[::nk][:len(pts)-1].tolist() + [dist[-1]]
 
 
 def _marching_table(dim: int) -> dict[int, list[list[tuple[int, int]]]]:
@@ -3604,15 +3630,15 @@ def _zone_polygon(rec: NDArray[np.float64]) -> NDArray[np.float64]:
     gs = np.array([n @ rec for n in product(range(-2, 3), repeat=2) if any(n)])
     half = np.sum(gs ** 2, axis=1) / 2
     tol = 1e-9 * half.max()
-    verts = []
+    found = []
     for i in range(len(gs)):
         for j in range(i + 1, len(gs)):
             mat = gs[[i, j]]
             if abs(np.linalg.det(mat)) > tol:
                 k = np.linalg.solve(mat, half[[i, j]])
                 if np.all(gs @ k <= half + tol):
-                    verts.append(k)
-    verts = np.unique(np.round(verts, 9), axis=0)
+                    found.append(k)
+    verts = np.unique(np.round(np.array(found), 9), axis=0)
     return verts[np.argsort(np.arctan2(verts[:, 1], verts[:, 0]))]
 
 
@@ -3644,7 +3670,7 @@ def _successive_minima(vecs: NDArray[np.float64]):
     # by length, then (among equal lengths) the most positive first: x, then y, then z
     order = np.lexsort((-pts[:, 2], -pts[:, 1], -pts[:, 0], np.round(lengths / lengths.min(), 6)))
     pts, lengths = pts[order], lengths[order]
-    minima = []
+    minima: list = []
     for p in pts:
         if np.linalg.matrix_rank(np.array(minima + [p]), tol=1e-8 * lengths[0]) == len(minima) + 1:
             minima.append(p)
@@ -3705,9 +3731,9 @@ def _bravais_3d(vecs: NDArray[np.float64]):
             rec = 2 * PI * np.linalg.inv(minima[[i, j, k]]).T
             b1, b2 = _gauss_reduce(rec[0], rec[1])
             M, K, A = b1 / 2, (2 * b1 + b2) / 3, rec[2] / 2
-            pts = {G: np.zeros(3), 'M': M, 'K': K, 'A': A, 'L': M + A, 'H': K + A}
+            hex_pts = {G: np.zeros(3), 'M': M, 'K': K, 'A': A, 'L': M + A, 'H': K + A}
             names = [G, 'M', 'K', G, 'A', 'L', 'H', 'A']
-            return [pts[n] for n in names], names
+            return [hex_pts[n] for n in names], names
     if not all(equal.values()):
         return None, None
     if len(shells[0]) == 12:  # fcc: 12 nearest neighbours at a/sqrt(2), then 6 at a

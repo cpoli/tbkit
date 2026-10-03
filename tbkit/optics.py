@@ -33,7 +33,7 @@ Example usage::
 """
 from __future__ import annotations
 
-from typing import Iterator
+from typing import Any, Iterator
 
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
@@ -115,7 +115,7 @@ def _bands(
         yield en, vel, vh[None, None] @ w @ vec[None, None]
 
 
-def _as_output(values: NDArray, like: ArrayLike) -> NDArray | complex | float:
+def _as_output(values: NDArray, like: ArrayLike) -> Any:
     '''
     Private function. A scalar for a scalar input, else shaped like it.
     '''

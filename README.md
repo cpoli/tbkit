@@ -64,7 +64,7 @@ Wavepacket dynamics, periodically driven (Floquet) lattices, and non-Hermitian b
 
 ## Install
 
-Requires Python >= 3.10.
+Requires Python >= 3.10 (tested on 3.10-3.15).
 
 ```bash
 pip install tbkit

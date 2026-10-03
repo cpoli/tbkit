@@ -75,10 +75,10 @@ class OrbitalSystem(System):
         self.orbitals = {tag: list(orbs) for tag, orbs in orbitals.items()}
         self.spin = spin
         self.ns = 2 if spin else 1
-        self.onsite_orb = {}  # tag -> {orbital: energy}
-        self.blocks = {}  # name -> list of (i, j, matrix): bond blocks, upper part
-        self.overlap_blocks = {}  # name -> list of (i, j, matrix)
-        self.onsite_blocks = {}  # name -> {site: matrix}
+        self.onsite_orb: dict = {}  # tag -> {orbital: energy}
+        self.blocks: dict = {}  # name -> list of (i, j, matrix): bond blocks, upper part
+        self.overlap_blocks: dict = {}  # name -> list of (i, j, matrix)
+        self.onsite_blocks: dict = {}  # name -> {site: matrix}
         self.overlap = None
         self._index()
 
@@ -265,7 +265,7 @@ class OrbitalSystem(System):
         error_handling.real_number(lam, 'lam')
         error_handling.positive_int(n, 'n')
         ni, nj, _ = self._bonds(1)
-        neighbours = [set() for _ in range(self.lat.sites)]
+        neighbours: list[set[int]] = [set() for _ in range(self.lat.sites)]
         for a, b in zip(ni, nj):
             neighbours[a].add(b)
             neighbours[b].add(a)
@@ -407,7 +407,7 @@ class OrbitalSystem(System):
         if self.onsite.size == self.lat.sites:
             diag += self.onsite[self.orb_site]
         for tag, energies in self.onsite_orb.items():
-            for site in np.flatnonzero(self.lat.coor['tag'] == tag):
+            for site in np.flatnonzero(self.lat.coor['tag'] == tag).tolist():
                 for o, e in energies.items():
                     k = self._site_orbs(site).index(o)
                     diag[self.offset[site] + k * self.ns: self.offset[site] + (k + 1) * self.ns] += e

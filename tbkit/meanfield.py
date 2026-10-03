@@ -137,18 +137,18 @@ def hubbard_mean_field(
         kick = 0.1 * rng.uniform(-1., 1., n)
         n_up = np.full(n, n_electrons / (2 * n)) + kick
         n_dn = np.full(n, n_electrons / (2 * n)) - kick
-    n_up, n_dn = np.asarray(n_up, dtype='f8').copy(), np.asarray(n_dn, dtype='f8').copy()
-    error_handling.ndarray(n_up, 'n_up', n)
-    error_handling.ndarray(n_dn, 'n_dn', n)
+    up, dn = np.asarray(n_up, dtype='f8').copy(), np.asarray(n_dn, dtype='f8').copy()
+    error_handling.ndarray(up, 'n_up', n)
+    error_handling.ndarray(dn, 'n_dn', n)
     for it in range(1, max_iter + 1):
-        en_up, v_up = LA.eigh(ham + np.diag(U * n_dn))
-        en_dn, v_dn = LA.eigh(ham + np.diag(U * n_up))
+        en_up, v_up = LA.eigh(ham + np.diag(U * dn))
+        en_dn, v_dn = LA.eigh(ham + np.diag(U * up))
         f_up, f_dn, mu = _occupy(en_up, en_dn, n_electrons, temperature)
         new_up = (np.abs(v_up) ** 2) @ f_up
         new_dn = (np.abs(v_dn) ** 2) @ f_dn
-        change = max(np.max(np.abs(new_up - n_up)), np.max(np.abs(new_dn - n_dn)))
-        n_up = (1 - mixing) * n_up + mixing * new_up
-        n_dn = (1 - mixing) * n_dn + mixing * new_dn
+        change = max(np.max(np.abs(new_up - up)), np.max(np.abs(new_dn - dn)))
+        up = (1 - mixing) * up + mixing * new_up
+        dn = (1 - mixing) * dn + mixing * new_dn
         if change < tol:
             break
     else:
@@ -250,7 +250,7 @@ def hubbard_mean_field_noncollinear(
     else:
         h0 = np.kron(ham, np.eye(2)).astype('c16')
     n = len(h0) // 2
-    U = np.full(n, float(U)) if np.ndim(U) == 0 else np.asarray(U, dtype='f8')
+    U = np.full(n, U, dtype='f8') if np.ndim(U) == 0 else np.asarray(U, dtype='f8')
     error_handling.ndarray(U, 'U', n)
     error_handling.electrons(n_electrons, 2 * n)
     error_handling.positive_real_zero(temperature, 'temperature')

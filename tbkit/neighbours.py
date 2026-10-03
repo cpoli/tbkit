@@ -65,8 +65,7 @@ def _candidates(lat: Lattice, m: int) -> tuple[NDArray, NDArray, NDArray, NDArra
     a, tau, _ = _geometry(lat)
     dim, ns = len(a), len(tau)
     cells = np.array(np.meshgrid(*[np.arange(-m, m + 1)] * dim, indexing='ij')).reshape(dim, -1).T
-    i, j = np.meshgrid(np.arange(ns), np.arange(ns), indexing='ij')
-    i, j = i.ravel(), j.ravel()
+    i, j = [m.ravel() for m in np.meshgrid(np.arange(ns), np.arange(ns), indexing='ij')]
     ii = np.repeat(i[None, :], len(cells), axis=0).ravel()
     jj = np.repeat(j[None, :], len(cells), axis=0).ravel()
     R = np.repeat(cells, len(i), axis=0)
@@ -238,10 +237,7 @@ def neighbour_hoppings(
         error_handling.index(ind, dic)
         t = dic['t']
         if reverse and hermitian:
-            if callable(t):
-                t_rev = values.reversed_conj(t)
-            else:
-                t_rev = np.conj(t) if np.ndim(t) == 0 else np.asarray(t).conj().T
+            t_rev = values.reversed_conj(t) if callable(t) else                 np.conj(t) if np.ndim(t) == 0 else np.asarray(t).conj().T
         for bond in shell[ind]:
             i, j, R = int(bond['i']), int(bond['j']), tuple(int(c) for c in bond['R'])
             if not reverse:

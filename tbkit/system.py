@@ -77,14 +77,14 @@ class System():
         self.coor_hop = np.array([], dtype=COOR_DTYPE)
         self.vec_hop = np.array([], dtype=[('dis', 'f8'),  ('ang', 'f8')]) # Hopping distances and angles
         self.dist_uni = np.array([], 'f8')  # Different hopping distances
-        self.store_hop = {}  #  Store the relevant hoppings (dynamic programming)
+        self.store_hop: dict = {}  #  Store the relevant hoppings (dynamic programming)
         self.hop = np.array([], dtype=HOP_DTYPE) #  Hoppings to build-up the Hamiltonian
         self.onsite = np.array([], 'c16')  #  Onsite energies
         # Value functions (see tbkit.values): (directed bond keys, function)
         # of the hoppings whose row of `hop` holds a factor 't', and (site
         # indices, function) of the onsite terms added to `onsite`.
-        self._hop_values = []
-        self._onsite_values = []
+        self._hop_values: list = []
+        self._onsite_values: list = []
         self.ham = sparse.csr_matrix(([], ([], [])), shape=(self.lat.sites, self.lat.sites))  # Hamiltonian
         self.en = np.array([], 'c16')  # Eigenenergies
         self.rn = np.array([], 'c16')  # Right eigenvectors: H |rn> = en |rn>
@@ -116,7 +116,7 @@ class System():
         if self.lat.sites > self.dense_max:
             self._sparse_distances(n_orders)
             return
-        self._pairs = None
+        self._pairs: NDArray | None = None
         if any(self.periodic):
             # shortest images, a block of rows at a time to bound the memory
             coords = self._coords()
@@ -875,7 +875,7 @@ class System():
         return in1 * in2
 
     def change_hopping_square(
-        self, list_hop: list[dict], xlims: tuple[float, float], ylims: tuple[float, float] = [-1., 1.],
+        self, list_hop: list[dict], xlims: tuple[float, float], ylims: tuple[float, float] = (-1., 1.),
     ) -> None:
         '''
         Change the values of the hoppings whose two sites both lie in
@@ -1065,7 +1065,7 @@ class System():
         en, vec = out if eigenvec else (out, None)
         ind = np.argsort(en.real, kind='stable')
         self.en = en[ind]
-        if eigenvec:
+        if vec is not None:
             self.rn = vec[:, ind]
             self._set_states()
 
@@ -1251,8 +1251,7 @@ class System():
         '''
         error_handling.empty_ndarray(self.rn, 'sys.get_eig(eigenvec=True)')
         error_handling.lims(lims)
-        ind = np.where((self.en.real > lims[0]) & (self.en.real < lims[1]))
-        ind = np.ravel(ind)
+        ind = np.ravel(np.where((self.en.real > lims[0]) & (self.en.real < lims[1])))
         print('{} states between {} and {}'.format(len(ind), lims[0], lims[1]))
         return np.sum(self.intensity[:, ind], axis=1)
 

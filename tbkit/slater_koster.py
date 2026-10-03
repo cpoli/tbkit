@@ -209,7 +209,7 @@ def sk_kspace(lat, orbitals: dict[str, list[str]], bonds: dict[int, dict],
     index = {key: n for n, key in enumerate(table)}
     new_cell = [{'tag': cell[i]['tag'], 'r0': cell[i]['r0']} for i, _ in table]
     ks = KSpace(Lattice(unit_cell=new_cell, prim_vec=lat.prim_vec))
-    ks.sk_orbitals = table
+    setattr(ks, 'sk_orbitals', table)  # an attribute of this KSpace only
     if onsite is not None:
         error_handling.set_onsite_orb(onsite, lat.tags, orbitals)
         for n, (i, o) in enumerate(table):
@@ -221,16 +221,16 @@ def sk_kspace(lat, orbitals: dict[str, list[str]], bonds: dict[int, dict],
     r0 = np.array([dic['r0'] for dic in cell], dtype='f8')
     shifts = np.array(np.meshgrid(*[range(-3, 4)] * len(a), indexing='ij')).reshape(len(a), -1).T
     cand = []
-    for R in shifts:
+    for shift in shifts:
         for i in range(len(cell)):
             for j in range(len(cell)):
-                d = r0[j] + R @ a - r0[i]
+                d = r0[j] + shift @ a - r0[i]
                 dist = np.linalg.norm(d)
                 if dist < 1e-9:
                     continue
-                if (i, j) > (j, i) or (i == j and tuple(-R) > tuple(R)):
+                if (i, j) > (j, i) or (i == j and tuple(-shift) > tuple(shift)):
                     continue
-                cand.append((round(dist, 4), i, j, tuple(int(c) for c in R), d))
+                cand.append((round(dist, 4), i, j, tuple(int(c) for c in shift), d))
     distances = sorted({c[0] for c in cand})
     for store, spec in ((ks.set_hopping, bonds), (ks.set_overlap, overlap or {})):
         hops = []

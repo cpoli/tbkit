@@ -119,11 +119,11 @@ def _loop(loop) -> Callable[[float], NDArray[np.float64]]:
     '''
     error_handling.loop(loop)
     if callable(loop):
-        def path(s):
+        def traced(s):
             p = np.asarray(loop(float(s)), dtype='f8')
             error_handling.loop_point(p)
             return p
-        return path
+        return traced
     vert = np.asarray(loop, dtype='f8')
     closed = np.vstack([vert, vert[:1]])
     m = len(vert)
@@ -670,7 +670,7 @@ def find_exceptional_points(
             disc, lambda s, a=a, b=b: kmesh[a] + s * (kmesh[b] - kmesh[a]), 0., 1., d[a], d[b])
     b1, b2 = ks.rec_vec_k
     orient = np.sign(b1[0] * b2[1] - b1[1] * b2[0])
-    points = []
+    points: list = []
     for i in range(nk):
         for j in range(nk):
             w = (edge[0, i, j] + edge[1, (i + 1) % nk, j]
