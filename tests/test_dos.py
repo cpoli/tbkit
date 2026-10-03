@@ -1,5 +1,6 @@
 import unittest
 import numpy as np
+from scipy.integrate import trapezoid
 
 import tbkit.dos as dos
 
@@ -20,14 +21,14 @@ class TestDos(unittest.TestCase):
         rng = np.random.default_rng(0)
         energies = rng.uniform(-2., 2., 500)
         e_grid, rho = dos.density_of_states(energies, broadening=0.1)
-        self.assertTrue(np.isclose(np.trapezoid(rho, e_grid), len(energies), rtol=1e-3))
+        self.assertTrue(np.isclose(trapezoid(rho, e_grid), len(energies), rtol=1e-3))
 
     def test_normalization_lorentzian(self):
         rng = np.random.default_rng(1)
         energies = rng.uniform(-2., 2., 500)
         e_grid, rho = dos.density_of_states(energies, broadening=0.1, kernel='lorentzian',
                                                                   e_grid=np.linspace(-20., 20., 4001))
-        self.assertTrue(np.isclose(np.trapezoid(rho, e_grid), len(energies), rtol=1e-2))
+        self.assertTrue(np.isclose(trapezoid(rho, e_grid), len(energies), rtol=1e-2))
 
     def test_single_level_peak(self):
         e_grid, rho = dos.density_of_states(np.array([0.]), broadening=0.2,

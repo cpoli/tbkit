@@ -286,6 +286,60 @@ strong disorder destroys it.
 
 .. minigallery:: ../../examples/hall_effects/plot_anomalous_hall_disorder.py
 
+1955/1957 -- The k·p Method and Effective-Mass Theory
+-----------------------------------------------------------
+
+Near a band edge, the Bloch functions at :math:`\mathbf{k}` can be
+expanded in those at the band extremum, and the crystal Hamiltonian
+becomes a small matrix polynomial in :math:`\mathbf{k}`: the *k·p*
+Hamiltonian. J. M. Luttinger and W. Kohn (1955) turned this into the
+effective-mass theory of electrons and holes in slowly varying fields,
+where :math:`\mathbf{k}` is replaced by :math:`-i\nabla` acting on an
+envelope function. E. O. Kane (1957) used it to explain the band structure of
+InSb from a handful of parameters. Since then k·p models (the Kane and
+Luttinger models, and B. A. Bernevig, T. L. Hughes and S.-C. Zhang's
+(2006) model of the band inversion in HgTe quantum wells) describe
+semiconductor heterostructures, nanowires and topological insulators
+from a few numbers fitted to experiment or to first-principles bands.
+
+A computer solves a k·p model by discretizing the envelope functions on a
+grid. :math:`k_x = -i\partial_x` becomes a finite difference, which
+turns the continuum Hamiltonian into a Tight-Binding model on a square or
+cubic lattice: :math:`k_x^2 \to (2 - 2\cos k_xa)/a^2`,
+:math:`k_x \to \sin(k_xa)/a`. It agrees with the continuum model to
+:math:`O(a^2)` near :math:`\mathbf{k}=0`, and its Brillouin zone is
+compact, which makes topological invariants integers.
+
+*Implementation:* :func:`tbkit.continuum.discretize` takes a sympy
+expression or a string in ``k_x, k_y, k_z`` (scalar, or a matrix built
+with ``sigma_x``, ``kron``, ...) and returns a
+:class:`~tbkit.kspace.KSpace` on a chain, square or cubic grid. Its free
+symbols become parameters, set by
+``get_ham(k, M=...)`` or :meth:`~tbkit.kspace.KSpace.set_params`.
+:func:`~tbkit.continuum.discretize_symbolic` shows the hopping matrices
+in terms of the grid spacing :math:`a`. The scheme (half-step differences,
+step :math:`a` for even powers and :math:`2a` for odd ones) is that of
+Kwant's ``kwant.continuum``. :func:`tbkit.bridges.finite_system` turns
+the lattice model into a real-space :class:`~tbkit.system.System`.
+
+*References:* J. M. Luttinger and W. Kohn, "Motion of Electrons and Holes
+in Perturbed Periodic Fields," Phys. Rev. 97, 869-883 (1955); E. O. Kane,
+"Band structure of indium antimonide," J. Phys. Chem. Solids 1, 249-261
+(1957); B. A. Bernevig, T. L. Hughes, and S.-C. Zhang, "Quantum Spin Hall
+Effect and Topological Phase Transition in HgTe Quantum Wells," Science
+314, 1757-1761 (2006); C. W. Groth, M. Wimmer, A. R. Akhmerov, and X.
+Waintal, "Kwant: a software package for quantum transport," New J. Phys.
+16, 063065 (2014).
+
+*Example:* ``examples/models/plot_kp_theory_on_a_lattice.py`` derives the
+nearest-neighbour chain of the effective mass symbolically. It then
+discretizes the BHZ model, checks that its bands converge to the
+continuum ones as :math:`a^2`, that the lattice model has Chern number
+:math:`|C| = 1` exactly when the bands are inverted (:math:`M/B > 0`),
+and that a finite flake cut from it has edge states in the gap only then.
+
+.. minigallery:: ../../examples/models/plot_kp_theory_on_a_lattice.py
+
 1957/1988 -- The Landauer Formula and Quantized Conductance
 ------------------------------------------------------------------
 
@@ -470,6 +524,46 @@ a threshold that shrinks as its edges get longer.
 
 .. minigallery:: ../../examples/correlations/plot_hubbard_edge_magnetism.py
 
+1964/1982 -- Andreev Reflection and the BTK Theory of NS Junctions
+------------------------------------------------------------------------
+
+Andreev (1964) found how a superconductor reflects an electron with an
+energy inside its gap: as a *hole*, retracing the electron's path, while a
+Cooper pair enters the condensate. Blonder, Tinkham and Klapwijk (1982)
+turned this into the conductance of a normal-superconductor junction with
+a barrier of strength :math:`Z`,
+
+.. math::
+
+   G_{NS} = \frac{e^2}{h}\left(1 + R_{he} - R_{ee}\right)\, ,
+
+with :math:`R_{he}` the Andreev and :math:`R_{ee}` the normal reflection.
+A clean interface doubles the conductance in the gap. A tunnel barrier
+suppresses it and leaves the superconductor's density of states. The BTK
+formula is still how point-contact spectroscopy measures superconducting
+gaps.
+
+*Implementation:* :meth:`tbkit.transport.Transport.add_lead` with a
+``conservation_law`` (here the electron-hole charge :math:`\tau_z` of the
+normal lead) splits a lead's modes into blocks, and
+:meth:`~tbkit.transport.Transport.smatrix` resolves them:
+``SMatrix.transmission((0, 0), (0, 1))`` is the Andreev reflection.
+
+*References:* A. F. Andreev, "The thermal conductivity of the intermediate
+state in superconductors," Sov. Phys. JETP 19, 1228-1231 (1964); G. E.
+Blonder, M. Tinkham and T. M. Klapwijk, "Transition from metallic to
+tunneling regimes in superconducting microconstrictions: Excess current,
+charge imbalance, and supercurrent conversion," Phys. Rev. B 25,
+4515-4532 (1982).
+
+*Example:* ``examples/superconductivity/plot_andreev_reflection.py``
+confirms that a clean NS interface Andreev-reflects more than 99.9% of
+the electrons in the gap and doubles the conductance, and that the
+S-matrix of a chain with a barrier reproduces the BTK conductance within
+0.01 :math:`e^2/h` at every energy, for :math:`Z = 0`, 0.5 and 1.5.
+
+.. minigallery:: ../../examples/superconductivity/plot_andreev_reflection.py
+
 1930/2005 -- Landau Levels: From Free Electrons to Graphene's Dirac Fermions
 ------------------------------------------------------------------------------------
 
@@ -551,6 +645,47 @@ plateau (102 states) matches the predicted :math:`v_F\sqrt{2eB}` to
 within 1%.
 
 .. minigallery:: ../../examples/magnetic_field/plot_landau_levels.py
+
+1971/1972 -- The Tetrahedron Method for the Density of States
+--------------------------------------------------------------------
+
+The density of states and every Fermi-surface property are integrals over
+the Brillouin zone of functions that are singular: a delta function
+:math:`\delta(E - E_n(\mathbf{k}))`, or a step at the Fermi level.
+Sampling the bands on a mesh and broadening each level smears the
+features that matter most -- the :math:`\sqrt{E}` band edges and the van
+Hove singularities at the saddle points of :math:`E_n(\mathbf{k})` -- by
+a width chosen by hand. O. Jepsen and O. K. Andersen (1971) and,
+independently, G. Lehmann and M. Taut (1972) split the zone into
+tetrahedra with the mesh points at their corners, interpolated each band
+linearly inside every tetrahedron, and integrated that interpolation
+*exactly*: within a tetrahedron the density of states is a polynomial in
+:math:`E` known in closed form. Nothing has to be broadened, and the
+error falls with the mesh. P. E. Blochl, Jepsen and Andersen (1994) gave
+the formulas in their standard form (with a correction for the curvature
+of the bands), and the method has been the default for densities of
+states and Fermi-level integrals in band-structure codes ever since.
+
+*Implementation:* :func:`tbkit.dos.tetrahedron_dos` (the linear method,
+on segments, triangles or tetrahedra of a 1D, 2D or 3D mesh) and
+:meth:`~tbkit.kspace.KSpace.plot_dos` with ``kernel='tetrahedron'``. The
+same decomposition of the mesh gives the constant-energy contours of
+:meth:`~tbkit.kspace.KSpace.fermi_surface`.
+
+*References:* O. Jepsen and O. K. Andersen, "The electronic structure of
+h.c.p. ytterbium," Solid State Commun. 9, 1763-1767 (1971); G. Lehmann
+and M. Taut, "On the numerical calculation of the density of states and
+related properties," Phys. Status Solidi B 54, 469-477 (1972); P. E.
+Blochl, O. Jepsen, and O. K. Andersen, "Improved tetrahedron method for
+Brillouin-zone integrations," Phys. Rev. B 49, 16223-16233 (1994).
+
+*Example:* ``examples/tight_binding/plot_tetrahedron_method.py``
+reproduces the logarithmic van Hove singularity of the square lattice
+(within 0.3% of the exact elliptic-integral result on an 80 x 80 mesh,
+where a Gaussian broadening is off by 6%), and in 3D puts no states
+below the band bottom and converges ten times faster than the Gaussian.
+
+.. minigallery:: ../../examples/tight_binding/plot_tetrahedron_method.py
 
 1973/1988 -- Frustration and the 120-Degree Order of the Triangular Antiferromagnet
 -------------------------------------------------------------------------------------------
@@ -813,6 +948,55 @@ to 500 sites, 300 samples each), and computes the transmission of a
 
 .. minigallery:: ../../examples/transport/plot_recursive_green_function.py
 
+1981/1991 -- The Scattering Matrix: the Fisher-Lee Relation and Mode Matching
+------------------------------------------------------------------------------------
+
+Fisher and Lee (1981) showed that the Landauer transmission is the
+squared norm of a block of the scattering matrix :math:`S`, the
+amplitudes of every outgoing mode of the leads for every incoming one,
+and they related :math:`S` to the Green's function of the sample. Ando
+(1991) computed :math:`S` on a lattice by *mode matching*. The modes of
+a lead, :math:`\psi_n = \lambda^n\phi`, solve
+
+.. math::
+
+   (E - h_0 - \lambda v - \lambda^{-1}v^\dagger)\,\phi = 0\, ,
+
+and propagate when :math:`|\lambda| = 1`. In the sample, the wave function
+is an incoming mode plus outgoing and decaying ones, with coefficients
+fixed by the Schrodinger equation. Groth et al. (2014) wrote the problem
+as one sparse linear system, the basis of Kwant. The S-matrix resolves
+transport by mode, gives the scattering states inside the sample, and
+needs no broadening :math:`\eta`.
+
+*Implementation:* :func:`tbkit.transport.lead_modes` (the generalized
+eigenproblem of the transfer matrix, by the QZ algorithm, which allows a
+singular :math:`v`), :meth:`tbkit.transport.Transport.smatrix` (one
+sparse LU factorization per energy, returning a
+:class:`~tbkit.transport.SMatrix`),
+:meth:`~tbkit.transport.Transport.wave_function` and
+:meth:`~tbkit.transport.Transport.ldos`.
+:meth:`~tbkit.transport.Transport.transmission` uses it by default.
+
+*References:* D. S. Fisher and P. A. Lee, "Relation between conductivity
+and transmission matrix," Phys. Rev. B 23, 6851-6854 (1981); T. Ando,
+"Quantum point contacts in magnetic fields," Phys. Rev. B 44, 8017-8027
+(1991); C. W. Groth, M. Wimmer, A. R. Akhmerov and X. Waintal, "Kwant: a
+software package for quantum transport," New J. Phys. 16, 063065 (2014).
+
+*Example:* ``examples/transport/plot_scattering_matrix.py`` finds one
+incoming and one outgoing mode per open subband of a strip, on its
+analytic bands. It confirms that the S-matrix of a strip with an
+antidot is unitary to :math:`10^{-12}` and that its transmission block
+gives the Caroli transmission, and that each scattering state carries
+its transmission through every cross-section. It also confirms that the
+scattering states hold all of the local density of states, and that,
+1e-9 below a band edge, the S-matrix keeps an impurity's transmission
+exact to :math:`10^{-6}` where the Caroli formula with :math:`\eta = 10^{-9}`
+is off by 20%.
+
+.. minigallery:: ../../examples/transport/plot_scattering_matrix.py
+
 1982 -- The TKNN Invariant
 --------------------------------
 
@@ -932,6 +1116,88 @@ around a loop that misses it, and vorticity 0), and that the point moves
 continuously, without disappearing, as the potential is changed.
 
 .. minigallery:: ../../examples/topology/plot_diabolical_points.py
+
+1984/2007 -- The Wannier Obstruction of Chern Bands
+---------------------------------------------------------
+
+D. J. Thouless pointed out that a band with a nonzero Chern number cannot
+be built from exponentially localized Wannier functions: these need a
+gauge of the Bloch states that is smooth and periodic over the whole
+Brillouin zone, and the Chern number counts the phase winding that
+forbids one. C. Brouder, G. Panati, M. Calandra, C. Mourougane and N.
+Marzari proved the converse in 2007: exponentially localized Wannier
+functions exist exactly when every Chern number vanishes. A Chern band's
+Wannier functions decay only as a power law, and their spread diverges.
+The obstruction separates topological bands from atomic insulators, and
+it is the starting point of the later classifications by elementary band
+representations and fragile topology.
+
+*Implementation:* :func:`tbkit.wannier.wannierize` reports the smallest
+singular value of the projection onto the trial orbitals
+(``min_singular_value``) and refuses an exactly singular one; its
+gauge-invariant spread :math:`\Omega_I` stays finite while the total
+spread grows with the mesh.
+
+*References:* D. J. Thouless, "Wannier functions for magnetic sub-bands,"
+J. Phys. C 17, L325-L327 (1984); C. Brouder, G. Panati, M. Calandra, C.
+Mourougane, and N. Marzari, "Exponential Localization of Wannier
+Functions in Insulators," Phys. Rev. Lett. 98, 046402 (2007); T.
+Thonhauser and D. Vanderbilt, "Insulator/Chern-insulator transition in
+the Haldane model," Phys. Rev. B 74, 235111 (2006).
+
+*Example:* ``examples/topology/plot_wannier_obstruction_of_chern_bands.py``
+wannierizes the lower band of the Haldane model in its trivial and Chern
+phases. It shows both trial orbitals failing exactly at K or K' in the
+Chern phase, the minimized spread converging in the trivial phase but
+growing by about 0.3 per doubling of the mesh in the Chern phase (with
+:math:`\Omega_I` converged and the smallest projection falling as
+:math:`1/N`), and power-law tails :math:`|W|^2 \sim r^{-4}` against
+exponential ones.
+
+.. minigallery:: ../../examples/topology/plot_wannier_obstruction_of_chern_bands.py
+
+1986 -- Thermoelectric Transport in the Landauer Picture
+--------------------------------------------------------------
+
+Sivan and Imry (1986) extended the Landauer formula to heat. A
+temperature difference across a phase-coherent conductor drives a
+current, and a bias carries heat. In linear response, every coefficient
+is a moment of the transmission over the Fermi window,
+
+.. math::
+
+   L_n = \int dE\,(E - \mu)^n\,T(E)\left(-\frac{\partial f}{\partial E}\right)\, ,
+   \qquad G = L_0\, ,\quad S = -\frac{L_1}{TL_0}\, ,\quad
+   \kappa = \frac{L_2 - L_1^2/L_0}{T}\, .
+
+For a transmission smooth on the scale :math:`k_BT` they reduce to the Mott
+formula for the thermopower and the Wiedemann-Franz law
+:math:`\kappa = \frac{\pi^2}{3}TG`. A sharp resonance breaks both, which is
+the idea behind energy-filtering thermoelectrics (Mahan and Sofo 1996).
+
+*Implementation:* :meth:`tbkit.transport.Transport.thermoelectric` (and
+:meth:`~tbkit.transport.Transport.conductance`) integrate the exact
+transmission over the Fermi window; ``temperature`` in
+:meth:`~tbkit.transport.Transport.conductance_matrix` and
+:meth:`~tbkit.transport.Transport.four_terminal_resistance` does the same
+for multi-terminal devices.
+
+*References:* U. Sivan and Y. Imry, "Multichannel Landauer formula for
+thermoelectric transport with application to thermopower near the
+mobility edge," Phys. Rev. B 33, 551-558 (1986); P. N. Butcher, "Thermal
+and electrical transport formalism for electronic microstructures with
+many terminals," J. Phys.: Condens. Matter 2, 4869-4878 (1990); G. D.
+Mahan and J. O. Sofo, "The best thermoelectric," Proc. Natl. Acad. Sci.
+USA 93, 7436-7439 (1996).
+
+*Example:* ``examples/transport/plot_thermoelectric_transport.py``
+confirms that, through a resonant level at :math:`k_BT = \Gamma/50`, the
+thermopower follows the Mott formula and changes sign at the resonance,
+and the Lorenz ratio is :math:`\pi^2/3`, both within 2%. It also
+confirms that the Lorenz ratio falls below 1% of :math:`\pi^2/3` once
+:math:`k_BT = 10\,\Gamma`.
+
+.. minigallery:: ../../examples/transport/plot_thermoelectric_transport.py
 
 1988 -- The Haldane Model
 --------------------------------
@@ -1191,10 +1457,17 @@ at any k. The Wannier90 code (2008) made these models a routine output
 of density-functional calculations, and brought tight-binding back to
 materials-specific accuracy.
 
-*Implementation:* :func:`tbkit.io.read_wannier90` reads
-``seedname_hr.dat`` (with the degeneracy weights of the Wigner-Seitz
-supercell), the lattice vectors of ``seedname.win`` and the Wannier
-centres of ``seedname_centres.xyz`` into a
+*Implementation:* :func:`tbkit.wannier.wannierize` builds the maximally
+localized Wannier functions of an isolated band group of any
+:class:`~tbkit.kspace.KSpace` model: projection onto trial orbitals,
+Lowdin orthogonalization, then conjugate-gradient minimization of the
+Marzari-Vanderbilt spread. It returns the functions on the sites of a
+finite :class:`~tbkit.system.System`, their centres, their spreads and
+:math:`\Omega_I, \tilde\Omega_D, \tilde\Omega_{OD}` (entangled bands
+are disentangled first, see the 2001 entry). :func:`tbkit.io.read_wannier90`
+reads ``seedname_hr.dat`` (with the degeneracy weights of the
+Wigner-Seitz supercell), the lattice vectors of ``seedname.win`` and the
+Wannier centres of ``seedname_centres.xyz`` into a
 :class:`~tbkit.kspace.KSpace`; :func:`~tbkit.io.read_hr`,
 :func:`~tbkit.io.read_win_cell` and :func:`~tbkit.io.read_centres` read
 the files themselves.
@@ -1206,10 +1479,17 @@ Rev. B 65, 035109 (2001); A. A. Mostofi et al., "wannier90: A tool for
 obtaining maximally-localised Wannier functions," Comput. Phys. Commun.
 178, 685-699 (2008); N. Marzari et al., Rev. Mod. Phys. 84, 1419 (2012).
 
-*Example:* ``examples/models/plot_maximally_localized_wannier_functions.py``
+*Examples:* ``examples/models/plot_building_maximally_localized_wannier_functions.py``
+builds them for the SSH chain, where the minimization reaches the bound
+:math:`\Omega = \Omega_I` with the centre on the Wilson-loop value 0.75,
+and for gapped graphene, whose Wannier function sits on a ``b`` site with
+:math:`\langle 0|H|0\rangle` equal to the band's mean energy.
+``examples/models/plot_maximally_localized_wannier_functions.py``
 imports graphene's :math:`p_z` bands from Wannier90-format files shipped
 with it, checks the degeneracy weights and the decay of the hoppings, and
 recovers the closed-form energies at :math:`\Gamma` and at the Dirac point.
+
+.. minigallery:: ../../examples/models/plot_building_maximally_localized_wannier_functions.py
 
 .. minigallery:: ../../examples/models/plot_maximally_localized_wannier_functions.py
 
@@ -1273,10 +1553,17 @@ nanowires with strong spin-orbit coupling (Lutchyn, Sau and Das Sarma;
 Oreg, Refael and von Oppen, 2010) launched the search for topological
 qubits.
 
+Kitaev's bulk invariant is the *Majorana number*
+:math:`\mathcal{M} = \mathrm{sign}[\mathrm{Pf}A(0)\,\mathrm{Pf}A(\pi)]`, from the
+Pfaffians of the Hamiltonian written in Majorana operators at the two
+time-reversal-invariant momenta: :math:`-1` when the chain is topological.
+
 *Implementation:* :mod:`tbkit.bdg` -- the real-space BdG Hamiltonian
 (:func:`~tbkit.bdg.bdg_ham`, with bond or s-wave pairings), and the BdG
 Bloch Hamiltonian (:func:`~tbkit.bdg.bdg_kspace`), whose Berry phase,
-open chains and symmetry class follow from the usual **KSpace** tools.
+open chains and symmetry class follow from the usual **KSpace** tools;
+:func:`~tbkit.bdg.majorana_number` (with :func:`~tbkit.bdg.pfaffian`) gives
+the Majorana number, and the parity of the Chern number in 2D.
 
 *References:* A. Y. Kitaev, "Unpaired Majorana Fermions in Quantum
 Wires," Physics-Uspekhi 44, 131-136 (2001); R. M. Lutchyn, J. D. Sau,
@@ -1284,11 +1571,59 @@ and S. Das Sarma, Phys. Rev. Lett. 105, 077001 (2010); Y. Oreg, G.
 Refael, and F. von Oppen, Phys. Rev. Lett. 105, 177002 (2010).
 
 *Example:* ``examples/superconductivity/plot_kitaev_chain.py`` confirms
-the bulk spectrum, the Berry phase :math:`\pi` for :math:`|\mu| < 2|t|` and
-0 outside, and two zero modes (:math:`|E| \sim 10^{-12}`) at the ends of
+the bulk spectrum, the Berry phase :math:`\pi` and the Majorana number
+:math:`-1` for :math:`|\mu| < 2|t|` (0 and :math:`+1` outside), and two zero modes (:math:`|E| \sim 10^{-12}`) at the ends of
 an open 40-site chain in the topological phase only.
 
 .. minigallery:: ../../examples/superconductivity/plot_kitaev_chain.py
+
+2001 -- Disentanglement of Entangled Bands
+---------------------------------------------
+
+Maximally localized Wannier functions need a group of bands separated
+from the rest of the spectrum, and the bands of interest rarely are:
+graphene's π bands cross its σ bands, and the d bands of transition
+metals are entangled with s bands. I. Souza, N. Marzari and D. Vanderbilt
+split the construction in two. First, at each k, choose the
+:math:`n_W`-dimensional subspace of the states in an outer energy window
+that changes least from k to k: the one that minimizes the
+gauge-invariant spread :math:`\Omega_I`, a variational problem solved by
+iterating an eigenvalue problem at each k. States in an inner, frozen
+window are kept unchanged, so the Wannier functions reproduce the bands
+there exactly. Then localize within that subspace as for an isolated
+group. Disentanglement is what made Wannier functions usable for metals
+and for the low-energy bands of real materials, and it is the first step
+of nearly every Wannier90 calculation. The Hamiltonian in the resulting
+basis interpolates the bands between the mesh points (Wannier
+interpolation).
+
+*Implementation:* :func:`tbkit.wannier.wannierize` disentangles when it
+gets more bands than trial orbitals, or an outer ``window``, with an
+optional ``frozen`` window: the subspace iteration with linear mixing
+(``dis_history`` records :math:`\Omega_I` at each step), then the
+spread minimization within it.
+:meth:`~tbkit.wannier.WannierFunctions.kspace` returns the Wannier-basis
+Hamiltonian :math:`H_{mn}(\mathbf{R})` as a
+:class:`~tbkit.kspace.KSpace` (Wigner-Seitz images, as in Wannier90), the
+model :func:`tbkit.io.read_wannier90` would read.
+
+*References:* I. Souza, N. Marzari, and D. Vanderbilt, "Maximally
+localized Wannier functions for entangled energy bands," Phys. Rev. B 65,
+035109 (2001); J. R. Yates, X. Wang, D. Vanderbilt, and I. Souza,
+"Spectral and Fermi surface properties from Wannier interpolation,"
+Phys. Rev. B 75, 195121 (2007).
+
+*Example:* ``examples/models/plot_disentangling_entangled_bands.py``
+takes the eight sp\ :sup:`3` bands of graphene, where the π band starts
+6 eV below the top of the σ bands. In flat graphene the disentangled
+subspace is exactly the :math:`p_z` one (:math:`\Omega_I = 0`), and the
+Wannier model is Wallace's, with the single hopping :math:`V_{pp\pi}`.
+In buckled graphene the π and σ states mix: :math:`\Omega_I` decreases at
+every step, the frozen bands are reproduced on the mesh to
+:math:`10^{-14}`, and the error between mesh points falls from 0.23 eV to
+0.04 eV as the mesh goes from 6 x 6 to 12 x 12.
+
+.. minigallery:: ../../examples/models/plot_disentangling_entangled_bands.py
 
 2003/2004 -- The Intrinsic Spin Hall Effect
 --------------------------------------------------
@@ -1378,6 +1713,51 @@ Zhang, S. V. Dubonos, I. V. Grigorieva, and A. A. Firsov, "Electric Field
 Effect in Atomically Thin Carbon Films," Science 306, 666-669 (2004).
 
 .. minigallery:: ../../examples/tight_binding/plot_isolation_of_graphene.py
+
+2005 -- The Modern Theory of Orbital Magnetization
+--------------------------------------------------------
+
+The orbital magnetization of a crystal, the moment of its circulating
+currents :math:`\frac{1}{2}\int\mathbf{r}\times\mathbf{j}`, has the same
+problem as the polarization: the position operator is ill defined in a
+periodic solid. T. Thonhauser, D. Ceresoli, D. Vanderbilt and R. Resta,
+from Wannier functions, and D. Xiao, J. Shi and Q. Niu, from wavepackets,
+found the bulk formula in 2005:
+
+.. math::
+
+   M = \frac{e}{\hbar}\int\frac{d^2k}{(2\pi)^2}\sum_nf_n\,
+   \mathrm{Im}\langle\partial_xu_n|(H+E_n-2\mu)|\partial_yu_n\rangle\, .
+
+One part is the self-rotation of the wavepackets, the other the edge
+currents of the Berry curvature. In a Chern insulator the latter grows
+linearly with :math:`\mu` across the gap, with slope the Chern number: the
+Streda formula :math:`\partial M/\partial\mu = \partial n/\partial B =
+\sigma_{xy}`.
+
+*Implementation:* :meth:`tbkit.kspace.KSpace.orbital_magnetization`, at any
+Fermi level and temperature, from the same Bloch derivatives as
+:meth:`~tbkit.kspace.KSpace.hall_conductivity` and with its sign
+convention.
+
+*References:* T. Thonhauser, D. Ceresoli, D. Vanderbilt, and R. Resta,
+"Orbital Magnetization in Periodic Insulators," Phys. Rev. Lett. 95,
+137205 (2005); D. Xiao, J. Shi, and Q. Niu, "Berry Phase Correction to
+Electron Density of States in Solids," Phys. Rev. Lett. 95, 137204
+(2005); D. Ceresoli, T. Thonhauser, D. Vanderbilt, and R. Resta, "Orbital
+magnetization in crystalline solids: Multi-band insulators, Chern
+insulators, and metals," Phys. Rev. B 74, 024408 (2006); P. Streda,
+"Theory of quantised Hall conductivity in two dimensions," J. Phys. C 15,
+L717 (1982).
+
+*Example:* ``examples/magnetic_field/plot_orbital_magnetization.py``
+sweeps :math:`\mu` through the Haldane model: :math:`\partial M/\partial\mu`
+equals the Chern number in the gap to :math:`10^{-6}` (1 in the
+topological phase, 0 in the trivial one), and the electrons that a weak
+field pulls into the bulk of a finite flake give the same slope to
+:math:`10^{-4}`.
+
+.. minigallery:: ../../examples/magnetic_field/plot_orbital_magnetization.py
 
 2005-2007 -- The Kane-Mele Model and the Quantum Spin Hall Effect
 ------------------------------------------------------------------------
@@ -1469,6 +1849,73 @@ zero-energy states bound by 2% of vacancies.
 
 .. minigallery:: ../../examples/large_scale/plot_kernel_polynomial_method.py
 
+2006 -- The Berry-Phase Anomalous Nernst Effect
+-----------------------------------------------------
+
+A temperature gradient across a ferromagnet drives a transverse current
+with no magnetic field. D. Xiao, Y. Yao, Z. Fang and Q. Niu showed that its
+intrinsic part comes from the Berry curvature, weighted by the entropy
+:math:`s = -f\ln f-(1-f)\ln(1-f)` of each state:
+
+.. math::
+
+   \alpha_{xy} = \frac{ek_B}{\hbar}\int\frac{d^2k}{(2\pi)^2}\sum_ns_n\,\Omega_n\, .
+
+The orbital magnetization of 2005 is what makes the thermal and the
+electrical driving forces differ. Only states near :math:`\mu` carry
+entropy, so the effect vanishes in a gap, and the formula is equivalent to
+the Mott relation
+:math:`\alpha_{xy} = \frac{1}{eT}\int dE\,(E-\mu)(-\partial f/\partial E)\,\sigma_{xy}(E)`.
+
+*Implementation:* :meth:`tbkit.kspace.KSpace.anomalous_nernst_conductivity`.
+
+*References:* D. Xiao, Y. Yao, Z. Fang, and Q. Niu, "Berry-Phase Effect
+in Anomalous Thermoelectric Transport," Phys. Rev. Lett. 97, 026603
+(2006); D. Xiao, M.-C. Chang, and Q. Niu, "Berry phase effects on
+electronic properties," Rev. Mod. Phys. 82, 1959 (2010).
+
+*Example:* ``examples/hall_effects/plot_anomalous_nernst_effect.py``
+computes :math:`\alpha_{xy}(\mu)` of the Haldane model at three
+temperatures: it vanishes in the gap, agrees with the Mott integral of the
+Hall conductivity to :math:`10^{-4}`, and approaches
+:math:`\frac{\pi^2}{3}k_BT\,d\sigma_{xy}/d\mu` at low temperature.
+
+.. minigallery:: ../../examples/hall_effects/plot_anomalous_nernst_effect.py
+
+2006/2009 -- The Spin Chern Number
+----------------------------------------
+
+The Chern numbers of the two spins of the Kane-Mele model are
+:math:`\pm1`, and their half-difference, the spin Chern number
+:math:`C_s`, counts its helical edge pairs. Rashba coupling mixes the
+spins, and the picture seems lost. D. N. Sheng, Z. Y. Weng, L. Sheng and
+F. D. M. Haldane (2006) found numerically, from spin-twisted boundary
+conditions, that :math:`C_s` survives. E. Prodan (2009) gave the exact
+construction: project the spin onto the occupied bands, :math:`Ps_zP`. As
+long as its spectrum keeps a gap around zero, its positive and negative
+eigenvectors split the bands into two sectors with well-defined Chern
+numbers :math:`C_\pm`, and :math:`C_s = (C_+ - C_-)/2`. With time reversal,
+:math:`C_s` modulo 2 is the :math:`\mathbb{Z}_2` invariant, and
+:math:`C_s` stays quantized when time reversal is broken too, as long as
+both gaps stay open.
+
+*Implementation:* :meth:`tbkit.kspace.KSpace.spin_chern_number`, built on
+:meth:`~tbkit.kspace.KSpace.sector_chern_numbers` (the Chern numbers of
+the two sectors of any Hermitian operator projected on a group of bands).
+
+*References:* D. N. Sheng, Z. Y. Weng, L. Sheng, and F. D. M. Haldane,
+"Quantum Spin-Hall Effect and Topologically Invariant Chern Numbers,"
+Phys. Rev. Lett. 97, 036808 (2006); E. Prodan, "Robustness of the Spin-Chern
+Number," Phys. Rev. B 80, 125327 (2009).
+
+*Example:* ``examples/topology/plot_spin_chern_number.py`` confirms
+:math:`C_\pm = \pm1` without Rashba coupling, :math:`C_s = 1` with it --
+equal to :math:`\nu` across a Rashba sweep, while the spin gap stays open and
+:math:`s_z` is not conserved -- the drop to 0 where the bulk gap closes, and
+:math:`C_s = 1` with time reversal broken by an in-plane Zeeman field.
+
+.. minigallery:: ../../examples/topology/plot_spin_chern_number.py
+
 2007 -- The Fu-Kane Parity Criterion
 -------------------------------------------
 
@@ -1513,8 +1960,11 @@ never mixed with those of an opposite surface.
 
 *Implementation:* :meth:`tbkit.kspace.KSpace.surface_spectral_function`
 (surface or bulk, either side, any primitive vector as surface normal);
-:meth:`~tbkit.kspace.KSpace.parity_z2` gives the strong index of 3D
-models.
+:meth:`~tbkit.kspace.KSpace.z2_indices_3d` gives the four indices
+:math:`(\nu_0;\nu_1\nu_2\nu_3)` from the Wannier-centre flow on the six
+time-reversal-invariant planes, and
+:meth:`~tbkit.kspace.KSpace.parity_z2` the strong index of
+inversion-symmetric models.
 
 *References:* L. Fu, C. L. Kane, and E. J. Mele, "Topological Insulators
 in Three Dimensions," Phys. Rev. Lett. 98, 106803 (2007); J. E. Moore and
@@ -1525,7 +1975,8 @@ P. Lopez Sancho, J. M. Lopez Sancho, and J. Rubio, J. Phys. F 15, 851
 (1985).
 
 *Example:* ``examples/topology/plot_3d_topological_insulator.py``
-confirms the strong index of a cubic model across its phases, an empty
+confirms the four indices of a cubic model across its phases -- trivial,
+strong, the weak :math:`(0;111)` and strong :math:`(1;111)` -- an empty
 bulk gap, a single surface Dirac cone of velocity 1 at
 :math:`\bar\Gamma` (at :math:`\bar{M}` when the band inversion moves to
 :math:`R`), and no surface state in the trivial phase.
@@ -1583,6 +2034,115 @@ absorption peaks at the van Hove energy :math:`2|t|`; and that doping to
 :math:`E_F` suppresses it below :math:`2|E_F|`.
 
 .. minigallery:: ../../examples/optics/plot_graphene_universal_absorption.py
+
+2008 -- The Entanglement Spectrum
+---------------------------------------
+
+H. Li and F. D. M. Haldane showed that the entanglement between two halves
+of a topological ground state carries more than a number. The spectrum
+of the reduced density matrix, :math:`\rho_A = e^{-H_E}/Z`, reproduces the
+edge spectrum at the cut, as if the cut were a physical edge. For free
+fermions the entanglement Hamiltonian :math:`H_E` is quadratic (I. Peschel,
+2003), and its levels follow from the eigenvalues :math:`\xi_n` of the
+correlation matrix restricted to one half. L. Fidkowski, and A. Turner, Y.
+Zhang and A. Vishwanath (2010), showed that topology then forces
+entanglement modes inside :math:`(0, 1)`: a mode pinned at
+:math:`\xi = 1/2` at each cut of a chiral-symmetric chain, and a branch
+that flows across the whole interval with the momentum along the cut of
+a Chern insulator. The diagnostic depends on the ground state alone,
+not on the basis of the Hamiltonian, and needs no physical edge.
+
+*Implementation:* :func:`tbkit.topology.entanglement_spectrum` (finite
+samples, any region) and :meth:`tbkit.kspace.KSpace.entanglement_spectrum`
+(k-resolved, for ribbons and supercells).
+
+*References:* H. Li and F. D. M. Haldane, "Entanglement Spectrum as a
+Generalization of Entanglement Entropy," Phys. Rev. Lett. 101, 010504
+(2008); I. Peschel, J. Phys. A 36, L205 (2003); L. Fidkowski, Phys. Rev.
+Lett. 104, 130502 (2010); A. M. Turner, Y. Zhang, and A. Vishwanath, Phys.
+Rev. B 82, 241102(R) (2010).
+
+*Example:* ``examples/topology/plot_entanglement_spectrum.py`` confirms
+two modes at :math:`\xi = 1/2` (to :math:`10^{-10}`) for half of a
+topological SSH ring and none near 1/2 in the trivial phase, and the
+k-resolved spectrum of a Haldane cylinder filling :math:`(0.1, 0.9)` in the
+Chern phase and staying out of it in the trivial one.
+
+.. minigallery:: ../../examples/topology/plot_entanglement_spectrum.py
+
+2008/2012 -- Topological Crystalline Insulators and Mirror Chern Numbers
+------------------------------------------------------------------------------
+
+J. Teo, L. Fu and C. Kane (2008) showed that a crystal symmetry can
+protect a topology that time reversal misses. On a plane of the zone
+invariant under a mirror, the mirror commutes with :math:`H(\mathbf{k})`, the
+bands split into mirror sectors, and the *mirror Chern number*
+:math:`n_M = (C_{+i} - C_{-i})/2` is an integer whose parity is the
+:math:`\mathbb{Z}_2` index of the plane. L. Fu (2011) called insulators
+protected this way *topological crystalline insulators*, and T. Hsieh,
+H. Lin, J. Liu, W. Duan, A. Bansil and L. Fu (2012) predicted that SnTe
+is one: :math:`n_M = 2`, all :math:`\mathbb{Z}_2` indices zero, and surface
+Dirac cones on the mirror-symmetric surfaces. Tanaka et al., Dziawa et al.
+and Xu et al. observed them the same year in SnTe and
+Pb\ :sub:`1-x`\ Sn\ :sub:`x`\ (Se, Te).
+
+*Implementation:* :meth:`tbkit.kspace.KSpace.mirror_chern_number` (a
+*mirror* operator with :math:`M^2 = \pm1`, checked to commute with
+:math:`H(\mathbf{k})` on the chosen plane).
+
+*References:* J. C. Y. Teo, L. Fu, and C. L. Kane, "Surface States and
+Topological Invariants in Three-Dimensional Topological Insulators:
+Application to Bi\ :sub:`1-x`\ Sb\ :sub:`x`," Phys. Rev. B 78, 045426 (2008);
+L. Fu, Phys. Rev. Lett. 106, 106802 (2011); T. H. Hsieh, H. Lin, J. Liu,
+W. Duan, A. Bansil, and L. Fu, "Topological Crystalline Insulators in the
+SnTe Material Class," Nat. Commun. 3, 982 (2012); Y. Tanaka et al., Nat.
+Phys. 8, 800 (2012); P. Dziawa et al., Nat. Mater. 11, 1023 (2012); S.-Y.
+Xu et al., Nat. Commun. 3, 1192 (2012).
+
+*Example:* ``examples/topology/plot_mirror_chern_number.py`` confirms
+:math:`\nu = n_M` modulo 2 on the mirror planes of a 3D topological
+insulator, then :math:`n_M = 2` with all four :math:`\mathbb{Z}_2` indices
+zero for two coupled copies, and surface states across the bulk gap on
+the mirror line of their (100) surface, absent in the trivial phase.
+
+.. minigallery:: ../../examples/topology/plot_mirror_chern_number.py
+
+2008/2009 -- The Axion Angle and the Topological Magnetoelectric Effect
+-----------------------------------------------------------------------------
+
+In an insulator, a magnetic field can induce a polarization,
+:math:`\mathbf{P} = \frac{\theta}{2\pi}\frac{e^2}{h}\mathbf{B}`, through the
+axion term :math:`\frac{\theta e^2}{2\pi h}\mathbf{E}\cdot\mathbf{B}` of the
+electromagnetic Lagrangian (F. Wilczek 1987). X.-L. Qi, T. Hughes and S.-C.
+Zhang (2008) and A. Essin, J. Moore and D. Vanderbilt (2009) found that
+for Bloch electrons :math:`\theta` is the Chern-Simons integral of the
+Berry connection of the occupied bands. It is defined modulo
+:math:`2\pi`, and time reversal or inversion pin it to 0 or :math:`\pi`:
+:math:`\theta = \pi` is the 3D topological insulator, a quantized
+magnetoelectric response. Breaking those symmetries (a magnetic
+topological insulator, an antiferromagnet) frees :math:`\theta`, and a
+cycle of Hamiltonians changes it by :math:`2\pi` times the second Chern
+number, the 4D quantum Hall effect.
+
+*Implementation:* :meth:`tbkit.kspace.KSpace.axion_angle` integrates the
+second Chern form along a gapped path of a value-function parameter
+(gauge invariant: no smooth gauge is needed).
+
+*References:* F. Wilczek, "Two applications of axion electrodynamics,"
+Phys. Rev. Lett. 58, 1799 (1987); X.-L. Qi, T. L. Hughes, and S.-C. Zhang,
+"Topological field theory of time-reversal invariant insulators," Phys.
+Rev. B 78, 195424 (2008); A. M. Essin, J. E. Moore, and D. Vanderbilt,
+"Magnetoelectric Polarizability and Axion Electrodynamics in Crystalline
+Insulators," Phys. Rev. Lett. 102, 146805 (2009).
+
+*Example:* ``examples/topology/plot_axion_angle.py`` pumps a lattice
+Dirac model through a cycle: :math:`\theta` goes from 0 at the trivial
+point to :math:`\pi` at the topological one and :math:`2\pi` at the end
+(:math:`C_2 = 1`), within :math:`10^{-3}\pi`, matching the strong
+:math:`\mathbb{Z}_2` index at both time-reversal symmetric points, while a
+trivial model's :math:`\theta` stays at 0.
+
+.. minigallery:: ../../examples/topology/plot_axion_angle.py
 
 2009/2011 -- Floquet Topological Insulators
 --------------------------------------------------
@@ -1768,6 +2328,38 @@ supercell.
 
 .. minigallery:: ../../examples/moire/plot_band_unfolding.py
 
+2010 -- The Bott Index
+-----------------------------
+
+T. Loring and M. Hastings found a Chern number for finite samples
+without translation symmetry. On a torus the positions are defined only
+modulo the sides, but their exponentials :math:`e^{2\pi iX_{1,2}}` are well
+defined. Projected on the occupied states, :math:`\tilde U` and
+:math:`\tilde V`, they almost commute in an insulator, and the winding of
+their commutator,
+:math:`B = \frac{1}{2\pi}\mathrm{Im}\,\mathrm{Tr}\log(\tilde V\tilde U\tilde V^\dagger\tilde U^\dagger)`,
+is an integer: the *Bott index*. It equals the Chern number of a clean
+crystal, and it applies to disordered lattices, amorphous solids and
+quasicrystals, where it locates the topological Anderson transitions.
+It complements the local Chern marker below, which needs open edges and
+a bulk average.
+
+*Implementation:* :func:`tbkit.topology.bott_index` (any Hermitian
+Hamiltonian on a torus, e.g. from :meth:`tbkit.kspace.KSpace.finite_ham`
+with ``periodic=True``, and its orbital positions).
+
+*References:* T. A. Loring and M. B. Hastings, "Disordered Topological
+Insulators via C*-Algebras," EPL 92, 67004 (2010); T. A. Loring, Ann.
+Phys. 356, 383 (2015).
+
+*Example:* ``examples/topology/plot_bott_index.py`` confirms, on a Haldane
+torus, a Bott index equal to the Chern number across the phase diagram,
+an integer for every disordered sample, and a value of 1 up to disorder
+:math:`W = 5` (more than twice the clean gap) that drops to 0 for
+:math:`W \geq 8`.
+
+.. minigallery:: ../../examples/topology/plot_bott_index.py
+
 2011 -- The Local Chern Marker
 -------------------------------------
 
@@ -1791,6 +2383,40 @@ zero, robust to weak disorder and destroyed by strong disorder.
 
 .. minigallery:: ../../examples/topology/plot_local_chern_marker.py
 
+2011 -- The Intrinsic Thermal Hall Effect and the Wiedemann-Franz Law
+-----------------------------------------------------------------------------
+
+The heat current of a Hall system includes a circulating part, a
+magnetization current, that does not flow through the sample. T. Qin,
+Q. Niu and J. Shi (2011) separated it in the Kubo formula and found the
+transport thermal Hall conductivity of the electrons as one more
+Berry-curvature integral,
+
+.. math::
+
+   \kappa_{xy} = \frac{k_B^2T}{\hbar}\int\frac{d^2k}{(2\pi)^2}\sum_nc_2(x_n)\,\Omega_n\, ,
+   \qquad c_2(x) = \int_x^\infty y^2\left(-\frac{\partial f}{\partial y}\right)dy\, .
+
+At low temperature it obeys the Wiedemann-Franz law,
+:math:`\kappa_{xy} = \frac{\pi^2k_B^2}{3e^2}T\sigma_{xy}`; for a Chern
+insulator the thermal Hall conductance is quantized, as for the heat
+carried by its chiral edge states.
+
+*Implementation:* :meth:`tbkit.kspace.KSpace.thermal_hall_conductivity`.
+
+*References:* T. Qin, Q. Niu, and J. Shi, "Energy Magnetization and the
+Thermal Hall Effect," Phys. Rev. Lett. 107, 236601 (2011); C. L. Kane and
+M. P. A. Fisher, "Quantized thermal transport in the fractional quantum
+Hall effect," Phys. Rev. B 55, 15832 (1997).
+
+*Example:* ``examples/hall_effects/plot_thermal_hall_effect.py`` finds
+:math:`\kappa_{xy}/T = \pi^2/3` (:math:`k_B^2/h`) on the Chern plateau of the
+Haldane model to :math:`10^{-6}`, agreement with the energy integral of
+the Hall conductivity everywhere, and the departure from Wiedemann-Franz
+when :math:`k_BT` approaches the gap.
+
+.. minigallery:: ../../examples/hall_effects/plot_thermal_hall_effect.py
+
 2011/2015 -- Weyl Semimetals
 -----------------------------------
 
@@ -1804,6 +2430,9 @@ point; each plane with :math:`C \neq 0` contributes a chiral surface
 state, and together they draw the arc between the projected Weyl points.
 
 *Implementation:* 3D **KSpace** models (*prim_vec* as three 3-tuples);
+:func:`tbkit.topology.find_weyl_points` locates the Weyl points (gap
+minima on a mesh, Newton refinement) with their chiralities, the Berry
+flux through a small sphere around each;
 :meth:`~tbkit.kspace.KSpace.chern_number` of a plane of the zone
 (*plane*, *k_fixed*); :func:`tbkit.kspace.ribbon` cuts a slab.
 
@@ -1813,8 +2442,10 @@ Structure of Pyrochlore Iridates," Phys. Rev. B 83, 205101 (2011); S.-Y.
 Xu et al., Science 349, 613 (2015); B. Q. Lv et al., Phys. Rev. X 5,
 031013 (2015).
 
-*Example:* ``examples/three_dimensions/plot_weyl_semimetal.py`` confirms
-two linear Weyl points, :math:`|C(k_z)| = 1` between them and 0 outside,
+*Example:* ``examples/three_dimensions/plot_weyl_semimetal.py`` finds
+two linear Weyl points of chirality :math:`\mp1`, confirms that
+:math:`C(k_z)` jumps by the chirality across each (:math:`|C| = 1` between
+them, 0 outside),
 and zero-energy surface states of a slab only between the projected
 Weyl points.
 
@@ -1940,6 +2571,45 @@ hoppings, since the 1.05° cell (11908 orbitals) is too large for dense
 Bloch matrices -- central bands more than 15 times narrower.
 
 .. minigallery:: ../../examples/moire/plot_magic_angle_twisted_bilayer.py
+
+2014 -- Leads as Translational Symmetries: Automatic Lead Attachment
+--------------------------------------------------------------------------
+
+Every transport calculation since Caroli et al. (1971) splits the world
+into a finite device and semi-infinite leads that enter only through
+their surface Green's functions. For decades, though, the coupling
+between the two was written by hand: which device sites the lead
+touches, and with which hopping matrix. That is easy for a straight strip
+and error-prone for anything else. C. W. Groth, M. Wimmer, A. R. Akhmerov
+and X. Waintal (2014) made the lead a *translational symmetry* of a
+tight-binding model in Kwant: a unit cell plus a lattice vector. The
+interface then follows from geometry. The device sites that the
+translation maps onto lead orbitals are copies of them, and the lead's own
+hopping to the next cell couples them to it. Devices of any shape, with
+leads of any width at any position, are built in a few lines, and the
+scattering problem is assembled automatically.
+
+*Implementation:* :meth:`tbkit.transport.Transport.attach_lead` takes the
+lead as a 1D :class:`~tbkit.kspace.KSpace` (e.g. a strip from
+:func:`~tbkit.kspace.ribbon`) whose orbitals sit at their positions in the
+device's coordinates. It finds the interface cell and builds the coupling
+from :func:`~tbkit.transport.lead_from_kspace`, for the S-matrix and Caroli
+methods of :class:`~tbkit.transport.Transport`.
+
+*References:* C. Caroli, R. Combescot, P. Nozieres, and D. Saint-James,
+"Direct calculation of the tunneling current," J. Phys. C 4, 916-929
+(1971); C. W. Groth, M. Wimmer, A. R. Akhmerov, and X. Waintal, "Kwant: a
+software package for quantum transport," New J. Phys. 16, 063065 (2014).
+
+*Example:* ``examples/transport/plot_automatic_lead_attachment.py``
+checks that, on a straight strip, the automatic leads give the same
+transmission as hand-built ones to :math:`10^{-8}`. It then attaches two
+6-site leads at different heights to a 20 x 30 cavity: the contacts are
+found on the outermost columns under each lead's footprint, the
+transmission stays below the number of open modes of the narrow leads,
+and the scattering matrix is unitary.
+
+.. minigallery:: ../../examples/transport/plot_automatic_lead_attachment.py
 
 2015-2018 -- Exceptional Points in Momentum Space: Vorticity, Exceptional Rings and Bulk Fermi Arcs
 -------------------------------------------------------------------------------------------------------

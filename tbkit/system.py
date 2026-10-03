@@ -11,10 +11,12 @@ import scipy.linalg as LA
 import scipy.sparse.linalg as SLA
 from scipy.spatial import cKDTree
 import numpy.random as rand
-import numpy.char as npc
+npc = np.char  # `import numpy.char` needs NumPy >= 2.0
+from itertools import product
 from math import sin, cos
 import tbkit.error_handling as error_handling
 import tbkit.occupation as occupation
+import tbkit.values as values
 from tbkit.lattice import Lattice, COOR_DTYPE
 
 
@@ -35,11 +37,25 @@ def _upper(ang: NDArray) -> NDArray:
 
 
 class System():
-    '''
+    r'''
     Solve the Tight-Binding eigenvalue problem of a lattice defined 
     by the class **lattice**.
 
     :param lat: **lattice** class instance.
+    :param periodic: Boolean, or tuple of booleans (one per primitive
+        vector). Default value False. Periodic boundary conditions along the
+        primitive vectors :math:`\mathbf{a}_i`: the sample is then the
+        :math:`n_1\mathbf{a}_1\times n_2\mathbf{a}_2\,(\times n_3\mathbf{a}_3)`
+        box of *lat.get_lattice* wrapped into a torus (True), or a cylinder
+        (e.g. ``(True, False)``, periodic along :math:`\mathbf{a}_1` only).
+        *lat.get_lattice* must have been called; sites may be removed
+        afterwards (vacancies), but not moved. Every distance and bond
+        angle is then that of the shortest image, so the neighbour orders of
+        *set_hopping* include the bonds that wrap around, with their short
+        bond vector; a bond order reaching half-way around the torus is
+        refused (it would be ambiguous). A uniform magnetic field
+        (*set_magnetic_field*) and the local Chern marker need open
+        boundaries; *get_bott_index* is the Chern number of a torus.
 
     Up to *dense_max* sites (default 5000), the distances between all pairs
     of sites are computed (and kept in *vec_hop*). Larger lattices only look
@@ -51,8 +67,11 @@ class System():
     #: Largest lattice (number of sites) whose pairwise distances are all computed.
     dense_max = 5000
 
-    def __init__(self, lat: Lattice) -> None:
+    def __init__(self, lat: Lattice, periodic: bool | tuple[bool, ...] = False) -> None:
         error_handling.lat(lat)
+        self.periodic = error_handling.periodic(periodic, len(lat.prim_vec))
+        if any(self.periodic):
+            error_handling.torus_lattice(lat.n1)
         self.lat = lat
         self.sites = self.lat.sites  # used to check if sites changes
         self.coor_hop = np.array([], dtype=COOR_DTYPE)
@@ -61,6 +80,11 @@ class System():
         self.store_hop = {}  #  Store the relevant hoppings (dynamic programming)
         self.hop = np.array([], dtype=HOP_DTYPE) #  Hoppings to build-up the Hamiltonian
         self.onsite = np.array([], 'c16')  #  Onsite energies
+        # Value functions (see tbkit.values): (directed bond keys, function)
+        # of the hoppings whose row of `hop` holds a factor 't', and (site
+        # indices, function) of the onsite terms added to `onsite`.
+        self._hop_values = []
+        self._onsite_values = []
         self.ham = sparse.csr_matrix(([], ([], [])), shape=(self.lat.sites, self.lat.sites))  # Hamiltonian
         self.en = np.array([], 'c16')  # Eigenenergies
         self.rn = np.array([], 'c16')  # Right eigenvectors: H |rn> = en |rn>
@@ -76,6 +100,7 @@ class System():
         Clear structured array *hop*.
         '''
         self.hop = np.array([], dtype=HOP_DTYPE)
+        self._hop_values = []
 
     def get_distances(self, n_orders: int = 1) -> None:
         '''
@@ -92,7 +117,17 @@ class System():
             self._sparse_distances(n_orders)
             return
         self._pairs = None
-        dif = self.lat.distances()
+        if any(self.periodic):
+            # shortest images, a block of rows at a time to bound the memory
+            coords = self._coords()
+            n = len(coords)
+            d = np.empty((n, n, coords.shape[1]))
+            step = max(1, 1000000 // n)
+            for r0 in range(0, n, step):
+                d[r0:r0 + step] = self._min_image(coords[None, :, :] - coords[r0:r0 + step, None, :])
+            dif = tuple(d[..., c] for c in range(d.shape[-1]))
+        else:
+            dif = self.lat.distances()
         dist = np.sqrt(sum(d ** 2 for d in dif))
         ang = (180 / PI * np.arctan2(dif[1], dif[0]))
         if len(dif) == 3:
@@ -113,6 +148,91 @@ class System():
         '''
         return np.stack([self.lat.coor[f] for f in ('x', 'y', 'z')[:self.lat.space_dim]], axis=1)
 
+    def _box(self) -> NDArray[np.float64]:
+        '''
+        Private method. The vectors n_i a_i of the sample of *get_lattice*, shape (dim, space_dim).
+        '''
+        counts = np.array((self.lat.n1, self.lat.n2, self.lat.n3)[:len(self.lat.prim_vec)], dtype='f8')
+        return counts[:, None] * np.array(self.lat.prim_vec, dtype='f8')
+
+    def _torus(self) -> NDArray[np.float64]:
+        '''
+        Private method. The periodic vectors n_i a_i, shape (n_periodic, space_dim).
+        '''
+        return self._box()[list(self.periodic)]
+
+    def _min_image(self, d: NDArray[np.float64]) -> NDArray[np.float64]:
+        '''
+        Private method. Shortest images of displacements *d* (shape (..., space_dim))
+        under the periodic translations: the fractional coordinates along the
+        periodic vectors are rounded, then the neighbouring images compared
+        (rounding alone can miss the shortest one in a skewed cell). Only
+        displacements longer than half the shortest period need that
+        comparison: any other image of a shorter one is longer than it.
+        '''
+        if not any(self.periodic):
+            return d
+        torus = self._torus()
+        shape = d.shape
+        d = d.reshape(-1, shape[-1])  # 2D, for fast matrix products
+        frac = d @ np.linalg.pinv(self._box())[:, list(self.periodic)]
+        d = d - np.rint(frac) @ torus
+        sq = np.einsum('ij,ij->i', d, d)
+        far = np.flatnonzero(sq > (self._shortest_period() / 2) ** 2)
+        start = d[far]
+        best, best_sq = start.copy(), sq[far]
+        for m in product((-1, 0, 1), repeat=len(torus)):
+            if any(m):
+                cand = start + np.array(m, dtype='f8') @ torus
+                cand_sq = np.einsum('ij,ij->i', cand, cand)
+                shorter = cand_sq < best_sq - 1e-12
+                best[shorter], best_sq[shorter] = cand[shorter], cand_sq[shorter]
+        d[far] = best
+        return d.reshape(shape)
+
+    def _bond_vectors(self, i: NDArray, j: NDArray) -> NDArray[np.float64]:
+        '''
+        Private method. Bond vectors from sites *i* to sites *j*, shape
+        (len(i), space_dim): the shortest image on a torus.
+        '''
+        coords = self._coords()
+        return self._min_image(coords[j] - coords[i])
+
+    def _wrapped(self, i: NDArray, j: NDArray) -> NDArray:
+        '''
+        Private method. Mask of the bonds i -> j that wrap around the torus
+        (their shortest image is not the straight segment between the sites).
+        '''
+        coords = self._coords()
+        return np.linalg.norm(self._bond_vectors(i, j) - (coords[j] - coords[i]), axis=1) > ATOL
+
+    def _shortest_period(self) -> float:
+        '''
+        Private method. Length of the shortest nonzero periodic translation
+        (infinite with open boundaries).
+        '''
+        if not any(self.periodic):
+            return np.inf
+        torus = self._torus()
+        return min(np.linalg.norm(np.array(m, dtype='f8') @ torus)
+                       for m in product(range(-2, 3), repeat=len(torus)) if any(m))
+
+    def _near_pairs(self, tree: cKDTree, coords: NDArray[np.float64], radius: float) -> NDArray:
+        '''
+        Private method. Pairs i < j of sites closer than *radius* (shortest
+        image on a torus, from the images of the sites under the periodic
+        translations of -1, 0, +1 periods), sorted.
+        '''
+        if not any(self.periodic):
+            return tree.query_pairs(radius, output_type='ndarray')
+        torus = self._torus()
+        shifts = np.array(list(product((-1, 0, 1), repeat=len(torus))), dtype='f8') @ torus
+        images = (coords[None, :, :] + shifts[:, None, :]).reshape(-1, coords.shape[1])
+        found = tree.sparse_distance_matrix(cKDTree(images), radius, output_type='ndarray')
+        i, j = found['i'], found['j'] % len(coords)
+        keep = i < j
+        return np.unique(np.column_stack([i[keep], j[keep]]), axis=0).reshape(-1, 2)
+
     def _sparse_distances(self, n_orders: int) -> None:
         '''
         Private method. The pairs of sites up to the *n_orders*-th distinct
@@ -126,8 +246,8 @@ class System():
         radius = max(np.min(near[near > 1e-9]) if np.any(near > 1e-9) else 1., 1e-6)
         span = np.max(np.ptp(coords, axis=0)) * np.sqrt(coords.shape[1]) + radius
         while True:
-            pairs = tree.query_pairs(radius * (1. + 1e-6) + ATOL, output_type='ndarray')
-            dis = np.linalg.norm(coords[pairs[:, 1]] - coords[pairs[:, 0]], axis=1)
+            pairs = self._near_pairs(tree, coords, radius * (1. + 1e-6) + ATOL)
+            dis = np.linalg.norm(self._bond_vectors(pairs[:, 0], pairs[:, 1]), axis=1)
             uni = np.unique(dis.round(4))
             if len(uni) >= n_orders + 1 or radius > span:
                 break
@@ -142,8 +262,7 @@ class System():
         Private method. Angles (degrees) of the bonds from sites i to sites j,
         with the vertical-bond rule of *get_distances*.
         '''
-        coords = self._coords()
-        d = coords[j] - coords[i]
+        d = self._bond_vectors(i, j)
         ang = 180 / PI * np.arctan2(d[:, 1], d[:, 0])
         if d.shape[1] == 3:
             vertical = np.hypot(d[:, 0], d[:, 1]) < 1e-6 * np.maximum(np.linalg.norm(d, axis=1), 1.)
@@ -183,18 +302,30 @@ class System():
         '''
         Set onsite energies.
 
-        :param dict_onsite: Dictionary. key: sublattice tag, val: onsite energy.
+        :param dict_onsite: Dictionary. key: sublattice tag, val: onsite
+            energy, or a value function ``onsite(site, **params)``, evaluated
+            by ``get_ham(**params)``. *site* is a structured array of the
+            sites of that tag (fields 'x', 'y', ('z'), 'tag', 'index'); the
+            function returns one energy, or one per site. *set_onsite_dis*
+            adds to it.
 
         Example usage::
 
             # Line-Centered Square lattice
             sys.set_onsite({'a': -1j, 'b': -2j})
+            # a gate voltage V across the sample, set by get_ham(V=...)
+            sys.set_onsite({'a': lambda site, V: V * site['x'] / 10, 'b': 0.})
+            sys.get_ham(V=0.5)
         '''
         error_handling.sites(self.lat.sites)
         error_handling.set_onsite(dict_onsite, self.lat.tags)
         self.onsite = np.zeros(self.lat.sites, 'c16')
+        self._onsite_values = []
         for tag, on in dict_onsite.items():
-            self.onsite[self.lat.coor['tag'] ==tag] = on
+            if callable(on):
+                self._onsite_values.append((np.flatnonzero(self.lat.coor['tag'] == tag), on))
+            else:
+                self.onsite[self.lat.coor['tag'] ==tag] = on
 
     def get_bonds(self, n: int) -> tuple[NDArray, NDArray, NDArray]:
         '''
@@ -212,6 +343,7 @@ class System():
             * **i**, **j** -- Integer ndarrays. Bond end points.
             * **ang** -- Real ndarray. Bond angles, in degrees, in :math:`[0, 180)`.
         '''
+        error_handling.torus_size(self.dist_uni[n], self._shortest_period(), n)
         if self._pairs is not None:
             pairs = self._pairs[np.isclose(self.dist_uni[n], self._pair_dis, atol=ATOL)]
             pairs = pairs[np.lexsort((pairs[:, 1], pairs[:, 0]))]
@@ -266,9 +398,15 @@ class System():
 
                     Hopping tags.
 
-                * 't' Complex number.
+                * 't' Complex number, or value function.
 
-                    Hopping value.
+                    Hopping value. A value function ``t(site_i, site_j, **params)``
+                    is evaluated by ``get_ham(**params)``: *site_i* and *site_j*
+                    are structured arrays of the bonds' end points (fields 'x',
+                    'y', ('z'), 'tag', 'index'), and it returns one value, or
+                    one per bond (see the example below). Modifiers applied
+                    afterwards (*set_peierls_phase*, *set_hopping_dis*, ...)
+                    multiply it.
 
         :param upper_part: Boolean. Default value True.
 
@@ -304,6 +442,11 @@ class System():
                                         {'n': 1, 'ang': -90., 'tag': 'ab', 't': 3.},
                                         {'n': 1, 'ang': -90., 'tag': 'ba', 't': 4.}],
                                        upper_part=False)
+            # value function: a hopping that decays along x, swept without
+            # rebuilding the model
+            sys.set_hopping([{'n': 1, 't': lambda si, sj, t0, xi: t0 * np.exp(-si['x'] / xi)}])
+            for xi in (5., 10., 20.):
+                sys.get_ham(t0=1., xi=xi)
 
         .. note::
 
@@ -390,6 +533,7 @@ class System():
                 error_handling.index(ind, dic)
                 hop = self.set_given_hopping(dic['n'], size, dic, ind, upper_part=upper_part)
             self.hop = np.concatenate([self.hop, hop])
+            self._assign_hopping(np.arange(len(self.hop) - len(hop), len(self.hop)), dic['t'])
 
     def check_sites(self) -> None:
         '''
@@ -417,7 +561,7 @@ class System():
         '''
         hop = np.empty(size, dtype=HOP_DTYPE)
         hop['n'] = dic['n']
-        hop['t'] = dic['t']
+        hop['t'] = 1. if callable(dic['t']) else dic['t']
         if upper_part:
             hop['i'] = self.store_hop[n]['i'][mask]
             hop['j'] = self.store_hop[n]['j'][mask]
@@ -457,14 +601,67 @@ class System():
         hop['t'] = t 
         hop['tag'] = npc.add(self.lat.coor['tag'][i], 
                                         self.lat.coor['tag'][j])
-        ang = 180 / PI * np.arctan2(self.lat.coor['y'][j]-self.lat.coor['y'][i],
-                                                    self.lat.coor['x'][j]-self.lat.coor['x'][i])
+        d = self._bond_vectors(np.array(i, int), np.array(j, int))
+        ang = 180 / PI * np.arctan2(d[:, 1], d[:, 0])
         if upper_part:
             ang[ang < 0] += 180
         else:
             ang[ang >= 0] -= 180
         hop['ang'] = ang
         self.hop = np.concatenate([self.hop, hop])
+        self._assign_hopping(np.arange(len(self.hop) - len(hop), len(self.hop)), hop['t'])
+
+    def _assign_hopping(self, rows: NDArray, t) -> None:
+        '''
+        Private method. Set the values of the rows *rows* (indices or mask)
+        of *hop* to *t*: number(s), or a value function (the rows then hold
+        the factor 1). It replaces any value function set on the same bonds.
+        '''
+        keys = self._bond_keys(rows)
+        self._hop_values = [(k[~np.isin(k, keys)], f) for k, f in self._hop_values]
+        self._hop_values = [(k, f) for k, f in self._hop_values if k.size]
+        if callable(t):
+            self.hop['t'][rows] = 1.
+            self._hop_values.append((keys, t))
+        else:
+            self.hop['t'][rows] = t
+
+    def _bond_keys(self, rows: NDArray | slice) -> NDArray[np.int64]:
+        '''
+        Private method. One integer per directed bond (i, j) of the rows *rows* of *hop*.
+        '''
+        return (self.hop['i'][rows].astype('i8') << 32) | self.hop['j'][rows].astype('i8')
+
+    def _sites(self) -> NDArray:
+        '''
+        Private method. All the sites, as passed to value functions (see *tbkit.values.sites*).
+        '''
+        return values.sites(self._coords(), self.lat.coor['tag'], np.arange(self.lat.sites))
+
+    def _hop_t(self, params: dict) -> NDArray[np.complex128]:
+        '''
+        Private method. The hopping values of *hop*, value functions evaluated with *params*.
+        '''
+        t = self.hop['t'].copy()
+        if not self._hop_values:
+            return t
+        keys, sites = self._bond_keys(slice(None)), self._sites()
+        for k, func in self._hop_values:
+            rows = np.flatnonzero(np.isin(keys, k))
+            t[rows] *= values.evaluate(func, (sites[self.hop['i'][rows]], sites[self.hop['j'][rows]]),
+                                                  params, len(rows))
+        return t
+
+    def _onsite_e(self, params: dict) -> NDArray[np.complex128]:
+        '''
+        Private method. The onsite energies, value functions evaluated with *params*.
+        '''
+        onsite = self.onsite.copy()
+        if self._onsite_values:
+            sites = self._sites()
+            for idx, func in self._onsite_values:
+                onsite[idx] += values.evaluate(func, (sites[idx],), params, len(idx))
+        return onsite
 
     def set_hopping_dis(self, alpha: complex) -> None:
         '''
@@ -503,7 +700,13 @@ class System():
         :param phase: Callable. ``phase(xi, yi, xj, yj)`` returns
             :math:`\phi_{ij}`, the (real-valued) Peierls phase for the bond
             from :math:`(x_i, y_i)` to :math:`(x_j, y_j)`. Called with
-            Numpy arrays (one value per hopping in *sys.hop*).
+            Numpy arrays (one value per hopping in *sys.hop*). With periodic
+            boundaries, :math:`(x_j, y_j)` is the end of the short bond, i.e.
+            the image of site :math:`j` next to site :math:`i`, which lies
+            outside the sample for a bond that wraps around. The vector
+            potential must then be consistent with the torus: periodic (a
+            field of zero net flux), or uniform (a flux threading the holes
+            of the torus, i.e. twisted boundary conditions).
 
         .. note::
 
@@ -526,8 +729,8 @@ class System():
         error_handling.is_callable(phase, 'phase')
         xi = self.lat.coor['x'][self.hop['i']]
         yi = self.lat.coor['y'][self.hop['i']]
-        xj = self.lat.coor['x'][self.hop['j']]
-        yj = self.lat.coor['y'][self.hop['j']]
+        d = self._bond_vectors(self.hop['i'].astype(int), self.hop['j'].astype(int))
+        xj, yj = xi + d[:, 0], yi + d[:, 1]
         self.hop['t'] = self.hop['t'] * np.exp(1j * phase(xi, yi, xj, yj))
 
     def set_magnetic_field(self, alpha: float) -> None:
@@ -550,7 +753,12 @@ class System():
             # one flux quantum per 100 unit cells of a lattice with
             # lattice constant 1:
             sys.set_magnetic_field(alpha=0.01)
+
+        Open boundaries only: on a torus the symmetric gauge is not
+        periodic, and a uniform field needs a quantized total flux and
+        magnetic boundary conditions.
         '''
+        error_handling.not_periodic(self.periodic, 'set_magnetic_field')
         error_handling.real_number(alpha, 'alpha')
         self.set_peierls_phase(lambda xi, yi, xj, yj: PI * alpha * (xi*yj - xj*yi))
 
@@ -584,6 +792,7 @@ class System():
         error_handling.set_onsite_def(onsite_def, self.lat.sites)
         for i, o in onsite_def.items():
             self.onsite[i] = o
+        self._onsite_values = [(idx[~np.isin(idx, list(onsite_def))], f) for idx, f in self._onsite_values]
 
     def set_hopping_def(self, hopping_def: dict[tuple[int, int], complex]) -> None:
         '''
@@ -605,10 +814,10 @@ class System():
         for key, val in hopping_def.items():
             cond = (self.hop['i'] == key[0]) & (self.hop['j'] == key[1])
             if cond.any():
-                self.hop['t'][cond] = val
+                self._assign_hopping(cond, val)
                 continue
             cond = (self.hop['i'] == key[1]) & (self.hop['j'] == key[0])
-            self.hop['t'][cond] = np.conj(val)
+            self._assign_hopping(cond, np.conj(val))
 
     def set_new_hopping(self, list_hop: list[dict], ind: NDArray) -> None:
         '''
@@ -620,16 +829,14 @@ class System():
         '''
         for dic in list_hop:
             if len(dic) == 2:
-                self.hop['t'][ind] = dic['t']
+                self._assign_hopping(ind, dic['t'])
             elif len(dic) == 3 and 'ang' in dic:
-                self.hop['t'][ind & np.isclose(self.hop['ang'], dic['ang'],
-                                                              atol=ATOL)] = dic['t']
+                self._assign_hopping(ind & np.isclose(self.hop['ang'], dic['ang'], atol=ATOL), dic['t'])
             elif len(dic) == 3 and 'tag' in dic:
-                self.hop['t'][ind & (self.hop['tag'] == dic['tag'])] = dic['t']
+                self._assign_hopping(ind & (self.hop['tag'] == dic['tag']), dic['t'])
             else:
-                self.hop['t'][ind & (self.hop['tag'] == dic['tag'])
-                                        & np.isclose(self.hop['ang'], dic['ang'],
-                                                            atol=ATOL)] = dic['t']
+                self._assign_hopping(ind & (self.hop['tag'] == dic['tag'])
+                                                  & np.isclose(self.hop['ang'], dic['ang'], atol=ATOL), dic['t'])
 
     def find_square(self, xlims: tuple[float, float], ylims: tuple[float, float]) -> NDArray:
         '''
@@ -737,22 +944,35 @@ class System():
                 break
             i_visit = explored[0, 0]
 
-    def get_ham(self) -> None:
+    def get_ham(self, **params) -> None:
         '''
         Get the Tight-Binding Hamiltonian using sys.hop.
+
+        :param params: Values of the parameters of the value functions given
+            to *set_hopping* / *set_onsite*: each function gets the ones its
+            signature names (all of them with ``**kwargs``); the others are
+            ignored. Only the values are recomputed: sweeping a parameter
+            costs one call per point, not a new model.
+
+        Example usage::
+
+            for B in np.linspace(0., 0.1, 50):
+                sys.get_ham(B=B)
+                sys.get_eig()
         '''
         error_handling.empty_hop(self.hop)
         error_handling.hop_sites(self.hop, self.lat.sites)
+        t = self._hop_t(params)
         if np.all(self.hop['ang'] >= 0) or np.all(self.hop['ang'] < 0):
-            self.ham = sparse.csr_matrix((self.hop['t'], (self.hop['i'], self.hop['j'])), 
+            self.ham = sparse.csr_matrix((t, (self.hop['i'], self.hop['j'])), 
                                                             shape=(self.lat.sites, self.lat.sites)) \
-                           + sparse.csr_matrix((self.hop['t'].conj(), (self.hop['j'], self.hop['i'])), 
+                           + sparse.csr_matrix((t.conj(), (self.hop['j'], self.hop['i'])), 
                                                             shape=(self.lat.sites, self.lat.sites))
         else:
-            self.ham = sparse.csr_matrix((self.hop['t'], (self.hop['i'], self.hop['j'])), 
+            self.ham = sparse.csr_matrix((t, (self.hop['i'], self.hop['j'])), 
                                                             shape=(self.lat.sites, self.lat.sites))
         if self.onsite.size == self.lat.sites:
-            self.ham += sparse.diags(self.onsite, 0)
+            self.ham += sparse.diags(self._onsite_e(params), 0)
 
     def get_eig(self, eigenvec: bool = False, left: bool = False) -> None:
         '''
@@ -1062,6 +1282,7 @@ class System():
         :returns:
             * **marker** -- Real ndarray, shape (sites,).
         '''
+        error_handling.not_periodic(self.periodic, 'get_local_chern_marker')
         error_handling.empty_ham(self.ham)
         error_handling.real_number(e_fermi, 'e_fermi')
         error_handling.hermitian(self.ham)
@@ -1083,6 +1304,35 @@ class System():
         marker = np.zeros(self.lat.sites)
         np.add.at(marker, rows, per_row)
         return marker
+
+    def get_bott_index(self, e_fermi: float = 0.) -> float:
+        r'''
+        Get the Bott index of the states below *e_fermi* of a 2D lattice
+        with periodic boundaries along both primitive vectors (Loring and
+        Hastings, EPL 92, 67004 (2010); see *tbkit.topology.bott_index*):
+        the Chern number of a torus, in the sign convention of
+        *KSpace.chern_number*, and an integer for any disordered sample
+        whose occupied states are gapped or localized.
+
+        :param e_fermi: Real number. Default value 0. Fermi energy.
+
+        :returns:
+            * **bott** -- Real number, close to an integer.
+
+        Example usage::
+
+            lat = lattices.honeycomb()
+            lat.get_lattice(12, 12)
+            sys = System(lat, periodic=True)
+            sys.set_hopping([{'n': 1, 't': 1.}])
+            ...
+            sys.get_ham()
+            sys.get_bott_index()
+        '''
+        from tbkit.topology import bott_index
+        error_handling.empty_ham(self.ham)
+        error_handling.torus_2d(self.periodic)
+        return bott_index(self.ham, self._coords()[self._row_sites()], self._box(), e_fermi)
 
     def _row_sites(self) -> NDArray:
         '''

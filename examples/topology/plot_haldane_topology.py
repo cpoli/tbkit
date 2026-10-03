@@ -20,7 +20,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice
-from tbkit.kspace import KSpace, reciprocal_vectors
+from tbkit.kspace import KSpace, reciprocal_vectors, high_symmetry_path
 from tbkit.system import System
 from tbkit.plot import Plot
 
@@ -103,22 +103,24 @@ ax.set_title('Haldane model: topological phase transition')
 # %%
 # Berry curvature in the topological phase
 # ------------------------------------------------
-# :meth:`~tbkit.kspace.KSpace.berry_curvature` concentrates near the Dirac
-# points (where the gap is smallest), with total flux :math:`2\pi`.
+# The total flux of :meth:`~tbkit.kspace.KSpace.berry_curvature` through
+# the zone is :math:`2\pi`: the Chern number. With a gap this large
+# (:math:`2M_c \approx 2t`) the curvature is spread over the whole zone
+# rather than concentrated at the Dirac points.
+# :meth:`~tbkit.kspace.KSpace.plot_berry_curvature` draws it as a density
+# over the first Brillouin zone, the hexagon whose corners are K and K'.
 
 hal_topological = haldane(M=0.)
 curv = hal_topological.berry_curvature(bands=[0], nk=60)
-fig2, ax2 = plt.subplots()
-im = ax2.imshow(curv.T, origin='lower', extent=[0, 1, 0, 1], aspect='auto', cmap='RdBu')
-ax2.set_xlabel('$k_1$ (fractional)')
-ax2.set_ylabel('$k_2$ (fractional)')
-ax2.set_title('Berry curvature of the lower band')
-fig2.colorbar(im, ax=ax2)
+assert np.isclose(curv.sum(), 2 * np.pi, atol=1e-6)
+fig2 = hal_topological.plot_berry_curvature(0, nk=60, fs=14)
 
 # %%
 # Band structure in the topological phase
 # ------------------------------------------------
+# :func:`~tbkit.kspace.high_symmetry_path` recognizes the hexagonal
+# lattice and returns the path :math:`\Gamma` - M - K - :math:`\Gamma`.
 
-Gamma, K, M_pt = np.zeros(2), K_pt, b1 / 2
-hal_topological.k_path([Gamma, K, M_pt, Gamma], nk=60)
-fig3 = hal_topological.plot_bands(node_labels=[r'$\Gamma$', 'K', 'M', r'$\Gamma$'])
+points, labels = high_symmetry_path(hal_topological.lat)
+hal_topological.k_path(points, nk=60)
+fig3 = hal_topological.plot_bands(node_labels=labels)

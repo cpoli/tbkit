@@ -111,6 +111,49 @@ def number(var, var_name):
         raise TypeError('\n\nParameter {} must be a real or complex number.\n'.format(var_name))
 
 
+def value_params(required, params, func):
+    '''
+    Check that *params* holds every parameter that the value function *func*
+    needs (see *tbkit.values*).
+
+    :raises TypeError: The value function needs parameters missing from get_ham.
+    '''
+    missing = [name for name in required if name not in params]
+    if missing:
+        raise TypeError('\n\nThe value function {} needs the parameter(s) {}: '
+                                'pass them to get_ham (or KSpace.set_params).\n'.format(
+                                    getattr(func, '__name__', func), ', '.join(missing)))
+
+
+def value_shape(val, size, spin, func):
+    '''
+    Check the values returned by the value function *func* for *size*
+    bonds or sites: a number or one per entry (or, if *spin*, also a 2x2
+    matrix or one per entry).
+
+    :raises ValueError: The value function must return a number or an array of one value per bond/site.
+    '''
+    shapes = [(), (size,)] + ([(2, 2), (size, 2, 2)] if spin else [])
+    if val.shape not in shapes:
+        raise ValueError('\n\nThe value function {} returned shape {}: it must return a number, '
+                                 'or one per bond/site (shape ({},)){}.\n'.format(
+                                     getattr(func, '__name__', func), val.shape, size,
+                                     ', or a 2x2 matrix (one per bond, shape ({}, 2, 2))'.format(size)
+                                     if spin else ''))
+
+
+def no_value_functions(model, method):
+    '''
+    Check that *model* has no value functions (callable hoppings or onsite
+    energies), which *method* cannot represent.
+
+    :raises ValueError: method does not support value functions.
+    '''
+    if getattr(model, '_hop_values', None) or getattr(model, '_onsite_values', None):
+        raise ValueError('\n\n{} does not support value functions (callable hoppings or '
+                                 'onsite energies): use plain numbers.\n'.format(method))
+
+
 def is_callable(var, var_name):
     '''
     Check if parameter *var* is callable.
@@ -474,16 +517,16 @@ def set_onsite(onsite, tags):
     :raises TypeError: Parameter onsite must be a dictionary.
     :raises ValueError: Parameter onsite keys must be a tag.
     :raises ValueError: Parameter onsite values must be
-      real and/or complex numbers.
+      real and/or complex numbers, or value functions.
     '''
     if not isinstance(onsite, dict):
         raise TypeError('\n\nParameter onsite must be a dictionary.\n')
     for tag, val in onsite.items():
         if tag not in tags:
             raise ValueError('\n\nParameter onsite keys must be a tag.\n')   
-        if not isinstance(val, (int, float, complex)):
+        if not isinstance(val, (int, float, complex)) and not callable(val):
             raise ValueError('\n\nParameter onsite values must be\n'\
-                                       'real and/or complex numbers.\n')
+                                       'real and/or complex numbers, or value functions.\n')
 
 
 def set_hopping(list_hop, n_max):
@@ -510,8 +553,8 @@ def set_hopping(list_hop, n_max):
             raise TypeError('\n\n"n" value must be an integer.\n')
         if not 0 < dic['n'] <= n_max:
             raise ValueError('\n\n"n" value must be between 1 and {}.\n'.format(n_max))
-        if not isinstance(dic['t'], (int, float, complex)):
-            raise TypeError('\n\n"t" value must be a real or complex number.\n')
+        if not isinstance(dic['t'], (int, float, complex)) and not callable(dic['t']):
+            raise TypeError('\n\n"t" value must be a real or complex number, or a value function.\n')
         if len(dic) == 3:
             if 'tag' not in dic and 'ang' not in dic:
                 raise KeyError('\n\n"tag" or "ang" must be a key.\n')
@@ -887,9 +930,10 @@ def spin_matrix(t, var_name):
         raise TypeError('\n\nParameter {} must be a number or a 2x2 matrix.\n'.format(var_name))
 
 
-def set_hopping_kspace(list_hop, n_sites, ndim, spin=False):
+def set_hopping_kspace(list_hop, n_sites, ndim, spin=False, values=False):
     '''
-    Check method *kspace.set_hopping*.
+    Check method *kspace.set_hopping*. With *values*, "t" may also be a
+    value function (a callable).
 
     :raises TypeError: Parameter *list_hop* must be a list of dictionaries.
     :raises KeyError: "i", "j", "R", and "t" must be dictionary keys.
@@ -916,6 +960,8 @@ def set_hopping_kspace(list_hop, n_sites, ndim, spin=False):
         if dic['i'] == dic['j'] and dic['R'] == (0,) * ndim:
             raise ValueError('\n\nUse kspace.set_onsite for i == j and R == 0 '
                                   '(it accepts a 2x2 spin matrix when spin=True).\n')
+        if values and callable(dic['t']):
+            continue
         if spin:
             spin_matrix(dic['t'], '"t"')
         elif not isinstance(dic['t'], (int, float, complex)):
@@ -979,6 +1025,44 @@ def dos_kernel(kernel):
     if kernel not in ['gaussian', 'lorentzian']:
         raise ValueError('\n\nParameter kernel must be a string:\n'
                                    '"gaussian", "lorentzian".\n')
+
+
+def kspace_dos_kernel(kernel):
+    '''
+    Check parameter *kernel* used by *kspace.plot_dos*.
+
+    :raises TypeError: Parameter kernel must be a string.
+    :raises ValueError: Parameter kernel must be "gaussian", "lorentzian" or "tetrahedron".
+    '''
+    string(kernel, 'kernel')
+    if kernel not in ['gaussian', 'lorentzian', 'tetrahedron']:
+        raise ValueError('\n\nParameter kernel must be a string:\n'
+                                   '"gaussian", "lorentzian", "tetrahedron".\n')
+
+
+def mesh_energies(energies):
+    '''
+    Check parameter *energies* used by *dos.tetrahedron_dos*: a non-empty
+    array of bands on a mesh of 1, 2 or 3 dimensions.
+
+    :raises ValueError: Parameter energies must be of shape (n1, ..., nbands), on a mesh of 1 to 3 dimensions.
+    '''
+    energies = np.asarray(energies)
+    if energies.ndim not in (2, 3, 4) or energies.size == 0:
+        raise ValueError('\n\nParameter energies must be a non-empty array of shape '
+                                   '(n1, ..., nbands), on a mesh of 1, 2 or 3 dimensions.\n')
+
+
+def increasing_grid(grid, var_name):
+    '''
+    Check that *grid* is a 1D real array of at least two increasing values.
+
+    :raises ValueError: Parameter *var_name* must be a 1D array of at least two increasing real values.
+    '''
+    grid = np.asarray(grid)
+    if grid.ndim != 1 or len(grid) < 2 or np.iscomplexobj(grid) or np.any(np.diff(grid) <= 0):
+        raise ValueError('\n\nParameter {} must be a 1D array of at least two increasing '
+                                   'real values.\n'.format(var_name))
 
 
 def nk(nk, ndim):
@@ -1584,6 +1668,52 @@ def lead_coupling(coupling, sites, m, n_device):
                                     '= ({}, {}).\n'.format(len(sites), m))
 
 
+def lead_device_size(sites, n_device):
+    '''
+    Check that a System has one site per row of the device Hamiltonian.
+
+    :raises ValueError: The System must have as many sites as the device Hamiltonian has rows.
+    '''
+    if sites != n_device:
+        raise ValueError('\n\nThe System has {} sites but the device Hamiltonian has {} '
+                                    'rows.\n'.format(sites, n_device))
+
+
+def lead_space_dim(lead_dim, device_dim):
+    '''
+    Check that a lead and the device have positions of the same dimension.
+
+    :raises ValueError: The lead and the device must have the same space dimension.
+    '''
+    if lead_dim != device_dim:
+        raise ValueError('\n\nThe lead has {}D positions but the device {}D '
+                                    'ones.\n'.format(lead_dim, device_dim))
+
+
+def lead_overlap(found):
+    '''
+    Check that some device site lies on the lattice of a lead.
+
+    :raises ValueError: No device site matches a lead orbital.
+    '''
+    if not found:
+        raise ValueError('\n\nNo device site sits at the position (and tag) of a lead '
+                                    'orbital: place the lead unit cell in the coordinates of the device.\n')
+
+
+def lead_interface(missing):
+    '''
+    Check that the interface cell of a lead is complete (*missing*: the lead
+    orbitals coupled to the next cell but absent from the device).
+
+    :raises ValueError: The interface between the device and the lead is incomplete.
+    '''
+    if missing:
+        raise ValueError('\n\nThe device lacks lead orbitals {} in its outermost lead cell: '
+                                    'extend the device so that it ends with a complete lead '
+                                    'cell.\n'.format([int(o) for o in missing]))
+
+
 def lead_index(lead, n_leads):
     '''
     Check a lead index.
@@ -1595,6 +1725,52 @@ def lead_index(lead, n_leads):
         raise TypeError('\n\nThe lead index must be an integer.\n')
     if not 0 <= lead < n_leads:
         raise ValueError('\n\nNo lead {} ({} lead(s) attached with add_lead).\n'.format(lead, n_leads))
+
+
+def lead_band_edge(flag, energy):
+    '''
+    Check that the modes of a lead are well defined: the energy is not at a
+    band edge, where a propagating mode has zero velocity.
+
+    :raises ValueError: Energy at a band edge of a lead.
+    '''
+    if not flag:
+        raise ValueError('\n\nEnergy {} is at a band edge of a lead (a mode with zero velocity): '
+                         'shift it slightly.\n'.format(energy))
+
+
+def conservation_law(law, h0, v, tol=1e-10):
+    '''
+    Check the conservation law of a lead: a Hermitian matrix of the shape
+    of *h0* that commutes with *h0* and *v*.
+
+    :raises ValueError: Wrong shape, not Hermitian, or not conserved by the lead.
+    '''
+    if law.shape != h0.shape:
+        raise ValueError('\n\nParameter conservation_law must have the shape of h0, {}.\n'.format(h0.shape))
+    hermitian_operator(law, tol)
+    scale = max(1., np.max(np.abs(h0)), np.max(np.abs(v)))
+    if max(np.max(np.abs(law @ h0 - h0 @ law)), np.max(np.abs(law @ v - v @ law))) > tol * scale:
+        raise ValueError('\n\nThe conservation law must commute with the lead\'s h0 and v.\n')
+
+
+def lead_block(lead, n_blocks):
+    '''
+    Check a lead of a scattering matrix: a lead index, or a tuple
+    (lead, block) with a block of that lead's conservation law.
+
+    :raises TypeError: Not an integer or a tuple of two integers.
+    :raises ValueError: No such lead or block.
+    '''
+    if isinstance(lead, tuple):
+        if len(lead) != 2 or not all(isinstance(x, (int, np.integer)) for x in lead):
+            raise TypeError('\n\nA lead block must be a tuple (lead, block) of two integers.\n')
+        lead_index(int(lead[0]), len(n_blocks))
+        if not 0 <= lead[1] < n_blocks[lead[0]]:
+            raise ValueError('\n\nLead {} has {} block(s) (its conservation law).\n'.format(
+                lead[0], n_blocks[lead[0]]))
+    else:
+        lead_index(lead, len(n_blocks))
 
 
 
@@ -2068,6 +2244,45 @@ def refine_fraction(fraction):
         raise ValueError('\n\nParameter refine_fraction must be in (0, 1].\n')
 
 
+def path_parameter(param):
+    '''
+    Check the parameter that a path varies (*KSpace.axion_angle*): a string.
+
+    :raises TypeError: Parameter param must be a string (the name of a value-function parameter).
+    '''
+    if not isinstance(param, str):
+        raise TypeError('\n\nParameter param must be a string (the name of a '
+                                'value-function parameter).\n')
+
+
+def path_values(values):
+    '''
+    Check the parameter values of a path: a 1D array of at least two finite
+    real numbers, strictly increasing or strictly decreasing.
+
+    :raises TypeError: Parameter values must be a 1D array of real numbers.
+    :raises ValueError: Parameter values must hold at least two finite, strictly monotonic values.
+    '''
+    arr = np.asarray(values)
+    if arr.ndim != 1 or arr.dtype.kind not in 'iuf':
+        raise TypeError('\n\nParameter values must be a 1D array of real numbers.\n')
+    step = np.diff(arr)
+    if len(arr) < 2 or not np.all(np.isfinite(arr)) or not (np.all(step > 0) or np.all(step < 0)):
+        raise ValueError('\n\nParameter values must hold at least two finite values, '
+                                    'strictly increasing or strictly decreasing.\n')
+
+
+def path_gap(gap, param, value, tol=1e-6):
+    '''
+    Check that the bands stay separated from the others along a path.
+
+    :raises ValueError: The bands touch the others at param = value.
+    '''
+    if gap < tol:
+        raise ValueError('\n\nThe bands touch the other bands at {} = {} (gap {:.1e}): '
+                                    'the path must stay gapped.\n'.format(param, value, gap))
+
+
 def velocity(vel, n, var_name):
     '''
     Check a velocity operator: a square (sparse or dense) matrix of the
@@ -2241,7 +2456,7 @@ def set_hopping_neighbours(list_hop, spin=False):
 
     :raises KeyError: "n" and "t" must be keys, and only "ang" and "tag" may be added.
     :raises TypeError: "n" must be an integer, "t" a number (or, if *spin*,
-      a 2x2 matrix), "ang" a real number and "tag" a string.
+      a 2x2 matrix) or a value function, "ang" a real number and "tag" a string.
     :raises ValueError: "n" must be positive, "ang" in [-180, 180), "tag" of length 2.
     '''
     hopping_form(list_hop)
@@ -2254,7 +2469,9 @@ def set_hopping_neighbours(list_hop, spin=False):
             raise TypeError('\n\n"n" value must be an integer.\n')
         if dic['n'] < 1:
             raise ValueError('\n\n"n" value must be a positive integer.\n')
-        if spin:
+        if callable(dic['t']):
+            pass
+        elif spin:
             spin_matrix(dic['t'], '"t"')
         elif not isinstance(dic['t'], (int, float, complex)):
             raise TypeError('\n\n"t" value must be a real or complex number.\n')
@@ -2794,3 +3011,555 @@ def lead_tuple(lead):
     '''
     if not isinstance(lead, (tuple, list)) or len(lead) != 3:
         raise TypeError('\n\nA lead must be a tuple (h0, v, coupling).\n')
+
+
+####################################
+# SECTOR CHERN NUMBERS, BDG, BOTT, WEYL
+####################################
+
+
+def hermitian_operator(ops, tol=1e-10):
+    '''
+    Check that an operator (shape (..., norb, norb)) is Hermitian.
+
+    :raises ValueError: The operator must be Hermitian.
+    '''
+    if np.max(np.abs(ops - ops.conj().swapaxes(-1, -2))) > tol:
+        raise ValueError('\n\nThe operator must be Hermitian.\n')
+
+
+def projected_gap(w, tol=1e-6):
+    '''
+    Check that the projected operator POP (eigenvalues *w*, shape (nk, n),
+    sorted) has no eigenvalue near zero, and the same number of negative
+    eigenvalues at every k-point; return that number.
+
+    :raises ValueError: The spectrum of POP must have a gap around zero.
+    '''
+    n_minus = np.sum(w < 0., axis=1)
+    if np.min(np.abs(w)) < tol or np.any(n_minus != n_minus[0]):
+        raise ValueError('\n\nThe spectrum of the projected operator POP closes around zero '
+                                    '(smallest |eigenvalue| {:.3g}): the two sectors are not '
+                                    'defined.\n'.format(float(np.min(np.abs(w)))))
+    return int(n_minus[0])
+
+
+def mirror_square(squares, tol):
+    '''
+    Check that a mirror operator squares to +1 or -1 (*squares*, shape
+    (..., norb, norb)); return the sign.
+
+    :raises ValueError: The mirror operator must square to +1 or -1.
+    '''
+    sign = np.sign(squares[0, 0, 0].real)
+    eye = np.eye(squares.shape[-1])
+    if sign == 0 or np.max(np.abs(squares - sign * eye)) > tol:
+        raise ValueError('\n\nThe mirror operator must be unitary and square to +1 or -1.\n')
+    return int(sign)
+
+
+def commutes(err, tol):
+    '''
+    Check that an operator commutes with H(k) on the plane (*err*: largest
+    entry of the commutator).
+
+    :raises ValueError: The operator does not commute with H(k) on this plane.
+    '''
+    if err > tol:
+        raise ValueError('\n\nThe mirror operator does not commute with H(k) on this plane '
+                                    '(largest commutator entry {:.3g}): choose a '
+                                    'mirror-invariant plane.\n'.format(err))
+
+
+def strong_index(strong):
+    '''
+    Check that the strong Z2 index comes out the same from the three pairs
+    of time-reversal-invariant planes.
+
+    :raises ValueError: The six Z2 invariants are inconsistent.
+    '''
+    if len(set(int(s) for s in strong)) != 1:
+        raise ValueError('\n\nThe six planar Z2 invariants give different strong indices: '
+                                    'increase nk or nk_perp (or the bands are not gapped).\n')
+
+
+def region(region, n):
+    '''
+    Check a region: a non-empty list of distinct indices between 0 and n-1.
+
+    :raises TypeError: Parameter region must be a non-empty list of integers.
+    :raises ValueError: Parameter region must hold distinct indices between 0 and n-1.
+    '''
+    if not isinstance(region, list) or not region or \
+            not all(isinstance(i, (int, np.integer)) for i in region):
+        raise TypeError('\n\nParameter region must be a non-empty list of integers.\n')
+    if len(set(region)) != len(region) or not all(0 <= i < n for i in region):
+        raise ValueError('\n\nParameter region must hold distinct indices between 0 and '
+                                    '{}.\n'.format(n - 1))
+
+
+def torus_cell(cell, d):
+    '''
+    Check the two vectors spanning a torus: shape (2, d), linearly independent.
+
+    :raises ValueError: Parameter cell must hold two independent vectors of d components.
+    '''
+    if cell.shape != (2, d) or np.linalg.matrix_rank(cell) < 2:
+        raise ValueError('\n\nParameter cell must hold two linearly independent vectors '
+                                    'of {} components.\n'.format(d))
+
+
+def band_below_top(n, norb):
+    '''
+    Check that a band has a band above it.
+
+    :raises ValueError: The highest band of bands must not be the top band.
+    '''
+    if n >= norb - 1:
+        raise ValueError('\n\nThe highest band of bands must have a band above it.\n')
+
+
+def antisymmetric(a, tol=1e-10):
+    '''
+    Check that a matrix is antisymmetric.
+
+    :raises ValueError: The matrix must be antisymmetric.
+    '''
+    if np.max(np.abs(a + a.T), initial=0.) > tol:
+        raise ValueError('\n\nThe matrix must be antisymmetric.\n')
+
+
+def bdg_orbitals(norb):
+    '''
+    Check that a BdG model has an even number of orbitals (particles, then holes).
+
+    :raises ValueError: A BdG model must have an even number of orbitals.
+    '''
+    if norb % 2:
+        raise ValueError('\n\nA BdG model must have an even number of orbitals '
+                                    '(particles, then holes).\n')
+
+
+def majorana_form(a, tol=1e-8):
+    '''
+    Check that the Majorana form -i U H U^dagger of a BdG Hamiltonian at a
+    time-reversal-invariant momentum is real (particle-hole symmetry).
+
+    :raises ValueError: The model is not particle-hole symmetric.
+    '''
+    if np.max(np.abs(a.imag)) > tol:
+        raise ValueError('\n\nThe model is not particle-hole symmetric in the BdG basis '
+                                    '(particles, then holes; see bdg.bdg_kspace).\n')
+
+
+def gapped_trim(pf, tol=1e-12):
+    '''
+    Check that a Pfaffian is nonzero (the BdG gap is open at the momentum).
+
+    :raises ValueError: The gap closes at a time-reversal-invariant momentum.
+    '''
+    if abs(pf) < tol:
+        raise ValueError('\n\nThe gap closes at a time-reversal-invariant momentum: the '
+                                    'Majorana number is not defined.\n')
+
+
+####################################
+# PERIODIC BOUNDARIES (SYSTEM)
+####################################
+
+
+def periodic(periodic, dim):
+    '''
+    Check parameter *periodic* of *System*: a boolean, or a tuple of *dim*
+    booleans (one per primitive vector); return the tuple.
+
+    :raises TypeError: Parameter periodic must be a bool or a tuple of bools.
+    :raises ValueError: Parameter periodic must have one entry per primitive vector.
+    '''
+    if isinstance(periodic, bool):
+        return (periodic,) * dim
+    if not isinstance(periodic, tuple) or not all(isinstance(p, bool) for p in periodic):
+        raise TypeError('\n\nParameter periodic must be a bool or a tuple of bools.\n')
+    if len(periodic) != dim:
+        raise ValueError('\n\nParameter periodic must have one entry per primitive vector '
+                                    '({}).\n'.format(dim))
+    return periodic
+
+
+def torus_lattice(n1):
+    '''
+    Check that the lattice of a periodic System comes from *get_lattice*.
+
+    :raises ValueError: Periodic boundaries need lat.get_lattice first.
+    '''
+    if n1 == 0:
+        raise ValueError('\n\nPeriodic boundaries wrap the n1 x n2 (x n3) cells of '
+                                    'lat.get_lattice: call it first.\n')
+
+
+def torus_size(dist, period, n):
+    '''
+    Check that bonds of length *dist* (order *n*) reach less than half-way
+    around the torus (shortest period *period*), so that each one has a
+    single shortest image.
+
+    :raises ValueError: The torus is too small for this neighbour order.
+    '''
+    if 2 * dist >= period - ATOL:
+        raise ValueError('\n\nThe torus is too small for the neighbours of order {}: their '
+                                    'length {:.3f} reaches half-way around it (shortest period '
+                                    '{:.3f}). Use more cells.\n'.format(n, dist, period))
+
+
+def not_periodic(periodic, method):
+    '''
+    Check that a System has open boundaries.
+
+    :raises ValueError: The method needs open boundaries.
+    '''
+    if any(periodic):
+        raise ValueError('\n\n{} needs open boundaries (periodic=False); on a torus, see '
+                                    'System.get_bott_index and set_peierls_phase.\n'.format(method))
+
+
+def torus_2d(periodic):
+    '''
+    Check that a System is a 2D torus (periodic along two primitive vectors).
+
+    :raises ValueError: This calculation needs a 2D lattice periodic along both vectors.
+    '''
+    if len(periodic) != 2 or not all(periodic):
+        raise ValueError('\n\nThis calculation needs a 2D lattice with periodic boundaries '
+                                    'along both primitive vectors (periodic=True).\n')
+
+
+####################################
+# ANALYSIS AND PLOTTING (projections, contours, k-paths)
+####################################
+
+
+def projector(proj, norb, tags):
+    '''
+    Check parameter *projector* of *kspace.band_weights*: an orbital index,
+    a non-empty list of distinct orbital indices, a sublattice tag, or a
+    (norb, norb) Hermitian matrix.
+
+    :raises TypeError: Parameter projector must be an orbital index, a list of them, a tag or a matrix.
+    :raises ValueError: Orbital indices must be distinct and between 0 and norb-1.
+    :raises ValueError: Parameter projector must be a tag of the unit cell.
+    :raises ValueError: The operator must be a (norb, norb) Hermitian matrix.
+    '''
+    if isinstance(proj, str):
+        if proj not in tags:
+            raise ValueError('\n\nParameter projector must be a tag of the unit cell: '
+                                        '{}.\n'.format(sorted(set(tags))))
+        return
+    if isinstance(proj, np.ndarray) and proj.ndim == 2:
+        operator(proj, norb)
+        hermitian_operator(proj)
+        return
+    if isinstance(proj, int):
+        proj = [proj]
+    if not isinstance(proj, list) or not proj or not all(isinstance(p, int) for p in proj):
+        raise TypeError('\n\nParameter projector must be an orbital index, a list of '
+                                   'orbital indices, a sublattice tag or a (norb, norb) matrix.\n')
+    if len(set(proj)) != len(proj) or not all(0 <= p < norb for p in proj):
+        raise ValueError('\n\nOrbital indices must be distinct and between 0 and '
+                                    '{}.\n'.format(norb - 1))
+
+
+def band_weights(weights, shape):
+    '''
+    Check parameter *weights* of *kspace.plot_bands*: real values, one per
+    band and k-point of the stored band structure.
+
+    :raises ValueError: Parameter weights must be a real array of the shape of the bands.
+    '''
+    weights = np.asarray(weights)
+    if weights.shape != shape or np.iscomplexobj(weights) or not np.all(np.isfinite(weights)):
+        raise ValueError('\n\nParameter weights must be a finite real array of shape {}, '
+                                    'the shape of the bands (see band_weights).\n'.format(shape))
+
+
+def weight_style(style):
+    '''
+    Check parameter *style* of *kspace.plot_bands*.
+
+    :raises ValueError: Parameter style must be "color" or "size".
+    '''
+    if style not in ('color', 'size'):
+        raise ValueError('\n\nParameter style must be "color" or "size".\n')
+
+
+def contour_found(n_elements, energy):
+    '''
+    Check that a band crosses the energy of a constant-energy contour.
+
+    :raises ValueError: The band does not cross the energy.
+    '''
+    if n_elements == 0:
+        raise ValueError('\n\nThe band does not cross the energy {}: there is no '
+                                    'constant-energy contour.\n'.format(energy))
+
+
+def bravais_lattice(kind, dim):
+    '''
+    Check that *kspace.high_symmetry_path* recognized the Bravais lattice.
+
+    :raises ValueError: No standard path for this lattice.
+    '''
+    if kind is None:
+        raise ValueError('\n\nNo standard high-symmetry path for this {}D lattice: '
+                                    'high_symmetry_path knows the 1D and 2D Bravais lattices, '
+                                    'and the simple cubic, fcc, bcc, simple tetragonal and '
+                                    'hexagonal ones in 3D. Pass the k-points to k_path '
+                                    'directly.\n'.format(dim))
+
+
+###############################
+# CONTINUUM DISCRETIZATION
+###############################
+
+
+def sympy_module(module):
+    '''
+    Check that sympy, the optional dependency of *tbkit.continuum*, is installed.
+
+    :raises ImportError: sympy is not installed.
+    '''
+    if module is None:
+        raise ImportError('\n\ntbkit.continuum needs sympy: pip install tbkit[continuum].\n')
+
+
+def continuum_type(ham, types):
+    '''
+    Check the type of the Hamiltonian of *continuum.discretize*.
+
+    :raises TypeError: The Hamiltonian must be a string, a sympy expression
+      or a sympy Matrix.
+    '''
+    if not isinstance(ham, types):
+        raise TypeError('\n\nParameter hamiltonian must be a string, a sympy expression '
+                                'or a sympy Matrix.\n')
+
+
+def continuum_parsed(error, string):
+    '''
+    Check that the string Hamiltonian of *continuum.discretize* was parsed.
+
+    :raises ValueError: The string is not a valid expression.
+    '''
+    if error is not None:
+        raise ValueError('\n\nParameter hamiltonian {!r} is not a valid sympy expression '
+                                 '({}: {}).\n'.format(string, type(error).__name__, error))
+
+
+def continuum_square(shape):
+    '''
+    Check that the Hamiltonian of *continuum.discretize* is a square matrix.
+
+    :raises ValueError: The Hamiltonian must be a square matrix.
+    '''
+    if len(shape) != 2 or shape[0] != shape[1] or shape[0] == 0:
+        raise ValueError('\n\nParameter hamiltonian must be a scalar or a square matrix '
+                                 '(shape {}).\n'.format(shape))
+
+
+def continuum_symbols(names):
+    '''
+    Check the free symbols of the Hamiltonian of *continuum.discretize*:
+    no position (the model is translation invariant), no symbol named
+    like the grid spacing *a*, and parameter names that can be passed as
+    keyword arguments.
+
+    :raises ValueError: x, y, z are not supported.
+    :raises ValueError: a is reserved for the grid spacing.
+    :raises ValueError: Parameter names must be Python identifiers.
+    '''
+    position = sorted(names & {'x', 'y', 'z'})
+    if position:
+        raise ValueError('\n\nThe Hamiltonian depends on the position ({}): only translation-'
+                                 'invariant continuum models (constant coefficients) can be '
+                                 'discretized into a KSpace.\n'.format(', '.join(position)))
+    if 'a' in names:
+        raise ValueError('\n\nThe symbol a is reserved for the grid spacing: rename the '
+                                 'parameter.\n')
+    bad = sorted(n for n in names if not n.isidentifier() or n in ('site_i', 'site_j'))
+    if bad:
+        raise ValueError('\n\nParameter names must be Python identifiers (other than site_i, '
+                                 'site_j), to be passed to get_ham: {}.\n'.format(', '.join(bad)))
+
+
+def continuum_dim(dim, used):
+    '''
+    Check the dimension of *continuum.discretize*, given the momenta
+    k_x, k_y, k_z (axes 0, 1, 2) used by the Hamiltonian.
+
+    :raises TypeError: Parameter dim must be an integer.
+    :raises ValueError: Parameter dim must be 1, 2 or 3.
+    :raises ValueError: The Hamiltonian uses a momentum beyond dim.
+    '''
+    if not isinstance(dim, int):
+        raise TypeError('\n\nParameter dim must be an integer.\n')
+    if dim not in (1, 2, 3):
+        raise ValueError('\n\nParameter dim must be 1, 2 or 3.\n')
+    if used and max(used) >= dim:
+        raise ValueError('\n\nThe Hamiltonian uses {} in dimension {}.\n'.format(
+            ('k_x', 'k_y', 'k_z')[max(used)], dim))
+
+
+def continuum_polynomial(entry, is_polynomial):
+    '''
+    Check that a matrix element of *continuum.discretize* is a polynomial
+    in the momenta.
+
+    :raises ValueError: The Hamiltonian must be a polynomial in k_x, k_y, k_z.
+    '''
+    if not is_polynomial:
+        raise ValueError('\n\nThe Hamiltonian must be a polynomial in k_x, k_y, k_z '
+                                 '(matrix element {}).\n'.format(entry))
+
+
+def continuum_tags(tags, norb):
+    '''
+    Check the orbital tags of *continuum.discretize*.
+
+    :raises ValueError: More than 52 orbitals need explicit tags.
+    :raises TypeError: Parameter tags must be a string or a list of strings.
+    :raises ValueError: Parameter tags must hold one one-character tag per orbital.
+    '''
+    if tags is None:
+        if norb > 52:
+            raise ValueError('\n\nThe Hamiltonian has {} orbitals: pass their tags (default '
+                                     'tags are the 52 letters).\n'.format(norb))
+        return
+    if not isinstance(tags, (str, list, tuple)) or not all(isinstance(t, str) for t in tags):
+        raise TypeError('\n\nParameter tags must be a string or a list of strings.\n')
+    if len(tags) != norb or not all(len(t) == 1 for t in tags):
+        raise ValueError('\n\nParameter tags must hold {} one-character tags, one per '
+                                 'orbital.\n'.format(norb))
+
+
+def continuum_spacing(a):
+    '''
+    Check the grid spacing of *continuum.discretize*: a **Lattice**
+    refuses primitive vectors whose squared norm is below 0.1.
+
+    :raises ValueError: Parameter a must be at least sqrt(0.1).
+    '''
+    if a * a < 0.1:
+        raise ValueError('\n\nParameter a must be at least sqrt(0.1) = 0.316 (the shortest '
+                                 'primitive vector of a Lattice): measure lengths in a smaller '
+                                 'unit, and scale the coefficients of the Hamiltonian '
+                                 'accordingly.\n')
+
+
+####################################
+# WANNIER FUNCTIONS
+####################################
+
+
+def trial_orbitals(trial, norb, n_bands):
+    '''
+    Check the trial orbitals of *wannier.wannierize*: a list of orbital
+    indices, or an array of shape (norb, n_wann), with at most *n_bands*
+    trial orbitals (one per Wannier function; fewer than the bands
+    disentangles them).
+
+    :raises TypeError: Parameter trial must be a list of orbital indices or an array.
+    :raises ValueError: Parameter trial must hold between 1 and n_bands trial orbitals.
+    '''
+    if isinstance(trial, list) and trial and all(isinstance(o, int) for o in trial):
+        if len(trial) > n_bands or not all(0 <= o < norb for o in trial):
+            raise ValueError('\n\nParameter trial must hold at most {} orbital indices (one per '
+                                     'Wannier function, at most one per band) between 0 and {}.\n'
+                                     .format(n_bands, norb - 1))
+        return
+    try:
+        g = np.asarray(trial, dtype='c16')
+    except (TypeError, ValueError):
+        raise TypeError('\n\nParameter trial must be a list of orbital indices or a complex '
+                                'array of shape (norb, n_wann).\n') from None
+    if g.ndim != 2 or g.shape[0] != norb or not 1 <= g.shape[1] <= n_bands:
+        raise ValueError('\n\nParameter trial must be an array of shape ({}, n_wann), with '
+                                 '1 <= n_wann <= {}: one column (trial orbital) per Wannier '
+                                 'function, at most one per band.\n'.format(norb, n_bands))
+
+
+def energy_window(window, var_name):
+    '''
+    Check an energy window of *wannier.wannierize*: a tuple of two
+    increasing real numbers.
+
+    :raises TypeError: Parameter var_name must be a tuple of two real numbers.
+    :raises ValueError: Parameter var_name must be increasing.
+    '''
+    if not isinstance(window, tuple) or len(window) != 2 or \
+            not all(isinstance(e, (int, float)) and not isinstance(e, bool) for e in window):
+        raise TypeError('\n\nParameter {} must be a tuple (E_min, E_max) of two real '
+                                'numbers.\n'.format(var_name))
+    if window[0] >= window[1]:
+        raise ValueError('\n\nParameter {} must satisfy E_min < E_max.\n'.format(var_name))
+
+
+def frozen_window(frozen, window):
+    '''
+    Check that the frozen (inner) window of *wannier.wannierize* lies
+    inside the outer window.
+
+    :raises ValueError: The frozen window must lie inside the outer window.
+    '''
+    if frozen[0] < window[0] or frozen[1] > window[1]:
+        raise ValueError('\n\nParameter frozen {} must lie inside the outer window {}.\n'
+                                 .format(frozen, window))
+
+
+def window_states(n_inside, n_frozen, n_wann):
+    '''
+    Check the number of states of the disentanglement windows at every
+    k-point: at least *n_wann* in the outer window, at most *n_wann* in the
+    frozen window.
+
+    :raises ValueError: The outer window holds fewer than n_wann states at some k-point.
+    :raises ValueError: The frozen window holds more than n_wann states at some k-point.
+    '''
+    if n_inside < n_wann:
+        raise ValueError('\n\nThe outer window holds only {} of the bands at some k-point, '
+                                 'fewer than the {} Wannier functions: widen it, or add bands.\n'
+                                 .format(n_inside, n_wann))
+    if n_frozen > n_wann:
+        raise ValueError('\n\nThe frozen window holds {} bands at some k-point, more than the '
+                                 '{} Wannier functions: narrow it.\n'.format(n_frozen, n_wann))
+
+
+def isolated_bands(en, bands, tol=1e-8):
+    '''
+    Check that a group of bands is separated in energy from the other bands
+    at every point of the mesh (*en*, shape (nk, norb), sorted).
+
+    :raises ValueError: The bands are not isolated.
+    '''
+    inside = np.zeros(en.shape[1], bool)
+    inside[bands] = True
+    for n in range(en.shape[1] - 1):
+        if inside[n] != inside[n + 1] and np.min(en[:, n + 1] - en[:, n]) < tol:
+            raise ValueError('\n\nThe bands {} touch band {} on the k-mesh: Wannier functions '
+                                     'need an isolated group of bands: add the bands they touch to the group, '
+                                     'or disentangle them (more bands than trial orbitals).\n'
+                                     .format(bands, n + 1 if inside[n] else n))
+
+
+def projection(s_min, tol=1e-10):
+    '''
+    Check that the projection of the bands onto the trial orbitals has full
+    rank at every k-point.
+
+    :raises ValueError: The trial orbitals miss the bands at some k-point.
+    '''
+    if s_min < tol:
+        raise ValueError('\n\nThe trial orbitals have no overlap with the bands at some '
+                                 'k-point (singular projection): choose other trial orbitals, or '
+                                 'another mesh. A band group with a nonzero Chern number has no '
+                                 'localized Wannier functions, and any projection vanishes '
+                                 'somewhere.\n')
+

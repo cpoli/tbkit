@@ -7,6 +7,7 @@ import numpy as np
 
 import tbkit.lattices as lattices
 from tbkit.kspace import KSpace, ribbon
+from tbkit.lattice import Lattice
 from tbkit.system import System
 from tbkit.transport import Transport, lead_from_kspace, surface_green
 
@@ -124,6 +125,62 @@ class TestTransmission(unittest.TestCase):
         self.assertRaises(ValueError, lead_from_kspace, long)
         self.assertRaises(ValueError, lead_from_kspace, chain, 0)
         self.assertRaises(ValueError, lead_from_kspace, KSpace(lattices.square()))
+
+    def test_attach_lead(self):
+        # same leads as the hand-built couplings of ribbon_device
+        width, length = 4, 6
+        lat = lattices.square()
+        lat.get_lattice(length, width)
+        sys = System(lat)
+        sys.set_hopping([{'n': 1, 't': 1.}])
+        sys.get_ham()
+        rib = ribbon(lattices.square(), SQUARE, width=width, direction=1)
+        tr = Transport(sys.ham)
+        tr.attach_lead(sys, rib, -1)
+        tr.attach_lead(sys, rib, 1)
+        ref = ribbon_device(width, length)
+        for (h0, v, tau, sites), (h0_r, v_r, tau_r, sites_r) in zip(tr.leads, ref.leads):
+            order = np.argsort(sites)
+            self.assertEqual(list(np.array(sites)[order]), sorted(sites_r))
+            self.assertTrue(np.allclose(tau[order], tau_r[np.argsort(sites_r)]))
+            self.assertTrue(np.allclose(h0, h0_r) and np.allclose(v, v_r))
+        energies = np.linspace(-3.5, 3.5, 9)
+        self.assertTrue(np.allclose(tr.transmission(energies), ref.transmission(energies)))
+        # a narrow lead on part of a wider device, its cell shifted by a lattice
+        # vector: only the matching sites of the outermost column couple
+        narrow = ribbon(lattices.square(), SQUARE, width=2, direction=1)
+        narrow.lat.unit_cell = [{'tag': 'a', 'r0': (-3., 1.)}, {'tag': 'a', 'r0': (-3., 2.)}]
+        tr2 = Transport(sys.ham)
+        tr2.attach_lead(sys, narrow, 1)
+        sites = tr2.leads[0][3]
+        self.assertEqual(sorted((lat.coor['x'][s], lat.coor['y'][s]) for s in sites),
+                         [(length - 1., 1.), (length - 1., 2.)])
+
+    def test_attach_lead_checks(self):
+        lat = lattices.square()
+        lat.get_lattice(3, 2)
+        sys = System(lat)
+        sys.set_hopping([{'n': 1, 't': 1.}])
+        sys.get_ham()
+        rib = ribbon(lattices.square(), SQUARE, width=2, direction=1)
+        tr = Transport(sys.ham)
+        self.assertRaises(TypeError, tr.attach_lead, None, rib)
+        self.assertRaises(ValueError, Transport(np.zeros((2, 2))).attach_lead, sys, rib)
+        self.assertRaises(ValueError, tr.attach_lead, sys, rib, 0)
+        spinful = KSpace(lattices.chain(), spin=True)
+        self.assertRaises(ValueError, tr.attach_lead, sys, spinful)
+        # lead off the device lattice, wrong tag, too wide (incomplete interface)
+        off = ribbon(lattices.square(), SQUARE, width=2, direction=1)
+        off.lat.unit_cell = [{'tag': 'a', 'r0': (0.5, 0.)}, {'tag': 'a', 'r0': (0.5, 1.)}]
+        self.assertRaises(ValueError, tr.attach_lead, sys, off)
+        tagged = ribbon(lattices.square(), SQUARE, width=2, direction=1)
+        tagged.tags = np.array(['b', 'b'])
+        self.assertRaises(ValueError, tr.attach_lead, sys, tagged)
+        wide = ribbon(lattices.square(), SQUARE, width=3, direction=1)
+        self.assertRaises(ValueError, tr.attach_lead, sys, wide)
+        cubic = KSpace(Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0., 0.)}], prim_vec=[(1., 0., 0.)]))
+        self.assertRaises(ValueError, tr.attach_lead, sys, cubic)
+        self.assertEqual(tr.leads, [])
 
     def test_checks(self):
         tr = Transport(np.zeros((3, 3)))

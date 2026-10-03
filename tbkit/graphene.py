@@ -17,6 +17,30 @@ DY = 0.5
 
        
 class GrapheneLattice(Lattice):
+    r'''
+    Honeycomb lattice of graphene, with flake shapes.
+
+    Two sublattices, 'a' at :math:`(0, 0)` and 'b' at
+    :math:`(\sqrt3/2, 1/2)`, and primitive vectors
+    :math:`\mathbf{a}_1 = (\sqrt3, 0)` and
+    :math:`\mathbf{a}_2 = (\sqrt3/2, 3/2)`, so the nearest-neighbour
+    distance is 1. It is a :class:`Lattice` with methods that cut flakes
+    of the usual shapes: *triangle_zigzag*, *hexagon_zigzag*,
+    *triangle_armchair*, *hexagon_armchair*, *square* and *circle*.
+
+    *butterfly* and *betas* are empty here; *GrapheneSystem.get_butterfly*
+    fills the ones of the system.
+
+    Example usage::
+
+        from tbkit.graphene import GrapheneLattice, GrapheneSystem
+
+        lat = GrapheneLattice()
+        lat.hexagon_zigzag(n=4)
+        sys = GrapheneSystem(lat)
+        sys.set_hopping([{'n': 1, 't': 1.}])
+    '''
+
     def __init__(self) -> None:
         unit_cell = [{'tag': 'a', 'r0': (0, 0)},
                           {'tag': 'b', 'r0': (DX, DY)}]
@@ -103,6 +127,29 @@ class GrapheneLattice(Lattice):
         self.remove_dangling()
         
 class GrapheneSystem(System):
+    r'''
+    Graphene :class:`System`, with triaxial strain.
+
+    Adds to *System* the nearest-neighbour hoppings of a linear triaxial
+    strain (*set_hop_linear_strain*), which acts as a uniform
+    pseudo-magnetic field, the range of strains that keeps every hopping
+    positive (*get_beta_lims*), and the spectrum as a function of the strain
+    (*get_butterfly*).
+
+    :param lat: Lattice, usually a :class:`GrapheneLattice` flake.
+
+    Example usage::
+
+        from tbkit.graphene import GrapheneLattice, GrapheneSystem
+
+        lat = GrapheneLattice()
+        lat.hexagon_zigzag(n=10)
+        lat.center()
+        sys = GrapheneSystem(lat)
+        sys.set_hop_linear_strain(t=1., beta=0.1)
+        sys.get_ham()
+    '''
+
     def __init__(self, lat: Lattice) -> None:
         System.__init__(self, lat)
 
@@ -161,6 +208,7 @@ class GrapheneSystem(System):
         error_handling.number(t, 't')
         error_handling.real_number(beta, 'beta')
         i, j, ang, s = self._strain_projection()
+        self.clear_hopping()
         self.hop = np.zeros(len(i), dtype=HOP_DTYPE)
         self.hop['n'] = 1
         self.hop['i'] = i

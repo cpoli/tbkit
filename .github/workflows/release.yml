@@ -1,0 +1,94 @@
+name: release
+
+# Push a tag vX.Y.Z (matching `version` in pyproject.toml and a
+# "## X.Y.Z -- date" section in CHANGELOG.md) to publish a release.
+#
+# One-time setup on the services:
+# - PyPI: add this repository as a trusted publisher of tbkit
+#   (workflow release.yml, environment pypi).
+# - GitHub: create the environment "pypi" in the repository settings.
+# - Zenodo: enable the repository at zenodo.org/account/settings/github;
+#   every GitHub Release is then archived with its own DOI.
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Check that the tag matches the package version
+        run: |
+          version=$(python -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])")
+          test "v$version" = "$GITHUB_REF_NAME"
+      - run: pip install build
+      - run: python -m build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  pypi:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
+
+  github-release:
+    needs: pypi
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Release notes from the CHANGELOG section
+        run: |
+          version=${GITHUB_REF_NAME#v}
+          awk -v v="$version" '
+            /^## / { if (found) exit; if (index($0, "## " v " ") == 1) { found = 1; next } }
+            found' CHANGELOG.md > notes.md
+          test -s notes.md
+      - run: gh release create "$GITHUB_REF_NAME" dist/* --title "tbkit ${GITHUB_REF_NAME#v}" --notes-file notes.md
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+  docs:
+    needs: pypi
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      OMP_NUM_THREADS: 1
+      OPENBLAS_NUM_THREADS: 1
+      MKL_NUM_THREADS: 1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install .[docs,test]
+      - run: make -C docs html
+      # The coverage report linked from the README lives at /coverage/.
+      - run: pytest tests/ --cov=tbkit --cov-report=html:docs/build/html/coverage
+      - run: touch docs/build/html/.nojekyll
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ github.token }}
+          publish_dir: docs/build/html
+          commit_message: "Rebuild docs for ${{ github.ref_name }}"

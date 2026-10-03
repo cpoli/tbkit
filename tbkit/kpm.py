@@ -28,6 +28,7 @@ from __future__ import annotations
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
 import scipy.sparse as sparse
+from scipy.integrate import trapezoid
 
 import tbkit.error_handling as error_handling
 import tbkit.occupation as occupation
@@ -434,6 +435,6 @@ def hall_conductivity(
         sigma = prefactor * np.interp(e_grid, energies, cum)
     else:
         f = np.array([occupation.fermi_dirac(energies, float(e), temperature) for e in e_grid])
-        sigma = prefactor * np.trapezoid(f * integrand[None, :], eps, axis=1)
+        sigma = prefactor * trapezoid(f * integrand[None, :], eps, axis=1)
     return e_grid, sigma
 

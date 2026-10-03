@@ -163,6 +163,88 @@ def particle_hole(n: int) -> NDArray[np.float64]:
     return np.kron(np.array([[0., 1.], [1., 0.]]), np.eye(n))
 
 
+def pfaffian(a) -> complex:
+    r'''
+    Get the Pfaffian of an antisymmetric matrix,
+    :math:`\mathrm{Pf}(A)^2 = \det A`, by the Parlett-Reid reduction to
+    tridiagonal form with pivoting (Wimmer, ACM Trans. Math. Softw. 38, 30
+    (2012)). For a 2x2 block :math:`\begin{pmatrix}0 & a\\ -a & 0\end{pmatrix}`
+    it is :math:`a`; it is 0 for an odd dimension.
+
+    :param a: Square antisymmetric matrix, shape (n, n).
+
+    :returns:
+        * **pf** -- Complex number (a float for a real matrix).
+    '''
+    real = not np.iscomplexobj(a)
+    a = np.array(a, dtype='c16')
+    error_handling.square_matrix(a, 'a')
+    error_handling.antisymmetric(a)
+    n = len(a)
+    if n % 2:
+        return 0.
+    pf = 1. + 0j
+    for k in range(0, n - 1, 2):
+        # bring the largest entry of column k below the diagonal to row k + 1
+        p = k + 1 + int(np.argmax(np.abs(a[k + 1:, k])))
+        if p != k + 1:
+            a[[k + 1, p], :] = a[[p, k + 1], :]
+            a[:, [k + 1, p]] = a[:, [p, k + 1]]
+            pf = -pf
+        if a[k + 1, k] == 0.:
+            return 0.
+        pf *= a[k, k + 1]
+        if k + 2 < n:
+            tau = a[k, k + 2:] / a[k, k + 1]
+            a[k + 2:, k + 2:] += np.outer(tau, a[k + 2:, k + 1]) - np.outer(a[k + 2:, k + 1], tau)
+    return float(pf.real) if real else complex(pf)
+
+
+def majorana_number(ks) -> int:
+    r'''
+    Get Kitaev's Majorana number of a BdG model (Kitaev, Physics-Uspekhi
+    44, 131 (2001)): the product, over the time-reversal-invariant momenta
+    :math:`\Gamma_i`, of the signs of the Pfaffians of the Hamiltonian in
+    the Majorana basis,
+
+    .. math::
+
+        \mathcal{M} = \prod_i \mathrm{sign}\,\mathrm{Pf}\,A(\Gamma_i)\, ,\qquad
+        A = -i\,U H_{BdG} U^\dagger\, ,\qquad
+        U = \frac{1}{\sqrt2}\begin{pmatrix}1 & 1\\ -i & i\end{pmatrix}\, ,
+
+    :math:`U` taking the Nambu spinor :math:`(c, c^\dagger)` to the Majorana
+    operators :math:`(c + c^\dagger, -i(c - c^\dagger))`. Particle-hole
+    symmetry makes :math:`A(\Gamma_i)` real and antisymmetric. In 1D,
+    :math:`\mathcal{M} = \mathrm{sign}\,\mathrm{Pf}A(0)\,\mathrm{Pf}A(\pi) = -1`
+    in the topological phase (a Majorana zero mode at each end of an open
+    chain), +1 in the trivial one: the :math:`\mathbb{Z}_2` invariant of
+    class D. In 2D the product over the four momenta is
+    :math:`(-1)^C`, the parity of the Chern number (Ghosh et al., Phys. Rev.
+    B 82, 184525 (2010)). The invariant changes only where the gap closes
+    at one of the :math:`\Gamma_i`.
+
+    :param ks: **KSpace** instance of a BdG model, 2n orbitals: n particles
+        then their n holes (see *bdg_kspace*).
+
+    :returns:
+        * **m** -- Integer, -1 (topological) or +1 (trivial).
+    '''
+    from tbkit.kspace import KSpace
+    error_handling.kspace(ks, KSpace)
+    error_handling.bdg_orbitals(ks.norb)
+    n = ks.norb // 2
+    u = np.kron(np.array([[1., 1.], [-1j, 1j]]) / np.sqrt(2), np.eye(n))
+    sign = 1
+    for k in ks._trims():
+        a = -1j * u @ ks.get_ham(k) @ u.conj().T
+        error_handling.majorana_form(a)
+        pf = pfaffian(a.real)
+        error_handling.gapped_trim(pf)
+        sign *= int(np.sign(pf))
+    return sign
+
+
 class GapResult():
     r'''
     Self-consistent s-wave pairing of *s_wave_gap*.

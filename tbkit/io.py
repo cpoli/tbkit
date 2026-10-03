@@ -15,7 +15,10 @@ Archive layout (format ``'tbkit-model'``, version :data:`VERSION`):
   ``'KSpace'``), ``tbkit_version``;
 * ``uc_tag`` (n_sites,), ``uc_r0`` (n_sites, space_dim), ``prim_vec``
   (dim, space_dim), ``coor`` (the structured site array), ``n_cells`` (3,);
-* System: ``onsite`` (sites,), ``hop`` (the structured *sys.hop*);
+* System: ``onsite`` (sites,), ``hop`` (the structured *sys.hop*), and,
+  from version 2, ``periodic`` (one boolean per primitive vector) for a
+  System with periodic boundaries (every other model is still written as
+  version 1, which older tbkit versions read);
 * KSpace: ``spin``, ``onsite`` (norb,), ``onsite_offdiag`` (norb, norb),
   ``nonreciprocal``, and ``hop_i``, ``hop_j``, ``hop_R`` (Cartesian
   lattice vectors), ``hop_t`` for the hoppings, ``ovl_i``, ``ovl_j``,
@@ -43,7 +46,7 @@ from tbkit.system import System
 FORMAT = 'tbkit-model'
 #: Version of the archive format written by *save_model*; *load_model*
 #: reads this version and every earlier one.
-VERSION = 1
+VERSION = 2
 
 
 def _hop_arrays(hops: list, space_dim: int, prefix: str) -> dict:
@@ -84,13 +87,16 @@ def save_model(model: Lattice | System | KSpace, path: str | os.PathLike) -> str
         gra2 = load_model('graphene.npz')
     '''
     error_handling.saveable_model(model, Lattice, System, KSpace, OrbitalSystem)
+    error_handling.no_value_functions(model, 'save_model')
     error_handling.file_path(path, 'path')
     path = os.fspath(path)
     if not path.endswith('.npz'):
         path += '.npz'
     lat = model.lat if isinstance(model, (System, KSpace)) else model
     kind = 'System' if isinstance(model, System) else 'KSpace' if isinstance(model, KSpace) else 'Lattice'
-    data = {'format': np.array(FORMAT), 'version': np.array(VERSION), 'kind': np.array(kind),
+    # only what needs version 2 (a periodic System) is written as such, so
+    # that older tbkit versions keep reading everything else
+    data = {'format': np.array(FORMAT), 'version': np.array(1), 'kind': np.array(kind),
                 'tbkit_version': np.array(tbkit.__version__),
                 'uc_tag': np.array([dic['tag'] for dic in lat.unit_cell], dtype='U1'),
                 'uc_r0': np.array([dic['r0'] for dic in lat.unit_cell], dtype='f8'),
@@ -100,6 +106,9 @@ def save_model(model: Lattice | System | KSpace, path: str | os.PathLike) -> str
     if kind == 'System':
         data['onsite'] = np.asarray(model.onsite, dtype='c16')
         data['hop'] = model.hop
+        if any(model.periodic):
+            data['periodic'] = np.array(model.periodic, dtype=bool)
+            data['version'] = np.array(VERSION)
     elif kind == 'KSpace':
         data.update({'spin': np.array(model.spin), 'onsite': model.onsite,
                           'onsite_offdiag': model._onsite_offdiag,
@@ -136,7 +145,8 @@ def load_model(path: str | os.PathLike) -> Lattice | System | KSpace:
         if kind == 'Lattice':
             return lat
         if kind == 'System':
-            sys = System(lat)
+            periodic = tuple(bool(p) for p in data['periodic']) if 'periodic' in data.files else False
+            sys = System(lat, periodic=periodic)
             sys.onsite = data['onsite'].copy()
             sys.hop = data['hop'].copy()
             return sys
@@ -331,8 +341,24 @@ def read_wannier90(
         error_handling.layer_hoppings(float(np.abs(ham[R[:, 2] != 0]).max(initial=0.)), tol)
         keep = R[:, 2] == 0
         R, ndegen, ham = R[keep, :2], ndegen[keep], ham[keep]
-    ham = ham / ndegen[:, None, None]
-    unit_cell = [{'tag': tag, 'r0': tuple(float(c) for c in r[:dim])} for tag, r in zip(tags, positions)]
+    return _hr_kspace(prim_vec, positions[:, :dim], tags, R, ham / ndegen[:, None, None], cutoff, tol)
+
+
+def _hr_kspace(
+    prim_vec: list[tuple[float, ...]], positions: NDArray[np.float64], tags: list[str],
+    R: NDArray[np.int_], ham: NDArray[np.complex128], cutoff: float, tol: float,
+) -> KSpace:
+    r'''
+    Private function. The **KSpace** of the matrices :math:`H(\mathbf{R})`
+    (*ham*, shape (nR, num_wann, num_wann), degeneracy weights already
+    divided out) at the lattice vectors *R* (integers, shape (nR, dim)),
+    with orbitals at *positions*, for *read_wannier90* and
+    *WannierFunctions.kspace*. It is Hermitian (with real onsite energies)
+    when every :math:`H(\mathbf{R})` has its partner
+    :math:`H(-\mathbf{R}) = H(\mathbf{R})^\dagger` within *tol*.
+    '''
+    num_wann = ham.shape[1]
+    unit_cell = [{'tag': tag, 'r0': tuple(float(c) for c in r)} for tag, r in zip(tags, positions)]
     ks = KSpace(Lattice(unit_cell=unit_cell, prim_vec=list(prim_vec)))
     # Hermitian: every H(R) has its partner H(-R) = H(R)^dagger
     index = {tuple(r): p for p, r in enumerate(R.tolist())}

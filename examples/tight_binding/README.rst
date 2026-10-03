@@ -9,4 +9,10 @@ including Wallace's 1947 linear (Dirac) dispersion near the K point;
 the physics behind the 2004 isolation of graphene -- flakes, edge
 states, and the Berry phase of pi of its Dirac cones; and
 :class:`tbkit.plot.Plot`'s lattice, spectrum, density-of-states, and
-eigenstate-intensity plots.
+eigenstate-intensity plots; parametrized Hamiltonians, whose value
+functions let a flux or dimerization sweep re-evaluate the hoppings
+instead of rebuilding the model; periodic boundaries in real space,
+tori and cylinders whose spectra match the Bloch bands on a k-mesh;
+and the analysis of a band structure: Fermi surfaces and their Lifshitz
+transitions, bands projected on sublattices or spins and spin textures,
+and the tetrahedron method for the density of states.

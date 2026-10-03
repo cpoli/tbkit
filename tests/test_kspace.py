@@ -4,6 +4,7 @@ from tbkit.system import system
 import unittest
 from unittest import mock
 import numpy as np
+import scipy.linalg as LA
 from math import sqrt
 
 
@@ -413,3 +414,52 @@ class TestRibbon(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class TestBatchedDiagonalization(unittest.TestCase):
+    '''
+    The stacked eigensolvers over k (*_eigs*) against scipy.linalg, one
+    k-point at a time.
+    '''
+    def setUp(self):
+        self.ks = np.random.default_rng(0).uniform(-3., 3., (40, 2))
+
+    def test_hermitian_overlap(self):
+        hal = haldane(M=0.3)
+        hal.set_overlap([{'i': 0, 'j': 1, 'R': (0, 0), 't': 0.1}])
+        en, vn = hal.get_bands(self.ks, eigenvec=True)
+        for k, e, v in zip(self.ks, en, vn):
+            h, s = hal.get_ham(k), hal.get_overlap(k)
+            self.assertTrue(np.allclose(e, LA.eigvalsh(h, s)))
+            self.assertTrue(np.allclose(h @ v, s @ v * e[None]))
+            self.assertTrue(np.allclose(v.conj().T @ s @ v, np.eye(2)))
+        self.assertTrue(np.allclose(hal.mesh_bands(7), hal._eigs(hal.mesh_grid(7)[1], True)[0]))
+
+    def test_non_hermitian(self):
+        for overlap in (False, True):
+            hal = haldane(M=0.3)
+            hal.set_onsite({'a': 0.3 + 0.2j, 'b': -0.3})
+            if overlap:
+                hal.set_overlap([{'i': 0, 'j': 1, 'R': (0, 0), 't': 0.1}])
+            en, vn = hal.get_bands(self.ks, eigenvec=True)
+            self.assertTrue(np.allclose(hal.get_bands(self.ks), en))
+            for k, e, v in zip(self.ks, en, vn):
+                h, s = hal.get_ham(k), hal.get_overlap(k)
+                ref = LA.eigvals(h, s)
+                self.assertTrue(np.allclose(e, ref[np.argsort(ref.real)]))
+                self.assertTrue(np.allclose(h @ v, s @ v * e[None]))
+
+    def test_workers(self):
+        hal = haldane(M=0.3)
+        serial = hal.get_bands(self.ks, eigenvec=True), hal.berry_curvature(0, 12), hal.wannier_centers(0, 30)
+        self.assertEqual(hal.workers, 1)
+        hal.set_workers(3)
+        en, vn = hal.get_bands(self.ks, eigenvec=True)
+        self.assertTrue(np.allclose(en, serial[0][0]))
+        # the same eigenvectors, up to a phase
+        self.assertTrue(np.allclose(np.abs(np.einsum("kin,kin->kn", vn.conj(), serial[0][1])), 1.))
+        self.assertTrue(np.allclose(hal.berry_curvature(0, 12), serial[1]))
+        self.assertTrue(np.allclose(hal.wannier_centers(0, 30), serial[2]))
+        self.assertEqual(KSpace.workers, 1)
+        self.assertRaises(TypeError, hal.set_workers, 2.)
+        self.assertRaises(ValueError, hal.set_workers, 0)

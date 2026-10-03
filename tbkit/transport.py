@@ -29,6 +29,18 @@ Example usage::
     tr.add_lead(h0, v, coupling=np.ones((1, 1)), sites=[9])
     T = tr.transmission(np.linspace(-1.9, 1.9, 50))
 
+*Transport.attach_lead* builds the coupling and finds the device sites
+itself, from a lead given as a 1D *KSpace* model placed in the device's
+coordinates (e.g. ``tr.attach_lead(sys, strip, 1)``).
+
+*Transport.smatrix* gives the scattering matrix itself. It uses the exact
+propagating and evanescent modes of the leads (*lead_modes*, with no
+broadening) and one sparse factorization of the device per energy (the
+formulation of Groth et al. 2014, as in Kwant). *Transport.wave_function*
+and *Transport.ldos* give the scattering states and the local density of
+states they carry. *Transport.transmission* uses the scattering matrix by
+default.
+
 With more leads, *Transport.conductance_matrix* and
 *four_terminal_resistance* solve the Landauer-Buttiker equations (Hall
 bars); *bond_currents* and *local_currents* map the current;
@@ -39,10 +51,13 @@ inverting the whole device.
 """
 from __future__ import annotations
 
+from typing import NamedTuple
+
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
 import scipy.linalg as LA
 import scipy.sparse as sp
+import scipy.sparse.linalg as spla
 
 import tbkit.error_handling as error_handling
 
@@ -196,24 +211,296 @@ def lead_from_kspace(ks, direction: int = 1) -> tuple[NDArray[np.complex128], ND
     return h0, v
 
 
+class LeadModes(NamedTuple):
+    r'''
+    The propagating modes of a lead at one energy (see *lead_modes*):
+    the incoming ones first (moving towards the device, velocity < 0), then
+    the outgoing ones, each group by block of the conservation law, then in
+    increasing momentum.
+
+    * **wave_functions** -- Complex ndarray, shape (m, n_modes). Mode :math:`\phi`
+      on the lead's surface cell: cell :math:`n` carries :math:`\lambda^n\phi`,
+      with :math:`\lambda = e^{ik}`. Normalized to unit current.
+    * **momenta** -- Real ndarray, shape (n_modes,). :math:`k` in :math:`(-\pi, \pi]`.
+    * **velocities** -- Real ndarray, shape (n_modes,). :math:`dE/dk`,
+      positive away from the device.
+    * **blocks** -- Integer ndarray, shape (n_modes,). The block of the
+      conservation law each mode belongs to: the index of its eigenvalue,
+      in increasing order (all 0 without a conservation law).
+    '''
+    wave_functions: NDArray[np.complex128]
+    momenta: NDArray[np.float64]
+    velocities: NDArray[np.float64]
+    blocks: NDArray[np.int64]
+
+
+def lead_modes(
+    h0: ArrayLike, v: ArrayLike, energy: float, conservation_law: ArrayLike | None = None,
+) -> LeadModes:
+    r'''
+    Get the propagating modes of a semi-infinite lead (cells
+    :math:`0, 1, 2, \dots` away from the device, :math:`H_{nn} = h_0`,
+    :math:`H_{n,n+1} = v`) at one energy. A mode :math:`\psi_n = \lambda^n\phi`
+    solves :math:`(E - h_0 - \lambda v - \lambda^{-1}v^\dagger)\phi = 0`, the
+    generalized eigenproblem of the transfer matrix
+
+    .. math::
+
+        \begin{pmatrix} 0 & 1\\ -v^\dagger & E - h_0\end{pmatrix}
+        \begin{pmatrix}\phi\\ \lambda\phi\end{pmatrix} = \lambda
+        \begin{pmatrix} 1 & 0\\ 0 & v\end{pmatrix}
+        \begin{pmatrix}\phi\\ \lambda\phi\end{pmatrix}\, ,
+
+    solved by the QZ algorithm, so that a singular :math:`v` is allowed. The
+    modes with :math:`|\lambda| = 1` propagate with the velocity
+    :math:`dE/dk = -2\,\mathrm{Im}(\lambda\phi^\dagger v\phi)` (diagonalized
+    within degenerate modes). There is no broadening :math:`\eta`, so the
+    modes are exact up to the band edges.
+
+    A *conservation_law* :math:`Q` (spin :math:`\sigma_z`, the electron-hole
+    :math:`\tau_z` of a normal lead, a valley) commutes with :math:`h_0` and
+    :math:`v`. The modes are then found in each eigenspace of :math:`Q`
+    separately, so that every mode carries one of its eigenvalues, even
+    when modes of different blocks are degenerate.
+
+    :param h0: Square complex array, Hermitian. Cell Hamiltonian.
+    :param v: Square complex array, same shape. Coupling of a cell to the
+        next one, away from the device.
+    :param energy: Real number. Energy, not at a band edge of the lead.
+    :param conservation_law: Hermitian complex array, shape of *h0*, or None.
+        Default value None.
+
+    :returns:
+        * **modes** -- **LeadModes**: the wave functions, momenta, velocities and blocks.
+    '''
+    h0 = np.atleast_2d(np.asarray(h0, dtype='c16'))
+    v = np.atleast_2d(np.asarray(v, dtype='c16'))
+    error_handling.lead(h0, v)
+    error_handling.real_number(energy, 'energy')
+    law = _law_blocks(h0, v, conservation_law)
+    return _lead_modes(h0, v, float(energy), law)[0]
+
+
+def _law_blocks(
+    h0: NDArray[np.complex128], v: NDArray[np.complex128], law: ArrayLike | None,
+) -> list[NDArray[np.complex128]] | None:
+    r'''
+    Private function. Validate a conservation law of a lead and return an
+    orthonormal basis (shape (m, d)) of each of its eigenspaces, in
+    increasing eigenvalue (None without a conservation law).
+    '''
+    if law is None:
+        return None
+    law = np.atleast_2d(np.asarray(law, dtype='c16'))
+    error_handling.conservation_law(law, h0, v)
+    w, u = np.linalg.eigh(law)
+    breaks = np.flatnonzero(np.diff(w) > 1e-8 * max(1., np.max(np.abs(w)))) + 1
+    return [u[:, g] for g in np.split(np.arange(len(w)), breaks)]
+
+
+def _lead_modes(
+    h0: NDArray[np.complex128], v: NDArray[np.complex128], energy: float,
+    law: list[NDArray[np.complex128]] | None = None, tol: float = 1e-6,
+) -> tuple[LeadModes, int, NDArray[np.complex128], NDArray[np.complex128]]:
+    r'''
+    Private function. The modes of a lead (see *lead_modes*), the number of
+    incoming ones, and a basis of every solution that leaves the device or
+    decays away from it: its values on cells 0 and 1, *u0* and *u1* of shape
+    (m, m). Its first columns are the outgoing modes of *LeadModes*, the
+    others span the evanescent modes (a Schur basis of the pencil, which
+    stays well conditioned when :math:`v` is singular and many
+    :math:`\lambda` vanish). Modes with :math:`||\lambda| - 1| \le` *tol*
+    propagate. With the eigenspaces *law* of a conservation law
+    (*_law_blocks*), each block :math:`P^\dagger h_0P`, :math:`P^\dagger vP`
+    is solved on its own and embedded back.
+    '''
+    if law is not None:
+        # the incoming modes of every block, then the outgoing ones, then
+        # the evanescent ones: the order of the single-block case
+        phi, k, vel, block, out0, out1, ev0, ev1 = ([] for _ in range(8))
+        for b, p in enumerate(law):
+            md, n, u0, u1 = _lead_modes(p.conj().T @ h0 @ p, p.conj().T @ v @ p, energy, None, tol)
+            phi.append((p @ md.wave_functions[:, :n], p @ md.wave_functions[:, n:]))
+            k.append((md.momenta[:n], md.momenta[n:]))
+            vel.append((md.velocities[:n], md.velocities[n:]))
+            block.append(np.full(n, b))
+            out0.append(p @ u0[:, :n])
+            out1.append(p @ u1[:, :n])
+            ev0.append(p @ u0[:, n:])
+            ev1.append(p @ u1[:, n:])
+        modes = LeadModes(np.hstack([f[0] for f in phi] + [f[1] for f in phi]),
+                          np.concatenate([f[0] for f in k] + [f[1] for f in k]),
+                          np.concatenate([f[0] for f in vel] + [f[1] for f in vel]),
+                          np.concatenate(block * 2))
+        return modes, sum(len(b) for b in block), np.hstack(out0 + ev0), np.hstack(out1 + ev1)
+    error_handling.hermitian_operator(h0)
+    m = len(h0)
+    eye, zero = np.eye(m), np.zeros((m, m))
+    a = np.block([[zero, eye], [-v.conj().T, energy * eye - h0]])
+    b = np.block([[eye, zero], [zero, v]])
+    # decaying (|lambda| < 1, including lambda = 0) first; beta = 0 is lambda = infinity
+    _, _, alpha, beta, _, z = LA.ordqz(a, b, sort=lambda al, be: np.abs(al) < (1 - tol) * np.abs(be),
+                                       output='complex')
+    decay = np.abs(alpha) < (1 - tol) * np.abs(beta)
+    unit = ~decay & (np.abs(np.abs(alpha) - np.abs(beta)) <= tol * np.abs(beta)) & (beta != 0)
+    lams = alpha[unit] / beta[unit]
+    phis, ks, vels = [], [], []
+    left = list(range(len(lams)))
+    while left:
+        # a group of degenerate lambdas: its modes span the kernel of the
+        # Hermitian E - h0 - lam v - lam^* v^dagger; diagonalize the velocity there
+        group = [i for i in left if abs(lams[i] - lams[left[0]]) < tol]
+        left = [i for i in left if i not in group]
+        lam = np.mean(lams[group])
+        lam /= abs(lam)
+        w, u = np.linalg.eigh(energy * eye - h0 - lam * v - np.conj(lam) * v.conj().T)
+        phi = u[:, np.argsort(np.abs(w))[:len(group)]]
+        vel, rot = np.linalg.eigh(1j * (lam * phi.conj().T @ v @ phi
+                                        - np.conj(lam) * phi.conj().T @ v.conj().T @ phi))
+        error_handling.lead_band_edge(np.min(np.abs(vel)) > tol, energy)
+        phis.append(phi @ rot / np.sqrt(np.abs(vel)))
+        ks += [np.angle(lam)] * len(group)
+        vels.append(vel)
+    phis = np.hstack(phis) if phis else np.zeros((m, 0), 'c16')
+    ks, vels = np.array(ks), np.concatenate(vels) if vels else np.zeros(0)
+    order = np.lexsort((ks, vels > 0))  # incoming (v < 0) first, then by momentum
+    phis, ks, vels = phis[:, order], ks[order], vels[order]
+    n_in, n_dec = int(np.sum(vels < 0)), int(np.sum(decay))
+    error_handling.lead_band_edge(2 * n_in == len(vels) and n_in + n_dec == m, energy)
+    out = phis[:, n_in:]
+    u0 = np.hstack([out, z[:m, :n_dec]])
+    u1 = np.hstack([out * np.exp(1j * ks[n_in:]), z[m:, :n_dec]])
+    return LeadModes(phis, ks, vels, np.zeros(len(ks), int)), n_in, u0, u1
+
+
+class SMatrix():
+    r'''
+    The scattering matrix of a device at one energy (see
+    *Transport.smatrix*): ``data[a, b]`` is the amplitude of outgoing mode
+    *a* for an incoming mode *b* of unit current. The rows are the outgoing
+    modes of lead 0, then lead 1, ...; the columns the incoming ones, in the
+    order of *lead_info*. It is unitary for a Hermitian device.
+
+    A lead is an integer, or a tuple ``(lead, block)`` that keeps only the
+    modes in one block of the lead's conservation law (*Transport.add_lead*),
+    for example ``(0, 1)`` for the electrons and ``(0, 0)`` for the holes of
+    a normal lead with :math:`Q = \tau_z`.
+
+    :ivar data: Complex ndarray, shape (n_out, n_in).
+    :ivar lead_info: List of **LeadModes**, one per lead.
+    '''
+
+    def __init__(
+        self, data: NDArray[np.complex128], lead_info: list[LeadModes], n_blocks: list[int] | None = None,
+    ) -> None:
+        self.data = data
+        self.lead_info = lead_info
+        self._n_blocks = [1] * len(lead_info) if n_blocks is None else list(n_blocks)
+        counts = [int(np.sum(m.velocities < 0)) for m in lead_info]
+        self._bounds = np.concatenate([[0], np.cumsum(counts)]).astype(int)
+
+    def _modes(self, lead: int | tuple[int, int], outgoing: bool) -> NDArray[np.int64]:
+        r'''
+        Private method. The rows (*outgoing*) or columns of the modes of a
+        lead, or of one block of it.
+        '''
+        error_handling.lead_block(lead, self._n_blocks)
+        l = lead[0] if isinstance(lead, tuple) else lead
+        idx = np.arange(self._bounds[l], self._bounds[l + 1])
+        if isinstance(lead, tuple):
+            n = len(idx)
+            blocks = self.lead_info[l].blocks
+            idx = idx[(blocks[n:] if outgoing else blocks[:n]) == lead[1]]
+        return idx
+
+    def num_propagating(self, lead: int | tuple[int, int]) -> int:
+        r'''
+        Get the number of propagating modes (incoming, as many as outgoing)
+        of a lead, or of one block of it.
+
+        :param lead: Integer or tuple (lead, block).
+
+        :returns:
+            * **n** -- Integer.
+        '''
+        return len(self._modes(lead, False))
+
+    def submatrix(
+        self, lead_out: int | tuple[int, int], lead_in: int | tuple[int, int],
+    ) -> NDArray[np.complex128]:
+        r'''
+        Get the block of the scattering matrix from lead *lead_in* to lead
+        *lead_out*: the transmission amplitudes :math:`t`, or the reflection
+        amplitudes :math:`r` if the two are equal.
+
+        :param lead_out: Integer or tuple (lead, block).
+        :param lead_in: Integer or tuple (lead, block).
+
+        :returns:
+            * **s** -- Complex ndarray, shape (num_propagating(lead_out), num_propagating(lead_in)).
+        '''
+        return self.data[np.ix_(self._modes(lead_out, True), self._modes(lead_in, False))]
+
+    def transmission(self, lead_out: int | tuple[int, int], lead_in: int | tuple[int, int]) -> float:
+        r'''
+        Get the transmission :math:`\sum_{ab}|S_{ab}|^2` from lead *lead_in*
+        to lead *lead_out* (the reflection if they are equal). With blocks,
+        ``transmission((0, 0), (0, 1))`` is, for example, the Andreev
+        reflection of electrons into holes.
+
+        :param lead_out: Integer or tuple (lead, block).
+        :param lead_in: Integer or tuple (lead, block).
+
+        :returns:
+            * **T** -- Real number.
+        '''
+        return float(np.sum(np.abs(self.submatrix(lead_out, lead_in)) ** 2))
+
+
 class Transport():
     r'''
     A finite device, of Hamiltonian *ham* (e.g. *System.ham*), to which
     semi-infinite leads are attached with *add_lead*; *transmission* then
     gives the Landauer transmission between two of them.
 
+    The device is stored sparse. *smatrix*, *wave_function*, *ldos* and
+    *transmission* (by default) only factorize the sparse matrix. The
+    methods with a broadening *eta* use the dense Green's function, and the
+    dense matrix *ham* is built once, the first time it is needed.
+
     :param ham: Square matrix (sparse or dense). Device Hamiltonian.
     '''
 
     def __init__(self, ham) -> None:
-        ham = ham.toarray() if hasattr(ham, 'toarray') else np.asarray(ham)
+        ham = sp.csr_matrix(ham, dtype='c16')
         error_handling.square_matrix(ham, 'ham')
-        self.ham = ham.astype('c16')
+        self._ham = ham
+        self._dense = None
         self.leads = []  # list of (h0, v, coupling, sites)
+        self._laws = []  # eigenspaces of each lead's conservation law, or None
 
-    def add_lead(self, h0: ArrayLike, v: ArrayLike, coupling: ArrayLike, sites: list[int]) -> None:
+    @property
+    def ham(self) -> NDArray[np.complex128]:
+        r'''
+        The device Hamiltonian, as a dense complex ndarray.
+        '''
+        if self._dense is None:
+            self._dense = self._ham.toarray()
+        return self._dense
+
+    def add_lead(
+        self, h0: ArrayLike, v: ArrayLike, coupling: ArrayLike, sites: list[int],
+        conservation_law: ArrayLike | None = None,
+    ) -> None:
         r'''
         Attach a semi-infinite lead (see *surface_green*).
+
+        A *conservation_law* :math:`Q`, Hermitian and commuting with
+        :math:`h_0` and :math:`v`, sorts the lead's modes into the eigenspaces
+        of :math:`Q` (*lead_modes*), and *smatrix* then resolves its blocks:
+        :math:`\sigma_z` for spin-resolved transport, the electron-hole
+        :math:`\tau_z` of a normal lead for Andreev reflection. The device
+        itself need not conserve :math:`Q`.
 
         :param h0: Square complex array, shape (m, m). Lead cell Hamiltonian.
         :param v: Square complex array, shape (m, m). Coupling of a lead cell
@@ -221,13 +508,81 @@ class Transport():
         :param coupling: Complex array, shape (len(sites), m). Hoppings
             :math:`\tau` between the device *sites* and the lead's surface cell.
         :param sites: List of device site (row) indices the lead touches.
+        :param conservation_law: Hermitian complex array, shape (m, m), or None.
+            Default value None. Its blocks are numbered in increasing eigenvalue.
         '''
         h0 = np.atleast_2d(np.asarray(h0, dtype='c16'))
         v = np.atleast_2d(np.asarray(v, dtype='c16'))
         error_handling.lead(h0, v)
         coupling = np.atleast_2d(np.asarray(coupling, dtype='c16'))
-        error_handling.lead_coupling(coupling, sites, len(h0), len(self.ham))
+        error_handling.lead_coupling(coupling, sites, len(h0), self._ham.shape[0])
+        law = _law_blocks(h0, v, conservation_law)
         self.leads.append((h0, v, coupling, list(sites)))
+        self._laws.append(law)
+
+    def attach_lead(
+        self, sys, ks, direction: int = 1, conservation_law: ArrayLike | None = None,
+    ) -> None:
+        r'''
+        Attach a semi-infinite lead given as a 1D *KSpace* model (e.g. a
+        ribbon, see *kspace.ribbon*) to the device built from *sys*, without
+        writing the coupling by hand.
+
+        The lead's sites sit at :math:`\boldsymbol\tau_o + n\mathbf{a}_1`
+        (its *unit_cell* positions, in the coordinates of *sys*, and its
+        primitive vector). The device sites found at these positions, with
+        the same tag, are copies of lead orbitals; the outermost cell along
+        *direction* that holds some of them is the interface. The lead
+        starts at the next cell, and couples to the interface sites through
+        its own hoppings: :math:`\tau = v` restricted to their orbitals (see
+        *lead_from_kspace*, which also gives :math:`h_0` and :math:`v`).
+        Every lead orbital with a hopping into the next cell must be present
+        in the interface cell; the device is not extended.
+
+        :param sys: **System** instance (one orbital per site) whose
+            Hamiltonian, in the same site order, is the device of this
+            *Transport*.
+        :param ks: **KSpace** instance, 1D and spinless, with hoppings
+            between neighbouring cells only.
+        :param direction: +1 or -1. Default value 1. Direction, along the
+            lead's primitive vector, in which the lead extends away from the device.
+        :param conservation_law: Hermitian complex array, shape (norb, norb),
+            or None. Default value None. See *add_lead*.
+
+        Example usage::
+
+            strip = ribbon(lattices.square(), hoppings, width=5, direction=1)
+            tr = Transport(sys.ham)
+            tr.attach_lead(sys, strip, -1)   # at the left end of the device
+            tr.attach_lead(sys, strip, 1)    # at the right end
+        '''
+        from tbkit.orbital import OrbitalSystem
+        error_handling.sys(sys)
+        error_handling.not_orbital_system(sys, OrbitalSystem)
+        error_handling.empty_coor(sys.lat.coor)
+        error_handling.lead_device_size(sys.lat.sites, self._ham.shape[0])
+        error_handling.spinless(ks.spin)
+        h0, v = lead_from_kspace(ks, direction)
+        error_handling.lead_space_dim(ks.space_dim, sys.lat.space_dim)
+        pos = np.stack([sys.lat.coor[f] for f in ('x', 'y', 'z')[:sys.lat.space_dim]], axis=1)
+        a = np.array(ks.lat.prim_vec[0], dtype='f8')
+        tau = ks.orbital_positions()
+        cell = np.zeros(len(pos), int)
+        orb = np.full(len(pos), -1)
+        for o in range(ks.norb):
+            rel = pos - tau[o]
+            n = np.rint(rel @ a / (a @ a)).astype(int)
+            hit = (orb < 0) & (np.linalg.norm(rel - n[:, None] * a, axis=1) < error_handling.ATOL) \
+                & (sys.lat.coor['tag'] == ks.tags[o])
+            cell[hit], orb[hit] = n[hit], o
+        on_lead = orb >= 0
+        error_handling.lead_overlap(bool(on_lead.any()))
+        edge = direction * np.max(direction * cell[on_lead])
+        interface = np.flatnonzero(on_lead & (cell == edge))
+        bonded = np.flatnonzero(np.any(v != 0, axis=1))  # orbitals coupled to the next cell
+        error_handling.lead_interface(sorted(set(bonded) - set(orb[interface])))
+        sites = interface[np.isin(orb[interface], bonded)]
+        self.add_lead(h0, v, v[orb[sites]], [int(s) for s in sites], conservation_law)
 
     def self_energy(self, lead: int, energy: float, eta: float = 1e-9) -> NDArray[np.complex128]:
         r'''
@@ -265,18 +620,24 @@ class Transport():
         return LA.inv((energy + 1j * eta) * np.eye(len(self.ham)) - self.ham - sigma)
 
     def transmission(
-        self, energies: ArrayLike, lead_in: int = 0, lead_out: int = 1, eta: float = 1e-9,
+        self, energies: ArrayLike, lead_in: int = 0, lead_out: int = 1, eta: float | None = None,
     ) -> NDArray[np.float64]:
         r'''
-        Get the transmission :math:`T(E) = \mathrm{Tr}[\Gamma_{out} G^r
-        \Gamma_{in} G^a]` from lead *lead_in* to lead *lead_out*: the
+        Get the transmission from lead *lead_in* to lead *lead_out*: the
         two-terminal conductance in units of :math:`e^2/h` (per spin, for a
         spinless model).
+
+        By default (*eta* None) it is :math:`\sum_{ab}|S_{ab}|^2` over the block of
+        the scattering matrix (*smatrix*), exact up to the band edges of the
+        leads. With a broadening *eta* (and, as a fallback, for non-Hermitian
+        leads or *lead_in* = *lead_out*, with *eta* = 1e-9) it is the Caroli
+        formula :math:`T(E) = \mathrm{Tr}[\Gamma_{out} G^r \Gamma_{in} G^a]`.
+        The two agree to :math:`O(\eta)`.
 
         :param energies: Real array. Energies.
         :param lead_in: Integer. Default value 0.
         :param lead_out: Integer. Default value 1.
-        :param eta: Positive real. Default value 1e-9.
+        :param eta: Positive real or None. Default value None.
 
         :returns:
             * **T** -- Real ndarray, same length as *energies*.
@@ -284,6 +645,16 @@ class Transport():
         error_handling.lead_index(lead_in, len(self.leads))
         error_handling.lead_index(lead_out, len(self.leads))
         energies = np.atleast_1d(np.asarray(energies, dtype='f8'))
+        hermitian = all(np.allclose(h0, h0.conj().T) for h0, _, _, _ in self.leads)
+        if eta is None and hermitian and lead_in != lead_out:
+            out = np.zeros(len(energies))
+            for n, e in enumerate(energies):
+                modes, sol = self._scattering(float(e), [lead_in])
+                a = self._ham.shape[0] + sum(len(h0) for h0, _, _, _ in self.leads[:lead_out])
+                n_out = int(np.sum(modes[lead_out].velocities > 0))
+                out[n] = np.sum(np.abs(sol[a:a + n_out]) ** 2)
+            return out
+        eta = 1e-9 if eta is None else eta
         out = np.zeros(len(energies))
         for n, e in enumerate(energies):
             sig_in = self.self_energy(lead_in, e, eta)
@@ -293,6 +664,226 @@ class Transport():
             g = self.get_green(e, eta)
             out[n] = np.trace(gam_out @ g @ gam_in @ g.conj().T).real
         return out
+
+    # ------------------------------------------------------------------
+    # Scattering matrix and scattering states
+    # ------------------------------------------------------------------
+
+    def _scattering(self, energy: float, inject: list[int]) -> tuple:
+        r'''
+        Private method. Solve the scattering problem for every incoming mode
+        of the leads *inject* (Groth et al. 2014). In lead :math:`l`, the
+        wave function on cells 0 and 1 is the incoming mode plus
+        :math:`U_0 b_l`, :math:`U_1 b_l` (*_lead_modes*: outgoing and
+        evanescent). The unknowns are the device wave function
+        :math:`\psi` and the amplitudes :math:`b_l`, and the equations are
+        the Schrodinger equation on the device and on the surface cell of
+        every lead,
+
+        .. math::
+
+            (E - H)\psi - \sum_l\tau_l U_{0,l}b_l = \sum_l\tau_l\phi^{in}_l\, ,\qquad
+            -\tau_l^\dagger\psi + [(E - h_0)U_0 - vU_1]b_l = -(E - h_0 - \lambda_{in}v)\phi^{in}_l\, ,
+
+        one sparse system of size n_sites + sum_l m_l, factorized once
+        (*scipy.sparse.linalg.splu*) for every right-hand side.
+
+        :returns:
+            * **modes** -- List of **LeadModes**, one per lead.
+            * **sol** -- Complex ndarray, shape (n_sites + sum_l m_l, n_in): one
+              column per incoming mode of the leads *inject*, in order.
+        '''
+        error_handling.real_number(energy, 'energy')
+        n = self._ham.shape[0]
+        found = [_lead_modes(h0, v, energy, law) for (h0, v, _, _), law in zip(self.leads, self._laws)]
+        size = n + sum(len(h0) for h0, _, _, _ in self.leads)
+        device = (energy * sp.eye(n, dtype='c16') - self._ham).tocoo()
+        rows, cols, vals = [device.row], [device.col], [device.data]
+
+        def block(r, c, values):
+            rr, cc = np.meshgrid(r, c, indexing='ij')
+            rows.append(rr.ravel())
+            cols.append(cc.ravel())
+            vals.append(values.ravel())
+
+        rhs, a = [], n
+        for l, ((h0, v, tau, sites), (modes, n_in, u0, u1)) in enumerate(zip(self.leads, found)):
+            m = len(h0)
+            lead = np.arange(a, a + m)
+            e_h0 = energy * np.eye(m) - h0
+            block(sites, lead, -tau @ u0)
+            block(lead, sites, -tau.conj().T)
+            block(lead, lead, e_h0 @ u0 - v @ u1)
+            if l in inject:
+                phi = modes.wave_functions[:, :n_in]
+                col = np.zeros((size, n_in), 'c16')
+                col[sites] = tau @ phi
+                col[a:a + m] = -(e_h0 @ phi - v @ phi * np.exp(1j * modes.momenta[:n_in]))
+                rhs.append(col)
+            a += m
+        rhs = np.hstack(rhs) if rhs else np.zeros((size, 0), 'c16')
+        if rhs.shape[1] == 0:
+            return [f[0] for f in found], rhs
+        mat = sp.csc_matrix((np.concatenate(vals), (np.concatenate(rows), np.concatenate(cols))),
+                            shape=(size, size))
+        sol = spla.splu(mat).solve(rhs)
+        return [f[0] for f in found], sol
+
+    def smatrix(self, energy: float) -> SMatrix:
+        r'''
+        Get the scattering matrix at one energy: the amplitudes of the
+        outgoing modes of every lead for each incoming mode of unit
+        current, from the exact lead modes (*lead_modes*, no broadening) and
+        one sparse factorization of the device. It is unitary for a
+        Hermitian device. Every lead must be Hermitian. The blocks of the
+        leads' conservation laws (*add_lead*) are addressed as
+        ``(lead, block)`` in *SMatrix.submatrix* and *SMatrix.transmission*.
+
+        :param energy: Real number. Energy, not at a band edge of a lead.
+
+        :returns:
+            * **S** -- **SMatrix**: *data*, *lead_info*, *submatrix*, *transmission*.
+
+        Example usage::
+
+            s = tr.smatrix(0.3)
+            t = s.submatrix(1, 0)           # transmission amplitudes, lead 0 to lead 1
+            T = s.transmission(1, 0)        # = tr.transmission(0.3, 0, 1)
+        '''
+        modes, sol = self._scattering(energy, list(range(len(self.leads))))
+        rows, a = [], self._ham.shape[0]
+        for (h0, _, _, _), mode in zip(self.leads, modes):
+            rows.append(sol[a:a + int(np.sum(mode.velocities > 0))])
+            a += len(h0)
+        data = np.vstack(rows) if rows else np.zeros((0, 0), 'c16')
+        return SMatrix(data, modes, [1 if law is None else len(law) for law in self._laws])
+
+    def wave_function(self, energy: float, lead: int) -> NDArray[np.complex128]:
+        r'''
+        Get the scattering states injected from a lead: the wave function on
+        the device of each incoming mode of unit current (*lead_modes*),
+        with the scattered part leaving through every lead.
+
+        :param energy: Real number. Energy, not at a band edge of a lead.
+        :param lead: Integer. Injecting lead.
+
+        :returns:
+            * **psi** -- Complex ndarray, shape (n_modes, n_sites): one row
+              per incoming mode of the lead.
+        '''
+        error_handling.lead_index(lead, len(self.leads))
+        _, sol = self._scattering(energy, [lead])
+        return sol[:self._ham.shape[0]].T
+
+    def ldos(self, energy: float) -> NDArray[np.float64]:
+        r'''
+        Get the local density of states carried by the scattering states,
+        :math:`\rho_i(E) = \frac{1}{2\pi}\sum_{l,a}|\psi_{la}(i)|^2` over every
+        incoming mode :math:`a` of every lead :math:`l` (unit current
+        normalization). The bound states of the device, which no lead
+        feeds, are left out.
+
+        :param energy: Real number. Energy, not at a band edge of a lead.
+
+        :returns:
+            * **rho** -- Real ndarray, shape (n_sites,).
+        '''
+        _, sol = self._scattering(energy, list(range(len(self.leads))))
+        return np.sum(np.abs(sol[:self._ham.shape[0]]) ** 2, axis=1) / (2 * np.pi)
+
+    # ------------------------------------------------------------------
+    # Finite temperature: conductance and thermoelectric coefficients
+    # ------------------------------------------------------------------
+
+    def _onsager(
+        self, mu: float, temperature: float, lead_in: int, lead_out: int, eta: float | None,
+        n_points: int,
+    ) -> tuple[float, float, float]:
+        r'''
+        Private method. The integrals :math:`L_n = \int dE\,(E - \mu)^n\,T(E)
+        (-\partial f/\partial E)`, n = 0, 1, 2.
+        '''
+        energies, weights = _fermi_window(mu, temperature, n_points)
+        t = self.transmission(energies, lead_in, lead_out, eta) * weights
+        de = energies - mu
+        return float(t.sum()), float(np.sum(t * de)), float(np.sum(t * de**2))
+
+    def conductance(
+        self, mu: float, temperature: float = 0., lead_in: int = 0, lead_out: int = 1,
+        eta: float | None = None, n_points: int = 101,
+    ) -> float:
+        r'''
+        Get the two-terminal linear conductance at a finite temperature, in
+        units of :math:`e^2/h`,
+
+        .. math::
+
+            G = \int dE\,\left(-\frac{\partial f}{\partial E}\right)T(E)\, ,
+
+        with the Fermi-Dirac :math:`f` at chemical potential :math:`\mu`. The
+        integral runs over :math:`|E - \mu| \le 36k_BT` on *n_points* equally
+        spaced energies (the trapezoidal rule, spectrally accurate for
+        a smooth :math:`T(E)`). Resolving features of :math:`T(E)` narrower than
+        :math:`k_BT` needs more points. At zero temperature it is :math:`T(\mu)`.
+
+        :param mu: Real number. Chemical potential.
+        :param temperature: Positive real or zero. Default value 0 (:math:`k_B = 1`).
+        :param lead_in: Integer. Default value 0.
+        :param lead_out: Integer. Default value 1.
+        :param eta: Positive real or None. Default value None (see *transmission*).
+        :param n_points: Positive integer. Default value 101.
+
+        :returns:
+            * **G** -- Real number.
+        '''
+        error_handling.real_number(mu, 'mu')
+        error_handling.positive_real_zero(temperature, 'temperature')
+        error_handling.positive_int(n_points, 'n_points')
+        if temperature == 0:
+            return float(self.transmission([mu], lead_in, lead_out, eta)[0])
+        return self._onsager(mu, temperature, lead_in, lead_out, eta, n_points)[0]
+
+    def thermoelectric(
+        self, mu: float, temperature: float, lead_in: int = 0, lead_out: int = 1,
+        eta: float | None = None, n_points: int = 101,
+    ) -> tuple[float, float, float]:
+        r'''
+        Get the two-terminal thermoelectric coefficients in linear response
+        (Sivan and Imry 1986), from :math:`L_n = \int dE\,(E - \mu)^n\,T(E)
+        (-\partial f/\partial E)`:
+
+        .. math::
+
+            G = L_0\, ,\qquad S = -\frac{L_1}{T L_0}\, ,\qquad
+            \kappa = \frac{1}{T}\left(L_2 - \frac{L_1^2}{L_0}\right)\, ,
+
+        the conductance (:math:`e^2/h`), the thermopower (:math:`k_B/e`, for
+        electrons of charge :math:`-e`) and the electronic thermal conductance
+        at zero current (:math:`k_B/h` times the energy unit). At low
+        temperature they obey the Mott formula
+        :math:`S = -\frac{\pi^2}{3}T\,\frac{d\ln T(E)}{dE}` and the
+        Wiedemann-Franz law :math:`\kappa = \frac{\pi^2}{3}TG`. The integrals
+        are those of *conductance*.
+
+        :param mu: Real number. Chemical potential.
+        :param temperature: Positive real (:math:`k_B = 1`).
+        :param lead_in: Integer. Default value 0.
+        :param lead_out: Integer. Default value 1.
+        :param eta: Positive real or None. Default value None (see *transmission*).
+        :param n_points: Positive integer. Default value 101.
+
+        :returns:
+            * **G** -- Real number.
+            * **S** -- Real number (NaN when nothing is transmitted).
+            * **kappa** -- Real number.
+        '''
+        error_handling.real_number(mu, 'mu')
+        error_handling.positive_real(temperature, 'temperature')
+        error_handling.positive_int(n_points, 'n_points')
+        l0, l1, l2 = self._onsager(mu, temperature, lead_in, lead_out, eta, n_points)
+        if l0 < 1e-14:
+            return l0, np.nan, l2 / temperature
+        return l0, -l1 / (temperature * l0), (l2 - l1**2 / l0) / temperature
 
     # ------------------------------------------------------------------
     # Multi-terminal conductance, currents and noise
@@ -332,7 +923,9 @@ class Transport():
                     out[p, q] = np.trace(gam[p] @ gpq @ gam[q] @ gpq.conj().T).real
         return out
 
-    def conductance_matrix(self, energy: float, eta: float = 1e-9) -> NDArray[np.float64]:
+    def conductance_matrix(
+        self, energy: float, eta: float = 1e-9, temperature: float = 0., n_points: int = 101,
+    ) -> NDArray[np.float64]:
         r'''
         Get the Landauer-Buttiker conductance matrix (Buttiker 1986), in units
         of :math:`e^2/h`: the linear-response currents flowing *into* the
@@ -343,19 +936,30 @@ class Transport():
             G_{pq} = -T_{pq}\ (p\neq q)\, ,\qquad G_{pp} = \sum_{q\neq p}T_{qp}\, .
 
         Its rows and columns add up to zero (current conservation, and no
-        current at equal voltages).
+        current at equal voltages). At a finite *temperature* it is averaged
+        over the Fermi window, :math:`\int dE\,(-\partial f/\partial E)\,G(E)`
+        (see *conductance*).
 
-        :param energy: Real number. Fermi energy.
+        :param energy: Real number. Fermi energy (chemical potential).
         :param eta: Positive real. Default value 1e-9.
+        :param temperature: Positive real or zero. Default value 0 (:math:`k_B = 1`).
+        :param n_points: Positive integer. Default value 101. Energies in the
+            Fermi window, at a finite temperature.
 
         :returns:
             * **G** -- Real ndarray, shape (n_leads, n_leads).
         '''
+        error_handling.positive_real_zero(temperature, 'temperature')
+        error_handling.positive_int(n_points, 'n_points')
+        if temperature > 0:
+            energies, weights = _fermi_window(energy, temperature, n_points)
+            return sum(w * self.conductance_matrix(float(e), eta) for e, w in zip(energies, weights))
         t = self.transmission_matrix(energy, eta)
         return np.diag(t.sum(axis=0)) - t
 
     def four_terminal_resistance(
         self, energy: float, current: tuple[int, int], voltage: tuple[int, int], eta: float = 1e-9,
+        temperature: float = 0., n_points: int = 101,
     ) -> float:
         r'''
         Get a four-terminal (or two-terminal) resistance from the
@@ -372,13 +976,15 @@ class Transport():
         :param current: Tuple of two distinct lead indices (source, drain).
         :param voltage: Tuple of two lead indices (a, b).
         :param eta: Positive real. Default value 1e-9.
+        :param temperature: Positive real or zero. Default value 0 (see *conductance_matrix*).
+        :param n_points: Positive integer. Default value 101.
 
         :returns:
             * **R** -- Real number.
         '''
         error_handling.lead_pair(current, len(self.leads), 'current', True)
         error_handling.lead_pair(voltage, len(self.leads), 'voltage', False)
-        g = self.conductance_matrix(energy, eta)
+        g = self.conductance_matrix(energy, eta, temperature, n_points)
         source, drain = current
         keep = [p for p in range(len(self.leads)) if p != drain]  # the drain is grounded
         currents = np.zeros(len(keep))
@@ -513,6 +1119,20 @@ class Transport():
         energies = np.atleast_1d(np.asarray(energies, dtype='f8'))
         return np.array([_fano(self.transmission_eigenvalues(float(e), lead_in, lead_out, eta))
                                 for e in energies])
+
+
+def _fermi_window(
+    mu: float, temperature: float, n_points: int,
+) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
+    r'''
+    Private function. Energies and weights of the trapezoidal rule for
+    :math:`\int dE\,(-\partial f/\partial E)\,F(E)`, on *n_points* equally
+    spaced energies with :math:`|E - \mu| \le 36T` (the weight is below
+    1e-15 beyond). The weights add up to 1.
+    '''
+    x = np.linspace(-36., 36., n_points) if n_points > 1 else np.zeros(1)
+    w = 1 / (4 * np.cosh(x / 2) ** 2)
+    return mu + temperature * x, w / w.sum()
 
 
 def _sqrt_psd(mat: NDArray[np.complex128]) -> NDArray[np.complex128]:

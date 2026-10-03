@@ -6,7 +6,7 @@
 
 """tbkit: build and solve Tight-Binding models."""
 
-__version__ = "0.4.2"
+__version__ = "0.5.0"
 
 __all__ = [
     "Lattice", "System", "Plot", "Propagation", "Save", "KSpace",
@@ -47,3 +47,15 @@ from tbkit.bdg import GapResult, s_wave_gap
 __all__ += ["NonCollinearResult", "hubbard_mean_field_noncollinear", "GapResult", "s_wave_gap"]
 from tbkit.transport import RecursiveTransport
 __all__ += ["RecursiveTransport"]
+# Real-space and 3D topological diagnostics
+from tbkit.topology import WeylPoints, find_weyl_points, bott_index
+__all__ += ["WeylPoints", "find_weyl_points", "bott_index"]
+# Analysis and plotting: standard k-paths
+from tbkit.kspace import high_symmetry_path
+__all__ += ["high_symmetry_path"]
+# Continuum (k.p) models discretized on a grid; sympy is imported on first use
+from tbkit.continuum import discretize, discretize_symbolic
+__all__ += ["discretize", "discretize_symbolic"]
+# Wannier functions: projection and maximal localization
+from tbkit.wannier import WannierFunctions, wannierize
+__all__ += ["WannierFunctions", "wannierize"]

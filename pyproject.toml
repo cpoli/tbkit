@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tbkit"
-version = "0.4.2"
+version = "0.5.0"
 description = "A Python package to build and solve Tight-Binding models."
 readme = "README.md"
 license = "BSD-3-Clause"
 authors = [{ name = "Charles Poli", email = "cpoli374@gmail.com" }]
-maintainers = [{ name = "cpoli", email = "cpoli374@gmail.com" }]
+maintainers = [{ name = "Charles Poli", email = "cpoli374@gmail.com" }]
 requires-python = ">=3.10"
 dependencies = [
     "numpy>=1.24",
@@ -21,14 +21,16 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: Physics",
     "Programming Language :: Python :: 3",
+    "Typing :: Typed",
 ]
 
 [project.urls]
 Homepage = "https://github.com/cpoli/tbkit"
 
 [project.optional-dependencies]
-test = ["pytest>=7", "pytest-cov>=4", "pytest-xdist>=3.2"]
-docs = ["sphinx>=7", "pydata-sphinx-theme>=0.15", "sphinx-gallery>=0.15"]
+continuum = ["sympy>=1.12"]
+test = ["pytest>=7", "pytest-cov>=4", "pytest-xdist>=3.2", "sympy>=1.12"]
+docs = ["sphinx>=7", "pydata-sphinx-theme>=0.15", "sphinx-gallery>=0.15", "sympy>=1.12"]
 
 [tool.pytest.ini_options]
 # The suite is warning-free; keep it that way. A warning from tbkit itself is
@@ -40,8 +42,34 @@ filterwarnings = ["error"]
 # Pass -n0 to run a single test without the worker startup cost.
 addopts = "-n auto --dist worksteal"
 
+[tool.ruff.lint]
+# Pyflakes and the pycodestyle errors (ruff's classic defaults, named so a
+# ruff upgrade does not change them), minus two that clash with the physics
+# notation: `l` is the angular momentum or a length, and short local lambdas
+# stand for formulas.
+select = ["E4", "E7", "E9", "F"]
+ignore = ["E741", "E731"]
+
+[tool.ruff.lint.per-file-ignores]
+# Imports grouped by feature, each followed by its `__all__` entry.
+"tbkit/__init__.py" = ["E402", "F401"]
+# `npc = np.char` has to sit between the imports.
+"tbkit/system.py" = ["E402"]
+# Pre-0.2 module built on star imports.
+"tbkit/graphene.py" = ["F403", "F405"]
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+# The type hints are documentation first: check what is annotated, and
+# skip the bodies of unannotated functions.
+check_untyped_defs = false
+
 [tool.setuptools.packages.find]
 include = ["tbkit*"]
+
+[tool.setuptools.package-data]
+tbkit = ["py.typed"]
 
 [tool.coverage.run]
 source = ["tbkit"]

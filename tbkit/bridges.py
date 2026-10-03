@@ -69,7 +69,7 @@ def cell_orbitals(lat: Lattice) -> tuple[NDArray[np.int64], NDArray[np.int64]]:
     return cells[np.arange(lat.sites), orb], orb
 
 
-def kspace_from_system(sys: System, periodic: bool = False, tol: float = 1e-9) -> KSpace:
+def kspace_from_system(sys: System, periodic: bool | None = None, tol: float = 1e-9) -> KSpace:
     r'''
     Get the Bloch Hamiltonian of a periodic model defined the real-space
     way: every matrix element :math:`H_{ab}` of the finite *System* (built
@@ -91,8 +91,11 @@ def kspace_from_system(sys: System, periodic: bool = False, tol: float = 1e-9) -
     orbital by orbital.
 
     :param sys: **System** instance with its hoppings set (one orbital per site).
-    :param periodic: Boolean. Default value False. The System is a torus
-        of the *lat.n1* x *lat.n2* (x *lat.n3*) cells of *get_lattice*.
+    :param periodic: Boolean. Default value None: True if *sys* has
+        periodic boundaries along some primitive vector (``System(lat,
+        periodic=...)``, or *finite_system* with ``periodic=True``). The
+        System is a torus of the *lat.n1* x *lat.n2* (x *lat.n3*) cells of
+        *get_lattice*.
     :param tol: Positive real number. Default value 1e-9. Largest allowed
         difference between equivalent matrix elements.
 
@@ -110,6 +113,8 @@ def kspace_from_system(sys: System, periodic: bool = False, tol: float = 1e-9) -
     '''
     error_handling.sys(sys)
     error_handling.not_orbital_system(sys, OrbitalSystem)
+    if periodic is None:
+        periodic = any(sys.periodic)
     error_handling.boolean(periodic, 'periodic')
     error_handling.positive_real(tol, 'tol')
     sys.get_ham()
@@ -201,7 +206,9 @@ def finite_system(ks: KSpace, n_cells: int | tuple[int, ...], periodic: bool = F
     neighbour order of the bond (0 for coinciding orbitals), 'tag' the
     sublattice pair. On a torus, a bond that wraps around keeps its short
     bond vector for its angle, and a hopping that wraps onto its own site
-    is added to the onsite energy.
+    is added to the onsite energy; the System has periodic boundaries
+    (``sys.periodic``), so that further *set_hopping* calls, *Plot* and
+    *get_bott_index* treat it as a torus.
 
     :param ks: **KSpace** instance, with ``spin=False``.
     :param n_cells: Positive integer, or tuple of *dim* positive integers.
@@ -229,7 +236,7 @@ def finite_system(ks: KSpace, n_cells: int | tuple[int, ...], periodic: bool = F
     coor['tag'] = tags
     lat.coor, lat.sites = coor, len(coor)
     lat.n1, lat.n2, lat.n3 = (tuple(n_cells) + (1, 1))[:3]
-    sys = System(lat)
+    sys = System(lat, periodic=periodic)
     _, n_tot, entries = ks._finite_entries(n_cells, periodic)
     tau = ks.orbital_positions()
     rows = np.concatenate([np.zeros(0, int)] + [e[0] for e in entries])

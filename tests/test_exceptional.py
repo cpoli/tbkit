@@ -267,7 +267,7 @@ class TestFinder(unittest.TestCase):
         self.assertEqual(ex._order(np.diag([1., 2.]))[0], 1)
         en, kp = ex.petermann_factors(pair_model(), (0.5, 0.))
         self.assertEqual(len(en), 2)
-        self.assertTrue(np.all(kp >= 1.))
+        self.assertTrue(np.all(kp >= 1. - 1e-12))  # K >= 1, up to roundoff
         # K ~ 1/|dk| near the EP
         _, k1 = ex.petermann_factors(pair_model(), (1e-4, KY0))
         _, k2 = ex.petermann_factors(pair_model(), (1e-6, KY0))

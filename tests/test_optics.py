@@ -6,7 +6,7 @@ dipole and shift current.
 import unittest
 
 import numpy as np
-from scipy.integrate import quad
+from scipy.integrate import quad, trapezoid
 from scipy.optimize import brentq
 
 import tbkit.error_handling as error_handling
@@ -123,7 +123,7 @@ class TestOpticalConductivity(unittest.TestCase):
         for ks, e_f, temp in ((haldane(M=0.3), 0., 0.), (graphene(), 0.8, 0.1)):
             sigma = optics.optical_conductivity(ks, grid, e_fermi=e_f, temperature=temp, eta=0.05,
                                                               nk=24, positions=False)
-            weight = np.trapezoid(sigma.real, grid) / 2
+            weight = trapezoid(sigma.real, grid) / 2
             self.assertAlmostEqual(weight / f_sum(ks, e_f, temp, 24), 1., delta=2e-3)
         # the Drude peak holds the intraband part of the weight: absent at T = 0
         gra = graphene()
@@ -167,7 +167,7 @@ class TestJointDos(unittest.TestCase):
         self.assertTrue(np.allclose(jdos / omega / slope, 1., atol=0.02))
         # one occupied and one empty band: unit total weight
         grid = np.linspace(-1., 7., 1601)
-        self.assertAlmostEqual(np.trapezoid(optics.joint_dos(gra, grid, eta=0.05, nk=40), grid), 1., places=6)
+        self.assertAlmostEqual(trapezoid(optics.joint_dos(gra, grid, eta=0.05, nk=40), grid), 1., places=6)
         # a gapped model absorbs nothing below its gap 2 m
         self.assertLess(optics.joint_dos(graphene(mass=0.5), 0.5, eta=0.05, nk=60), 1e-12)
         # a filled band has nothing to absorb

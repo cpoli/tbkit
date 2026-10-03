@@ -25,6 +25,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 import tbkit.error_handling as error_handling
+import tbkit.values as values
 from tbkit.lattice import Lattice
 from tbkit.system import ATOL, _upper
 
@@ -198,7 +199,9 @@ def neighbour_hoppings(
         * 'tag': String of length 2. Only the bonds from a site of the
           first sublattice to one of the second, in the orientation above.
         * 't': Complex number (or, if *spin*, a 2x2 matrix): the matrix
-          element :math:`\langle i|H|j\rangle` along the oriented bond.
+          element :math:`\langle i|H|j\rangle` along the oriented bond. Or a
+          value function (see *KSpace.set_hopping*), passed on as it is (as
+          ``t(j, i)^\dagger`` for a reversed bond of a Hermitian model).
 
         When several dictionaries select the same bond, the last one wins,
         as in *System.set_hopping*.
@@ -234,12 +237,17 @@ def neighbour_hoppings(
             ind &= shell['tag'] == (dic['tag'][::-1] if reverse else dic['tag'])
         error_handling.index(ind, dic)
         t = dic['t']
+        if reverse and hermitian:
+            if callable(t):
+                t_rev = values.reversed_conj(t)
+            else:
+                t_rev = np.conj(t) if np.ndim(t) == 0 else np.asarray(t).conj().T
         for bond in shell[ind]:
             i, j, R = int(bond['i']), int(bond['j']), tuple(int(c) for c in bond['R'])
             if not reverse:
                 chosen[(i, j, R)] = t
             elif hermitian:
-                chosen[(i, j, R)] = np.conj(t) if np.ndim(t) == 0 else np.asarray(t).conj().T
+                chosen[(i, j, R)] = t_rev
             else:
                 chosen[(j, i, tuple(-c for c in R))] = t
     return [{'i': i, 'j': j, 'R': R, 't': t} for (i, j, R), t in chosen.items()]

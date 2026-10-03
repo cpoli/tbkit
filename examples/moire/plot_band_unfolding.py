@@ -28,6 +28,7 @@ is drawn in the primitive zone again.
 """
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.integrate import trapezoid
 
 import tbkit.lattices as lattices
 from tbkit.kspace import KSpace
@@ -97,7 +98,7 @@ for W in (0., 0.8, 2.):
     row = maps[W][80, omega > 0]
     widths[W] = 0.5 * (omega[1] - omega[0]) * np.sum(row > row.max() / 2)
 fine = np.linspace(-40., 40., 40001)
-norm = np.trapezoid(spectral_function(big, path[:1], fine, 0.04), fine)[0]
+norm = trapezoid(spectral_function(big, path[:1], fine, 0.04), fine)[0]
 assert abs(norm - 2.) < 2e-3
 assert widths[0.] < widths[0.8] < widths[2.]
 print('half widths at M: ' + ', '.join('W = {}: {:.3f}'.format(W, h) for W, h in widths.items()))

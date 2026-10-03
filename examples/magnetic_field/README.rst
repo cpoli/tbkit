@@ -4,4 +4,6 @@ Magnetic Field
 The Peierls substitution on a lattice: gauge-invariant flux through the
 plaquettes, an Aharonov-Bohm ring's flux-periodic spectrum, Landau
 levels of the square lattice and of graphene, and the self-similar,
-fractal Hofstadter butterfly swept continuously in flux.
+fractal Hofstadter butterfly swept continuously in flux, and the orbital
+magnetization of a Chern insulator, checked against the Streda formula on
+a flake.

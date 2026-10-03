@@ -1,10 +1,12 @@
 # tbkit — a Tight-Binding package
 
-[![tests](https://github.com/cpoli/tbkit/actions/workflows/tests.yml/badge.svg)](https://github.com/cpoli/tbkit/actions/workflows/tests.yml)
-[![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](https://cpoli.github.io/tbkit/coverage/)
-[![docs](https://img.shields.io/badge/docs-cpoli.github.io%2Ftbkit-blue.svg)](https://cpoli.github.io/tbkit/)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](pyproject.toml)
-[![License: BSD 3-Clause](https://img.shields.io/badge/License-BSD--3--Clause-blue.svg)](LICENSE)
+| | |
+|:--|:-:|
+| Package | [![PyPI version](https://img.shields.io/pypi/v/tbkit)](https://pypi.org/project/tbkit/) [![Python versions](https://img.shields.io/pypi/pyversions/tbkit)](https://pypi.org/project/tbkit/) [![DOI](https://zenodo.org/badge/1381398706.svg)](https://zenodo.org/badge/latestdoi/1381398706) |
+| Quality | [![License](https://img.shields.io/github/license/cpoli/tbkit)](https://github.com/cpoli/tbkit/blob/master/LICENSE) [![CI](https://github.com/cpoli/tbkit/actions/workflows/tests.yml/badge.svg)](https://github.com/cpoli/tbkit/actions/workflows/tests.yml) [![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://cpoli.github.io/tbkit/coverage/) |
+| Documentation | [![Docs](https://img.shields.io/badge/docs-cpoli.github.io%2Ftbkit-blue)](https://cpoli.github.io/tbkit/) |
+| Downloads | [![Downloads](https://static.pepy.tech/badge/tbkit)](https://pepy.tech/project/tbkit) [![Downloads/Month](https://static.pepy.tech/badge/tbkit/month)](https://pepy.tech/project/tbkit) |
+| Community | [![GitHub Stars](https://img.shields.io/github/stars/cpoli/tbkit?style=social)](https://github.com/cpoli/tbkit) [![GitHub Forks](https://img.shields.io/github/forks/cpoli/tbkit?style=social)](https://github.com/cpoli/tbkit) [![Contributors](https://img.shields.io/github/contributors/cpoli/tbkit)](https://github.com/cpoli/tbkit/graphs/contributors) [![Last Commit](https://img.shields.io/github/last-commit/cpoli/tbkit)](https://github.com/cpoli/tbkit/commits/master) |
 
 ![tbkit logo](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/image/tbkit_logo.png)
 
@@ -26,7 +28,7 @@ topology alongside superconductivity.
 
 ### Building and solving models
 
-Finite lattices, defects, several orbitals per site, real space to k-space and back, saved models and Wannier90 imports, and solvers for very large lattices.
+Finite lattices, defects, several orbitals per site, real space to k-space and back, k·p models discretized into lattice models, saved models and Wannier90 imports, maximally localized Wannier functions, and solvers for very large lattices.
 
 ![An impurity bound state, Slater-Koster sp3 graphene bands with overlaps, and the kernel polynomial method on 45,000 sites](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_models.png)
 
@@ -38,13 +40,13 @@ What happens to a lattice under a magnetic field (Peierls substitution), under s
 
 ### Band topology
 
-Chern numbers, Berry phases, the Z2 invariant, quantum geometry, symmetry classes, higher-order and 3D topological phases.
+Chern numbers, Berry phases, the Z2 invariant (and the four 3D indices), spin and mirror Chern numbers, the Bott index and entanglement spectrum, Weyl points and their chirality, Kitaev's Majorana number, quantum geometry, symmetry classes, higher-order and 3D topological phases.
 
 ![Berry curvature of the Haldane model, the Kane-Mele Z2 Wannier flow, and the four corner states of a quadrupole insulator](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_topology.png)
 
 ### Response and transport
 
-Hall conductivities at any Fermi level, Landauer transport between leads, and linear and nonlinear optical response.
+Hall conductivities at any Fermi level (with the orbital magnetization, Nernst and thermal Hall responses), Landauer transport between leads, and linear and nonlinear optical response.
 
 ![The anomalous Hall conductivity of the Haldane model, the conductance steps of a quantum point contact, and graphene's universal absorption](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_response.png)
 
@@ -66,6 +68,12 @@ Requires Python >= 3.10.
 
 ```bash
 pip install tbkit
+```
+
+`tbkit.continuum` (k·p models to tight-binding) also needs sympy:
+
+```bash
+pip install "tbkit[continuum]"
 ```
 
 or, for an editable install from a clone (e.g. to run the test suite or

@@ -4,6 +4,7 @@ Supercells, band unfolding, spectral functions and twisted bilayers.
 import unittest
 
 import numpy as np
+from scipy.integrate import trapezoid
 from scipy.optimize import brentq
 
 import tbkit.lattices as lattices
@@ -124,7 +125,7 @@ class TestUnfolding(unittest.TestCase):
         omega = np.linspace(-8., 8., 4001)
         a = spectral_function(sc, pts, omega, broadening=0.05, kernel='gaussian')
         self.assertEqual(a.shape, (2, 4001))
-        np.testing.assert_allclose(np.trapezoid(a, omega, axis=1), 2., atol=1e-6)
+        np.testing.assert_allclose(trapezoid(a, omega, axis=1), 2., atol=1e-6)
         # peaks at the primitive bands
         for k, row in zip(pts, a):
             e = np.linalg.eigvalsh(gra.get_ham(k))

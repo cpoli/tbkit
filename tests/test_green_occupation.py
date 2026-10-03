@@ -5,6 +5,7 @@ occupation of states (Fermi-Dirac, Fermi level, charge, band energy).
 import unittest
 
 import numpy as np
+from scipy.integrate import trapezoid
 
 import tbkit.lattices as lattices
 import tbkit.occupation as occupation
@@ -75,7 +76,7 @@ class TestGreen(unittest.TestCase):
             self.assertTrue(np.allclose(row, -np.diag(sys.get_green(e, 0.1)).imag / np.pi))
         # summed over sites and energies: the Lorentzian DOS integrates to N
         grid = np.linspace(-40., 40., 40001)
-        total = np.trapezoid(sys.get_ldos(grid, eta=0.1).sum(axis=1), grid)
+        total = trapezoid(sys.get_ldos(grid, eta=0.1).sum(axis=1), grid)
         self.assertAlmostEqual(total / 25, 1., places=2)
 
     def test_non_hermitian_ldos(self):

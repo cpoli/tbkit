@@ -8,134 +8,59 @@ packages closest to tbkit's scope.
 tbkit already covers more physics than either package: band topology,
 Hall and optical response, non-Hermitian and Floquet models, mean field,
 moiré systems. What it lacks is mostly transport machinery and
-scalability. Items 1-4 would make tbkit credible for mesoscopic device
-work. Until they land, Kwant remains the right tool for serious transport.
-Items 10-13 are smaller. Section 12 (plotting and analysis) holds the
-cheapest wins, and section 10 the most valuable additions on the physics
-side.
+scalability. The scattering matrix, conservation laws, finite
+temperature and automatic lead attachment are in place (see Done). What
+remains for mesoscopic device work is completing lead interfaces (item 1)
+and, above all, scale (item 2). Until then, Kwant remains the right tool
+for large transport calculations. Items 4 and 6 are smaller, and item 5
+(interactions) holds the next additions on the physics side.
 
 Each item lists why it matters, the current state, and a sketch of the
 approach. The project conventions (validation in `error_handling.py`, 100%
 line coverage, an asserted gallery example, a history entry when there is
 a breakthrough to tell) apply to all of them.
 
-## 1. Scattering-matrix transport
+## 1. Completing lead interfaces
 
-**Why.** Mode-resolved transmission, reflection, Andreev and spin-resolved
-conductances, and scattering wavefunctions inside the device are what
-transport studies actually need. Kwant's `smatrix` and `wave_function` are
-the reference.
+**Why.** `Transport.attach_lead` (see Done) needs the device to end with
+a complete lead cell. A device whose edge is ragged relative to the lead,
+such as a graphene flake under a zigzag lead or a disc under a strip,
+has to be trimmed or padded by hand first.
 
-**Now.** `Transport` builds the dense device Green's function by inverting
-the whole device, O(N^3) per energy
-(`transport.py`, `Transport.__init__` densifies `ham`). Leads use the
-Lopez Sancho-Rubio decimation with a finite `eta`, which loses accuracy at
-band edges. There are no lead modes, no S-matrix and no wavefunctions.
-`RecursiveTransport` avoids the full inversion only for quasi-1D devices.
+**Now.** `attach_lead` refuses an incomplete interface cell and names the
+missing lead orbitals.
 
-**Approach.**
-- Lead modes from the generalized eigenproblem of the lead's transfer
-  matrix. That gives exact propagating and evanescent modes and their
-  velocities, with no `eta`.
-- The S-matrix from the sparse linear system of the device plus the
-  modes' boundary conditions (the Kwant/Groth et al. 2014 formulation),
-  solved with `scipy.sparse.linalg.splu`.
-- Scattering wavefunctions and the local density of states from the same
-  factorization.
-- Keep `Transport.transmission` as a thin wrapper, for backward
-  compatibility.
+**Approach.** An `extend=True` option that adds the missing lead sites to
+the device, as Kwant's `attach_lead` does. Their bonds come from the
+lead's hoppings, and the method returns the enlarged Hamiltonian and site
+positions. Repeat cell by cell until every lead orbital with a hopping
+into the next cell is present.
 
-## 2. Automatic lead attachment
-
-**Why.** Today a lead is attached by hand: `add_lead(h0, v, coupling,
-sites)` with an explicit coupling matrix and list of device sites. That is
-error-prone for anything but a straight strip.
-
-**Approach.** `attach_lead(system, lead_kspace, direction)`: find the
-device sites that the lead's translation maps onto, build the coupling
-from the lead's hoppings, and (optionally) extend the device until the
-interface is complete, as Kwant's `attach_lead` does. `lead_from_kspace`
-and `bridges.py` already hold most of the pieces.
-
-## 3. Conservation laws, symmetries and finite temperature in transport
-
-**Why.** NS junctions (Andreev reflection), spin-resolved transport and
-valley filters need transmission blocks resolved by a conserved quantity.
-Thermoelectrics and realistic conductances need finite temperature.
-
-**Now.** `KSpace.symmetry_error` and `tenfold_class` detect symmetries
-but nothing uses them to block-diagonalize. All Landauer quantities are at
-zero temperature.
-
-**Approach.** A `conservation_law` operator on `Transport` (and on leads)
-projects the lead modes onto its eigenspaces and labels the S-matrix
-blocks. Add a `temperature` argument to the conductances
-(`-df/dE`-weighted integrals), plus the thermopower and thermal
-conductance.
-
-## 4. Parametrized Hamiltonians
-
-**Why.** Sweeps over field, gate voltage or disorder seed currently
-rebuild the whole model at every step. Kwant's value functions with
-`params=` make such sweeps cheap and the code short.
-
-**Now.** Hopping and onsite values are numbers. The only exception is
-`set_peierls_phase`, which takes a callable.
-
-**Approach.** Accept callables `t(site_i, site_j, **params)` and
-`onsite(site, **params)` in `System.set_hopping`/`set_onsite` and
-`KSpace.set_hopping`. Store the structure (indices, bond vectors) once and
-evaluate the values per call with `get_ham(**params)`, vectorized over
-bonds. It must stay backward compatible: plain numbers keep working
-unchanged.
-
-## 5. Continuum discretization (k·p to tight-binding)
-
-**Why.** Semiconductor devices, BHZ and Bi2Se3 k·p models and
-Bogoliubov-de Gennes nanowires are written as continuum Hamiltonians.
-Kwant's `kwant.continuum` turns them into lattice models automatically.
-
-**Approach.** `discretize(expr, a)` on a sympy expression in `k_x, k_y,
-k_z` (finite differences on a square or cubic grid, with symmetrized
-products). It returns a `KSpace` and the matching `System` hoppings. sympy
-would be an optional dependency (`pip install tbkit[continuum]`).
-
-## 6. Wannierization
-
-**Why.** Building localized Wannier functions from a band group is the
-bridge between band topology and real-space pictures. It is also where the
-obstruction of Chern bands shows up. I believe PythTB 2.x has
-projection-based and maximally localized Wannier functions; check its
-current documentation before relying on this comparison.
-
-**Now.** tbkit reads Wannier90 `_hr.dat` models and computes Wannier
-centres and flow from Wilson loops, but cannot construct Wannier functions
-itself.
-
-**Approach.** Projection onto trial orbitals (Löwdin orthogonalization of
-the projected Bloch states on a mesh), then the Marzari-Vanderbilt spread
-minimization for isolated band groups, and disentanglement later. It
-returns the Wannier functions on a finite `System` and their centres and
-spreads.
-
-## 7. Performance and scale
+## 2. Performance and scale
 
 **Why.** Many workflows (Wilson loops on fine meshes, `System.get_eig` on
 large flakes, transport of 2D devices) are dense and single-threaded.
 
 **Now.** The sparse paths (KPM, the k-d tree neighbour search,
-shift-invert, `RecursiveTransport`) cover part of this. Most of the
-k-space topology works on dense matrices, looping over k.
+shift-invert, `RecursiveTransport`) cover part of this. The k-space
+diagonalizations are batched over k and optionally threaded
+(`KSpace.set_workers`, see Done), and `tests/benchmark_kspace.py` times
+them. The scattering matrix (`Transport.smatrix` and the default
+`Transport.transmission`) factorizes the sparse device. Real-space
+`System.get_eig` and the Green's-function methods of `Transport`
+(`get_green`, the conductance matrix, currents and noise) remain dense
+and single-threaded.
 
 **Approach.**
-- Batch the diagonalizations over k with stacked `numpy.linalg.eigh`
-  (as `_bloch_sum` already does for the Hamiltonians).
-- Optional parallelism over k-points and energies (`concurrent.futures`,
-  no new required dependency).
-- Sparse solvers in transport (item 1).
-- Keep a benchmark script in `tests/` so regressions are visible.
+- Parallelism over energies in transport and in
+  `surface_spectral_function` (`concurrent.futures`, as for k).
+- The rest of `Transport` on the sparse factorization: currents, noise
+  and the conductance matrix from the scattering states and the S-matrix.
+- Batch the remaining per-k loops: `biorthogonal_berry_curvature`, the
+  quantum geometric tensor, and the Floquet `get_ham` (one evolution
+  per k-point today).
 
-## 8. Interoperability and API limits
+## 3. Interoperability and API limits
 
 - Import and export Kwant `Builder`s, PythTB `tb_model`s, pybinding
   models and ASE `Atoms` geometries. That makes cross-checks against these
@@ -148,88 +73,178 @@ k-space topology works on dense matrices, looping over k.
 - Optional physical units (eV, Å, tesla) for magnetic fields and
   conductances. The current dimensionless conventions stay the default.
 
-## 9. Time-dependent transport
+## 4. Time-dependent transport
 
 Transient currents and pulses through a device, like tkwant. This is
-niche, and it depends on items 1 and 4.
+niche. It can build on the scattering states (`Transport.wave_function`).
 
-## 10. Missing topological invariants
+## 5. Interactions beyond on-site Hubbard mean field
 
-**Why.** These are standard in the literature and in other codes, and each
-one reuses machinery tbkit already has (Wilson loops, BdG models,
-projectors).
+**Why.** Magnetic order in a bulk crystal, charge-density waves, and the
+correlated phases of moiré bands all need mean-field theory in k-space or
+interactions longer than on-site U. Devices need the charge to be
+self-consistent with the electrostatics.
 
-- **Spin Chern number**: the Chern number of the two sectors of the
-  projected spin operator P s_z P (Prodan 2009). It covers quantum spin
-  Hall systems where s_z is not conserved, for example Kane-Mele with
-  Rashba coupling.
-- **Mirror Chern numbers**: Chern numbers of the mirror-eigenvalue sectors
-  on a mirror-invariant plane, for topological crystalline insulators
-  (SnTe). It needs a `mirror` operator argument, like `parity_z2`'s
-  `inversion`.
-- **BdG topology**: the Pfaffian Z2 invariant and Kitaev's Majorana number
-  sign Pf[H(k=0)] Pf[H(k=pi)] in the Majorana basis. `bdg.py` builds the
-  Hamiltonians but computes no invariant.
-- **Bott index**: a real-space Chern number for disordered samples and
-  quasicrystals (Loring and Hastings 2010), complementing
-  `get_local_chern_marker`.
-- **All four 3D Z2 indices in one call**: `z2_indices_3d(bands)` returning
-  (nu0; nu1 nu2 nu3) from the six time-reversal-invariant planes. Today it
-  takes six `z2_invariant(..., k_fixed=...)` calls combined by hand, which
-  is how the weak phase of the 3D topological insulator example has to be
-  identified.
-- **Entanglement spectrum**: the eigenvalues of the correlation matrix
-  restricted to half of a ribbon or flake. It is a basis-independent
-  diagnostic of topology and cheap to compute.
+**Now.** `hubbard_mean_field`, `hubbard_mean_field_noncollinear` and
+`bdg.s_wave_gap` work only on a finite `System`, with on-site
+interactions. A bulk phase has to be approximated by a large flake or
+torus.
 
-## 11. Berry-phase response beyond the Hall conductivity
+**Approach.**
+- Hartree-Fock on a `KSpace` mesh: the density matrix per k, a
+  (possibly enlarged) magnetic unit cell, and the same linear mixing as
+  the real-space solver. The result is a `KSpace`, so every band and
+  topology tool applies to it.
+- Extended interactions: nearest-neighbour V, then a screened Coulomb
+  potential, with Hartree and Fock terms on the bonds.
+- Self-consistent Hartree-Poisson for gated devices, on the sparse
+  scattering states (`Transport.ldos`).
 
-- **Orbital magnetization** in the modern theory (Thonhauser, Ceresoli,
-  Vanderbilt and Resta 2005), from the same Bloch derivatives as
-  `hall_conductivity`. It can be checked against the Streda formula
-  dM/dmu = sigma_xy on a `System`.
-- **Anomalous Nernst and thermal Hall conductivities**: energy-weighted
-  integrals of the Berry curvature (Xiao et al. 2006).
-- **Axion angle theta** of 3D insulators, for magnetic topological
-  insulators. Low priority.
+## 6. Project infrastructure
 
-## 12. Analysis and plotting
-
-These are cheap wins, about a day each, and they remove a lot of
-boilerplate from the examples.
-
-- **Fat bands and spin textures**: `KSpace.plot_bands(weights=...)` coloring
-  or sizing the bands by orbital, sublattice or spin projection, and a
-  spin-texture arrow plot on a constant-energy contour. `KSpace` currently
-  plots only `plot_bands` and `plot_dos`.
-- **Fermi surfaces and constant-energy contours** in 2D (contours on a
-  mesh) and 3D (marching cubes, optional scikit-image). The Weyl semimetal
-  example builds its Fermi-arc map by hand.
-- **Automatic high-symmetry k-paths**: `high_symmetry_path(lat)` for the 2D
-  Bravais lattices and the cubic, hexagonal and tetragonal lattices, with
-  labels ready for `plot_bands(node_labels=...)`. Every example
-  hard-codes Gamma, K and M today.
-- **Tetrahedron-method density of states**: more accurate than Gaussian or
-  Lorentzian broadening at van Hove singularities and band edges.
-- **Plot helpers for the newer tools**: the surface spectral function, the
-  Wilson loop and Wannier-centre flow, and the Berry curvature map. The
-  examples draw all of these with raw matplotlib.
-
-## 13. Project infrastructure
-
-- **Docs and gallery in CI**: build the docs, which re-runs every asserted
-  example, on each push. Today a code change that breaks an example passes
-  CI and is only found at the next local docs build.
-- **Release automation**: a workflow triggered by a `v*` tag that builds
-  the wheel and sdist, publishes to PyPI with trusted publishing (no API
-  token), creates the GitHub Release from the CHANGELOG section, and
-  rebuilds gh-pages.
-- **A DOI**: connect the repository to Zenodo so each release gets a
-  citable DOI, and add it to `CITATION.cff` and the README.
-- **Static checks**: ruff for linting and mypy for the existing type hints,
-  as a CI job.
+- **Activate releases and the DOI**: the workflow is in place
+  (`.github/workflows/release.yml`, see Done); register it as a PyPI
+  trusted publisher, create the `pypi` environment on GitHub, and enable
+  the repository on Zenodo, then add the DOI to `CITATION.cff` and the
+  README.
+- **Make the type check blocking**: `mypy tbkit` reports about 260 errors,
+  mostly from the strictness of the NumPy stubs. Fix them module by module,
+  then drop `continue-on-error` from the `typecheck` job.
 
 ## Done
+
+- **Project infrastructure for review** (unreleased): the docs build,
+  which re-runs every asserted gallery example, and the paper's code
+  listings run in CI (job `docs`); ruff lints `tbkit` (job `lint`) and
+  mypy runs as an advisory job; a release workflow builds on a `v*` tag,
+  publishes to PyPI by trusted publishing, creates the GitHub Release from
+  the CHANGELOG section and rebuilds gh-pages; `GrapheneLattice` and
+  `GrapheneSystem` have docstrings.
+
+- **Automatic lead attachment** (unreleased):
+  `Transport.attach_lead(sys, ks, direction)` takes a lead as a 1D
+  `KSpace` (for example a ribbon) placed in the device's coordinates. It
+  matches the device sites to lead orbitals by position and tag, takes
+  the outermost matched cell along `direction` as the interface, and
+  couples it with the lead's own hoppings (`lead_from_kspace`). No
+  coupling matrix or site list to write by hand, and a lead may cover only
+  part of a wider device. Example:
+  `examples/transport/plot_automatic_lead_attachment.py` (narrow leads at
+  different heights on a wide cavity).
+
+- **Wannier disentanglement and interpolation** (unreleased):
+  `wannier.wannierize` takes more bands than trial orbitals, an outer
+  energy `window` and a `frozen` inner window, and first selects at each
+  k the `n_wann`-dimensional subspace that minimizes Ω_I (Souza, Marzari
+  and Vanderbilt 2001, with linear mixing), then runs the spread
+  minimization in it. `WannierFunctions.kspace()` returns the
+  Wannier-basis Hamiltonian H_mn(R) as a `KSpace` (Wigner-Seitz images,
+  built by the same code as `io.read_wannier90`), which reproduces the
+  frozen bands on the mesh and interpolates between its points. Example:
+  `models/plot_disentangling_entangled_bands.py` (the π bands of flat
+  and buckled sp3 graphene).
+
+- **Wannierization** (unreleased): `wannier.wannierize(ks, bands,
+  trial, nk)` projects an isolated band group onto trial orbitals (Löwdin
+  orthogonalization on the k-mesh), then minimizes the Marzari-Vanderbilt
+  spread by conjugate gradients. The overlaps include the orbital
+  positions, so the centres agree with the Wilson-loop ones. It returns a
+  `WannierFunctions` with the functions on the sites of a finite `System`
+  (`wf.system`), their centres and spreads, and Ω_I, Ω_D and Ω_OD. A
+  Chern band shows the obstruction: the projection becomes singular and
+  the spread grows with the mesh.
+  Examples: `models/plot_building_maximally_localized_wannier_functions.py`,
+  `topology/plot_wannier_obstruction_of_chern_bands.py`.
+
+- **Berry-phase response beyond the Hall conductivity** (unreleased):
+  `KSpace.orbital_magnetization` (the modern theory, Thonhauser et al.
+  and Xiao et al. 2005, at any Fermi level and temperature; its slope in a
+  gap is the Chern number, checked against the Streda formula on a
+  `System` flake), `anomalous_nernst_conductivity` and
+  `thermal_hall_conductivity` (entropy- and c2-weighted Berry curvature,
+  Xiao et al. 2006 and Qin, Niu and Shi 2011; they satisfy the Mott and
+  Wiedemann-Franz relations exactly), all sharing the Kubo pair sums of
+  `hall_conductivity`, and `KSpace.axion_angle` (the second Chern form
+  integrated along a gapped parameter path). Finite temperature in the
+  k-space Kubo formulas was already in place. Examples:
+  `magnetic_field/plot_orbital_magnetization.py`,
+  `hall_effects/plot_anomalous_nernst_effect.py`,
+  `plot_thermal_hall_effect.py`, `topology/plot_axion_angle.py`.
+
+- **Continuum discretization** (unreleased): `continuum.discretize`
+  turns a k·p Hamiltonian (a sympy expression, matrix or string in
+  `k_x, k_y, k_z`) into a `KSpace` on a chain, square or cubic grid, with
+  finite differences as in `kwant.continuum`. Its free symbols become
+  value-function parameters, `discretize_symbolic` shows the hoppings,
+  and `bridges.finite_system` gives the `System`. sympy is optional
+  (`tbkit[continuum]`). Position-dependent coefficients (a potential
+  V(x), a gate) are not supported: they need a real-space builder, not a
+  `KSpace`. Example: `examples/models/plot_kp_theory_on_a_lattice.py`.
+
+- **Analysis and plotting** (unreleased): fat bands
+  (`KSpace.band_weights`, `plot_bands(weights=...)`, by orbital,
+  sublattice or any operator such as `spin_operator`), spin textures
+  (`spin_texture`, `plot_spin_texture`), Fermi surfaces in 2D and 3D
+  (`fermi_surface`, `plot_fermi_surface`, by marching triangles and
+  tetrahedra, without scikit-image), standard k-paths for the 1D and 2D
+  Bravais lattices and the cubic, tetragonal and hexagonal ones
+  (`high_symmetry_path`), the tetrahedron density of states
+  (`dos.tetrahedron_dos`, `plot_dos(kernel='tetrahedron')`), and plot
+  helpers for the surface spectral function, the Wannier-centre flow and
+  the Berry curvature. Examples:
+  `tight_binding/plot_fermi_surfaces.py`,
+  `plot_projected_bands_and_spin_textures.py`, `plot_tetrahedron_method.py`.
+
+- **Conservation laws and finite temperature in transport** (unreleased):
+  `add_lead(..., conservation_law=Q)` finds the lead modes in each
+  eigenspace of Q, and `SMatrix` addresses blocks as `(lead, block)`, for
+  Andreev reflection (tau_z) and spin-resolved transport (sigma_z).
+  `Transport.conductance` and `thermoelectric` (conductance, thermopower,
+  thermal conductance) integrate over the Fermi window, and
+  `conductance_matrix`/`four_terminal_resistance` take a `temperature`.
+  The symmetry detectors (`symmetry_error`, `tenfold_class`) are not yet
+  used to find Q automatically. Examples:
+  `examples/superconductivity/plot_andreev_reflection.py`,
+  `examples/transport/plot_thermoelectric_transport.py`.
+
+- **Scattering-matrix transport** (unreleased): exact lead modes from the
+  generalized eigenproblem of the transfer matrix (`lead_modes`, QZ, no
+  `eta`, singular couplings allowed), the S-matrix from one sparse LU
+  factorization of the device plus the modes' boundary conditions
+  (`Transport.smatrix`, the Groth et al. 2014 formulation), and the
+  scattering states and the LDOS (`Transport.wave_function`,
+  `Transport.ldos`). `Transport.transmission` wraps it by default, and
+  passing `eta` keeps the Caroli formula. Example:
+  `examples/transport/plot_scattering_matrix.py`.
+
+- **Missing topological invariants** (unreleased): spin Chern numbers
+  (`KSpace.spin_chern_number`, on `sector_chern_numbers`), mirror Chern
+  numbers (`KSpace.mirror_chern_number`), the four 3D Z2 indices in one
+  call (`KSpace.z2_indices_3d`), Kitaev's Majorana number
+  (`bdg.majorana_number`, `bdg.pfaffian`), and the new `tbkit.topology`
+  module (the Bott index, the entanglement spectrum, also k-resolved as
+  `KSpace.entanglement_spectrum`, and `find_weyl_points` with
+  chiralities). Examples: `topology/plot_spin_chern_number.py`,
+  `plot_mirror_chern_number.py`, `plot_bott_index.py`,
+  `plot_entanglement_spectrum.py`, plus the updated Kitaev chain, 3D
+  topological insulator and Weyl semimetal examples.
+
+- **Batched and threaded k-space diagonalization** (unreleased): one
+  Bloch sum and stacked NumPy eigensolvers per memory-bounded chunk of
+  k-points, in `get_bands`, `mesh_bands`, `berry_curvature` and the Wilson
+  loops, across threads with `KSpace.set_workers(n)`. About 10x faster
+  on one thread. Benchmark: `tests/benchmark_kspace.py`. Example:
+  `examples/large_scale/plot_batched_k_space.py`.
+
+- **Parametrized Hamiltonians** (unreleased): value functions
+  `t(site_i, site_j, **params)` and `onsite(site, **params)` in
+  `System.set_hopping`/`set_onsite` and `KSpace.set_hopping`, evaluated
+  per call by `get_ham(**params)` (`KSpace.set_params` for the other
+  methods). Example: `examples/tight_binding/plot_parametrized_hamiltonians.py`.
+
+- **Packaging and CI** (unreleased): a `py.typed` marker, Python 3.14 in
+  the CI matrix, and a CI job on the minimum supported NumPy, SciPy and
+  matplotlib, which found two NumPy 2-only calls.
 
 - **Surface spectral functions of semi-infinite crystals** (0.4.2):
   `KSpace.surface_spectral_function`, the iterative surface Green's
@@ -240,10 +255,15 @@ boilerplate from the examples.
 
 | | tbkit | Kwant | PythTB |
 |---|---|---|---|
-| Model building | Real-space `System` and Bloch `KSpace`, with bridges between them | Graph `Builder` with symmetries and value functions | One `tb_model`, any periodic and real-space dimensions |
-| Transport | Landauer, multi-terminal, currents, shot noise, recursive Green's function (dense, finite `eta`) | S-matrix, lead modes, wavefunctions, conservation laws, sparse solver | None |
-| Band topology | Chern, Wilson loops, 2D/3D Z2, Fu-Kane parities, quantum geometry, tenfold way, higher order, local Chern marker | Minimal (via qsymm) | Berry phases, Wilson loops, hybrid Wannier centres |
+| Model building | Real-space `System` and Bloch `KSpace`, with bridges between them, value functions (`get_ham(**params)`) and k·p discretization | Graph `Builder` with symmetries and value functions | `TBModel` (2.0; `tb_model` kept as an alias), any periodic and real-space dimensions, parametrized terms |
+| Transport | S-matrix from exact lead modes (sparse), automatic lead attachment, conservation-law blocks, scattering states and LDOS, finite temperature and thermoelectrics; Landauer, multi-terminal, currents, shot noise (dense, finite `eta`), recursive Green's function | S-matrix, lead modes, wavefunctions, conservation laws, sparse solver | None |
+| Band topology | Chern, spin and mirror Chern, Wilson loops, 2D Z2 and the four 3D indices, Fu-Kane parities, Majorana number, Weyl points, quantum geometry, tenfold way, higher order, local Chern marker, Bott index, entanglement spectrum | Minimal (via qsymm) | Berry phases, Wilson loops, hybrid Wannier centres; since 2.0 also Chern numbers, Berry curvature, quantum metric, local Chern marker, axion angle, Wannier functions |
 | Surface states | Ribbons and slabs, semi-infinite surface spectral function | Leads and `kwant.physics` | Finite slabs (`cut_piece`) |
-| Response | Anomalous and spin Hall, Kubo-Bastin, optics, Berry curvature dipole, shift current | Kubo conductivity (KPM) | None |
+| Response | Anomalous and spin Hall, orbital magnetization, anomalous Nernst and thermal Hall, axion angle, Kubo-Bastin, optics, Berry curvature dipole, shift current | Kubo conductivity (KPM) | Berry curvature and velocities, no conductivity routines |
 | Non-Hermitian, Floquet | Extensive | None | None |
-| Scale | NumPy/SciPy, mostly dense | Cython and MUMPS, about 10^6 sites | Pure Python, small models |
+| Scale | NumPy/SciPy, mostly dense; k-meshes batched and threaded; sparse LU for the S-matrix | Cython and MUMPS, about 10^6 sites | Vectorized NumPy since 2.0 |
+
+Measured on one thread (`paper/benchmarks/run_benchmarks.py`, Kwant 1.5.0,
+PythTB 2.0.2): on k-meshes tbkit and PythTB 2 are within a factor of two of
+each other, tbkit using 5-14x less memory; for the scattering matrix Kwant
+is faster from about 10^3 sites, and ten times faster at 4x10^5 sites.

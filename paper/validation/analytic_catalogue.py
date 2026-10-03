@@ -1,0 +1,56 @@
+r"""
+Closed-form and literature results that the gallery examples assert.
+
+Each entry names the result, its reference, the example that asserts it,
+and the tolerance of that assert. ``run_all.py`` re-runs every listed
+example, so the table in the paper cannot claim a check that no longer
+passes.
+"""
+
+ANALYTIC = [
+    {'result': 'Hall conductances of the Hofstadter bands from the Diophantine equation',
+     'reference': 'Thouless et al., PRL 49, 405 (1982)',
+     'example': 'topology/plot_tknn_hofstadter.py', 'tolerance': '$10^{-6}$'},
+    {'result': 'Zak phase of the SSH chain: Wannier centres $1/4$ and $3/4$, difference $\\pi$',
+     'reference': 'Zak, PRL 62, 2747 (1989)',
+     'example': 'topology/plot_zak_phase.py', 'tolerance': '$10^{-8}$'},
+    {'result': 'Anomalous Hall conductivity in the gap equals the Chern number',
+     'reference': 'Haldane, PRL 61, 2015 (1988)',
+     'example': 'hall_effects/plot_anomalous_hall_effect.py', 'tolerance': '$10^{-6}$'},
+    {'result': 'Streda slope of the orbital magnetization equals the Chern number',
+     'reference': 'Streda, J. Phys. C 15, L717 (1982)',
+     'example': 'magnetic_field/plot_orbital_magnetization.py', 'tolerance': '$10^{-6}$'},
+    {'result': 'Clean strip: transmission equals the number of open subbands',
+     'reference': 'Landauer, IBM J. Res. Dev. 1, 223 (1957)',
+     'example': 'transport/plot_landauer_conductance.py', 'tolerance': '$10^{-6}$'},
+    {'result': 'Impurity in a chain: $T = v^2/(v^2 + \\varepsilon^2)$ up to the band edge',
+     'reference': 'Fisher and Lee, PRB 23, 6851 (1981)',
+     'example': 'transport/plot_scattering_matrix.py', 'tolerance': '$10^{-9}$ (relative)'},
+    {'result': 'Graphene absorbance $\\pi\\alpha = 2.29$% at low frequency',
+     'reference': 'Nair et al., Science 320, 1308 (2008)',
+     'example': 'optics/plot_graphene_universal_absorption.py', 'tolerance': '$2\\times10^{-4}$'},
+    {'result': 'BCS ratio $\\Delta_0/k_BT_c = 1.764$',
+     'reference': 'Bardeen, Cooper and Schrieffer, Phys. Rev. 108, 1175 (1957)',
+     'example': 'superconductivity/plot_bcs_gap_equation.py', 'tolerance': '2% (finite size)'},
+    {'result': 'Perfect NS interface: $R_{he} = 1$, $G = 2e^2/h$',
+     'reference': 'Blonder, Tinkham and Klapwijk, PRB 25, 4515 (1982)',
+     'example': 'superconductivity/plot_andreev_reflection.py', 'tolerance': '$2\\times10^{-3}$'},
+    {'result': 'Kitaev chain: Majorana number $-1$ exactly in the topological phase',
+     'reference': 'Kitaev, Phys.-Usp. 44, 131 (2001)',
+     'example': 'superconductivity/plot_kitaev_chain.py', 'tolerance': 'exact (integer)'},
+    {'result': 'Anomalous Floquet phase: Chern number $0$, winding number $1$',
+     'reference': 'Rudner et al., PRX 3, 031005 (2013)',
+     'example': 'floquet/plot_anomalous_floquet_phases.py', 'tolerance': '$10^{-10}$'},
+    {'result': 'PT dimer: $E = \\pm\\sqrt{t^2 - \\gamma^2}$ and its Petermann factor',
+     'reference': 'Bender and Boettcher, PRL 80, 5243 (1998)',
+     'example': 'non_hermitian/plot_pt_symmetry.py', 'tolerance': '$10^{-8}$'},
+    {'result': 'Exceptional points carry vorticity $\\pm 1/2$',
+     'reference': 'Shen, Zhen and Fu, PRL 120, 146402 (2018)',
+     'example': 'non_hermitian/plot_exceptional_point_vorticity.py', 'tolerance': '$10^{-10}$'},
+    {'result': 'Encircling an exceptional point swaps the bands, Berry phase $\\pi$',
+     'reference': 'Heiss, J. Phys. A 45, 444016 (2012)',
+     'example': 'non_hermitian/plot_exceptional_point_encircling.py', 'tolerance': '$10^{-8}$'},
+    {'result': 'Hatano-Nelson chain: spectral winding $1$ and skin modes',
+     'reference': 'Hatano and Nelson, PRL 77, 570 (1996)',
+     'example': 'non_hermitian/plot_skin_effect.py', 'tolerance': '$10^{-8}$'},
+]

@@ -5,12 +5,9 @@ from numpy.typing import NDArray, ArrayLike
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.axes import Axes
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib.legend_handler import HandlerLine2D
 import tbkit.error_handling as error_handling
 import tbkit.dos as dos
 from tbkit.system import System
-import os
 
 
 #################################
@@ -40,6 +37,8 @@ class Plot:
         '''
         if ax is None:
             ax = plt.gca()
+        # bonds that wrap around a torus would cross the whole sample
+        hop = hop[~self.sys._wrapped(hop['i'].astype(int), hop['j'].astype(int))]
         for i in range(len(hop)):
             ax.plot([coor['x'][hop['i'][i]],
                         coor['x'][hop['j'][i]]],
@@ -615,10 +614,12 @@ class Plot:
         ax.set_ylabel('$j$', fontsize=fs)
         ax.set_title(title, fontsize=fs)
         if plt_hop:
-            plt.plot([self.sys.lat.coor['x'][self.sys.hop['i'][:]], 
-                             self.sys.lat.coor['x'][self.sys.hop['j'][:]]],
-                            [self.sys.lat.coor['y'][self.sys.hop['i'][:]],
-                             self.sys.lat.coor['y'][self.sys.hop['j'][:]]],
+            hop = self.sys.hop[~self.sys._wrapped(self.sys.hop['i'].astype(int),
+                                                                       self.sys.hop['j'].astype(int))]
+            plt.plot([self.sys.lat.coor['x'][hop['i'][:]],
+                             self.sys.lat.coor['x'][hop['j'][:]]],
+                            [self.sys.lat.coor['y'][hop['i'][:]],
+                             self.sys.lat.coor['y'][hop['j'][:]]],
                             'k', lw=lw)
         for tag, color in zip(self.sys.lat.tags, self.colors):
             plt.scatter(self.sys.lat.coor['x'][self.sys.lat.coor['tag'] == tag],

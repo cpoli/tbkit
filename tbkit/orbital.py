@@ -21,8 +21,8 @@ import scipy.sparse as sparse
 
 import tbkit.error_handling as error_handling
 from tbkit.lattice import Lattice
-from tbkit.slater_koster import ORBITALS, sk_block, orbital_angular_momentum
-from tbkit.system import System, PI
+from tbkit.slater_koster import sk_block, orbital_angular_momentum
+from tbkit.system import System
 
 SIGMA = [np.array([[0., 1.], [1., 0.]], dtype='c16'),
               np.array([[0., -1j], [1j, 0.]], dtype='c16'),
@@ -40,6 +40,10 @@ class OrbitalSystem(System):
         :data:`tbkit.slater_koster.ORBITALS`), e.g. ``{'a': ['s', 'px', 'py', 'pz']}``.
     :param spin: Boolean. Default value False. Give every orbital a
         spin-1/2 degree of freedom.
+    :param periodic: Boolean, or tuple of booleans. Default value False.
+        Periodic boundaries (see *System*); the bond vectors of the
+        Slater-Koster, spin-orbit and Rashba blocks are then those of the
+        shortest image.
 
     Everything of **System** still applies: *set_hopping* (and the disorder,
     defect and Peierls methods) sets hoppings :math:`t` that connect equal
@@ -62,8 +66,8 @@ class OrbitalSystem(System):
     '''
 
     def __init__(self, lat: Lattice, orbitals: dict[str, list[str]] | None = None,
-                 spin: bool = False) -> None:
-        System.__init__(self, lat)
+                 spin: bool = False, periodic: bool | tuple[bool, ...] = False) -> None:
+        System.__init__(self, lat, periodic)
         error_handling.boolean(spin, 'spin')
         if orbitals is None:
             orbitals = {tag: ['s'] for tag in lat.tags}
@@ -206,8 +210,7 @@ class OrbitalSystem(System):
         self.nmax = len(self.dist_uni) - 1
         error_handling.positive_int_lim(n, 'n', self.nmax)
         i, j, _ = self.get_bonds(n)
-        coords = self._coords()
-        return i, j, coords[j] - coords[i]
+        return i, j, self._bond_vectors(i, j)
 
     def set_slater_koster(self, n: int, params: dict, overlap: dict | None = None) -> None:
         r'''
@@ -272,7 +275,7 @@ class OrbitalSystem(System):
         for a, b in zip(i, j):
             nu = 0.
             for k in neighbours[a] & neighbours[b]:
-                d1, d2 = coords[k] - coords[a], coords[b] - coords[k]
+                d1, d2 = self._min_image(coords[k] - coords[a]), self._min_image(coords[b] - coords[k])
                 nu += np.sign(d1[0] * d2[1] - d1[1] * d2[0])
             if nu:
                 blocks.append((a, b, 1j * lam * nu * np.kron(self._same_orbitals(a, b), SIGMA[2])))
@@ -338,8 +341,11 @@ class OrbitalSystem(System):
             System.set_peierls_phase(self, phase)
         x, y = self.lat.coor['x'], self.lat.coor['y']
         for key, blocks in self.blocks.items():
-            self.blocks[key] = [(a, b, mat * np.exp(1j * phase(x[a], y[a], x[b], y[b])))
-                                          for a, b, mat in blocks]
+            # the end of the short bond (outside the sample if it wraps around)
+            d = self._bond_vectors(np.array([a for a, _, _ in blocks], int),
+                                          np.array([b for _, b, _ in blocks], int))
+            self.blocks[key] = [(a, b, mat * np.exp(1j * phase(x[a], y[a], x[a] + dx, y[a] + dy)))
+                                          for (a, b, mat), (dx, dy) in zip(blocks, d[:, :2])]
 
     # ------------------------------------------------------------------
     # Hamiltonian and eigenstates
@@ -362,10 +368,13 @@ class OrbitalSystem(System):
         return sparse.csr_matrix((np.concatenate(vals), (np.concatenate(rows), np.concatenate(cols))),
                                           shape=(n, n))
 
-    def get_ham(self) -> None:
+    def get_ham(self, **params) -> None:
         '''
         Get the Hamiltonian (and, for a non-orthogonal basis, the overlap
         matrix *overlap*).
+
+        :param params: Values of the parameters of the value functions of
+            *hop* (see *System.get_ham*).
         '''
         error_handling.orbital_terms(self.hop, self.blocks)
         self._index()
@@ -380,12 +389,13 @@ class OrbitalSystem(System):
                 for k, o in enumerate(self._site_orbs(site)):
                     index[o][site] = self.offset[site] + k * self.ns
             hi, hj = self.hop['i'].astype(int), self.hop['j'].astype(int)
+            t = self._hop_t(params)
             for o in names:
                 keep = (index[o][hi] >= 0) & (index[o][hj] >= 0)
                 for s in range(self.ns):
                     rows.append(index[o][hi[keep]] + s)
                     cols.append(index[o][hj[keep]] + s)
-                    vals.append(self.hop['t'][keep])
+                    vals.append(t[keep])
             scalar = sparse.csr_matrix((np.concatenate(vals), (np.concatenate(rows), np.concatenate(cols))),
                                                 shape=(n, n))
             if np.all(self.hop['ang'] >= 0) or np.all(self.hop['ang'] < 0):
@@ -481,3 +491,16 @@ class OrbitalSystem(System):
         '''
         error_handling.orthogonal(self.overlap)
         return System.get_local_chern_marker(self, e_fermi, area)
+
+    def get_bott_index(self, e_fermi: float = 0.) -> float:
+        '''
+        Get the Bott index of a torus (see *System.get_bott_index*), the
+        orbitals and spin of a site sharing its position (orthogonal basis only).
+
+        :param e_fermi: Real number. Default value 0.
+
+        :returns:
+            * **bott** -- Real number, close to an integer.
+        '''
+        error_handling.orthogonal(self.overlap)
+        return System.get_bott_index(self, e_fermi)

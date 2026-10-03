@@ -1,0 +1,19 @@
+# Reference environment for the paper's validation, benchmarks and figures.
+# Kwant comes from conda-forge, which ships it built with MUMPS.
+#
+#   micromamba create -f paper/environment.yml
+#   micromamba activate tbkit-paper
+#   pip install -e .            # tbkit from this checkout (repository root)
+name: tbkit-paper
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - kwant=1.5.0
+  - numpy=2.5.3
+  - scipy=1.18.1
+  - matplotlib=3.11.2
+  - sympy=1.14.0
+  - pip
+  - pip:
+      - pythtb==2.0.2

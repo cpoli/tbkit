@@ -107,13 +107,8 @@ print('Bottom band is a C=-1 Chern insulator; the three bands sum to C=0. OK')
 # Berry curvature of the isolated lower band
 # ------------------------------------------------------------------
 
-curv = kag.berry_curvature(bands=[0], nk=60)
-fig, ax = plt.subplots()
-im = ax.imshow(curv.T, origin='lower', extent=[0, 1, 0, 1], aspect='auto', cmap='RdBu')
-ax.set_xlabel('$k_1$ (fractional)')
-ax.set_ylabel('$k_2$ (fractional)')
-ax.set_title('Berry curvature of the lower (Chern) band')
-fig.colorbar(im, ax=ax)
+fig = kag.plot_berry_curvature(0, nk=60, fs=14)
+fig.axes[0].set_title('Berry curvature of the lower band, $C = -1$', fontsize=14)
 
 # %%
 # Band structure: flat-and-touching vs. gapped-and-topological

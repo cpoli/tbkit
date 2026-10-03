@@ -6,6 +6,7 @@ import unittest
 
 import numpy as np
 import scipy.linalg as LA
+from scipy.integrate import trapezoid
 
 import tbkit.kpm as kpm
 import tbkit.lattices as lattices
@@ -62,7 +63,7 @@ class TestDOS(unittest.TestCase):
             e_grid, rho = kpm.dos(sys.ham, 64, None, kernel=kernel)
             deltas, _, _ = smoothed_deltas(sys, 64, e_grid, kernel)
             self.assertTrue(np.allclose(rho, deltas.sum(axis=1)))
-        self.assertAlmostEqual(np.trapezoid(rho, e_grid) / sys.lat.sites, 1., places=2)
+        self.assertAlmostEqual(trapezoid(rho, e_grid) / sys.lat.sites, 1., places=2)
 
     def test_dos_from_levels(self):
         sys = disordered_square()

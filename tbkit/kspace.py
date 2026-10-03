@@ -1,17 +1,25 @@
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor
+from itertools import product
 from typing import Sequence
 
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
+from matplotlib.collections import LineCollection, PolyCollection
+from matplotlib.colors import LogNorm, Normalize
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 import scipy.linalg as LA
 import scipy.sparse as sp
+from scipy.integrate import cumulative_trapezoid
+from scipy.special import expit, spence
 import tbkit.error_handling as error_handling
 import tbkit.dos as dos
 import tbkit.occupation as occupation
 import tbkit.neighbours as neighbours
+import tbkit.values as values
 from tbkit.lattice import Lattice
 from tbkit.transport import _green_surface_bulk
 
@@ -97,6 +105,8 @@ class KSpace():
                                 {'i': 0, 'j': 1, 'R': (0, -1), 't': 1.}])
     '''
 
+    workers = 1  # threads diagonalizing over k, see set_workers
+
     def __init__(self, lat: Lattice, spin: bool = False) -> None:
         error_handling.lat(lat)
         error_handling.boolean(spin, 'spin')
@@ -112,7 +122,12 @@ class KSpace():
         # spin-off-diagonal onsite terms (in-plane Zeeman, onsite Rashba):
         # they have no place on the diagonal `onsite` array.
         self._onsite_offdiag = np.zeros((self.norb, self.norb), 'c16')
-        self._hop = []  # list of (i, j, R_cartesian (np.ndarray), t)
+        self._hop_const = []  # list of (i, j, R_cartesian (np.ndarray), t)
+        # value functions (see tbkit.values): (i, j, R_cartesian, function,
+        # hermitian), with arrays of sites i, j and bond vectors R
+        self._hop_values = []
+        #: Parameters of the value functions (see *set_params*).
+        self.params = {}
         self._nonreciprocal = False  # set_hopping(hermitian=False) was used
         self._overlap_hop = []  # overlaps, as _hop: list of (i, j, R_cartesian, s)
         self.rec_vec = reciprocal_vectors(lat.prim_vec)
@@ -135,6 +150,58 @@ class KSpace():
         self.ks_dist = np.array([])  # cumulative distance along the k-path
         self.nodes = np.array([])  # positions, along ks_dist, of the k-path nodes
         self.en = np.array([])  # bands, shape (len(ks), norb)
+
+    @property
+    def _hop(self) -> list:
+        '''
+        Private. The hoppings, as a list of (i, j, R_cartesian, t): those
+        given as numbers, then the value functions evaluated with *params*.
+        Assigning it replaces both.
+        '''
+        return self._hops(self.params)
+
+    @_hop.setter
+    def _hop(self, hops: list) -> None:
+        self._hop_const = list(hops)
+        self._hop_values = []
+
+    def _hops(self, params: dict) -> list:
+        '''
+        Private method. *_hop*, with the value functions evaluated with *params*.
+        '''
+        hops = list(self._hop_const)
+        if not self._hop_values:
+            return hops
+        tau = np.array([dic['r0'] for dic in self.lat.unit_cell], dtype='f8').reshape(self.n_sites, -1)
+        for i, j, R, func, hermitian in self._hop_values:
+            site_i = values.sites(tau[i], self.tags[i], i)
+            site_j = values.sites(tau[j] + R, self.tags[j], j)
+            t = values.evaluate(func, (site_i, site_j), params, len(i), self.spin)
+            if self.spin:
+                pairs = [(2*ii + a, 2*jj + b, RR, tt[a, b], np.conj(tt[a, b]))
+                            for ii, jj, RR, tt in zip(i, j, R, t) for a in range(2) for b in range(2)]
+            else:
+                pairs = [(ii, jj, RR, tt, np.conj(tt)) for ii, jj, RR, tt in zip(i, j, R, t)]
+            for ii, jj, RR, tt, tc in pairs:
+                hops.append((int(ii), int(jj), RR, tt))
+                if hermitian:
+                    hops.append((int(jj), int(ii), -RR, tc))
+        return hops
+
+    def set_params(self, **params) -> None:
+        '''
+        Set the parameters of the value functions of *set_hopping*: every
+        method (*get_bands*, *chern_number*, *finite_ham*, ...) then uses
+        these values. *get_ham* also takes them per call.
+
+        :param params: Parameter values, added to (or replacing those of) *params*.
+
+        Example usage::
+
+            ks.set_params(m=0.5)
+            ks.chern_number()
+        '''
+        self.params.update(params)
 
     def set_onsite(self, dict_onsite: dict[str, complex | Sequence[complex]]) -> None:
         '''
@@ -195,6 +262,16 @@ class KSpace():
               number (spin-independent hopping) or a 2x2 complex matrix (a
               general, possibly spin-mixing, hopping -- e.g. built from
               :data:`PAULI` for Rashba or intrinsic spin-orbit coupling).
+              Or a value function ``t(site_i, site_j, **params)``,
+              evaluated by ``get_ham(k, **params)`` (and by every other
+              method, with the parameters of *set_params*): *site_i* and
+              *site_j* are structured arrays of the bonds' end points,
+              *site_i* in the home cell and *site_j* in cell
+              :math:`\mathbf{R}` (fields 'x', 'y', ('z'), 'tag', 'index' --
+              the site index within *unit_cell*). It is called once with
+              every bond of the dictionaries that share it, and returns one
+              value, or one per bond (or, if ``spin=True``, a 2x2 matrix,
+              or one per bond).
 
             *list_hop* may instead use the neighbour-order form of
             *System.set_hopping*: dictionaries with keys ('n', 't') and
@@ -227,29 +304,38 @@ class KSpace():
             # spin-flip term of strength alpha:
             chain_spin.set_hopping([{'i': 0, 'j': 0, 'R': (1,),
                                                     't': t*PAULI['0'] + 1j*alpha*PAULI['y']}])
+            # value function: a staggered hopping, swept without rebuilding
+            chain.set_hopping([{'n': 1, 't': lambda si, sj, t, d: t + d * (-1) ** si['index']}])
+            ham = chain.get_ham((0.,), t=1., d=0.2)
         '''
         error_handling.boolean(hermitian, 'hermitian')
         if error_handling.hopping_form(list_hop):
             list_hop = neighbours.neighbour_hoppings(self.lat, list_hop, self.spin, hermitian)
-        error_handling.set_hopping_kspace(list_hop, self.n_sites, self.dim, self.spin)
+        error_handling.set_hopping_kspace(list_hop, self.n_sites, self.dim, self.spin, values=True)
         if not hermitian:
             self._nonreciprocal = True
+        funcs = {}  # the bonds of each value function: id -> (function, [(i, j, R_cart)])
         for dic in list_hop:
             R_cart = np.zeros(self.space_dim)
             for n, a in zip(dic['R'], self.lat.prim_vec):
                 R_cart += n * np.array(a)
             i, j, t = dic['i'], dic['j'], dic['t']
-            if self.spin:
+            if callable(t):
+                funcs.setdefault(id(t), (t, []))[1].append((i, j, R_cart))
+            elif self.spin:
                 block = t*PAULI['0'] if np.ndim(t) == 0 else np.asarray(t, 'c16')
                 for a in range(2):
                     for b in range(2):
-                        self._hop.append((2*i+a, 2*j+b, R_cart, block[a, b]))
+                        self._hop_const.append((2*i+a, 2*j+b, R_cart, block[a, b]))
                         if hermitian:
-                            self._hop.append((2*j+b, 2*i+a, -R_cart, np.conj(block[a, b])))
+                            self._hop_const.append((2*j+b, 2*i+a, -R_cart, np.conj(block[a, b])))
             else:
-                self._hop.append((i, j, R_cart, t))
+                self._hop_const.append((i, j, R_cart, t))
                 if hermitian:
-                    self._hop.append((j, i, -R_cart, np.conj(t)))
+                    self._hop_const.append((j, i, -R_cart, np.conj(t)))
+        for func, bonds in funcs.values():
+            i, j, R = zip(*bonds)
+            self._hop_values.append((np.array(i), np.array(j), np.array(R), func, hermitian))
 
     def set_overlap(self, list_hop: list[dict]) -> None:
         r'''
@@ -268,16 +354,17 @@ class KSpace():
         the Lowdin-orthonormalized states :math:`S^{1/2}v`.
 
         :param list_hop: List of dictionaries ('i', 'j', 'R', 't'), or by
-            neighbour order ('n', 't', optionally 'ang', 'tag'), see *set_hopping*.
+            neighbour order ('n', 't', optionally 'ang', 'tag'), see
+            *set_hopping* (numbers only, no value functions).
         '''
         if error_handling.hopping_form(list_hop):
             list_hop = neighbours.neighbour_hoppings(self.lat, list_hop, self.spin)
         error_handling.set_hopping_kspace(list_hop, self.n_sites, self.dim, self.spin)
-        saved, self._hop = self._hop, []
-        nonrec = self._nonreciprocal
+        saved = self._hop_const, self._hop_values, self._nonreciprocal
+        self._hop = []
         self.set_hopping(list_hop)
-        self._overlap_hop += self._hop
-        self._hop, self._nonreciprocal = saved, nonrec
+        self._overlap_hop += self._hop_const
+        self._hop_const, self._hop_values, self._nonreciprocal = saved
 
     def get_overlap(self, k: ArrayLike) -> NDArray[np.complex128]:
         r'''
@@ -301,7 +388,7 @@ class KSpace():
         self._nonreciprocal = False
         self._overlap_hop = []
 
-    def get_ham(self, k: ArrayLike) -> NDArray[np.complex128]:
+    def get_ham(self, k: ArrayLike, **params) -> NDArray[np.complex128]:
         r'''
         Get the dense Bloch Hamiltonian :math:`H(\mathbf{k})`.
 
@@ -315,12 +402,21 @@ class KSpace():
             orthonormal basis *k_basis* of its plane (the first along
             :math:`\mathbf{a}_1`). *rec_vec_k* holds the reciprocal vectors in
             these coordinates.
+        :param params: Values of the parameters of the value functions of
+            *set_hopping*, for this call only: they override those of
+            *set_params*. Each function gets the ones its signature names
+            (all of them with ``**kwargs``); the others are ignored.
 
         :returns:
             * **ham** -- Complex ndarray, shape (norb, norb).
+
+        Example usage::
+
+            hams = [ks.get_ham((0., 0.), m=m) for m in np.linspace(-1., 1., 21)]
         '''
         error_handling.k_vector(k, 'k', self.dim)
-        return self._bloch_ham((self.k_basis @ np.asarray(k, dtype='f8'))[None])[0]
+        return self._bloch_ham((self.k_basis @ np.asarray(k, dtype='f8'))[None],
+                                          params={**self.params, **params})[0]
 
     def get_ham_peierls(self, k: ArrayLike, A: ArrayLike) -> NDArray[np.complex128]:
         r'''
@@ -343,13 +439,17 @@ class KSpace():
         error_handling.ndarray(A, 'A', self.space_dim)
         return self._bloch_ham((self.k_basis @ np.asarray(k, dtype='f8'))[None], A)[0]
 
-    def _bloch_ham(self, k_cart: NDArray[np.float64], A: NDArray[np.float64] | None = None) -> NDArray[np.complex128]:
+    def _bloch_ham(
+        self, k_cart: NDArray[np.float64], A: NDArray[np.float64] | None = None, params: dict | None = None,
+    ) -> NDArray[np.complex128]:
         '''
         Private method. *get_ham* (or, with a vector potential *A*,
         *get_ham_peierls*) at many k-points at once: *k_cart* has shape
-        (nk, space_dim) and the result (nk, norb, norb).
+        (nk, space_dim) and the result (nk, norb, norb). The value functions
+        take *params* (default: *self.params*).
         '''
-        return self._bloch_sum(self._hop, k_cart, A=A)[0] + (np.diag(self.onsite) + self._onsite_offdiag)[None]
+        hops = self._hops(self.params if params is None else params)
+        return self._bloch_sum(hops, k_cart, A=A)[0] + (np.diag(self.onsite) + self._onsite_offdiag)[None]
 
     def get_bands(
         self, ks: ArrayLike, eigenvec: bool = False,
@@ -387,17 +487,100 @@ class KSpace():
         Private method. Diagonalize :math:`H(\mathbf{k})` over the k-points
         *ks* (shape (nk, dim)), without touching the stored band structure.
         '''
-        en = np.zeros((len(ks), self.norb), 'f8' if self.is_hermitian() else 'c16')
+        return self._eigs(ks, eigenvec)
+
+    def set_workers(self, workers: int) -> None:
+        r'''
+        Set the number of threads that diagonalize :math:`H(\mathbf{k})`
+        over many k-points (*get_bands*, *mesh_bands*, *berry_curvature*,
+        the Wilson loops, ...). The k-points are split into chunks, each
+        diagonalized by one stacked LAPACK call, which releases the GIL, so
+        the chunks run in parallel. The results depend on *workers* only up
+        to rounding (and the phases of the eigenvectors).
+
+        :param workers: Positive integer. Number of threads (default 1, no threads).
+
+        Example usage::
+
+            ks.set_workers(4)
+            curv = ks.berry_curvature(0, nk=400)
+        '''
+        error_handling.positive_int(workers, 'workers')
+        self.workers = workers
+
+    def _hams(self, ks: NDArray[np.float64]) -> NDArray[np.complex128]:
+        '''
+        Private method. *get_ham* at the k-points *ks* (shape (nk, dim)),
+        shape (nk, norb, norb): one Bloch sum, unless a subclass overrides
+        *get_ham* (a Floquet model), which is then called per k-point.
+        '''
+        if type(self).get_ham is KSpace.get_ham:
+            return self._bloch_ham(ks @ self.k_basis.T)
+        return np.array([self.get_ham(k) for k in ks], dtype='c16')
+
+    def _overlaps(self, ks: NDArray[np.float64]) -> NDArray[np.complex128]:
+        '''
+        Private method. *get_overlap* at the k-points *ks*, shape (nk, norb, norb).
+        '''
+        return np.eye(self.norb) + self._bloch_sum(self._overlap_hop, ks @ self.k_basis.T)[0]
+
+    def _eigs(
+        self, ks: NDArray[np.float64], eigenvec: bool = False,
+    ) -> NDArray | tuple[NDArray, NDArray[np.complex128]]:
+        '''
+        Private method. *_eig* at the k-points *ks* (shape (nk, dim)): the
+        eigenvalues, shape (nk, norb), and the eigenvectors, shape
+        (nk, norb, norb). The k-points go in chunks of bounded memory,
+        spread over *workers* threads (see *set_workers*).
+        '''
+        chunk = max(1, min(400000 // self.norb ** 2, -(-len(ks) // self.workers)))
+        parts = [ks[c0:c0 + chunk] for c0 in range(0, len(ks), chunk)] or [ks]
+        if self.workers > 1 and len(parts) > 1:
+            with ThreadPoolExecutor(self.workers) as pool:
+                out = list(pool.map(lambda part: self._eig_chunk(part, eigenvec), parts))
+        else:
+            out = [self._eig_chunk(part, eigenvec) for part in parts]
         if eigenvec:
-            vn = np.zeros((len(ks), self.norb, self.norb), 'c16')
-        for i, k in enumerate(ks):
-            if eigenvec:
-                en[i], vn[i] = self._eig(self.get_ham(k), eigenvec=True, k=k)
-            else:
-                en[i] = self._eig(self.get_ham(k), k=k)
-        if eigenvec:
-            return en, vn
-        return en
+            return np.concatenate([o[0] for o in out]), np.concatenate([o[1] for o in out])
+        return np.concatenate(out)
+
+    def _eig_chunk(
+        self, ks: NDArray[np.float64], eigenvec: bool,
+    ) -> NDArray | tuple[NDArray, NDArray[np.complex128]]:
+        r'''
+        Private method. One chunk of *_eigs*: the Hermitian solver when
+        *is_hermitian*, otherwise the general one, with the eigenvalues
+        sorted by real part, both stacked over the k-points. With an overlap
+        (see *set_overlap*), the generalized problem :math:`Hv = ES(\mathbf{k})v`:
+        the Hermitian one is reduced by the Cholesky factor
+        :math:`S = LL^\dagger` to :math:`L^{-1}HL^{-\dagger}` (eigenvectors
+        :math:`L^{-\dagger}v`, normalized to :math:`v^\dagger Sv = 1` as by
+        *scipy.linalg.eigh*); the non-Hermitian one has no stacked solver,
+        and is solved one k-point at a time.
+        '''
+        ham = self._hams(ks)
+        hermitian = self.is_hermitian()
+        if self._overlap_hop and hermitian:
+            l_inv = np.linalg.inv(np.linalg.cholesky(self._overlaps(ks)))
+            l_inv_h = l_inv.conj().transpose(0, 2, 1)
+            ham = l_inv @ ham @ l_inv_h
+        if hermitian:
+            if not eigenvec:
+                return np.linalg.eigvalsh(ham)
+            en, vn = np.linalg.eigh(ham)
+            return en, (l_inv_h @ vn if self._overlap_hop else vn)
+        if self._overlap_hop:
+            solved = [LA.eig(h, s) for h, s in zip(ham, self._overlaps(ks))]
+            en = np.array([w for w, _ in solved], dtype='c16').reshape(len(ks), self.norb)
+            vn = np.array([v for _, v in solved], dtype='c16').reshape(ham.shape)
+        elif eigenvec:
+            en, vn = np.linalg.eig(ham)
+        else:
+            en = np.linalg.eigvals(ham)
+        ind = np.argsort(en.real, axis=1, kind='stable')
+        if not eigenvec:
+            return np.take_along_axis(en, ind, axis=1)
+        return np.take_along_axis(en, ind, axis=1), np.take_along_axis(vn, ind[:, None, :], axis=2)
 
     def is_hermitian(self) -> bool:
         '''
@@ -412,25 +595,6 @@ class KSpace():
         return bool(not self._nonreciprocal and np.all(self.onsite.imag == 0.)
                         and np.array_equal(self._onsite_offdiag, self._onsite_offdiag.conj().T))
 
-    def _eig(
-        self, ham: NDArray[np.complex128], eigenvec: bool = False, k: NDArray | None = None,
-    ) -> NDArray | tuple[NDArray, NDArray[np.complex128]]:
-        '''
-        Private method. Eigenvalues (and right eigenvectors) of one Bloch
-        Hamiltonian: the Hermitian solver when *is_hermitian*, otherwise the
-        general one, with the eigenvalues sorted by real part. With an
-        overlap (see *set_overlap*), the generalized problem H v = E S(k) v.
-        '''
-        s = self.get_overlap(k) if (self._overlap_hop and k is not None) else None
-        if self.is_hermitian():
-            return LA.eigh(ham, s) if eigenvec else LA.eigvalsh(ham, s)
-        if not eigenvec:
-            en = LA.eigvals(ham, s)
-            return en[np.argsort(en.real, kind='stable')]
-        en, vn = LA.eig(ham, s)
-        ind = np.argsort(en.real, kind='stable')
-        return en[ind], vn[:, ind]
-
     def k_path(
         self, points: list[ArrayLike], nk: int,
     ) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
@@ -439,7 +603,7 @@ class KSpace():
         associated bands.
 
         :param points: List of at least two k-points (each a tuple/list of
-            one/two real numbers).
+            *dim* real numbers), e.g. from *high_symmetry_path*.
         :param nk: Positive integer. Number of k-points per path segment.
 
         :returns:
@@ -449,12 +613,9 @@ class KSpace():
         '''
         error_handling.k_path_points(points, self.dim)
         error_handling.positive_int(nk, 'nk')
-        points = np.atleast_2d(np.asarray(points, dtype='f8'))
-        segments = [np.linspace(points[i], points[i+1], nk, endpoint=False)
-                          for i in range(len(points) - 1)]
-        ks = np.concatenate(segments + [points[-1:]])
+        ks, _, nodes = _path(points, nk)
         en = self.get_bands(ks)
-        self.nodes = self.ks_dist[::nk][:len(points)-1].tolist() + [self.ks_dist[-1]]
+        self.nodes = nodes
         return self.ks_dist, en
 
     def mesh_grid(
@@ -586,25 +747,27 @@ class KSpace():
         ks = self._plane_mesh(nk, plane, k_fixed)
         if not self.is_hermitian():
             # bands labelled by Re E are continuous only across a real line gap
-            en = np.array([self._eig(self.get_ham(k), k=k) for k in ks.reshape(-1, self.dim)])
+            en = self._eigs(ks.reshape(-1, self.dim))
             error_handling.line_gap(en.real, bands, 'real')
             error_handling.band_continuity(en.reshape(n1, n2, self.norb), bands)
-        v = np.zeros((n1, n2, self.norb, len(bands)), 'c16')
-        for i1 in range(n1):
-            for i2 in range(n2):
-                v[i1, i2] = self._subspace(ks[i1, i2], bands)
-        curv = np.zeros((n1, n2))
-        for i1 in range(n1):
-            for i2 in range(n2):
-                v1 = v[i1, i2]
-                v2 = v[(i1+1) % n1, i2]
-                v3 = v[(i1+1) % n1, (i2+1) % n2]
-                v4 = v[i1, (i2+1) % n2]
-                link = (np.linalg.det(v1.conj().T @ v2)
-                             * np.linalg.det(v2.conj().T @ v3)
-                             * np.linalg.det(v3.conj().T @ v4)
-                             * np.linalg.det(v4.conj().T @ v1))
-                curv[i1, i2] = -np.angle(link)
+        v1 = self._subspaces(ks.reshape(-1, self.dim), bands).reshape(n1, n2, self.norb, len(bands))
+        return self._flux(v1, plane)
+
+    def _flux(self, v1: NDArray[np.complex128], plane: tuple[int, int]) -> NDArray[np.float64]:
+        '''
+        Private method. Fukui-Hatsugai-Suzuki flux through each plaquette of
+        the mesh of *_plane_mesh*, from orthonormal bases *v1* of a subspace
+        at its nodes (shape (n1, n2, norb, n)), oriented as in *berry_curvature*.
+        '''
+        # the other corners of each plaquette: k + b_i/n1, k + b_i/n1 + b_j/n2, k + b_j/n2
+        v2 = np.roll(v1, -1, axis=0)
+        v3 = np.roll(v2, -1, axis=1)
+        v4 = np.roll(v1, -1, axis=1)
+
+        def overlap(a, b):
+            return np.linalg.det(a.conj().swapaxes(-1, -2) @ b)
+        link = overlap(v1, v2) * overlap(v2, v3) * overlap(v3, v4) * overlap(v4, v1)
+        curv = -np.angle(link)
         # The corners k, k+b_i/n1, k+b_i/n1+b_j/n2, k+b_j/n2 run
         # counterclockwise about the normal only if (b_i x b_j).normal > 0;
         # otherwise every flux comes out with the opposite sign.
@@ -653,10 +816,19 @@ class KSpace():
         *bands* at *k* (in the periodic gauge, orbital positions ignored).
         With an overlap S(k), the Lowdin-orthonormalized S^(1/2) v.
         '''
-        _, vn = self._eig(self.get_ham(k), eigenvec=True, k=k)
+        return self._subspaces(np.asarray(k, dtype='f8')[None], bands)[0]
+
+    def _subspaces(self, ks: NDArray[np.float64], bands: list[int]) -> NDArray[np.complex128]:
+        '''
+        Private method. *_subspace* at the k-points *ks* (shape (nk, dim)),
+        shape (nk, norb, len(bands)). S^(1/2) comes from the eigenvalues of
+        the (Hermitian, positive) overlap.
+        '''
+        _, vn = self._eigs(ks, eigenvec=True)
         if self._overlap_hop:
-            vn = LA.sqrtm(self.get_overlap(k)) @ vn
-        return vn[:, bands]
+            sv, us = np.linalg.eigh(self._overlaps(ks))
+            vn = (us * np.sqrt(sv)[:, None, :]) @ (us.conj().transpose(0, 2, 1) @ vn)
+        return vn[:, :, bands]
 
     def biorthogonal_berry_curvature(
         self, bands: int | list[int], nk: int | tuple[int, int] = 30, kind: str = 'LR',
@@ -810,6 +982,169 @@ class KSpace():
         '''
         return self.berry_curvature(bands, nk, plane, k_fixed).sum() / (2*PI)
 
+    def sector_chern_numbers(
+        self, op, bands: int | list[int], nk: int | tuple[int, int] = 30,
+        plane: tuple[int, int] = (0, 1), k_fixed: float = 0.,
+    ) -> tuple[float, float]:
+        r'''
+        Get the Chern numbers of the two sectors into which a Hermitian
+        operator :math:`O` splits a group of bands: at every k-point, the
+        projected operator :math:`P(\mathbf{k})\,O\,P(\mathbf{k})`
+        (:math:`P` the projector on *bands*) is diagonalized within the
+        bands, and its eigenvectors with positive and negative eigenvalues
+        span the two sectors, whose Chern numbers :math:`C_\pm` follow as in
+        *berry_curvature*. They are well defined as long as the spectrum of
+        :math:`POP` keeps a gap around zero over the whole plane, even if
+        :math:`O` does not commute with :math:`H` (Prodan, Phys. Rev. B 80,
+        125327 (2009)); otherwise a ValueError is raised. See
+        *spin_chern_number* and *mirror_chern_number*.
+
+        :param op: Complex ndarray, shape (norb, norb), or callable of k
+            returning one: the Hermitian operator :math:`O`.
+        :param bands: Band index, or list of band indices.
+        :param nk: Positive integer, or tuple of 2 positive integers. Default value 30.
+        :param plane: Tuple of two integers. Default value (0, 1). 3D only, see *berry_curvature*.
+        :param k_fixed: Real number. Default value 0. 3D only, see *berry_curvature*.
+
+        :returns:
+            * **c_plus** -- Real number, close to an integer: Chern number
+              of the sector with :math:`POP > 0`.
+            * **c_minus** -- Real number: that of the sector with :math:`POP < 0`.
+              :math:`C_+ + C_-` is the Chern number of *bands*.
+        '''
+        bands, nk, ks = self._check_sectors(bands, nk, plane, k_fixed)
+        if callable(op):
+            ops = np.array([self._operator(op, k) for k in ks])
+        else:
+            ops = self._operator(op, ks[0])[None]
+        error_handling.hermitian_operator(ops)
+        return self._sector_cherns(ops, bands, nk, ks, plane)
+
+    def _check_sectors(
+        self, bands, nk, plane, k_fixed,
+    ) -> tuple[list[int], tuple[int, int], NDArray[np.float64]]:
+        '''
+        Private method. Validate the arguments of the sector Chern numbers;
+        return them with the k-points of the plane mesh, shape (n1 n2, dim).
+        '''
+        error_handling.dim_min(self.dim, 2)
+        if isinstance(bands, int):
+            bands = [bands]
+        error_handling.band_indices(bands, self.norb)
+        if isinstance(nk, int):
+            nk = (nk, nk)
+        error_handling.nk(nk, 2)
+        error_handling.plane(plane, self.dim)
+        error_handling.real_number(k_fixed, 'k_fixed')
+        error_handling.hermitian_kspace(self.is_hermitian(), self._overlap_hop)
+        return bands, nk, self._plane_mesh(nk, plane, k_fixed).reshape(-1, self.dim)
+
+    def _sector_cherns(
+        self, ops: NDArray[np.complex128], bands: list[int], nk: tuple[int, int],
+        ks: NDArray[np.float64], plane: tuple[int, int],
+    ) -> tuple[float, float]:
+        '''
+        Private method. *sector_chern_numbers* with the Hermitian operator
+        evaluated at the k-points *ks* (shape (n1 n2, norb, norb), or
+        (1, norb, norb) if constant).
+        '''
+        n1, n2 = nk
+        v = self._subspaces(ks, bands)
+        w, u = np.linalg.eigh(v.conj().transpose(0, 2, 1) @ ops @ v)
+        n_minus = error_handling.projected_gap(w)
+        sectors = v @ u
+        c_minus = self._flux(sectors[:, :, :n_minus].reshape(n1, n2, self.norb, -1), plane)
+        c_plus = self._flux(sectors[:, :, n_minus:].reshape(n1, n2, self.norb, -1), plane)
+        return float(c_plus.sum() / (2*PI)), float(c_minus.sum() / (2*PI))
+
+    def spin_chern_number(
+        self, bands: list[int], nk: int | tuple[int, int] = 30, s_z=None,
+        plane: tuple[int, int] = (0, 1), k_fixed: float = 0.,
+    ) -> float:
+        r'''
+        Get the spin Chern number of a group of bands (Prodan, Phys. Rev. B
+        80, 125327 (2009); Sheng, Weng, Sheng and Haldane, Phys. Rev. Lett.
+        97, 036808 (2006)),
+
+        .. math::
+
+            C_s = \frac{C_+ - C_-}{2}\, ,
+
+        with :math:`C_\pm` the Chern numbers of the two sectors of the
+        projected spin operator :math:`Ps_zP` (see *sector_chern_numbers*).
+        When :math:`s_z` is conserved they are the Chern numbers of the two
+        spins; Rashba coupling mixes the spins, but :math:`C_s` stays
+        quantized, and unchanged, as long as the spectrum of :math:`Ps_zP`
+        keeps a gap around zero. With time reversal, :math:`C_s` modulo 2 is
+        the :math:`\mathbb{Z}_2` invariant of *z2_invariant*.
+
+        :param bands: List of band indices (e.g. the occupied bands).
+        :param nk: Positive integer, or tuple of 2 positive integers. Default value 30.
+        :param s_z: Complex ndarray, shape (norb, norb), or callable of k.
+            Default value None: :math:`\sigma_z` on every site of a model
+            built with ``spin=True``. The spin operator.
+        :param plane: Tuple of two integers. Default value (0, 1). 3D only, see *berry_curvature*.
+        :param k_fixed: Real number. Default value 0. 3D only, see *berry_curvature*.
+
+        :returns:
+            * **c_s** -- Real number, close to an integer.
+        '''
+        if s_z is None:
+            error_handling.spinful(self.spin)
+            s_z = np.kron(np.eye(self.norb // 2), PAULI['z'])
+        c_plus, c_minus = self.sector_chern_numbers(s_z, bands, nk, plane, k_fixed)
+        return (c_plus - c_minus) / 2
+
+    def mirror_chern_number(
+        self, mirror, bands: list[int], nk: int | tuple[int, int] = 30,
+        plane: tuple[int, int] = (0, 1), k_fixed: float = 0., tol: float = 1e-8,
+    ) -> float:
+        r'''
+        Get the mirror Chern number of a group of bands on a mirror-invariant
+        plane of the Brillouin zone (Teo, Fu and Kane, Phys. Rev. B 78,
+        045426 (2008); Hsieh et al., Nat. Commun. 3, 982 (2012)),
+
+        .. math::
+
+            n_M = \frac{C_{+} - C_{-}}{2}\, ,
+
+        with :math:`C_\pm` the Chern numbers of the bands of mirror
+        eigenvalue :math:`+i` and :math:`-i` (:math:`M^2 = -1`, spinful
+        electrons) or :math:`+1` and :math:`-1` (:math:`M^2 = +1`). The
+        mirror must commute with :math:`H(\mathbf{k})` at every point of the
+        plane: in 3D, the plane fixed by the reflection (e.g.
+        :math:`k_z = 0` or :math:`\pi` for :math:`z\to-z`); in 2D, the whole
+        zone, for a reflection of the third axis. A topological crystalline
+        insulator such as SnTe has :math:`n_M = 2` and every
+        :math:`\mathbb{Z}_2` index zero (:math:`\nu = n_M` modulo 2 on the plane).
+
+        :param mirror: Complex ndarray, shape (norb, norb), or callable of k:
+            the unitary mirror operator :math:`M`, with :math:`M^2 = \pm1`.
+        :param bands: List of band indices (e.g. the occupied bands).
+        :param nk: Positive integer, or tuple of 2 positive integers. Default value 30.
+        :param plane: Tuple of two integers. Default value (0, 1). 3D only, see *berry_curvature*.
+        :param k_fixed: Real number. Default value 0. 3D only: the
+            mirror-invariant plane (0 or 0.5 for a reflection of the remaining axis).
+        :param tol: Positive real. Default value 1e-8. Tolerance of the
+            checks :math:`M^2 = \pm1` and :math:`[M, H(\mathbf{k})] = 0`.
+
+        :returns:
+            * **n_m** -- Real number, close to an integer.
+        '''
+        bands, nk, ks = self._check_sectors(bands, nk, plane, k_fixed)
+        error_handling.positive_real(tol, 'tol')
+        if callable(mirror):
+            mats = np.array([self._operator(mirror, k) for k in ks])
+        else:
+            mats = self._operator(mirror, ks[0])[None]
+        sign = error_handling.mirror_square(mats @ mats, tol)
+        hams = self._hams(ks)
+        error_handling.commutes(float(np.max(np.abs(mats @ hams - hams @ mats))), tol)
+        # Hermitian, with eigenvalue +1 on the sector M = +i (M = +1 if M^2 = 1)
+        herm = mats if sign > 0 else -1j * mats
+        c_plus, c_minus = self._sector_cherns(herm, bands, nk, ks, plane)
+        return (c_plus - c_minus) / 2
+
     # ------------------------------------------------------------------
     # Anomalous and spin Hall conductivities (Kubo formula)
     # ------------------------------------------------------------------
@@ -867,6 +1202,7 @@ class KSpace():
 
     def _bloch_derivatives(
         self, ks: NDArray[np.float64], directions: list[NDArray[np.float64]], positions: bool,
+        params: dict | None = None,
     ) -> tuple[NDArray[np.complex128], NDArray[np.complex128]]:
         r'''
         Private method. :math:`H(\mathbf{k})` and its exact derivatives
@@ -879,9 +1215,11 @@ class KSpace():
         eigenbasis :math:`S = \sum_a s_a|a\rangle\langle a|`:
         :math:`\langle a|\partial S^{-1/2}|b\rangle = \langle a|\partial S|b\rangle
         (s_a^{-1/2}-s_b^{-1/2})/(s_a-s_b)`, :math:`-s_a^{-3/2}/2` when :math:`s_a = s_b`.
+        The value functions take *params* (default: *self.params*).
         '''
         k_cart = ks @ self.k_basis.T
-        ham, dham = self._bloch_sum(self._hop, k_cart, directions, positions)
+        hops = self._hop if params is None else self._hops(params)
+        ham, dham = self._bloch_sum(hops, k_cart, directions, positions)
         ham = ham + (np.diag(self.onsite) + self._onsite_offdiag)[None]
         if not self._overlap_hop:
             return ham, dham
@@ -903,16 +1241,18 @@ class KSpace():
     def _kubo(
         self, ks: NDArray[np.float64], e_fermi: NDArray[np.float64], temperature: float,
         directions: list[NDArray[np.float64]], pairs: list[tuple[int, int]], positions: bool,
-        spin_op: NDArray[np.complex128] | None,
+        spin_op: NDArray[np.complex128] | None, response: str = 'hall',
     ) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
         r'''
         Private method. The Kubo curvature
-        :math:`F(\mathbf{k}) = -\sum_{n\neq m}(f_n-f_m)\,\mathrm{Im}[X_{nm}Y_{mn}]/(E_n-E_m)^2`
-        (:math:`=\sum_n f_n\Omega_n`) at each k-point, Fermi energy and pair
-        (X, Y) of velocities (X the spin current :math:`\{s, v\}/2` if
-        *spin_op*). Shape (nk, len(e_fermi), len(pairs)). Pairs of
-        degenerate states (:math:`f_n = f_m`) are skipped, so :math:`F` stays
-        finite at band crossings below or above the Fermi level. Also
+        :math:`F(\mathbf{k}) = \sum_{n\neq m}P_{nm}\,\mathrm{Im}[X_{nm}Y_{mn}]/(E_n-E_m)^2`
+        at each k-point, Fermi energy and pair (X, Y) of velocities (X the
+        spin current :math:`\{s, v\}/2` if *spin_op*), with the weights
+        :math:`P_{nm}` of *response* (see *_response_weights*), e.g.
+        :math:`P_{nm} = -(f_n-f_m)` for the Hall conductivity
+        (:math:`F = \sum_n f_n\Omega_n`). Shape (nk, len(e_fermi), len(pairs)).
+        Pairs of degenerate states (equal weights) are skipped, so :math:`F`
+        stays finite at band crossings below or above the Fermi level. Also
         returns, per k-point, the occupation-independent size of the
         curvature, :math:`\sum_{n\neq m}|\mathrm{Im}[X_{nm}Y_{mn}]|/(E_n-E_m)^2`,
         which locates the hot spots of the adaptive refinement.
@@ -935,24 +1275,29 @@ class KSpace():
                 w = np.imag(x * vel[b].transpose(0, 2, 1)) * inv2
                 hot[c0:c0 + chunk] += np.abs(w).sum(axis=(1, 2))
                 for e, mu in enumerate(e_fermi):
-                    f = occupation.fermi_dirac(en, float(mu), temperature)
-                    out[c0:c0 + chunk, e, p] = -np.einsum('knm,knm->k', f[:, :, None] - f[:, None, :], w)
+                    weights = _response_weights(en, float(mu), temperature, response)
+                    out[c0:c0 + chunk, e, p] = np.einsum('knm,knm->k', weights, w)
         return out, hot
 
     def _hall(
         self, e_fermi, temperature, nk, plane, k_fixed, positions, refine, refine_fraction,
-        spin_axis,
+        spin_axis, response='hall',
     ):
         '''
         Private method. Validate, set the geometry and mesh, integrate the
         Kubo curvature (with the adaptive refinement), for
-        *hall_conductivity* (spin_axis None) and *spin_hall_conductivity*.
+        *hall_conductivity* (spin_axis None) and *spin_hall_conductivity*,
+        and, with the weights of *response*, for *orbital_magnetization*,
+        *anomalous_nernst_conductivity* and *thermal_hall_conductivity*.
         '''
         self._check_static()
         error_handling.dim_min(self.dim, 2)
         error_handling.hermitian_model(self.is_hermitian())
         error_handling.fermi_energies(e_fermi)
-        error_handling.positive_real_zero(temperature, 'temperature')
+        if response in ('nernst', 'thermal'):
+            error_handling.positive_real(temperature, 'temperature')
+        else:
+            error_handling.positive_real_zero(temperature, 'temperature')
         error_handling.plane(plane, self.dim)
         error_handling.k_fixed_hall(k_fixed, self.dim, spin_axis is None)
         error_handling.boolean(positions, 'positions')
@@ -997,7 +1342,7 @@ class KSpace():
         for ax in range(self.dim):
             if ax not in axes:
                 fracs[:, ax] = k_fixed
-        args = (e_arr, temperature, directions, pairs, positions, spin_op)
+        args = (e_arr, temperature, directions, pairs, positions, spin_op, response)
         coarse, size = self._kubo(fracs @ self.rec_vec_k, *args)
         total = coarse.sum(axis=0)
         if refine > 1:
@@ -1203,6 +1548,281 @@ class KSpace():
         '''
         return self._hall(e_fermi, temperature, nk, plane, k_fixed, positions, refine,
                                 refine_fraction, spin_axis)
+
+    # ------------------------------------------------------------------
+    # Berry-phase response beyond the Hall conductivity
+    # ------------------------------------------------------------------
+
+    def orbital_magnetization(
+        self, e_fermi: float | ArrayLike, temperature: float = 0., nk: int | tuple[int, ...] = 60,
+        plane: tuple[int, int] = (0, 1), k_fixed: float | None = None, positions: bool = True,
+        refine: int = 1, refine_fraction: float = 0.05,
+    ) -> float | NDArray[np.float64]:
+        r'''
+        Get the orbital magnetization in the modern theory (Thonhauser,
+        Ceresoli, Vanderbilt and Resta, Phys. Rev. Lett. 95, 137205 (2005);
+        Xiao, Shi and Niu, Phys. Rev. Lett. 95, 137204 (2005); Ceresoli et
+        al., Phys. Rev. B 74, 024408 (2006)), at any Fermi level and
+        temperature:
+
+        .. math::
+
+            M = \frac{e}{h}\,\frac{1}{2\pi}\int_{BZ} d^2k\sum_n\left[f_n\,m_n
+            + g_n\,\Omega_n\right],\qquad
+            m_n = \mathrm{Im}\langle\partial_xu_n|(H-E_n)|\partial_yu_n\rangle\, ,
+
+        with :math:`g = k_BT\ln(1+e^{-(E-\mu)/k_BT})` (:math:`\mu - E` below
+        :math:`\mu` and 0 above, at :math:`T = 0`). The first term is the
+        self-rotation of the wavepackets, the second the circulation of
+        the Berry-curvature currents at the edges. At :math:`T = 0` both
+        combine into :math:`\sum_nf_n\,\mathrm{Im}\langle\partial_xu_n|(H+E_n-2\mu)|\partial_yu_n\rangle`,
+        the formula of Thonhauser et al. It is evaluated, like
+        *hall_conductivity*, from :math:`\langle n|\partial H|m\rangle`
+        (no derivatives of the eigenstates), so it is finite where bands
+        touch.
+
+        **Sign and units.** The sign is that of *hall_conductivity*, so
+        that the Streda formula reads :math:`\partial M/\partial\mu = \sigma`:
+        in a gap (:math:`T = 0`), :math:`M` is linear in :math:`\mu` with
+        slope the Chern number :math:`C`. In 2D, :math:`M` (a magnetic
+        moment per area, i.e. a current) is in units of :math:`e/h` times
+        the energy unit; with ``k_fixed=None`` in 3D, the vector
+        :math:`(M_x, M_y, M_z)` per length. *positions* matters as for
+        *hall_conductivity*, and the physical choice is the default.
+
+        :param e_fermi: See *hall_conductivity*.
+        :param temperature: See *hall_conductivity*.
+        :param nk: See *hall_conductivity*.
+        :param plane: See *hall_conductivity*.
+        :param k_fixed: See *hall_conductivity*.
+        :param positions: See *hall_conductivity*.
+        :param refine: See *hall_conductivity*.
+        :param refine_fraction: See *hall_conductivity*.
+
+        :returns:
+            * **M** -- Real number (or ndarray shaped like *e_fermi*); in 3D
+              with ``k_fixed=None``, ndarray of shape (3,) (or ``e_fermi.shape + (3,)``).
+
+        Example usage::
+
+            mu = np.linspace(-0.5, 0.5, 11)  # in the gap of a Chern insulator
+            M = hal.orbital_magnetization(mu)  # slope C = hall_conductivity(mu)
+        '''
+        return self._hall(e_fermi, temperature, nk, plane, k_fixed, positions, refine,
+                                refine_fraction, None, 'magnetization')
+
+    def anomalous_nernst_conductivity(
+        self, e_fermi: float | ArrayLike, temperature: float, nk: int | tuple[int, ...] = 60,
+        plane: tuple[int, int] = (0, 1), k_fixed: float | None = None, positions: bool = True,
+        refine: int = 1, refine_fraction: float = 0.05,
+    ) -> float | NDArray[np.float64]:
+        r'''
+        Get the intrinsic anomalous Nernst (transverse thermoelectric)
+        conductivity :math:`\alpha_{xy}`, :math:`j_x = \alpha_{xy}(-\partial_yT)`,
+        from the Berry curvature weighted by the entropy of each state
+        (Xiao, Yao, Fang and Niu, Phys. Rev. Lett. 97, 026603 (2006)):
+
+        .. math::
+
+            \alpha_{xy} = \frac{ek_B}{h}\,\frac{1}{2\pi}\int_{BZ}d^2k\sum_n s_n\,\Omega_n\, ,
+            \qquad s = -f\ln f - (1-f)\ln(1-f)\, .
+
+        Only the states within a few :math:`k_BT` of :math:`\mu` carry
+        entropy, so it vanishes in a gap at low temperature. It obeys the
+        Mott relation exactly,
+        :math:`\alpha_{xy}(\mu, T) = \frac{1}{eT}\int dE\,(E-\mu)\left(-\frac{\partial f}{\partial E}\right)\sigma_{xy}(E)`,
+        with :math:`\sigma_{xy}(E)` the :math:`T = 0` *hall_conductivity*
+        at Fermi energy :math:`E`, which fixes the sign. The pair form of
+        *hall_conductivity* keeps it finite where bands touch.
+
+        **Units.** :math:`ek_B/h` in 2D (:math:`k_B = 1`, temperatures in
+        energy units), per length for the 3D vector (``k_fixed=None``).
+
+        :param e_fermi: See *hall_conductivity*.
+        :param temperature: Positive real number. In energy units (:math:`k_B = 1`).
+        :param nk: See *hall_conductivity*.
+        :param plane: See *hall_conductivity*.
+        :param k_fixed: See *hall_conductivity*.
+        :param positions: See *hall_conductivity*.
+        :param refine: See *hall_conductivity*.
+        :param refine_fraction: See *hall_conductivity*.
+
+        :returns:
+            * **alpha** -- Real number (or ndarray, as *hall_conductivity*).
+
+        Example usage::
+
+            alpha = hal.anomalous_nernst_conductivity(np.linspace(-3, 3, 301), 0.05)
+        '''
+        return self._hall(e_fermi, temperature, nk, plane, k_fixed, positions, refine,
+                                refine_fraction, None, 'nernst')
+
+    def thermal_hall_conductivity(
+        self, e_fermi: float | ArrayLike, temperature: float, nk: int | tuple[int, ...] = 60,
+        plane: tuple[int, int] = (0, 1), k_fixed: float | None = None, positions: bool = True,
+        refine: int = 1, refine_fraction: float = 0.05,
+    ) -> float | NDArray[np.float64]:
+        r'''
+        Get the intrinsic thermal Hall conductivity of the electrons
+        :math:`\kappa_{xy}`, :math:`j^Q_x = \kappa_{xy}(-\partial_yT)`
+        (Qin, Niu and Shi, Phys. Rev. Lett. 107, 236601 (2011)):
+
+        .. math::
+
+            \kappa_{xy} = \frac{k_B^2T}{h}\,\frac{1}{2\pi}\int_{BZ}d^2k
+            \sum_n c_2(x_n)\,\Omega_n\, ,\qquad
+            c_2(x) = \int_x^\infty y^2\left(-\frac{\partial f}{\partial y}\right)dy\, ,
+
+        :math:`x_n = (E_n-\mu)/k_BT` (:math:`c_2 = \pi^2/3` deep below
+        :math:`\mu`, 0 far above). Equivalently, exactly,
+        :math:`\kappa_{xy}(\mu, T) = \frac{1}{e^2T}\int dE\,(E-\mu)^2\left(-\frac{\partial f}{\partial E}\right)\sigma_{xy}(E)`
+        with the :math:`T = 0` *hall_conductivity*. In a gap at low
+        temperature it is the Wiedemann-Franz value
+        :math:`\kappa_{xy} = \frac{\pi^2k_B^2}{3e^2}T\sigma_{xy}`: for a Chern
+        insulator the quantized :math:`C\,\pi^2k_B^2T/3h`.
+
+        **Units.** :math:`k_B^2/h` times the temperature (in energy units,
+        :math:`k_B = 1`) in 2D, so that :math:`\kappa/T = \pi^2C/3` on a
+        Chern plateau; per length for the 3D vector (``k_fixed=None``).
+        The sign is that of *hall_conductivity*.
+
+        :param e_fermi: See *hall_conductivity*.
+        :param temperature: Positive real number. In energy units (:math:`k_B = 1`).
+        :param nk: See *hall_conductivity*.
+        :param plane: See *hall_conductivity*.
+        :param k_fixed: See *hall_conductivity*.
+        :param positions: See *hall_conductivity*.
+        :param refine: See *hall_conductivity*.
+        :param refine_fraction: See *hall_conductivity*.
+
+        :returns:
+            * **kappa** -- Real number (or ndarray, as *hall_conductivity*).
+
+        Example usage::
+
+            kappa = hal.thermal_hall_conductivity(0., 0.01)  # = pi^2/3 C T in the gap
+        '''
+        return self._hall(e_fermi, temperature, nk, plane, k_fixed, positions, refine,
+                                refine_fraction, None, 'thermal')
+
+    def _axion_rate(
+        self, ks: NDArray[np.float64], bands: list[int], params: dict, param: str,
+        positions: bool,
+    ) -> float:
+        r'''
+        Private method. The mesh average, over *ks*, of
+        :math:`\mathrm{tr}[F_{\lambda x}F_{yz} + F_{\lambda y}F_{zx} + F_{\lambda z}F_{xy}]`
+        for the bands *bands* at the parameters *params*, the derivative
+        along *param* by central differences. The non-Abelian curvature is
+        :math:`F_{\mu\nu} = i(X_\mu^\dagger X_\nu - X_\nu^\dagger X_\mu)`,
+        :math:`(X_\mu)_{lm} = \langle l|\partial_\mu H|m\rangle/(E_m-E_l)`
+        (:math:`m` in *bands*, :math:`l` not), i.e.
+        :math:`Q|\partial_\mu u_m\rangle` in the eigenbasis: gauge covariant.
+        '''
+        value = params[param]
+        step = 1e-5 * max(1., abs(value))
+        others = [b for b in range(self.norb) if b not in bands]
+        total, gap = 0., np.inf
+        chunk = max(1, 400000 // self.norb ** 2)
+        for c0 in range(0, len(ks), chunk):
+            k = ks[c0:c0 + chunk]
+            ham, dham = self._bloch_derivatives(k, list(np.eye(3)), positions, params)
+            plus = self._bloch_derivatives(k, [], positions, dict(params, **{param: value + step}))[0]
+            minus = self._bloch_derivatives(k, [], positions, dict(params, **{param: value - step}))[0]
+            en, vec = np.linalg.eigh(ham)
+            occ, emp = vec[:, :, bands], vec[:, :, others]
+            de = en[:, others][:, :, None] - en[:, bands][:, None, :]
+            gap = min(gap, np.abs(de).min())
+            emp_h = emp.conj().transpose(0, 2, 1)
+            x = [-(emp_h @ d @ occ) / de for d in [(plus - minus) / (2 * step), *dham]]
+            f = {}
+            for a, b in ((0, 1), (0, 2), (0, 3), (1, 2), (2, 3), (3, 1)):
+                xa_h = x[a].conj().transpose(0, 2, 1)
+                xb_h = x[b].conj().transpose(0, 2, 1)
+                f[a, b] = 1j * (xa_h @ x[b] - xb_h @ x[a])
+            trace = (np.einsum('kab,kba->k', f[0, 1], f[2, 3]) + np.einsum('kab,kba->k', f[0, 2], f[3, 1])
+                       + np.einsum('kab,kba->k', f[0, 3], f[1, 2]))
+            total += trace.real.sum()
+        error_handling.path_gap(gap, param, value)
+        return total / len(ks)
+
+    def axion_angle(
+        self, bands: list[int], param: str, values: ArrayLike, nk: int | tuple[int, int, int] = 16,
+        theta0: float = 0., positions: bool = True,
+    ) -> NDArray[np.float64]:
+        r'''
+        Get the axion angle :math:`\theta` of a 3D insulator along a path of
+        a parameter of its value functions (*set_hopping*), from the second
+        Chern form (Qi, Hughes and Zhang, Phys. Rev. B 78, 195424 (2008);
+        Essin, Moore and Vanderbilt, Phys. Rev. Lett. 102, 146805 (2009)):
+
+        .. math::
+
+            \frac{d\theta}{d\lambda} = \frac{1}{2\pi}\int_{BZ}d^3k\;
+            \mathrm{tr}\left[F_{\lambda x}F_{yz} + F_{\lambda y}F_{zx} + F_{\lambda z}F_{xy}\right],
+
+        :math:`F_{\mu\nu}` the non-Abelian Berry curvature of the bands
+        *bands* in :math:`(\lambda, k_x, k_y, k_z)` space, so that
+        :math:`\theta(\lambda) = \theta_0 + \int_{\lambda_0}^{\lambda}\frac{d\theta}{d\lambda'}d\lambda'`.
+        This is the variation of the Chern-Simons axion coupling, computed
+        from gauge-invariant quantities only (no smooth gauge is needed),
+        and :math:`\theta_0` is its value at ``values[0]``: e.g. 0
+        for a path starting from an atomic insulator. A closed path (a
+        pumping cycle) changes :math:`\theta` by :math:`2\pi C_2`, with
+        :math:`C_2` the second Chern number of the 4D family. At a point
+        with time-reversal or inversion symmetry, :math:`\theta` is 0 or
+        :math:`\pi` (mod :math:`2\pi`): :math:`\pi` for a strong topological
+        insulator, cf. *z2_indices_3d*. The sign of :math:`\theta` follows
+        the orientation :math:`(\lambda, k_x, k_y, k_z)` above.
+
+        The path must stay gapped: the bands *bands* must be separated
+        from the others at every k-point and every value (a ValueError
+        names the value where they touch). The integrand is smooth, so the
+        uniform k-mesh converges exponentially; the :math:`\lambda`
+        integral is a trapezoid over *values* (error :math:`O(\Delta\lambda^2)`).
+        :math:`\partial H/\partial\lambda` is a central difference, and
+        :math:`\partial H/\partial\mathbf{k}` is exact (see
+        *hall_conductivity*, whose *positions* convention applies).
+
+        :param bands: List of integers. The occupied bands (e.g. the lower
+            half of the spectrum).
+        :param param: String. Name of the parameter of the value functions
+            that the path varies (see *set_params*; the other parameters keep
+            their values in *params*).
+        :param values: 1D array of at least two real numbers, increasing
+            or decreasing. The parameter values along the path.
+        :param nk: Positive integer, or tuple of 3 positive integers.
+            Default value 16. k-mesh.
+        :param theta0: Real number. Default value 0. :math:`\theta` at ``values[0]``.
+        :param positions: Boolean. Default value True. See *hall_conductivity*.
+
+        :returns:
+            * **theta** -- ndarray, shape ``(len(values),)``: :math:`\theta`
+              at each value, not reduced modulo :math:`2\pi`.
+
+        Example usage::
+
+            phi = np.linspace(0., 2 * np.pi, 41)
+            theta = ks.axion_angle([0, 1], 'phi', phi)  # theta[-1] = 2 pi C2
+        '''
+        self._check_static()
+        error_handling.dim_exact(self.dim, 3)
+        error_handling.hermitian_model(self.is_hermitian())
+        error_handling.band_indices(bands, self.norb)
+        error_handling.path_parameter(param)
+        error_handling.path_values(values)
+        if isinstance(nk, int):
+            nk = (nk,) * 3
+        error_handling.nk(nk, 3)
+        error_handling.real_number(theta0, 'theta0')
+        error_handling.boolean(positions, 'positions')
+        values = np.asarray(values, dtype='f8')
+        fracs = np.array(np.meshgrid(*[np.arange(n) / n for n in nk], indexing='ij')).reshape(3, -1).T
+        ks = fracs @ self.rec_vec_k
+        volume = abs(np.linalg.det(self.rec_vec_k))
+        rates = [self._axion_rate(ks, bands, dict(self.params, **{param: float(v)}), param, positions)
+                     for v in values]
+        return theta0 + cumulative_trapezoid(np.array(rates) * volume / (2 * PI), values, initial=0.)
 
     # ------------------------------------------------------------------
     # Finite samples and non-Hermitian band theory
@@ -1470,14 +2090,14 @@ class KSpace():
         dk_space = self.k_basis @ (b / nk)
         phase = np.exp(-1j * self.orbital_positions() @ dk_space) if positions \
             else np.ones(self.norb)
-        vs = [self._subspace(k0 + m * b / nk, bands) for m in range(nk)]
+        vs = self._subspaces(k0 + np.arange(nk)[:, None] * b[None] / nk, bands)
+        links = vs.conj().transpose(0, 2, 1) @ (phase[:, None] * np.roll(vs, -1, axis=0))
+        # keep only the unitary part of each link (its singular values
+        # tend to 1 as nk grows): the product then stays unitary
+        u, _, vh = np.linalg.svd(links)
         wilson = np.eye(len(bands), dtype='c16')
-        for m in range(nk):
-            link = vs[m].conj().T @ (phase[:, None] * vs[(m + 1) % nk])
-            # keep only the unitary part of each link (its singular values
-            # tend to 1 as nk grows): the product then stays unitary
-            u, _, vh = np.linalg.svd(link)
-            wilson = wilson @ (u @ vh)
+        for unitary in u @ vh:
+            wilson = wilson @ unitary
         return wilson
 
     def _perp(self, direction: int, k_perp: float | tuple | None) -> dict[int, float]:
@@ -1644,6 +2264,91 @@ class KSpace():
         jumps = sum(self._between(gap[n], gap[n + 1], centers[n + 1])
                            for n in range(len(gap) - 1))
         return int(jumps % 2)
+
+    def z2_indices_3d(
+        self, bands: list[int], nk: int = 100, nk_perp: int = 51,
+    ) -> tuple[int, int, int, int]:
+        r'''
+        Get the four :math:`\mathbb{Z}_2` indices
+        :math:`(\nu_0;\nu_1\nu_2\nu_3)` of a 3D time-reversal-invariant
+        insulator (Fu, Kane and Mele, Phys. Rev. Lett. 98, 106803 (2007);
+        Moore and Balents, Phys. Rev. B 75, 121306(R) (2007)) from the
+        :math:`\mathbb{Z}_2` invariants of its six time-reversal-invariant
+        planes :math:`k_i = 0` and :math:`k_i = 1/2` (fractional coordinates
+        along :math:`\mathbf{b}_i`), each computed by *z2_invariant*:
+
+        .. math::
+
+            \nu_0 = \nu(k_i = 0) + \nu(k_i = 1/2) \bmod 2\, ,\qquad
+            \nu_i = \nu(k_i = 1/2)\, .
+
+        The strong index :math:`\nu_0` comes out the same for the three
+        :math:`i`, which is checked (a ValueError asks for a finer flow
+        otherwise). :math:`\nu_0 = 1` is a strong topological insulator; a
+        weak one has :math:`\nu_0 = 0` and some :math:`\nu_i = 1`, i.e.
+        stacked quantum spin Hall layers normal to
+        :math:`\nu_1\mathbf{b}_1 + \nu_2\mathbf{b}_2 + \nu_3\mathbf{b}_3`.
+        No inversion symmetry is needed (compare *parity_z2*).
+
+        :param bands: List of band indices (an even number of bands).
+        :param nk: Positive integer. Default value 100. See *z2_invariant*.
+        :param nk_perp: Positive integer. Default value 51. See *z2_invariant*.
+
+        :returns:
+            * **indices** -- Tuple of four integers, 0 or 1: :math:`(\nu_0, \nu_1, \nu_2, \nu_3)`.
+        '''
+        error_handling.dim_exact(self.dim, 3)
+        nu = np.zeros((3, 2), int)
+        for i in range(3):
+            direction, flow = [d for d in range(3) if d != i]
+            for n, k_fixed in enumerate((0., 0.5)):
+                nu[i, n] = self.z2_invariant(bands, nk, nk_perp, direction, flow, k_fixed)
+        strong = nu.sum(axis=1) % 2
+        error_handling.strong_index(strong)
+        return int(strong[0]), int(nu[0, 1]), int(nu[1, 1]), int(nu[2, 1])
+
+    def entanglement_spectrum(
+        self, ks: ArrayLike, region: list[int], bands: int | list[int],
+    ) -> NDArray[np.float64]:
+        r'''
+        Get the k-resolved entanglement spectrum of a group of bands
+        (Peschel, J. Phys. A 36, L205 (2003); Li and Haldane, Phys. Rev. Lett.
+        101, 010504 (2008); Fidkowski, Phys. Rev. Lett. 104, 130502 (2010)):
+        the eigenvalues :math:`\xi_n(\mathbf{k})` of the correlation matrix
+        :math:`P(\mathbf{k})` of the filled *bands*, restricted to the
+        orbitals of *region*,
+
+        .. math::
+
+            C_A(\mathbf{k}) = \left[P(\mathbf{k})\right]_{A}\, ,\qquad
+            P(\mathbf{k}) = \sum_{n\in\mathrm{bands}}|u_n(\mathbf{k})\rangle\langle u_n(\mathbf{k})|\, ,
+
+        between 0 and 1. For a ribbon or a supercell
+        (*tbkit.moire.supercell*) cut in two halves across its width, the
+        states of the whole are either inside the region
+        (:math:`\xi \approx 1`) or outside (:math:`\xi \approx 0`), except
+        for those localized at the cuts: a topological phase leaves
+        entanglement modes inside :math:`(0, 1)` -- a mode pinned at 1/2 in
+        a chiral-symmetric chain, a branch that flows from 0 to 1 across
+        the zone in a Chern insulator. The single-particle entanglement
+        energies are :math:`\epsilon = \ln[(1-\xi)/\xi]`.
+
+        :param ks: ndarray, shape (nk, dim). k-points (see *get_bands*).
+        :param region: List of orbital indices (the region :math:`A`).
+        :param bands: Band index, or list of band indices (the filled bands).
+
+        :returns:
+            * **xi** -- Real ndarray, shape (nk, len(region)), sorted ascending at every k.
+        '''
+        ks = np.atleast_2d(np.asarray(ks, dtype='f8'))
+        error_handling.ks(ks, self.dim)
+        error_handling.region(region, self.norb)
+        if isinstance(bands, int):
+            bands = [bands]
+        error_handling.band_indices(bands, self.norb)
+        error_handling.hermitian_kspace(self.is_hermitian(), self._overlap_hop)
+        v = self._subspaces(ks, bands)[:, region, :]
+        return np.linalg.eigvalsh(v @ v.conj().transpose(0, 2, 1))
 
     @staticmethod
     def _largest_gap(centers: NDArray[np.float64]) -> float:
@@ -1977,6 +2682,506 @@ class KSpace():
             spec[n] = -np.trace(g[:, :norb, :norb], axis1=1, axis2=2).imag / PI
         return spec
 
+    # ------------------------------------------------------------------
+    # Projections, constant-energy contours and plot helpers
+    # ------------------------------------------------------------------
+
+    def spin_operator(self, axis: str) -> NDArray[np.complex128]:
+        r'''
+        Get the Pauli matrix :math:`\sigma_{axis}` acting on the spin of
+        every site, :math:`\mathbb{1}_{sites}\otimes\sigma_{axis}`, for a model
+        built with ``spin=True`` (for *band_weights* and *spin_texture*).
+
+        :param axis: 'x', 'y' or 'z'.
+
+        :returns:
+            * **op** -- Complex ndarray, shape (norb, norb).
+        '''
+        error_handling.spinful(self.spin)
+        error_handling.spin_axis(axis)
+        return np.kron(np.eye(self.n_sites), PAULI[axis])
+
+    def _projector(self, projector) -> NDArray[np.complex128]:
+        '''
+        Private method. The (norb, norb) operator of *band_weights* from an
+        orbital index, a list of them, a sublattice tag or a matrix.
+        '''
+        error_handling.projector(projector, self.norb, self.tags)
+        if isinstance(projector, np.ndarray):
+            return projector.astype('c16')
+        if isinstance(projector, str):
+            sites = np.nonzero(self.tags == projector)[0]
+            projector = np.concatenate([2 * sites, 2 * sites + 1]) if self.spin else sites
+        diag = np.zeros(self.norb)
+        diag[projector] = 1.
+        return np.diag(diag).astype('c16')
+
+    def _expectations(self, ks: NDArray[np.float64], ops: list) -> NDArray[np.float64]:
+        r'''
+        Private method. :math:`\mathrm{Re}\langle u_n(\mathbf{k})|O|u_n(\mathbf{k})\rangle
+        /\langle u_n|u_n\rangle` for each operator of *ops*, band and k-point:
+        shape (len(ops), nk, norb), from one diagonalization. Within a group
+        of degenerate bands (energies within 1e-8 of each other, relative to
+        the largest one), each band gets the average over the group: the
+        trace of O over the degenerate subspace divided by its dimension,
+        which does not depend on the eigenvectors the solver returns.
+        '''
+        en, vn = self._eigs(ks, eigenvec=True)
+        norm = np.sum(np.abs(vn) ** 2, axis=1)
+        values = np.array([np.einsum('kin,ij,kjn->kn', vn.conj(), op, vn).real / norm for op in ops])
+        # label the degenerate groups (consecutive bands, sorted by energy)
+        tol = 1e-8 * max(1., np.abs(en).max())
+        new_group = np.concatenate([np.ones((len(en), 1), bool),
+                                              np.abs(np.diff(en, axis=1)) > tol], axis=1)
+        groups = np.cumsum(new_group.ravel()) - 1
+        counts = np.bincount(groups)
+        return np.array([(np.bincount(groups, v.ravel()) / counts)[groups].reshape(v.shape)
+                              for v in values])
+
+    def band_weights(self, projector, ks: ArrayLike | None = None) -> NDArray[np.float64]:
+        r'''
+        Get the weight of each band on a set of orbitals, or the expectation
+        value of an operator, for "fat band" plots (see *plot_bands*):
+
+        .. math::
+
+            w_n(\mathbf{k}) = \langle u_n(\mathbf{k})|P|u_n(\mathbf{k})\rangle\, ,
+
+        with :math:`P` the projector on the chosen orbitals (a weight
+        between 0 and 1; the weights on all the sublattices add up to 1), or
+        any Hermitian operator, e.g. ``ks.spin_operator('z')`` for the spin
+        polarization (between -1 and 1). Within a group of degenerate bands
+        (e.g. Kramers pairs with inversion and time reversal), the weight of
+        a single eigenvector depends on the choice of eigenvectors; each band
+        of the group gets instead the average over the group, which does not
+        (a Kramers pair has zero spin polarization).
+        For a non-Hermitian model, the right eigenvectors are used; with an
+        overlap (*set_overlap*), :math:`v^\dagger Pv/v^\dagger v`.
+
+        :param projector: Orbital index, list of orbital indices, sublattice
+            tag (all the orbitals, both spins, of the sites with that tag),
+            or a (norb, norb) Hermitian matrix.
+        :param ks: Real array, shape (nk, dim). Default value None: the
+            k-points of the last *get_bands* or *k_path*.
+
+        :returns:
+            * **weights** -- Real ndarray, shape (nk, norb), ordered as the bands.
+
+        Example usage::
+
+            ks.k_path(points, nk=100)
+            ks.plot_bands(weights=ks.band_weights('a'))
+        '''
+        op = self._projector(projector)
+        if ks is None:
+            error_handling.empty_ndarray(self.en, 'get_bands or k_path')
+            ks = self.ks
+        ks = np.atleast_2d(np.asarray(ks, dtype='f8'))
+        error_handling.ks(ks, self.dim)
+        return self._expectations(ks, [op])[0]
+
+    def spin_texture(self, ks: ArrayLike, band: int) -> NDArray[np.float64]:
+        r'''
+        Get the spin expectation values
+        :math:`\langle\boldsymbol\sigma\rangle_n(\mathbf{k}) =
+        \langle u_n|\boldsymbol\sigma|u_n\rangle` of a band, for a model built
+        with ``spin=True``. Their length is 1 if the band is fully polarized,
+        less if spin-orbit coupling entangles the spin with the orbitals.
+        Within a group of degenerate bands, each band gets the average spin
+        of the group (see *band_weights*): zero for a Kramers pair, with both
+        inversion and time reversal.
+
+        :param ks: Real array, shape (nk, dim). k-points.
+        :param band: Integer. Band index.
+
+        :returns:
+            * **spin** -- Real ndarray, shape (nk, 3):
+              :math:`(\langle\sigma_x\rangle, \langle\sigma_y\rangle, \langle\sigma_z\rangle)`.
+        '''
+        error_handling.spinful(self.spin)
+        error_handling.band_index(band, self.norb)
+        ks = np.atleast_2d(np.asarray(ks, dtype='f8'))
+        error_handling.ks(ks, self.dim)
+        ops = [self.spin_operator(a) for a in 'xyz']
+        return self._expectations(ks, ops)[:, :, band].T
+
+    def _fold(self, elements: NDArray[np.float64]) -> NDArray[np.float64]:
+        '''
+        Private method. Bring segments or triangles (fractional coordinates,
+        shape (n, nv, dim)) into the first Brillouin zone (the Wigner-Seitz
+        cell of the reciprocal lattice, by their centres), in the k
+        coordinates of *get_ham*.
+        '''
+        elements = elements - np.floor(elements.mean(axis=1) + 0.5)[:, None, :]
+        cart = elements @ self.rec_vec_k
+        shifts = np.array(list(product((-1, 0, 1), repeat=self.dim))) @ self.rec_vec_k
+        dist = np.linalg.norm(cart.mean(axis=1)[:, None, :] - shifts[None], axis=2)
+        return cart - shifts[np.argmin(dist, axis=1)][:, None, :]
+
+    def fermi_surface(
+        self, energy: float = 0., nk: int | tuple[int, ...] | None = None,
+        bands: int | list[int] | None = None,
+    ) -> list[NDArray[np.float64]]:
+        r'''
+        Get the constant-energy surfaces :math:`E_n(\mathbf{k}) = E` (the
+        Fermi surface at :math:`E = E_F`): lines in a 2D Brillouin zone,
+        surfaces in 3D. The bands are interpolated linearly in the triangles
+        (tetrahedra in 3D) of a uniform mesh, the same decomposition as
+        *dos.tetrahedron_dos*, and the level set of each simplex is a segment
+        (a triangle or a quadrilateral, split in two, in 3D): marching
+        triangles and tetrahedra, exact for the interpolated bands. Each
+        piece is brought into the first Brillouin zone, the Wigner-Seitz
+        cell around :math:`\Gamma`. For a non-Hermitian model, the real part
+        of the energies is used.
+
+        :param energy: Real number. Default value 0. The energy :math:`E`.
+        :param nk: Positive integer, or tuple of *dim* positive integers.
+            Default value None: 100 in 2D, 40 in 3D. Number of k-points along
+            each reciprocal lattice vector.
+        :param bands: Band index, or list of band indices. Default value
+            None: all bands.
+
+        :returns:
+            * **surfaces** -- List, one entry per band of *bands*: a real
+              ndarray of shape (n, 2, 2) in 2D (n segments, each two k-points)
+              or (n, 3, 3) in 3D (n triangles, each three k-points), in the
+              k coordinates of *get_ham*. Empty (n = 0) if the band does not
+              cross *energy*.
+
+        Example usage::
+
+            # the Fermi surface of the half-filled square lattice
+            segments = sq.fermi_surface(0.)[0]
+        '''
+        error_handling.dim_min(self.dim, 2)
+        error_handling.real_number(energy, 'energy')
+        if nk is None:
+            nk = 100 if self.dim == 2 else 40
+        error_handling.nk(nk, self.dim)
+        if isinstance(nk, int):
+            nk = (nk,) * self.dim
+        if bands is None:
+            bands = list(range(self.norb))
+        elif isinstance(bands, int):
+            bands = [bands]
+        error_handling.band_indices(bands, self.norb)
+        _, ks = self.mesh_grid(nk)
+        en = self._eigs(ks).real.reshape(*nk, self.norb)
+        return [self._fold(_level_set(en[..., n], energy)) for n in bands]
+
+    def _k_labels(self) -> list[str]:
+        '''
+        Private method. Axis labels of the k coordinates of *get_ham*:
+        '$k_x$' for a coordinate along the Cartesian x axis (the slab of a
+        3D model along x and z gives '$k_x$', '$k_z$'), '$k_1$', ... otherwise.
+        '''
+        labels = []
+        for n, col in enumerate(self.k_basis.T):
+            axis = np.nonzero(np.isclose(np.abs(col), 1.))[0]
+            labels.append('$k_{}$'.format('xyz'[axis[0]] if len(axis) else n + 1))
+        return labels
+
+    def _zone_axes(self, ax, fs: float) -> None:
+        '''
+        Private method. Draw the first Brillouin zone of a 2D model on *ax*,
+        and label and scale its axes.
+        '''
+        zone = _zone_polygon(self.rec_vec_k)
+        ax.plot(*np.vstack([zone, zone[:1]]).T, 'k', lw=1)
+        ax.set_aspect('equal')
+        pad = 0.05 * np.ptp(zone, axis=0).max()
+        ax.set_xlim(zone[:, 0].min() - pad, zone[:, 0].max() + pad)
+        ax.set_ylim(zone[:, 1].min() - pad, zone[:, 1].max() + pad)
+        ax.set_xlabel(self._k_labels()[0], fontsize=fs)
+        ax.set_ylabel(self._k_labels()[1], fontsize=fs)
+
+    def plot_fermi_surface(
+        self, energy: float = 0., nk: int | tuple[int, ...] | None = None,
+        bands: int | list[int] | None = None, lw: float = 2., alpha: float = 0.6,
+        fs: float = 20, figsize: tuple[float, float] | None = None,
+    ) -> Figure:
+        '''
+        Plot the constant-energy contours of *fermi_surface* (one color per
+        band, with a legend if several bands cross the energy): lines inside
+        the first Brillouin zone (drawn in black) in 2D, surfaces in 3D.
+
+        :param energy: Real number. Default value 0. The energy.
+        :param nk: See *fermi_surface*.
+        :param bands: See *fermi_surface*.
+        :param lw: Positive number. Default value 2. Linewidth (2D).
+        :param alpha: Real number in (0, 1]. Default value 0.6. Opacity of
+            the surfaces (3D).
+        :param fs: Positive number. Default value 20. Fontsize.
+        :param figsize: Tuple. Default value None. Figure size.
+
+        :returns:
+            * **fig** -- Figure.
+        '''
+        error_handling.positive_real(lw, 'lw')
+        error_handling.positive_real(alpha, 'alpha')
+        error_handling.positive_real(fs, 'fs')
+        error_handling.tuple_2elem(figsize, 'figsize')
+        surfaces = self.fermi_surface(energy, nk, bands)
+        bands = list(range(self.norb)) if bands is None else np.atleast_1d(bands).tolist()
+        fig = plt.figure(figsize=figsize)
+        if self.dim == 2:
+            ax = fig.add_subplot()
+            for n, (band, segs) in enumerate(zip(bands, surfaces)):
+                if len(segs):
+                    ax.add_collection(LineCollection(segs, colors='C{}'.format(n % 10), lw=lw,
+                                                                   label='band {}'.format(band)))
+            self._zone_axes(ax, fs)
+        else:
+            ax = fig.add_subplot(projection='3d')
+            for n, (band, tris) in enumerate(zip(bands, surfaces)):
+                if len(tris):
+                    ax.add_collection3d(Poly3DCollection(tris, facecolor='C{}'.format(n % 10),
+                                                                         alpha=min(alpha, 1.), edgecolor='none',
+                                                                         label='band {}'.format(band)))
+            extent = np.abs(np.concatenate([t.reshape(-1, 3) for t in surfaces] +
+                                                         [self.rec_vec_k / 2])).max()
+            ax.set(xlim=(-extent, extent), ylim=(-extent, extent), zlim=(-extent, extent))
+            ax.set_box_aspect((1, 1, 1))
+            ax.set_xlabel(self._k_labels()[0], fontsize=fs)
+            ax.set_ylabel(self._k_labels()[1], fontsize=fs)
+            ax.set_zlabel(self._k_labels()[2], fontsize=fs)
+        if sum(len(s) > 0 for s in surfaces) > 1:
+            ax.legend(fontsize=0.6 * fs)
+        ax.set_title('$E = {:g}$'.format(energy), fontsize=fs)
+        plt.draw()
+        return fig
+
+    def plot_spin_texture(
+        self, band: int, energy: float = 0., nk: int = 100, n_arrows: int = 40,
+        cmap: str = 'RdBu_r', lw: float = 1., fs: float = 20,
+        figsize: tuple[float, float] | None = None,
+    ) -> Figure:
+        r'''
+        Plot the spin texture of a band of a 2D spinful model on its
+        constant-energy contour (see *fermi_surface*), zoomed on the
+        contour: arrows of
+        :math:`(\langle\sigma_x\rangle, \langle\sigma_y\rangle)` along the
+        contour, colored by :math:`\langle\sigma_z\rangle` (see *spin_texture*).
+        Rashba coupling, for instance, locks the spin perpendicular to
+        :math:`\mathbf{k}`, winding once around the contour.
+
+        :param band: Integer. Band index.
+        :param energy: Real number. Default value 0. Energy of the contour.
+        :param nk: Positive integer. Default value 100. Mesh of the contour.
+        :param n_arrows: Positive integer. Default value 40. Approximate
+            number of arrows, evenly spaced along the contour. A fully
+            polarized in-plane spin is drawn 80% as long as their spacing.
+        :param cmap: Default value 'RdBu_r'. Colormap of :math:`\langle\sigma_z\rangle`.
+        :param lw: Positive number. Default value 1. Linewidth of the contour.
+        :param fs: Positive number. Default value 20. Fontsize.
+        :param figsize: Tuple. Default value None. Figure size.
+
+        :returns:
+            * **fig** -- Figure.
+        '''
+        error_handling.dim_2(self.dim)
+        error_handling.spinful(self.spin)
+        error_handling.band_index(band, self.norb)
+        error_handling.positive_int(nk, 'nk')
+        error_handling.positive_int(n_arrows, 'n_arrows')
+        error_handling.positive_real(lw, 'lw')
+        error_handling.positive_real(fs, 'fs')
+        error_handling.tuple_2elem(figsize, 'figsize')
+        segs = self.fermi_surface(energy, nk, [band])[0]
+        error_handling.contour_found(len(segs), energy)
+        # arrows at segment midpoints, at least one contour length / n_arrows apart
+        mids = segs.mean(axis=1)
+        spacing = np.linalg.norm(segs[:, 1] - segs[:, 0], axis=1).sum() / n_arrows
+        keep = [0]
+        for i in range(1, len(mids)):
+            if np.min(np.linalg.norm(mids[keep] - mids[i], axis=1)) >= spacing:
+                keep.append(i)
+        spin = self.spin_texture(mids[keep], band)
+        fig, ax = plt.subplots(figsize=figsize)
+        ax.add_collection(LineCollection(segs, colors='0.6', lw=lw))
+        arrows = ax.quiver(mids[keep, 0], mids[keep, 1], spin[:, 0], spin[:, 1], spin[:, 2],
+                                  cmap=cmap, norm=Normalize(-1., 1.), pivot='mid', edgecolor='k',
+                                  linewidth=0.5, angles='xy', scale_units='xy', scale=1.25 / spacing)
+        fig.colorbar(arrows, ax=ax).set_label(r'$\langle\sigma_z\rangle$', fontsize=fs)
+        self._zone_axes(ax, fs)
+        # zoom on the contour (within the zone)
+        low, high = segs.reshape(-1, 2).min(axis=0), segs.reshape(-1, 2).max(axis=0)
+        pad = 0.1 * (high - low).max() + spacing
+        ax.set_xlim(max(ax.get_xlim()[0], low[0] - pad), min(ax.get_xlim()[1], high[0] + pad))
+        ax.set_ylim(max(ax.get_ylim()[0], low[1] - pad), min(ax.get_ylim()[1], high[1] + pad))
+        ax.set_title('Spin texture of band {}, $E = {:g}$'.format(band, energy), fontsize=fs)
+        plt.draw()
+        return fig
+
+    def plot_berry_curvature(
+        self, bands: int | list[int], nk: int | tuple[int, int] = 60,
+        plane: tuple[int, int] = (0, 1), k_fixed: float = 0., cmap: str = 'RdBu_r',
+        fs: float = 20, figsize: tuple[float, float] | None = None,
+    ) -> Figure:
+        r'''
+        Plot the Berry curvature of *berry_curvature* as a density,
+        :math:`\Omega(\mathbf{k})` = flux of each plaquette / its area. In
+        2D, the plaquettes are brought into the first Brillouin zone (drawn
+        in black), in the k coordinates of *get_ham*. In 3D, they fill the
+        parallelogram spanned by the two reciprocal vectors of *plane*, in
+        orthonormal coordinates of the plane (:math:`k_1` along
+        :math:`\mathbf{b}_i`). The title gives the Chern number, the total
+        flux over :math:`2\pi`.
+
+        :param bands: See *berry_curvature*.
+        :param nk: Default value 60. See *berry_curvature*.
+        :param plane: See *berry_curvature*.
+        :param k_fixed: See *berry_curvature*.
+        :param cmap: Default value 'RdBu_r'. Colormap, centred on zero.
+        :param fs: Positive number. Default value 20. Fontsize.
+        :param figsize: Tuple. Default value None. Figure size.
+
+        :returns:
+            * **fig** -- Figure.
+        '''
+        error_handling.positive_real(fs, 'fs')
+        error_handling.tuple_2elem(figsize, 'figsize')
+        curv = self.berry_curvature(bands, nk, plane, k_fixed)
+        n1, n2 = curv.shape
+        # the corners of each plaquette, counterclockwise, in fractional coordinates
+        f1, f2 = np.meshgrid(np.arange(n1) / n1, np.arange(n2) / n2, indexing='ij')
+        corner = np.stack([f1.ravel(), f2.ravel()], axis=-1)[:, None, :]
+        quads = corner + np.array([[0., 0.], [1. / n1, 0.], [1. / n1, 1. / n2], [0., 1. / n2]])
+        b_i, b_j = self.rec_vec_k[plane[0]], self.rec_vec_k[plane[1]]
+        if self.dim == 2:
+            quads = self._fold(quads)
+        else:
+            # orthonormal coordinates of the plane, the first along b_i
+            u = b_i / np.linalg.norm(b_i)
+            v = b_j - (b_j @ u) * u
+            b_i, b_j = np.array([b_i @ u, 0.]), np.array([b_j @ u, b_j @ v / np.linalg.norm(v)])
+            quads = quads @ np.array([b_i, b_j])
+        area = abs(b_i[0] * b_j[1] - b_i[1] * b_j[0]) / (n1 * n2)
+        omega = curv.ravel() / area
+        vmax = np.abs(omega).max() or 1.
+        fig, ax = plt.subplots(figsize=figsize)
+        patches = PolyCollection(quads, array=omega, cmap=cmap, norm=Normalize(-vmax, vmax),
+                                          edgecolors='face', linewidths=0.2)
+        ax.add_collection(patches)
+        fig.colorbar(patches, ax=ax).set_label(r'$\Omega(\mathbf{k})$', fontsize=fs)
+        if self.dim == 2:
+            self._zone_axes(ax, fs)
+        else:
+            ax.autoscale_view()
+            ax.set_aspect('equal')
+            ax.set_xlabel('$k_1$', fontsize=fs)
+            ax.set_ylabel('$k_2$', fontsize=fs)
+        ax.set_title('Berry curvature, $C = {:.3f}$'.format(curv.sum() / (2 * PI)), fontsize=fs)
+        fig.set_layout_engine('tight')
+        plt.draw()
+        return fig
+
+    def plot_wannier_flow(
+        self, bands: int | list[int], nk: int = 100, nk_perp: int = 51, direction: int = 0,
+        flow: int | None = None, k_fixed: float = 0., positions: bool = True,
+        k_range: tuple[float, float] = (0., 1.), ms: float = 4., c: str = 'b', fs: float = 20,
+        figsize: tuple[float, float] | None = None,
+    ) -> Figure:
+        r'''
+        Plot the flow of the hybrid Wannier centres (the Wilson-loop
+        spectrum) of *wannier_flow*: the centres along *direction*, in
+        units of :math:`\mathbf{a}_{direction}`, as the loop moves along
+        the reciprocal vector *flow*. They wind :math:`C` times in a Chern
+        insulator, and the Kramers pairs swap partners in a
+        :math:`\mathbb{Z}_2` topological insulator.
+
+        :param bands: See *wannier_flow*.
+        :param nk: See *wannier_flow*.
+        :param nk_perp: See *wannier_flow*.
+        :param direction: See *wannier_flow*.
+        :param flow: See *wannier_flow*.
+        :param k_fixed: See *wannier_flow*.
+        :param positions: See *wannier_flow*.
+        :param k_range: See *wannier_flow*.
+        :param ms: Positive number. Default value 4. Marker size.
+        :param c: Default value 'b'. Marker color.
+        :param fs: Positive number. Default value 20. Fontsize.
+        :param figsize: Tuple. Default value None. Figure size.
+
+        :returns:
+            * **fig** -- Figure.
+        '''
+        error_handling.positive_real(ms, 'ms')
+        error_handling.positive_real(fs, 'fs')
+        error_handling.tuple_2elem(figsize, 'figsize')
+        fracs, centers = self.wannier_flow(bands, nk, nk_perp, direction, flow, k_fixed,
+                                                         positions, k_range)
+        if flow is None:
+            flow = [d for d in range(self.dim) if d != direction][0]
+        fig, ax = plt.subplots(figsize=figsize)
+        ax.plot(fracs, centers, 'o', c=c, ms=ms)
+        ax.set_xlim(fracs[0], fracs[-1])
+        ax.set_ylim(0., 1.)
+        ax.set_xlabel(r'$k_{0}/|\mathbf{{b}}_{0}|$'.format(flow + 1), fontsize=fs)
+        ax.set_ylabel(r'Wannier centres ($\mathbf{{a}}_{}$)'.format(direction + 1), fontsize=fs)
+        fig.set_layout_engine('tight')
+        plt.draw()
+        return fig
+
+    def plot_surface_spectral_function(
+        self, points: list[ArrayLike], energies: ArrayLike, direction: int, nk: int = 60,
+        side: int = 1, eta: float = 1e-2, bulk: bool = False,
+        node_labels: list[str] | None = None, log: bool = True, cmap: str = 'magma',
+        fs: float = 20, figsize: tuple[float, float] | None = None,
+    ) -> Figure:
+        r'''
+        Plot the surface spectral function of *surface_spectral_function*
+        along a path through the surface Brillouin zone (built as in
+        *k_path*), as an ARPES-like map of :math:`E` against
+        :math:`\mathbf{k}_\parallel`. Surface states are the sharp lines in
+        the bulk gaps.
+
+        :param points: List of at least two k-points, the nodes of the path
+            (see *k_path*).
+        :param energies: Real array. Energies :math:`E`.
+        :param direction: See *surface_spectral_function*.
+        :param nk: Positive integer. Default value 60. Number of k-points per path segment.
+        :param side: See *surface_spectral_function*.
+        :param eta: See *surface_spectral_function*.
+        :param bulk: See *surface_spectral_function*.
+        :param node_labels: List of strings. Default value None. Labels of *points*.
+        :param log: Boolean. Default value True. Logarithmic color scale, over
+            four decades below the maximum (the surface states are much
+            sharper than the bulk continuum).
+        :param cmap: Default value 'magma'. Colormap.
+        :param fs: Positive number. Default value 20. Fontsize.
+        :param figsize: Tuple. Default value None. Figure size.
+
+        :returns:
+            * **fig** -- Figure.
+        '''
+        error_handling.k_path_points(points, self.dim)
+        error_handling.positive_int(nk, 'nk')
+        error_handling.boolean(log, 'log')
+        error_handling.positive_real(fs, 'fs')
+        error_handling.tuple_2elem(figsize, 'figsize')
+        if node_labels is not None:
+            error_handling.ndarray(np.array(node_labels), 'node_labels', len(points))
+        ks, dist, nodes = _path(points, nk)
+        spec = self.surface_spectral_function(ks, energies, direction, side, eta, bulk)
+        energies = np.atleast_1d(np.asarray(energies, dtype='f8'))
+        vmax = spec.max() if spec.max() > 0 else 1.
+        norm = LogNorm(vmax * 1e-4, vmax) if log else Normalize(0., vmax)
+        fig, ax = plt.subplots(figsize=figsize)
+        mesh = ax.pcolormesh(dist, energies, np.maximum(spec, vmax * 1e-4).T, cmap=cmap,
+                                       norm=norm, shading='nearest')
+        fig.colorbar(mesh, ax=ax).set_label(r'$A(\mathbf{k}_\parallel, E)$', fontsize=fs)
+        for node in nodes:
+            ax.axvline(node, color='w', lw=0.5)
+        if node_labels is not None:
+            ax.set_xticks(nodes)
+            ax.set_xticklabels(node_labels, fontsize=fs)
+        ax.set_ylabel('$E$', fontsize=fs)
+        ax.set_title('Bulk' if bulk else 'Surface', fontsize=fs)
+        fig.set_layout_engine('tight')
+        plt.draw()
+        return fig
+
     def plot_dos(
         self,
         nk: int | tuple[int, int] = 30,
@@ -1988,15 +3193,20 @@ class KSpace():
         figsize: tuple[float, float] | None = None,
     ) -> Figure:
         '''
-        Plot the (broadened) density of states, obtained by diagonalizing
-        :math:`H(\\mathbf{k})` over a uniform Brillouin-zone mesh -- see
-        *tbkit.dos.density_of_states*.
+        Plot the density of states, obtained by diagonalizing
+        :math:`H(\\mathbf{k})` over a uniform Brillouin-zone mesh: broadened
+        (see *tbkit.dos.density_of_states*), or by the linear tetrahedron
+        method (``kernel='tetrahedron'``, see *tbkit.dos.tetrahedron_dos*),
+        which needs no broadening and keeps band edges and van Hove
+        singularities sharp.
 
         :param nk: Positive integer, or tuple of *dim* positive integers.
             Default value 30. Number of k-points along each reciprocal
             lattice vector.
-        :param broadening: Positive real number. Default value 0.05. Kernel width.
-        :param kernel: String. Default value 'gaussian'. 'gaussian' or 'lorentzian'.
+        :param broadening: Positive real number. Default value 0.05. Kernel
+            width (unused by the tetrahedron method).
+        :param kernel: String. Default value 'gaussian'. 'gaussian',
+            'lorentzian' or 'tetrahedron'.
         :param e_grid: Real ndarray. Default value None. Energies at which to
             evaluate the density of states.
         :param fs: Positive number. Default value 20. Fontsize.
@@ -2009,8 +3219,13 @@ class KSpace():
         error_handling.positive_real(fs, 'fs')
         error_handling.positive_real(lw, 'lw')
         error_handling.tuple_2elem(figsize, 'figsize')
+        error_handling.kspace_dos_kernel(kernel)
         en = self.mesh_bands(nk)
-        return dos._plot_density_of_states(en, e_grid, broadening, kernel, fs, lw, figsize)
+        if kernel != 'tetrahedron':
+            return dos._plot_density_of_states(en, e_grid, broadening, kernel, fs, lw, figsize)
+        nk = (nk,) * self.dim if isinstance(nk, int) else nk
+        e_grid, rho = dos.tetrahedron_dos(en.reshape(*nk, self.norb), e_grid)
+        return dos._plot_dos_curve(e_grid, rho, fs, lw, figsize)
 
     def plot_bands(
         self,
@@ -2021,12 +3236,18 @@ class KSpace():
         c: str = 'b',
         lims: tuple[float, float] | None = None,
         figsize: tuple[float, float] | None = None,
+        weights: ArrayLike | None = None,
+        style: str = 'color',
+        cmap: str | None = None,
     ) -> Figure:
         '''
         Plot the band structure computed by *k_path* or *get_bands*, against
         the cumulative distance along the k-points (vertical lines mark the
         nodes of a *k_path*). For a non-Hermitian model, the real part of
-        the energies is plotted.
+        the energies is plotted. With *weights* (e.g. from *band_weights*:
+        an orbital, sublattice or spin projection), a "fat band" plot: the
+        bands are colored by the weights (with a colorbar), or drawn with
+        dots sized by their absolute value.
 
         :param node_labels: List of strings. Default value None. Labels of the
             high-symmetry points passed to *k_path*.
@@ -2036,6 +3257,14 @@ class KSpace():
         :param c: Default value 'b'. Line color.
         :param lims: List. Default value None. Energy plot limits.
         :param figsize: Tuple. Default value None. Figure size.
+        :param weights: Real array, shape (nk, norb). Default value None.
+            One weight per k-point and band, e.g. from *band_weights*.
+        :param style: String. Default value 'color'. 'color': the bands
+            colored by *weights*; 'size': dots of size proportional to
+            :math:`|w|` (*ms*, or 8 if *ms* is 0, for the largest) on thin
+            lines of color *c*.
+        :param cmap: Default value None ('viridis', or 'RdBu_r', centred on
+            zero, if some weights are negative). Colormap of *style* 'color'.
 
         :returns:
             * **fig** -- Figure.
@@ -2046,8 +3275,11 @@ class KSpace():
         error_handling.lims(lims)
         error_handling.tuple_2elem(figsize, 'figsize')
         fig, ax = plt.subplots(figsize=figsize)
-        for n in range(self.norb):
-            ax.plot(self.ks_dist, self.en[:, n].real, c=c, lw=lw, marker='o', ms=ms)
+        if weights is None:
+            for n in range(self.norb):
+                ax.plot(self.ks_dist, self.en[:, n].real, c=c, lw=lw, marker='o', ms=ms)
+        else:
+            self._plot_fat_bands(fig, ax, weights, style, cmap, c, lw, ms)
         for node in self.nodes:
             ax.axvline(node, color='k', lw=0.5)
         ax.set_xlim([self.ks_dist[0], self.ks_dist[-1]])
@@ -2063,6 +3295,33 @@ class KSpace():
         fig.set_layout_engine('tight')
         plt.draw()
         return fig
+
+    def _plot_fat_bands(self, fig, ax, weights, style, cmap, c, lw, ms) -> None:
+        '''
+        Private method. The bands of *plot_bands* colored (or with dots
+        sized) by *weights*.
+        '''
+        error_handling.band_weights(weights, self.en.shape)
+        error_handling.weight_style(style)
+        weights = np.asarray(weights, dtype='f8')
+        signed = weights.min() < 0
+        vmax = np.abs(weights).max() or 1.
+        if style == 'size':
+            size = (ms or 8.) ** 2
+            for n in range(self.norb):
+                ax.plot(self.ks_dist, self.en[:, n].real, c=c, lw=lw / 4)
+                ax.scatter(self.ks_dist, self.en[:, n].real, s=size * np.abs(weights[:, n]) / vmax,
+                                c=c, lw=0)
+            return
+        norm = Normalize(-vmax if signed else 0., vmax)
+        cmap = cmap or ('RdBu_r' if signed else 'viridis')
+        for n in range(self.norb):
+            pts = np.stack([self.ks_dist, self.en[:, n].real], axis=-1)
+            lines = LineCollection(np.stack([pts[:-1], pts[1:]], axis=1), cmap=cmap, norm=norm, lw=lw)
+            lines.set_array((weights[:-1, n] + weights[1:, n]) / 2)
+            ax.add_collection(lines)
+        ax.autoscale_view()
+        fig.colorbar(lines, ax=ax)
 
     def show(self) -> None:
         '''
@@ -2226,3 +3485,308 @@ def magnetic_supercell(
     if onsite is not None:
         mag.set_onsite(onsite)
     return mag
+
+
+#################################
+# K-PATHS AND CONSTANT-ENERGY CONTOURS
+#################################
+
+
+def _response_weights(
+    en: NDArray[np.float64], mu: float, temperature: float, response: str,
+) -> NDArray[np.float64]:
+    r'''
+    Private. The weights :math:`P_{nm}` of the Kubo pair sum of
+    *KSpace._kubo*, shape (nk, n, n), from the bands *en* (nk, n). With
+    :math:`x_n = (E_n-\mu)/T`, the conductivities are
+    :math:`\sum_n w_n\Omega_n`, i.e. :math:`P_{nm} = -(w_n - w_m)`, with
+    :math:`w = f` ('hall'), the entropy per state
+    :math:`s = -f\ln f-(1-f)\ln(1-f)` ('nernst') and
+    :math:`c_2/T = T\int_x^\infty y^2(-f'(y))\,dy` ('thermal'). The orbital
+    magnetization ('magnetization'),
+    :math:`\sum_n[f_n\,\mathrm{Im}\langle\partial_xu_n|(H-E_n)|\partial_yu_n\rangle + g_n\Omega_n]`
+    with :math:`g = T\ln(1+e^{-x})` (:math:`\max(\mu-E, 0)` at :math:`T = 0`),
+    has :math:`P_{nm} = \frac12(f_n+f_m)(E_m-E_n) - (g_n-g_m)`.
+    '''
+    if response == 'magnetization':
+        f = occupation.fermi_dirac(en, mu, temperature)
+        if temperature == 0:
+            g = np.maximum(mu - en, 0.)
+        else:
+            g = temperature * np.logaddexp(0., -(en - mu) / temperature)
+        return 0.5 * (f[:, :, None] + f[:, None, :]) * (en[:, None, :] - en[:, :, None]) \
+            - (g[:, :, None] - g[:, None, :])
+    if response == 'hall':
+        w = occupation.fermi_dirac(en, mu, temperature)
+    else:
+        a = np.abs(en - mu) / temperature
+        if response == 'nernst':
+            w = np.log1p(np.exp(-a)) + a * expit(-a)
+        else:
+            # int_a^inf y^2 (-f') dy = a^2 f(a) + 2 [a ln(1 + e^-a) - Li2(-e^-a)]
+            # for a >= 0, and pi^2/3 minus it below the Fermi level
+            # (Li2(z) = spence(1 - z) in scipy's convention)
+            c2 = a ** 2 * expit(-a) + 2 * (a * np.log1p(np.exp(-a)) - spence(1 + np.exp(-a)))
+            w = temperature * np.where(en >= mu, c2, PI ** 2 / 3 - c2)
+    return -(w[:, :, None] - w[:, None, :])
+
+
+def _path(
+    points: list[ArrayLike], nk: int,
+) -> tuple[NDArray[np.float64], NDArray[np.float64], list[float]]:
+    '''
+    Private function. The k-points of a path through *points* (*nk* per
+    segment, the last point included), their cumulative distance, and the
+    positions of the nodes along it.
+    '''
+    points = np.atleast_2d(np.asarray(points, dtype='f8'))
+    ks = np.concatenate([np.linspace(points[i], points[i+1], nk, endpoint=False)
+                                  for i in range(len(points) - 1)] + [points[-1:]])
+    dist = np.concatenate([[0.], np.cumsum(np.linalg.norm(np.diff(ks, axis=0), axis=1))])
+    return ks, dist, dist[::nk][:len(points)-1].tolist() + [dist[-1]]
+
+
+def _marching_table(dim: int) -> dict[int, list[list[tuple[int, int]]]]:
+    '''
+    Private function. For each pattern of the vertices of a triangle
+    (*dim* = 2) or tetrahedron (*dim* = 3) above a level (bit m set if
+    vertex m is above), the pieces of the level set, as lists of the edges
+    (a, b) that they cross: one segment in 2D; one triangle, or two
+    triangles forming a quadrilateral when two vertices are above, in 3D.
+    '''
+    table = {}
+    for pattern in range(1, 2 ** (dim + 1) - 1):
+        up = [m for m in range(dim + 1) if pattern >> m & 1]
+        down = [m for m in range(dim + 1) if not pattern >> m & 1]
+        if dim == 3 and len(up) == 2:
+            (a, b), (c, d) = up, down
+            table[pattern] = [[(a, c), (a, d), (b, d)], [(a, c), (b, d), (b, c)]]
+        else:
+            table[pattern] = [[(a, b) for a in up for b in down]]
+    return table
+
+
+def _level_set(values: NDArray[np.float64], level: float) -> NDArray[np.float64]:
+    '''
+    Private function. The level set ``values == level`` of a function on a
+    periodic 2D or 3D mesh (*values* of shape (n1, n2) or (n1, n2, n3)),
+    linear in each simplex of *dos._mesh_simplices*: segments (shape
+    (n, 2, 2)) or triangles (shape (n, 3, 3)), in fractional coordinates
+    (not folded: between 0 and 1 + 1/n_d).
+    '''
+    shape, dim = values.shape, values.ndim
+    offsets = dos._mesh_simplices(dim)
+    vals = dos._simplex_values(values - level, offsets).reshape(dim + 1, -1)
+    pattern = sum((vals[m] > 0).astype(int) << m for m in range(dim + 1))
+    pieces = [np.empty((0, dim, dim))]
+    for pat, polygons in _marching_table(dim).items():
+        sel = np.nonzero(pattern == pat)[0]
+        if not len(sel):
+            continue
+        simplex, cell = np.divmod(sel, int(np.prod(shape)))
+        corner = np.stack(np.unravel_index(cell, shape), axis=-1)
+        pos = corner[None] + offsets[simplex].transpose(1, 0, 2)
+        v = vals[:, sel]
+        for polygon in polygons:
+            # the crossing on edge (a, b): v[a] > 0 >= v[b] or the reverse
+            pieces.append(np.stack([pos[a] + (v[a] / (v[a] - v[b]))[:, None] * (pos[b] - pos[a])
+                                              for a, b in polygon], axis=1))
+    return np.concatenate(pieces) / np.array(shape)
+
+
+def _zone_polygon(rec: NDArray[np.float64]) -> NDArray[np.float64]:
+    '''
+    Private function. Vertices, counterclockwise, of the first Brillouin
+    zone (Wigner-Seitz cell) of the 2D reciprocal lattice with basis *rec*
+    (rows): the points at least as close to the origin as to any other
+    reciprocal lattice vector, where two of the bisectors meet.
+    '''
+    gs = np.array([n @ rec for n in product(range(-2, 3), repeat=2) if any(n)])
+    half = np.sum(gs ** 2, axis=1) / 2
+    tol = 1e-9 * half.max()
+    verts = []
+    for i in range(len(gs)):
+        for j in range(i + 1, len(gs)):
+            mat = gs[[i, j]]
+            if abs(np.linalg.det(mat)) > tol:
+                k = np.linalg.solve(mat, half[[i, j]])
+                if np.all(gs @ k <= half + tol):
+                    verts.append(k)
+    verts = np.unique(np.round(verts, 9), axis=0)
+    return verts[np.argsort(np.arctan2(verts[:, 1], verts[:, 0]))]
+
+
+def _gauss_reduce(u: NDArray[np.float64], v: NDArray[np.float64]):
+    '''
+    Private function. Gauss-reduced basis of a 2D lattice: the two
+    shortest independent vectors, |u| <= |v|, at an obtuse (or right)
+    angle, so that the edges of the Wigner-Seitz cell are normal to
+    u, v and u + v.
+    '''
+    while True:
+        if u @ u > v @ v:
+            u, v = v, u
+        m = np.round(u @ v / (u @ u))
+        if m == 0:
+            break
+        v = v - m * u
+    return (u, v - u) if u @ v > 0 else (u, v)
+
+
+def _successive_minima(vecs: NDArray[np.float64]):
+    '''
+    Private function. The shortest lattice vectors of a 3D lattice with
+    basis *vecs* (rows): the three successive minima, the shells of
+    lattice vectors sorted by length (list of arrays), and their lengths.
+    '''
+    pts = np.array([n @ vecs for n in product(range(-3, 4), repeat=3) if any(n)])
+    lengths = np.linalg.norm(pts, axis=1)
+    # by length, then (among equal lengths) the most positive first: x, then y, then z
+    order = np.lexsort((-pts[:, 2], -pts[:, 1], -pts[:, 0], np.round(lengths / lengths.min(), 6)))
+    pts, lengths = pts[order], lengths[order]
+    minima = []
+    for p in pts:
+        if np.linalg.matrix_rank(np.array(minima + [p]), tol=1e-8 * lengths[0]) == len(minima) + 1:
+            minima.append(p)
+        if len(minima) == 3:
+            break
+    bounds = np.nonzero(np.diff(lengths) > 1e-6 * lengths[0])[0] + 1
+    return np.array(minima), np.split(pts, bounds), [s[0] for s in np.split(lengths, bounds)]
+
+
+def _orthogonal_axes(shell: NDArray[np.float64]) -> NDArray[np.float64]:
+    '''
+    Private function. Three mutually orthogonal unit vectors among the
+    vectors of *shell* (the conventional cubic axes).
+    '''
+    x = shell[0] / np.linalg.norm(shell[0])
+    y = next(s for s in shell if abs(s @ x) < 1e-6 * np.linalg.norm(s))
+    y = y / np.linalg.norm(y)
+    return np.array([x, y, np.cross(x, y)])
+
+
+def _bravais_3d(vecs: NDArray[np.float64]):
+    '''
+    Private function. The points and labels of the high-symmetry path of a
+    3D lattice (basis *vecs*, rows), or (None, None) if it is not one of
+    the simple cubic, fcc, bcc, simple tetragonal or hexagonal lattices.
+    '''
+    minima, shells, radii = _successive_minima(vecs)
+    lengths = np.linalg.norm(minima, axis=1)
+    pairs = [(0, 1), (0, 2), (1, 2)]
+    cosine = {p: abs(minima[p[0]] @ minima[p[1]]) / (lengths[p[0]] * lengths[p[1]]) for p in pairs}
+    equal = {p: abs(lengths[p[0]] - lengths[p[1]]) < 1e-6 * lengths[2] for p in pairs}
+    right = {p: cosine[p] < 1e-6 for p in pairs}
+    G = r'$\Gamma$'
+
+    def cubic_path(pts, names, axes, a):
+        return [2 * PI / a * np.array(pts[n]) @ axes for n in names], names
+    if all(right.values()):
+        if all(equal.values()):  # simple cubic
+            return cubic_path({G: (0, 0, 0), 'X': (0, .5, 0), 'M': (.5, .5, 0), 'R': (.5, .5, .5)},
+                                   [G, 'X', 'M', G, 'R', 'X'], minima / lengths[:, None], lengths[0])
+        if sum(equal.values()) != 1:  # orthorhombic
+            return None, None
+        # simple tetragonal: a, a, c
+        (i, j), = [p for p in pairs if equal[p]]
+        k = 3 - i - j
+        a, c = lengths[i], lengths[k]
+        axes = np.array([minima[i] / a, minima[j] / a, minima[k] / c])
+        pts = {G: (0, 0, 0), 'X': (0, .5, 0), 'M': (.5, .5, 0), 'Z': (0, 0, .5),
+                 'R': (0, .5, .5), 'A': (.5, .5, .5)}
+        names = [G, 'X', 'M', G, 'Z', 'R', 'A', 'Z']
+        scale = 2 * PI * np.array([1 / a, 1 / a, 1 / c])
+        return [(scale * pts[n]) @ axes for n in names], names
+    for (i, j) in pairs:
+        k = 3 - i - j
+        if equal[(i, j)] and abs(cosine[(i, j)] - .5) < 1e-6 and \
+                all(right[p] for p in pairs if p != (i, j)):
+            # hexagonal: reciprocal vectors of (a1, a2, c), in-plane ones at 120 degrees
+            rec = 2 * PI * np.linalg.inv(minima[[i, j, k]]).T
+            b1, b2 = _gauss_reduce(rec[0], rec[1])
+            M, K, A = b1 / 2, (2 * b1 + b2) / 3, rec[2] / 2
+            pts = {G: np.zeros(3), 'M': M, 'K': K, 'A': A, 'L': M + A, 'H': K + A}
+            names = [G, 'M', 'K', G, 'A', 'L', 'H', 'A']
+            return [pts[n] for n in names], names
+    if not all(equal.values()):
+        return None, None
+    if len(shells[0]) == 12:  # fcc: 12 nearest neighbours at a/sqrt(2), then 6 at a
+        return cubic_path({G: (0, 0, 0), 'X': (0, 1, 0), 'W': (.5, 1, 0), 'K': (.75, .75, 0),
+                                  'L': (.5, .5, .5), 'U': (.25, 1, .25)},
+                                 [G, 'X', 'W', 'K', G, 'L', 'U', 'W', 'L', 'K'],
+                                 _orthogonal_axes(shells[1]), radii[1])
+    if len(shells[0]) == 8 and all(abs(c - 1 / 3) < 1e-6 for c in cosine.values()):
+        # bcc: 8 nearest neighbours at a sqrt(3)/2, then 6 at a
+        return cubic_path({G: (0, 0, 0), 'H': (0, 0, 1), 'N': (.5, 0, .5), 'P': (.5, .5, .5)},
+                                 [G, 'H', 'N', G, 'P', 'H'], _orthogonal_axes(shells[1]), radii[1])
+    return None, None
+
+
+def high_symmetry_path(lat: Lattice) -> tuple[list[NDArray[np.float64]], list[str]]:
+    r'''
+    Get a standard path through the high-symmetry points of the Brillouin
+    zone of a lattice, for *KSpace.k_path* and the labels of
+    *KSpace.plot_bands*. The Bravais lattice is recognized from
+    *lat.prim_vec*, whatever the choice of primitive vectors and the
+    orientation of the lattice:
+
+    * 1D: :math:`-X, \Gamma, X` (the whole zone, :math:`X = \mathbf{b}/2`).
+    * 2D (the five Bravais lattices): square :math:`\Gamma X M \Gamma`;
+      rectangular :math:`\Gamma X S Y \Gamma`; hexagonal
+      :math:`\Gamma M K \Gamma`; centred rectangular and oblique
+      :math:`\Gamma X H C H_1 Y \Gamma`, along the edges of the
+      zone: :math:`X, Y, C` are the midpoints of the edges normal to the
+      reciprocal vectors :math:`\mathbf{b}_1, \mathbf{b}_2,
+      \mathbf{b}_1+\mathbf{b}_2` of the reduced basis (with
+      :math:`|\mathbf{b}_1| \le |\mathbf{b}_2|`), :math:`H` and
+      :math:`H_1` the corners between them.
+    * 3D: simple cubic :math:`\Gamma X M \Gamma R X`; fcc
+      :math:`\Gamma X W K \Gamma L U W L K`; bcc :math:`\Gamma H N \Gamma P H`;
+      simple tetragonal :math:`\Gamma X M \Gamma Z R A Z`; hexagonal
+      :math:`\Gamma M K \Gamma A L H A`. These are the paths of Setyawan
+      and Curtarolo (Comput. Mater. Sci. 49, 299 (2010)), up to their
+      first discontinuity (a path here is one continuous line).
+
+    The other 3D lattices (orthorhombic, monoclinic, body-centred
+    tetragonal, rhombohedral, ...) raise a ValueError: give their points
+    to *k_path* directly.
+
+    :param lat: **lattice** class instance (only *prim_vec* is used).
+
+    :returns:
+        * **points** -- List of real ndarrays, the k-points, in the
+          coordinates of *KSpace.get_ham*.
+        * **labels** -- List of strings (LaTeX), for *node_labels*.
+
+    Example usage::
+
+        points, labels = high_symmetry_path(lat)
+        ks.k_path(points, nk=60)
+        ks.plot_bands(node_labels=labels)
+    '''
+    ks = KSpace(lat)
+    vecs = np.array(lat.prim_vec, dtype='f8') @ ks.k_basis  # in the k coordinates
+    G = r'$\Gamma$'
+    if ks.dim == 1:
+        x = PI / vecs[0]
+        return [-x, np.zeros(1), x], ['$-X$', G, 'X']
+    if ks.dim == 3:
+        points, labels = _bravais_3d(vecs)
+        error_handling.bravais_lattice(labels, 3)
+        return points, labels
+    rec = 2 * PI * np.linalg.inv(vecs).T
+    b1, b2 = _gauss_reduce(rec[0], rec[1])
+    l1, l2, l3 = (np.linalg.norm(b) for b in (b1, b2, b1 + b2))
+    close = lambda a, b: abs(a - b) < 1e-6 * max(abs(a), abs(b))
+    cosine = b1 @ b2 / (l1 * l2)
+    if abs(cosine) < 1e-6:
+        if close(l1, l2):
+            return [np.zeros(2), b1 / 2, (b1 + b2) / 2, np.zeros(2)], [G, 'X', 'M', G]
+        return [np.zeros(2), b1 / 2, (b1 + b2) / 2, b2 / 2, np.zeros(2)], [G, 'X', 'S', 'Y', G]
+    if close(l1, l2) and close(cosine, -.5):
+        return [np.zeros(2), b1 / 2, (2 * b1 + b2) / 3, np.zeros(2)], [G, 'M', 'K', G]
+    # centred rectangular and oblique: around half of the hexagonal zone
+    b3 = b1 + b2
+    corner = lambda u, v: np.linalg.solve(np.array([u, v]), np.array([u @ u, v @ v]) / 2)
+    return ([np.zeros(2), b1 / 2, corner(b1, b3), b3 / 2, corner(b2, b3), b2 / 2, np.zeros(2)],
+               [G, 'X', 'H', 'C', '$H_1$', 'Y', G])

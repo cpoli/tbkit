@@ -27,6 +27,7 @@ which piles up states at :math:`E = 0` (vacancy-bound zero modes).
 """
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.integrate import trapezoid
 
 import tbkit.kpm as kpm
 import tbkit.lattices as lattices
@@ -87,7 +88,7 @@ for e in (0.3, 0.4):
 peak = e_grid[np.argmax(rho_clean * (e_grid > 0))]
 print('van Hove peak at E = {:.3f}'.format(peak))
 assert abs(peak - t) < 0.05
-assert np.isclose(np.trapezoid(rho_clean, e_grid), 1., atol=0.01)
+assert np.isclose(trapezoid(rho_clean, e_grid), 1., atol=0.01)
 
 # %%
 # Vacancies: states at zero energy

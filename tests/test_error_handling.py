@@ -500,6 +500,19 @@ class TestHallChecks(unittest.TestCase):
         self.assertRaises(ValueError, eh.refine_fraction, 0.)
         self.assertRaises(ValueError, eh.refine_fraction, 1.5)
 
+    def test_path(self):
+        eh.path_parameter('phi')
+        self.assertRaises(TypeError, eh.path_parameter, None)
+        eh.path_values([0, 1])
+        eh.path_values([1., 0.])
+        self.assertRaises(TypeError, eh.path_values, ['a', 'b'])
+        self.assertRaises(TypeError, eh.path_values, [[0., 1.]])
+        self.assertRaises(ValueError, eh.path_values, [0.])
+        self.assertRaises(ValueError, eh.path_values, [0., np.nan])
+        self.assertRaises(ValueError, eh.path_values, [0., 1., 1.])
+        eh.path_gap(0.1, 'phi', 0.)
+        self.assertRaises(ValueError, eh.path_gap, 0., 'phi', 0.)
+
     def test_velocity(self):
         eh.velocity(np.eye(3), 3, 'vx')
         eh.velocity(sparse.identity(3), 3, 'vx')
@@ -677,6 +690,121 @@ class TestModelBuilding(unittest.TestCase):
         eh.layer_hoppings(0., 1e-6)
         self.assertRaises(ValueError, eh.layer_hoppings, 1e-3, 1e-6)
 
+
+
+class TestAnalysisPlotting(unittest.TestCase):
+    def test_dos_validators(self):
+        for kernel in ('gaussian', 'lorentzian', 'tetrahedron'):
+            eh.kspace_dos_kernel(kernel)
+        self.assertRaises(TypeError, eh.kspace_dos_kernel, 1)
+        self.assertRaises(ValueError, eh.kspace_dos_kernel, 'box')
+        eh.mesh_energies(np.zeros((3, 3, 2)))
+        self.assertRaises(ValueError, eh.mesh_energies, np.zeros(3))
+        self.assertRaises(ValueError, eh.mesh_energies, np.zeros((0, 2)))
+        eh.increasing_grid([0., 1.], 'e_grid')
+        for grid in ([0.], [1., 0.], [[0., 1.]], [0., 1j]):
+            self.assertRaises(ValueError, eh.increasing_grid, grid, 'e_grid')
+
+    def test_projector(self):
+        tags = np.array(['a', 'b'])
+        for proj in (0, [0, 1], 'a', np.eye(2)):
+            eh.projector(proj, 2, tags)
+        self.assertRaises(ValueError, eh.projector, 'c', 2, tags)
+        self.assertRaises(TypeError, eh.projector, 0.5, 2, tags)
+        self.assertRaises(TypeError, eh.projector, [], 2, tags)
+        self.assertRaises(ValueError, eh.projector, [0, 0], 2, tags)
+        self.assertRaises(ValueError, eh.projector, 2, 2, tags)
+        self.assertRaises(ValueError, eh.projector, np.eye(3), 2, tags)
+        self.assertRaises(ValueError, eh.projector, np.triu(np.ones((2, 2))), 2, tags)
+
+    def test_weights_contours_lattices(self):
+        eh.band_weights(np.zeros((3, 2)), (3, 2))
+        self.assertRaises(ValueError, eh.band_weights, np.zeros((2, 3)), (3, 2))
+        self.assertRaises(ValueError, eh.band_weights, np.zeros((3, 2), complex), (3, 2))
+        self.assertRaises(ValueError, eh.band_weights, np.full((3, 2), np.nan), (3, 2))
+        eh.weight_style('color')
+        eh.weight_style('size')
+        self.assertRaises(ValueError, eh.weight_style, 'fat')
+        eh.contour_found(3, 0.)
+        self.assertRaises(ValueError, eh.contour_found, 0, 0.)
+        eh.bravais_lattice(['X'], 3)
+        self.assertRaises(ValueError, eh.bravais_lattice, None, 3)
+
+
+class TestContinuumChecks(unittest.TestCase):
+
+    def test_sympy_and_types(self):
+        eh.sympy_module(unittest)
+        self.assertRaises(ImportError, eh.sympy_module, None)
+        eh.continuum_type('k_x', (str,))
+        self.assertRaises(TypeError, eh.continuum_type, 1., (str,))
+        eh.continuum_parsed(None, 'k_x')
+        self.assertRaises(ValueError, eh.continuum_parsed, SyntaxError('bad'), 'k_x +')
+
+    def test_shape_symbols_dim(self):
+        eh.continuum_square((2, 2))
+        for shape in ((2, 3), (0, 0), (2,)):
+            self.assertRaises(ValueError, eh.continuum_square, shape)
+        eh.continuum_symbols({'k_x', 'M', 'B'})
+        for names in ({'k_x', 'x'}, {'a'}, {'site_i'}, {'1M'}):
+            self.assertRaises(ValueError, eh.continuum_symbols, names)
+        eh.continuum_dim(2, [0, 1])
+        eh.continuum_dim(3, [])
+        self.assertRaises(TypeError, eh.continuum_dim, 2., [0])
+        self.assertRaises(ValueError, eh.continuum_dim, 4, [0])
+        self.assertRaises(ValueError, eh.continuum_dim, 1, [0, 1])
+
+    def test_polynomial_tags_spacing(self):
+        eh.continuum_polynomial((0, 0), True)
+        self.assertRaises(ValueError, eh.continuum_polynomial, (0, 0), False)
+        eh.continuum_tags(None, 52)
+        eh.continuum_tags('ab', 2)
+        eh.continuum_tags(['a', 'b'], 2)
+        self.assertRaises(ValueError, eh.continuum_tags, None, 53)
+        self.assertRaises(TypeError, eh.continuum_tags, 3, 2)
+        self.assertRaises(TypeError, eh.continuum_tags, ['a', 1], 2)
+        self.assertRaises(ValueError, eh.continuum_tags, 'abc', 2)
+        self.assertRaises(ValueError, eh.continuum_tags, ['a', 'bb'], 2)
+        eh.continuum_spacing(0.5)
+        self.assertRaises(ValueError, eh.continuum_spacing, 0.3)
+
+
+class TestWannierChecks(unittest.TestCase):
+
+    def test_trial_orbitals(self):
+        eh.trial_orbitals([0, 2], 3, 2)
+        eh.trial_orbitals(np.ones((3, 2)), 3, 2)
+        eh.trial_orbitals([0], 3, 2)  # fewer than the bands: disentanglement
+        eh.trial_orbitals(np.ones((3, 1)), 3, 2)
+        self.assertRaises(ValueError, eh.trial_orbitals, [0, 1, 2], 3, 2)
+        self.assertRaises(ValueError, eh.trial_orbitals, [0, 3], 3, 2)
+        self.assertRaises(ValueError, eh.trial_orbitals, np.ones((2, 2)), 3, 2)
+        self.assertRaises(ValueError, eh.trial_orbitals, np.ones((3, 3)), 3, 2)
+        self.assertRaises(ValueError, eh.trial_orbitals, np.ones(3), 3, 2)
+        self.assertRaises(TypeError, eh.trial_orbitals, 'ab', 3, 2)
+        self.assertRaises(TypeError, eh.trial_orbitals, [[0], [1, 2]], 3, 2)
+
+    def test_isolated_bands_and_projection(self):
+        en = np.array([[0., 1., 2.], [0., 1., 1.]])
+        eh.isolated_bands(en, [0])
+        self.assertRaises(ValueError, eh.isolated_bands, en, [1])
+        self.assertRaises(ValueError, eh.isolated_bands, en, [2])
+        eh.projection(0.1)
+        self.assertRaises(ValueError, eh.projection, 0.)
+
+    def test_disentanglement_windows(self):
+        eh.energy_window((-1, 2.), 'window')
+        self.assertRaises(TypeError, eh.energy_window, [-1., 2.], 'window')
+        self.assertRaises(TypeError, eh.energy_window, (-1., 2., 3.), 'window')
+        self.assertRaises(TypeError, eh.energy_window, (True, 2.), 'window')
+        self.assertRaises(TypeError, eh.energy_window, (-1., 2j), 'window')
+        self.assertRaises(ValueError, eh.energy_window, (2., 2.), 'frozen')
+        eh.frozen_window((-1., 0.), (-1., 2.))
+        self.assertRaises(ValueError, eh.frozen_window, (-2., 0.), (-1., 2.))
+        self.assertRaises(ValueError, eh.frozen_window, (0., 3.), (-1., 2.))
+        eh.window_states(3, 2, 2)
+        self.assertRaises(ValueError, eh.window_states, 1, 0, 2)
+        self.assertRaises(ValueError, eh.window_states, 4, 3, 2)
 
 if __name__ == '__main__':
     unittest.main()

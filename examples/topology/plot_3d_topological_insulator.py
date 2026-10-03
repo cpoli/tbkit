@@ -24,7 +24,7 @@ The model: s- and p-like orbitals with spin on a cubic lattice,
 
 the lattice regularization of the Bi\ :sub:`2`\ Se\ :sub:`3` model. The
 band inversion :math:`m < 0` at some of the eight momenta
-:math:`(0\text{ or }\pi)^3` sets :math:`\nu_0`.
+:math:`(0\text{ or }\pi)^3` sets the four indices.
 
 The photoemission picture is the *surface spectral function*
 :math:`A_s(\mathbf{k}_\parallel, E)` of the semi-infinite crystal
@@ -66,19 +66,27 @@ h = m * np.kron(PAULI['z'], PAULI['0']) + sum(np.sin(k[d]) * np.kron(PAULI['x'],
 assert np.allclose(topological_insulator(2.).get_ham(k), h)
 
 # %%
-# The strong index
-# -------------------
+# The four Z2 indices
+# ----------------------
 # :math:`m` is :math:`M` at :math:`\Gamma`, :math:`M - 4` at the three
 # :math:`X`, :math:`M - 8` at the three :math:`M` and :math:`M - 12` at
 # :math:`R`. The strong index counts the inverted momenta modulo 2: one
-# for :math:`0 < M < 4` (at :math:`\Gamma`), four for :math:`4 < M < 8`
-# (a weak topological insulator, :math:`\nu_0 = 0`), seven for
-# :math:`8 < M < 12`.
+# for :math:`0 < M < 4` (at :math:`\Gamma`), four for :math:`4 < M < 8`,
+# seven for :math:`8 < M < 12`. The parity criterion gives only
+# :math:`\nu_0`; :meth:`~tbkit.kspace.KSpace.z2_indices_3d` gives all four,
+# :math:`(\nu_0;\nu_1\nu_2\nu_3)`, from the Wannier-centre flow on the six
+# time-reversal-invariant planes, without using inversion. They tell the
+# weak topological insulator :math:`(0;111)` of :math:`4 < M < 8` -- quantum
+# spin Hall layers stacked along (111), whose planes :math:`k_i = \pi`
+# each hold one inverted momentum -- from the trivial insulator, which the
+# strong index alone cannot.
 
-phases = {-2.: 0, 2.: 1, 6.: 0, 10.: 1}
-for M, nu in phases.items():
-    assert topological_insulator(M).parity_z2(INVERSION, [0, 1]) == nu
-print('Strong index nu_0:', {M: nu for M, nu in phases.items()})
+phases = {-2.: (0, 0, 0, 0), 2.: (1, 0, 0, 0), 6.: (0, 1, 1, 1), 10.: (1, 1, 1, 1)}
+for M, indices in phases.items():
+    ti = topological_insulator(M)
+    assert ti.parity_z2(INVERSION, [0, 1]) == indices[0]
+    assert ti.z2_indices_3d([0, 1], nk=60, nk_perp=31) == indices
+    print('M = {:5.1f}: (nu_0; nu_1 nu_2 nu_3) = ({}; {}{}{})'.format(M, *indices))
 
 # %%
 # The surface Dirac cone

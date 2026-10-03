@@ -73,7 +73,7 @@ class TestConductanceMatrix(unittest.TestCase):
     def test_two_terminal(self):
         tr = chain_device(10, impurity={4: 0.7})
         e = 0.3
-        t = tr.transmission([e])[0]
+        t = tr.transmission([e], eta=1e-9)[0]  # the Caroli path, as conductance_matrix
         g = tr.conductance_matrix(e)
         self.assertTrue(np.allclose(g, [[t, -t], [-t, t]]))
         self.assertTrue(np.allclose(tr.transmission_matrix(e), [[0, t], [t, 0]]))
@@ -170,7 +170,7 @@ class TestShotNoise(unittest.TestCase):
         clean.add_lead(h_r, v_r, np.eye(width), cols[1])
         eig = clean.transmission_eigenvalues(-1.)
         self.assertEqual(len(eig), width)
-        self.assertAlmostEqual(eig.sum(), clean.transmission([-1.])[0], places=8)
+        self.assertAlmostEqual(eig.sum(), clean.transmission([-1.], eta=1e-9)[0], places=8)
         self.assertTrue(np.allclose(clean.fano_factor([-1., 0.5]), 0., atol=1e-6))
 
     def test_tunnel_barrier(self):
@@ -213,7 +213,7 @@ class TestRecursiveGreenFunction(unittest.TestCase):
         # a dense Hamiltonian works too
         again = RecursiveTransport(sys.ham.toarray(), slices, (h_l, v_l, np.eye(width)),
                                               (h_r, v_r, np.eye(width)))
-        self.assertAlmostEqual(again.transmission(-0.7)[0], dense.transmission([-0.7])[0], places=9)
+        self.assertAlmostEqual(again.transmission(-0.7)[0], dense.transmission([-0.7], eta=1e-9)[0], places=9)
 
     def test_single_slice_and_long_chain(self):
         # one slice holds both leads
