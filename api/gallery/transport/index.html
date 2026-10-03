@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Transport &#8212; tbkit 0.4.2 documentation</title>
+    <title>Transport &#8212; tbkit 0.5.0 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../../_static/documentation_options.js?v=9dc614e0"></script>
+    <script src="../../../_static/documentation_options.js?v=70f82a29"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -52,11 +52,11 @@
     <script src="../../../_static/js/force_light.js?v=8e7666d6"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Buttiker’s Edge Channels: the Quantized Resistances of a Hall Bar" href="plot_hall_bar_edge_channels.html" />
+    <link rel="next" title="Automatic Lead Attachment: Narrow Contacts on a Wide Cavity" href="plot_automatic_lead_attachment.html" />
     <link rel="prev" title="The Zak Phase: Where the SSH Chain’s Electrons Sit" href="../topology/plot_zak_phase.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.4" />
+  <meta name="docsearch:version" content="0.5" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -368,7 +368,9 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../hall_effects/index.html">Hall effects</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_anomalous_hall_disorder.html">The Anomalous Hall Effect in Real Space: a Disordered Chern Insulator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_anomalous_hall_effect.html">The Anomalous Hall Effect: from the Anomalous Velocity to the Berry Phase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_anomalous_nernst_effect.html">The Berry-Phase Anomalous Nernst Effect</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_intrinsic_spin_hall_effect.html">The Intrinsic Spin Hall Effect: Kane-Mele Plateau and Rashba Coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_thermal_hall_effect.html">The Intrinsic Thermal Hall Effect and the Wiedemann-Franz Law</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../higher_order/index.html">Higher-Order Topology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -376,6 +378,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../large_scale/index.html">Large lattices</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_batched_k_space.html">Batched and Threaded k-Space Diagonalization: the Haldane Model on 90,000 k-Points</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_kernel_polynomial_method.html">The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites</a></li>
 </ul>
 </details></li>
@@ -383,10 +386,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_hofstadter_butterfly.html">Hofstadter’s Butterfly</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_landau_levels.html">Landau Levels: Square Lattice vs. Graphene</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_magnetic_field.html">Aharonov-Bohm Ring: A Magnetic Field on a Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_orbital_magnetization.html">The Modern Theory of Orbital Magnetization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_peierls_substitution.html">The Peierls Substitution: Flux Through the Plaquettes, in Any Gauge</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../models/index.html">Building, Bridging and Saving Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../models/plot_building_maximally_localized_wannier_functions.html">Maximally Localized Wannier Functions: Projection and Spread Minimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/plot_disentangling_entangled_bands.html">Disentanglement: Wannier Functions of the π Bands of Graphene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/plot_kp_theory_on_a_lattice.html">k·p Theory on a Lattice: from a Continuum Hamiltonian to Tight-Binding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/plot_maximally_localized_wannier_functions.html">Maximally Localized Wannier Functions: Graphene from a Wannier90 File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/plot_neighbour_hoppings.html">Hoppings by Neighbour Order in k-Space: Third-Nearest-Neighbour Graphene</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/plot_pipeline_bridges.html">From Real Space to k-Space and Back: the Haldane Model on a Torus</a></li>
@@ -422,6 +429,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../superconductivity/index.html">Superconductivity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_andreev_reflection.html">Andreev Reflection: the BTK Conductance of a Normal-Superconductor Junction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_bcs_gap_equation.html">The BCS Gap Equation: Delta(T) and the Universal Ratio Delta(0)/T_c = 1.764</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_kitaev_chain.html">The Kitaev Chain: Majorana Zero Modes</a></li>
 </ul>
@@ -434,34 +442,48 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tight_binding/index.html">Tight-Binding</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_building_finite_lattices.html">Building Finite Lattices: Unit Cells, Cuts, and Lattice Arithmetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_defects_and_impurities.html">Defects and Impurities in a Graphene Flake: Vacancy Zero Modes and Bound States</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_fermi_surfaces.html">Fermi Surfaces and Constant-Energy Contours</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_graphene_bands.html">Graphene: Real-Space Flake and Reciprocal-Space Bands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_isolation_of_graphene.html">The Isolation of Graphene: Flakes, Edges, and a Berry Phase of pi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_parametrized_hamiltonians.html">Parametrized Hamiltonians: Sweeping Without Rebuilding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_periodic_boundaries.html">Periodic Boundaries in Real Space: Tori and Cylinders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_projected_bands_and_spin_textures.html">Projected Bands and Spin Textures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_square_lattice_bands.html">The Square Lattice: Bloch’s Theorem in its Simplest Form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_tetrahedron_method.html">The Tetrahedron Method for the Density of States</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_visualizing_a_model.html">Visualizing a Model: tbkit.plot.Plot</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../topology/index.html">Topology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_3d_topological_insulator.html">Three-Dimensional Topological Insulators: the Surface Dirac Cone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_axion_angle.html">The Axion Angle and the Topological Magnetoelectric Effect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_bott_index.html">The Bott Index: the Chern Number of a Disordered Torus</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_diabolical_points.html">Diabolical Points: Conical Intersections in a Two-Parameter Family</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_edge_states.html">Edge States on Ribbons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_entanglement_spectrum.html">The Entanglement Spectrum: Edge States Without an Edge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_fu_kane_parity.html">The Fu-Kane Parity Criterion: Z2 from Inversion Eigenvalues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_haldane_topology.html">The Haldane Model: Berry Curvature and a Topological Phase Transition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_kagome_chern_band.html">A Topological Flat Band on the Kagome Lattice</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_kane_mele_z2.html">The Kane-Mele Z2 Invariant from Wannier-Centre Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_local_chern_marker.html">The Local Chern Marker: Topology Without a Brillouin Zone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_mirror_chern_number.html">Mirror Chern Numbers: a Topological Crystalline Insulator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_quantum_geometry.html">The Quantum Metric: The Geometry of a Bloch Band</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_spin_chern_number.html">The Spin Chern Number: Quantum Spin Hall Without Spin Conservation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_ssh_model.html">The SSH Model: Bulk-Boundary Correspondence</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_tenfold_way.html">The Tenfold Way: Symmetry Classes of Tight-Binding Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_thouless_pump.html">The Thouless Quantum Pump (Rice-Mele Model)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_tknn_hofstadter.html">TKNN: The Quantized Hall Conductance of the Hofstadter Bands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_wannier_obstruction_of_chern_bands.html">The Wannier Obstruction of Chern Bands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_zak_phase.html">The Zak Phase: Where the SSH Chain’s Electrons Sit</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Transport</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="plot_automatic_lead_attachment.html">Automatic Lead Attachment: Narrow Contacts on a Wide Cavity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_hall_bar_edge_channels.html">Buttiker’s Edge Channels: the Quantized Resistances of a Hall Bar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_landauer_conductance.html">The Landauer Formula: Quantized Conductance of a Point Contact</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_recursive_green_function.html">The Recursive Green’s Function: Localization Length of Long Disordered Wires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_scattering_matrix.html">Mode Matching: the Scattering Matrix, Lead Modes and Scattering States</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_shot_noise_fano_factor.html">Shot Noise: the Fano Factor of Ballistic, Tunnel and Diffusive Conductors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_thermoelectric_transport.html">Thermoelectric Transport: the Mott Formula and the Wiedemann-Franz Law</a></li>
 </ul>
 </details></li>
 </ul>
@@ -529,12 +551,19 @@
 <p>Quantum transport through a finite device attached to semi-infinite
 leads: Landauer’s formula, in which the conductance is a transmission
 probability, and the quantized conductance steps of a quantum point
-contact.</p>
+contact. Leads attached automatically from their geometry, narrow
+contacts on a wide cavity.</p>
 <p>Multi-terminal devices: Landauer-Buttiker conductance matrices and the
 quantized resistances of a Hall bar with its edge channels; bond
 currents; shot noise and the Fano factor; and the recursive Green’s
-function for long wires.</p>
-<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Buttiker (1986) wrote the currents of a phase-coherent conductor with many leads as I_p = \frac{e^2}{h}\sum_q G_{pq}V_q, from the transmissions between leads, and treated voltage probes as leads that draw no net current. In 1988 he applied it to the quantum Hall effect: in a strong field the current flows in \nu chiral edge channels, one per filled Landau level, which carry electrons from each contact to the next one downstream without backscattering. The Landauer-Buttiker equations then give, for any sample shape and any probes,"><img alt="" src="../../../_images/sphx_glr_plot_hall_bar_edge_channels_thumb.png" />
+function for long wires. The scattering matrix from the exact modes of
+the leads, the scattering states and the local density of states they
+carry. Thermoelectric transport: the Mott formula and the
+Wiedemann-Franz law, and their breakdown at a resonance.</p>
+<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A lead is a semi-infinite repetition of a unit cell. To attach it, one needs the device sites it touches and the hoppings \tau between them and the lead&#x27;s first cell. For a straight strip, these are the edge column and the identity times t; for anything else, writing them by hand is error-prone."><img alt="" src="../../../_images/sphx_glr_plot_automatic_lead_attachment_thumb.png" />
+<p><a class="reference internal" href="plot_automatic_lead_attachment.html"><span class="doc">Automatic Lead Attachment: Narrow Contacts on a Wide Cavity</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Automatic Lead Attachment: Narrow Contacts on a Wide Cavity</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Buttiker (1986) wrote the currents of a phase-coherent conductor with many leads as I_p = \frac{e^2}{h}\sum_q G_{pq}V_q, from the transmissions between leads, and treated voltage probes as leads that draw no net current. In 1988 he applied it to the quantum Hall effect: in a strong field the current flows in \nu chiral edge channels, one per filled Landau level, which carry electrons from each contact to the next one downstream without backscattering. The Landauer-Buttiker equations then give, for any sample shape and any probes,"><img alt="" src="../../../_images/sphx_glr_plot_hall_bar_edge_channels_thumb.png" />
 <p><a class="reference internal" href="plot_hall_bar_edge_channels.html"><span class="doc">Buttiker’s Edge Channels: the Quantized Resistances of a Hall Bar</span></a></p>
   <div class="sphx-glr-thumbnail-title">Buttiker's Edge Channels: the Quantized Resistances of a Hall Bar</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="R. Landauer (1957), then M. Buttiker (1986), recast electrical conductance as a scattering problem: a phase-coherent conductor between two reservoirs has, at zero temperature and bias,"><img alt="" src="../../../_images/sphx_glr_plot_landauer_conductance_thumb.png" />
@@ -543,9 +572,15 @@ function for long wires.</p>
 </div><div class="sphx-glr-thumbcontainer" tooltip="The Landauer transmission of a device needs its Green&#x27;s function between the two leads. Inverting the whole device matrix costs N^3 for N sites, which rules out the long samples in which localization shows. In 1981 Thouless and Kirkpatrick, Lee and Fisher, and MacKinnon and Kramer cut the sample into slices coupled only to their neighbours and added them one at a time,"><img alt="" src="../../../_images/sphx_glr_plot_recursive_green_function_thumb.png" />
 <p><a class="reference internal" href="plot_recursive_green_function.html"><span class="doc">The Recursive Green’s Function: Localization Length of Long Disordered Wires</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Recursive Green's Function: Localization Length of Long Disordered Wires</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The Landauer conductance is a sum of transmission probabilities, but the object behind it is the scattering matrix S: the amplitude S_{ab} of every outgoing mode a for every incoming mode b of the leads. Fisher and Lee (1981) related it to the Green&#x27;s function, and Ando (1991) showed how to compute it on a lattice by mode matching. The modes of a lead, \psi_n = \lambda^n\phi in its cell n, solve the generalized eigenproblem of the transfer matrix"><img alt="" src="../../../_images/sphx_glr_plot_scattering_matrix_thumb.png" />
+<p><a class="reference internal" href="plot_scattering_matrix.html"><span class="doc">Mode Matching: the Scattering Matrix, Lead Modes and Scattering States</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Mode Matching: the Scattering Matrix, Lead Modes and Scattering States</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="A current made of discrete charges fluctuates: for independent electrons crossing a tunnel barrier, Schottky&#x27;s Poisson noise S = 2eI. In a phase-coherent conductor the Pauli principle correlates the electrons, and Lesovik (1989) and Buttiker (1990) found the zero-temperature noise from the transmission eigenvalues T_n of the scattering channels,"><img alt="" src="../../../_images/sphx_glr_plot_shot_noise_fano_factor_thumb.png" />
 <p><a class="reference internal" href="plot_shot_noise_fano_factor.html"><span class="doc">Shot Noise: the Fano Factor of Ballistic, Tunnel and Diffusive Conductors</span></a></p>
   <div class="sphx-glr-thumbnail-title">Shot Noise: the Fano Factor of Ballistic, Tunnel and Diffusive Conductors</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Sivan and Imry (1986) extended the Landauer formula to heat: a temperature difference across a phase-coherent conductor drives a current, and a bias carries heat. In linear response, every coefficient is a moment of the transmission over the Fermi window,"><img alt="" src="../../../_images/sphx_glr_plot_thermoelectric_transport_thumb.png" />
+<p><a class="reference internal" href="plot_thermoelectric_transport.html"><span class="doc">Thermoelectric Transport: the Mott Formula and the Wiedemann-Franz Law</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Thermoelectric Transport: the Mott Formula and the Wiedemann-Franz Law</div>
 </div></div><div class="toctree-wrapper compound">
 </div>
 </section>
@@ -570,11 +605,11 @@ function for long wires.</p>
       </div>
     </a>
     <a class="right-next"
-       href="plot_hall_bar_edge_channels.html"
+       href="plot_automatic_lead_attachment.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Buttiker’s Edge Channels: the Quantized Resistances of a Hall Bar</p>
+        <p class="prev-next-title">Automatic Lead Attachment: Narrow Contacts on a Wide Cavity</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

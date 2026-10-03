@@ -11,6 +11,9 @@ plateau in the gap, and its non-quantized value in the bands), the same
 plateau surviving disorder in a real-space Kubo-Bastin (kernel polynomial)
 calculation on a torus, and the intrinsic spin Hall conductivity of the
 Kane-Mele model with its departure from quantization under Rashba coupling.
+The same curvature, weighted by entropy or by energy, drives the anomalous
+Nernst effect (with the Mott relation) and the thermal Hall effect (with
+the Wiedemann-Franz law and its quantized Chern plateau).
 
 
 .. raw:: html
@@ -60,6 +63,23 @@ Kane-Mele model with its departure from quantization under Rashba coupling.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="A temperature gradient drives a transverse charge current in a ferromagnet, with no magnetic field: the anomalous Nernst effect, j_x = \alpha_{xy}(-\partial_yT). Xiao, Yao, Fang and Niu (2006) showed that its intrinsic part is the Berry curvature again, weighted this time by the entropy of each state,">
+
+.. only:: html
+
+  .. image:: /api/gallery/hall_effects/images/thumb/sphx_glr_plot_anomalous_nernst_effect_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/hall_effects/plot_anomalous_nernst_effect`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Berry-Phase Anomalous Nernst Effect</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="An electric field along y can drive a spin current along x with no charge current at all: up and down spins are deflected to opposite sides. Murakami, Nagaosa and Zhang (2003) and Sinova et al. (2004) showed that spin-orbit coupling alone produces it, as a property of the band structure -- the spin analogue of the intrinsic anomalous Hall effect. With the spin current j^s_x = \{s_z, v_x\}/2, the Kubo formula gives the spin Hall conductivity (~tbkit.kspace.KSpace.spin_hall_conductivity), in units of e/2\pi.">
 
 .. only:: html
@@ -75,6 +95,23 @@ Kane-Mele model with its departure from quantization under Rashba coupling.
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A temperature gradient also drives a transverse heat current, j^Q_x = \kappa_{xy}(-\partial_yT). Computing it from the Kubo formula is subtle: part of the heat current circulates as a bound magnetization current and does not flow. Qin, Niu and Shi (2011) subtracted it and found the intrinsic electronic thermal Hall conductivity as one more weighted integral of the Berry curvature,">
+
+.. only:: html
+
+  .. image:: /api/gallery/hall_effects/images/thumb/sphx_glr_plot_thermal_hall_effect_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/hall_effects/plot_thermal_hall_effect`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Intrinsic Thermal Hall Effect and the Wiedemann-Franz Law</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -87,5 +124,7 @@ Kane-Mele model with its departure from quantization under Rashba coupling.
 
    /api/gallery/hall_effects/plot_anomalous_hall_disorder
    /api/gallery/hall_effects/plot_anomalous_hall_effect
+   /api/gallery/hall_effects/plot_anomalous_nernst_effect
    /api/gallery/hall_effects/plot_intrinsic_spin_hall_effect
+   /api/gallery/hall_effects/plot_thermal_hall_effect
 

@@ -155,6 +155,22 @@ tbkit.neighbours module
     :undoc-members:
     :show-inheritance:
 
+tbkit.topology module
+---------------------
+
+.. automodule:: tbkit.topology
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+tbkit.wannier module
+--------------------
+
+.. automodule:: tbkit.wannier
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 tbkit.higher_order module
 -------------------------
 
@@ -167,6 +183,14 @@ tbkit.bridges module
 --------------------
 
 .. automodule:: tbkit.bridges
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+tbkit.continuum module
+----------------------
+
+.. automodule:: tbkit.continuum
     :members:
     :undoc-members:
     :show-inheritance:

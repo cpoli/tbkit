@@ -1,0 +1,1017 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tbkit.wannier &#8212; tbkit 0.5.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+
+    <script src="../../_static/documentation_options.js?v=70f82a29"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tbkit/wannier';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../_static/js/force_light.js?v=8e7666d6"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.5" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../_static/tbkit_logo.png" class="logo__image only-light" alt="tbkit logo"/>
+    <img src="../../_static/tbkit_logo.png" class="logo__image only-dark pst-js-only" alt="tbkit logo"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tbkit.wannier</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for tbkit.wannier</h1><div class="highlight"><pre>
+<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Wannier functions of a group of bands of a :class:`tbkit.kspace.KSpace`</span>
+<span class="sd">model, built in two steps (three for entangled bands):</span>
+
+<span class="sd">* **Disentanglement** (when there are more bands than Wannier functions):</span>
+<span class="sd">  at each k, the :math:`n_W`-dimensional subspace of the states in an outer</span>
+<span class="sd">  energy window that is smoothest across the mesh, i.e. that minimizes</span>
+<span class="sd">  :math:`\Omega_I`, keeping the states of an optional frozen window exactly</span>
+<span class="sd">  (Souza, Marzari and Vanderbilt, Phys. Rev. B 65, 035109 (2001)).</span>
+<span class="sd">* **Projection** onto trial orbitals :math:`|g_n\rangle` localized in the</span>
+<span class="sd">  home cell: :math:`A_{mn}(\mathbf{k}) = \langle u_{m\mathbf{k}}|g_n\rangle`,</span>
+<span class="sd">  made unitary by Lowdin orthogonalization,</span>
+<span class="sd">  :math:`U(\mathbf{k}) = A(A^\dagger A)^{-1/2}` (Marzari, Mostofi, Yates,</span>
+<span class="sd">  Souza and Vanderbilt, Rev. Mod. Phys. 84, 1419 (2012), Sec. III.A).</span>
+<span class="sd">* **Maximal localization**: conjugate-gradient descent of the spread</span>
+<span class="sd">  :math:`\Omega = \sum_n \langle r^2\rangle_n - |\bar{\mathbf{r}}_n|^2`</span>
+<span class="sd">  over the gauge :math:`U(\mathbf{k})`, from the overlaps</span>
+<span class="sd">  :math:`M^{(\mathbf{k},\mathbf{b})}_{mn} = \langle u_{m\mathbf{k}}|u_{n\mathbf{k}+\mathbf{b}}\rangle`</span>
+<span class="sd">  between neighbouring points of the k-mesh (Marzari and Vanderbilt, Phys.</span>
+<span class="sd">  Rev. B 56, 12847 (1997)).</span>
+
+<span class="sd">The Wannier functions are the Fourier transforms of the rotated Bloch</span>
+<span class="sd">states, on the :math:`N_1\times N_2\times\dots` cells of the k-mesh (the</span>
+<span class="sd">supercell on which they are periodic). Their Hamiltonian</span>
+<span class="sd">:math:`H_{mn}(\mathbf{R}) = \langle W_{m\mathbf{0}}|H|W_{n\mathbf{R}}\rangle`</span>
+<span class="sd">is a tight-binding model of its own (*WannierFunctions.kspace*), which</span>
+<span class="sd">interpolates the bands between the mesh points (Wannier interpolation).</span>
+
+<span class="sd">A band group with a nonzero Chern number has no exponentially localized</span>
+<span class="sd">Wannier functions (Thouless, J. Phys. C 17, L325 (1984); Brouder et al.,</span>
+<span class="sd">Phys. Rev. Lett. 98, 046402 (2007)): any projection vanishes somewhere in</span>
+<span class="sd">the Brillouin zone, and the spread grows with the mesh instead of</span>
+<span class="sd">converging.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">NDArray</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.error_handling</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">error_handling</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.bridges</span><span class="w"> </span><span class="kn">import</span> <span class="n">_finite_sites</span><span class="p">,</span> <span class="n">finite_system</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">_hr_kspace</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">KSpace</span>
+
+
+<div class="viewcode-block" id="WannierFunctions">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.wannier.WannierFunctions">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">WannierFunctions</span><span class="p">():</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Wannier functions of a group of bands, see *wannierize*.</span>
+
+<span class="sd">    :ivar functions: Complex ndarray, shape (n_wann, N*norb). Amplitudes</span>
+<span class="sd">        of each Wannier function on the orbitals of the</span>
+<span class="sd">        :math:`N = N_1N_2\dots` cells of the k-mesh, indexed as the rows of</span>
+<span class="sd">        *KSpace.finite_ham(nk)* (and the sites of *system*). Each one is a</span>
+<span class="sd">        lattice translate chosen to sit in the middle of the sample.</span>
+<span class="sd">    :ivar positions: Real ndarray, shape (N*norb, space_dim). Position of each row.</span>
+<span class="sd">    :ivar centers: Real ndarray, shape (n_wann, space_dim). Centres</span>
+<span class="sd">        :math:`\bar{\mathbf{r}}_n` of *functions* (Cartesian).</span>
+<span class="sd">    :ivar spreads: Real ndarray, shape (n_wann,). Spreads</span>
+<span class="sd">        :math:`\langle r^2\rangle_n - |\bar{\mathbf{r}}_n|^2` (squared</span>
+<span class="sd">        length), along the primitive vectors only for a chain or a 2D</span>
+<span class="sd">        lattice in 3D.</span>
+<span class="sd">    :ivar omega_i: Real number. Gauge-invariant part :math:`\Omega_I` of the total spread.</span>
+<span class="sd">    :ivar omega_d: Real number. Diagonal part :math:`\tilde\Omega_D`.</span>
+<span class="sd">    :ivar omega_od: Real number. Off-diagonal part :math:`\tilde\Omega_{OD}`.</span>
+<span class="sd">    :ivar gauge: Complex ndarray, shape (N, len(bands), n_wann).</span>
+<span class="sd">        :math:`U(\mathbf{k})` over the k-mesh (flattened as *KSpace.mesh_grid*),</span>
+<span class="sd">        acting on the eigenvectors of *bands*: unitary for an isolated</span>
+<span class="sd">        group, otherwise the disentangled subspace (orthonormal columns,</span>
+<span class="sd">        zero on the states outside the window) times the unitary gauge.</span>
+<span class="sd">    :ivar history: Real ndarray. Total spread after the projection and after each step.</span>
+<span class="sd">    :ivar converged: Boolean. Whether the spread changed by less than *tol*.</span>
+<span class="sd">    :ivar min_singular_value: Real number. Smallest singular value of the</span>
+<span class="sd">        projection :math:`A(\mathbf{k})` over the mesh: close to zero when the</span>
+<span class="sd">        trial orbitals miss the bands somewhere (as they must for a Chern band).</span>
+<span class="sd">    :ivar dis_history: Real ndarray. :math:`\Omega_I` after the projection</span>
+<span class="sd">        and after each disentanglement step (empty for an isolated group).</span>
+<span class="sd">    :ivar dis_converged: Boolean. Whether :math:`\Omega_I` changed by</span>
+<span class="sd">        less than *dis_tol* (True for an isolated group).</span>
+<span class="sd">    :ivar ham_k: Complex ndarray, shape (N, n_wann, n_wann). Hamiltonian</span>
+<span class="sd">        :math:`U^\dagger(\mathbf{k})\,\mathrm{diag}(E)\,U(\mathbf{k})`</span>
+<span class="sd">        in the gauge of the Wannier functions, over the k-mesh.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">n_cells</span><span class="p">,</span> <span class="n">functions</span><span class="p">,</span> <span class="n">positions</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">spreads</span><span class="p">,</span> <span class="n">omega_i</span><span class="p">,</span>
+                      <span class="n">omega_d</span><span class="p">,</span> <span class="n">omega_od</span><span class="p">,</span> <span class="n">gauge</span><span class="p">,</span> <span class="n">history</span><span class="p">,</span> <span class="n">converged</span><span class="p">,</span> <span class="n">min_singular_value</span><span class="p">,</span>
+                      <span class="n">dis_history</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dis_converged</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ham_k</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ks</span> <span class="o">=</span> <span class="n">ks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_cells</span> <span class="o">=</span> <span class="n">n_cells</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">functions</span> <span class="o">=</span> <span class="n">functions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">positions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centers</span> <span class="o">=</span> <span class="n">centers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spreads</span> <span class="o">=</span> <span class="n">spreads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">omega_i</span> <span class="o">=</span> <span class="n">omega_i</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">omega_d</span> <span class="o">=</span> <span class="n">omega_d</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">omega_od</span> <span class="o">=</span> <span class="n">omega_od</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gauge</span> <span class="o">=</span> <span class="n">gauge</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history</span> <span class="o">=</span> <span class="n">history</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">converged</span> <span class="o">=</span> <span class="n">converged</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_singular_value</span> <span class="o">=</span> <span class="n">min_singular_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dis_history</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span> <span class="k">if</span> <span class="n">dis_history</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">dis_history</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dis_converged</span> <span class="o">=</span> <span class="n">dis_converged</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ham_k</span> <span class="o">=</span> <span class="n">ham_k</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shift</span> <span class="o">=</span> <span class="n">shift</span>  <span class="c1"># lattice vectors (integers) moving each function to the middle cell</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_system</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">omega</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Total spread :math:`\Omega = \Omega_I + \tilde\Omega_D + \tilde\Omega_{OD}`,</span>
+<span class="sd">        the sum of *spreads*.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spreads</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">system</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        The finite *System* (open boundaries) whose sites carry *functions*:</span>
+<span class="sd">        *bridges.finite_system(ks, nk)*, built on first access. Spinless</span>
+<span class="sd">        models only (for a spinful one, use *positions*).</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_system</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_system</span> <span class="o">=</span> <span class="n">finite_system</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ks</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cells</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_system</span>
+
+<div class="viewcode-block" id="WannierFunctions.kspace">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.wannier.WannierFunctions.kspace">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">kspace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-10</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KSpace</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        The tight-binding model of the Wannier functions (Wannier</span>
+<span class="sd">        interpolation): one orbital per function, at its centre (folded</span>
+<span class="sd">        into the home cell), and the matrix elements</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            H_{mn}(\mathbf{R}) = \langle W_{m\mathbf{0}}|H|W_{n\mathbf{R}}\rangle</span>
+<span class="sd">            = \frac{1}{N}\sum_{\mathbf{k}} e^{-i\mathbf{k}\cdot\mathbf{R}}\,</span>
+<span class="sd">            [U^\dagger(\mathbf{k})\,\mathrm{diag}(E)\,U(\mathbf{k})]_{mn}</span>
+
+<span class="sd">        as onsite energies and hoppings. Each :math:`\mathbf{R}` is the</span>
+<span class="sd">        image on the :math:`N_1\times N_2\times\dots` supercell closest to</span>
+<span class="sd">        the bond, :math:`|\mathbf{R} + \boldsymbol\tau_n - \boldsymbol\tau_m|`</span>
+<span class="sd">        minimal (equidistant images share the element, as</span>
+<span class="sd">        Wannier90&#39;s ``use_ws_distance``). Its bands equal the Wannierized</span>
+<span class="sd">        ones on the k-mesh: all of them for an isolated group, those in the</span>
+<span class="sd">        frozen window after disentanglement. Between the mesh points they</span>
+<span class="sd">        converge exponentially with the mesh, as the functions decay. The</span>
+<span class="sd">        model is the one *io.read_wannier90* would read from Wannier90&#39;s</span>
+<span class="sd">        ``seedname_hr.dat``.</span>
+
+<span class="sd">        :param cutoff: Positive real number or zero. Default value 1e-10.</span>
+<span class="sd">            Drop the hoppings with :math:`|t| \le` *cutoff*.</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **ks** -- **KSpace** instance, Hermitian, with n_wann orbitals.</span>
+
+<span class="sd">        Example usage::</span>
+
+<span class="sd">            wf = wannierize(ks, list(range(ks.norb)), trial=[0, 1], frozen=(-3., 0.))</span>
+<span class="sd">            wk = wf.kspace()</span>
+<span class="sd">            dist, en = wk.k_path(high_symmetry_path(ks.lat)[0], 50)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">cutoff</span><span class="p">,</span> <span class="s1">&#39;cutoff&#39;</span><span class="p">)</span>
+        <span class="n">ks</span><span class="p">,</span> <span class="n">nk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ks</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cells</span><span class="p">)</span>
+        <span class="n">dim</span><span class="p">,</span> <span class="n">n_k</span><span class="p">,</span> <span class="n">n_w</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">nk</span><span class="p">)),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spreads</span><span class="p">)</span>
+        <span class="n">prim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">prim_vec</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+        <span class="c1"># orbital m is W_m(T_m), the translate of the Fourier transform W_m(0)</span>
+        <span class="c1"># (the functions before their move to the middle cell) in the home cell</span>
+        <span class="n">centre</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">centers</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shift</span> <span class="o">@</span> <span class="n">prim</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">centre</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">rec_vec</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">tau</span> <span class="o">=</span> <span class="n">centre</span> <span class="o">-</span> <span class="n">cell</span> <span class="o">@</span> <span class="n">prim</span>
+        <span class="c1"># H&#39;_mn(R) = H_mn(R + T_n - T_m): a phase on the mesh, then the Fourier transform</span>
+        <span class="n">fracs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nk</span><span class="p">],</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">cell</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">cell</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>  <span class="c1"># T_n - T_m, shape (n_w, n_w, dim)</span>
+        <span class="n">ham</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ham_k</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ka,mna-&gt;kmn&#39;</span><span class="p">,</span> <span class="n">fracs</span><span class="p">,</span> <span class="n">dt</span><span class="p">))</span>
+        <span class="n">ham_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fftn</span><span class="p">(</span><span class="n">ham</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nk</span> <span class="o">+</span> <span class="p">(</span><span class="n">n_w</span><span class="p">,</span> <span class="n">n_w</span><span class="p">)),</span> <span class="n">axes</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)))</span> <span class="o">/</span> <span class="n">n_k</span>
+        <span class="c1"># the image R = j + N s closest to each bond, j centred on 0</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="o">*</span><span class="p">[(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="n">n</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span> <span class="o">%</span> <span class="n">n</span> <span class="o">-</span> <span class="n">n</span> <span class="o">//</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nk</span><span class="p">],</span>
+                                       <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span> <span class="o">*</span> <span class="n">dim</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">nk</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>  <span class="c1"># (n_k * 3^dim, dim)</span>
+        <span class="n">bond</span> <span class="o">=</span> <span class="p">(</span><span class="n">R</span> <span class="o">@</span> <span class="n">prim</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">tau</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">tau</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">bond</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_k</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">n_w</span><span class="p">,</span> <span class="n">n_w</span><span class="p">)</span>
+        <span class="n">closest</span> <span class="o">=</span> <span class="n">dist</span> <span class="o">&lt;=</span> <span class="n">dist</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">prim</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">closest</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">closest</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ham_r</span> <span class="o">=</span> <span class="p">(</span><span class="n">ham_r</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_k</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_w</span><span class="p">,</span> <span class="n">n_w</span><span class="p">)</span> <span class="o">*</span> <span class="n">weight</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_w</span><span class="p">,</span> <span class="n">n_w</span><span class="p">)</span>
+        <span class="n">keep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">weight</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_w</span><span class="p">,</span> <span class="n">n_w</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_hr_kspace</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">prim_vec</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_w</span><span class="p">,</span> <span class="n">R</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span> <span class="n">ham_r</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span> <span class="n">cutoff</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_shells</span><span class="p">(</span><span class="n">rec</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">nk</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Neighbours :math:`\mathbf{b}` of a k-point on the mesh</span>
+<span class="sd">    and their weights :math:`w_b`, so that</span>
+<span class="sd">    :math:`\sum_b w_b b_\alpha b_\beta = \delta_{\alpha\beta}` (the</span>
+<span class="sd">    finite-difference condition of Marzari and Vanderbilt 1997, Eq. B1).</span>
+<span class="sd">    Shells of equal :math:`|\mathbf{b}|` are added by increasing length,</span>
+<span class="sd">    skipping those that add no independent direction, until the condition</span>
+<span class="sd">    is solvable (as Wannier90 does).</span>
+
+<span class="sd">    :returns: steps (integers, shape (nb, dim)), b (shape (nb, dim)), w (shape (nb,)).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nk</span><span class="p">)</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span> <span class="o">*</span> <span class="n">dim</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">steps</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">steps</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">nk</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span> <span class="o">@</span> <span class="n">rec</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">radii</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">length</span> <span class="o">/</span> <span class="n">length</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="n">upper</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">triu_indices</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span><span class="p">)[</span><span class="n">upper</span><span class="p">]</span>
+    <span class="n">chosen</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">radii</span><span class="p">:</span>
+        <span class="n">shell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">length</span> <span class="o">/</span> <span class="n">length</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="n">r</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-6</span>
+        <span class="n">column</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ba,bc-&gt;ac&#39;</span><span class="p">,</span> <span class="n">b</span><span class="p">[</span><span class="n">shell</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="n">shell</span><span class="p">])[</span><span class="n">upper</span><span class="p">]</span>
+        <span class="n">trial</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">columns</span> <span class="o">+</span> <span class="p">[</span><span class="n">column</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">trial</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">chosen</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">shell</span><span class="p">)</span>
+        <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+        <span class="n">w</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">trial</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="c1"># always reached: the steps e_i and e_i + e_j give dim(dim+1)/2</span>
+        <span class="c1"># independent columns, and the system is then square and invertible</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">trial</span> <span class="o">@</span> <span class="n">w</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">):</span>
+            <span class="k">break</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">chosen</span><span class="p">])</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">ws</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">ws</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">chosen</span><span class="p">,</span> <span class="n">w</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">steps</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span> <span class="n">weights</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_spread</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">n_k</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Centres (shape (n_wann, dim), k coordinates), spreads</span>
+<span class="sd">    and the parts :math:`\Omega_I, \tilde\Omega_D, \tilde\Omega_{OD}` from</span>
+<span class="sd">    the overlaps *m* (shape (nk, nb, n_wann, n_wann)).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">axis1</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis2</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># (nk, nb, n_wann)</span>
+    <span class="n">phase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">diag</span><span class="p">)</span>
+    <span class="n">centers</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;b,ba,kbn-&gt;na&#39;</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">phase</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_k</span>
+    <span class="n">r2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;b,kbn-&gt;n&#39;</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="mf">1.</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">diag</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">phase</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_k</span>
+    <span class="n">spreads</span> <span class="o">=</span> <span class="n">r2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">centers</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;b,kbmn-&gt;&#39;</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_k</span>
+    <span class="n">on_diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;b,kbn-&gt;&#39;</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">diag</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_k</span>
+    <span class="n">omega_i</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">m</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">total</span><span class="p">)</span>
+    <span class="n">omega_od</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">total</span> <span class="o">-</span> <span class="n">on_diag</span><span class="p">)</span>
+    <span class="n">omega_d</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;b,kbn-&gt;&#39;</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="p">(</span><span class="n">phase</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span> <span class="o">@</span> <span class="n">centers</span><span class="o">.</span><span class="n">T</span><span class="p">)[</span><span class="kc">None</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_k</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">centers</span><span class="p">,</span> <span class="n">spreads</span><span class="p">,</span> <span class="n">omega_i</span><span class="p">,</span> <span class="n">omega_d</span><span class="p">,</span> <span class="n">omega_od</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_gradient</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">centers</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Gradient :math:`G(\mathbf{k})` of the spread for a</span>
+<span class="sd">    gauge change :math:`U \to U e^{dW}` (Marzari and Vanderbilt 1997,</span>
+<span class="sd">    Eq. 52), :math:`G = 4\sum_b w_b(\mathcal{A}[R] - \mathcal{S}[T])`:</span>
+<span class="sd">    :math:`\Omega` decreases along :math:`dW = \epsilon G`, :math:`\epsilon &gt; 0`,</span>
+<span class="sd">    with :math:`R_{mn} = M_{mn}M_{nn}^*`, :math:`T_{mn} = (M_{mn}/M_{nn})q_n`,</span>
+<span class="sd">    :math:`q_n = \mathrm{Im}\ln M_{nn} + \mathbf{b}\cdot\bar{\mathbf{r}}_n`,</span>
+<span class="sd">    :math:`\mathcal{A}[B] = (B - B^\dagger)/2`, :math:`\mathcal{S}[B] = (B + B^\dagger)/2i`.</span>
+<span class="sd">    Shape (nk, n_wann, n_wann), anti-Hermitian.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">axis1</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis2</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">m</span> <span class="o">*</span> <span class="n">diag</span><span class="o">.</span><span class="n">conj</span><span class="p">()[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">diag</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span> <span class="o">@</span> <span class="n">centers</span><span class="o">.</span><span class="n">T</span><span class="p">)[</span><span class="kc">None</span><span class="p">]</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">m</span> <span class="o">/</span> <span class="n">diag</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">a_r</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="n">r</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">s_t</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="n">j</span>
+    <span class="k">return</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;b,kbmn-&gt;kmn&#39;</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">a_r</span> <span class="o">-</span> <span class="n">s_t</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_unitary_step</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. exp(eps G) for anti-Hermitian matrices G (stacked).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">g</span>  <span class="c1"># Hermitian</span>
+    <span class="n">lam</span><span class="p">,</span> <span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">((</span><span class="n">h</span> <span class="o">+</span> <span class="n">h</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">vec</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">lam</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:])</span> <span class="o">@</span> <span class="n">vec</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_disentangle</span><span class="p">(</span><span class="n">m0</span><span class="p">,</span> <span class="n">neighbour</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">inside</span><span class="p">,</span> <span class="n">frozen</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">n_w</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">,</span> <span class="n">tol</span><span class="p">,</span> <span class="n">mixing</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Souza-Marzari-Vanderbilt subspace selection. At each</span>
+<span class="sd">    k, the :math:`n_W` states :math:`U(\mathbf{k})` (columns, in the basis</span>
+<span class="sd">    of the candidate bands) are the frozen ones plus the leading</span>
+<span class="sd">    eigenvectors of</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        Z(\mathbf{k}) = \sum_b w_b\, M^{(0)}_{\mathbf{k},\mathbf{b}}\,</span>
+<span class="sd">        P(\mathbf{k}+\mathbf{b})\, M^{(0)\dagger}_{\mathbf{k},\mathbf{b}}</span>
+
+<span class="sd">    restricted to the free states of the window (*inside* and not *frozen*),</span>
+<span class="sd">    :math:`P = UU^\dagger` from the previous step, with linear mixing of</span>
+<span class="sd">    :math:`Z` (Eqs. 21-25 of SMV 2001). Each step lowers</span>
+<span class="sd">    :math:`\Omega_I = \sum_b w_b(n_W - \langle\|U_\mathbf{k}^\dagger M^{(0)}U_{\mathbf{k}+\mathbf{b}}\|^2\rangle_k)`.</span>
+<span class="sd">    The first subspace is the projection of the trial orbitals *a*</span>
+<span class="sd">    (overlaps :math:`\langle u_m|g_n\rangle`, shape (nk, N, n_w)).</span>
+
+<span class="sd">    :returns: U (nk, N, n_w), the :math:`\Omega_I` history, converged.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">n_k</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">inside</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">free</span> <span class="o">=</span> <span class="n">inside</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">frozen</span>
+    <span class="c1"># the eigenvalues of Z lie in [0, sum w]: frozen states above, excluded below</span>
+    <span class="n">big</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">level</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">frozen</span><span class="p">,</span> <span class="n">big</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">inside</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="n">big</span><span class="p">))</span>
+    <span class="n">diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">select</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">*</span> <span class="p">(</span><span class="n">free</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">&amp;</span> <span class="n">free</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:])</span>
+        <span class="n">z</span><span class="p">[:,</span> <span class="n">diag</span><span class="p">,</span> <span class="n">diag</span><span class="p">]</span> <span class="o">+=</span> <span class="n">level</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">z</span><span class="p">)[</span><span class="mi">1</span><span class="p">][:,</span> <span class="p">:,</span> <span class="o">-</span><span class="n">n_w</span><span class="p">:]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">z_matrix</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="n">m0</span> <span class="o">@</span> <span class="n">u</span><span class="p">[</span><span class="n">neighbour</span><span class="p">]</span>  <span class="c1"># (nk, nb, N, n_w)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;b,kbmi,kbni-&gt;kmn&#39;</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">mu</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span>
+
+    <span class="n">u</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">a</span> <span class="o">@</span> <span class="n">a</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">z_matrix</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">history</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">n_w</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;kmi,kmn,kni-&gt;&#39;</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span><span class="o">.</span><span class="n">real</span> <span class="o">/</span> <span class="n">n_k</span><span class="p">)]</span>
+    <span class="n">converged</span> <span class="o">=</span> <span class="n">max_iter</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="n">z_in</span> <span class="o">=</span> <span class="n">z</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">z_in</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">z_matrix</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+        <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">n_w</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;kmi,kmn,kni-&gt;&#39;</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span><span class="o">.</span><span class="n">real</span> <span class="o">/</span> <span class="n">n_k</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="n">converged</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">break</span>
+        <span class="n">z_in</span> <span class="o">=</span> <span class="n">mixing</span> <span class="o">*</span> <span class="n">z</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">mixing</span><span class="p">)</span> <span class="o">*</span> <span class="n">z_in</span>
+    <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">history</span><span class="p">),</span> <span class="n">converged</span>
+
+
+<div class="viewcode-block" id="wannierize">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.wannier.wannierize">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">wannierize</span><span class="p">(</span>
+    <span class="n">ks</span><span class="p">:</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">bands</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">trial</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-10</span><span class="p">,</span>
+    <span class="n">step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">window</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">frozen</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dis_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">,</span> <span class="n">dis_tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-10</span><span class="p">,</span>
+    <span class="n">mixing</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WannierFunctions</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Build the maximally localized Wannier functions of a group of bands:</span>
+<span class="sd">    project the Bloch states onto trial orbitals (Lowdin orthogonalized),</span>
+<span class="sd">    then minimize the spread</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \Omega = \sum_n \left[\langle r^2\rangle_n - |\bar{\mathbf{r}}_n|^2\right]</span>
+<span class="sd">        = \Omega_I + \tilde\Omega_D + \tilde\Omega_{OD}</span>
+
+<span class="sd">    by conjugate gradients over the gauge :math:`U(\mathbf{k})` (Marzari</span>
+<span class="sd">    and Vanderbilt, Phys. Rev. B 56, 12847 (1997); as in Wannier90, with a</span>
+<span class="sd">    parabolic line search). The finite-difference</span>
+<span class="sd">    formulas use the overlaps of the Bloch states at neighbouring mesh</span>
+<span class="sd">    points, with the orbital positions included (as in the Wilson loops of</span>
+<span class="sd">    *KSpace.wannier_centers*, so the centres agree with them). Only</span>
+<span class="sd">    :math:`\tilde\Omega_D + \tilde\Omega_{OD}` depends on the gauge;</span>
+<span class="sd">    :math:`\Omega_I` is fixed by the band group.</span>
+
+<span class="sd">    In 1D, the minimum has :math:`\tilde\Omega_D = \tilde\Omega_{OD} = 0`</span>
+<span class="sd">    for one band, and the centre is the Berry phase over :math:`2\pi`. For</span>
+<span class="sd">    a Chern band, every projection fails somewhere (*min_singular_value*</span>
+<span class="sd">    tends to zero), and the spread diverges as the mesh is refined. The</span>
+<span class="sd">    descent finds the local minimum nearest the projected gauge: trial</span>
+<span class="sd">    orbitals that miss the bands at isolated k-points (a small</span>
+<span class="sd">    *min_singular_value*) leave phase vortices that it does not remove,</span>
+<span class="sd">    even in a trivial band, so choose orbitals the bands actually live on.</span>
+
+<span class="sd">    **Entangled bands.** With fewer trial orbitals :math:`n_W` than</span>
+<span class="sd">    *bands* (or with a *window*), the bands need not be isolated: the</span>
+<span class="sd">    Wannier functions span, at each k, the :math:`n_W`-dimensional subspace</span>
+<span class="sd">    of the states of *bands* inside the outer *window* that minimizes</span>
+<span class="sd">    :math:`\Omega_I` (Souza, Marzari and Vanderbilt, Phys. Rev. B 65,</span>
+<span class="sd">    035109 (2001)), found by iterating from the projection of the trial</span>
+<span class="sd">    orbitals, with linear *mixing*. The states inside the *frozen* window</span>
+<span class="sd">    are kept exactly, so the Wannier bands (*WannierFunctions.kspace*)</span>
+<span class="sd">    reproduce them. The maximal localization then runs within that</span>
+<span class="sd">    subspace. Pass every band (``list(range(ks.norb))``) and select the</span>
+<span class="sd">    states with the windows.</span>
+
+<span class="sd">    :param ks: **KSpace** instance, Hermitian.</span>
+<span class="sd">    :param bands: Band index, or list of band indices. With one trial</span>
+<span class="sd">        orbital per band and no window, the group, which must be separated</span>
+<span class="sd">        in energy from the other bands over the whole mesh; otherwise the</span>
+<span class="sd">        candidate bands of the disentanglement.</span>
+<span class="sd">    :param trial: Trial orbitals, one per Wannier function (at most one per</span>
+<span class="sd">        band): a list of orbital indices (each a single orbital of the home</span>
+<span class="sd">        cell), or a complex array of shape (norb, n_wann) whose columns are</span>
+<span class="sd">        combinations of the orbitals of the home cell (e.g. a bond orbital).</span>
+<span class="sd">    :param nk: Positive integer, or tuple of *dim* integers. Default value</span>
+<span class="sd">        12. k-mesh, at least 3 along each direction; the Wannier functions</span>
+<span class="sd">        live on the same number of cells.</span>
+<span class="sd">    :param max_iter: Positive integer or zero. Default value 500. Maximal</span>
+<span class="sd">        number of descent steps (0 keeps the projected gauge).</span>
+<span class="sd">    :param tol: Positive real number. Default value 1e-10. Convergence</span>
+<span class="sd">        threshold on the change of :math:`\Omega` between steps.</span>
+<span class="sd">    :param step: Positive real number. Default value 0.5. Trial step</span>
+<span class="sd">        :math:`\alpha` of the line search, :math:`dW = \alpha D/4\sum_b w_b`</span>
+<span class="sd">        along the search direction :math:`D`; it is halved whenever the</span>
+<span class="sd">        spread would grow.</span>
+<span class="sd">    :param window: Tuple of two real numbers. Default value None (every</span>
+<span class="sd">        state of *bands*). Outer energy window :math:`(E_{min}, E_{max})`:</span>
+<span class="sd">        the states of *bands* inside it are the candidates, at least</span>
+<span class="sd">        n_wann at every k-point.</span>
+<span class="sd">    :param frozen: Tuple of two real numbers. Default value None (no</span>
+<span class="sd">        frozen states). Inner energy window, inside *window*: its states,</span>
+<span class="sd">        at most n_wann at every k-point, are kept in the subspace.</span>
+<span class="sd">    :param dis_iter: Positive integer or zero. Default value 2000. Maximal</span>
+<span class="sd">        number of disentanglement steps (0 keeps the projected subspace).</span>
+<span class="sd">    :param dis_tol: Positive real number. Default value 1e-10. Convergence</span>
+<span class="sd">        threshold on the change of :math:`\Omega_I` between steps.</span>
+<span class="sd">    :param mixing: Real in (0, 1]. Default value 0.5. Fraction of the new</span>
+<span class="sd">        :math:`Z(\mathbf{k})` mixed in at each disentanglement step.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **wf** -- **WannierFunctions** instance.</span>
+
+<span class="sd">    Example usage::</span>
+
+<span class="sd">        wf = wannierize(ssh, 0, trial=[0], nk=20)</span>
+<span class="sd">        wf.centers, wf.spreads, wf.functions</span>
+<span class="sd">        # two Wannier functions out of four bands, the lowest two kept exactly</span>
+<span class="sd">        wf = wannierize(ks, [0, 1, 2, 3], trial=[0, 1], window=(-4., 3.), frozen=(-4., 0.))</span>
+<span class="sd">        wf.kspace()  # the Wannier-interpolated model</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">kspace</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">KSpace</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">hermitian_model</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">is_hermitian</span><span class="p">())</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">bands</span> <span class="o">=</span> <span class="p">[</span><span class="n">bands</span><span class="p">]</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">band_indices</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="n">ks</span><span class="o">.</span><span class="n">norb</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">trial_orbitals</span><span class="p">(</span><span class="n">trial</span><span class="p">,</span> <span class="n">ks</span><span class="o">.</span><span class="n">norb</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">bands</span><span class="p">))</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">nk</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="n">ks</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+    <span class="n">nk</span> <span class="o">=</span> <span class="p">(</span><span class="n">nk</span><span class="p">,)</span> <span class="o">*</span> <span class="n">ks</span><span class="o">.</span><span class="n">dim</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">nk</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">nk_min</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int_zero</span><span class="p">(</span><span class="n">max_iter</span><span class="p">,</span> <span class="s1">&#39;max_iter&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="s1">&#39;tol&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="s1">&#39;step&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">window</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">energy_window</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="s1">&#39;window&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">frozen</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">energy_window</span><span class="p">(</span><span class="n">frozen</span><span class="p">,</span> <span class="s1">&#39;frozen&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">window</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">error_handling</span><span class="o">.</span><span class="n">frozen_window</span><span class="p">(</span><span class="n">frozen</span><span class="p">,</span> <span class="n">window</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int_zero</span><span class="p">(</span><span class="n">dis_iter</span><span class="p">,</span> <span class="s1">&#39;dis_iter&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">dis_tol</span><span class="p">,</span> <span class="s1">&#39;dis_tol&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">mixing</span><span class="p">(</span><span class="n">mixing</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trial</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">trial</span><span class="p">):</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">norb</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)[:,</span> <span class="n">trial</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">trial</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+
+    <span class="n">n_k</span><span class="p">,</span> <span class="n">n_w</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">nk</span><span class="p">)),</span> <span class="n">g</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">entangled</span> <span class="o">=</span> <span class="n">n_w</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">bands</span><span class="p">)</span> <span class="ow">or</span> <span class="n">window</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">frozen</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">kpts</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">mesh_grid</span><span class="p">(</span><span class="n">nk</span><span class="p">)</span>
+    <span class="n">en</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">_eigs</span><span class="p">(</span><span class="n">kpts</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">entangled</span><span class="p">:</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">isolated_bands</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="n">bands</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">_subspaces</span><span class="p">(</span><span class="n">kpts</span><span class="p">,</span> <span class="n">bands</span><span class="p">)</span>  <span class="c1"># (n_k, norb, len(bands))</span>
+
+    <span class="c1"># overlaps of the Bloch states with their mesh neighbours</span>
+    <span class="n">steps</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">_shells</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">rec_vec_k</span><span class="p">,</span> <span class="n">nk</span><span class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_k</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nk</span><span class="p">)</span>
+    <span class="n">neighbour</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="o">-</span><span class="n">st</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">dim</span><span class="p">)))</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+                                   <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (n_k, nb)</span>
+    <span class="n">tau</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">orbital_positions</span><span class="p">()</span>
+    <span class="n">phase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">tau</span> <span class="o">@</span> <span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">k_basis</span> <span class="o">@</span> <span class="n">b</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>  <span class="c1"># (norb, nb)</span>
+    <span class="n">m0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;kom,ob,kbon-&gt;kbmn&#39;</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">phase</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="n">neighbour</span><span class="p">])</span>
+
+    <span class="c1"># disentanglement: the n_w-dimensional subspace, then the same steps within it</span>
+    <span class="n">energies</span> <span class="o">=</span> <span class="n">en</span><span class="p">[:,</span> <span class="n">bands</span><span class="p">]</span>
+    <span class="n">dis_history</span><span class="p">,</span> <span class="n">dis_converged</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="kc">True</span>
+    <span class="n">u_dis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n_w</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">n_k</span><span class="p">,</span> <span class="n">n_w</span><span class="p">,</span> <span class="n">n_w</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">entangled</span><span class="p">:</span>
+        <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="n">window</span> <span class="k">if</span> <span class="n">window</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+        <span class="n">inside</span> <span class="o">=</span> <span class="p">(</span><span class="n">energies</span> <span class="o">&gt;=</span> <span class="n">lo</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">energies</span> <span class="o">&lt;=</span> <span class="n">hi</span><span class="p">)</span>
+        <span class="n">fixed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">inside</span><span class="p">)</span> <span class="k">if</span> <span class="n">frozen</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> \
+            <span class="n">inside</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">energies</span> <span class="o">&gt;=</span> <span class="n">frozen</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">energies</span> <span class="o">&lt;=</span> <span class="n">frozen</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">window_states</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">inside</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()),</span> <span class="nb">int</span><span class="p">(</span><span class="n">fixed</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">n_w</span><span class="p">)</span>
+        <span class="n">u_dis</span><span class="p">,</span> <span class="n">dis_history</span><span class="p">,</span> <span class="n">dis_converged</span> <span class="o">=</span> <span class="n">_disentangle</span><span class="p">(</span>
+            <span class="n">m0</span><span class="p">,</span> <span class="n">neighbour</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">inside</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">@</span> <span class="n">g</span><span class="p">,</span> <span class="n">n_w</span><span class="p">,</span>
+            <span class="n">dis_iter</span><span class="p">,</span> <span class="n">dis_tol</span><span class="p">,</span> <span class="n">mixing</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">v</span> <span class="o">@</span> <span class="n">u_dis</span>  <span class="c1"># (n_k, norb, n_w)</span>
+        <span class="n">m0</span> <span class="o">=</span> <span class="n">u_dis</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">@</span> <span class="n">m0</span> <span class="o">@</span> <span class="n">u_dis</span><span class="p">[</span><span class="n">neighbour</span><span class="p">]</span>
+
+    <span class="c1"># projection, made unitary: A = W s V^dag -&gt; U = W V^dag</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">@</span> <span class="n">g</span>
+    <span class="n">w_svd</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">vh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">projection</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">w_svd</span> <span class="o">@</span> <span class="n">vh</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">overlaps</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">u</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">@</span> <span class="n">m0</span> <span class="o">@</span> <span class="n">u</span><span class="p">[</span><span class="n">neighbour</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">trial_gauge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">u_x</span> <span class="o">=</span> <span class="n">u</span> <span class="o">@</span> <span class="n">_unitary_step</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">m_x</span> <span class="o">=</span> <span class="n">overlaps</span><span class="p">(</span><span class="n">u_x</span><span class="p">)</span>
+        <span class="n">c_x</span><span class="p">,</span> <span class="n">s_x</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">_spread</span><span class="p">(</span><span class="n">m_x</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">n_k</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">s_x</span><span class="p">)),</span> <span class="n">u_x</span><span class="p">,</span> <span class="n">m_x</span><span class="p">,</span> <span class="n">c_x</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">overlaps</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">centers</span><span class="p">,</span> <span class="n">spreads</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">_spread</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">n_k</span><span class="p">)</span>
+    <span class="n">history</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">spreads</span><span class="p">))]</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">step</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+    <span class="n">converged</span> <span class="o">=</span> <span class="n">max_iter</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="n">d</span><span class="p">,</span> <span class="n">g_norm</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="mf">0.</span>
+    <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
+        <span class="c1"># conjugate gradients (Fletcher-Reeves, restarted every 5 steps; a</span>
+        <span class="c1"># direction without descent fails the line search, which restarts)</span>
+        <span class="n">grad</span> <span class="o">=</span> <span class="n">_gradient</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">centers</span><span class="p">)</span>
+        <span class="n">g_new</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">grad</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">grad</span> <span class="o">+</span> <span class="n">g_new</span> <span class="o">/</span> <span class="n">g_norm</span> <span class="o">*</span> <span class="n">d</span> <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">it</span> <span class="o">%</span> <span class="mi">5</span> <span class="ow">and</span> <span class="n">g_norm</span> <span class="o">&gt;</span> <span class="mf">0.</span> <span class="k">else</span> <span class="n">grad</span>
+        <span class="n">g_norm</span> <span class="o">=</span> <span class="n">g_new</span>
+        <span class="c1"># parabola through steps 0, eps, 2 eps; keep the lowest spread found</span>
+        <span class="n">tries</span> <span class="o">=</span> <span class="p">[</span><span class="n">trial_gauge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">eps</span><span class="p">),</span> <span class="n">trial_gauge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">eps</span><span class="p">)]</span>
+        <span class="n">o0</span><span class="p">,</span> <span class="n">o1</span><span class="p">,</span> <span class="n">o2</span> <span class="o">=</span> <span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">tries</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">tries</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">curv</span> <span class="o">=</span> <span class="n">o2</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">o1</span> <span class="o">+</span> <span class="n">o0</span>
+        <span class="k">if</span> <span class="n">curv</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">o0</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">o1</span> <span class="o">+</span> <span class="n">o2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">curv</span><span class="p">)</span>
+            <span class="k">if</span> <span class="mf">0.</span> <span class="o">&lt;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mf">4.</span><span class="p">:</span>
+                <span class="n">tries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">trial_gauge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">x</span> <span class="o">*</span> <span class="n">eps</span><span class="p">))</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">tries</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">best</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">o0</span><span class="p">:</span>
+            <span class="c1"># no descent along d: restart from the gradient with a smaller step,</span>
+            <span class="c1"># until the step is negligible (a minimum, within roundoff)</span>
+            <span class="n">eps</span> <span class="o">/=</span> <span class="mi">2</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">eps</span> <span class="o">&lt;</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">step</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span><span class="p">)):</span>
+                <span class="n">converged</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+            <span class="k">continue</span>
+        <span class="n">omega</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">centers</span> <span class="o">=</span> <span class="n">best</span>
+        <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">omega</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">o0</span> <span class="o">-</span> <span class="n">omega</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="n">converged</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">break</span>
+    <span class="n">centers</span><span class="p">,</span> <span class="n">spreads</span><span class="p">,</span> <span class="n">omega_i</span><span class="p">,</span> <span class="n">omega_d</span><span class="p">,</span> <span class="n">omega_od</span> <span class="o">=</span> <span class="n">_spread</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">n_k</span><span class="p">)</span>
+
+    <span class="c1"># Wannier functions: W_n(R, o) = (1/N) sum_k e^{ik.R} (v U)_{on}(k)</span>
+    <span class="n">amp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">ifftn</span><span class="p">((</span><span class="n">v</span> <span class="o">@</span> <span class="n">u</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nk</span> <span class="o">+</span> <span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">norb</span><span class="p">,</span> <span class="n">n_w</span><span class="p">)),</span> <span class="n">axes</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">dim</span><span class="p">)))</span>
+    <span class="c1"># move each one so that its centre sits in the middle cell</span>
+    <span class="n">rec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">rec_vec</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+    <span class="n">cart</span> <span class="o">=</span> <span class="n">centers</span> <span class="o">@</span> <span class="n">ks</span><span class="o">.</span><span class="n">k_basis</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">frac</span> <span class="o">=</span> <span class="n">cart</span> <span class="o">@</span> <span class="n">rec</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+    <span class="n">shift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">nk</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">frac</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>  <span class="c1"># roundoff at a cell corner</span>
+    <span class="n">functions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_w</span><span class="p">,</span> <span class="n">n_k</span> <span class="o">*</span> <span class="n">ks</span><span class="o">.</span><span class="n">norb</span><span class="p">),</span> <span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_w</span><span class="p">):</span>
+        <span class="n">moved</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">amp</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">shift</span><span class="p">[</span><span class="n">n</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">dim</span><span class="p">)))</span>
+        <span class="c1"># rows of finite_ham: cell n1 + N1 n2 + N1 N2 n3, then the orbital</span>
+        <span class="n">functions</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">moved</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">dim</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">dim</span><span class="p">,))</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">cart</span> <span class="o">=</span> <span class="n">cart</span> <span class="o">+</span> <span class="n">shift</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">prim_vec</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+    <span class="n">positions</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_finite_sites</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">nk</span><span class="p">)</span>
+    <span class="c1"># out of the plane of a 2D lattice in 3D (or off a chain), the position</span>
+    <span class="c1"># operator is well defined: the centre is its expectation value</span>
+    <span class="n">perp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">space_dim</span><span class="p">)</span> <span class="o">-</span> <span class="n">ks</span><span class="o">.</span><span class="n">k_basis</span> <span class="o">@</span> <span class="n">ks</span><span class="o">.</span><span class="n">k_basis</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">cart</span> <span class="o">=</span> <span class="n">cart</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">functions</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">@</span> <span class="n">positions</span><span class="p">)</span> <span class="o">@</span> <span class="n">perp</span>
+    <span class="n">gauge</span> <span class="o">=</span> <span class="n">u_dis</span> <span class="o">@</span> <span class="n">u</span>  <span class="c1"># (n_k, len(bands), n_w)</span>
+    <span class="n">ham_k</span> <span class="o">=</span> <span class="n">gauge</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">@</span> <span class="p">(</span><span class="n">energies</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">gauge</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">WannierFunctions</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">nk</span><span class="p">,</span> <span class="n">functions</span><span class="p">,</span> <span class="n">positions</span><span class="p">,</span> <span class="n">cart</span><span class="p">,</span> <span class="n">spreads</span><span class="p">,</span> <span class="n">omega_i</span><span class="p">,</span> <span class="n">omega_d</span><span class="p">,</span>
+                                      <span class="n">omega_od</span><span class="p">,</span> <span class="n">gauge</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">history</span><span class="p">),</span> <span class="n">converged</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">min</span><span class="p">()),</span>
+                                      <span class="n">dis_history</span><span class="p">,</span> <span class="n">dis_converged</span><span class="p">,</span> <span class="n">ham_k</span><span class="p">,</span> <span class="n">shift</span><span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2026, Charles Poli.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

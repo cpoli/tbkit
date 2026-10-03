@@ -43,7 +43,7 @@ The model: s- and p-like orbitals with spin on a cubic lattice,
 
 the lattice regularization of the Bi\ :sub:`2`\ Se\ :sub:`3` model. The
 band inversion :math:`m < 0` at some of the eight momenta
-:math:`(0\text{ or }\pi)^3` sets :math:`\nu_0`.
+:math:`(0\text{ or }\pi)^3` sets the four indices.
 
 The photoemission picture is the *surface spectral function*
 :math:`A_s(\mathbf{k}_\parallel, E)` of the semi-infinite crystal
@@ -95,26 +95,34 @@ Brillouin zone, plus sharp lines for the states bound to the surface.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-77
+.. GENERATED FROM PYTHON SOURCE LINES 69-83
 
-The strong index
--------------------
+The four Z2 indices
+----------------------
 :math:`m` is :math:`M` at :math:`\Gamma`, :math:`M - 4` at the three
 :math:`X`, :math:`M - 8` at the three :math:`M` and :math:`M - 12` at
 :math:`R`. The strong index counts the inverted momenta modulo 2: one
-for :math:`0 < M < 4` (at :math:`\Gamma`), four for :math:`4 < M < 8`
-(a weak topological insulator, :math:`\nu_0 = 0`), seven for
-:math:`8 < M < 12`.
+for :math:`0 < M < 4` (at :math:`\Gamma`), four for :math:`4 < M < 8`,
+seven for :math:`8 < M < 12`. The parity criterion gives only
+:math:`\nu_0`; :meth:`~tbkit.kspace.KSpace.z2_indices_3d` gives all four,
+:math:`(\nu_0;\nu_1\nu_2\nu_3)`, from the Wannier-centre flow on the six
+time-reversal-invariant planes, without using inversion. They tell the
+weak topological insulator :math:`(0;111)` of :math:`4 < M < 8` -- quantum
+spin Hall layers stacked along (111), whose planes :math:`k_i = \pi`
+each hold one inverted momentum -- from the trivial insulator, which the
+strong index alone cannot.
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-83
+.. GENERATED FROM PYTHON SOURCE LINES 83-91
 
 .. code-block:: Python
 
 
-    phases = {-2.: 0, 2.: 1, 6.: 0, 10.: 1}
-    for M, nu in phases.items():
-        assert topological_insulator(M).parity_z2(INVERSION, [0, 1]) == nu
-    print('Strong index nu_0:', {M: nu for M, nu in phases.items()})
+    phases = {-2.: (0, 0, 0, 0), 2.: (1, 0, 0, 0), 6.: (0, 1, 1, 1), 10.: (1, 1, 1, 1)}
+    for M, indices in phases.items():
+        ti = topological_insulator(M)
+        assert ti.parity_z2(INVERSION, [0, 1]) == indices[0]
+        assert ti.z2_indices_3d([0, 1], nk=60, nk_perp=31) == indices
+        print('M = {:5.1f}: (nu_0; nu_1 nu_2 nu_3) = ({}; {}{}{})'.format(M, *indices))
 
 
 
@@ -124,12 +132,15 @@ for :math:`0 < M < 4` (at :math:`\Gamma`), four for :math:`4 < M < 8`
 
  .. code-block:: none
 
-    Strong index nu_0: {-2.0: 0, 2.0: 1, 6.0: 0, 10.0: 1}
+    M =  -2.0: (nu_0; nu_1 nu_2 nu_3) = (0; 000)
+    M =   2.0: (nu_0; nu_1 nu_2 nu_3) = (1; 000)
+    M =   6.0: (nu_0; nu_1 nu_2 nu_3) = (0; 111)
+    M =  10.0: (nu_0; nu_1 nu_2 nu_3) = (1; 111)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-92
+.. GENERATED FROM PYTHON SOURCE LINES 92-100
 
 The surface Dirac cone
 ------------------------
@@ -140,7 +151,7 @@ topological insulator (:math:`M = 2`) a single Dirac cone crosses it,
 centred at :math:`\bar\Gamma`, the projection of the inverted momentum,
 with velocity 1.
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-123
+.. GENERATED FROM PYTHON SOURCE LINES 100-131
 
 .. code-block:: Python
 
@@ -189,7 +200,7 @@ with velocity 1.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 124-129
+.. GENERATED FROM PYTHON SOURCE LINES 132-137
 
 Where the cone sits, and when there is none
 ----------------------------------------------
@@ -197,7 +208,7 @@ For :math:`8 < M < 12` the inversion has moved to :math:`R = (\pi,\pi,\pi)`,
 and the cone to its projection :math:`\bar{M}`. In the trivial insulator
 (:math:`M = -2`) the gap stays empty on the surface too.
 
-.. GENERATED FROM PYTHON SOURCE LINES 129-147
+.. GENERATED FROM PYTHON SOURCE LINES 137-155
 
 .. code-block:: Python
 
@@ -240,7 +251,7 @@ and the cone to its projection :math:`\bar{M}`. In the trivial insulator
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.678 seconds)
+   **Total running time of the script:** (0 minutes 3.921 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_3d_topological_insulator.py:

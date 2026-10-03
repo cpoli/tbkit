@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>The Haldane Model: Berry Curvature and a Topological Phase Transition &#8212; tbkit 0.4.2 documentation</title>
+    <title>The Haldane Model: Berry Curvature and a Topological Phase Transition &#8212; tbkit 0.5.0 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../../_static/documentation_options.js?v=9dc614e0"></script>
+    <script src="../../../_static/documentation_options.js?v=70f82a29"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -57,7 +57,7 @@
     <link rel="prev" title="The Fu-Kane Parity Criterion: Z2 from Inversion Eigenvalues" href="plot_fu_kane_parity.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.4" />
+  <meta name="docsearch:version" content="0.5" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -369,7 +369,9 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../hall_effects/index.html">Hall effects</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_anomalous_hall_disorder.html">The Anomalous Hall Effect in Real Space: a Disordered Chern Insulator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_anomalous_hall_effect.html">The Anomalous Hall Effect: from the Anomalous Velocity to the Berry Phase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_anomalous_nernst_effect.html">The Berry-Phase Anomalous Nernst Effect</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_intrinsic_spin_hall_effect.html">The Intrinsic Spin Hall Effect: Kane-Mele Plateau and Rashba Coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_thermal_hall_effect.html">The Intrinsic Thermal Hall Effect and the Wiedemann-Franz Law</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../higher_order/index.html">Higher-Order Topology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -377,6 +379,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../large_scale/index.html">Large lattices</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_batched_k_space.html">Batched and Threaded k-Space Diagonalization: the Haldane Model on 90,000 k-Points</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_kernel_polynomial_method.html">The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites</a></li>
 </ul>
 </details></li>
@@ -384,10 +387,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_hofstadter_butterfly.html">Hofstadter’s Butterfly</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_landau_levels.html">Landau Levels: Square Lattice vs. Graphene</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_magnetic_field.html">Aharonov-Bohm Ring: A Magnetic Field on a Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_orbital_magnetization.html">The Modern Theory of Orbital Magnetization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_peierls_substitution.html">The Peierls Substitution: Flux Through the Plaquettes, in Any Gauge</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../models/index.html">Building, Bridging and Saving Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../models/plot_building_maximally_localized_wannier_functions.html">Maximally Localized Wannier Functions: Projection and Spread Minimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/plot_disentangling_entangled_bands.html">Disentanglement: Wannier Functions of the π Bands of Graphene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/plot_kp_theory_on_a_lattice.html">k·p Theory on a Lattice: from a Continuum Hamiltonian to Tight-Binding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/plot_maximally_localized_wannier_functions.html">Maximally Localized Wannier Functions: Graphene from a Wannier90 File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/plot_neighbour_hoppings.html">Hoppings by Neighbour Order in k-Space: Third-Nearest-Neighbour Graphene</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/plot_pipeline_bridges.html">From Real Space to k-Space and Back: the Haldane Model on a Torus</a></li>
@@ -423,6 +430,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../superconductivity/index.html">Superconductivity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_andreev_reflection.html">Andreev Reflection: the BTK Conductance of a Normal-Superconductor Junction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_bcs_gap_equation.html">The BCS Gap Equation: Delta(T) and the Universal Ratio Delta(0)/T_c = 1.764</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_kitaev_chain.html">The Kitaev Chain: Majorana Zero Modes</a></li>
 </ul>
@@ -435,34 +443,48 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tight_binding/index.html">Tight-Binding</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_building_finite_lattices.html">Building Finite Lattices: Unit Cells, Cuts, and Lattice Arithmetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_defects_and_impurities.html">Defects and Impurities in a Graphene Flake: Vacancy Zero Modes and Bound States</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_fermi_surfaces.html">Fermi Surfaces and Constant-Energy Contours</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_graphene_bands.html">Graphene: Real-Space Flake and Reciprocal-Space Bands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_isolation_of_graphene.html">The Isolation of Graphene: Flakes, Edges, and a Berry Phase of pi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_parametrized_hamiltonians.html">Parametrized Hamiltonians: Sweeping Without Rebuilding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_periodic_boundaries.html">Periodic Boundaries in Real Space: Tori and Cylinders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_projected_bands_and_spin_textures.html">Projected Bands and Spin Textures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_square_lattice_bands.html">The Square Lattice: Bloch’s Theorem in its Simplest Form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_tetrahedron_method.html">The Tetrahedron Method for the Density of States</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_visualizing_a_model.html">Visualizing a Model: tbkit.plot.Plot</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Topology</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="plot_3d_topological_insulator.html">Three-Dimensional Topological Insulators: the Surface Dirac Cone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_axion_angle.html">The Axion Angle and the Topological Magnetoelectric Effect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bott_index.html">The Bott Index: the Chern Number of a Disordered Torus</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_diabolical_points.html">Diabolical Points: Conical Intersections in a Two-Parameter Family</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_edge_states.html">Edge States on Ribbons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_entanglement_spectrum.html">The Entanglement Spectrum: Edge States Without an Edge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_fu_kane_parity.html">The Fu-Kane Parity Criterion: Z2 from Inversion Eigenvalues</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">The Haldane Model: Berry Curvature and a Topological Phase Transition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_kagome_chern_band.html">A Topological Flat Band on the Kagome Lattice</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_kane_mele_z2.html">The Kane-Mele Z2 Invariant from Wannier-Centre Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_local_chern_marker.html">The Local Chern Marker: Topology Without a Brillouin Zone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_mirror_chern_number.html">Mirror Chern Numbers: a Topological Crystalline Insulator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_quantum_geometry.html">The Quantum Metric: The Geometry of a Bloch Band</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_spin_chern_number.html">The Spin Chern Number: Quantum Spin Hall Without Spin Conservation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_ssh_model.html">The SSH Model: Bulk-Boundary Correspondence</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_tenfold_way.html">The Tenfold Way: Symmetry Classes of Tight-Binding Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_thouless_pump.html">The Thouless Quantum Pump (Rice-Mele Model)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_tknn_hofstadter.html">TKNN: The Quantized Hall Conductance of the Hofstadter Bands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_wannier_obstruction_of_chern_bands.html">The Wannier Obstruction of Chern Bands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_zak_phase.html">The Zak Phase: Where the SSH Chain’s Electrons Sit</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../transport/index.html">Transport</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../transport/plot_automatic_lead_attachment.html">Automatic Lead Attachment: Narrow Contacts on a Wide Cavity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transport/plot_hall_bar_edge_channels.html">Buttiker’s Edge Channels: the Quantized Resistances of a Hall Bar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transport/plot_landauer_conductance.html">The Landauer Formula: Quantized Conductance of a Point Contact</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transport/plot_recursive_green_function.html">The Recursive Green’s Function: Localization Length of Long Disordered Wires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transport/plot_scattering_matrix.html">Mode Matching: the Scattering Matrix, Lead Modes and Scattering States</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transport/plot_shot_noise_fano_factor.html">Shot Noise: the Fano Factor of Ballistic, Tunnel and Diffusive Conductors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transport/plot_thermoelectric_transport.html">Thermoelectric Transport: the Mott Formula and the Wiedemann-Franz Law</a></li>
 </ul>
 </details></li>
 </ul>
@@ -551,7 +573,7 @@ below that (<span class="math notranslate nohighlight">\(+1\)</span> here, with 
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.lattice</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lattice</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">reciprocal_vectors</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">reciprocal_vectors</span><span class="p">,</span> <span class="n">high_symmetry_path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.system</span><span class="w"> </span><span class="kn">import</span> <span class="n">System</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.plot</span><span class="w"> </span><span class="kn">import</span> <span class="n">Plot</span>
 
@@ -641,30 +663,29 @@ Text(0.5, 1.0, &#39;Haldane model: topological phase transition&#39;)
 </section>
 <section id="berry-curvature-in-the-topological-phase">
 <h2>Berry curvature in the topological phase<a class="headerlink" href="#berry-curvature-in-the-topological-phase" title="Link to this heading">#</a></h2>
-<p><a class="reference internal" href="../../../tbkit.html#tbkit.kspace.KSpace.berry_curvature" title="tbkit.kspace.KSpace.berry_curvature"><code class="xref py py-meth docutils literal notranslate"><span class="pre">berry_curvature()</span></code></a> concentrates near the Dirac
-points (where the gap is smallest), with total flux <span class="math notranslate nohighlight">\(2\pi\)</span>.</p>
+<p>The total flux of <a class="reference internal" href="../../../tbkit.html#tbkit.kspace.KSpace.berry_curvature" title="tbkit.kspace.KSpace.berry_curvature"><code class="xref py py-meth docutils literal notranslate"><span class="pre">berry_curvature()</span></code></a> through
+the zone is <span class="math notranslate nohighlight">\(2\pi\)</span>: the Chern number. With a gap this large
+(<span class="math notranslate nohighlight">\(2M_c \approx 2t\)</span>) the curvature is spread over the whole zone
+rather than concentrated at the Dirac points.
+<a class="reference internal" href="../../../tbkit.html#tbkit.kspace.KSpace.plot_berry_curvature" title="tbkit.kspace.KSpace.plot_berry_curvature"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_berry_curvature()</span></code></a> draws it as a density
+over the first Brillouin zone, the hexagon whose corners are K and K’.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">hal_topological</span> <span class="o">=</span> <span class="n">haldane</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">M</span></a><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">curv</span></a> <span class="o">=</span> <span class="n">hal_topological</span><span class="o">.</span><span class="n">berry_curvature</span><span class="p">(</span><span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nk</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
-<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig2</span></a><span class="p">,</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="matplotlib.axes.Axes" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax2</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">()</span>
-<a href="https://matplotlib.org/stable/api/image_api.html#matplotlib.image.AxesImage" title="matplotlib.image.AxesImage" class="sphx-glr-backref-module-matplotlib-image sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">im</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.imshow.html#matplotlib.axes.Axes.imshow" title="matplotlib.axes.Axes.imshow" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax2</span><span class="o">.</span><span class="n">imshow</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">curv</span><span class="o">.</span><span class="n">T</span></a><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdBu&#39;</span><span class="p">)</span>
-<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_xlabel.html#matplotlib.axes.Axes.set_xlabel" title="matplotlib.axes.Axes.set_xlabel" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span></a><span class="p">(</span><span class="s1">&#39;$k_1$ (fractional)&#39;</span><span class="p">)</span>
-<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_ylabel.html#matplotlib.axes.Axes.set_ylabel" title="matplotlib.axes.Axes.set_ylabel" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span></a><span class="p">(</span><span class="s1">&#39;$k_2$ (fractional)&#39;</span><span class="p">)</span>
-<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_title.html#matplotlib.axes.Axes.set_title" title="matplotlib.axes.Axes.set_title" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span></a><span class="p">(</span><span class="s1">&#39;Berry curvature of the lower band&#39;</span><span class="p">)</span>
-<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.colorbar.html#matplotlib.figure.Figure.colorbar" title="matplotlib.figure.Figure.colorbar" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig2</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><a href="https://matplotlib.org/stable/api/image_api.html#matplotlib.image.AxesImage" title="matplotlib.image.AxesImage" class="sphx-glr-backref-module-matplotlib-image sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">im</span></a><span class="p">,</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="matplotlib.axes.Axes" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="o">=</span><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="matplotlib.axes.Axes" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax2</span></a><span class="p">)</span>
+<span class="k">assert</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.isclose.html#numpy.isclose" title="numpy.isclose" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">isclose</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">curv</span></a><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="mi">2</span> <span class="o">*</span> <a href="https://docs.python.org/3/builtins/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">np</span><span class="o">.</span><span class="n">pi</span></a><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig2</span></a> <span class="o">=</span> <span class="n">hal_topological</span><span class="o">.</span><span class="n">plot_berry_curvature</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nk</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../../_images/sphx_glr_plot_haldane_topology_003.png" srcset="../../../_images/sphx_glr_plot_haldane_topology_003.png" alt="Berry curvature of the lower band" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.colorbar.Colorbar object at 0x11780f230&gt;
-</pre></div>
-</div>
-</section>
+<img src="../../../_images/sphx_glr_plot_haldane_topology_003.png" srcset="../../../_images/sphx_glr_plot_haldane_topology_003.png" alt="Berry curvature, $C = 1.000$" class = "sphx-glr-single-img"/></section>
 <section id="band-structure-in-the-topological-phase">
 <h2>Band structure in the topological phase<a class="headerlink" href="#band-structure-in-the-topological-phase" title="Link to this heading">#</a></h2>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Gamma</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">K</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">M_pt</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="numpy.zeros" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">K_pt</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">b1</span></a> <span class="o">/</span> <span class="mi">2</span>
-<span class="n">hal_topological</span><span class="o">.</span><span class="n">k_path</span><span class="p">([</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Gamma</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">K</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">M_pt</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Gamma</span></a><span class="p">],</span> <span class="n">nk</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
-<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig3</span></a> <span class="o">=</span> <span class="n">hal_topological</span><span class="o">.</span><span class="n">plot_bands</span><span class="p">(</span><span class="n">node_labels</span><span class="o">=</span><span class="p">[</span><span class="sa">r</span><span class="s1">&#39;$\Gamma$&#39;</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$\Gamma$&#39;</span><span class="p">])</span>
+<p><a class="reference internal" href="../../../tbkit.html#tbkit.kspace.high_symmetry_path" title="tbkit.kspace.high_symmetry_path"><code class="xref py py-func docutils literal notranslate"><span class="pre">high_symmetry_path()</span></code></a> recognizes the hexagonal
+lattice and returns the path <span class="math notranslate nohighlight">\(\Gamma\)</span> - M - K - <span class="math notranslate nohighlight">\(\Gamma\)</span>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/builtins/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">points</span></a><span class="p">,</span> <a href="https://docs.python.org/3/builtins/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">labels</span></a> <span class="o">=</span> <span class="n">high_symmetry_path</span><span class="p">(</span><span class="n">hal_topological</span><span class="o">.</span><span class="n">lat</span><span class="p">)</span>
+<span class="n">hal_topological</span><span class="o">.</span><span class="n">k_path</span><span class="p">(</span><a href="https://docs.python.org/3/builtins/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">points</span></a><span class="p">,</span> <span class="n">nk</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig3</span></a> <span class="o">=</span> <span class="n">hal_topological</span><span class="o">.</span><span class="n">plot_bands</span><span class="p">(</span><span class="n">node_labels</span><span class="o">=</span><a href="https://docs.python.org/3/builtins/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">labels</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../../_images/sphx_glr_plot_haldane_topology_004.png" srcset="../../../_images/sphx_glr_plot_haldane_topology_004.png" alt="plot haldane topology" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 4.523 seconds)</p>
+<img src="../../../_images/sphx_glr_plot_haldane_topology_004.png" srcset="../../../_images/sphx_glr_plot_haldane_topology_004.png" alt="plot haldane topology" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.210 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-api-gallery-topology-plot-haldane-topology-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/d24a270630e82961411be0d30166dbae/plot_haldane_topology.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_haldane_topology.ipynb</span></code></a></p>

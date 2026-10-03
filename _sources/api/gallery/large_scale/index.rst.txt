@@ -8,7 +8,8 @@ Large lattices
 Lattices far beyond dense diagonalization: sparse neighbour search,
 shift-invert eigensolvers, and the kernel polynomial method, which
 turns spectral densities and conductivities of hundreds of thousands of
-sites into a few hundred sparse matrix-vector products.
+sites into a few hundred sparse matrix-vector products. In k-space,
+fine meshes are diagonalized in batches, optionally across threads.
 
 
 .. raw:: html
@@ -21,6 +22,23 @@ sites into a few hundred sparse matrix-vector products.
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The band and topology tools of KSpace diagonalize H(\mathbf{k}) at every point of a mesh. Calling the eigensolver once per k-point spends most of its time in Python, not in LAPACK. tbkit builds all the Bloch matrices with one vectorized Bloch sum, then diagonalizes them with stacked LAPACK calls (``numpy.linalg.eigh`` on an array of shape (nk, norb, norb)), in chunks of bounded memory. set_workers spreads the chunks over threads (LAPACK releases the GIL).">
+
+.. only:: html
+
+  .. image:: /api/gallery/large_scale/images/thumb/sphx_glr_plot_batched_k_space_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/large_scale/plot_batched_k_space`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Batched and Threaded k-Space Diagonalization: the Haldane Model on 90,000 k-Points</div>
+    </div>
+
 
 .. raw:: html
 
@@ -49,5 +67,6 @@ sites into a few hundred sparse matrix-vector products.
 .. toctree::
    :hidden:
 
+   /api/gallery/large_scale/plot_batched_k_space
    /api/gallery/large_scale/plot_kernel_polynomial_method
 

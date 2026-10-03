@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Tutorial &#8212; tbkit 0.4.2 documentation</title>
+    <title>Tutorial &#8212; tbkit 0.5.0 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="_static/documentation_options.js?v=9dc614e0"></script>
+    <script src="_static/documentation_options.js?v=70f82a29"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -57,7 +57,7 @@
     <link rel="prev" title="tbkit" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.4" />
+  <meta name="docsearch:version" content="0.5" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -532,9 +532,21 @@ lattice vectors to build that path from):</p>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">gra</span><span class="o">.</span><span class="n">plot_bands</span><span class="p">(</span><span class="n">node_labels</span><span class="o">=</span><span class="p">[</span><span class="sa">r</span><span class="s1">&#39;$\Gamma$&#39;</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$\Gamma$&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
+<p><a class="reference internal" href="tbkit.html#tbkit.kspace.high_symmetry_path" title="tbkit.kspace.high_symmetry_path"><code class="xref py py-func docutils literal notranslate"><span class="pre">high_symmetry_path()</span></code></a> recognizes the Bravais lattice
+and returns a standard path with its labels (here
+<span class="math notranslate nohighlight">\(\Gamma\)</span>-M-K-<span class="math notranslate nohighlight">\(\Gamma\)</span>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">points</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">high_symmetry_path</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
+<span class="n">gra</span><span class="o">.</span><span class="n">k_path</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">nk</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">gra</span><span class="o">.</span><span class="n">plot_bands</span><span class="p">(</span><span class="n">node_labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+</pre></div>
+</div>
 <p><code class="docutils literal notranslate"><span class="pre">gra.mesh_bands(nk)</span></code> samples a uniform mesh over the whole Brillouin
 zone instead (used internally by <code class="docutils literal notranslate"><span class="pre">plot_dos</span></code>, and for the topology tools
-below). See <code class="docutils literal notranslate"><span class="pre">examples/tight_binding/plot_graphene_bands.py</span></code>.</p>
+below). See <code class="docutils literal notranslate"><span class="pre">examples/tight_binding/plot_graphene_bands.py</span></code>. On top of
+the bands: <code class="docutils literal notranslate"><span class="pre">plot_bands(weights=gra.band_weights('a'))</span></code> colors them by
+their weight on a sublattice (fat bands), <code class="docutils literal notranslate"><span class="pre">plot_fermi_surface(E)</span></code>
+draws the constant-energy contours, and <code class="docutils literal notranslate"><span class="pre">plot_dos(kernel='tetrahedron')</span></code>
+gives the density of states without broadening.</p>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A from-scratch walkthrough of tbkit&#x27;s two complementary ways of looking at a Tight-Binding model:"><img alt="" src="_images/sphx_glr_plot_graphene_bands_thumb.png" />
 <p><a class="reference internal" href="api/gallery/tight_binding/plot_graphene_bands.html"><span class="doc">Graphene: Real-Space Flake and Reciprocal-Space Bands</span></a></p>
   <div class="sphx-glr-thumbnail-title">Graphene: Real-Space Flake and Reciprocal-Space Bands</div>
@@ -725,7 +737,18 @@ built by <a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.fini
 <span class="n">energies</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">kpm</span><span class="o">.</span><span class="n">hall_conductivity</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">vx</span><span class="p">,</span> <span class="n">vy</span><span class="p">,</span> <span class="n">n_moments</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>See <code class="docutils literal notranslate"><span class="pre">examples/hall_effects/</span></code>.</p>
+<p>The same Berry curvature, with other energy weights, gives the orbital
+magnetization (whose slope in a gap is <span class="math notranslate nohighlight">\(\sigma_{xy}\)</span>, the Streda
+formula), the anomalous Nernst conductivity and the thermal Hall
+conductivity; <a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace.axion_angle" title="tbkit.kspace.KSpace.axion_angle"><code class="xref py py-meth docutils literal notranslate"><span class="pre">axion_angle()</span></code></a> follows
+<span class="math notranslate nohighlight">\(\theta\)</span> of a 3D insulator along a parameter path:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">M</span> <span class="o">=</span> <span class="n">hal</span><span class="o">.</span><span class="n">orbital_magnetization</span><span class="p">(</span><span class="n">e_f</span><span class="p">,</span> <span class="n">nk</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="n">hal</span><span class="o">.</span><span class="n">anomalous_nernst_conductivity</span><span class="p">(</span><span class="n">e_f</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">nk</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+<span class="n">kappa</span> <span class="o">=</span> <span class="n">hal</span><span class="o">.</span><span class="n">thermal_hall_conductivity</span><span class="p">(</span><span class="n">e_f</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">nk</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See <code class="docutils literal notranslate"><span class="pre">examples/hall_effects/</span></code>, <code class="docutils literal notranslate"><span class="pre">examples/magnetic_field/plot_orbital_magnetization.py</span></code>
+and <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_axion_angle.py</span></code>.</p>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="In 1954 Karplus and Luttinger found that the electrons of a ferromagnet acquire an anomalous velocity transverse to an applied electric field, a Hall current with no magnetic field. Half a century later it was recognized as a Berry-phase effect (Jungwirth, Niu and MacDonald 2002; Haldane 2004): a band&#x27;s velocity picks up -\dot{\mathbf{k}}\times \boldsymbol\Omega_n(\mathbf{k}), and the intrinsic Hall conductivity is the Berry curvature summed over the occupied states,"><img alt="" src="_images/sphx_glr_plot_anomalous_hall_effect_thumb.png" />
 <p><a class="reference internal" href="api/gallery/hall_effects/plot_anomalous_hall_effect.html"><span class="doc">The Anomalous Hall Effect: from the Anomalous Velocity to the Berry Phase</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Anomalous Hall Effect: from the Anomalous Velocity to the Berry Phase</div>
@@ -800,23 +823,35 @@ and local density of states; <a class="reference internal" href="tbkit.html#tbki
 <code class="docutils literal notranslate"><span class="pre">get_occupations</span></code> and <code class="docutils literal notranslate"><span class="pre">get_charge_density</span></code> fill the levels with a
 given number of electrons, at zero or finite temperature
 (<a class="reference internal" href="tbkit.html#module-tbkit.occupation" title="tbkit.occupation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.occupation</span></code></a>). <a class="reference internal" href="tbkit.html#tbkit.transport.Transport" title="tbkit.transport.Transport"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.transport.Transport</span></code></a> attaches
-semi-infinite leads to a finite device (their surface Green’s functions
-by Sancho-Rubio decimation, <a class="reference internal" href="tbkit.html#tbkit.transport.lead_from_kspace" title="tbkit.transport.lead_from_kspace"><code class="xref py py-func docutils literal notranslate"><span class="pre">lead_from_kspace()</span></code></a>
-making a lead from any <em>KSpace</em> model) and returns the Landauer
-transmission:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.transport</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transport</span><span class="p">,</span> <span class="n">lead_from_kspace</span>
+semi-infinite leads to a finite device and returns the Landauer
+transmission, from the scattering matrix of the exact lead modes
+(<a class="reference internal" href="tbkit.html#tbkit.transport.Transport.smatrix" title="tbkit.transport.Transport.smatrix"><code class="xref py py-meth docutils literal notranslate"><span class="pre">smatrix()</span></code></a>). The scattering states and
+their local density of states come from
+<a class="reference internal" href="tbkit.html#tbkit.transport.Transport.wave_function" title="tbkit.transport.Transport.wave_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">wave_function()</span></code></a> and
+<a class="reference internal" href="tbkit.html#tbkit.transport.Transport.ldos" title="tbkit.transport.Transport.ldos"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ldos()</span></code></a>.</p>
+<p>A lead is any 1D <em>KSpace</em> model, for example a strip cut with
+<a class="reference internal" href="tbkit.html#tbkit.kspace.ribbon" title="tbkit.kspace.ribbon"><code class="xref py py-func docutils literal notranslate"><span class="pre">ribbon()</span></code></a>, its orbitals placed in the device’s
+coordinates. <a class="reference internal" href="tbkit.html#tbkit.transport.Transport.attach_lead" title="tbkit.transport.Transport.attach_lead"><code class="xref py py-meth docutils literal notranslate"><span class="pre">attach_lead()</span></code></a> finds the
+device sites under the lead and couples them with the lead’s own
+hoppings:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.transport</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transport</span>
 
 <span class="c1"># strip: a KSpace ribbon, the cross-section of the leads</span>
-<span class="n">h_left</span><span class="p">,</span> <span class="n">v_left</span> <span class="o">=</span> <span class="n">lead_from_kspace</span><span class="p">(</span><span class="n">strip</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>    <span class="c1"># continued to -x</span>
-<span class="n">h_right</span><span class="p">,</span> <span class="n">v_right</span> <span class="o">=</span> <span class="n">lead_from_kspace</span><span class="p">(</span><span class="n">strip</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># continued to +x</span>
 <span class="n">tr</span> <span class="o">=</span> <span class="n">Transport</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">ham</span><span class="p">)</span>
-<span class="n">tr</span><span class="o">.</span><span class="n">add_lead</span><span class="p">(</span><span class="n">h_left</span><span class="p">,</span> <span class="n">v_left</span><span class="p">,</span> <span class="n">coupling</span><span class="p">,</span> <span class="n">left_sites</span><span class="p">)</span>
-<span class="n">tr</span><span class="o">.</span><span class="n">add_lead</span><span class="p">(</span><span class="n">h_right</span><span class="p">,</span> <span class="n">v_right</span><span class="p">,</span> <span class="n">coupling</span><span class="p">,</span> <span class="n">right_sites</span><span class="p">)</span>
+<span class="n">tr</span><span class="o">.</span><span class="n">attach_lead</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="n">strip</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>            <span class="c1"># continued to -x</span>
+<span class="n">tr</span><span class="o">.</span><span class="n">attach_lead</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="n">strip</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>             <span class="c1"># continued to +x</span>
 <span class="n">conductance</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">transmission</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>   <span class="c1"># in units of e^2/h</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">smatrix</span><span class="p">(</span><span class="n">energies</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>               <span class="c1"># mode-resolved: s.submatrix(1, 0)</span>
 </pre></div>
 </div>
-<p>See <code class="docutils literal notranslate"><span class="pre">examples/transport/</span></code>.</p>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="R. Landauer (1957), then M. Buttiker (1986), recast electrical conductance as a scattering problem: a phase-coherent conductor between two reservoirs has, at zero temperature and bias,"><img alt="" src="_images/sphx_glr_plot_landauer_conductance_thumb.png" />
+<p><a class="reference internal" href="tbkit.html#tbkit.transport.Transport.add_lead" title="tbkit.transport.Transport.add_lead"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_lead()</span></code></a> attaches a lead by hand: its
+cell Hamiltonian and coupling (<a class="reference internal" href="tbkit.html#tbkit.transport.lead_from_kspace" title="tbkit.transport.lead_from_kspace"><code class="xref py py-func docutils literal notranslate"><span class="pre">lead_from_kspace()</span></code></a>
+cuts them from a <em>KSpace</em> model), a coupling matrix and the device sites
+it touches. See <code class="docutils literal notranslate"><span class="pre">examples/transport/</span></code>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A lead is a semi-infinite repetition of a unit cell. To attach it, one needs the device sites it touches and the hoppings \tau between them and the lead&#x27;s first cell. For a straight strip, these are the edge column and the identity times t; for anything else, writing them by hand is error-prone."><img alt="" src="_images/sphx_glr_plot_automatic_lead_attachment_thumb.png" />
+<p><a class="reference internal" href="api/gallery/transport/plot_automatic_lead_attachment.html"><span class="doc">Automatic Lead Attachment: Narrow Contacts on a Wide Cavity</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Automatic Lead Attachment: Narrow Contacts on a Wide Cavity</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="R. Landauer (1957), then M. Buttiker (1986), recast electrical conductance as a scattering problem: a phase-coherent conductor between two reservoirs has, at zero temperature and bias,"><img alt="" src="_images/sphx_glr_plot_landauer_conductance_thumb.png" />
 <p><a class="reference internal" href="api/gallery/transport/plot_landauer_conductance.html"><span class="doc">The Landauer Formula: Quantized Conductance of a Point Contact</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Landauer Formula: Quantized Conductance of a Point Contact</div>
 </div></div></section>

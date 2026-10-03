@@ -72,8 +72,8 @@ nu = [kane_mele(M).z2_invariant([0, 1], nk=60, nk_perp=41) for M in masses]
 print('M / M_c:', np.round(masses / M_c, 2), '-> nu =', nu)
 assert nu == [int(M < M_c) for M in masses]
 
-# Rashba coupling mixes the spins (S_z is no longer conserved, so there is
-# no spin Chern number), but nu does not change
+# Rashba coupling mixes the spins (S_z is no longer conserved, so the two
+# spins no longer carry Chern numbers of their own), but nu does not change
 nu_r = kane_mele(0.1, rashba=0.05).z2_invariant([0, 1], nk=60, nk_perp=41)
 assert nu_r == 1
 print('With Rashba coupling: nu = {}.'.format(nu_r))

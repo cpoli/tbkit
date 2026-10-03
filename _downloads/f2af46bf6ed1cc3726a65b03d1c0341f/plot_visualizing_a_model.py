@@ -11,6 +11,7 @@ lattice itself (with or without its hoppings drawn on), the spectrum
 and an eigenstate's spatial intensity.
 """
 import numpy as np
+from scipy.integrate import trapezoid
 
 from tbkit.graphene import GrapheneLattice
 from tbkit.system import System
@@ -70,7 +71,7 @@ fig3 = plot.dos(broadening=0.1)
 # The broadened DOS integrates back to the total number of states,
 # regardless of the broadening kernel's width.
 e_grid, rho = density_of_states(sys.en, broadening=0.1)
-integral = np.trapezoid(rho, e_grid)
+integral = trapezoid(rho, e_grid)
 print('DOS integrates to {:.3f} states (flake has {}).'.format(integral, glat.sites))
 assert abs(integral - glat.sites) < 0.5
 

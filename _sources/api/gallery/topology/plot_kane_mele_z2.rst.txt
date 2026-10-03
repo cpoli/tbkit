@@ -126,8 +126,8 @@ The invariant across the phase diagram
     print('M / M_c:', np.round(masses / M_c, 2), '-> nu =', nu)
     assert nu == [int(M < M_c) for M in masses]
 
-    # Rashba coupling mixes the spins (S_z is no longer conserved, so there is
-    # no spin Chern number), but nu does not change
+    # Rashba coupling mixes the spins (S_z is no longer conserved, so the two
+    # spins no longer carry Chern numbers of their own), but nu does not change
     nu_r = kane_mele(0.1, rashba=0.05).z2_invariant([0, 1], nk=60, nk_perp=41)
     assert nu_r == 1
     print('With Rashba coupling: nu = {}.'.format(nu_r))
@@ -197,7 +197,7 @@ the topological phase.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.257 seconds)
+   **Total running time of the script:** (0 minutes 0.318 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_kane_mele_z2.py:

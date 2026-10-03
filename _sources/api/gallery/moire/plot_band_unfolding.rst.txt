@@ -45,12 +45,13 @@ is drawn in the primitive zone again.
 :mod:`tbkit.moire`: :func:`~tbkit.moire.supercell`,
 :func:`~tbkit.moire.unfold`, :func:`~tbkit.moire.spectral_function`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-41
+.. GENERATED FROM PYTHON SOURCE LINES 29-42
 
 .. code-block:: Python
 
     import numpy as np
     import matplotlib.pyplot as plt
+    from scipy.integrate import trapezoid
 
     import tbkit.lattices as lattices
     from tbkit.kspace import KSpace
@@ -68,12 +69,12 @@ is drawn in the primitive zone again.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-44
+.. GENERATED FROM PYTHON SOURCE LINES 43-45
 
 A pristine supercell unfolds exactly
 ---------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-64
+.. GENERATED FROM PYTHON SOURCE LINES 45-65
 
 .. code-block:: Python
 
@@ -110,12 +111,12 @@ A pristine supercell unfolds exactly
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-67
+.. GENERATED FROM PYTHON SOURCE LINES 66-68
 
 Coherence factors of a staggered chain
 -----------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-79
+.. GENERATED FROM PYTHON SOURCE LINES 68-80
 
 .. code-block:: Python
 
@@ -138,7 +139,7 @@ Coherence factors of a staggered chain
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 80-85
+.. GENERATED FROM PYTHON SOURCE LINES 81-86
 
 Anderson disorder in a 6 x 6 graphene supercell
 --------------------------------------------------
@@ -146,7 +147,7 @@ Onsite energies uniform in :math:`[-W/2, W/2]`, averaged over eight
 configurations. The broadening of the peak at a given :math:`\mathbf{k}`
 grows with :math:`W`, and the integrated weight stays 2 (sum rule).
 
-.. GENERATED FROM PYTHON SOURCE LINES 85-116
+.. GENERATED FROM PYTHON SOURCE LINES 86-117
 
 .. code-block:: Python
 
@@ -165,7 +166,7 @@ grows with :math:`W`, and the integrated weight stays 2 (sum rule).
         row = maps[W][80, omega > 0]
         widths[W] = 0.5 * (omega[1] - omega[0]) * np.sum(row > row.max() / 2)
     fine = np.linspace(-40., 40., 40001)
-    norm = np.trapezoid(spectral_function(big, path[:1], fine, 0.04), fine)[0]
+    norm = trapezoid(spectral_function(big, path[:1], fine, 0.04), fine)[0]
     assert abs(norm - 2.) < 2e-3
     assert widths[0.] < widths[0.8] < widths[2.]
     print('half widths at M: ' + ', '.join('W = {}: {:.3f}'.format(W, h) for W, h in widths.items()))
@@ -202,7 +203,7 @@ grows with :math:`W`, and the integrated weight stays 2 (sum rule).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.384 seconds)
+   **Total running time of the script:** (0 minutes 1.437 seconds)
 
 
 .. _sphx_glr_download_api_gallery_moire_plot_band_unfolding.py:

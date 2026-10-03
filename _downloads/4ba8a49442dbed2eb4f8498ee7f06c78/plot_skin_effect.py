@@ -41,8 +41,10 @@ hn.set_hopping([{'i': 0, 'j': 0, 'R': (1,), 't': t_right},
 n = 60
 ring = np.linalg.eigvals(hn.finite_ham(n, periodic=True))
 en, vec = np.linalg.eig(hn.finite_ham(n))
-assert np.allclose(sorted(ring, key=np.angle), sorted(
-    [t_right*np.exp(1j*k) + t_left*np.exp(-1j*k) for k in 2*np.pi*np.arange(n)/n], key=np.angle))
+# compared as sets: E(k = pi) is real, and its angle (+pi or -pi) depends on
+# the sign of a roundoff imaginary part
+expected = [t_right*np.exp(1j*k) + t_left*np.exp(-1j*k) for k in 2*np.pi*np.arange(n)/n]
+assert np.allclose(np.sort_complex(np.round(ring, 8)), np.sort_complex(np.round(expected, 8)))
 assert np.max(np.abs(en.imag)) < 1e-8 and np.max(np.abs(en.real)) < 2*np.sqrt(t_right*t_left)
 winding = hn.spectral_winding(0.)
 print('Spectral winding about E = 0: {:.3f}; open-chain spectrum real, within +-{:.3f}.'

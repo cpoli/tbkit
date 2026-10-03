@@ -8,12 +8,16 @@ Transport
 Quantum transport through a finite device attached to semi-infinite
 leads: Landauer's formula, in which the conductance is a transmission
 probability, and the quantized conductance steps of a quantum point
-contact.
+contact. Leads attached automatically from their geometry, narrow
+contacts on a wide cavity.
 
 Multi-terminal devices: Landauer-Buttiker conductance matrices and the
 quantized resistances of a Hall bar with its edge channels; bond
 currents; shot noise and the Fano factor; and the recursive Green's
-function for long wires.
+function for long wires. The scattering matrix from the exact modes of
+the leads, the scattering states and the local density of states they
+carry. Thermoelectric transport: the Mott formula and the
+Wiedemann-Franz law, and their breakdown at a resonance.
 
 
 .. raw:: html
@@ -26,6 +30,23 @@ function for long wires.
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A lead is a semi-infinite repetition of a unit cell. To attach it, one needs the device sites it touches and the hoppings \tau between them and the lead&#x27;s first cell. For a straight strip, these are the edge column and the identity times t; for anything else, writing them by hand is error-prone.">
+
+.. only:: html
+
+  .. image:: /api/gallery/transport/images/thumb/sphx_glr_plot_automatic_lead_attachment_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/transport/plot_automatic_lead_attachment`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Automatic Lead Attachment: Narrow Contacts on a Wide Cavity</div>
+    </div>
+
 
 .. raw:: html
 
@@ -80,6 +101,23 @@ function for long wires.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="The Landauer conductance is a sum of transmission probabilities, but the object behind it is the scattering matrix S: the amplitude S_{ab} of every outgoing mode a for every incoming mode b of the leads. Fisher and Lee (1981) related it to the Green&#x27;s function, and Ando (1991) showed how to compute it on a lattice by mode matching. The modes of a lead, \psi_n = \lambda^n\phi in its cell n, solve the generalized eigenproblem of the transfer matrix">
+
+.. only:: html
+
+  .. image:: /api/gallery/transport/images/thumb/sphx_glr_plot_scattering_matrix_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/transport/plot_scattering_matrix`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Mode Matching: the Scattering Matrix, Lead Modes and Scattering States</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="A current made of discrete charges fluctuates: for independent electrons crossing a tunnel barrier, Schottky&#x27;s Poisson noise S = 2eI. In a phase-coherent conductor the Pauli principle correlates the electrons, and Lesovik (1989) and Buttiker (1990) found the zero-temperature noise from the transmission eigenvalues T_n of the scattering channels,">
 
 .. only:: html
@@ -95,6 +133,23 @@ function for long wires.
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sivan and Imry (1986) extended the Landauer formula to heat: a temperature difference across a phase-coherent conductor drives a current, and a bias carries heat. In linear response, every coefficient is a moment of the transmission over the Fermi window,">
+
+.. only:: html
+
+  .. image:: /api/gallery/transport/images/thumb/sphx_glr_plot_thermoelectric_transport_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/transport/plot_thermoelectric_transport`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Thermoelectric Transport: the Mott Formula and the Wiedemann-Franz Law</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -105,8 +160,11 @@ function for long wires.
 .. toctree::
    :hidden:
 
+   /api/gallery/transport/plot_automatic_lead_attachment
    /api/gallery/transport/plot_hall_bar_edge_channels
    /api/gallery/transport/plot_landauer_conductance
    /api/gallery/transport/plot_recursive_green_function
+   /api/gallery/transport/plot_scattering_matrix
    /api/gallery/transport/plot_shot_noise_fano_factor
+   /api/gallery/transport/plot_thermoelectric_transport
 

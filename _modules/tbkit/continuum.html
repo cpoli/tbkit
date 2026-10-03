@@ -1,0 +1,733 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tbkit.continuum &#8212; tbkit 0.5.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+
+    <script src="../../_static/documentation_options.js?v=70f82a29"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tbkit/continuum';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../_static/js/force_light.js?v=8e7666d6"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.5" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../_static/tbkit_logo.png" class="logo__image only-light" alt="tbkit logo"/>
+    <img src="../../_static/tbkit_logo.png" class="logo__image only-dark pst-js-only" alt="tbkit logo"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tbkit.continuum</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for tbkit.continuum</h1><div class="highlight"><pre>
+<span></span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Continuum discretization: turn a k·p (continuum) Hamiltonian, a polynomial</span>
+<span class="sd">in the momenta :math:`k_x, k_y, k_z` with constant (possibly symbolic)</span>
+<span class="sd">matrix coefficients, into a Tight-Binding model on a square or cubic grid</span>
+<span class="sd">of spacing *a*.</span>
+
+<span class="sd">Each momentum is the derivative :math:`k_x = -i\partial_x`, and a power</span>
+<span class="sd">:math:`k_x^n` is replaced by the half-step finite difference</span>
+<span class="sd">:math:`D_hf(x) = [f(x+h/2) - f(x-h/2)]/h` applied *n* times, with</span>
+<span class="sd">:math:`h = a` for an even *n* and :math:`h = 2a` for an odd one, so that</span>
+<span class="sd">every shift is a whole number of sites (the scheme of Kwant&#39;s</span>
+<span class="sd">``kwant.continuum``). In k-space this replaces</span>
+
+<span class="sd">.. math::</span>
+
+<span class="sd">    k^n \to \Big(\tfrac{2}{a}\sin\tfrac{ka}{2}\Big)^n \;(n\text{ even}),\qquad</span>
+<span class="sd">    k^n \to \Big(\tfrac{1}{a}\sin ka\Big)^n \;(n\text{ odd}),</span>
+
+<span class="sd">which agrees with :math:`k^n` up to :math:`O(a^2)` and keeps a Hermitian</span>
+<span class="sd">Hamiltonian Hermitian: :math:`k_x\to-i(\psi_{n+1}-\psi_{n-1})/2a`,</span>
+<span class="sd">:math:`k_x^2\to-(\psi_{n+1}-2\psi_n+\psi_{n-1})/a^2`. Products of momenta</span>
+<span class="sd">along different axes multiply their stencils. The coefficients do not</span>
+<span class="sd">depend on the position, so the order of the factors does not matter.</span>
+
+<span class="sd">* *discretize_symbolic* returns the hopping matrices :math:`T(\mathbf{R})`</span>
+<span class="sd">  as sympy matrices in the grid spacing *a*, to inspect.</span>
+<span class="sd">* *discretize* builds the **KSpace** model with</span>
+<span class="sd">  :math:`H(\mathbf{k}) = \sum_\mathbf{R} T(\mathbf{R})e^{i\mathbf{k}\cdot\mathbf{R}}`.</span>
+<span class="sd">  Its free symbols (*M*, *B*, ...) become parameters of value functions,</span>
+<span class="sd">  set by ``get_ham(k, M=...)`` or *KSpace.set_params*.</span>
+<span class="sd">  *bridges.finite_system* then gives the matching real-space **System**.</span>
+
+<span class="sd">sympy is an optional dependency: ``pip install tbkit[continuum]``.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">comb</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.error_handling</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">error_handling</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">KSpace</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.lattice</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lattice</span>
+
+<span class="c1">#: Names of the momenta, along x, y and z.</span>
+<span class="n">MOMENTA</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;k_x&#39;</span><span class="p">,</span> <span class="s1">&#39;k_y&#39;</span><span class="p">,</span> <span class="s1">&#39;k_z&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_sympy</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. The sympy module, imported on first use.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">sympy</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">sympy</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">sympy_module</span><span class="p">(</span><span class="n">sympy</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sympy</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_namespace</span><span class="p">(</span><span class="n">sympy</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Names available in a string Hamiltonian: the Pauli</span>
+<span class="sd">    matrices *sigma_0*, *sigma_x*, *sigma_y*, *sigma_z*, *kron* (Kronecker</span>
+<span class="sd">    product), and plain symbols for the names sympy would otherwise read</span>
+<span class="sd">    as its own objects (E, N, O, Q, S, beta, gamma, zeta).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">space</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">,</span> <span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="s1">&#39;zeta&#39;</span><span class="p">)}</span>
+    <span class="n">space</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;sigma_0&#39;</span><span class="p">:</span> <span class="n">sympy</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+                       <span class="s1">&#39;sigma_x&#39;</span><span class="p">:</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]),</span>
+                       <span class="s1">&#39;sigma_y&#39;</span><span class="p">:</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">sympy</span><span class="o">.</span><span class="n">I</span><span class="p">],</span> <span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">I</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]),</span>
+                       <span class="s1">&#39;sigma_z&#39;</span><span class="p">:</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]]),</span>
+                       <span class="s1">&#39;kron&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">ms</span><span class="p">:</span> <span class="n">sympy</span><span class="o">.</span><span class="n">kronecker_product</span><span class="p">(</span><span class="o">*</span><span class="n">ms</span><span class="p">)})</span>
+    <span class="k">return</span> <span class="n">space</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_matrix</span><span class="p">(</span><span class="n">sympy</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. The Hamiltonian as a square sympy Matrix whose free</span>
+<span class="sd">    symbols are all real, and the map back to the original symbols.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">continuum_type</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Basic</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">MatrixBase</span><span class="p">))</span>
+    <span class="n">ham</span> <span class="o">=</span> <span class="n">hamiltonian</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">sympy.parsing.sympy_parser</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_expr</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ham</span> <span class="o">=</span> <span class="n">parse_expr</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">local_dict</span><span class="o">=</span><span class="n">_namespace</span><span class="p">(</span><span class="n">sympy</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>  <span class="c1"># parse_expr raises many types</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">err</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">continuum_parsed</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">continuum_type</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">Basic</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">MatrixBase</span><span class="p">))</span>
+    <span class="n">ham</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">MatrixBase</span><span class="p">)</span> <span class="k">else</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="n">ham</span><span class="p">]])</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">continuum_square</span><span class="p">(</span><span class="n">ham</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">real</span> <span class="o">=</span> <span class="p">{</span><span class="n">s</span><span class="p">:</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">real</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ham</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">ham</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="n">real</span><span class="p">),</span> <span class="p">{</span><span class="n">r</span><span class="p">:</span> <span class="n">s</span> <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">real</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_stencil</span><span class="p">(</span><span class="n">sympy</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">object</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. The finite difference of :math:`k^n`, times</span>
+<span class="sd">    :math:`a^n`: {shift in sites: coefficient}.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="p">{(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">h</span> <span class="o">//</span> <span class="mi">2</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">sympy</span><span class="o">.</span><span class="n">I</span> <span class="o">/</span> <span class="n">h</span><span class="p">)</span><span class="o">**</span><span class="n">n</span> <span class="o">*</span> <span class="n">comb</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_discretize</span><span class="p">(</span><span class="n">sympy</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. The hoppings of *discretize_symbolic*, the dimension,</span>
+<span class="sd">    the number of orbitals, and whether the Hamiltonian is Hermitian (for</span>
+<span class="sd">    real parameters).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">ham</span><span class="p">,</span> <span class="n">originals</span> <span class="o">=</span> <span class="n">_matrix</span><span class="p">(</span><span class="n">sympy</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">)</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="p">{</span><span class="n">s</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ham</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">}</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">continuum_symbols</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+    <span class="n">used</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">MOMENTA</span><span class="p">)</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">names</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">used</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">continuum_dim</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">used</span><span class="p">)</span>
+    <span class="n">momenta</span> <span class="o">=</span> <span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">real</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">MOMENTA</span><span class="p">[:</span><span class="n">dim</span><span class="p">]]</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+    <span class="n">norb</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">hops</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">norb</span><span class="p">),</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">ham</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">continuum_polynomial</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="n">entry</span><span class="o">.</span><span class="n">is_polynomial</span><span class="p">(</span><span class="o">*</span><span class="n">momenta</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">powers</span><span class="p">,</span> <span class="n">coeff</span> <span class="ow">in</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Poly</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="o">*</span><span class="n">momenta</span><span class="p">)</span><span class="o">.</span><span class="n">terms</span><span class="p">():</span>
+            <span class="n">stencils</span> <span class="o">=</span> <span class="p">[</span><span class="n">_stencil</span><span class="p">(</span><span class="n">sympy</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">powers</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">steps</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">stencils</span><span class="p">):</span>
+                <span class="n">R</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">shift</span> <span class="k">for</span> <span class="n">shift</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">)</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">coeff</span> <span class="o">*</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">))</span> <span class="o">/</span> <span class="n">a</span><span class="o">**</span><span class="nb">sum</span><span class="p">(</span><span class="n">powers</span><span class="p">)</span>
+                <span class="n">hops</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">norb</span><span class="p">))[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">c</span>
+    <span class="n">hops</span> <span class="o">=</span> <span class="p">{</span><span class="n">R</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">applyfunc</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">expand</span><span class="p">)</span><span class="o">.</span><span class="n">xreplace</span><span class="p">(</span><span class="n">originals</span><span class="p">)</span> <span class="k">for</span> <span class="n">R</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">hops</span><span class="o">.</span><span class="n">items</span><span class="p">())}</span>
+    <span class="n">hops</span> <span class="o">=</span> <span class="p">{</span><span class="n">R</span><span class="p">:</span> <span class="n">m</span> <span class="k">for</span> <span class="n">R</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">hops</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="o">.</span><span class="n">is_zero_matrix</span><span class="p">}</span>
+    <span class="n">hermitian</span> <span class="o">=</span> <span class="p">(</span><span class="n">ham</span> <span class="o">-</span> <span class="n">ham</span><span class="o">.</span><span class="n">H</span><span class="p">)</span><span class="o">.</span><span class="n">applyfunc</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">simplify</span><span class="p">)</span><span class="o">.</span><span class="n">is_zero_matrix</span>
+    <span class="k">return</span> <span class="n">hops</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">norb</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">hermitian</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="discretize_symbolic">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.continuum.discretize_symbolic">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">discretize_symbolic</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Discretize a continuum Hamiltonian on a square or cubic grid, keeping</span>
+<span class="sd">    everything symbolic: the hopping matrices</span>
+<span class="sd">    :math:`T(\mathbf{R}) = \langle\mathbf{0}|H|\mathbf{R}\rangle` between</span>
+<span class="sd">    a grid site and the one :math:`\mathbf{R}` sites further, in terms of</span>
+<span class="sd">    the grid spacing *a* and the parameters of the Hamiltonian (see the</span>
+<span class="sd">    module docstring for the scheme).</span>
+
+<span class="sd">    :param hamiltonian: sympy expression or Matrix, or a string, in the</span>
+<span class="sd">        momenta ``k_x``, ``k_y``, ``k_z``: a polynomial in them with</span>
+<span class="sd">        constant coefficients. Any other symbol is a parameter, taken real</span>
+<span class="sd">        (the symbols ``x``, ``y``, ``z`` and ``a`` are not allowed). A</span>
+<span class="sd">        string may use the Pauli matrices ``sigma_0``, ``sigma_x``,</span>
+<span class="sd">        ``sigma_y``, ``sigma_z`` and ``kron`` (Kronecker product); ``I``</span>
+<span class="sd">        is the imaginary unit.</span>
+<span class="sd">    :param dim: 1, 2 or 3. Default value None: the last axis whose momentum</span>
+<span class="sd">        appears (1 if none).</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **hoppings** -- Dictionary. key: tuple of *dim* integers</span>
+<span class="sd">          :math:`\mathbf{R}`, val: sympy Matrix :math:`T(\mathbf{R})`, in</span>
+<span class="sd">          the symbol ``a`` and those of *hamiltonian*.</span>
+
+<span class="sd">    Example usage::</span>
+
+<span class="sd">        discretize_symbolic(&#39;k_x**2&#39;)</span>
+<span class="sd">        # {(-1,): Matrix([[-1/a**2]]), (0,): Matrix([[2/a**2]]), (1,): Matrix([[-1/a**2]])}</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">_discretize</span><span class="p">(</span><span class="n">_sympy</span><span class="p">(),</span> <span class="n">hamiltonian</span><span class="p">,</span> <span class="n">dim</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_value</span><span class="p">(</span><span class="n">sympy</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. A value function returning the matrix element *expr*,</span>
+<span class="sd">    whose free symbols are its keyword parameters.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">symbols</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">]</span>
+    <span class="n">func</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span> <span class="n">expr</span><span class="p">,</span> <span class="n">modules</span><span class="o">=</span><span class="s1">&#39;numpy&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="n">site_i</span><span class="p">,</span> <span class="n">site_j</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">complex</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span><span class="p">)))</span>
+    <span class="n">kind</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Parameter</span>
+    <span class="n">value</span><span class="o">.</span><span class="n">__signature__</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Signature</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">kind</span><span class="p">(</span><span class="s1">&#39;site_i&#39;</span><span class="p">,</span> <span class="n">kind</span><span class="o">.</span><span class="n">POSITIONAL_OR_KEYWORD</span><span class="p">),</span> <span class="n">kind</span><span class="p">(</span><span class="s1">&#39;site_j&#39;</span><span class="p">,</span> <span class="n">kind</span><span class="o">.</span><span class="n">POSITIONAL_OR_KEYWORD</span><span class="p">)]</span>
+        <span class="o">+</span> <span class="p">[</span><span class="n">kind</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kind</span><span class="o">.</span><span class="n">KEYWORD_ONLY</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span><span class="p">])</span>
+    <span class="n">value</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span>
+
+
+<div class="viewcode-block" id="discretize">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.continuum.discretize">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">discretize</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                      <span class="n">tags</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KSpace</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Discretize a continuum (k·p) Hamiltonian into a Tight-Binding **KSpace**</span>
+<span class="sd">    model on a square (2D) or cubic (3D) grid, or a chain (1D), of spacing</span>
+<span class="sd">    *a*. The grid has one site per unit cell carrying the *norb* orbitals of</span>
+<span class="sd">    the Hamiltonian&#39;s matrix, all at the origin of the cell, so that</span>
+<span class="sd">    :math:`H(\mathbf{k}) = \sum_\mathbf{R} T(\mathbf{R})e^{i\mathbf{k}\cdot\mathbf{R}}`</span>
+<span class="sd">    with the hoppings of *discretize_symbolic*. It agrees with the</span>
+<span class="sd">    continuum Hamiltonian up to :math:`O(a^2)` near</span>
+<span class="sd">    :math:`\mathbf{k}=\mathbf{0}`.</span>
+
+<span class="sd">    A matrix element with no free symbol becomes a number. One with</span>
+<span class="sd">    parameters becomes a value function (see *KSpace.set_hopping*): pass</span>
+<span class="sd">    the parameters to ``get_ham(k, M=...)``, or to *KSpace.set_params* for</span>
+<span class="sd">    the other methods. A Hamiltonian that is Hermitian for real parameters</span>
+<span class="sd">    is stored with ``hermitian=True`` (one representative per bond);</span>
+<span class="sd">    otherwise every matrix element is stored, with ``hermitian=False``.</span>
+<span class="sd">    Constant onsite terms are in *ks.onsite*.</span>
+
+<span class="sd">    :param hamiltonian: sympy expression or Matrix, or a string (see</span>
+<span class="sd">        *discretize_symbolic*).</span>
+<span class="sd">    :param a: Real number, at least :math:`\sqrt{0.1}\approx 0.316` (the</span>
+<span class="sd">        shortest primitive vector of a **Lattice**). Default value 1. Grid</span>
+<span class="sd">        spacing: to refine the grid, measure lengths in a smaller unit.</span>
+<span class="sd">    :param dim: 1, 2 or 3. Default value None: the last axis whose momentum</span>
+<span class="sd">        appears (1 if none).</span>
+<span class="sd">    :param tags: String or list of one-character strings. Default value</span>
+<span class="sd">        None: &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, ... Tag of each orbital.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **ks** -- **KSpace** instance (spinless, *norb* orbitals). Its</span>
+<span class="sd">          lattice has *prim_vec* :math:`a\hat{\mathbf{x}}, a\hat{\mathbf{y}},</span>
+<span class="sd">          (a\hat{\mathbf{z}})`.</span>
+
+<span class="sd">    Example usage::</span>
+
+<span class="sd">        # the BHZ model of HgTe quantum wells, one spin block</span>
+<span class="sd">        bhz = discretize(&#39;A*(k_x*sigma_x - k_y*sigma_y)&#39;</span>
+<span class="sd">                                &#39;+ (M - B*(k_x**2 + k_y**2))*sigma_z&#39;, a=0.5)</span>
+<span class="sd">        bhz.set_params(A=1., B=1., M=1.)</span>
+<span class="sd">        bhz.chern_number([0])</span>
+<span class="sd">        sys = finite_system(bhz, (40, 40))   # a real-space flake</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">continuum_spacing</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">sympy</span> <span class="o">=</span> <span class="n">_sympy</span><span class="p">()</span>
+    <span class="n">hops</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">norb</span><span class="p">,</span> <span class="n">hermitian</span> <span class="o">=</span> <span class="n">_discretize</span><span class="p">(</span><span class="n">sympy</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">continuum_tags</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="n">norb</span><span class="p">)</span>
+    <span class="n">tags</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span> <span class="k">if</span> <span class="n">tags</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">list</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_letters</span><span class="p">[:</span><span class="n">norb</span><span class="p">])</span>
+    <span class="n">space_dim</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">origin</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,)</span> <span class="o">*</span> <span class="n">space_dim</span>
+    <span class="n">prim_vec</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">space_dim</span><span class="p">))</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)]</span>
+    <span class="n">ks</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">Lattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="p">[{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="n">origin</span><span class="p">}</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">],</span> <span class="n">prim_vec</span><span class="o">=</span><span class="n">prim_vec</span><span class="p">))</span>
+    <span class="n">a_sym</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+    <span class="n">list_hop</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">R</span><span class="p">,</span> <span class="n">mat</span> <span class="ow">in</span> <span class="n">hops</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">a_sym</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">norb</span><span class="p">),</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+            <span class="n">expr</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">expr</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">nonzero</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">R</span> <span class="k">if</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="n">onsite</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">nonzero</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span>
+            <span class="k">if</span> <span class="n">hermitian</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">onsite</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">((</span><span class="n">nonzero</span> <span class="ow">and</span> <span class="n">nonzero</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">nonzero</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">j</span><span class="p">)):</span>
+                <span class="k">continue</span>  <span class="c1"># the conjugate of a kept representative</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">_value</span><span class="p">(</span><span class="n">sympy</span><span class="p">,</span> <span class="n">expr</span><span class="p">)</span> <span class="k">if</span> <span class="n">expr</span><span class="o">.</span><span class="n">free_symbols</span> <span class="k">else</span> <span class="nb">complex</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">onsite</span><span class="p">:</span>
+                <span class="n">list_hop</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="n">j</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">})</span>
+            <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+                <span class="c1"># a parametrized onsite energy: a value function on the</span>
+                <span class="c1"># bond i -&gt; i, R = 0, which set_hopping does not take</span>
+                <span class="n">ks</span><span class="o">.</span><span class="n">_hop_values</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">ks</span><span class="o">.</span><span class="n">space_dim</span><span class="p">)),</span> <span class="n">t</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ks</span><span class="o">.</span><span class="n">onsite</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
+    <span class="k">if</span> <span class="n">list_hop</span><span class="p">:</span>
+        <span class="n">ks</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">(</span><span class="n">list_hop</span><span class="p">,</span> <span class="n">hermitian</span><span class="o">=</span><span class="n">hermitian</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">hermitian</span><span class="p">:</span>
+        <span class="n">ks</span><span class="o">.</span><span class="n">_nonreciprocal</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="n">ks</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2026, Charles Poli.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

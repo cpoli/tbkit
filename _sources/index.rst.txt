@@ -58,14 +58,25 @@ topology alongside superconductivity.
     * Berry curvature and Chern numbers.
     * An optional spin-1/2 degree of freedom, for spin-orbit coupling and
       Zeeman terms.
-    * Ribbons (edge states) cut from any periodic model.
+    * Ribbons (edge states) cut from any periodic model, and real-space
+      lattices with periodic boundaries (tori and cylinders).
     * Zak/Berry phases, Wannier centres and their flow, the Z2 invariant
-      (Wilson loops and Fu-Kane parities), the quantum metric, symmetry
-      checks and the tenfold way, and the local Chern marker.
+      (Wilson loops and Fu-Kane parities) and the four 3D Z2 indices, spin
+      and mirror Chern numbers, the quantum metric, symmetry checks and the
+      tenfold way, the local Chern marker, the Bott index, and the
+      entanglement spectrum.
+    * Maximally localized Wannier functions (projection onto trial
+      orbitals, then Marzari-Vanderbilt spread minimization), with their
+      centres and spreads; disentanglement of entangled bands, and Wannier
+      interpolation.
+    * Weyl points of 3D models and their chiralities, and the Majorana
+      number (Pfaffian invariant) of BdG superconductors.
     * Magnetic supercells (Hofstadter bands, TKNN Chern numbers).
     * Anomalous and spin Hall conductivities at any Fermi level (Kubo
       formula over the Brillouin zone), and the real-space Kubo-Bastin Hall
       conductivity of large disordered samples (kernel polynomial method).
+    * Orbital magnetization (modern theory), anomalous Nernst and thermal
+      Hall conductivities, and the axion angle of 3D insulators.
     * Non-reciprocal models: spectral winding, the skin effect, and the
       generalized Brillouin zone.
     * Exceptional points of 2D non-Hermitian bands: eigenvalue vorticity,

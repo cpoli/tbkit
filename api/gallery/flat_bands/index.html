@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Flat Bands &#8212; tbkit 0.4.2 documentation</title>
+    <title>Flat Bands &#8212; tbkit 0.5.0 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../../_static/documentation_options.js?v=9dc614e0"></script>
+    <script src="../../../_static/documentation_options.js?v=70f82a29"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -56,7 +56,7 @@
     <link rel="prev" title="Wave Propagation: Interference on a Ring and a Trapped Domain-Wall State" href="../dynamics/plot_wavepacket_interference.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.4" />
+  <meta name="docsearch:version" content="0.5" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -368,7 +368,9 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../hall_effects/index.html">Hall effects</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_anomalous_hall_disorder.html">The Anomalous Hall Effect in Real Space: a Disordered Chern Insulator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_anomalous_hall_effect.html">The Anomalous Hall Effect: from the Anomalous Velocity to the Berry Phase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_anomalous_nernst_effect.html">The Berry-Phase Anomalous Nernst Effect</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_intrinsic_spin_hall_effect.html">The Intrinsic Spin Hall Effect: Kane-Mele Plateau and Rashba Coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_thermal_hall_effect.html">The Intrinsic Thermal Hall Effect and the Wiedemann-Franz Law</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../higher_order/index.html">Higher-Order Topology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -376,6 +378,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../large_scale/index.html">Large lattices</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_batched_k_space.html">Batched and Threaded k-Space Diagonalization: the Haldane Model on 90,000 k-Points</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_kernel_polynomial_method.html">The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites</a></li>
 </ul>
 </details></li>
@@ -383,10 +386,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_hofstadter_butterfly.html">Hofstadter’s Butterfly</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_landau_levels.html">Landau Levels: Square Lattice vs. Graphene</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_magnetic_field.html">Aharonov-Bohm Ring: A Magnetic Field on a Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_orbital_magnetization.html">The Modern Theory of Orbital Magnetization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_peierls_substitution.html">The Peierls Substitution: Flux Through the Plaquettes, in Any Gauge</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../models/index.html">Building, Bridging and Saving Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../models/plot_building_maximally_localized_wannier_functions.html">Maximally Localized Wannier Functions: Projection and Spread Minimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/plot_disentangling_entangled_bands.html">Disentanglement: Wannier Functions of the π Bands of Graphene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/plot_kp_theory_on_a_lattice.html">k·p Theory on a Lattice: from a Continuum Hamiltonian to Tight-Binding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/plot_maximally_localized_wannier_functions.html">Maximally Localized Wannier Functions: Graphene from a Wannier90 File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/plot_neighbour_hoppings.html">Hoppings by Neighbour Order in k-Space: Third-Nearest-Neighbour Graphene</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/plot_pipeline_bridges.html">From Real Space to k-Space and Back: the Haldane Model on a Torus</a></li>
@@ -422,6 +429,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../superconductivity/index.html">Superconductivity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_andreev_reflection.html">Andreev Reflection: the BTK Conductance of a Normal-Superconductor Junction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_bcs_gap_equation.html">The BCS Gap Equation: Delta(T) and the Universal Ratio Delta(0)/T_c = 1.764</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_kitaev_chain.html">The Kitaev Chain: Majorana Zero Modes</a></li>
 </ul>
@@ -434,34 +442,48 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tight_binding/index.html">Tight-Binding</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_building_finite_lattices.html">Building Finite Lattices: Unit Cells, Cuts, and Lattice Arithmetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_defects_and_impurities.html">Defects and Impurities in a Graphene Flake: Vacancy Zero Modes and Bound States</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_fermi_surfaces.html">Fermi Surfaces and Constant-Energy Contours</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_graphene_bands.html">Graphene: Real-Space Flake and Reciprocal-Space Bands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_isolation_of_graphene.html">The Isolation of Graphene: Flakes, Edges, and a Berry Phase of pi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_parametrized_hamiltonians.html">Parametrized Hamiltonians: Sweeping Without Rebuilding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_periodic_boundaries.html">Periodic Boundaries in Real Space: Tori and Cylinders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_projected_bands_and_spin_textures.html">Projected Bands and Spin Textures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_square_lattice_bands.html">The Square Lattice: Bloch’s Theorem in its Simplest Form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_tetrahedron_method.html">The Tetrahedron Method for the Density of States</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_visualizing_a_model.html">Visualizing a Model: tbkit.plot.Plot</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../topology/index.html">Topology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_3d_topological_insulator.html">Three-Dimensional Topological Insulators: the Surface Dirac Cone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_axion_angle.html">The Axion Angle and the Topological Magnetoelectric Effect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_bott_index.html">The Bott Index: the Chern Number of a Disordered Torus</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_diabolical_points.html">Diabolical Points: Conical Intersections in a Two-Parameter Family</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_edge_states.html">Edge States on Ribbons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_entanglement_spectrum.html">The Entanglement Spectrum: Edge States Without an Edge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_fu_kane_parity.html">The Fu-Kane Parity Criterion: Z2 from Inversion Eigenvalues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_haldane_topology.html">The Haldane Model: Berry Curvature and a Topological Phase Transition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_kagome_chern_band.html">A Topological Flat Band on the Kagome Lattice</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_kane_mele_z2.html">The Kane-Mele Z2 Invariant from Wannier-Centre Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_local_chern_marker.html">The Local Chern Marker: Topology Without a Brillouin Zone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_mirror_chern_number.html">Mirror Chern Numbers: a Topological Crystalline Insulator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_quantum_geometry.html">The Quantum Metric: The Geometry of a Bloch Band</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_spin_chern_number.html">The Spin Chern Number: Quantum Spin Hall Without Spin Conservation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_ssh_model.html">The SSH Model: Bulk-Boundary Correspondence</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_tenfold_way.html">The Tenfold Way: Symmetry Classes of Tight-Binding Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_thouless_pump.html">The Thouless Quantum Pump (Rice-Mele Model)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_tknn_hofstadter.html">TKNN: The Quantized Hall Conductance of the Hofstadter Bands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_wannier_obstruction_of_chern_bands.html">The Wannier Obstruction of Chern Bands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_zak_phase.html">The Zak Phase: Where the SSH Chain’s Electrons Sit</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../transport/index.html">Transport</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../transport/plot_automatic_lead_attachment.html">Automatic Lead Attachment: Narrow Contacts on a Wide Cavity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transport/plot_hall_bar_edge_channels.html">Buttiker’s Edge Channels: the Quantized Resistances of a Hall Bar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transport/plot_landauer_conductance.html">The Landauer Formula: Quantized Conductance of a Point Contact</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transport/plot_recursive_green_function.html">The Recursive Green’s Function: Localization Length of Long Disordered Wires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transport/plot_scattering_matrix.html">Mode Matching: the Scattering Matrix, Lead Modes and Scattering States</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transport/plot_shot_noise_fano_factor.html">Shot Noise: the Fano Factor of Ballistic, Tunnel and Diffusive Conductors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transport/plot_thermoelectric_transport.html">Thermoelectric Transport: the Mott Formula and the Wiedemann-Franz Law</a></li>
 </ul>
 </details></li>
 </ul>

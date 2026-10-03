@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tbkit.bridges &#8212; tbkit 0.4.2 documentation</title>
+    <title>tbkit.bridges &#8212; tbkit 0.5.0 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../_static/documentation_options.js?v=9dc614e0"></script>
+    <script src="../../_static/documentation_options.js?v=70f82a29"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.4" />
+  <meta name="docsearch:version" content="0.5" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -454,7 +454,7 @@
 
 <div class="viewcode-block" id="kspace_from_system">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.bridges.kspace_from_system">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">kspace_from_system</span><span class="p">(</span><span class="n">sys</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span> <span class="n">periodic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KSpace</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">kspace_from_system</span><span class="p">(</span><span class="n">sys</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span> <span class="n">periodic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KSpace</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Get the Bloch Hamiltonian of a periodic model defined the real-space</span>
 <span class="sd">    way: every matrix element :math:`H_{ab}` of the finite *System* (built</span>
@@ -476,8 +476,11 @@
 <span class="sd">    orbital by orbital.</span>
 
 <span class="sd">    :param sys: **System** instance with its hoppings set (one orbital per site).</span>
-<span class="sd">    :param periodic: Boolean. Default value False. The System is a torus</span>
-<span class="sd">        of the *lat.n1* x *lat.n2* (x *lat.n3*) cells of *get_lattice*.</span>
+<span class="sd">    :param periodic: Boolean. Default value None: True if *sys* has</span>
+<span class="sd">        periodic boundaries along some primitive vector (``System(lat,</span>
+<span class="sd">        periodic=...)``, or *finite_system* with ``periodic=True``). The</span>
+<span class="sd">        System is a torus of the *lat.n1* x *lat.n2* (x *lat.n3*) cells of</span>
+<span class="sd">        *get_lattice*.</span>
 <span class="sd">    :param tol: Positive real number. Default value 1e-9. Largest allowed</span>
 <span class="sd">        difference between equivalent matrix elements.</span>
 
@@ -495,6 +498,8 @@
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">sys</span><span class="p">(</span><span class="n">sys</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">not_orbital_system</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="n">OrbitalSystem</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">periodic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">periodic</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">periodic</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">periodic</span><span class="p">,</span> <span class="s1">&#39;periodic&#39;</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="s1">&#39;tol&#39;</span><span class="p">)</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">get_ham</span><span class="p">()</span>
@@ -592,7 +597,9 @@
 <span class="sd">    neighbour order of the bond (0 for coinciding orbitals), &#39;tag&#39; the</span>
 <span class="sd">    sublattice pair. On a torus, a bond that wraps around keeps its short</span>
 <span class="sd">    bond vector for its angle, and a hopping that wraps onto its own site</span>
-<span class="sd">    is added to the onsite energy.</span>
+<span class="sd">    is added to the onsite energy; the System has periodic boundaries</span>
+<span class="sd">    (``sys.periodic``), so that further *set_hopping* calls, *Plot* and</span>
+<span class="sd">    *get_bott_index* treat it as a torus.</span>
 
 <span class="sd">    :param ks: **KSpace** instance, with ``spin=False``.</span>
 <span class="sd">    :param n_cells: Positive integer, or tuple of *dim* positive integers.</span>
@@ -620,7 +627,7 @@
     <span class="n">coor</span><span class="p">[</span><span class="s1">&#39;tag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tags</span>
     <span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">,</span> <span class="n">lat</span><span class="o">.</span><span class="n">sites</span> <span class="o">=</span> <span class="n">coor</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">coor</span><span class="p">)</span>
     <span class="n">lat</span><span class="o">.</span><span class="n">n1</span><span class="p">,</span> <span class="n">lat</span><span class="o">.</span><span class="n">n2</span><span class="p">,</span> <span class="n">lat</span><span class="o">.</span><span class="n">n3</span> <span class="o">=</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">n_cells</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))[:</span><span class="mi">3</span><span class="p">]</span>
-    <span class="n">sys</span> <span class="o">=</span> <span class="n">System</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
+    <span class="n">sys</span> <span class="o">=</span> <span class="n">System</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">periodic</span><span class="o">=</span><span class="n">periodic</span><span class="p">)</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">n_tot</span><span class="p">,</span> <span class="n">entries</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">_finite_entries</span><span class="p">(</span><span class="n">n_cells</span><span class="p">,</span> <span class="n">periodic</span><span class="p">)</span>
     <span class="n">tau</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">orbital_positions</span><span class="p">()</span>
     <span class="n">rows</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">])</span>

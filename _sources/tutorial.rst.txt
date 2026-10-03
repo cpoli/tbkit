@@ -180,9 +180,21 @@ lattice vectors to build that path from)::
     gra.k_path([Gamma, K, M, Gamma], nk=60)
     fig = gra.plot_bands(node_labels=[r'$\Gamma$', 'K', 'M', r'$\Gamma$'])
 
+:func:`~tbkit.kspace.high_symmetry_path` recognizes the Bravais lattice
+and returns a standard path with its labels (here
+:math:`\Gamma`-M-K-:math:`\Gamma`)::
+
+    points, labels = high_symmetry_path(lat)
+    gra.k_path(points, nk=60)
+    fig = gra.plot_bands(node_labels=labels)
+
 ``gra.mesh_bands(nk)`` samples a uniform mesh over the whole Brillouin
 zone instead (used internally by ``plot_dos``, and for the topology tools
-below). See ``examples/tight_binding/plot_graphene_bands.py``.
+below). See ``examples/tight_binding/plot_graphene_bands.py``. On top of
+the bands: ``plot_bands(weights=gra.band_weights('a'))`` colors them by
+their weight on a sublattice (fat bands), ``plot_fermi_surface(E)``
+draws the constant-energy contours, and ``plot_dos(kernel='tetrahedron')``
+gives the density of states without broadening.
 
 .. minigallery:: ../../examples/tight_binding/plot_graphene_bands.py
 
@@ -381,7 +393,18 @@ built by :meth:`~tbkit.kspace.KSpace.finite_ham` with the velocities of
     area = 100**2 * abs(np.linalg.det(np.array(hal.lat.prim_vec)))
     energies, sigma = kpm.hall_conductivity(ham, vx, vy, n_moments=256, area=area)
 
-See ``examples/hall_effects/``.
+The same Berry curvature, with other energy weights, gives the orbital
+magnetization (whose slope in a gap is :math:`\sigma_{xy}`, the Streda
+formula), the anomalous Nernst conductivity and the thermal Hall
+conductivity; :meth:`~tbkit.kspace.KSpace.axion_angle` follows
+:math:`\theta` of a 3D insulator along a parameter path::
+
+    M = hal.orbital_magnetization(e_f, nk=120)
+    alpha = hal.anomalous_nernst_conductivity(e_f, 0.05, nk=120)
+    kappa = hal.thermal_hall_conductivity(e_f, 0.05, nk=120)
+
+See ``examples/hall_effects/``, ``examples/magnetic_field/plot_orbital_magnetization.py``
+and ``examples/topology/plot_axion_angle.py``.
 
 .. minigallery:: ../../examples/hall_effects/plot_anomalous_hall_effect.py
 
@@ -460,24 +483,34 @@ and local density of states; :meth:`~tbkit.system.System.get_fermi_level`,
 ``get_occupations`` and ``get_charge_density`` fill the levels with a
 given number of electrons, at zero or finite temperature
 (:mod:`tbkit.occupation`). :class:`tbkit.transport.Transport` attaches
-semi-infinite leads to a finite device (their surface Green's functions
-by Sancho-Rubio decimation, :func:`~tbkit.transport.lead_from_kspace`
-making a lead from any *KSpace* model) and returns the Landauer
-transmission::
+semi-infinite leads to a finite device and returns the Landauer
+transmission, from the scattering matrix of the exact lead modes
+(:meth:`~tbkit.transport.Transport.smatrix`). The scattering states and
+their local density of states come from
+:meth:`~tbkit.transport.Transport.wave_function` and
+:meth:`~tbkit.transport.Transport.ldos`.
 
-    from tbkit.transport import Transport, lead_from_kspace
+A lead is any 1D *KSpace* model, for example a strip cut with
+:func:`~tbkit.kspace.ribbon`, its orbitals placed in the device's
+coordinates. :meth:`~tbkit.transport.Transport.attach_lead` finds the
+device sites under the lead and couples them with the lead's own
+hoppings::
+
+    from tbkit.transport import Transport
 
     # strip: a KSpace ribbon, the cross-section of the leads
-    h_left, v_left = lead_from_kspace(strip, -1)    # continued to -x
-    h_right, v_right = lead_from_kspace(strip, 1)   # continued to +x
     tr = Transport(sys.ham)
-    tr.add_lead(h_left, v_left, coupling, left_sites)
-    tr.add_lead(h_right, v_right, coupling, right_sites)
+    tr.attach_lead(sys, strip, -1)            # continued to -x
+    tr.attach_lead(sys, strip, 1)             # continued to +x
     conductance = tr.transmission(energies)   # in units of e^2/h
+    s = tr.smatrix(energies[0])               # mode-resolved: s.submatrix(1, 0)
 
-See ``examples/transport/``.
+:meth:`~tbkit.transport.Transport.add_lead` attaches a lead by hand: its
+cell Hamiltonian and coupling (:func:`~tbkit.transport.lead_from_kspace`
+cuts them from a *KSpace* model), a coupling matrix and the device sites
+it touches. See ``examples/transport/``.
 
-.. minigallery:: ../../examples/transport/plot_landauer_conductance.py
+.. minigallery:: ../../examples/transport/plot_landauer_conductance.py ../../examples/transport/plot_automatic_lead_attachment.py
 
 
 Interactions and superconductivity

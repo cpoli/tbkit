@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tbkit.transport &#8212; tbkit 0.4.2 documentation</title>
+    <title>tbkit.transport &#8212; tbkit 0.5.0 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../_static/documentation_options.js?v=9dc614e0"></script>
+    <script src="../../_static/documentation_options.js?v=70f82a29"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.4" />
+  <meta name="docsearch:version" content="0.5" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -409,6 +409,18 @@
 <span class="sd">    tr.add_lead(h0, v, coupling=np.ones((1, 1)), sites=[9])</span>
 <span class="sd">    T = tr.transmission(np.linspace(-1.9, 1.9, 50))</span>
 
+<span class="sd">*Transport.attach_lead* builds the coupling and finds the device sites</span>
+<span class="sd">itself, from a lead given as a 1D *KSpace* model placed in the device&#39;s</span>
+<span class="sd">coordinates (e.g. ``tr.attach_lead(sys, strip, 1)``).</span>
+
+<span class="sd">*Transport.smatrix* gives the scattering matrix itself. It uses the exact</span>
+<span class="sd">propagating and evanescent modes of the leads (*lead_modes*, with no</span>
+<span class="sd">broadening) and one sparse factorization of the device per energy (the</span>
+<span class="sd">formulation of Groth et al. 2014, as in Kwant). *Transport.wave_function*</span>
+<span class="sd">and *Transport.ldos* give the scattering states and the local density of</span>
+<span class="sd">states they carry. *Transport.transmission* uses the scattering matrix by</span>
+<span class="sd">default.</span>
+
 <span class="sd">With more leads, *Transport.conductance_matrix* and</span>
 <span class="sd">*four_terminal_resistance* solve the Landauer-Buttiker equations (Hall</span>
 <span class="sd">bars); *bond_currents* and *local_currents* map the current;</span>
@@ -419,10 +431,13 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTuple</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">NDArray</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">scipy.linalg</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">LA</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">scipy.sparse</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.sparse.linalg</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">spla</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.error_handling</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">error_handling</span>
 
@@ -582,6 +597,270 @@
 
 
 
+<div class="viewcode-block" id="LeadModes">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.transport.LeadModes">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">LeadModes</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    The propagating modes of a lead at one energy (see *lead_modes*):</span>
+<span class="sd">    the incoming ones first (moving towards the device, velocity &lt; 0), then</span>
+<span class="sd">    the outgoing ones, each group by block of the conservation law, then in</span>
+<span class="sd">    increasing momentum.</span>
+
+<span class="sd">    * **wave_functions** -- Complex ndarray, shape (m, n_modes). Mode :math:`\phi`</span>
+<span class="sd">      on the lead&#39;s surface cell: cell :math:`n` carries :math:`\lambda^n\phi`,</span>
+<span class="sd">      with :math:`\lambda = e^{ik}`. Normalized to unit current.</span>
+<span class="sd">    * **momenta** -- Real ndarray, shape (n_modes,). :math:`k` in :math:`(-\pi, \pi]`.</span>
+<span class="sd">    * **velocities** -- Real ndarray, shape (n_modes,). :math:`dE/dk`,</span>
+<span class="sd">      positive away from the device.</span>
+<span class="sd">    * **blocks** -- Integer ndarray, shape (n_modes,). The block of the</span>
+<span class="sd">      conservation law each mode belongs to: the index of its eigenvalue,</span>
+<span class="sd">      in increasing order (all 0 without a conservation law).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">wave_functions</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]</span>
+    <span class="n">momenta</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span>
+    <span class="n">velocities</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span>
+    <span class="n">blocks</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="lead_modes">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.transport.lead_modes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">lead_modes</span><span class="p">(</span>
+    <span class="n">h0</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">conservation_law</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LeadModes</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the propagating modes of a semi-infinite lead (cells</span>
+<span class="sd">    :math:`0, 1, 2, \dots` away from the device, :math:`H_{nn} = h_0`,</span>
+<span class="sd">    :math:`H_{n,n+1} = v`) at one energy. A mode :math:`\psi_n = \lambda^n\phi`</span>
+<span class="sd">    solves :math:`(E - h_0 - \lambda v - \lambda^{-1}v^\dagger)\phi = 0`, the</span>
+<span class="sd">    generalized eigenproblem of the transfer matrix</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \begin{pmatrix} 0 &amp; 1\\ -v^\dagger &amp; E - h_0\end{pmatrix}</span>
+<span class="sd">        \begin{pmatrix}\phi\\ \lambda\phi\end{pmatrix} = \lambda</span>
+<span class="sd">        \begin{pmatrix} 1 &amp; 0\\ 0 &amp; v\end{pmatrix}</span>
+<span class="sd">        \begin{pmatrix}\phi\\ \lambda\phi\end{pmatrix}\, ,</span>
+
+<span class="sd">    solved by the QZ algorithm, so that a singular :math:`v` is allowed. The</span>
+<span class="sd">    modes with :math:`|\lambda| = 1` propagate with the velocity</span>
+<span class="sd">    :math:`dE/dk = -2\,\mathrm{Im}(\lambda\phi^\dagger v\phi)` (diagonalized</span>
+<span class="sd">    within degenerate modes). There is no broadening :math:`\eta`, so the</span>
+<span class="sd">    modes are exact up to the band edges.</span>
+
+<span class="sd">    A *conservation_law* :math:`Q` (spin :math:`\sigma_z`, the electron-hole</span>
+<span class="sd">    :math:`\tau_z` of a normal lead, a valley) commutes with :math:`h_0` and</span>
+<span class="sd">    :math:`v`. The modes are then found in each eigenspace of :math:`Q`</span>
+<span class="sd">    separately, so that every mode carries one of its eigenvalues, even</span>
+<span class="sd">    when modes of different blocks are degenerate.</span>
+
+<span class="sd">    :param h0: Square complex array, Hermitian. Cell Hamiltonian.</span>
+<span class="sd">    :param v: Square complex array, same shape. Coupling of a cell to the</span>
+<span class="sd">        next one, away from the device.</span>
+<span class="sd">    :param energy: Real number. Energy, not at a band edge of the lead.</span>
+<span class="sd">    :param conservation_law: Hermitian complex array, shape of *h0*, or None.</span>
+<span class="sd">        Default value None.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **modes** -- **LeadModes**: the wave functions, momenta, velocities and blocks.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">h0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">))</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">))</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">lead</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">)</span>
+    <span class="n">law</span> <span class="o">=</span> <span class="n">_law_blocks</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">conservation_law</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_lead_modes</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">energy</span><span class="p">),</span> <span class="n">law</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_law_blocks</span><span class="p">(</span>
+    <span class="n">h0</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">v</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">law</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Validate a conservation law of a lead and return an</span>
+<span class="sd">    orthonormal basis (shape (m, d)) of each of its eigenspaces, in</span>
+<span class="sd">    increasing eigenvalue (None without a conservation law).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">law</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">law</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">law</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">))</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">conservation_law</span><span class="p">(</span><span class="n">law</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">law</span><span class="p">)</span>
+    <span class="n">breaks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-8</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">w</span><span class="p">))))</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">u</span><span class="p">[:,</span> <span class="n">g</span><span class="p">]</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)),</span> <span class="n">breaks</span><span class="p">)]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_lead_modes</span><span class="p">(</span>
+    <span class="n">h0</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">v</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">law</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">LeadModes</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. The modes of a lead (see *lead_modes*), the number of</span>
+<span class="sd">    incoming ones, and a basis of every solution that leaves the device or</span>
+<span class="sd">    decays away from it: its values on cells 0 and 1, *u0* and *u1* of shape</span>
+<span class="sd">    (m, m). Its first columns are the outgoing modes of *LeadModes*, the</span>
+<span class="sd">    others span the evanescent modes (a Schur basis of the pencil, which</span>
+<span class="sd">    stays well conditioned when :math:`v` is singular and many</span>
+<span class="sd">    :math:`\lambda` vanish). Modes with :math:`||\lambda| - 1| \le` *tol*</span>
+<span class="sd">    propagate. With the eigenspaces *law* of a conservation law</span>
+<span class="sd">    (*_law_blocks*), each block :math:`P^\dagger h_0P`, :math:`P^\dagger vP`</span>
+<span class="sd">    is solved on its own and embedded back.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">law</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># the incoming modes of every block, then the outgoing ones, then</span>
+        <span class="c1"># the evanescent ones: the order of the single-block case</span>
+        <span class="n">phi</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">vel</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">out0</span><span class="p">,</span> <span class="n">out1</span><span class="p">,</span> <span class="n">ev0</span><span class="p">,</span> <span class="n">ev1</span> <span class="o">=</span> <span class="p">([]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">b</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">law</span><span class="p">):</span>
+            <span class="n">md</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">u0</span><span class="p">,</span> <span class="n">u1</span> <span class="o">=</span> <span class="n">_lead_modes</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">h0</span> <span class="o">@</span> <span class="n">p</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">v</span> <span class="o">@</span> <span class="n">p</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span>
+            <span class="n">phi</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">p</span> <span class="o">@</span> <span class="n">md</span><span class="o">.</span><span class="n">wave_functions</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n</span><span class="p">],</span> <span class="n">p</span> <span class="o">@</span> <span class="n">md</span><span class="o">.</span><span class="n">wave_functions</span><span class="p">[:,</span> <span class="n">n</span><span class="p">:]))</span>
+            <span class="n">k</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">md</span><span class="o">.</span><span class="n">momenta</span><span class="p">[:</span><span class="n">n</span><span class="p">],</span> <span class="n">md</span><span class="o">.</span><span class="n">momenta</span><span class="p">[</span><span class="n">n</span><span class="p">:]))</span>
+            <span class="n">vel</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">md</span><span class="o">.</span><span class="n">velocities</span><span class="p">[:</span><span class="n">n</span><span class="p">],</span> <span class="n">md</span><span class="o">.</span><span class="n">velocities</span><span class="p">[</span><span class="n">n</span><span class="p">:]))</span>
+            <span class="n">block</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+            <span class="n">out0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span> <span class="o">@</span> <span class="n">u0</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n</span><span class="p">])</span>
+            <span class="n">out1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span> <span class="o">@</span> <span class="n">u1</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n</span><span class="p">])</span>
+            <span class="n">ev0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span> <span class="o">@</span> <span class="n">u0</span><span class="p">[:,</span> <span class="n">n</span><span class="p">:])</span>
+            <span class="n">ev1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span> <span class="o">@</span> <span class="n">u1</span><span class="p">[:,</span> <span class="n">n</span><span class="p">:])</span>
+        <span class="n">modes</span> <span class="o">=</span> <span class="n">LeadModes</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">phi</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">phi</span><span class="p">]),</span>
+                          <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">k</span><span class="p">]),</span>
+                          <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">vel</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">vel</span><span class="p">]),</span>
+                          <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">block</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">modes</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">block</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">out0</span> <span class="o">+</span> <span class="n">ev0</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">out1</span> <span class="o">+</span> <span class="n">ev1</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">hermitian_operator</span><span class="p">(</span><span class="n">h0</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">h0</span><span class="p">)</span>
+    <span class="n">eye</span><span class="p">,</span> <span class="n">zero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">zero</span><span class="p">,</span> <span class="n">eye</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">energy</span> <span class="o">*</span> <span class="n">eye</span> <span class="o">-</span> <span class="n">h0</span><span class="p">]])</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">eye</span><span class="p">,</span> <span class="n">zero</span><span class="p">],</span> <span class="p">[</span><span class="n">zero</span><span class="p">,</span> <span class="n">v</span><span class="p">]])</span>
+    <span class="c1"># decaying (|lambda| &lt; 1, including lambda = 0) first; beta = 0 is lambda = infinity</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">ordqz</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="k">lambda</span> <span class="n">al</span><span class="p">,</span> <span class="n">be</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">al</span><span class="p">)</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">tol</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">be</span><span class="p">),</span>
+                                       <span class="n">output</span><span class="o">=</span><span class="s1">&#39;complex&#39;</span><span class="p">)</span>
+    <span class="n">decay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">tol</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span>
+    <span class="n">unit</span> <span class="o">=</span> <span class="o">~</span><span class="n">decay</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">beta</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="n">tol</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">beta</span><span class="p">))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">beta</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">lams</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">[</span><span class="n">unit</span><span class="p">]</span> <span class="o">/</span> <span class="n">beta</span><span class="p">[</span><span class="n">unit</span><span class="p">]</span>
+    <span class="n">phis</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">vels</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">left</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lams</span><span class="p">)))</span>
+    <span class="k">while</span> <span class="n">left</span><span class="p">:</span>
+        <span class="c1"># a group of degenerate lambdas: its modes span the kernel of the</span>
+        <span class="c1"># Hermitian E - h0 - lam v - lam^* v^dagger; diagonalize the velocity there</span>
+        <span class="n">group</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">left</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">lams</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">lams</span><span class="p">[</span><span class="n">left</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">]</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">left</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">group</span><span class="p">]</span>
+        <span class="n">lam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">lams</span><span class="p">[</span><span class="n">group</span><span class="p">])</span>
+        <span class="n">lam</span> <span class="o">/=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">energy</span> <span class="o">*</span> <span class="n">eye</span> <span class="o">-</span> <span class="n">h0</span> <span class="o">-</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">v</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span> <span class="o">*</span> <span class="n">v</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">u</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">w</span><span class="p">))[:</span><span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)]]</span>
+        <span class="n">vel</span><span class="p">,</span> <span class="n">rot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">lam</span> <span class="o">*</span> <span class="n">phi</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">v</span> <span class="o">@</span> <span class="n">phi</span>
+                                        <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span> <span class="o">*</span> <span class="n">phi</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">v</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">phi</span><span class="p">))</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_band_edge</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">vel</span><span class="p">))</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">,</span> <span class="n">energy</span><span class="p">)</span>
+        <span class="n">phis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">phi</span> <span class="o">@</span> <span class="n">rot</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">vel</span><span class="p">)))</span>
+        <span class="n">ks</span> <span class="o">+=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">lam</span><span class="p">)]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+        <span class="n">vels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vel</span><span class="p">)</span>
+    <span class="n">phis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">phis</span><span class="p">)</span> <span class="k">if</span> <span class="n">phis</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+    <span class="n">ks</span><span class="p">,</span> <span class="n">vels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ks</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">vels</span><span class="p">)</span> <span class="k">if</span> <span class="n">vels</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">lexsort</span><span class="p">((</span><span class="n">ks</span><span class="p">,</span> <span class="n">vels</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">))</span>  <span class="c1"># incoming (v &lt; 0) first, then by momentum</span>
+    <span class="n">phis</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">vels</span> <span class="o">=</span> <span class="n">phis</span><span class="p">[:,</span> <span class="n">order</span><span class="p">],</span> <span class="n">ks</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">vels</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
+    <span class="n">n_in</span><span class="p">,</span> <span class="n">n_dec</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">vels</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">decay</span><span class="p">))</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_band_edge</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n_in</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">vels</span><span class="p">)</span> <span class="ow">and</span> <span class="n">n_in</span> <span class="o">+</span> <span class="n">n_dec</span> <span class="o">==</span> <span class="n">m</span><span class="p">,</span> <span class="n">energy</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">phis</span><span class="p">[:,</span> <span class="n">n_in</span><span class="p">:]</span>
+    <span class="n">u0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">out</span><span class="p">,</span> <span class="n">z</span><span class="p">[:</span><span class="n">m</span><span class="p">,</span> <span class="p">:</span><span class="n">n_dec</span><span class="p">]])</span>
+    <span class="n">u1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">out</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">ks</span><span class="p">[</span><span class="n">n_in</span><span class="p">:]),</span> <span class="n">z</span><span class="p">[</span><span class="n">m</span><span class="p">:,</span> <span class="p">:</span><span class="n">n_dec</span><span class="p">]])</span>
+    <span class="k">return</span> <span class="n">LeadModes</span><span class="p">(</span><span class="n">phis</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">vels</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ks</span><span class="p">),</span> <span class="nb">int</span><span class="p">)),</span> <span class="n">n_in</span><span class="p">,</span> <span class="n">u0</span><span class="p">,</span> <span class="n">u1</span>
+
+
+<div class="viewcode-block" id="SMatrix">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.transport.SMatrix">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SMatrix</span><span class="p">():</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    The scattering matrix of a device at one energy (see</span>
+<span class="sd">    *Transport.smatrix*): ``data[a, b]`` is the amplitude of outgoing mode</span>
+<span class="sd">    *a* for an incoming mode *b* of unit current. The rows are the outgoing</span>
+<span class="sd">    modes of lead 0, then lead 1, ...; the columns the incoming ones, in the</span>
+<span class="sd">    order of *lead_info*. It is unitary for a Hermitian device.</span>
+
+<span class="sd">    A lead is an integer, or a tuple ``(lead, block)`` that keeps only the</span>
+<span class="sd">    modes in one block of the lead&#39;s conservation law (*Transport.add_lead*),</span>
+<span class="sd">    for example ``(0, 1)`` for the electrons and ``(0, 0)`` for the holes of</span>
+<span class="sd">    a normal lead with :math:`Q = \tau_z`.</span>
+
+<span class="sd">    :ivar data: Complex ndarray, shape (n_out, n_in).</span>
+<span class="sd">    :ivar lead_info: List of **LeadModes**, one per lead.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">lead_info</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">LeadModes</span><span class="p">],</span> <span class="n">n_blocks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lead_info</span> <span class="o">=</span> <span class="n">lead_info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_blocks</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">lead_info</span><span class="p">)</span> <span class="k">if</span> <span class="n">n_blocks</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">list</span><span class="p">(</span><span class="n">n_blocks</span><span class="p">)</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">velocities</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">))</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">lead_info</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">counts</span><span class="p">)])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_modes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lead</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">outgoing</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Private method. The rows (*outgoing*) or columns of the modes of a</span>
+<span class="sd">        lead, or of one block of it.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_block</span><span class="p">(</span><span class="n">lead</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_blocks</span><span class="p">)</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">lead</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lead</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="k">else</span> <span class="n">lead</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="p">[</span><span class="n">l</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="p">[</span><span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lead</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+            <span class="n">blocks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lead_info</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">.</span><span class="n">blocks</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">idx</span><span class="p">[(</span><span class="n">blocks</span><span class="p">[</span><span class="n">n</span><span class="p">:]</span> <span class="k">if</span> <span class="n">outgoing</span> <span class="k">else</span> <span class="n">blocks</span><span class="p">[:</span><span class="n">n</span><span class="p">])</span> <span class="o">==</span> <span class="n">lead</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">idx</span>
+
+<div class="viewcode-block" id="SMatrix.num_propagating">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.transport.SMatrix.num_propagating">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">num_propagating</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lead</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the number of propagating modes (incoming, as many as outgoing)</span>
+<span class="sd">        of a lead, or of one block of it.</span>
+
+<span class="sd">        :param lead: Integer or tuple (lead, block).</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **n** -- Integer.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_modes</span><span class="p">(</span><span class="n">lead</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="SMatrix.submatrix">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.transport.SMatrix.submatrix">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">submatrix</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">lead_in</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the block of the scattering matrix from lead *lead_in* to lead</span>
+<span class="sd">        *lead_out*: the transmission amplitudes :math:`t`, or the reflection</span>
+<span class="sd">        amplitudes :math:`r` if the two are equal.</span>
+
+<span class="sd">        :param lead_out: Integer or tuple (lead, block).</span>
+<span class="sd">        :param lead_in: Integer or tuple (lead, block).</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **s** -- Complex ndarray, shape (num_propagating(lead_out), num_propagating(lead_in)).</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_modes</span><span class="p">(</span><span class="n">lead_out</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modes</span><span class="p">(</span><span class="n">lead_in</span><span class="p">,</span> <span class="kc">False</span><span class="p">))]</span></div>
+
+
+<div class="viewcode-block" id="SMatrix.transmission">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.transport.SMatrix.transmission">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">transmission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">lead_in</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the transmission :math:`\sum_{ab}|S_{ab}|^2` from lead *lead_in*</span>
+<span class="sd">        to lead *lead_out* (the reflection if they are equal). With blocks,</span>
+<span class="sd">        ``transmission((0, 0), (0, 1))`` is, for example, the Andreev</span>
+<span class="sd">        reflection of electrons into holes.</span>
+
+<span class="sd">        :param lead_out: Integer or tuple (lead, block).</span>
+<span class="sd">        :param lead_in: Integer or tuple (lead, block).</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **T** -- Real number.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">submatrix</span><span class="p">(</span><span class="n">lead_out</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span></div>
+</div>
+
+
+
 <div class="viewcode-block" id="Transport">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Transport</span><span class="p">():</span>
@@ -590,20 +869,46 @@
 <span class="sd">    semi-infinite leads are attached with *add_lead*; *transmission* then</span>
 <span class="sd">    gives the Landauer transmission between two of them.</span>
 
+<span class="sd">    The device is stored sparse. *smatrix*, *wave_function*, *ldos* and</span>
+<span class="sd">    *transmission* (by default) only factorize the sparse matrix. The</span>
+<span class="sd">    methods with a broadening *eta* use the dense Green&#39;s function, and the</span>
+<span class="sd">    dense matrix *ham* is built once, the first time it is needed.</span>
+
 <span class="sd">    :param ham: Square matrix (sparse or dense). Device Hamiltonian.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ham</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ham</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="s1">&#39;toarray&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span>
+        <span class="n">ham</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">square_matrix</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="s1">&#39;ham&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ham</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ham</span> <span class="o">=</span> <span class="n">ham</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dense</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">leads</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># list of (h0, v, coupling, sites)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_laws</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># eigenspaces of each lead&#39;s conservation law, or None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ham</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        The device Hamiltonian, as a dense complex ndarray.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dense</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dense</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ham</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dense</span>
 
 <div class="viewcode-block" id="Transport.add_lead">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.add_lead">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_lead</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h0</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">coupling</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">sites</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_lead</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">h0</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">coupling</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">sites</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+        <span class="n">conservation_law</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Attach a semi-infinite lead (see *surface_green*).</span>
+
+<span class="sd">        A *conservation_law* :math:`Q`, Hermitian and commuting with</span>
+<span class="sd">        :math:`h_0` and :math:`v`, sorts the lead&#39;s modes into the eigenspaces</span>
+<span class="sd">        of :math:`Q` (*lead_modes*), and *smatrix* then resolves its blocks:</span>
+<span class="sd">        :math:`\sigma_z` for spin-resolved transport, the electron-hole</span>
+<span class="sd">        :math:`\tau_z` of a normal lead for Andreev reflection. The device</span>
+<span class="sd">        itself need not conserve :math:`Q`.</span>
 
 <span class="sd">        :param h0: Square complex array, shape (m, m). Lead cell Hamiltonian.</span>
 <span class="sd">        :param v: Square complex array, shape (m, m). Coupling of a lead cell</span>
@@ -611,13 +916,84 @@
 <span class="sd">        :param coupling: Complex array, shape (len(sites), m). Hoppings</span>
 <span class="sd">            :math:`\tau` between the device *sites* and the lead&#39;s surface cell.</span>
 <span class="sd">        :param sites: List of device site (row) indices the lead touches.</span>
+<span class="sd">        :param conservation_law: Hermitian complex array, shape (m, m), or None.</span>
+<span class="sd">            Default value None. Its blocks are numbered in increasing eigenvalue.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">h0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">))</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">))</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">lead</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
         <span class="n">coupling</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">coupling</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">))</span>
-        <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_coupling</span><span class="p">(</span><span class="n">coupling</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">h0</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ham</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">h0</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">coupling</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">sites</span><span class="p">)))</span></div>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_coupling</span><span class="p">(</span><span class="n">coupling</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">h0</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ham</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">law</span> <span class="o">=</span> <span class="n">_law_blocks</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">conservation_law</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">h0</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">coupling</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">sites</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_laws</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">law</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Transport.attach_lead">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.attach_lead">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">attach_lead</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">sys</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">direction</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">conservation_law</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Attach a semi-infinite lead given as a 1D *KSpace* model (e.g. a</span>
+<span class="sd">        ribbon, see *kspace.ribbon*) to the device built from *sys*, without</span>
+<span class="sd">        writing the coupling by hand.</span>
+
+<span class="sd">        The lead&#39;s sites sit at :math:`\boldsymbol\tau_o + n\mathbf{a}_1`</span>
+<span class="sd">        (its *unit_cell* positions, in the coordinates of *sys*, and its</span>
+<span class="sd">        primitive vector). The device sites found at these positions, with</span>
+<span class="sd">        the same tag, are copies of lead orbitals; the outermost cell along</span>
+<span class="sd">        *direction* that holds some of them is the interface. The lead</span>
+<span class="sd">        starts at the next cell, and couples to the interface sites through</span>
+<span class="sd">        its own hoppings: :math:`\tau = v` restricted to their orbitals (see</span>
+<span class="sd">        *lead_from_kspace*, which also gives :math:`h_0` and :math:`v`).</span>
+<span class="sd">        Every lead orbital with a hopping into the next cell must be present</span>
+<span class="sd">        in the interface cell; the device is not extended.</span>
+
+<span class="sd">        :param sys: **System** instance (one orbital per site) whose</span>
+<span class="sd">            Hamiltonian, in the same site order, is the device of this</span>
+<span class="sd">            *Transport*.</span>
+<span class="sd">        :param ks: **KSpace** instance, 1D and spinless, with hoppings</span>
+<span class="sd">            between neighbouring cells only.</span>
+<span class="sd">        :param direction: +1 or -1. Default value 1. Direction, along the</span>
+<span class="sd">            lead&#39;s primitive vector, in which the lead extends away from the device.</span>
+<span class="sd">        :param conservation_law: Hermitian complex array, shape (norb, norb),</span>
+<span class="sd">            or None. Default value None. See *add_lead*.</span>
+
+<span class="sd">        Example usage::</span>
+
+<span class="sd">            strip = ribbon(lattices.square(), hoppings, width=5, direction=1)</span>
+<span class="sd">            tr = Transport(sys.ham)</span>
+<span class="sd">            tr.attach_lead(sys, strip, -1)   # at the left end of the device</span>
+<span class="sd">            tr.attach_lead(sys, strip, 1)    # at the right end</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.orbital</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrbitalSystem</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">sys</span><span class="p">(</span><span class="n">sys</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">not_orbital_system</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="n">OrbitalSystem</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">empty_coor</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_device_size</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">sites</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ham</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">spinless</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">spin</span><span class="p">)</span>
+        <span class="n">h0</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">lead_from_kspace</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_space_dim</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">space_dim</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">space_dim</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">)[:</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">space_dim</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">prim_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+        <span class="n">tau</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">orbital_positions</span><span class="p">()</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">),</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="n">orb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">norb</span><span class="p">):</span>
+            <span class="n">rel</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">-</span> <span class="n">tau</span><span class="p">[</span><span class="n">o</span><span class="p">]</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">rel</span> <span class="o">@</span> <span class="n">a</span> <span class="o">/</span> <span class="p">(</span><span class="n">a</span> <span class="o">@</span> <span class="n">a</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">hit</span> <span class="o">=</span> <span class="p">(</span><span class="n">orb</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">rel</span> <span class="o">-</span> <span class="n">n</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">error_handling</span><span class="o">.</span><span class="n">ATOL</span><span class="p">)</span> \
+                <span class="o">&amp;</span> <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;tag&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ks</span><span class="o">.</span><span class="n">tags</span><span class="p">[</span><span class="n">o</span><span class="p">])</span>
+            <span class="n">cell</span><span class="p">[</span><span class="n">hit</span><span class="p">],</span> <span class="n">orb</span><span class="p">[</span><span class="n">hit</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span><span class="p">[</span><span class="n">hit</span><span class="p">],</span> <span class="n">o</span>
+        <span class="n">on_lead</span> <span class="o">=</span> <span class="n">orb</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_overlap</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">on_lead</span><span class="o">.</span><span class="n">any</span><span class="p">()))</span>
+        <span class="n">edge</span> <span class="o">=</span> <span class="n">direction</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">direction</span> <span class="o">*</span> <span class="n">cell</span><span class="p">[</span><span class="n">on_lead</span><span class="p">])</span>
+        <span class="n">interface</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">on_lead</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">cell</span> <span class="o">==</span> <span class="n">edge</span><span class="p">))</span>
+        <span class="n">bonded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">v</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># orbitals coupled to the next cell</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_interface</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">bonded</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">orb</span><span class="p">[</span><span class="n">interface</span><span class="p">])))</span>
+        <span class="n">sites</span> <span class="o">=</span> <span class="n">interface</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">orb</span><span class="p">[</span><span class="n">interface</span><span class="p">],</span> <span class="n">bonded</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_lead</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="n">orb</span><span class="p">[</span><span class="n">sites</span><span class="p">]],</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sites</span><span class="p">],</span> <span class="n">conservation_law</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Transport.self_energy">
@@ -664,18 +1040,24 @@
 <div class="viewcode-block" id="Transport.transmission">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.transmission">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transmission</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Get the transmission :math:`T(E) = \mathrm{Tr}[\Gamma_{out} G^r</span>
-<span class="sd">        \Gamma_{in} G^a]` from lead *lead_in* to lead *lead_out*: the</span>
+<span class="sd">        Get the transmission from lead *lead_in* to lead *lead_out*: the</span>
 <span class="sd">        two-terminal conductance in units of :math:`e^2/h` (per spin, for a</span>
 <span class="sd">        spinless model).</span>
+
+<span class="sd">        By default (*eta* None) it is :math:`\sum_{ab}|S_{ab}|^2` over the block of</span>
+<span class="sd">        the scattering matrix (*smatrix*), exact up to the band edges of the</span>
+<span class="sd">        leads. With a broadening *eta* (and, as a fallback, for non-Hermitian</span>
+<span class="sd">        leads or *lead_in* = *lead_out*, with *eta* = 1e-9) it is the Caroli</span>
+<span class="sd">        formula :math:`T(E) = \mathrm{Tr}[\Gamma_{out} G^r \Gamma_{in} G^a]`.</span>
+<span class="sd">        The two agree to :math:`O(\eta)`.</span>
 
 <span class="sd">        :param energies: Real array. Energies.</span>
 <span class="sd">        :param lead_in: Integer. Default value 0.</span>
 <span class="sd">        :param lead_out: Integer. Default value 1.</span>
-<span class="sd">        :param eta: Positive real. Default value 1e-9.</span>
+<span class="sd">        :param eta: Positive real or None. Default value None.</span>
 
 <span class="sd">        :returns:</span>
 <span class="sd">            * **T** -- Real ndarray, same length as *energies*.</span>
@@ -683,6 +1065,16 @@
         <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_index</span><span class="p">(</span><span class="n">lead_in</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">))</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_index</span><span class="p">(</span><span class="n">lead_out</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">))</span>
         <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">))</span>
+        <span class="n">hermitian</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">h0</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="k">for</span> <span class="n">h0</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">eta</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">hermitian</span> <span class="ow">and</span> <span class="n">lead_in</span> <span class="o">!=</span> <span class="n">lead_out</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">energies</span><span class="p">):</span>
+                <span class="n">modes</span><span class="p">,</span> <span class="n">sol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scattering</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="p">[</span><span class="n">lead_in</span><span class="p">])</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ham</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">h0</span><span class="p">)</span> <span class="k">for</span> <span class="n">h0</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">[:</span><span class="n">lead_out</span><span class="p">])</span>
+                <span class="n">n_out</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">modes</span><span class="p">[</span><span class="n">lead_out</span><span class="p">]</span><span class="o">.</span><span class="n">velocities</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">))</span>
+                <span class="n">out</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="n">a</span><span class="p">:</span><span class="n">a</span> <span class="o">+</span> <span class="n">n_out</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">out</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="mf">1e-9</span> <span class="k">if</span> <span class="n">eta</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">eta</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">energies</span><span class="p">):</span>
             <span class="n">sig_in</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">self_energy</span><span class="p">(</span><span class="n">lead_in</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
@@ -692,6 +1084,241 @@
             <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_green</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
             <span class="n">out</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">gam_out</span> <span class="o">@</span> <span class="n">g</span> <span class="o">@</span> <span class="n">gam_in</span> <span class="o">@</span> <span class="n">g</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
         <span class="k">return</span> <span class="n">out</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Scattering matrix and scattering states</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_scattering</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">inject</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Private method. Solve the scattering problem for every incoming mode</span>
+<span class="sd">        of the leads *inject* (Groth et al. 2014). In lead :math:`l`, the</span>
+<span class="sd">        wave function on cells 0 and 1 is the incoming mode plus</span>
+<span class="sd">        :math:`U_0 b_l`, :math:`U_1 b_l` (*_lead_modes*: outgoing and</span>
+<span class="sd">        evanescent). The unknowns are the device wave function</span>
+<span class="sd">        :math:`\psi` and the amplitudes :math:`b_l`, and the equations are</span>
+<span class="sd">        the Schrodinger equation on the device and on the surface cell of</span>
+<span class="sd">        every lead,</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            (E - H)\psi - \sum_l\tau_l U_{0,l}b_l = \sum_l\tau_l\phi^{in}_l\, ,\qquad</span>
+<span class="sd">            -\tau_l^\dagger\psi + [(E - h_0)U_0 - vU_1]b_l = -(E - h_0 - \lambda_{in}v)\phi^{in}_l\, ,</span>
+
+<span class="sd">        one sparse system of size n_sites + sum_l m_l, factorized once</span>
+<span class="sd">        (*scipy.sparse.linalg.splu*) for every right-hand side.</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **modes** -- List of **LeadModes**, one per lead.</span>
+<span class="sd">            * **sol** -- Complex ndarray, shape (n_sites + sum_l m_l, n_in): one</span>
+<span class="sd">              column per incoming mode of the leads *inject*, in order.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ham</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="p">[</span><span class="n">_lead_modes</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">law</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">),</span> <span class="n">law</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_laws</span><span class="p">)]</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">h0</span><span class="p">)</span> <span class="k">for</span> <span class="n">h0</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">)</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="p">(</span><span class="n">energy</span> <span class="o">*</span> <span class="n">sp</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ham</span><span class="p">)</span><span class="o">.</span><span class="n">tocoo</span><span class="p">()</span>
+        <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">device</span><span class="o">.</span><span class="n">row</span><span class="p">],</span> <span class="p">[</span><span class="n">device</span><span class="o">.</span><span class="n">col</span><span class="p">],</span> <span class="p">[</span><span class="n">device</span><span class="o">.</span><span class="n">data</span><span class="p">]</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">block</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+            <span class="n">rr</span><span class="p">,</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+            <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cc</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+            <span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+
+        <span class="n">rhs</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">n</span>
+        <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="p">((</span><span class="n">h0</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">sites</span><span class="p">),</span> <span class="p">(</span><span class="n">modes</span><span class="p">,</span> <span class="n">n_in</span><span class="p">,</span> <span class="n">u0</span><span class="p">,</span> <span class="n">u1</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">,</span> <span class="n">found</span><span class="p">)):</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">h0</span><span class="p">)</span>
+            <span class="n">lead</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">m</span><span class="p">)</span>
+            <span class="n">e_h0</span> <span class="o">=</span> <span class="n">energy</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">-</span> <span class="n">h0</span>
+            <span class="n">block</span><span class="p">(</span><span class="n">sites</span><span class="p">,</span> <span class="n">lead</span><span class="p">,</span> <span class="o">-</span><span class="n">tau</span> <span class="o">@</span> <span class="n">u0</span><span class="p">)</span>
+            <span class="n">block</span><span class="p">(</span><span class="n">lead</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="o">-</span><span class="n">tau</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="n">block</span><span class="p">(</span><span class="n">lead</span><span class="p">,</span> <span class="n">lead</span><span class="p">,</span> <span class="n">e_h0</span> <span class="o">@</span> <span class="n">u0</span> <span class="o">-</span> <span class="n">v</span> <span class="o">@</span> <span class="n">u1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">inject</span><span class="p">:</span>
+                <span class="n">phi</span> <span class="o">=</span> <span class="n">modes</span><span class="o">.</span><span class="n">wave_functions</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n_in</span><span class="p">]</span>
+                <span class="n">col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">n_in</span><span class="p">),</span> <span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+                <span class="n">col</span><span class="p">[</span><span class="n">sites</span><span class="p">]</span> <span class="o">=</span> <span class="n">tau</span> <span class="o">@</span> <span class="n">phi</span>
+                <span class="n">col</span><span class="p">[</span><span class="n">a</span><span class="p">:</span><span class="n">a</span> <span class="o">+</span> <span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">e_h0</span> <span class="o">@</span> <span class="n">phi</span> <span class="o">-</span> <span class="n">v</span> <span class="o">@</span> <span class="n">phi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">modes</span><span class="o">.</span><span class="n">momenta</span><span class="p">[:</span><span class="n">n_in</span><span class="p">]))</span>
+                <span class="n">rhs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+            <span class="n">a</span> <span class="o">+=</span> <span class="n">m</span>
+        <span class="n">rhs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span> <span class="k">if</span> <span class="n">rhs</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rhs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">found</span><span class="p">],</span> <span class="n">rhs</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">vals</span><span class="p">),</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">rows</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">cols</span><span class="p">))),</span>
+                            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
+        <span class="n">sol</span> <span class="o">=</span> <span class="n">spla</span><span class="o">.</span><span class="n">splu</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">found</span><span class="p">],</span> <span class="n">sol</span>
+
+<div class="viewcode-block" id="Transport.smatrix">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.smatrix">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">smatrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SMatrix</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the scattering matrix at one energy: the amplitudes of the</span>
+<span class="sd">        outgoing modes of every lead for each incoming mode of unit</span>
+<span class="sd">        current, from the exact lead modes (*lead_modes*, no broadening) and</span>
+<span class="sd">        one sparse factorization of the device. It is unitary for a</span>
+<span class="sd">        Hermitian device. Every lead must be Hermitian. The blocks of the</span>
+<span class="sd">        leads&#39; conservation laws (*add_lead*) are addressed as</span>
+<span class="sd">        ``(lead, block)`` in *SMatrix.submatrix* and *SMatrix.transmission*.</span>
+
+<span class="sd">        :param energy: Real number. Energy, not at a band edge of a lead.</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **S** -- **SMatrix**: *data*, *lead_info*, *submatrix*, *transmission*.</span>
+
+<span class="sd">        Example usage::</span>
+
+<span class="sd">            s = tr.smatrix(0.3)</span>
+<span class="sd">            t = s.submatrix(1, 0)           # transmission amplitudes, lead 0 to lead 1</span>
+<span class="sd">            T = s.transmission(1, 0)        # = tr.transmission(0.3, 0, 1)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">modes</span><span class="p">,</span> <span class="n">sol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scattering</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">))))</span>
+        <span class="n">rows</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ham</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">),</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">,</span> <span class="n">modes</span><span class="p">):</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="n">a</span><span class="p">:</span><span class="n">a</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mode</span><span class="o">.</span><span class="n">velocities</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">))])</span>
+            <span class="n">a</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">h0</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="k">if</span> <span class="n">rows</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">SMatrix</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">modes</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span> <span class="k">if</span> <span class="n">law</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="n">law</span><span class="p">)</span> <span class="k">for</span> <span class="n">law</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_laws</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="Transport.wave_function">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.wave_function">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wave_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lead</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the scattering states injected from a lead: the wave function on</span>
+<span class="sd">        the device of each incoming mode of unit current (*lead_modes*),</span>
+<span class="sd">        with the scattered part leaving through every lead.</span>
+
+<span class="sd">        :param energy: Real number. Energy, not at a band edge of a lead.</span>
+<span class="sd">        :param lead: Integer. Injecting lead.</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **psi** -- Complex ndarray, shape (n_modes, n_sites): one row</span>
+<span class="sd">              per incoming mode of the lead.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_index</span><span class="p">(</span><span class="n">lead</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">))</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">sol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scattering</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="p">[</span><span class="n">lead</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">sol</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">_ham</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">T</span></div>
+
+
+<div class="viewcode-block" id="Transport.ldos">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.ldos">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ldos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the local density of states carried by the scattering states,</span>
+<span class="sd">        :math:`\rho_i(E) = \frac{1}{2\pi}\sum_{l,a}|\psi_{la}(i)|^2` over every</span>
+<span class="sd">        incoming mode :math:`a` of every lead :math:`l` (unit current</span>
+<span class="sd">        normalization). The bound states of the device, which no lead</span>
+<span class="sd">        feeds, are left out.</span>
+
+<span class="sd">        :param energy: Real number. Energy, not at a band edge of a lead.</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **rho** -- Real ndarray, shape (n_sites,).</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">sol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scattering</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">))))</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">sol</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">_ham</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Finite temperature: conductance and thermoelectric coefficients</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_onsager</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Private method. The integrals :math:`L_n = \int dE\,(E - \mu)^n\,T(E)</span>
+<span class="sd">        (-\partial f/\partial E)`, n = 0, 1, 2.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">energies</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">_fermi_window</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">n_points</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transmission</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span> <span class="o">*</span> <span class="n">weights</span>
+        <span class="n">de</span> <span class="o">=</span> <span class="n">energies</span> <span class="o">-</span> <span class="n">mu</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">t</span> <span class="o">*</span> <span class="n">de</span><span class="p">)),</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">t</span> <span class="o">*</span> <span class="n">de</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Transport.conductance">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.conductance">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">conductance</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">101</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the two-terminal linear conductance at a finite temperature, in</span>
+<span class="sd">        units of :math:`e^2/h`,</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            G = \int dE\,\left(-\frac{\partial f}{\partial E}\right)T(E)\, ,</span>
+
+<span class="sd">        with the Fermi-Dirac :math:`f` at chemical potential :math:`\mu`. The</span>
+<span class="sd">        integral runs over :math:`|E - \mu| \le 36k_BT` on *n_points* equally</span>
+<span class="sd">        spaced energies (the trapezoidal rule, spectrally accurate for</span>
+<span class="sd">        a smooth :math:`T(E)`). Resolving features of :math:`T(E)` narrower than</span>
+<span class="sd">        :math:`k_BT` needs more points. At zero temperature it is :math:`T(\mu)`.</span>
+
+<span class="sd">        :param mu: Real number. Chemical potential.</span>
+<span class="sd">        :param temperature: Positive real or zero. Default value 0 (:math:`k_B = 1`).</span>
+<span class="sd">        :param lead_in: Integer. Default value 0.</span>
+<span class="sd">        :param lead_out: Integer. Default value 1.</span>
+<span class="sd">        :param eta: Positive real or None. Default value None (see *transmission*).</span>
+<span class="sd">        :param n_points: Positive integer. Default value 101.</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **G** -- Real number.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="s1">&#39;mu&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="s1">&#39;n_points&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">temperature</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transmission</span><span class="p">([</span><span class="n">mu</span><span class="p">],</span> <span class="n">lead_in</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">,</span> <span class="n">eta</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_onsager</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">n_points</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Transport.thermoelectric">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.thermoelectric">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">thermoelectric</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">101</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the two-terminal thermoelectric coefficients in linear response</span>
+<span class="sd">        (Sivan and Imry 1986), from :math:`L_n = \int dE\,(E - \mu)^n\,T(E)</span>
+<span class="sd">        (-\partial f/\partial E)`:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            G = L_0\, ,\qquad S = -\frac{L_1}{T L_0}\, ,\qquad</span>
+<span class="sd">            \kappa = \frac{1}{T}\left(L_2 - \frac{L_1^2}{L_0}\right)\, ,</span>
+
+<span class="sd">        the conductance (:math:`e^2/h`), the thermopower (:math:`k_B/e`, for</span>
+<span class="sd">        electrons of charge :math:`-e`) and the electronic thermal conductance</span>
+<span class="sd">        at zero current (:math:`k_B/h` times the energy unit). At low</span>
+<span class="sd">        temperature they obey the Mott formula</span>
+<span class="sd">        :math:`S = -\frac{\pi^2}{3}T\,\frac{d\ln T(E)}{dE}` and the</span>
+<span class="sd">        Wiedemann-Franz law :math:`\kappa = \frac{\pi^2}{3}TG`. The integrals</span>
+<span class="sd">        are those of *conductance*.</span>
+
+<span class="sd">        :param mu: Real number. Chemical potential.</span>
+<span class="sd">        :param temperature: Positive real (:math:`k_B = 1`).</span>
+<span class="sd">        :param lead_in: Integer. Default value 0.</span>
+<span class="sd">        :param lead_out: Integer. Default value 1.</span>
+<span class="sd">        :param eta: Positive real or None. Default value None (see *transmission*).</span>
+<span class="sd">        :param n_points: Positive integer. Default value 101.</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **G** -- Real number.</span>
+<span class="sd">            * **S** -- Real number (NaN when nothing is transmitted).</span>
+<span class="sd">            * **kappa** -- Real number.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="s1">&#39;mu&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="s1">&#39;n_points&#39;</span><span class="p">)</span>
+        <span class="n">l0</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">l2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_onsager</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">n_points</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">l0</span> <span class="o">&lt;</span> <span class="mf">1e-14</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">l0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">l2</span> <span class="o">/</span> <span class="n">temperature</span>
+        <span class="k">return</span> <span class="n">l0</span><span class="p">,</span> <span class="o">-</span><span class="n">l1</span> <span class="o">/</span> <span class="p">(</span><span class="n">temperature</span> <span class="o">*</span> <span class="n">l0</span><span class="p">),</span> <span class="p">(</span><span class="n">l2</span> <span class="o">-</span> <span class="n">l1</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">l0</span><span class="p">)</span> <span class="o">/</span> <span class="n">temperature</span></div>
 
 
     <span class="c1"># ------------------------------------------------------------------</span>
@@ -737,7 +1364,9 @@
 
 <div class="viewcode-block" id="Transport.conductance_matrix">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.conductance_matrix">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">conductance_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">conductance_matrix</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">101</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Get the Landauer-Buttiker conductance matrix (Buttiker 1986), in units</span>
 <span class="sd">        of :math:`e^2/h`: the linear-response currents flowing *into* the</span>
@@ -748,14 +1377,24 @@
 <span class="sd">            G_{pq} = -T_{pq}\ (p\neq q)\, ,\qquad G_{pp} = \sum_{q\neq p}T_{qp}\, .</span>
 
 <span class="sd">        Its rows and columns add up to zero (current conservation, and no</span>
-<span class="sd">        current at equal voltages).</span>
+<span class="sd">        current at equal voltages). At a finite *temperature* it is averaged</span>
+<span class="sd">        over the Fermi window, :math:`\int dE\,(-\partial f/\partial E)\,G(E)`</span>
+<span class="sd">        (see *conductance*).</span>
 
-<span class="sd">        :param energy: Real number. Fermi energy.</span>
+<span class="sd">        :param energy: Real number. Fermi energy (chemical potential).</span>
 <span class="sd">        :param eta: Positive real. Default value 1e-9.</span>
+<span class="sd">        :param temperature: Positive real or zero. Default value 0 (:math:`k_B = 1`).</span>
+<span class="sd">        :param n_points: Positive integer. Default value 101. Energies in the</span>
+<span class="sd">            Fermi window, at a finite temperature.</span>
 
 <span class="sd">        :returns:</span>
 <span class="sd">            * **G** -- Real ndarray, shape (n_leads, n_leads).</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="s1">&#39;n_points&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">temperature</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">energies</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">_fermi_window</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">n_points</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">conductance_matrix</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">eta</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">weights</span><span class="p">))</span>
         <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transmission_matrix</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">-</span> <span class="n">t</span></div>
 
@@ -764,6 +1403,7 @@
 <a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.four_terminal_resistance">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">four_terminal_resistance</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">current</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">voltage</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">,</span>
+        <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">101</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Get a four-terminal (or two-terminal) resistance from the</span>
@@ -780,13 +1420,15 @@
 <span class="sd">        :param current: Tuple of two distinct lead indices (source, drain).</span>
 <span class="sd">        :param voltage: Tuple of two lead indices (a, b).</span>
 <span class="sd">        :param eta: Positive real. Default value 1e-9.</span>
+<span class="sd">        :param temperature: Positive real or zero. Default value 0 (see *conductance_matrix*).</span>
+<span class="sd">        :param n_points: Positive integer. Default value 101.</span>
 
 <span class="sd">        :returns:</span>
 <span class="sd">            * **R** -- Real number.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_pair</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">),</span> <span class="s1">&#39;current&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_pair</span><span class="p">(</span><span class="n">voltage</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">),</span> <span class="s1">&#39;voltage&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-        <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conductance_matrix</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conductance_matrix</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">n_points</span><span class="p">)</span>
         <span class="n">source</span><span class="p">,</span> <span class="n">drain</span> <span class="o">=</span> <span class="n">current</span>
         <span class="n">keep</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">))</span> <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="n">drain</span><span class="p">]</span>  <span class="c1"># the drain is grounded</span>
         <span class="n">currents</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">keep</span><span class="p">))</span>
@@ -938,6 +1580,20 @@
                                 <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">energies</span><span class="p">])</span></div>
 </div>
 
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_fermi_window</span><span class="p">(</span>
+    <span class="n">mu</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Energies and weights of the trapezoidal rule for</span>
+<span class="sd">    :math:`\int dE\,(-\partial f/\partial E)\,F(E)`, on *n_points* equally</span>
+<span class="sd">    spaced energies with :math:`|E - \mu| \le 36T` (the weight is below</span>
+<span class="sd">    1e-15 beyond). The weights add up to 1.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">36.</span><span class="p">,</span> <span class="mf">36.</span><span class="p">,</span> <span class="n">n_points</span><span class="p">)</span> <span class="k">if</span> <span class="n">n_points</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cosh</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">temperature</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">w</span> <span class="o">/</span> <span class="n">w</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_sqrt_psd</span><span class="p">(</span><span class="n">mat</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>

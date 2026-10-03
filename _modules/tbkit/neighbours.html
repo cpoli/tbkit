@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tbkit.neighbours &#8212; tbkit 0.4.2 documentation</title>
+    <title>tbkit.neighbours &#8212; tbkit 0.5.0 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../_static/documentation_options.js?v=9dc614e0"></script>
+    <script src="../../_static/documentation_options.js?v=70f82a29"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.4" />
+  <meta name="docsearch:version" content="0.5" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -405,6 +405,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.error_handling</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">error_handling</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.values</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">values</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.lattice</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lattice</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.system</span><span class="w"> </span><span class="kn">import</span> <span class="n">ATOL</span><span class="p">,</span> <span class="n">_upper</span>
 
@@ -589,7 +590,9 @@
 <span class="sd">        * &#39;tag&#39;: String of length 2. Only the bonds from a site of the</span>
 <span class="sd">          first sublattice to one of the second, in the orientation above.</span>
 <span class="sd">        * &#39;t&#39;: Complex number (or, if *spin*, a 2x2 matrix): the matrix</span>
-<span class="sd">          element :math:`\langle i|H|j\rangle` along the oriented bond.</span>
+<span class="sd">          element :math:`\langle i|H|j\rangle` along the oriented bond. Or a</span>
+<span class="sd">          value function (see *KSpace.set_hopping*), passed on as it is (as</span>
+<span class="sd">          ``t(j, i)^\dagger`` for a reversed bond of a Hermitian model).</span>
 
 <span class="sd">        When several dictionaries select the same bond, the last one wins,</span>
 <span class="sd">        as in *System.set_hopping*.</span>
@@ -625,12 +628,17 @@
             <span class="n">ind</span> <span class="o">&amp;=</span> <span class="n">shell</span><span class="p">[</span><span class="s1">&#39;tag&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">&#39;tag&#39;</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">reverse</span> <span class="k">else</span> <span class="n">dic</span><span class="p">[</span><span class="s1">&#39;tag&#39;</span><span class="p">])</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">dic</span><span class="p">)</span>
         <span class="n">t</span> <span class="o">=</span> <span class="n">dic</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">reverse</span> <span class="ow">and</span> <span class="n">hermitian</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+                <span class="n">t_rev</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">reversed_conj</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">t_rev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
         <span class="k">for</span> <span class="n">bond</span> <span class="ow">in</span> <span class="n">shell</span><span class="p">[</span><span class="n">ind</span><span class="p">]:</span>
             <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bond</span><span class="p">[</span><span class="s1">&#39;i&#39;</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">bond</span><span class="p">[</span><span class="s1">&#39;j&#39;</span><span class="p">]),</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">bond</span><span class="p">[</span><span class="s1">&#39;R&#39;</span><span class="p">])</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">reverse</span><span class="p">:</span>
                 <span class="n">chosen</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">R</span><span class="p">)]</span> <span class="o">=</span> <span class="n">t</span>
             <span class="k">elif</span> <span class="n">hermitian</span><span class="p">:</span>
-                <span class="n">chosen</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">R</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+                <span class="n">chosen</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">R</span><span class="p">)]</span> <span class="o">=</span> <span class="n">t_rev</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">chosen</span><span class="p">[(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="o">-</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">R</span><span class="p">))]</span> <span class="o">=</span> <span class="n">t</span>
     <span class="k">return</span> <span class="p">[{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="n">j</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">}</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">R</span><span class="p">),</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">chosen</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span></div>

@@ -29,11 +29,12 @@ lattice itself (with or without its hoppings drawn on), the spectrum
 (optionally colored by sublattice polarization), the density of states,
 and an eigenstate's spatial intensity.
 
-.. GENERATED FROM PYTHON SOURCE LINES 13-21
+.. GENERATED FROM PYTHON SOURCE LINES 13-22
 
 .. code-block:: Python
 
     import numpy as np
+    from scipy.integrate import trapezoid
 
     from tbkit.graphene import GrapheneLattice
     from tbkit.system import System
@@ -48,14 +49,14 @@ and an eigenstate's spatial intensity.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 22-26
+.. GENERATED FROM PYTHON SOURCE LINES 23-27
 
 A small graphene flake
 ------------------------------
 A zigzag hexagonal flake, small enough that the lattice and hopping
 plots below stay legible.
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-44
+.. GENERATED FROM PYTHON SOURCE LINES 27-45
 
 .. code-block:: Python
 
@@ -91,12 +92,12 @@ plots below stay legible.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-47
+.. GENERATED FROM PYTHON SOURCE LINES 46-48
 
 The lattice, with hoppings drawn on
 ------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-50
+.. GENERATED FROM PYTHON SOURCE LINES 48-51
 
 .. code-block:: Python
 
@@ -115,7 +116,7 @@ The lattice, with hoppings drawn on
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-58
+.. GENERATED FROM PYTHON SOURCE LINES 52-59
 
 Spectrum and sublattice polarization
 ------------------------------------------
@@ -125,7 +126,7 @@ on ``b``. Every state's ``a`` + ``b`` weight sums to exactly 1 (a
 normalized eigenvector split across the two sublattices), regardless
 of how it is distributed between them.
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-65
+.. GENERATED FROM PYTHON SOURCE LINES 59-66
 
 .. code-block:: Python
 
@@ -154,12 +155,12 @@ of how it is distributed between them.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-68
+.. GENERATED FROM PYTHON SOURCE LINES 67-69
 
 Density of states
 ---------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-77
+.. GENERATED FROM PYTHON SOURCE LINES 69-78
 
 .. code-block:: Python
 
@@ -168,7 +169,7 @@ Density of states
     # The broadened DOS integrates back to the total number of states,
     # regardless of the broadening kernel's width.
     e_grid, rho = density_of_states(sys.en, broadening=0.1)
-    integral = np.trapezoid(rho, e_grid)
+    integral = trapezoid(rho, e_grid)
     print('DOS integrates to {:.3f} states (flake has {}).'.format(integral, glat.sites))
     assert abs(integral - glat.sites) < 0.5
 
@@ -190,7 +191,7 @@ Density of states
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-83
+.. GENERATED FROM PYTHON SOURCE LINES 79-84
 
 An eigenstate's spatial intensity
 ------------------------------------------
@@ -198,7 +199,7 @@ An eigenstate's spatial intensity
 disk at each site, sized by the local weight -- here, for the state
 closest to zero energy.
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-88
+.. GENERATED FROM PYTHON SOURCE LINES 84-89
 
 .. code-block:: Python
 
@@ -228,7 +229,7 @@ closest to zero energy.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.704 seconds)
+   **Total running time of the script:** (0 minutes 0.210 seconds)
 
 
 .. _sphx_glr_download_api_gallery_tight_binding_plot_visualizing_a_model.py:

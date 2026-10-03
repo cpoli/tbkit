@@ -17,9 +17,18 @@ except at :math:`|\mu| = 2|t|`. For :math:`|\mu| < 2|t|` the chain is
 topological: an open chain hosts one *Majorana* zero mode at each end
 -- a fermion split in two halves, a building block proposed for
 topological quantum computation, and chased in semiconductor nanowires
-since 2012. The bulk invariant is the Berry (Zak) phase of the occupied
-BdG band, :math:`\pi` in the topological phase and 0 otherwise (class
-BDI).
+since 2012. Kitaev's own bulk invariant is the *Majorana number*
+
+.. math::
+
+    \mathcal{M} = \mathrm{sign}\left[\mathrm{Pf}\,A(0)\,\mathrm{Pf}\,A(\pi)\right]\, ,
+
+the signs of the Pfaffians of the Hamiltonian written in Majorana
+operators at the two time-reversal-invariant momenta: :math:`-1` in the
+topological phase, :math:`+1` otherwise. It needs only particle-hole
+symmetry (class D). With the extra chiral symmetry of this real chain
+(class BDI), the Berry (Zak) phase of the occupied BdG band,
+:math:`\pi` or 0, says the same.
 
 :mod:`tbkit.bdg` builds the chain in real space (*bdg_ham*) and in
 reciprocal space (*bdg_kspace*).
@@ -28,7 +37,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
-from tbkit.bdg import bdg_ham, bdg_kspace, pairing_bonds, particle_hole
+from tbkit.bdg import bdg_ham, bdg_kspace, majorana_number, pairing_bonds, particle_hole
 from tbkit.kspace import KSpace
 from tbkit.system import System
 
@@ -57,6 +66,16 @@ zak = np.array([abs(kitaev(mu).berry_phase(0, nk=200)) for mu in mus])
 topological = np.abs(mus) < 2 * abs(t)
 assert np.allclose(zak[topological], np.pi) and np.allclose(zak[~topological], 0., atol=1e-8)
 print('Berry phase pi for |mu| < 2|t|, 0 outside.')
+# at |mu| = 2|t| the gap closes at k = 0 or pi, and the Majorana number is undefined
+gapped = ~np.isclose(np.abs(mus), 2 * abs(t))
+majorana = np.array([majorana_number(kitaev(mu)) for mu in mus[gapped]])
+assert np.all(majorana[topological[gapped]] == -1) and np.all(majorana[~topological[gapped]] == 1)
+try:
+    majorana_number(kitaev(2 * t))
+    raise AssertionError('the gap closes at k = 0')
+except ValueError:
+    pass
+print('Majorana number -1 for |mu| < 2|t|, +1 outside.')
 
 # %%
 # Majorana zero modes at the ends of an open chain
@@ -87,9 +106,10 @@ assert ends / 2 > 0.95
 assert np.allclose(spectra[0.5], np.linalg.eigvalsh(kitaev(0.5).finite_ham(n)))
 
 fig, axes = plt.subplots(1, 2, figsize=(10, 4))
-axes[0].plot(mus, zak / np.pi, 'o-b')
+axes[0].plot(mus, zak / np.pi, 'o-b', label=r'Berry phase / $\pi$')
+axes[0].plot(mus[gapped], majorana, 's--r', ms=4, label=r'Majorana number $\mathcal{M}$')
 axes[0].set_xlabel(r'$\mu/t$')
-axes[0].set_ylabel(r'Berry phase / $\pi$')
+axes[0].legend()
 axes[1].plot(np.arange(n), weight.sum(axis=1), 'o-r')
 axes[1].set_xlabel('site')
 axes[1].set_ylabel('zero-mode weight')

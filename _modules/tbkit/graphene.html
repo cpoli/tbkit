@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tbkit.graphene &#8212; tbkit 0.4.2 documentation</title>
+    <title>tbkit.graphene &#8212; tbkit 0.5.0 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../_static/documentation_options.js?v=9dc614e0"></script>
+    <script src="../../_static/documentation_options.js?v=70f82a29"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.4" />
+  <meta name="docsearch:version" content="0.5" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -399,6 +399,30 @@
 <div class="viewcode-block" id="GrapheneLattice">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.graphene.GrapheneLattice">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GrapheneLattice</span><span class="p">(</span><span class="n">Lattice</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Honeycomb lattice of graphene, with flake shapes.</span>
+
+<span class="sd">    Two sublattices, &#39;a&#39; at :math:`(0, 0)` and &#39;b&#39; at</span>
+<span class="sd">    :math:`(\sqrt3/2, 1/2)`, and primitive vectors</span>
+<span class="sd">    :math:`\mathbf{a}_1 = (\sqrt3, 0)` and</span>
+<span class="sd">    :math:`\mathbf{a}_2 = (\sqrt3/2, 3/2)`, so the nearest-neighbour</span>
+<span class="sd">    distance is 1. It is a :class:`Lattice` with methods that cut flakes</span>
+<span class="sd">    of the usual shapes: *triangle_zigzag*, *hexagon_zigzag*,</span>
+<span class="sd">    *triangle_armchair*, *hexagon_armchair*, *square* and *circle*.</span>
+
+<span class="sd">    *butterfly* and *betas* are empty here; *GrapheneSystem.get_butterfly*</span>
+<span class="sd">    fills the ones of the system.</span>
+
+<span class="sd">    Example usage::</span>
+
+<span class="sd">        from tbkit.graphene import GrapheneLattice, GrapheneSystem</span>
+
+<span class="sd">        lat = GrapheneLattice()</span>
+<span class="sd">        lat.hexagon_zigzag(n=4)</span>
+<span class="sd">        sys = GrapheneSystem(lat)</span>
+<span class="sd">        sys.set_hopping([{&#39;n&#39;: 1, &#39;t&#39;: 1.}])</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">unit_cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)},</span>
                           <span class="p">{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="n">DY</span><span class="p">)}]</span>
@@ -506,6 +530,29 @@
 <div class="viewcode-block" id="GrapheneSystem">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.graphene.GrapheneSystem">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GrapheneSystem</span><span class="p">(</span><span class="n">System</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Graphene :class:`System`, with triaxial strain.</span>
+
+<span class="sd">    Adds to *System* the nearest-neighbour hoppings of a linear triaxial</span>
+<span class="sd">    strain (*set_hop_linear_strain*), which acts as a uniform</span>
+<span class="sd">    pseudo-magnetic field, the range of strains that keeps every hopping</span>
+<span class="sd">    positive (*get_beta_lims*), and the spectrum as a function of the strain</span>
+<span class="sd">    (*get_butterfly*).</span>
+
+<span class="sd">    :param lat: Lattice, usually a :class:`GrapheneLattice` flake.</span>
+
+<span class="sd">    Example usage::</span>
+
+<span class="sd">        from tbkit.graphene import GrapheneLattice, GrapheneSystem</span>
+
+<span class="sd">        lat = GrapheneLattice()</span>
+<span class="sd">        lat.hexagon_zigzag(n=10)</span>
+<span class="sd">        lat.center()</span>
+<span class="sd">        sys = GrapheneSystem(lat)</span>
+<span class="sd">        sys.set_hop_linear_strain(t=1., beta=0.1)</span>
+<span class="sd">        sys.get_ham()</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="n">Lattice</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">System</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
 
@@ -566,6 +613,7 @@
         <span class="n">error_handling</span><span class="o">.</span><span class="n">number</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">)</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">ang</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strain_projection</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_hopping</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">HOP_DTYPE</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;i&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>

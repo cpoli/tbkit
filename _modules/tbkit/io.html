@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tbkit.io &#8212; tbkit 0.4.2 documentation</title>
+    <title>tbkit.io &#8212; tbkit 0.5.0 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../_static/documentation_options.js?v=9dc614e0"></script>
+    <script src="../../_static/documentation_options.js?v=70f82a29"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.4" />
+  <meta name="docsearch:version" content="0.5" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -395,7 +395,10 @@
 <span class="sd">  ``&#39;KSpace&#39;``), ``tbkit_version``;</span>
 <span class="sd">* ``uc_tag`` (n_sites,), ``uc_r0`` (n_sites, space_dim), ``prim_vec``</span>
 <span class="sd">  (dim, space_dim), ``coor`` (the structured site array), ``n_cells`` (3,);</span>
-<span class="sd">* System: ``onsite`` (sites,), ``hop`` (the structured *sys.hop*);</span>
+<span class="sd">* System: ``onsite`` (sites,), ``hop`` (the structured *sys.hop*), and,</span>
+<span class="sd">  from version 2, ``periodic`` (one boolean per primitive vector) for a</span>
+<span class="sd">  System with periodic boundaries (every other model is still written as</span>
+<span class="sd">  version 1, which older tbkit versions read);</span>
 <span class="sd">* KSpace: ``spin``, ``onsite`` (norb,), ``onsite_offdiag`` (norb, norb),</span>
 <span class="sd">  ``nonreciprocal``, and ``hop_i``, ``hop_j``, ``hop_R`` (Cartesian</span>
 <span class="sd">  lattice vectors), ``hop_t`` for the hoppings, ``ovl_i``, ``ovl_j``,</span>
@@ -423,7 +426,7 @@
 <span class="n">FORMAT</span> <span class="o">=</span> <span class="s1">&#39;tbkit-model&#39;</span>
 <span class="c1">#: Version of the archive format written by *save_model*; *load_model*</span>
 <span class="c1">#: reads this version and every earlier one.</span>
-<span class="n">VERSION</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">VERSION</span> <span class="o">=</span> <span class="mi">2</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_hop_arrays</span><span class="p">(</span><span class="n">hops</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">space_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -466,13 +469,16 @@
 <span class="sd">        gra2 = load_model(&#39;graphene.npz&#39;)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">saveable_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">Lattice</span><span class="p">,</span> <span class="n">System</span><span class="p">,</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">OrbitalSystem</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">no_value_functions</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;save_model&#39;</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">file_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;path&#39;</span><span class="p">)</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.npz&#39;</span><span class="p">):</span>
         <span class="n">path</span> <span class="o">+=</span> <span class="s1">&#39;.npz&#39;</span>
     <span class="n">lat</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">lat</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">(</span><span class="n">System</span><span class="p">,</span> <span class="n">KSpace</span><span class="p">))</span> <span class="k">else</span> <span class="n">model</span>
     <span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;System&#39;</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">System</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;KSpace&#39;</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">KSpace</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;Lattice&#39;</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">FORMAT</span><span class="p">),</span> <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">VERSION</span><span class="p">),</span> <span class="s1">&#39;kind&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kind</span><span class="p">),</span>
+    <span class="c1"># only what needs version 2 (a periodic System) is written as such, so</span>
+    <span class="c1"># that older tbkit versions keep reading everything else</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">FORMAT</span><span class="p">),</span> <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;kind&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kind</span><span class="p">),</span>
                 <span class="s1">&#39;tbkit_version&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tbkit</span><span class="o">.</span><span class="n">__version__</span><span class="p">),</span>
                 <span class="s1">&#39;uc_tag&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dic</span><span class="p">[</span><span class="s1">&#39;tag&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">dic</span> <span class="ow">in</span> <span class="n">lat</span><span class="o">.</span><span class="n">unit_cell</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;U1&#39;</span><span class="p">),</span>
                 <span class="s1">&#39;uc_r0&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dic</span><span class="p">[</span><span class="s1">&#39;r0&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">dic</span> <span class="ow">in</span> <span class="n">lat</span><span class="o">.</span><span class="n">unit_cell</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">),</span>
@@ -482,6 +488,9 @@
     <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;System&#39;</span><span class="p">:</span>
         <span class="n">data</span><span class="p">[</span><span class="s1">&#39;onsite&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">onsite</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
         <span class="n">data</span><span class="p">[</span><span class="s1">&#39;hop&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">hop</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">periodic</span><span class="p">):</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;periodic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">periodic</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">VERSION</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;KSpace&#39;</span><span class="p">:</span>
         <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;spin&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">spin</span><span class="p">),</span> <span class="s1">&#39;onsite&#39;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">onsite</span><span class="p">,</span>
                           <span class="s1">&#39;onsite_offdiag&#39;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">_onsite_offdiag</span><span class="p">,</span>
@@ -521,7 +530,8 @@
         <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;Lattice&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">lat</span>
         <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;System&#39;</span><span class="p">:</span>
-            <span class="n">sys</span> <span class="o">=</span> <span class="n">System</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
+            <span class="n">periodic</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;periodic&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="s1">&#39;periodic&#39;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">files</span> <span class="k">else</span> <span class="kc">False</span>
+            <span class="n">sys</span> <span class="o">=</span> <span class="n">System</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">periodic</span><span class="o">=</span><span class="n">periodic</span><span class="p">)</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">onsite</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;onsite&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">hop</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;hop&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">sys</span>
@@ -728,8 +738,25 @@
         <span class="n">error_handling</span><span class="o">.</span><span class="n">layer_hoppings</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ham</span><span class="p">[</span><span class="n">R</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="mf">0.</span><span class="p">)),</span> <span class="n">tol</span><span class="p">)</span>
         <span class="n">keep</span> <span class="o">=</span> <span class="n">R</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
         <span class="n">R</span><span class="p">,</span> <span class="n">ndegen</span><span class="p">,</span> <span class="n">ham</span> <span class="o">=</span> <span class="n">R</span><span class="p">[</span><span class="n">keep</span><span class="p">,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">ndegen</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span> <span class="n">ham</span><span class="p">[</span><span class="n">keep</span><span class="p">]</span>
-    <span class="n">ham</span> <span class="o">=</span> <span class="n">ham</span> <span class="o">/</span> <span class="n">ndegen</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
-    <span class="n">unit_cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="n">tag</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[:</span><span class="n">dim</span><span class="p">])}</span> <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="n">positions</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">_hr_kspace</span><span class="p">(</span><span class="n">prim_vec</span><span class="p">,</span> <span class="n">positions</span><span class="p">[:,</span> <span class="p">:</span><span class="n">dim</span><span class="p">],</span> <span class="n">tags</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">ham</span> <span class="o">/</span> <span class="n">ndegen</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">cutoff</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_hr_kspace</span><span class="p">(</span>
+    <span class="n">prim_vec</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]],</span> <span class="n">positions</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">R</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int_</span><span class="p">],</span> <span class="n">ham</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">cutoff</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KSpace</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. The **KSpace** of the matrices :math:`H(\mathbf{R})`</span>
+<span class="sd">    (*ham*, shape (nR, num_wann, num_wann), degeneracy weights already</span>
+<span class="sd">    divided out) at the lattice vectors *R* (integers, shape (nR, dim)),</span>
+<span class="sd">    with orbitals at *positions*, for *read_wannier90* and</span>
+<span class="sd">    *WannierFunctions.kspace*. It is Hermitian (with real onsite energies)</span>
+<span class="sd">    when every :math:`H(\mathbf{R})` has its partner</span>
+<span class="sd">    :math:`H(-\mathbf{R}) = H(\mathbf{R})^\dagger` within *tol*.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">num_wann</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">unit_cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="n">tag</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">r</span><span class="p">)}</span> <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="n">positions</span><span class="p">)]</span>
     <span class="n">ks</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">Lattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="n">unit_cell</span><span class="p">,</span> <span class="n">prim_vec</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">prim_vec</span><span class="p">)))</span>
     <span class="c1"># Hermitian: every H(R) has its partner H(-R) = H(R)^dagger</span>
     <span class="n">index</span> <span class="o">=</span> <span class="p">{</span><span class="nb">tuple</span><span class="p">(</span><span class="n">r</span><span class="p">):</span> <span class="n">p</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">R</span><span class="o">.</span><span class="n">tolist</span><span class="p">())}</span>
@@ -748,8 +775,7 @@
                                                     <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">nonzero</span> <span class="ow">and</span> <span class="n">m</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">)):</span>
                     <span class="n">list_hop</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="n">m</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">})</span>
     <span class="n">ks</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">(</span><span class="n">list_hop</span><span class="p">,</span> <span class="n">hermitian</span><span class="o">=</span><span class="n">hermitian</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">ks</span></div>
-
+    <span class="k">return</span> <span class="n">ks</span>
 </pre></div>
 
                 </article>

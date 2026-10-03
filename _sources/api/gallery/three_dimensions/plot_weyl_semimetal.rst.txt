@@ -31,8 +31,8 @@ signature, open *Fermi arcs*.
 
 Both follow from topology. Every plane :math:`k_z = \mathrm{const}` of the
 Brillouin zone is a 2D insulator with a Chern number, which jumps by the
-monopole charge as the plane crosses a Weyl point: here
-:math:`C(k_z) = 1` between the two Weyl points and 0 outside. Each plane
+monopole charge (the chirality) as the plane crosses a Weyl point: here
+:math:`|C(k_z)| = 1` between the two Weyl points and 0 outside. Each plane
 with :math:`C = 1` contributes one chiral edge state to a surface; together
 they draw a line of zero-energy surface states that ends at the
 projections of the Weyl points -- the Fermi arc.
@@ -41,7 +41,7 @@ The model: :math:`H(\mathbf{k}) = \sin k_x\,\sigma_x + \sin k_y\,\sigma_y
 + (2 + \cos k_0 - \cos k_x - \cos k_y - \cos k_z)\,\sigma_z`, Weyl points at
 :math:`(0, 0, \pm k_0)`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-43
+.. GENERATED FROM PYTHON SOURCE LINES 25-44
 
 .. code-block:: Python
 
@@ -50,6 +50,7 @@ The model: :math:`H(\mathbf{k}) = \sin k_x\,\sigma_x + \sin k_y\,\sigma_y
 
     from tbkit.lattice import Lattice
     from tbkit.kspace import KSpace, PAULI, ribbon
+    from tbkit.topology import find_weyl_points
 
     k0 = np.pi / 2
     cubic = [(1., 0., 0.), (0., 1., 0.), (0., 0., 1.)]
@@ -70,24 +71,34 @@ The model: :math:`H(\mathbf{k}) = \sin k_x\,\sigma_x + \sin k_y\,\sigma_y
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-46
+.. GENERATED FROM PYTHON SOURCE LINES 45-52
 
-The Weyl points
-------------------
+The Weyl points and their chirality
+---------------------------------------
+:func:`~tbkit.topology.find_weyl_points` scans the gap between the two
+bands over a mesh of the zone, refines its minima by Newton's method, and
+measures the chirality of each touching: the Berry flux of the lower band
+out of a small sphere around it, divided by :math:`2\pi`. The two
+chiralities cancel, as they must over a whole zone (Nielsen-Ninomiya).
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-56
+.. GENERATED FROM PYTHON SOURCE LINES 52-67
 
 .. code-block:: Python
 
 
-    for kz in (k0, -k0):
-        assert np.allclose(np.linalg.eigvalsh(weyl.get_ham([0., 0., kz])), 0.)
+    points = find_weyl_points(weyl, bands=0)
+    order = np.argsort(points.k[:, 2])
+    k_weyl, chirality = points.k[order], points.chirality[order]
+    print('Weyl points (k_x, k_y, k_z):', np.round(k_weyl, 6).tolist(), 'chiralities:', chirality.tolist())
+    assert np.allclose(k_weyl, [[0., 0., -k0], [0., 0., k0]], atol=1e-8)
+    assert np.all(points.gap < 1e-8) and np.allclose(points.energy, 0., atol=1e-8)
+    assert chirality.tolist() == [-1, 1] and points.total_chirality == 0
     # linear in every direction around them
     q = 1e-4
     for d in np.eye(3):
-        gap = np.diff(np.linalg.eigvalsh(weyl.get_ham(np.array([0., 0., k0]) + q * d)))[0]
+        gap = np.diff(np.linalg.eigvalsh(weyl.get_ham(k_weyl[1] + q * d)))[0]
         assert np.isclose(gap / (2 * q), 1., atol=1e-3)
-    print('Two Weyl points at k = (0, 0, +-pi/2), linear in every direction.')
+    print('Two Weyl points at k = (0, 0, +-pi/2), linear in every direction, of chirality -1 and +1.')
 
 
 
@@ -97,17 +108,21 @@ The Weyl points
 
  .. code-block:: none
 
-    Two Weyl points at k = (0, 0, +-pi/2), linear in every direction.
+    Weyl points (k_x, k_y, k_z): [[0.0, 0.0, -1.570796], [0.0, 0.0, 1.570796]] chiralities: [-1, 1]
+    Two Weyl points at k = (0, 0, +-pi/2), linear in every direction, of chirality -1 and +1.
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-59
+.. GENERATED FROM PYTHON SOURCE LINES 68-73
 
 The Chern number of the k_z planes
 ----------------------------------------
+By Gauss's law, the Chern number of the plane jumps by the chirality as
+the plane crosses a Weyl point upwards: :math:`-1` at :math:`-k_0`, back up
+by :math:`+1` at :math:`+k_0`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-67
+.. GENERATED FROM PYTHON SOURCE LINES 73-80
 
 .. code-block:: Python
 
@@ -116,8 +131,7 @@ The Chern number of the k_z planes
     chern = np.array([weyl.chern_number(bands=[0], nk=20, k_fixed=f) for f in kz_fracs])
     inside = np.abs(kz_fracs) < k0 / (2 * np.pi)
     print('C(k_z):', np.round(chern).astype(int))
-    assert np.allclose(np.abs(chern[inside]), 1., atol=1e-6) and np.allclose(chern[~inside], 0., atol=1e-6)
-    assert len(set(np.round(chern[inside]))) == 1
+    assert np.allclose(chern[inside], chirality[0], atol=1e-6) and np.allclose(chern[~inside], 0., atol=1e-6)
 
 
 
@@ -132,7 +146,7 @@ The Chern number of the k_z planes
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-73
+.. GENERATED FROM PYTHON SOURCE LINES 81-86
 
 The Fermi arc
 ----------------
@@ -140,7 +154,7 @@ A slab, finite along y (:func:`~tbkit.kspace.ribbon` of the 3D model):
 at :math:`k_x = 0`, zero-energy states exist only for :math:`|k_z| < k_0`,
 and live on the two surfaces.
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-101
+.. GENERATED FROM PYTHON SOURCE LINES 86-111
 
 .. code-block:: Python
 
@@ -160,23 +174,20 @@ and live on the two surfaces.
     print('Zero-energy slab state at k_z = 0: {:.0%} of its weight on the outer 3 layers.'.format(surface))
     assert surface > 0.9
 
-    fig, axes = plt.subplots(1, 2, figsize=(10, 4))
-    axes[0].plot(kz_fracs * 2 * np.pi, chern, 'o-b')
-    axes[0].set_xlabel('$k_z$')
-    axes[0].set_ylabel('Chern number of the plane')
-    kx = np.linspace(-np.pi, np.pi, 81)
-    grid = np.array([[a, b] for a in kx for b in kx])
-    e_grid = np.min(np.abs(slab.get_bands(grid)), axis=1).reshape(len(kx), len(kx))
-    axes[1].imshow(np.log10(e_grid.T + 1e-4), origin='lower', extent=[-np.pi, np.pi, -np.pi, np.pi], cmap='magma')
-    axes[1].set_xlabel('$k_x$')
-    axes[1].set_ylabel('$k_z$')
-    axes[1].set_title('slab: $\\log_{10}\\min|E|$ (the Fermi arc)')
+    fig, ax = plt.subplots(figsize=(6, 4))
+    ax.plot(kz_fracs * 2 * np.pi, chern, 'o-b')
+    for kz, chi in zip(k_weyl[:, 2], chirality):
+        ax.axvline(kz, color='r', ls='--')
+        ax.annotate(r'$\chi = {:+d}$'.format(chi), (kz, 0.1), color='r', ha='center')
+    ax.set_xlabel('$k_z$')
+    ax.set_ylabel('Chern number of the plane')
     fig.set_layout_engine('tight')
 
 
 
+
 .. image-sg:: /api/gallery/three_dimensions/images/sphx_glr_plot_weyl_semimetal_001.png
-   :alt: slab: $\log_{10}\min|E|$ (the Fermi arc)
+   :alt: plot weyl semimetal
    :srcset: /api/gallery/three_dimensions/images/sphx_glr_plot_weyl_semimetal_001.png
    :class: sphx-glr-single-img
 
@@ -190,10 +201,54 @@ and live on the two surfaces.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 112-120
+
+The Fermi surface of the slab
+---------------------------------
+:meth:`~tbkit.kspace.KSpace.fermi_surface` of the slab at a small energy
+:math:`E = 0.1`: each surface carries an arc of states with
+:math:`k_x = \pm E` (velocity 1, opposite on the two surfaces) for
+:math:`|k_z| < k_0`, and the two arcs join through the small bulk
+pockets around the projections of the Weyl points -- one closed contour,
+half on each surface.
+
+.. GENERATED FROM PYTHON SOURCE LINES 120-130
+
+.. code-block:: Python
+
+
+    energy = 0.1
+    middle = slab.norb // 2  # the lowest band above zero energy
+    contour = slab.fermi_surface(energy, nk=(40, 80), bands=middle)[0].reshape(-1, 2)
+    on_arc = np.abs(contour[:, 1]) < k0 - 0.3
+    assert np.allclose(np.abs(contour[on_arc, 0]), energy, atol=1e-3)
+    assert np.abs(contour[:, 1]).max() < k0 + 0.15  # it ends at the Weyl points
+    print('Fermi arcs at E = {}: |k_x| = E for |k_z| < k0, closing at k_z = +-k0.'.format(energy))
+    fig2 = slab.plot_fermi_surface(energy, nk=(40, 80), bands=middle, fs=14, figsize=(5, 5))
+    fig2.axes[0].set_title('Slab Fermi surface: the Fermi arcs', fontsize=14)
+
+
+
+.. image-sg:: /api/gallery/three_dimensions/images/sphx_glr_plot_weyl_semimetal_002.png
+   :alt: Slab Fermi surface: the Fermi arcs
+   :srcset: /api/gallery/three_dimensions/images/sphx_glr_plot_weyl_semimetal_002.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    Fermi arcs at E = 0.1: |k_x| = E for |k_z| < k0, closing at k_z = +-k0.
+
+    Text(0.5, 1.0, 'Slab Fermi surface: the Fermi arcs')
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.890 seconds)
+   **Total running time of the script:** (0 minutes 1.409 seconds)
 
 
 .. _sphx_glr_download_api_gallery_three_dimensions_plot_weyl_semimetal.py:

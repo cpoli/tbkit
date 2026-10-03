@@ -385,6 +385,9 @@ plateau in the gap, and its non-quantized value in the bands), the same
 plateau surviving disorder in a real-space Kubo-Bastin (kernel polynomial)
 calculation on a torus, and the intrinsic spin Hall conductivity of the
 Kane-Mele model with its departure from quantization under Rashba coupling.
+The same curvature, weighted by entropy or by energy, drives the anomalous
+Nernst effect (with the Mott relation) and the thermal Hall effect (with
+the Wiedemann-Franz law and its quantized Chern plateau).
 
 
 .. raw:: html
@@ -434,6 +437,23 @@ Kane-Mele model with its departure from quantization under Rashba coupling.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="A temperature gradient drives a transverse charge current in a ferromagnet, with no magnetic field: the anomalous Nernst effect, j_x = \alpha_{xy}(-\partial_yT). Xiao, Yao, Fang and Niu (2006) showed that its intrinsic part is the Berry curvature again, weighted this time by the entropy of each state,">
+
+.. only:: html
+
+  .. image:: /api/gallery/hall_effects/images/thumb/sphx_glr_plot_anomalous_nernst_effect_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/hall_effects/plot_anomalous_nernst_effect`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Berry-Phase Anomalous Nernst Effect</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="An electric field along y can drive a spin current along x with no charge current at all: up and down spins are deflected to opposite sides. Murakami, Nagaosa and Zhang (2003) and Sinova et al. (2004) showed that spin-orbit coupling alone produces it, as a property of the band structure -- the spin analogue of the intrinsic anomalous Hall effect. With the spin current j^s_x = \{s_z, v_x\}/2, the Kubo formula gives the spin Hall conductivity (~tbkit.kspace.KSpace.spin_hall_conductivity), in units of e/2\pi.">
 
 .. only:: html
@@ -446,6 +466,23 @@ Kane-Mele model with its departure from quantization under Rashba coupling.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">The Intrinsic Spin Hall Effect: Kane-Mele Plateau and Rashba Coupling</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A temperature gradient also drives a transverse heat current, j^Q_x = \kappa_{xy}(-\partial_yT). Computing it from the Kubo formula is subtle: part of the heat current circulates as a bound magnetization current and does not flow. Qin, Niu and Shi (2011) subtracted it and found the intrinsic electronic thermal Hall conductivity as one more weighted integral of the Berry curvature,">
+
+.. only:: html
+
+  .. image:: /api/gallery/hall_effects/images/thumb/sphx_glr_plot_thermal_hall_effect_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/hall_effects/plot_thermal_hall_effect`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Intrinsic Thermal Hall Effect and the Wiedemann-Franz Law</div>
     </div>
 
 
@@ -503,7 +540,8 @@ Large lattices
 Lattices far beyond dense diagonalization: sparse neighbour search,
 shift-invert eigensolvers, and the kernel polynomial method, which
 turns spectral densities and conductivities of hundreds of thousands of
-sites into a few hundred sparse matrix-vector products.
+sites into a few hundred sparse matrix-vector products. In k-space,
+fine meshes are diagonalized in batches, optionally across threads.
 
 
 .. raw:: html
@@ -516,6 +554,23 @@ sites into a few hundred sparse matrix-vector products.
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The band and topology tools of KSpace diagonalize H(\mathbf{k}) at every point of a mesh. Calling the eigensolver once per k-point spends most of its time in Python, not in LAPACK. tbkit builds all the Bloch matrices with one vectorized Bloch sum, then diagonalizes them with stacked LAPACK calls (``numpy.linalg.eigh`` on an array of shape (nk, norb, norb)), in chunks of bounded memory. set_workers spreads the chunks over threads (LAPACK releases the GIL).">
+
+.. only:: html
+
+  .. image:: /api/gallery/large_scale/images/thumb/sphx_glr_plot_batched_k_space_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/large_scale/plot_batched_k_space`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Batched and Threaded k-Space Diagonalization: the Haldane Model on 90,000 k-Points</div>
+    </div>
+
 
 .. raw:: html
 
@@ -546,7 +601,9 @@ Magnetic Field
 The Peierls substitution on a lattice: gauge-invariant flux through the
 plaquettes, an Aharonov-Bohm ring's flux-periodic spectrum, Landau
 levels of the square lattice and of graphene, and the self-similar,
-fractal Hofstadter butterfly swept continuously in flux.
+fractal Hofstadter butterfly swept continuously in flux, and the orbital
+magnetization of a Chern insulator, checked against the Streda formula on
+a flake.
 
 
 .. raw:: html
@@ -613,6 +670,23 @@ fractal Hofstadter butterfly swept continuously in flux.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="The orbital magnetization of a crystal, \mathbf{M} = \frac{1}{2V}\int \mathbf{r}\times\mathbf{j}, resisted a bulk formula for decades: the position operator is unbounded in a periodic solid, as for the polarization. In 2005 Thonhauser, Ceresoli, Vanderbilt and Resta (Wannier functions) and Xiao, Shi and Niu (semiclassical wavepackets) found it:">
+
+.. only:: html
+
+  .. image:: /api/gallery/magnetic_field/images/thumb/sphx_glr_plot_orbital_magnetization_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/magnetic_field/plot_orbital_magnetization`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Modern Theory of Orbital Magnetization</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="R. Peierls (1933) put a magnetic field on a lattice by attaching to each hopping the line integral of the vector potential along its bond,">
 
 .. only:: html
@@ -640,9 +714,11 @@ Building, Bridging and Saving Models
 Tools that make realistic models easy to build and move around: Bloch
 Hamiltonians set up by neighbour order (1st, 2nd, 3rd, ... neighbours) as
 in real space, bridges between the real-space :class:`~tbkit.system.System`
-and the reciprocal-space :class:`~tbkit.kspace.KSpace` pipelines, models
-saved to and loaded from disk, and tight-binding models imported from
-Wannier90's ``_hr.dat`` files.
+and the reciprocal-space :class:`~tbkit.kspace.KSpace` pipelines, k·p
+(continuum) Hamiltonians discretized into lattice models, models
+saved to and loaded from disk, tight-binding models imported from
+Wannier90's ``_hr.dat`` files, and Wannier functions built from any model
+(isolated or entangled bands), with their Wannier-interpolated model.
 
 
 .. raw:: html
@@ -655,6 +731,57 @@ Wannier90's ``_hr.dat`` files.
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The Wannier functions of a band are the Fourier transforms of its Bloch states,">
+
+.. only:: html
+
+  .. image:: /api/gallery/models/images/thumb/sphx_glr_plot_building_maximally_localized_wannier_functions_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/models/plot_building_maximally_localized_wannier_functions`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Maximally Localized Wannier Functions: Projection and Spread Minimization</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Maximal localization needs an isolated group of bands. Most bands of interest are not isolated: in graphene with its four valence orbitals s, p_x, p_y, p_z per carbon, the π bands cross the σ bands, so no set of band indices follows the π bands over the whole Brillouin zone.">
+
+.. only:: html
+
+  .. image:: /api/gallery/models/images/thumb/sphx_glr_plot_disentangling_entangled_bands_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/models/plot_disentangling_entangled_bands`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Disentanglement: Wannier Functions of the π Bands of Graphene</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The k·p method of J. M. Luttinger and W. Kohn (1955) and E. O. Kane (1957) describes the electrons of a semiconductor near a band edge by a small matrix that is a polynomial in the crystal momentum \mathbf{k}. The effective mass k^2/2m^* is its simplest case. The Bernevig-Hughes-Zhang (BHZ) model of HgTe quantum wells is a two-band one. Devices and topology are computed on lattices, so the continuum model is discretized: k_x = -i\partial_x becomes a finite difference on a square grid of spacing a.">
+
+.. only:: html
+
+  .. image:: /api/gallery/models/images/thumb/sphx_glr_plot_kp_theory_on_a_lattice_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/models/plot_kp_theory_on_a_lattice`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">k·p Theory on a Lattice: from a Continuum Hamiltonian to Tight-Binding</div>
+    </div>
+
 
 .. raw:: html
 
@@ -1091,8 +1218,10 @@ Superconductivity
 
 Superconductors in the Bogoliubov-de Gennes formalism: particle-hole
 symmetric spectra, and the Majorana zero modes at the ends of Kitaev's
-p-wave chain. The self-consistent BCS gap equation in real space, with
-its universal ratio Delta(0)/T_c = 1.764 and the proximity effect.
+p-wave chain, with its Pfaffian bulk invariant, the Majorana number. The self-consistent BCS gap equation in real space, with
+its universal ratio Delta(0)/T_c = 1.764 and the proximity effect. Andreev reflection at a normal-superconductor
+junction and the BTK conductance, from the scattering matrix resolved
+into electrons and holes.
 
 
 .. raw:: html
@@ -1105,6 +1234,23 @@ its universal ratio Delta(0)/T_c = 1.764 and the proximity effect.
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="An electron from a normal metal, with an energy inside the superconducting gap \Delta, cannot enter the superconductor alone. Andreev (1964) showed that it is retro-reflected as a hole while a Cooper pair enters the condensate, which carries a charge 2e across the interface. Blonder, Tinkham and Klapwijk (BTK, 1982) turned this into the conductance of a normal-superconductor (NS) junction with a barrier of strength Z,">
+
+.. only:: html
+
+  .. image:: /api/gallery/superconductivity/images/thumb/sphx_glr_plot_andreev_reflection_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/superconductivity/plot_andreev_reflection`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Andreev Reflection: the BTK Conductance of a Normal-Superconductor Junction</div>
+    </div>
+
 
 .. raw:: html
 
@@ -1151,7 +1297,8 @@ Three dimensions
 
 Lattices in 3D space: the Anderson metal-insulator transition, which
 exists only in three dimensions, and Weyl semimetals, whose band
-touchings are monopoles of Berry curvature with Fermi-arc surface states.
+touchings (located, with their chiralities, by a Weyl point finder) are
+monopoles of Berry curvature with Fermi-arc surface states.
 
 
 .. raw:: html
@@ -1216,7 +1363,13 @@ including Wallace's 1947 linear (Dirac) dispersion near the K point;
 the physics behind the 2004 isolation of graphene -- flakes, edge
 states, and the Berry phase of pi of its Dirac cones; and
 :class:`tbkit.plot.Plot`'s lattice, spectrum, density-of-states, and
-eigenstate-intensity plots.
+eigenstate-intensity plots; parametrized Hamiltonians, whose value
+functions let a flux or dimerization sweep re-evaluate the hoppings
+instead of rebuilding the model; periodic boundaries in real space,
+tori and cylinders whose spectra match the Bloch bands on a k-mesh;
+and the analysis of a band structure: Fermi surfaces and their Lifshitz
+transitions, bands projected on sublattices or spins and spin textures,
+and the tetrahedron method for the density of states.
 
 
 .. raw:: html
@@ -1266,6 +1419,23 @@ eigenstate-intensity plots.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="The Fermi surface E_n(\mathbf{k}) = E_F separates the occupied states from the empty ones: transport, screening, magnetic oscillations and instabilities all happen on it. Its shape matters (nesting), and so does its topology: when the Fermi level crosses a saddle point of a band, the surface changes connectivity -- a Lifshitz transition.">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_fermi_surfaces_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_fermi_surfaces`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Fermi Surfaces and Constant-Energy Contours</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="A from-scratch walkthrough of tbkit&#x27;s two complementary ways of looking at a Tight-Binding model:">
 
 .. only:: html
@@ -1300,6 +1470,57 @@ eigenstate-intensity plots.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="A sweep over a magnetic field, a gate voltage or a dimerization usually rebuilds the model at every step: find the bonds, set the hoppings, apply the field. A value function replaces a number by a callable of the sites and of named parameters, t(site_i, site_j, params) or onsite(site, params). The model stores its bonds once, and get_ham (``sys.get_ham(alpha=...)``) or get_ham (``ks.get_ham(k, v=...)``) only re-evaluates the values. site_i and site_j are structured arrays holding every bond at once (fields &#x27;x&#x27;, &#x27;y&#x27;, &#x27;tag&#x27;, &#x27;index&#x27;), so each function runs once per Hamiltonian, vectorized.">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_parametrized_hamiltonians_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_parametrized_hamiltonians`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Parametrized Hamiltonians: Sweeping Without Rebuilding</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A finite flake has edges, and their states mix with the bulk ones. Wrap the sample of get_lattice into a torus and the edges disappear: System(lat, periodic=True) measures every distance and bond angle along the shortest image, so set_hopping by neighbour order (with angles and tags) also sets the bonds that wrap around. The spectrum of an N_1\times N_2 torus is then exactly that of the Bloch bands on the N_1\times N_2 k-mesh. Wrapping along one vector only, periodic=(True, False), gives a cylinder, with the edge states of a ribbon.">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_periodic_boundaries_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_periodic_boundaries`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Periodic Boundaries in Real Space: Tori and Cylinders</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A band structure says where the states are in energy; their character says what they are made of. A &quot;fat band&quot; plot colors each band by its weight on a sublattice, an orbital or a spin direction,">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_projected_bands_and_spin_textures_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_projected_bands_and_spin_textures`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Projected Bands and Spin Textures</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The smallest complete illustration of Bloch&#x27;s theorem: one orbital per unit cell on a square lattice, nearest-neighbor hopping only. With a single orbital the Bloch Hamiltonian H(\mathbf{k}) is a 1\times1 matrix, so &quot;diagonalizing&quot; it is nothing but reading it off, and the whole band structure is one closed-form expression,">
 
 .. only:: html
@@ -1312,6 +1533,23 @@ eigenstate-intensity plots.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">The Square Lattice: Bloch's Theorem in its Simplest Form</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The density of states \rho(E) = \sum_n\int\frac{d\mathbf{k}}{V_{BZ}}\, \delta(E - E_n(\mathbf{k})) needs an integral over the Brillouin zone, but a calculation only knows the bands on a finite mesh. Broadening each eigenvalue into a Gaussian of width \sigma turns the sum into a smooth curve, at the price of smearing exactly the features that matter: band edges, and the van Hove singularities where \nabla_k E = 0.">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_tetrahedron_method_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_tetrahedron_method`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Tetrahedron Method for the Density of States</div>
     </div>
 
 
@@ -1350,9 +1588,15 @@ Fu-Kane parity criterion, the surface Dirac cone of a 3D topological
 insulator (surface spectral function of a semi-infinite crystal), the Thouless quantum pump's exactly quantized
 charge transport, a topological (Chern) flat band on the kagome lattice,
 the quantum metric of a Bloch band, the local Chern marker of a
-disordered flake, the tenfold-way classification of tight-binding
-models by their symmetries, and the diabolical points (conical
-intersections with a Berry phase of pi) of a two-parameter family.
+disordered flake, the Bott index of a disordered torus, the
+entanglement spectrum of a cut SSH ring and Haldane cylinder, the spin
+Chern number of the Kane-Mele model with Rashba coupling, the mirror
+Chern number of a topological crystalline insulator, the four Z2 indices
+of strong and weak 3D topological insulators, the axion angle pumped by
+2 pi around a cycle of a lattice Dirac model, the tenfold-way
+classification of tight-binding models by their symmetries, and the
+diabolical points (conical intersections with a Berry phase of pi) of a
+two-parameter family.
 
 
 .. raw:: html
@@ -1380,6 +1624,40 @@ intersections with a Berry phase of pi) of a two-parameter family.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Three-Dimensional Topological Insulators: the Surface Dirac Cone</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="An insulator responds to an electric field with a magnetization and to a magnetic field with a polarization. Part of that response is a single number \theta, entering the electromagnetic action as the axion term of Wilczek (1987), \frac{\theta e^2}{2\pi h}\int\mathbf{E}\cdot\mathbf{B}: the polarization \mathbf{P} = \frac{\theta}{2\pi}\frac{e^2}{h}\mathbf{B}. Qi, Hughes and Zhang (2008) and Essin, Moore and Vanderbilt (2009) showed that for Bloch electrons \theta is the Chern-Simons integral of the Berry connection of the occupied bands. It is defined modulo 2\pi (a surface can always gain a quantum Hall layer), and time reversal or inversion force \theta = 0 or \pi: \pi is the strong 3D topological insulator.">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_axion_angle_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_axion_angle`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Axion Angle and the Topological Magnetoelectric Effect</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The Chern number is an integral over the Brillouin zone, and disorder removes the Brillouin zone. T. Loring and M. Hastings (2010) found an invariant of a finite sample that needs none. Put the sample on a torus, where the coordinates X_1, X_2 (in units of the torus sides) are only defined modulo 1, but their exponentials e^{2\pi iX_{1,2}} are well defined. Project them onto the occupied states, \tilde U = Pe^{2\pi iX_1}P and \tilde V = Pe^{2\pi iX_2}P. In a gapped or localized phase they almost commute, and the winding of their commutator,">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_bott_index_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_bott_index`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Bott Index: the Chern Number of a Disordered Torus</div>
     </div>
 
 
@@ -1414,6 +1692,23 @@ intersections with a Berry phase of pi) of a two-parameter family.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Edge States on Ribbons</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cut a system in two halves A and B, and ask how the ground state entangles them. The answer is the reduced density matrix \rho_A = e^{-H_E}/Z, and H. Li and F. D. M. Haldane (2008) showed that the spectrum of the entanglement Hamiltonian H_E of a topological phase looks like its edge spectrum, as if the cut were a physical edge. For free fermions H_E is quadratic (Peschel 2003): its single-particle levels follow from the eigenvalues \xi_n of the correlation matrix C_{ij} = \langle c_i^\dagger c_j\rangle restricted to A. States that live entirely in A or in B give \xi = 1 or 0. Values inside (0, 1) come from states shared across the cuts, and topology forces some of them there (Fidkowski 2010; Turner, Zhang and Vishwanath 2010).">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_entanglement_spectrum_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_entanglement_spectrum`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Entanglement Spectrum: Edge States Without an Edge</div>
     </div>
 
 
@@ -1504,6 +1799,23 @@ intersections with a Berry phase of pi) of a two-parameter family.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Two copies of a strong topological insulator make a trivial one, as far as time reversal can tell: the \mathbb{Z}_2 indices add modulo 2, so all four vanish, and the two surface Dirac cones can in principle annihilate. Teo, Fu and Kane (2008) pointed out that a crystal symmetry can still protect them. On a plane of the Brillouin zone left invariant by a mirror M (here z\to-z, the plane k_z = 0), M commutes with H(\mathbf{k}), the bands split into the mirror sectors M = \pm i, and each sector has its own Chern number. Their half-difference is the mirror Chern number">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_mirror_chern_number_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_mirror_chern_number`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Mirror Chern Numbers: a Topological Crystalline Insulator</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="J. P. Provost and G. Vallee (1980) showed that the manifold of quantum states carries a natural metric -- how distinguishable two nearby states are -- which, together with the Berry curvature, forms the quantum geometric tensor">
 
 .. only:: html
@@ -1516,6 +1828,23 @@ intersections with a Berry phase of pi) of a two-parameter family.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">The Quantum Metric: The Geometry of a Bloch Band</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In Kane and Mele&#x27;s model each spin is a Haldane model: spin up has Chern number +1, spin down -1, and the spin Chern number C_s = (C_\uparrow - C_\downarrow)/2 = 1 counts the helical edge pairs. Rashba coupling ruins this picture, since s_z is no longer conserved and the bands are no longer spin up or spin down.">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_spin_chern_number_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_spin_chern_number`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Spin Chern Number: Quantum Spin Hall Without Spin Conservation</div>
     </div>
 
 
@@ -1589,6 +1918,23 @@ intersections with a Berry phase of pi) of a two-parameter family.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="A band with a nonzero Chern number has no exponentially localized Wannier functions. D. J. Thouless (1984) saw the conflict: localized Wannier functions need a gauge |u_{\mathbf{k}}\rangle that is smooth and periodic over the whole Brillouin zone, and the Chern number is exactly the obstruction to one, the winding of the phase that any gauge must pick up somewhere. C. Brouder, G. Panati, M. Calandra, C. Mourougane and N. Marzari (2007) proved the converse for any number of bands: exponentially localized Wannier functions exist if and only if the Chern numbers vanish.">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_wannier_obstruction_of_chern_bands_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_wannier_obstruction_of_chern_bands`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Wannier Obstruction of Chern Bands</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="J. Zak showed in 1989 that the Berry phase acquired by a Bloch state carried once across the Brillouin zone,">
 
 .. only:: html
@@ -1616,12 +1962,16 @@ Transport
 Quantum transport through a finite device attached to semi-infinite
 leads: Landauer's formula, in which the conductance is a transmission
 probability, and the quantized conductance steps of a quantum point
-contact.
+contact. Leads attached automatically from their geometry, narrow
+contacts on a wide cavity.
 
 Multi-terminal devices: Landauer-Buttiker conductance matrices and the
 quantized resistances of a Hall bar with its edge channels; bond
 currents; shot noise and the Fano factor; and the recursive Green's
-function for long wires.
+function for long wires. The scattering matrix from the exact modes of
+the leads, the scattering states and the local density of states they
+carry. Thermoelectric transport: the Mott formula and the
+Wiedemann-Franz law, and their breakdown at a resonance.
 
 
 .. raw:: html
@@ -1634,6 +1984,23 @@ function for long wires.
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A lead is a semi-infinite repetition of a unit cell. To attach it, one needs the device sites it touches and the hoppings \tau between them and the lead&#x27;s first cell. For a straight strip, these are the edge column and the identity times t; for anything else, writing them by hand is error-prone.">
+
+.. only:: html
+
+  .. image:: /api/gallery/transport/images/thumb/sphx_glr_plot_automatic_lead_attachment_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/transport/plot_automatic_lead_attachment`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Automatic Lead Attachment: Narrow Contacts on a Wide Cavity</div>
+    </div>
+
 
 .. raw:: html
 
@@ -1688,6 +2055,23 @@ function for long wires.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="The Landauer conductance is a sum of transmission probabilities, but the object behind it is the scattering matrix S: the amplitude S_{ab} of every outgoing mode a for every incoming mode b of the leads. Fisher and Lee (1981) related it to the Green&#x27;s function, and Ando (1991) showed how to compute it on a lattice by mode matching. The modes of a lead, \psi_n = \lambda^n\phi in its cell n, solve the generalized eigenproblem of the transfer matrix">
+
+.. only:: html
+
+  .. image:: /api/gallery/transport/images/thumb/sphx_glr_plot_scattering_matrix_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/transport/plot_scattering_matrix`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Mode Matching: the Scattering Matrix, Lead Modes and Scattering States</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="A current made of discrete charges fluctuates: for independent electrons crossing a tunnel barrier, Schottky&#x27;s Poisson noise S = 2eI. In a phase-coherent conductor the Pauli principle correlates the electrons, and Lesovik (1989) and Buttiker (1990) found the zero-temperature noise from the transmission eigenvalues T_n of the scattering channels,">
 
 .. only:: html
@@ -1700,6 +2084,23 @@ function for long wires.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Shot Noise: the Fano Factor of Ballistic, Tunnel and Diffusive Conductors</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sivan and Imry (1986) extended the Landauer formula to heat: a temperature difference across a phase-coherent conductor drives a current, and a bias carries heat. In linear response, every coefficient is a moment of the transmission over the Fermi window,">
+
+.. only:: html
+
+  .. image:: /api/gallery/transport/images/thumb/sphx_glr_plot_thermoelectric_transport_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/transport/plot_thermoelectric_transport`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Thermoelectric Transport: the Mott Formula and the Wiedemann-Franz Law</div>
     </div>
 
 

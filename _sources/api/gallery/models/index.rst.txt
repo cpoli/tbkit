@@ -8,9 +8,11 @@ Building, Bridging and Saving Models
 Tools that make realistic models easy to build and move around: Bloch
 Hamiltonians set up by neighbour order (1st, 2nd, 3rd, ... neighbours) as
 in real space, bridges between the real-space :class:`~tbkit.system.System`
-and the reciprocal-space :class:`~tbkit.kspace.KSpace` pipelines, models
-saved to and loaded from disk, and tight-binding models imported from
-Wannier90's ``_hr.dat`` files.
+and the reciprocal-space :class:`~tbkit.kspace.KSpace` pipelines, k·p
+(continuum) Hamiltonians discretized into lattice models, models
+saved to and loaded from disk, tight-binding models imported from
+Wannier90's ``_hr.dat`` files, and Wannier functions built from any model
+(isolated or entangled bands), with their Wannier-interpolated model.
 
 
 .. raw:: html
@@ -23,6 +25,57 @@ Wannier90's ``_hr.dat`` files.
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The Wannier functions of a band are the Fourier transforms of its Bloch states,">
+
+.. only:: html
+
+  .. image:: /api/gallery/models/images/thumb/sphx_glr_plot_building_maximally_localized_wannier_functions_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/models/plot_building_maximally_localized_wannier_functions`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Maximally Localized Wannier Functions: Projection and Spread Minimization</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Maximal localization needs an isolated group of bands. Most bands of interest are not isolated: in graphene with its four valence orbitals s, p_x, p_y, p_z per carbon, the π bands cross the σ bands, so no set of band indices follows the π bands over the whole Brillouin zone.">
+
+.. only:: html
+
+  .. image:: /api/gallery/models/images/thumb/sphx_glr_plot_disentangling_entangled_bands_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/models/plot_disentangling_entangled_bands`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Disentanglement: Wannier Functions of the π Bands of Graphene</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The k·p method of J. M. Luttinger and W. Kohn (1955) and E. O. Kane (1957) describes the electrons of a semiconductor near a band edge by a small matrix that is a polynomial in the crystal momentum \mathbf{k}. The effective mass k^2/2m^* is its simplest case. The Bernevig-Hughes-Zhang (BHZ) model of HgTe quantum wells is a two-band one. Devices and topology are computed on lattices, so the continuum model is discretized: k_x = -i\partial_x becomes a finite difference on a square grid of spacing a.">
+
+.. only:: html
+
+  .. image:: /api/gallery/models/images/thumb/sphx_glr_plot_kp_theory_on_a_lattice_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/models/plot_kp_theory_on_a_lattice`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">k·p Theory on a Lattice: from a Continuum Hamiltonian to Tight-Binding</div>
+    </div>
+
 
 .. raw:: html
 
@@ -102,6 +155,9 @@ Wannier90's ``_hr.dat`` files.
 .. toctree::
    :hidden:
 
+   /api/gallery/models/plot_building_maximally_localized_wannier_functions
+   /api/gallery/models/plot_disentangling_entangled_bands
+   /api/gallery/models/plot_kp_theory_on_a_lattice
    /api/gallery/models/plot_maximally_localized_wannier_functions
    /api/gallery/models/plot_neighbour_hoppings
    /api/gallery/models/plot_pipeline_bridges

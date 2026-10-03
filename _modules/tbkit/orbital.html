@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tbkit.orbital &#8212; tbkit 0.4.2 documentation</title>
+    <title>tbkit.orbital &#8212; tbkit 0.5.0 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../_static/documentation_options.js?v=9dc614e0"></script>
+    <script src="../../_static/documentation_options.js?v=70f82a29"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.4" />
+  <meta name="docsearch:version" content="0.5" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -401,8 +401,8 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.error_handling</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">error_handling</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.lattice</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lattice</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.slater_koster</span><span class="w"> </span><span class="kn">import</span> <span class="n">ORBITALS</span><span class="p">,</span> <span class="n">sk_block</span><span class="p">,</span> <span class="n">orbital_angular_momentum</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.system</span><span class="w"> </span><span class="kn">import</span> <span class="n">System</span><span class="p">,</span> <span class="n">PI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.slater_koster</span><span class="w"> </span><span class="kn">import</span> <span class="n">sk_block</span><span class="p">,</span> <span class="n">orbital_angular_momentum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.system</span><span class="w"> </span><span class="kn">import</span> <span class="n">System</span>
 
 <span class="n">SIGMA</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">),</span>
               <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">),</span>
@@ -422,6 +422,10 @@
 <span class="sd">        :data:`tbkit.slater_koster.ORBITALS`), e.g. ``{&#39;a&#39;: [&#39;s&#39;, &#39;px&#39;, &#39;py&#39;, &#39;pz&#39;]}``.</span>
 <span class="sd">    :param spin: Boolean. Default value False. Give every orbital a</span>
 <span class="sd">        spin-1/2 degree of freedom.</span>
+<span class="sd">    :param periodic: Boolean, or tuple of booleans. Default value False.</span>
+<span class="sd">        Periodic boundaries (see *System*); the bond vectors of the</span>
+<span class="sd">        Slater-Koster, spin-orbit and Rashba blocks are then those of the</span>
+<span class="sd">        shortest image.</span>
 
 <span class="sd">    Everything of **System** still applies: *set_hopping* (and the disorder,</span>
 <span class="sd">    defect and Peierls methods) sets hoppings :math:`t` that connect equal</span>
@@ -444,8 +448,8 @@
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="n">Lattice</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">spin</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">System</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+                 <span class="n">spin</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">periodic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">System</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">periodic</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="s1">&#39;spin&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">orbitals</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">orbitals</span> <span class="o">=</span> <span class="p">{</span><span class="n">tag</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">lat</span><span class="o">.</span><span class="n">tags</span><span class="p">}</span>
@@ -600,8 +604,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">nmax</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dist_uni</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int_lim</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nmax</span><span class="p">)</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bonds</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-        <span class="n">coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coords</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">coords</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bond_vectors</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
 
 <div class="viewcode-block" id="OrbitalSystem.set_slater_koster">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.orbital.OrbitalSystem.set_slater_koster">[docs]</a>
@@ -671,7 +674,7 @@
         <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
             <span class="n">nu</span> <span class="o">=</span> <span class="mf">0.</span>
             <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">neighbours</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">&amp;</span> <span class="n">neighbours</span><span class="p">[</span><span class="n">b</span><span class="p">]:</span>
-                <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">coords</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">coords</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">-</span> <span class="n">coords</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+                <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_image</span><span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">coords</span><span class="p">[</span><span class="n">a</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_image</span><span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">-</span> <span class="n">coords</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
                 <span class="n">nu</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">d1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">d2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">d1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">d2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="k">if</span> <span class="n">nu</span><span class="p">:</span>
                 <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">nu</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_same_orbitals</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">SIGMA</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
@@ -749,8 +752,11 @@
             <span class="n">System</span><span class="o">.</span><span class="n">set_peierls_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phase</span><span class="p">)</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">blocks</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocks</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">mat</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">phase</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">b</span><span class="p">])))</span>
-                                          <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">mat</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">]</span></div>
+            <span class="c1"># the end of the short bond (outside the sample if it wraps around)</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bond_vectors</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">],</span> <span class="nb">int</span><span class="p">),</span>
+                                          <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">b</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">],</span> <span class="nb">int</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">mat</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">phase</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">+</span> <span class="n">dy</span><span class="p">)))</span>
+                                          <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">mat</span><span class="p">),</span> <span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">blocks</span><span class="p">,</span> <span class="n">d</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">])]</span></div>
 
 
     <span class="c1"># ------------------------------------------------------------------</span>
@@ -776,10 +782,13 @@
 
 <div class="viewcode-block" id="OrbitalSystem.get_ham">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.orbital.OrbitalSystem.get_ham">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_ham</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_ham</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Get the Hamiltonian (and, for a non-orthogonal basis, the overlap</span>
 <span class="sd">        matrix *overlap*).</span>
+
+<span class="sd">        :param params: Values of the parameters of the value functions of</span>
+<span class="sd">            *hop* (see *System.get_ham*).</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">orbital_terms</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocks</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_index</span><span class="p">()</span>
@@ -794,12 +803,13 @@
                 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_site_orbs</span><span class="p">(</span><span class="n">site</span><span class="p">)):</span>
                     <span class="n">index</span><span class="p">[</span><span class="n">o</span><span class="p">][</span><span class="n">site</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">[</span><span class="n">site</span><span class="p">]</span> <span class="o">+</span> <span class="n">k</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ns</span>
             <span class="n">hi</span><span class="p">,</span> <span class="n">hj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;i&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;j&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hop_t</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
                 <span class="n">keep</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">o</span><span class="p">][</span><span class="n">hi</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">o</span><span class="p">][</span><span class="n">hj</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ns</span><span class="p">):</span>
                     <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">o</span><span class="p">][</span><span class="n">hi</span><span class="p">[</span><span class="n">keep</span><span class="p">]]</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span>
                     <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">o</span><span class="p">][</span><span class="n">hj</span><span class="p">[</span><span class="n">keep</span><span class="p">]]</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span>
-                    <span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">][</span><span class="n">keep</span><span class="p">])</span>
+                    <span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">keep</span><span class="p">])</span>
             <span class="n">scalar</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">vals</span><span class="p">),</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">rows</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">cols</span><span class="p">))),</span>
                                                 <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;ang&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;ang&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
@@ -904,6 +914,22 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">System</span><span class="o">.</span><span class="n">get_local_chern_marker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e_fermi</span><span class="p">,</span> <span class="n">area</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrbitalSystem.get_bott_index">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.orbital.OrbitalSystem.get_bott_index">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_bott_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e_fermi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the Bott index of a torus (see *System.get_bott_index*), the</span>
+<span class="sd">        orbitals and spin of a site sharing its position (orthogonal basis only).</span>
+
+<span class="sd">        :param e_fermi: Real number. Default value 0.</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">            * **bott** -- Real number, close to an integer.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">System</span><span class="o">.</span><span class="n">get_bott_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e_fermi</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

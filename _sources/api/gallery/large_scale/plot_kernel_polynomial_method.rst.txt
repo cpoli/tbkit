@@ -44,12 +44,13 @@ Here: the density of states of a graphene sheet of 45,000 sites
 van Hove peaks at :math:`E = \pm t` -- and with 2% of the sites removed,
 which piles up states at :math:`E = 0` (vacancy-bound zero modes).
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-61
+.. GENERATED FROM PYTHON SOURCE LINES 28-62
 
 .. code-block:: Python
 
     import numpy as np
     import matplotlib.pyplot as plt
+    from scipy.integrate import trapezoid
 
     import tbkit.kpm as kpm
     import tbkit.lattices as lattices
@@ -94,7 +95,7 @@ which piles up states at :math:`E = 0` (vacancy-bound zero modes).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-70
+.. GENERATED FROM PYTHON SOURCE LINES 63-71
 
 Against the Brillouin zone, and the Dirac law
 -------------------------------------------------
@@ -105,7 +106,7 @@ point, per site,
 :math:`\rho(E) = \frac{A_c}{2\pi v_F^2}|E| = \frac{|E|}{\sqrt3\,\pi t^2}`
 (:math:`A_c = 3\sqrt3/2` the cell area, :math:`v_F = 3t/2`).
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-92
+.. GENERATED FROM PYTHON SOURCE LINES 71-93
 
 .. code-block:: Python
 
@@ -129,7 +130,7 @@ point, per site,
     peak = e_grid[np.argmax(rho_clean * (e_grid > 0))]
     print('van Hove peak at E = {:.3f}'.format(peak))
     assert abs(peak - t) < 0.05
-    assert np.isclose(np.trapezoid(rho_clean, e_grid), 1., atol=0.01)
+    assert np.isclose(trapezoid(rho_clean, e_grid), 1., atol=0.01)
 
 
 
@@ -147,14 +148,14 @@ point, per site,
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-97
+.. GENERATED FROM PYTHON SOURCE LINES 94-98
 
 Vacancies: states at zero energy
 -------------------------------------
 Each vacancy binds a state at :math:`E = 0` on the other sublattice: 2%
 of vacancies more than double the (broadened) density of states there.
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-113
+.. GENERATED FROM PYTHON SOURCE LINES 98-114
 
 .. code-block:: Python
 
@@ -195,7 +196,7 @@ of vacancies more than double the (broadened) density of states there.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.340 seconds)
+   **Total running time of the script:** (0 minutes 2.090 seconds)
 
 
 .. _sphx_glr_download_api_gallery_large_scale_plot_kernel_polynomial_method.py:

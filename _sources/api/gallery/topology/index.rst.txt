@@ -14,9 +14,15 @@ Fu-Kane parity criterion, the surface Dirac cone of a 3D topological
 insulator (surface spectral function of a semi-infinite crystal), the Thouless quantum pump's exactly quantized
 charge transport, a topological (Chern) flat band on the kagome lattice,
 the quantum metric of a Bloch band, the local Chern marker of a
-disordered flake, the tenfold-way classification of tight-binding
-models by their symmetries, and the diabolical points (conical
-intersections with a Berry phase of pi) of a two-parameter family.
+disordered flake, the Bott index of a disordered torus, the
+entanglement spectrum of a cut SSH ring and Haldane cylinder, the spin
+Chern number of the Kane-Mele model with Rashba coupling, the mirror
+Chern number of a topological crystalline insulator, the four Z2 indices
+of strong and weak 3D topological insulators, the axion angle pumped by
+2 pi around a cycle of a lattice Dirac model, the tenfold-way
+classification of tight-binding models by their symmetries, and the
+diabolical points (conical intersections with a Berry phase of pi) of a
+two-parameter family.
 
 
 .. raw:: html
@@ -44,6 +50,40 @@ intersections with a Berry phase of pi) of a two-parameter family.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Three-Dimensional Topological Insulators: the Surface Dirac Cone</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="An insulator responds to an electric field with a magnetization and to a magnetic field with a polarization. Part of that response is a single number \theta, entering the electromagnetic action as the axion term of Wilczek (1987), \frac{\theta e^2}{2\pi h}\int\mathbf{E}\cdot\mathbf{B}: the polarization \mathbf{P} = \frac{\theta}{2\pi}\frac{e^2}{h}\mathbf{B}. Qi, Hughes and Zhang (2008) and Essin, Moore and Vanderbilt (2009) showed that for Bloch electrons \theta is the Chern-Simons integral of the Berry connection of the occupied bands. It is defined modulo 2\pi (a surface can always gain a quantum Hall layer), and time reversal or inversion force \theta = 0 or \pi: \pi is the strong 3D topological insulator.">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_axion_angle_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_axion_angle`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Axion Angle and the Topological Magnetoelectric Effect</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The Chern number is an integral over the Brillouin zone, and disorder removes the Brillouin zone. T. Loring and M. Hastings (2010) found an invariant of a finite sample that needs none. Put the sample on a torus, where the coordinates X_1, X_2 (in units of the torus sides) are only defined modulo 1, but their exponentials e^{2\pi iX_{1,2}} are well defined. Project them onto the occupied states, \tilde U = Pe^{2\pi iX_1}P and \tilde V = Pe^{2\pi iX_2}P. In a gapped or localized phase they almost commute, and the winding of their commutator,">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_bott_index_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_bott_index`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Bott Index: the Chern Number of a Disordered Torus</div>
     </div>
 
 
@@ -78,6 +118,23 @@ intersections with a Berry phase of pi) of a two-parameter family.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Edge States on Ribbons</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cut a system in two halves A and B, and ask how the ground state entangles them. The answer is the reduced density matrix \rho_A = e^{-H_E}/Z, and H. Li and F. D. M. Haldane (2008) showed that the spectrum of the entanglement Hamiltonian H_E of a topological phase looks like its edge spectrum, as if the cut were a physical edge. For free fermions H_E is quadratic (Peschel 2003): its single-particle levels follow from the eigenvalues \xi_n of the correlation matrix C_{ij} = \langle c_i^\dagger c_j\rangle restricted to A. States that live entirely in A or in B give \xi = 1 or 0. Values inside (0, 1) come from states shared across the cuts, and topology forces some of them there (Fidkowski 2010; Turner, Zhang and Vishwanath 2010).">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_entanglement_spectrum_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_entanglement_spectrum`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Entanglement Spectrum: Edge States Without an Edge</div>
     </div>
 
 
@@ -168,6 +225,23 @@ intersections with a Berry phase of pi) of a two-parameter family.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Two copies of a strong topological insulator make a trivial one, as far as time reversal can tell: the \mathbb{Z}_2 indices add modulo 2, so all four vanish, and the two surface Dirac cones can in principle annihilate. Teo, Fu and Kane (2008) pointed out that a crystal symmetry can still protect them. On a plane of the Brillouin zone left invariant by a mirror M (here z\to-z, the plane k_z = 0), M commutes with H(\mathbf{k}), the bands split into the mirror sectors M = \pm i, and each sector has its own Chern number. Their half-difference is the mirror Chern number">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_mirror_chern_number_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_mirror_chern_number`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Mirror Chern Numbers: a Topological Crystalline Insulator</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="J. P. Provost and G. Vallee (1980) showed that the manifold of quantum states carries a natural metric -- how distinguishable two nearby states are -- which, together with the Berry curvature, forms the quantum geometric tensor">
 
 .. only:: html
@@ -180,6 +254,23 @@ intersections with a Berry phase of pi) of a two-parameter family.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">The Quantum Metric: The Geometry of a Bloch Band</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In Kane and Mele&#x27;s model each spin is a Haldane model: spin up has Chern number +1, spin down -1, and the spin Chern number C_s = (C_\uparrow - C_\downarrow)/2 = 1 counts the helical edge pairs. Rashba coupling ruins this picture, since s_z is no longer conserved and the bands are no longer spin up or spin down.">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_spin_chern_number_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_spin_chern_number`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Spin Chern Number: Quantum Spin Hall Without Spin Conservation</div>
     </div>
 
 
@@ -253,6 +344,23 @@ intersections with a Berry phase of pi) of a two-parameter family.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="A band with a nonzero Chern number has no exponentially localized Wannier functions. D. J. Thouless (1984) saw the conflict: localized Wannier functions need a gauge |u_{\mathbf{k}}\rangle that is smooth and periodic over the whole Brillouin zone, and the Chern number is exactly the obstruction to one, the winding of the phase that any gauge must pick up somewhere. C. Brouder, G. Panati, M. Calandra, C. Mourougane and N. Marzari (2007) proved the converse for any number of bands: exponentially localized Wannier functions exist if and only if the Chern numbers vanish.">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_wannier_obstruction_of_chern_bands_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_wannier_obstruction_of_chern_bands`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Wannier Obstruction of Chern Bands</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="J. Zak showed in 1989 that the Berry phase acquired by a Bloch state carried once across the Brillouin zone,">
 
 .. only:: html
@@ -279,17 +387,23 @@ intersections with a Berry phase of pi) of a two-parameter family.
    :hidden:
 
    /api/gallery/topology/plot_3d_topological_insulator
+   /api/gallery/topology/plot_axion_angle
+   /api/gallery/topology/plot_bott_index
    /api/gallery/topology/plot_diabolical_points
    /api/gallery/topology/plot_edge_states
+   /api/gallery/topology/plot_entanglement_spectrum
    /api/gallery/topology/plot_fu_kane_parity
    /api/gallery/topology/plot_haldane_topology
    /api/gallery/topology/plot_kagome_chern_band
    /api/gallery/topology/plot_kane_mele_z2
    /api/gallery/topology/plot_local_chern_marker
+   /api/gallery/topology/plot_mirror_chern_number
    /api/gallery/topology/plot_quantum_geometry
+   /api/gallery/topology/plot_spin_chern_number
    /api/gallery/topology/plot_ssh_model
    /api/gallery/topology/plot_tenfold_way
    /api/gallery/topology/plot_thouless_pump
    /api/gallery/topology/plot_tknn_hofstadter
+   /api/gallery/topology/plot_wannier_obstruction_of_chern_bands
    /api/gallery/topology/plot_zak_phase
 

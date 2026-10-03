@@ -13,7 +13,13 @@ including Wallace's 1947 linear (Dirac) dispersion near the K point;
 the physics behind the 2004 isolation of graphene -- flakes, edge
 states, and the Berry phase of pi of its Dirac cones; and
 :class:`tbkit.plot.Plot`'s lattice, spectrum, density-of-states, and
-eigenstate-intensity plots.
+eigenstate-intensity plots; parametrized Hamiltonians, whose value
+functions let a flux or dimerization sweep re-evaluate the hoppings
+instead of rebuilding the model; periodic boundaries in real space,
+tori and cylinders whose spectra match the Bloch bands on a k-mesh;
+and the analysis of a band structure: Fermi surfaces and their Lifshitz
+transitions, bands projected on sublattices or spins and spin textures,
+and the tetrahedron method for the density of states.
 
 
 .. raw:: html
@@ -63,6 +69,23 @@ eigenstate-intensity plots.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="The Fermi surface E_n(\mathbf{k}) = E_F separates the occupied states from the empty ones: transport, screening, magnetic oscillations and instabilities all happen on it. Its shape matters (nesting), and so does its topology: when the Fermi level crosses a saddle point of a band, the surface changes connectivity -- a Lifshitz transition.">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_fermi_surfaces_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_fermi_surfaces`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Fermi Surfaces and Constant-Energy Contours</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="A from-scratch walkthrough of tbkit&#x27;s two complementary ways of looking at a Tight-Binding model:">
 
 .. only:: html
@@ -97,6 +120,57 @@ eigenstate-intensity plots.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="A sweep over a magnetic field, a gate voltage or a dimerization usually rebuilds the model at every step: find the bonds, set the hoppings, apply the field. A value function replaces a number by a callable of the sites and of named parameters, t(site_i, site_j, params) or onsite(site, params). The model stores its bonds once, and get_ham (``sys.get_ham(alpha=...)``) or get_ham (``ks.get_ham(k, v=...)``) only re-evaluates the values. site_i and site_j are structured arrays holding every bond at once (fields &#x27;x&#x27;, &#x27;y&#x27;, &#x27;tag&#x27;, &#x27;index&#x27;), so each function runs once per Hamiltonian, vectorized.">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_parametrized_hamiltonians_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_parametrized_hamiltonians`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Parametrized Hamiltonians: Sweeping Without Rebuilding</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A finite flake has edges, and their states mix with the bulk ones. Wrap the sample of get_lattice into a torus and the edges disappear: System(lat, periodic=True) measures every distance and bond angle along the shortest image, so set_hopping by neighbour order (with angles and tags) also sets the bonds that wrap around. The spectrum of an N_1\times N_2 torus is then exactly that of the Bloch bands on the N_1\times N_2 k-mesh. Wrapping along one vector only, periodic=(True, False), gives a cylinder, with the edge states of a ribbon.">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_periodic_boundaries_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_periodic_boundaries`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Periodic Boundaries in Real Space: Tori and Cylinders</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A band structure says where the states are in energy; their character says what they are made of. A &quot;fat band&quot; plot colors each band by its weight on a sublattice, an orbital or a spin direction,">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_projected_bands_and_spin_textures_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_projected_bands_and_spin_textures`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Projected Bands and Spin Textures</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The smallest complete illustration of Bloch&#x27;s theorem: one orbital per unit cell on a square lattice, nearest-neighbor hopping only. With a single orbital the Bloch Hamiltonian H(\mathbf{k}) is a 1\times1 matrix, so &quot;diagonalizing&quot; it is nothing but reading it off, and the whole band structure is one closed-form expression,">
 
 .. only:: html
@@ -109,6 +183,23 @@ eigenstate-intensity plots.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">The Square Lattice: Bloch's Theorem in its Simplest Form</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The density of states \rho(E) = \sum_n\int\frac{d\mathbf{k}}{V_{BZ}}\, \delta(E - E_n(\mathbf{k})) needs an integral over the Brillouin zone, but a calculation only knows the bands on a finite mesh. Broadening each eigenvalue into a Gaussian of width \sigma turns the sum into a smooth curve, at the price of smearing exactly the features that matter: band edges, and the van Hove singularities where \nabla_k E = 0.">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_tetrahedron_method_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_tetrahedron_method`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Tetrahedron Method for the Density of States</div>
     </div>
 
 
@@ -141,8 +232,13 @@ eigenstate-intensity plots.
 
    /api/gallery/tight_binding/plot_building_finite_lattices
    /api/gallery/tight_binding/plot_defects_and_impurities
+   /api/gallery/tight_binding/plot_fermi_surfaces
    /api/gallery/tight_binding/plot_graphene_bands
    /api/gallery/tight_binding/plot_isolation_of_graphene
+   /api/gallery/tight_binding/plot_parametrized_hamiltonians
+   /api/gallery/tight_binding/plot_periodic_boundaries
+   /api/gallery/tight_binding/plot_projected_bands_and_spin_textures
    /api/gallery/tight_binding/plot_square_lattice_bands
+   /api/gallery/tight_binding/plot_tetrahedron_method
    /api/gallery/tight_binding/plot_visualizing_a_model
 

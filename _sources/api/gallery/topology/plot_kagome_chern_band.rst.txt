@@ -214,24 +214,19 @@ does survive intact is the topology.
 Berry curvature of the isolated lower band
 ------------------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-118
+.. GENERATED FROM PYTHON SOURCE LINES 109-113
 
 .. code-block:: Python
 
 
-    curv = kag.berry_curvature(bands=[0], nk=60)
-    fig, ax = plt.subplots()
-    im = ax.imshow(curv.T, origin='lower', extent=[0, 1, 0, 1], aspect='auto', cmap='RdBu')
-    ax.set_xlabel('$k_1$ (fractional)')
-    ax.set_ylabel('$k_2$ (fractional)')
-    ax.set_title('Berry curvature of the lower (Chern) band')
-    fig.colorbar(im, ax=ax)
+    fig = kag.plot_berry_curvature(0, nk=60, fs=14)
+    fig.axes[0].set_title('Berry curvature of the lower band, $C = -1$', fontsize=14)
 
 
 
 
 .. image-sg:: /api/gallery/topology/images/sphx_glr_plot_kagome_chern_band_002.png
-   :alt: Berry curvature of the lower (Chern) band
+   :alt: Berry curvature of the lower band, $C = -1$
    :srcset: /api/gallery/topology/images/sphx_glr_plot_kagome_chern_band_002.png
    :class: sphx-glr-single-img
 
@@ -241,16 +236,16 @@ Berry curvature of the isolated lower band
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x11780da90>
+    Text(0.5, 1.0, 'Berry curvature of the lower band, $C = -1$')
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-121
+.. GENERATED FROM PYTHON SOURCE LINES 114-116
 
 Band structure: flat-and-touching vs. gapped-and-topological
 --------------------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 121-132
+.. GENERATED FROM PYTHON SOURCE LINES 116-127
 
 .. code-block:: Python
 
@@ -280,7 +275,7 @@ Band structure: flat-and-touching vs. gapped-and-topological
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.622 seconds)
+   **Total running time of the script:** (0 minutes 0.231 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_kagome_chern_band.py:

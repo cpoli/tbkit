@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tbkit.bdg &#8212; tbkit 0.4.2 documentation</title>
+    <title>tbkit.bdg &#8212; tbkit 0.5.0 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../_static/documentation_options.js?v=9dc614e0"></script>
+    <script src="../../_static/documentation_options.js?v=70f82a29"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.4" />
+  <meta name="docsearch:version" content="0.5" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -555,6 +555,94 @@
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="pfaffian">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.bdg.pfaffian">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pfaffian</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">complex</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the Pfaffian of an antisymmetric matrix,</span>
+<span class="sd">    :math:`\mathrm{Pf}(A)^2 = \det A`, by the Parlett-Reid reduction to</span>
+<span class="sd">    tridiagonal form with pivoting (Wimmer, ACM Trans. Math. Softw. 38, 30</span>
+<span class="sd">    (2012)). For a 2x2 block :math:`\begin{pmatrix}0 &amp; a\\ -a &amp; 0\end{pmatrix}`</span>
+<span class="sd">    it is :math:`a`; it is 0 for an odd dimension.</span>
+
+<span class="sd">    :param a: Square antisymmetric matrix, shape (n, n).</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **pf** -- Complex number (a float for a real matrix).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">real</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">iscomplexobj</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">square_matrix</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">antisymmetric</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.</span>
+    <span class="n">pf</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">+</span> <span class="mi">0</span><span class="n">j</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="c1"># bring the largest entry of column k below the diagonal to row k + 1</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:,</span> <span class="n">k</span><span class="p">])))</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">a</span><span class="p">[[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">],</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[[</span><span class="n">p</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="p">:]</span>
+            <span class="n">a</span><span class="p">[:,</span> <span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">]]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[:,</span> <span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span>
+            <span class="n">pf</span> <span class="o">=</span> <span class="o">-</span><span class="n">pf</span>
+        <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0.</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.</span>
+        <span class="n">pf</span> <span class="o">*=</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+            <span class="n">tau</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:]</span> <span class="o">/</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">a</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">tau</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">real</span><span class="p">)</span> <span class="k">if</span> <span class="n">real</span> <span class="k">else</span> <span class="nb">complex</span><span class="p">(</span><span class="n">pf</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="majorana_number">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.bdg.majorana_number">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">majorana_number</span><span class="p">(</span><span class="n">ks</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get Kitaev&#39;s Majorana number of a BdG model (Kitaev, Physics-Uspekhi</span>
+<span class="sd">    44, 131 (2001)): the product, over the time-reversal-invariant momenta</span>
+<span class="sd">    :math:`\Gamma_i`, of the signs of the Pfaffians of the Hamiltonian in</span>
+<span class="sd">    the Majorana basis,</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathcal{M} = \prod_i \mathrm{sign}\,\mathrm{Pf}\,A(\Gamma_i)\, ,\qquad</span>
+<span class="sd">        A = -i\,U H_{BdG} U^\dagger\, ,\qquad</span>
+<span class="sd">        U = \frac{1}{\sqrt2}\begin{pmatrix}1 &amp; 1\\ -i &amp; i\end{pmatrix}\, ,</span>
+
+<span class="sd">    :math:`U` taking the Nambu spinor :math:`(c, c^\dagger)` to the Majorana</span>
+<span class="sd">    operators :math:`(c + c^\dagger, -i(c - c^\dagger))`. Particle-hole</span>
+<span class="sd">    symmetry makes :math:`A(\Gamma_i)` real and antisymmetric. In 1D,</span>
+<span class="sd">    :math:`\mathcal{M} = \mathrm{sign}\,\mathrm{Pf}A(0)\,\mathrm{Pf}A(\pi) = -1`</span>
+<span class="sd">    in the topological phase (a Majorana zero mode at each end of an open</span>
+<span class="sd">    chain), +1 in the trivial one: the :math:`\mathbb{Z}_2` invariant of</span>
+<span class="sd">    class D. In 2D the product over the four momenta is</span>
+<span class="sd">    :math:`(-1)^C`, the parity of the Chern number (Ghosh et al., Phys. Rev.</span>
+<span class="sd">    B 82, 184525 (2010)). The invariant changes only where the gap closes</span>
+<span class="sd">    at one of the :math:`\Gamma_i`.</span>
+
+<span class="sd">    :param ks: **KSpace** instance of a BdG model, 2n orbitals: n particles</span>
+<span class="sd">        then their n holes (see *bdg_kspace*).</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * **m** -- Integer, -1 (topological) or +1 (trivial).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">KSpace</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">kspace</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">KSpace</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">bdg_orbitals</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">norb</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">norb</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mi">1</span><span class="n">j</span><span class="p">]])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">ks</span><span class="o">.</span><span class="n">_trims</span><span class="p">():</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">u</span> <span class="o">@</span> <span class="n">ks</span><span class="o">.</span><span class="n">get_ham</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">@</span> <span class="n">u</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">majorana_form</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">pf</span> <span class="o">=</span> <span class="n">pfaffian</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">gapped_trim</span><span class="p">(</span><span class="n">pf</span><span class="p">)</span>
+        <span class="n">sign</span> <span class="o">*=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">pf</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">sign</span></div>
 
 
 
