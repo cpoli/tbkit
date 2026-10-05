@@ -174,7 +174,8 @@ class TestBdGTopology(unittest.TestCase):
         for n in (2, 4, 6, 8):
             a = rng.normal(size=(n, n)) + 1j * rng.normal(size=(n, n))
             a = a - a.T
-            self.assertAlmostEqual(abs(pfaffian(a) ** 2 - np.linalg.det(a)), 0., places=10)
+            det = np.linalg.det(a)
+            self.assertAlmostEqual(abs(pfaffian(a) ** 2 - det) / abs(det), 0., places=10)
         self.assertEqual(pfaffian([[0., 2.], [-2., 0.]]), 2.)
         self.assertIsInstance(pfaffian(np.array([[0., 2.], [-2., 0.]])), float)
         self.assertIsInstance(pfaffian(np.array([[0., 2j], [-2j, 0.]])), complex)
