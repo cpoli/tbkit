@@ -1,4 +1,4 @@
-name: tests
+name: CI
 
 on:
   push:
@@ -26,8 +26,15 @@ jobs:
           allow-prereleases: true
           cache: pip
           cache-dependency-path: pyproject.toml
-      - run: pip install .[test]
-      - run: pytest tests/ -v --cov=tbkit --cov-report=term-missing
+      - run: pip install -e .[test]
+      - run: pytest tests/ -v --cov=tbkit --cov-report=term-missing --cov-report=xml
+      - name: Upload coverage to Codecov
+        if: matrix.python-version == '3.14'
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          fail_ci_if_error: false
 
   # The oldest NumPy, SciPy and matplotlib that pyproject.toml allows, so the
   # declared floors stay true (NumPy 2-only calls such as np.trapezoid fail
