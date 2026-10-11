@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- **`System.get_eig()` is about twice as fast on real Hamiltonians.** The
+  Hamiltonian is stored as complex, so the eigenvalues of a real one (no
+  magnetic field, no complex hoppings) went through the complex Hermitian
+  solver. Without eigenvectors, a matrix with no imaginary part is now
+  diagonalized with the real one: the same eigenvalues, about 2.2x faster at
+  1000 sites. The eigenvector path is unchanged (`rn` stays complex). The
+  3D Anderson-transition example runs in half the time, and the whole
+  gallery about 14% faster.
+
 ## 0.5.0 -- 2026-10-03
 
 ### Fixed

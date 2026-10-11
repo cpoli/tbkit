@@ -1013,7 +1013,12 @@ class System():
                 ind = np.argsort(self.en.real)
                 self.en = self.en[ind]
             else:
-                self.en = LA.eigvalsh(self.ham.toarray())
+                ham = self.ham.toarray()
+                # A real symmetric matrix (no fluxes, no spin-orbit) has the same
+                # eigenvalues from the real solver, about twice as fast.
+                if not ham.imag.any():
+                    ham = ham.real
+                self.en = LA.eigvalsh(ham)
 
     def _set_states(self) -> None:
         '''

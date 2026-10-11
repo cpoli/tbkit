@@ -217,6 +217,21 @@ class TestSystem(unittest.TestCase):
         sys.get_ham()
         self.assertRaises(TypeError, sys.get_eig, eigenvec='a')
 
+    def test_get_eig_real_and_complex_hermitian(self):
+        # A real Hamiltonian is diagonalized with the real solver, a complex
+        # Hermitian one (here with a flux) with the complex one: both must
+        # give the spectrum of the full complex matrix.
+        for t in (1., 1j):
+            sys = init()
+            sys.set_hopping([{'n': 1, 't': t}])
+            sys.set_onsite({'a': 0.})
+            sys.set_onsite_dis(1.)
+            sys.get_ham()
+            self.assertEqual(bool(sys.ham.toarray().imag.any()), t == 1j)
+            sys.get_eig()
+            self.assertEqual(sys.en.dtype, np.float64)
+            self.assertTrue(np.allclose(sys.en, np.linalg.eigvalsh(sys.ham.toarray())))
+
     def test_get_intensity_pola_max(self):
         sys = init()
         sys.set_hopping([{'n': 1, 't': 1.}])
