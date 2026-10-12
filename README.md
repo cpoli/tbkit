@@ -2,7 +2,7 @@
 
 | | |
 |:--|:-:|
-| Package | [![PyPI version](https://badgen.net/pypi/v/tbkit)](https://pypi.org/project/tbkit/) [![Python versions](https://badgen.net/pypi/python/tbkit)](https://pypi.org/project/tbkit/) [![DOI](https://zenodo.org/badge/1381398706.svg)](https://zenodo.org/badge/latestdoi/1381398706) |
+| Package | [![PyPI version](https://badgen.net/pypi/v/tbkit)](https://pypi.org/project/tbkit/) [![conda-forge](https://img.shields.io/conda/vn/conda-forge/tbkit)](https://anaconda.org/conda-forge/tbkit) [![Python versions](https://badgen.net/pypi/python/tbkit)](https://pypi.org/project/tbkit/) [![DOI](https://zenodo.org/badge/1381398706.svg)](https://zenodo.org/badge/latestdoi/1381398706) |
 | Quality | [![License](https://badgen.net/github/license/cpoli/tbkit)](https://github.com/cpoli/tbkit/blob/master/LICENSE) [![CI](https://github.com/cpoli/tbkit/actions/workflows/ci.yml/badge.svg)](https://github.com/cpoli/tbkit/actions/workflows/ci.yml) [![Coverage](https://codecov.io/gh/cpoli/tbkit/branch/master/graph/badge.svg)](https://codecov.io/gh/cpoli/tbkit) |
 | Documentation | [![Docs](https://badgen.net/badge/docs/cpoli.github.io%2Ftbkit/blue)](https://cpoli.github.io/tbkit/) |
 | Downloads | [![Downloads](https://static.pepy.tech/badge/tbkit)](https://pepy.tech/project/tbkit) [![Downloads/Month](https://static.pepy.tech/badge/tbkit/month)](https://pepy.tech/project/tbkit) |
@@ -68,12 +68,16 @@ Requires Python >= 3.10 (tested on 3.10-3.15).
 
 ```bash
 pip install tbkit
+# or
+conda install -c conda-forge tbkit
 ```
 
 `tbkit.continuum` (k·p models to tight-binding) also needs sympy:
 
 ```bash
 pip install "tbkit[continuum]"
+# or
+conda install -c conda-forge tbkit sympy
 ```
 
 or, for an editable install from a clone (e.g. to run the test suite or
