@@ -23,7 +23,8 @@ on their own, and educators building a demonstration.
    :alt: Graphene's Dirac cone, Hofstadter's butterfly, and helical edge states of a Kane-Mele ribbon, all computed with tbkit
    :width: 100%
 
-Start with the :doc:`tutorial`, browse the :doc:`example gallery
+Start with the :doc:`tutorial`, trace the :doc:`history of Tight-Binding
+breakthroughs <history>`, browse the :doc:`example gallery
 </api/gallery/index>`, or jump straight to the :doc:`API reference <tbkit>`.
 
 For computational physics beyond tight-binding -- quantum mechanics,
