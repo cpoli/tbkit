@@ -426,13 +426,17 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Callable</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">NDArray</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">scipy.linalg</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">LA</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.error_handling</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">error_handling</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">KSpace</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.lattice</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lattice</span>
 
 
 <div class="viewcode-block" id="evolution_operator">
@@ -454,11 +458,10 @@
     <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="s1">&#39;period&#39;</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n_steps</span><span class="p">,</span> <span class="s1">&#39;n_steps&#39;</span><span class="p">)</span>
     <span class="n">dt</span> <span class="o">=</span> <span class="n">period</span> <span class="o">/</span> <span class="n">n_steps</span>
-    <span class="n">u</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_steps</span><span class="p">):</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">expm</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ham_t</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">dt</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">):</span>
         <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ham_t</span><span class="p">((</span><span class="n">m</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
-        <span class="n">step</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">expm</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span>
-        <span class="n">u</span> <span class="o">=</span> <span class="n">step</span> <span class="k">if</span> <span class="n">u</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">step</span> <span class="o">@</span> <span class="n">u</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">expm</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span> <span class="o">@</span> <span class="n">u</span>
     <span class="k">return</span> <span class="n">u</span></div>
 
 
@@ -698,7 +701,7 @@
 <span class="sd">            * **H** -- Complex ndarray.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">)</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">durations</span><span class="p">),</span> <span class="n">t</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">durations</span><span class="p">),</span> <span class="n">t</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hams</span><span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hams</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span></div>
 
 
@@ -859,7 +862,7 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_winding_density</span><span class="p">(</span><span class="n">u</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">a_t</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_winding_density</span><span class="p">(</span><span class="n">u</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">a_t</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complexfloating</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Private function. Brillouin-zone average of</span>
 <span class="sd">    Tr(A_t [A_1, A_2]), A_i = U^-1 d U / d f_i along the fractional</span>
@@ -904,6 +907,22 @@
 <span class="sd">        drive = DrivenKSpace(ks, lambda k, t: ks.get_ham(k) + m * np.cos(w * t) * sz, 2 * np.pi / w)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
+    <span class="c1"># Set by _copy (and _from_steps or __new__) on an instance whose class</span>
+    <span class="c1"># also derives from type(ks): the rest is the copied KSpace&#39;s.</span>
+    <span class="n">static</span><span class="p">:</span> <span class="n">KSpace</span>
+    <span class="n">period</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">steps</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">durations</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span>
+    <span class="n">n_steps</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">ham_kt</span><span class="p">:</span> <span class="n">Callable</span>
+    <span class="n">lat</span><span class="p">:</span> <span class="n">Lattice</span>
+    <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">norb</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">spin</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">rec_vec_k</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span>
+    <span class="n">_plane_orientation</span><span class="p">:</span> <span class="n">Callable</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">ham_kt</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">period</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">KSpace</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">kspace</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">KSpace</span><span class="p">)</span>
@@ -926,7 +945,7 @@
 <span class="sd">        Private method. A copy of *ks* whose class also derives from *cls*.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">driven_cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">ks</span><span class="p">)),</span> <span class="p">{})</span>
-        <span class="n">obj</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">driven_cls</span><span class="p">)</span>
+        <span class="n">obj</span><span class="p">:</span> <span class="n">DrivenKSpace</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">driven_cls</span><span class="p">)</span>
         <span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">))</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">static</span> <span class="o">=</span> <span class="n">ks</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">period</span>
@@ -939,9 +958,10 @@
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Private method. The drive of *step_drive*: models[n] for durations[n].</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_copy</span><span class="p">(</span><span class="n">models</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">durations</span><span class="p">)),</span> <span class="n">epsilon</span><span class="p">)</span>
+        <span class="n">durations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">durations</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_copy</span><span class="p">(</span><span class="n">models</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">float</span><span class="p">(</span><span class="n">durations</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span> <span class="n">epsilon</span><span class="p">)</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">steps</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">models</span><span class="p">)</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">durations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">durations</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">durations</span> <span class="o">=</span> <span class="n">durations</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">n_steps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">models</span><span class="p">)</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">ham_kt</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">_step_ham</span>
         <span class="k">return</span> <span class="n">obj</span>
@@ -950,8 +970,9 @@
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Private method. H(k, t) of a step drive.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">durations</span><span class="p">),</span> <span class="n">t</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">get_ham</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">steps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span> <span class="ow">or</span> <span class="p">[]</span>  <span class="c1"># set by _from_steps, the only caller</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">durations</span><span class="p">),</span> <span class="n">t</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">steps</span><span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">get_ham</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_step_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
@@ -1242,6 +1263,8 @@
 <span class="sd">        :math:`[-\omega/2, \omega/2)`, as before this option existed).</span>
 <span class="sd">        Branch cut of *get_ham*, see *effective_hamiltonian*.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">vector_potential</span><span class="p">:</span> <span class="n">Callable</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">vector_potential</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">period</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
                      <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
