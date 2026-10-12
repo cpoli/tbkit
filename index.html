@@ -31,7 +31,7 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -372,78 +372,58 @@ classical mechanics, statistical physics, general relativity, and more
 – see <a class="reference external" href="https://cpoli.github.io/physicskit/">physicskit</a>, whose
 <code class="docutils literal notranslate"><span class="pre">physicskit.condensed</span></code> subpackage covers tight-binding band theory and
 topology alongside superconductivity.</p>
-<p><strong>tbkit</strong> main features:</p>
-<blockquote>
-<div><ul>
-<li><p>Complex lattice structures, in 1D, 2D and 3D.</p></li>
-<li><p>Complex-valued onsite energies and hoppings.</p></li>
-<li><p>Hermitian and non-Hermitian Tight-Binding Hamiltonians.</p></li>
-<li><p>Sublattices.</p></li>
-<li><p>Hoppings defined by their type, tags, and angles.</p></li>
-<li><p>Any type of hoppings:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Neighbors hoppings,</p></li>
-<li><p>Next-neighbors hoppings,</p></li>
-<li><p>Next-next-neighbors hoppings,</p></li>
-<li><p>etc..</p></li>
-</ul>
-</div></blockquote>
-</li>
-<li><p>Implementation of onsite energies and hopping patterns:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Dimerization defects.</p></li>
-<li><p>Magnetic field (Peierls substitution).</p></li>
-<li><p>Strain.</p></li>
-<li><p>Hopping disorder.</p></li>
-<li><p>Onsite disorder.</p></li>
-</ul>
-</div></blockquote>
-</li>
-<li><p>Reciprocal-space Bloch Hamiltonians and band structures.</p></li>
-<li><p>Berry curvature and Chern numbers.</p></li>
-<li><p>An optional spin-1/2 degree of freedom, for spin-orbit coupling and
-Zeeman terms.</p></li>
-<li><p>Ribbons (edge states) cut from any periodic model, and real-space
-lattices with periodic boundaries (tori and cylinders).</p></li>
-<li><p>Zak/Berry phases, Wannier centres and their flow, the Z2 invariant
-(Wilson loops and Fu-Kane parities) and the four 3D Z2 indices, spin
-and mirror Chern numbers, the quantum metric, symmetry checks and the
-tenfold way, the local Chern marker, the Bott index, and the
-entanglement spectrum.</p></li>
-<li><p>Maximally localized Wannier functions (projection onto trial
-orbitals, then Marzari-Vanderbilt spread minimization), with their
-centres and spreads; disentanglement of entangled bands, and Wannier
-interpolation.</p></li>
-<li><p>Weyl points of 3D models and their chiralities, and the Majorana
-number (Pfaffian invariant) of BdG superconductors.</p></li>
-<li><p>Magnetic supercells (Hofstadter bands, TKNN Chern numbers).</p></li>
-<li><p>Anomalous and spin Hall conductivities at any Fermi level (Kubo
-formula over the Brillouin zone), and the real-space Kubo-Bastin Hall
-conductivity of large disordered samples (kernel polynomial method).</p></li>
-<li><p>Orbital magnetization (modern theory), anomalous Nernst and thermal
-Hall conductivities, and the axion angle of 3D insulators.</p></li>
-<li><p>Non-reciprocal models: spectral winding, the skin effect, and the
-generalized Brillouin zone.</p></li>
-<li><p>Exceptional points of 2D non-Hermitian bands: eigenvalue vorticity,
-discriminant winding, an EP finder (charges, orders, exceptional
-rings, bulk Fermi arcs), encircling EPs and diabolical points, and
-biorthogonal Chern numbers of line-gapped bands.</p></li>
-<li><p>Several orbitals per site: Slater-Koster integrals, non-orthogonal
-bases, and spinful multi-orbital real-space models.</p></li>
-<li><p>Sparse eigensolvers, sparse neighbour search, and the kernel
-polynomial method for very large lattices.</p></li>
-<li><p>Green’s functions, Fermi levels and occupations, and Landauer
-transport through a device between semi-infinite leads.</p></li>
-<li><p>Hubbard mean field, and Bogoliubov-de Gennes superconductivity.</p></li>
-<li><p>Floquet theory of periodically driven lattices, and the winding
-number of anomalous Floquet phases.</p></li>
-<li><p>Broadened density of states.</p></li>
-<li><p>A small library of ready-made lattices.</p></li>
-<li><p>Time propagation.</p></li>
-</ul>
-</div></blockquote>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
+<section id="building-and-solving-models">
+<h3>Building and solving models<a class="headerlink" href="#building-and-solving-models" title="Link to this heading">#</a></h3>
+<p>Finite lattices, defects, several orbitals per site, real space to k-space
+and back, k·p models discretized into lattice models, saved models and
+Wannier90 imports, maximally localized Wannier functions, and solvers for
+very large lattices.</p>
+<a class="reference internal image-reference" href="_images/readme_models.png"><img alt="An impurity bound state, Slater-Koster sp3 graphene bands with overlaps, and the kernel polynomial method on 45,000 sites" src="_images/readme_models.png" style="width: 100%;" />
+</a>
+</section>
+<section id="fields-strain-and-disorder">
+<h3>Fields, strain and disorder<a class="headerlink" href="#fields-strain-and-disorder" title="Link to this heading">#</a></h3>
+<p>What happens to a lattice under a magnetic field (Peierls substitution),
+under strain, and with disorder.</p>
+<a class="reference internal image-reference" href="_images/readme_fields.png"><img alt="Graphene's sqrt(n) Landau ladder, triaxial strain as a pseudo-magnetic field, and Anderson localization" src="_images/readme_fields.png" style="width: 100%;" />
+</a>
+</section>
+<section id="band-topology">
+<h3>Band topology<a class="headerlink" href="#band-topology" title="Link to this heading">#</a></h3>
+<p>Chern numbers, Berry phases, the Z2 invariant (and the four 3D indices),
+spin and mirror Chern numbers, the Bott index and entanglement spectrum,
+Weyl points and their chirality, Kitaev’s Majorana number, quantum geometry,
+symmetry classes, higher-order and 3D topological phases.</p>
+<a class="reference internal image-reference" href="_images/readme_topology.png"><img alt="Berry curvature of the Haldane model, the Kane-Mele Z2 Wannier flow, and the four corner states of a quadrupole insulator" src="_images/readme_topology.png" style="width: 100%;" />
+</a>
+</section>
+<section id="response-and-transport">
+<h3>Response and transport<a class="headerlink" href="#response-and-transport" title="Link to this heading">#</a></h3>
+<p>Hall conductivities at any Fermi level (with the orbital magnetization,
+Nernst and thermal Hall responses), Landauer transport between leads, and
+linear and nonlinear optical response.</p>
+<a class="reference internal image-reference" href="_images/readme_response.png"><img alt="The anomalous Hall conductivity of the Haldane model, the conductance steps of a quantum point contact, and graphene's universal absorption" src="_images/readme_response.png" style="width: 100%;" />
+</a>
+</section>
+<section id="flat-bands-and-interactions">
+<h3>Flat bands and interactions<a class="headerlink" href="#flat-bands-and-interactions" title="Link to this heading">#</a></h3>
+<p>Flat bands from lattice geometry and from a moiré twist, the Hubbard model
+in mean field, and superconductivity.</p>
+<a class="reference internal image-reference" href="_images/readme_interactions.png"><img alt="The flat bands of twisted bilayer graphene, magnetic zigzag edges in Hubbard mean field, and the Majorana end modes of a Kitaev chain" src="_images/readme_interactions.png" style="width: 100%;" />
+</a>
+</section>
+<section id="driven-and-open-systems">
+<h3>Driven and open systems<a class="headerlink" href="#driven-and-open-systems" title="Link to this heading">#</a></h3>
+<p>Wavepacket dynamics, periodically driven (Floquet) lattices, and
+non-Hermitian bands with exceptional points.</p>
+<a class="reference internal image-reference" href="_images/readme_driven.png"><img alt="Bloch oscillations in a tilted chain, the Floquet bands of graphene in circularly polarized light, and the non-Hermitian skin effect" src="_images/readme_driven.png" style="width: 100%;" />
+</a>
+</section>
+</section>
+<section id="install">
+<h2>Install<a class="headerlink" href="#install" title="Link to this heading">#</a></h2>
 <p>To use <strong>tbkit</strong>:</p>
 <blockquote>
 <div><ul>
@@ -462,6 +442,7 @@ number of anomalous Floquet phases.</p></li>
 </div></blockquote>
 <p>Examples are available at <a class="github reference external" href="https://github.com/cpoli/tbkit/tree/master/examples">cpoli/tbkit</a>,
 and rendered with their output in the <a class="reference internal" href="api/gallery/index.html"><span class="doc">example gallery</span></a>.</p>
+</section>
 </section>
 
 
@@ -493,6 +474,27 @@ and rendered with their output in the <a class="reference internal" href="api/ga
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#building-and-solving-models">Building and solving models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fields-strain-and-disorder">Fields, strain and disorder</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#band-topology">Band topology</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#response-and-transport">Response and transport</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flat-bands-and-interactions">Flat bands and interactions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#driven-and-open-systems">Driven and open systems</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install">Install</a></li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
 

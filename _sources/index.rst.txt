@@ -32,70 +32,76 @@ classical mechanics, statistical physics, general relativity, and more
 ``physicskit.condensed`` subpackage covers tight-binding band theory and
 topology alongside superconductivity.
 
-**tbkit** main features:
+Examples
+--------
 
-    * Complex lattice structures, in 1D, 2D and 3D.
-    * Complex-valued onsite energies and hoppings.
-    * Hermitian and non-Hermitian Tight-Binding Hamiltonians.
-    * Sublattices.
-    * Hoppings defined by their type, tags, and angles.
-    * Any type of hoppings:
+Building and solving models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        * Neighbors hoppings,
-        * Next-neighbors hoppings,
-        * Next-next-neighbors hoppings,
-        * etc..
+Finite lattices, defects, several orbitals per site, real space to k-space
+and back, k·p models discretized into lattice models, saved models and
+Wannier90 imports, maximally localized Wannier functions, and solvers for
+very large lattices.
 
-    * Implementation of onsite energies and hopping patterns:
+.. image:: _static/images/readme_models.png
+   :alt: An impurity bound state, Slater-Koster sp3 graphene bands with overlaps, and the kernel polynomial method on 45,000 sites
+   :width: 100%
 
-       * Dimerization defects.
-       * Magnetic field (Peierls substitution).
-       * Strain.
-       * Hopping disorder.
-       * Onsite disorder.
+Fields, strain and disorder
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    * Reciprocal-space Bloch Hamiltonians and band structures.
-    * Berry curvature and Chern numbers.
-    * An optional spin-1/2 degree of freedom, for spin-orbit coupling and
-      Zeeman terms.
-    * Ribbons (edge states) cut from any periodic model, and real-space
-      lattices with periodic boundaries (tori and cylinders).
-    * Zak/Berry phases, Wannier centres and their flow, the Z2 invariant
-      (Wilson loops and Fu-Kane parities) and the four 3D Z2 indices, spin
-      and mirror Chern numbers, the quantum metric, symmetry checks and the
-      tenfold way, the local Chern marker, the Bott index, and the
-      entanglement spectrum.
-    * Maximally localized Wannier functions (projection onto trial
-      orbitals, then Marzari-Vanderbilt spread minimization), with their
-      centres and spreads; disentanglement of entangled bands, and Wannier
-      interpolation.
-    * Weyl points of 3D models and their chiralities, and the Majorana
-      number (Pfaffian invariant) of BdG superconductors.
-    * Magnetic supercells (Hofstadter bands, TKNN Chern numbers).
-    * Anomalous and spin Hall conductivities at any Fermi level (Kubo
-      formula over the Brillouin zone), and the real-space Kubo-Bastin Hall
-      conductivity of large disordered samples (kernel polynomial method).
-    * Orbital magnetization (modern theory), anomalous Nernst and thermal
-      Hall conductivities, and the axion angle of 3D insulators.
-    * Non-reciprocal models: spectral winding, the skin effect, and the
-      generalized Brillouin zone.
-    * Exceptional points of 2D non-Hermitian bands: eigenvalue vorticity,
-      discriminant winding, an EP finder (charges, orders, exceptional
-      rings, bulk Fermi arcs), encircling EPs and diabolical points, and
-      biorthogonal Chern numbers of line-gapped bands.
-    * Several orbitals per site: Slater-Koster integrals, non-orthogonal
-      bases, and spinful multi-orbital real-space models.
-    * Sparse eigensolvers, sparse neighbour search, and the kernel
-      polynomial method for very large lattices.
-    * Green's functions, Fermi levels and occupations, and Landauer
-      transport through a device between semi-infinite leads.
-    * Hubbard mean field, and Bogoliubov-de Gennes superconductivity.
-    * Floquet theory of periodically driven lattices, and the winding
-      number of anomalous Floquet phases.
-    * Broadened density of states.
-    * A small library of ready-made lattices.
-    * Time propagation.
+What happens to a lattice under a magnetic field (Peierls substitution),
+under strain, and with disorder.
 
+.. image:: _static/images/readme_fields.png
+   :alt: Graphene's sqrt(n) Landau ladder, triaxial strain as a pseudo-magnetic field, and Anderson localization
+   :width: 100%
+
+Band topology
+~~~~~~~~~~~~~
+
+Chern numbers, Berry phases, the Z2 invariant (and the four 3D indices),
+spin and mirror Chern numbers, the Bott index and entanglement spectrum,
+Weyl points and their chirality, Kitaev's Majorana number, quantum geometry,
+symmetry classes, higher-order and 3D topological phases.
+
+.. image:: _static/images/readme_topology.png
+   :alt: Berry curvature of the Haldane model, the Kane-Mele Z2 Wannier flow, and the four corner states of a quadrupole insulator
+   :width: 100%
+
+Response and transport
+~~~~~~~~~~~~~~~~~~~~~~
+
+Hall conductivities at any Fermi level (with the orbital magnetization,
+Nernst and thermal Hall responses), Landauer transport between leads, and
+linear and nonlinear optical response.
+
+.. image:: _static/images/readme_response.png
+   :alt: The anomalous Hall conductivity of the Haldane model, the conductance steps of a quantum point contact, and graphene's universal absorption
+   :width: 100%
+
+Flat bands and interactions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Flat bands from lattice geometry and from a moiré twist, the Hubbard model
+in mean field, and superconductivity.
+
+.. image:: _static/images/readme_interactions.png
+   :alt: The flat bands of twisted bilayer graphene, magnetic zigzag edges in Hubbard mean field, and the Majorana end modes of a Kitaev chain
+   :width: 100%
+
+Driven and open systems
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Wavepacket dynamics, periodically driven (Floquet) lattices, and
+non-Hermitian bands with exceptional points.
+
+.. image:: _static/images/readme_driven.png
+   :alt: Bloch oscillations in a tilted chain, the Floquet bands of graphene in circularly polarized light, and the non-Hermitian skin effect
+   :width: 100%
+
+Install
+-------
 
 To use **tbkit**:
 
