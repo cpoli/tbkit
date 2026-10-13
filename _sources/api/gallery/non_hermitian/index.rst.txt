@@ -100,6 +100,23 @@ number of a line-gapped band.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="In a non-Hermitian chain with the skin effect, the open-chain eigenstates are not Bloch waves \beta^n with |\beta| = |e^{ik}| = 1, but decay as |\beta|^n with |\beta| \neq 1. Yao and Wang (2018) put the open-chain bands on a generalized Brillouin zone (GBZ), the loop in the complex \beta plane on which H(\beta) = \sum_n t(n)\beta^n reproduces them, and Yokomizo and Murakami (2019) showed how to construct it for any 1D model: sort the roots of \det[H(\beta) - E] = 0 by modulus; E belongs to the open-chain spectrum when the middle two have equal moduli.">
+
+.. only:: html
+
+  .. image:: /api/gallery/non_hermitian/images/thumb/sphx_glr_plot_generalized_brillouin_zone_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/non_hermitian/plot_generalized_brillouin_zone`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Generalized Brillouin Zone and Non-Bloch Band Theory</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="A lattice with balanced gain and loss -- imaginary onsite energies \pm i\gamma on the two sublattices -- has a non-Hermitian Hamiltonian, but it commutes with the combined parity-time operation \mathcal{PT}. Bender and Boettcher&#x27;s 1998 observation was that such a Hamiltonian can still have an entirely real spectrum, up to a threshold in \gamma at which eigenvalues collide pairwise and split into complex-conjugate pairs.">
 
 .. only:: html
@@ -128,7 +145,7 @@ number of a line-gapped band.
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">The Non-Hermitian Skin Effect and the Generalized Brillouin Zone</div>
+      <div class="sphx-glr-thumbnail-title">The Non-Hermitian Skin Effect</div>
     </div>
 
 
@@ -146,6 +163,7 @@ number of a line-gapped band.
    /api/gallery/non_hermitian/plot_exceptional_point_vorticity
    /api/gallery/non_hermitian/plot_exceptional_points_chern_number
    /api/gallery/non_hermitian/plot_exceptional_points_fermi_arcs
+   /api/gallery/non_hermitian/plot_generalized_brillouin_zone
    /api/gallery/non_hermitian/plot_pt_symmetry
    /api/gallery/non_hermitian/plot_skin_effect
 

@@ -6,7 +6,10 @@ Dynamics
 --------
 
 Real-time wavepacket propagation: Bloch oscillations and the
-Wannier-Stark ladder under a uniform lattice tilt.
+Wannier-Stark ladder under a uniform lattice tilt, Landau-Zener
+tunnelling and Zener breakdown between bands, and light in waveguide
+arrays (the directional coupler, discrete diffraction and diffraction
+management).
 
 
 .. raw:: html
@@ -22,7 +25,7 @@ Wannier-Stark ladder under a uniform lattice tilt.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="A uniform force on an electron in a periodic lattice does not produce uniform acceleration, the way it would in free space: Bloch&#x27;s 1929 argument (formalized by Wannier in 1960) shows the electron instead oscillates periodically in real space, with period T_B=2\pi/F (in units where \hbar=1). In real crystals scattering happens on a far shorter timescale than T_B, which is why the effect went unobserved for over 60 years -- it took artificial semiconductor superlattices (Waschke et al., 1993), with a far larger effective lattice constant, to see it directly. See /history for the full historical context.">
+    <div class="sphx-glr-thumbcontainer" tooltip="A uniform force on an electron in a periodic lattice does not produce uniform acceleration, the way it would in free space: Bloch&#x27;s 1929 argument (formalized by Wannier in 1960) shows the electron instead oscillates periodically in real space, with period T_B=2\pi/F (in units where \hbar=1). In real crystals scattering happens on a far shorter timescale than T_B, which is why the effect went unobserved for over 60 years -- it took artificial semiconductor superlattices (Waschke et al., 1993), with a far larger effective lattice constant, to see it directly. See /history/driven_breakthroughs for the full historical context.">
 
 .. only:: html
 
@@ -34,6 +37,40 @@ Wannier-Stark ladder under a uniform lattice tilt.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Bloch Oscillations and the Wannier-Stark Ladder</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Light guided by parallel waveguides leaks from one to the next through their evanescent tails. In coupled-mode theory the field amplitudes obey a Tight-Binding Schrödinger equation in which the propagation distance z plays the role of time,">
+
+.. only:: html
+
+  .. image:: /api/gallery/dynamics/images/thumb/sphx_glr_plot_discrete_optics_in_waveguide_arrays_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/dynamics/plot_discrete_optics_in_waveguide_arrays`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Discrete Optics in Waveguide Arrays</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Two levels swept through an avoided crossing,">
+
+.. only:: html
+
+  .. image:: /api/gallery/dynamics/images/thumb/sphx_glr_plot_landau_zener_tunnelling_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/dynamics/plot_landau_zener_tunnelling`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Landau-Zener Tunnelling and Zener Breakdown</div>
     </div>
 
 
@@ -65,5 +102,7 @@ Wannier-Stark ladder under a uniform lattice tilt.
    :hidden:
 
    /api/gallery/dynamics/plot_bloch_oscillations
+   /api/gallery/dynamics/plot_discrete_optics_in_waveguide_arrays
+   /api/gallery/dynamics/plot_landau_zener_tunnelling
    /api/gallery/dynamics/plot_wavepacket_interference
 

@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Breakthroughs in Flat Bands and Interactions &#8212; tbkit 0.6.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../_static/documentation_options.js?v=dda85ae5"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'history/interactions_breakthroughs';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/force_light.js?v=8e7666d6"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Breakthroughs in Driven and Open Systems" href="driven_breakthroughs.html" />
+    <link rel="prev" title="Breakthroughs in Response and Transport" href="response_breakthroughs.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.6" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/tbkit_logo.png" class="logo__image only-light" alt="tbkit logo"/>
+    <img src="../_static/tbkit_logo.png" class="logo__image only-dark pst-js-only" alt="tbkit logo"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models_breakthroughs.html">Breakthroughs in Building and Solving Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fields_breakthroughs.html">Breakthroughs in Fields, Strain and Disorder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topology_breakthroughs.html">Breakthroughs in Band Topology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="response_breakthroughs.html">Breakthroughs in Response and Transport</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">Breakthroughs in Flat Bands and Interactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="driven_breakthroughs.html">Breakthroughs in Driven and Open Systems</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">History</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Breakthroughs in Flat Bands and Interactions</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="breakthroughs-in-flat-bands-and-interactions">
+<h1>Breakthroughs in Flat Bands and Interactions<a class="headerlink" href="#breakthroughs-in-flat-bands-and-interactions" title="Link to this heading">#</a></h1>
+<p>Flat bands from lattice geometry and from a moiré twist, the Hubbard model
+and magnetic order in mean field, and superconductivity from the BCS gap
+equation to Kitaev’s Majorana chain and the nanowires that realize it. It traces the ideas behind
+<a class="reference internal" href="../tbkit.html#module-tbkit.lattices" title="tbkit.lattices"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.lattices</span></code></a>, <a class="reference internal" href="../tbkit.html#module-tbkit.moire" title="tbkit.moire"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.moire</span></code></a>, <a class="reference internal" href="../tbkit.html#module-tbkit.meanfield" title="tbkit.meanfield"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.meanfield</span></code></a> and
+<a class="reference internal" href="../tbkit.html#module-tbkit.bdg" title="tbkit.bdg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.bdg</span></code></a>.</p>
+<nav class="contents local" id="timeline">
+<p class="topic-title">Timeline</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#bcs-theory-and-the-self-consistent-gap-equation" id="id1">1957 – BCS Theory and the Self-Consistent Gap Equation</a></p></li>
+<li><p><a class="reference internal" href="#the-hubbard-model" id="id2">1963 – The Hubbard Model</a></p></li>
+<li><p><a class="reference internal" href="#the-bogoliubov-de-gennes-equations" id="id3">1966 – The Bogoliubov-de Gennes Equations</a></p></li>
+<li><p><a class="reference internal" href="#nagaoka-and-mielke-tasaki-flat-band-ferromagnetism" id="id4">1966/1991-1992 – Nagaoka and Mielke-Tasaki Flat-Band Ferromagnetism</a></p></li>
+<li><p><a class="reference internal" href="#frustration-and-the-120-degree-order-of-the-triangular-antiferromagnet" id="id5">1973/1988 – Frustration and the 120-Degree Order of the Triangular Antiferromagnet</a></p></li>
+<li><p><a class="reference internal" href="#lieb-s-theorem-and-flat-band-lattices" id="id6">1989 – Lieb’s Theorem and Flat-Band Lattices</a></p></li>
+<li><p><a class="reference internal" href="#a-topological-flat-band-on-the-kagome-lattice" id="id7">2000/2011 – A Topological Flat Band on the Kagome Lattice</a></p></li>
+<li><p><a class="reference internal" href="#the-kitaev-chain-and-majorana-zero-modes" id="id8">2001 – The Kitaev Chain and Majorana Zero Modes</a></p></li>
+<li><p><a class="reference internal" href="#magnetism-of-triangular-graphene-nanoislands" id="id9">2007 – Magnetism of Triangular Graphene Nanoislands</a></p></li>
+<li><p><a class="reference internal" href="#majorana-nanowires" id="id10">2010 – Majorana Nanowires</a></p></li>
+<li><p><a class="reference internal" href="#magic-angle-twisted-bilayer-graphene" id="id11">2011/2018 – Magic-Angle Twisted Bilayer Graphene</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id12">See Also</a></p></li>
+</ul>
+</nav>
+<section id="bcs-theory-and-the-self-consistent-gap-equation">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">1957 – BCS Theory and the Self-Consistent Gap Equation</a><a class="headerlink" href="#bcs-theory-and-the-self-consistent-gap-equation" title="Link to this heading">#</a></h2>
+<p>J. Bardeen, L. N. Cooper and J. R. Schrieffer explained superconductivity
+by a condensate of Cooper pairs, whose gap solves a self-consistent <em>gap
+equation</em>, <span class="math notranslate nohighlight">\(1 = \frac{V}{N}\sum_{\mathbf{k}}\tanh(E_{\mathbf{k}}/2T)/2E_{\mathbf{k}}\)</span>.
+At weak coupling its solution is universal: <span class="math notranslate nohighlight">\(\Delta(T)\)</span> vanishes
+as <span class="math notranslate nohighlight">\(\sqrt{1-T/T_c}\)</span> at <span class="math notranslate nohighlight">\(T_c\)</span>, with <span class="math notranslate nohighlight">\(\Delta(0) =
+1.764\,k_BT_c\)</span> for every material. In real space (de Gennes, 1966,
+below) it becomes the self-consistency of the gap site by site,
+<span class="math notranslate nohighlight">\(\Delta_i = V\langle c_{i\downarrow}c_{i\uparrow}\rangle\)</span>.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.bdg.s_wave_gap" title="tbkit.bdg.s_wave_gap"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.bdg.s_wave_gap()</span></code></a> (real-space s-wave gap
+equation, uniform or site-dependent attraction, any temperature).</p>
+<p><em>References:</em> J. Bardeen, L. N. Cooper, and J. R. Schrieffer, “Theory of
+Superconductivity,” Phys. Rev. 108, 1175-1204 (1957).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/superconductivity/plot_bcs_gap_equation.py</span></code>
+confirms, on a clean <span class="math notranslate nohighlight">\(12\times12\)</span> torus, a uniform real-space gap
+equal to the k-space BCS solution at every temperature, a <span class="math notranslate nohighlight">\(T_c\)</span>
+(from the linear vanishing of <span class="math notranslate nohighlight">\(\Delta^2\)</span>) within 1% of the
+linearized gap equation, <span class="math notranslate nohighlight">\(\Delta(0)/T_c = 1.764\)</span> to 2%, and the
+proximity effect of a half-superconducting chain.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="J. Bardeen, L. Cooper and J. R. Schrieffer (1957) explained superconductivity by the pairing of electrons with opposite momenta and spins into a condensate, whose gap \Delta solves the self-consistent gap equation"><img alt="" src="../_images/sphx_glr_plot_bcs_gap_equation_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/superconductivity/plot_bcs_gap_equation.html"><span class="doc">The BCS Gap Equation: Delta(T) and the Universal Ratio Delta(0)/T_c = 1.764</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The BCS Gap Equation: Delta(T) and the Universal Ratio Delta(0)/T_c = 1.764</div>
+</div></div></section>
+<section id="the-hubbard-model">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">1963 – The Hubbard Model</a><a class="headerlink" href="#the-hubbard-model" title="Link to this heading">#</a></h2>
+<p>J. Hubbard – with M. Gutzwiller and J. Kanamori, the same year –
+reduced interacting electrons in narrow bands to their bare bones:
+hopping between neighbouring sites, and a repulsion <span class="math notranslate nohighlight">\(U\)</span> between
+two electrons on the same site,</p>
+<div class="math notranslate nohighlight">
+\[H = \sum_{\langle ij\rangle\sigma} t\,c^\dagger_{i\sigma}c_{j\sigma}
+    + U\sum_i n_{i\uparrow}n_{i\downarrow}\, .\]</div>
+<p>It is the reference model of itinerant magnetism and of the Mott
+insulator, and, doped, a candidate model of high-temperature
+superconductivity. Its simplest approximation lets each spin move in the
+mean density of the other (unrestricted Hartree-Fock). On graphene
+flakes it predicts magnetic zigzag edges, each edge ferromagnetic and
+neighbouring edges opposite (Fujita et al. 1996; Son, Cohen and Louie
+2006).</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.meanfield.hubbard_mean_field" title="tbkit.meanfield.hubbard_mean_field"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.meanfield.hubbard_mean_field()</span></code></a>, the
+self-consistent collinear mean field of any <em>System</em> Hamiltonian, at zero
+or finite temperature.</p>
+<p><em>References:</em> J. Hubbard, “Electron Correlations in Narrow Energy Bands,”
+Proc. R. Soc. Lond. A 276, 238-257 (1963); M. C. Gutzwiller, Phys. Rev.
+Lett. 10, 159 (1963); J. Kanamori, Prog. Theor. Phys. 30, 275 (1963);
+M. Fujita, K. Wakabayashi, K. Nakada, and K. Kusakabe, J. Phys. Soc.
+Jpn. 65, 1920 (1996).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/correlations/plot_hubbard_edge_magnetism.py</span></code>
+confirms that a 216-site zigzag hexagon at <span class="math notranslate nohighlight">\(U = 2|t|\)</span> has every
+outer edge atom magnetized, up on one sublattice and down on the other,
+with a total <span class="math notranslate nohighlight">\(S_z = 0\)</span>; and that a finite flake needs <span class="math notranslate nohighlight">\(U\)</span> above
+a threshold that shrinks as its edges get longer.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="J. Hubbard (1963) -- together with Gutzwiller and Kanamori, the same year -- reduced the problem of interacting electrons in narrow bands to its bare bones: hopping between neighbouring sites, and a repulsion U between two electrons on the same site,"><img alt="" src="../_images/sphx_glr_plot_hubbard_edge_magnetism_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/correlations/plot_hubbard_edge_magnetism.html"><span class="doc">The Hubbard Model: Magnetism of Graphene’s Zigzag Edges</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Hubbard Model: Magnetism of Graphene's Zigzag Edges</div>
+</div></div></section>
+<section id="the-bogoliubov-de-gennes-equations">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">1966 – The Bogoliubov-de Gennes Equations</a><a class="headerlink" href="#the-bogoliubov-de-gennes-equations" title="Link to this heading">#</a></h2>
+<p>N. N. Bogoliubov (1958) diagonalized the BCS Hamiltonian with
+quasiparticles that are part electron, part hole. P.-G. de Gennes
+(1966) wrote the same mean field site by site: a quasiparticle is a
+two-component wave function <span class="math notranslate nohighlight">\((u_i, v_i)\)</span> solving</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{pmatrix} h - \mu &amp; \Delta \\ \Delta^\dagger &amp; -(h - \mu)^T\end{pmatrix}
+\begin{pmatrix} u \\ v\end{pmatrix} = E\begin{pmatrix} u \\ v\end{pmatrix}\, ,\end{split}\]</div>
+<p>with a spectrum symmetric about zero (particle-hole symmetry) and a
+pairing potential <span class="math notranslate nohighlight">\(\Delta_i\)</span> free to vary in space. On a clean
+lattice it gives back <span class="math notranslate nohighlight">\(E_{\mathbf{k}} = \pm\sqrt{\xi_{\mathbf{k}}^2 +
+|\Delta|^2}\)</span>; its reach is everything else – vortices, interfaces,
+disorder, the proximity effect, and junctions. In a normal region between
+two superconductors an electron is Andreev-reflected as a hole at each
+interface (A. F. Andreev, 1964), and the round trips quantize into
+<em>Andreev bound states</em> inside the gap (de Gennes and Saint-James, 1963);
+with no normal region and a phase difference <span class="math notranslate nohighlight">\(\varphi\)</span>, one bound
+state sits at <span class="math notranslate nohighlight">\(\Delta|\cos(\varphi/2)|\)</span> (Kulik and Omelyanchuk,
+1977) and carries the Josephson current. The same equations, with
+self-consistency, give the real-space gap equation of the BCS entry
+above, and, with p-wave pairing, the Majorana modes below.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.bdg.bdg_ham" title="tbkit.bdg.bdg_ham"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.bdg.bdg_ham()</span></code></a> (real-space BdG matrix of any
+Hamiltonian and pairing), <a class="reference internal" href="../tbkit.html#tbkit.bdg.pairing_s_wave" title="tbkit.bdg.pairing_s_wave"><code class="xref py py-func docutils literal notranslate"><span class="pre">pairing_s_wave()</span></code></a> and
+<a class="reference internal" href="../tbkit.html#tbkit.bdg.pairing_bonds" title="tbkit.bdg.pairing_bonds"><code class="xref py py-func docutils literal notranslate"><span class="pre">pairing_bonds()</span></code></a>, <a class="reference internal" href="../tbkit.html#tbkit.bdg.particle_hole" title="tbkit.bdg.particle_hole"><code class="xref py py-func docutils literal notranslate"><span class="pre">particle_hole()</span></code></a> (the
+symmetry <span class="math notranslate nohighlight">\(\tau_x\mathcal{K}\)</span>), and <a class="reference internal" href="../tbkit.html#tbkit.bdg.bdg_kspace" title="tbkit.bdg.bdg_kspace"><code class="xref py py-func docutils literal notranslate"><span class="pre">bdg_kspace()</span></code></a> for
+the Bloch form.</p>
+<p><em>References:</em> N. N. Bogoliubov, “On a new method in the theory of
+superconductivity,” Nuovo Cimento 7, 794-805 (1958); P.-G. de Gennes,
+<em>Superconductivity of Metals and Alloys</em> (Benjamin, 1966); P.-G. de
+Gennes and D. Saint-James, “Elementary excitations in the vicinity of a
+normal metal-superconducting metal contact,” Phys. Lett. 4, 151-152
+(1963); A. F. Andreev, Sov. Phys. JETP 19, 1228-1231 (1964); I. O. Kulik
+and A. N. Omel’yanchuk, Sov. J. Low Temp. Phys. 3, 459 (1977).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/superconductivity/plot_bogoliubov_de_gennes_equations.py</span></code>
+confirms the BCS spectrum <span class="math notranslate nohighlight">\(\pm\sqrt{\xi_k^2+\Delta^2}\)</span> and the
+particle-hole symmetry of an s-wave ring, an Andreev level within 2% of
+<span class="math notranslate nohighlight">\(\Delta|\cos(\varphi/2)|\)</span> at a phase jump between two 200-site
+superconductors, and subgap de Gennes-Saint-James states that multiply,
+and sink towards zero energy, as a normal region grows from 0 to 200
+sites.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="P.-G. de Gennes (1966) wrote the BCS mean field site by site: a quasiparticle is a two-component wave function (u_i, v_i), an electron and a hole, solving"><img alt="" src="../_images/sphx_glr_plot_bogoliubov_de_gennes_equations_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/superconductivity/plot_bogoliubov_de_gennes_equations.html"><span class="doc">The Bogoliubov-de Gennes Equations: Andreev Bound States</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Bogoliubov-de Gennes Equations: Andreev Bound States</div>
+</div></div></section>
+<section id="nagaoka-and-mielke-tasaki-flat-band-ferromagnetism">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">1966/1991-1992 – Nagaoka and Mielke-Tasaki Flat-Band Ferromagnetism</a><a class="headerlink" href="#nagaoka-and-mielke-tasaki-flat-band-ferromagnetism" title="Link to this heading">#</a></h2>
+<p>Can the Hubbard repulsion alone make a ferromagnet? Aligned spins never
+share a site, but aligning them costs kinetic energy, and mean-field
+(Stoner) arguments are unreliable. Y. Nagaoka (1966) gave the first
+rigorous case: at <span class="math notranslate nohighlight">\(U = \infty\)</span>, with exactly one electron fewer
+than sites, the ground state is the saturated ferromagnet, which lets
+the hole move most freely. A. Mielke (1991-1992) found a second one at
+<em>finite</em> <span class="math notranslate nohighlight">\(U\)</span>: on line graphs such as the kagome lattice the lowest
+band is exactly flat, and filled with electrons of one spin it costs no
+kinetic energy over any other filling and no interaction energy at all
+– a ferromagnetic ground state for every <span class="math notranslate nohighlight">\(U &gt; 0\)</span>, unique when the
+band is exactly filled. H. Tasaki (1992) built a family of decorated
+lattices with the same property, and later (1995) proved that the
+ferromagnet survives when the flat band is bent into a nearly flat one,
+provided <span class="math notranslate nohighlight">\(U\)</span> is large compared with its width. Flat bands have been
+the main route to itinerant ferromagnetism in lattice models since,
+and Lieb’s ferrimagnet (1989, below) is their bipartite cousin.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.lattices.kagome" title="tbkit.lattices.kagome"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.lattices.kagome()</span></code></a> on a torus
+(<a class="reference internal" href="../tbkit.html#tbkit.system.System" title="tbkit.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">System</span></code></a> with <code class="docutils literal notranslate"><span class="pre">periodic=True</span></code>) and
+<a class="reference internal" href="../tbkit.html#tbkit.meanfield.hubbard_mean_field" title="tbkit.meanfield.hubbard_mean_field"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.meanfield.hubbard_mean_field()</span></code></a>, started from a saturated or a
+paramagnetic density.</p>
+<p><em>References:</em> Y. Nagaoka, “Ferromagnetism in a Narrow, Almost Half-Filled
+s Band,” Phys. Rev. 147, 392-405 (1966); A. Mielke, “Ferromagnetic ground
+states for the Hubbard model on line graphs,” J. Phys. A 24, L73-L77
+(1991); A. Mielke, “Exact ground states for the Hubbard model on the
+Kagome lattice,” J. Phys. A 25, 4335-4345 (1992); H. Tasaki,
+“Ferromagnetism in the Hubbard models with degenerate single-electron
+ground states,” Phys. Rev. Lett. 69, 1608-1611 (1992); H. Tasaki,
+“Ferromagnetism in Hubbard Models,” Phys. Rev. Lett. 75, 4678-4681
+(1995).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/correlations/plot_flat_band_ferromagnetism.py</span></code>
+confirms, by exact diagonalization of square clusters with one hole,
+the saturated ferromagnet above <span class="math notranslate nohighlight">\(U_c = 18.58|t|\)</span> (4 sites) and
+<span class="math notranslate nohighlight">\(51.8|t|\)</span> (6 sites) and at <span class="math notranslate nohighlight">\(U = 1000|t|\)</span> on 9 sites; on a
+48-site kagome torus, a mean-field ground state of spin 17/2 and energy
+<span class="math notranslate nohighlight">\(-2t\)</span> per electron for every <span class="math notranslate nohighlight">\(U\)</span> down to <span class="math notranslate nohighlight">\(0.01t\)</span>; and,
+with a second-neighbour hopping, a threshold proportional to the width
+of the band, <span class="math notranslate nohighlight">\(U_c \approx 3.46\,W\)</span>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Itinerant ferromagnetism is hard to get from the Hubbard model: the repulsion U favours aligned spins, which cannot share a site, but aligning them costs kinetic energy. Three exact results say when the spins align fully anyway."><img alt="" src="../_images/sphx_glr_plot_flat_band_ferromagnetism_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/correlations/plot_flat_band_ferromagnetism.html"><span class="doc">Flat-Band Ferromagnetism: Nagaoka, Mielke and Tasaki</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Flat-Band Ferromagnetism: Nagaoka, Mielke and Tasaki</div>
+</div></div></section>
+<section id="frustration-and-the-120-degree-order-of-the-triangular-antiferromagnet">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">1973/1988 – Frustration and the 120-Degree Order of the Triangular Antiferromagnet</a><a class="headerlink" href="#frustration-and-the-120-degree-order-of-the-triangular-antiferromagnet" title="Link to this heading">#</a></h2>
+<p>On a triangle, three antiparallel spins cannot all be satisfied. G.
+Wannier (1950) showed that the Ising triangular antiferromagnet never
+orders; P. W. Anderson (1973) proposed that the quantum Heisenberg one is
+a resonating-valence-bond spin liquid; D. A. Huse and V. Elser (1988), and
+later numerical work, found that it orders after all, <em>non-collinearly</em>:
+the moments of the three sublattices point 120 degrees apart, with zero
+total moment. Frustration has remained the main route to spin liquids,
+and the half-filled triangular Hubbard model its simplest itinerant
+version.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.meanfield.hubbard_mean_field_noncollinear" title="tbkit.meanfield.hubbard_mean_field_noncollinear"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.meanfield.hubbard_mean_field_noncollinear()</span></code></a>
+(spin-rotation invariant Hartree-Fock: the whole onsite spin density
+matrix, moments in any direction, spin-orbit Hamiltonians accepted; with
+moments along <span class="math notranslate nohighlight">\(z\)</span> it reduces to
+<a class="reference internal" href="../tbkit.html#tbkit.meanfield.hubbard_mean_field" title="tbkit.meanfield.hubbard_mean_field"><code class="xref py py-func docutils literal notranslate"><span class="pre">hubbard_mean_field()</span></code></a>).</p>
+<p><em>References:</em> G. H. Wannier, Phys. Rev. 79, 357 (1950); P. W. Anderson,
+“Resonating valence bonds: A new kind of insulator?,” Mater. Res. Bull. 8,
+153-160 (1973); D. A. Huse and V. Elser, Phys. Rev. Lett. 60, 2531
+(1988); H. R. Krishnamurthy, C. Jayaprakash, S. Sarker, and W. Wenzel,
+Phys. Rev. Lett. 64, 950 (1990).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/correlations/plot_noncollinear_120_degree_order.py</span></code>
+confirms the 120-degree state from random starts (neighbouring moments at
+<span class="math notranslate nohighlight">\(\cos = -1/2\)</span>, zero total moment, coplanar), below the collinear
+up-up-down state, and the Heisenberg limit <span class="math notranslate nohighlight">\(-1.5\,t^2/U\)</span> (versus
+<span class="math notranslate nohighlight">\(-\frac43t^2/U\)</span>) per bond at <span class="math notranslate nohighlight">\(U = 40t\)</span>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="On a triangle, three antiparallel spins cannot all be satisfied: the antiferromagnet is frustrated. G. Wannier (1950) found that the Ising triangular antiferromagnet never orders; P. W. Anderson (1973) proposed that the quantum Heisenberg one is a spin liquid; the answer, settled numerically in the late 1980s (Huse and Elser 1988), is a compromise: the spins order non-collinearly, at 120 degrees from each other on the three sublattices, with zero total moment."><img alt="" src="../_images/sphx_glr_plot_noncollinear_120_degree_order_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/correlations/plot_noncollinear_120_degree_order.html"><span class="doc">Frustrated Magnetism: the 120-Degree Order of the Triangular Hubbard Model</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Frustrated Magnetism: the 120-Degree Order of the Triangular Hubbard Model</div>
+</div></div></section>
+<section id="lieb-s-theorem-and-flat-band-lattices">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">1989 – Lieb’s Theorem and Flat-Band Lattices</a><a class="headerlink" href="#lieb-s-theorem-and-flat-band-lattices" title="Link to this heading">#</a></h2>
+<p>E. Lieb proved one of the few rigorous, non-perturbative results
+about the many-body Hubbard problem: on a bipartite lattice with unequal
+numbers of sites on its two sublattices <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>, the
+half-filled ground state has total spin exactly
+<span class="math notranslate nohighlight">\(S = \bigl||A|-|B|\bigr|/2\)</span>, for <em>any</em> repulsion <span class="math notranslate nohighlight">\(U&gt;0\)</span> –
+ferrimagnetic order, with a net moment, derived without approximation.
+The lattice Lieb used to prove it – a square lattice with an extra site
+at the midpoint of every bond, so three sites per unit cell split two-to-one
+between the sublattices – turns out to have an exactly flat (dispersionless) single-particle
+band already at the <em>noninteracting</em> level, from destructive interference
+confining an eigenstate to a single 4-site plaquette with zero amplitude
+everywhere else; the kagome lattice shares the same flat-band mechanism
+on a different geometry. A flat band’s macroscopic, noninteracting
+degeneracy is exactly the extreme limit in which arbitrarily weak
+interactions dominate – the underlying reason flat-band lattices remain
+an active route to engineered strong correlation and (on kagome, with
+further ingredients) topological flat-band physics.</p>
+<p>Both lattices owe their flat band to the same thing – a unit cell with
+more sites than the number of independent ways an electron can leave it:</p>
+<figure class="align-default">
+<img alt="../_images/interactions_breakthroughs-1.png" class="plot-directive" src="../_images/interactions_breakthroughs-1.png" />
+</figure>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.lattices.lieb" title="tbkit.lattices.lieb"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.lattices.lieb()</span></code></a> and <a class="reference internal" href="../tbkit.html#tbkit.lattices.kagome" title="tbkit.lattices.kagome"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.lattices.kagome()</span></code></a>
+provide both lattices’ unit cells directly, ready for
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">KSpace</span></code></a>; <a class="reference internal" href="../tbkit.html#tbkit.meanfield.hubbard_mean_field" title="tbkit.meanfield.hubbard_mean_field"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.meanfield.hubbard_mean_field()</span></code></a>
+solves the Hubbard model in mean field, whose lowest-energy solution
+obeys Lieb’s spin count.</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/correlations/plot_lieb_theorem.py</span></code> confirms that
+the flat band of the Lieb lattice lives on the <span class="math notranslate nohighlight">\(B\)</span> sites, and the
+ferrimagnetic ground state, <span class="math notranslate nohighlight">\(S = ||A|-|B||/2\)</span> with opposite moments
+on the two sublattices, on tori and open flakes of two sizes at two
+values of <span class="math notranslate nohighlight">\(U\)</span>.</p>
+<p><em>References:</em> E. H. Lieb, “Two Theorems on the Hubbard Model,” Phys.
+Rev. Lett. 62, 1201-1204 (1989).</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="E. Lieb proved in 1989 one of the few exact results on the Hubbard model: on a bipartite lattice at half filling, for any repulsion U &gt; 0, the ground state has total spin"><img alt="" src="../_images/sphx_glr_plot_lieb_theorem_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/correlations/plot_lieb_theorem.html"><span class="doc">Lieb’s Theorem: The Ferrimagnet of the Lieb Lattice</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Lieb's Theorem: The Ferrimagnet of the Lieb Lattice</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Some lattice geometries host a perfectly flat (dispersionless) band with uniform nearest-neighbor hopping alone -- destructive interference confines an eigenstate to a small loop of sites (a single hexagon on kagome, a single &quot;plus sign&quot; of four sites on Lieb) with exactly zero amplitude everywhere else, for every Bloch momentum simultaneously. A flat band&#x27;s macroscopic degeneracy is the natural home for strong-correlation physics: Lieb&#x27;s theorem guarantees the half-filled Hubbard model on a bipartite lattice with an unequal number of sites per sublattice (as Lieb&#x27;s own lattice has, 2 vs 1) is a ferromagnet, for any nonzero repulsion U -- one of the very few rigorous, non-perturbative results in the many-body problem. tbkit.lattices provides both lattices ready-made."><img alt="" src="../_images/sphx_glr_plot_flat_bands_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/flat_bands/plot_flat_bands.html"><span class="doc">Flat-Band Lattices: Kagome and Lieb</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Flat-Band Lattices: Kagome and Lieb</div>
+</div></div></section>
+<section id="a-topological-flat-band-on-the-kagome-lattice">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">2000/2011 – A Topological Flat Band on the Kagome Lattice</a><a class="headerlink" href="#a-topological-flat-band-on-the-kagome-lattice" title="Link to this heading">#</a></h2>
+<p>K. Ohgushi, S. Murakami, and N. Nagaosa showed in 2000 that
+a canted (non-coplanar) magnetic texture on the kagome lattice, via the
+scalar spin chirality its itinerant electrons pick up hopping around
+each elementary triangle, acts on those electrons exactly like a
+complex nearest-neighbor hopping amplitude <span class="math notranslate nohighlight">\(te^{i\phi}\)</span> –
+breaking time-reversal symmetry with no net magnetic field, the kagome
+counterpart of Haldane’s honeycomb construction above. That complex
+phase gaps the flat band’s symmetry-protected touching point with the
+lattice’s middle band (above), leaving the (no longer exactly flat)
+lower band a genuine Chern insulator. Eleven years later, three
+independent 2011 papers (Tang, Mei, and Wen; Sun, Gu, Katsura, and Das
+Sarma; Neupert, Santos, Chamon, and Mudry) generalized the same idea
+into a broader research program: engineer lattice models whose lowest
+band is simultaneously <em>nearly flat</em> and topologically nontrivial, as a
+route to fractional-quantum-Hall-like physics – a fractional Chern
+insulator – entirely without Landau levels or a net magnetic field.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.lattices.kagome" title="tbkit.lattices.kagome"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.lattices.kagome()</span></code></a> with every nearest-neighbor
+hopping set to the same complex amplitude <span class="math notranslate nohighlight">\(te^{i\phi}\)</span> (rather
+than the real, uniform <span class="math notranslate nohighlight">\(t\)</span> used above) via
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.set_hopping" title="tbkit.kspace.KSpace.set_hopping"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.set_hopping()</span></code></a>; <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.chern_number" title="tbkit.kspace.KSpace.chern_number"><code class="xref py py-meth docutils literal notranslate"><span class="pre">chern_number()</span></code></a>
+and <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.berry_curvature" title="tbkit.kspace.KSpace.berry_curvature"><code class="xref py py-meth docutils literal notranslate"><span class="pre">berry_curvature()</span></code></a> (1982 above) diagnose the
+resulting band’s topology exactly as for the Haldane model.</p>
+<p><em>References:</em> K. Ohgushi, S. Murakami, and N. Nagaosa, “Spin Anisotropy
+and Quantum Hall Effect in the Kagome Lattice: Chiral Spin State Based
+on a Ferromagnet,” Phys. Rev. B 62, R6065-R6068 (2000); E. Tang, J.-W.
+Mei, and X.-G. Wen, “High-Temperature Fractional Quantum Hall States,”
+Phys. Rev. Lett. 106, 236802 (2011); K. Sun, Z. Gu, H. Katsura, and S.
+Das Sarma, “Nearly Flatbands with Nontrivial Topology,” Phys. Rev. Lett.
+106, 236803 (2011); T. Neupert, L. Santos, C. Chamon, and C. Mudry,
+“Fractional Quantum Hall States at Zero Magnetic Field,” Phys. Rev.
+Lett. 106, 236804 (2011).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_kagome_chern_band.py</span></code> confirms the
+flat band and middle band are exactly degenerate at <span class="math notranslate nohighlight">\(\Gamma\)</span> when
+<span class="math notranslate nohighlight">\(\phi=0\)</span>, confirms a real gap (larger than 0.3t) opens across the
+whole Brillouin zone once <span class="math notranslate nohighlight">\(\phi\ne0\)</span>, and confirms the resulting
+three bands’ Chern numbers are exactly <span class="math notranslate nohighlight">\(-1, 0, +1\)</span> – summing to
+zero, as they must.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The kagome lattice&#x27;s flat band (see /api/gallery/flat_bands/plot_flat_bands) isn&#x27;t isolated: at zero field it touches the middle dispersive band exactly at \Gamma (a symmetry-protected degeneracy, both at E=-2t). Making the nearest-neighbor hopping complex -- the same phase t e^{i\phi} on every bond, regardless of which of the lattice&#x27;s two triangle orientations it belongs to -- breaks the mirror symmetries protecting that degeneracy (while leaving the threefold rotation intact) and opens a genuine gap across the whole Brillouin zone. The resulting lower band is no longer exactly flat, but it stays topologically nontrivial: a Chern insulator with no net magnetic field, built entirely from a real, physically motivated mechanism -- the scalar spin chirality of a canted magnetic texture on the kagome lattice acts, for the itinerant electrons, exactly like this complex hopping (Ohgushi, Murakami, and Nagaosa, 2000)."><img alt="" src="../_images/sphx_glr_plot_kagome_chern_band_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_kagome_chern_band.html"><span class="doc">A Topological Flat Band on the Kagome Lattice</span></a></p>
+  <div class="sphx-glr-thumbnail-title">A Topological Flat Band on the Kagome Lattice</div>
+</div></div></section>
+<section id="the-kitaev-chain-and-majorana-zero-modes">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">2001 – The Kitaev Chain and Majorana Zero Modes</a><a class="headerlink" href="#the-kitaev-chain-and-majorana-zero-modes" title="Link to this heading">#</a></h2>
+<p>A. Kitaev wrote down the simplest topological superconductor: spinless
+fermions on a chain, with nearest-neighbour hopping and p-wave pairing.
+In the Bogoliubov-de Gennes description its spectrum is
+<span class="math notranslate nohighlight">\(\pm\sqrt{(2t\cos k - \mu)^2 + 4|\Delta|^2\sin^2k}\)</span>; for
+<span class="math notranslate nohighlight">\(|\mu| &lt; 2|t|\)</span> it is topological, and an open chain binds a
+<em>Majorana</em> zero mode at each end – half a fermion, pinned at zero energy
+by particle-hole symmetry. Its realization in nanowires is the 2010
+entry below.</p>
+<p>Kitaev’s bulk invariant is the <em>Majorana number</em>
+<span class="math notranslate nohighlight">\(\mathcal{M} = \mathrm{sign}[\mathrm{Pf}A(0)\,\mathrm{Pf}A(\pi)]\)</span>, from the
+Pfaffians of the Hamiltonian written in Majorana operators at the two
+time-reversal-invariant momenta: <span class="math notranslate nohighlight">\(-1\)</span> when the chain is topological.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#module-tbkit.bdg" title="tbkit.bdg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.bdg</span></code></a> – the real-space BdG Hamiltonian
+(<a class="reference internal" href="../tbkit.html#tbkit.bdg.bdg_ham" title="tbkit.bdg.bdg_ham"><code class="xref py py-func docutils literal notranslate"><span class="pre">bdg_ham()</span></code></a>, with bond or s-wave pairings), and the BdG
+Bloch Hamiltonian (<a class="reference internal" href="../tbkit.html#tbkit.bdg.bdg_kspace" title="tbkit.bdg.bdg_kspace"><code class="xref py py-func docutils literal notranslate"><span class="pre">bdg_kspace()</span></code></a>), whose Berry phase,
+open chains and symmetry class follow from the usual <strong>KSpace</strong> tools;
+<a class="reference internal" href="../tbkit.html#tbkit.bdg.majorana_number" title="tbkit.bdg.majorana_number"><code class="xref py py-func docutils literal notranslate"><span class="pre">majorana_number()</span></code></a> (with <a class="reference internal" href="../tbkit.html#tbkit.bdg.pfaffian" title="tbkit.bdg.pfaffian"><code class="xref py py-func docutils literal notranslate"><span class="pre">pfaffian()</span></code></a>) gives
+the Majorana number, and the parity of the Chern number in 2D.</p>
+<p><em>References:</em> A. Y. Kitaev, “Unpaired Majorana Fermions in Quantum
+Wires,” Physics-Uspekhi 44, 131-136 (2001).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/superconductivity/plot_kitaev_chain.py</span></code> confirms
+the bulk spectrum, the Berry phase <span class="math notranslate nohighlight">\(\pi\)</span> and the Majorana number
+<span class="math notranslate nohighlight">\(-1\)</span> for <span class="math notranslate nohighlight">\(|\mu| &lt; 2|t|\)</span> (0 and <span class="math notranslate nohighlight">\(+1\)</span> outside), and two zero modes (<span class="math notranslate nohighlight">\(|E| \sim 10^{-12}\)</span>) at the ends of
+an open 40-site chain in the topological phase only.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A. Kitaev (2001) wrote down the simplest topological superconductor: a chain of spinless fermions with nearest-neighbour hopping t and p-wave pairing \Delta,"><img alt="" src="../_images/sphx_glr_plot_kitaev_chain_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/superconductivity/plot_kitaev_chain.html"><span class="doc">The Kitaev Chain: Majorana Zero Modes</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Kitaev Chain: Majorana Zero Modes</div>
+</div></div></section>
+<section id="magnetism-of-triangular-graphene-nanoislands">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">2007 – Magnetism of Triangular Graphene Nanoislands</a><a class="headerlink" href="#magnetism-of-triangular-graphene-nanoislands" title="Link to this heading">#</a></h2>
+<p>J. Fernández-Rossier and J. J. Palacios asked which graphene flakes are
+magnets, and found the answer in their shape. A triangle with zigzag
+edges has all three edges on the same sublattice, <span class="math notranslate nohighlight">\(A\)</span>, and
+<span class="math notranslate nohighlight">\(N_Z = |A| - |B|\)</span> more <span class="math notranslate nohighlight">\(A\)</span> than <span class="math notranslate nohighlight">\(B\)</span> sites; the
+nearest-neighbour Hamiltonian then has <span class="math notranslate nohighlight">\(N_Z\)</span> states at exactly
+zero energy, all on <span class="math notranslate nohighlight">\(A\)</span> and concentrated on the edges. At half
+filling they hold <span class="math notranslate nohighlight">\(N_Z\)</span> electrons, which – like the open shell of
+an atom – align (Hund’s rule): the flake carries a spin
+<span class="math notranslate nohighlight">\(S = N_Z/2\)</span> growing with its size, for <em>any</em> repulsion <span class="math notranslate nohighlight">\(U\)</span>,
+whereas a hexagonal flake (no zero modes) needs <span class="math notranslate nohighlight">\(U\)</span> above a
+threshold. It is Lieb’s theorem (1989) made concrete in a molecule, and
+the first proposal of nanographene magnets. Triangulene, the smallest
+such flake with <span class="math notranslate nohighlight">\(S = 1\)</span>, was synthesized on a surface in 2017,
+and its larger siblings were seen to be magnetic soon after.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.graphene.GrapheneLattice.triangle_zigzag" title="tbkit.graphene.GrapheneLattice.triangle_zigzag"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.graphene.GrapheneLattice.triangle_zigzag()</span></code></a>
+and <a class="reference internal" href="../tbkit.html#tbkit.graphene.GrapheneLattice.hexagon_zigzag" title="tbkit.graphene.GrapheneLattice.hexagon_zigzag"><code class="xref py py-meth docutils literal notranslate"><span class="pre">hexagon_zigzag()</span></code></a> cut the
+flakes; <a class="reference internal" href="../tbkit.html#tbkit.meanfield.hubbard_mean_field" title="tbkit.meanfield.hubbard_mean_field"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.meanfield.hubbard_mean_field()</span></code></a> solves the Hubbard
+model.</p>
+<p><em>References:</em> J. Fernández-Rossier and J. J. Palacios, “Magnetism in
+Graphene Nanoislands,” Phys. Rev. Lett. 99, 177204 (2007); M. Ezawa,
+“Metallic graphene nanodisks: Electronic and magnetic properties,” Phys.
+Rev. B 76, 245415 (2007); N. Pavliček et al., “Synthesis and
+characterization of triangulene,” Nat. Nanotechnol. 12, 308-311 (2017).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/correlations/plot_triangular_graphene_nanoislands.py</span></code>
+confirms <span class="math notranslate nohighlight">\(N_Z = |A|-|B|\)</span> zero modes, all on <span class="math notranslate nohighlight">\(A\)</span>, and a spin
+<span class="math notranslate nohighlight">\(S = N_Z/2\)</span> at <span class="math notranslate nohighlight">\(U = 0.1|t|\)</span> and <span class="math notranslate nohighlight">\(2|t|\)</span> for triangles of
+9 to 81 sites; a moment equal, at <span class="math notranslate nohighlight">\(U = 0.05|t|\)</span>, to half the
+zero-mode density (within 0.005); and a 96-site hexagon with no moment at
+<span class="math notranslate nohighlight">\(U = 0.1|t|\)</span>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="J. Fernández-Rossier and J. J. Palacios (2007) asked which graphene flakes are magnets, and found the answer in their shape. A triangle with zigzag edges has all three edges on the same sublattice, A, and more A than B sites. A bipartite Hamiltonian then has (at least) N_Z = |A| - |B| states at exactly zero energy, all on sublattice A and concentrated on the edges. At half filling they hold N_Z electrons: like the open shell of an atom, they are filled with parallel spins (Hund&#x27;s rule), and the flake carries a spin S = N_Z/2 -- for any repulsion U, however small, while a hexagonal flake needs U above a threshold. This is Lieb&#x27;s theorem made concrete: the moment grows with the size of the triangle. Triangular nanographenes (the &quot;triangulenes&quot;) were synthesized and seen to be magnetic in 2017-2021."><img alt="" src="../_images/sphx_glr_plot_triangular_graphene_nanoislands_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/correlations/plot_triangular_graphene_nanoislands.html"><span class="doc">Magnetism of Triangular Graphene Nanoislands</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Magnetism of Triangular Graphene Nanoislands</div>
+</div></div></section>
+<section id="majorana-nanowires">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">2010 – Majorana Nanowires</a><a class="headerlink" href="#majorana-nanowires" title="Link to this heading">#</a></h2>
+<p>Kitaev’s chain needs spinless fermions with p-wave pairing, which no
+material offers. R. M. Lutchyn, J. D. Sau and S. Das Sarma, and
+independently Y. Oreg, G. Refael and F. von Oppen, built one from
+ordinary parts: a semiconductor nanowire with strong Rashba spin-orbit
+coupling, a Zeeman field <span class="math notranslate nohighlight">\(V_Z\)</span> perpendicular to the spin-orbit
+field, and s-wave pairing <span class="math notranslate nohighlight">\(\Delta\)</span> induced by a nearby
+superconductor. The field leaves a single spin-orbit band at the Fermi
+level, whose inherited pairing is effectively p-wave, and the wire is
+topological once</p>
+<div class="math notranslate nohighlight">
+\[V_Z^2 &gt; \Delta^2 + \mu_0^2\, ,\]</div>
+<p><span class="math notranslate nohighlight">\(\mu_0\)</span> the chemical potential from the band bottom: a Majorana
+zero mode is then bound to each end. The zero-bias conductance peaks
+reported in InSb wires (Mourik et al., 2012) launched an experimental
+search for topological qubits that is still debated – disorder and
+smooth confinement can mimic the signature.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.orbital.OrbitalSystem" title="tbkit.orbital.OrbitalSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.orbital.OrbitalSystem</span></code></a> with
+<code class="docutils literal notranslate"><span class="pre">spin=True</span></code>, <a class="reference internal" href="../tbkit.html#tbkit.orbital.OrbitalSystem.set_rashba" title="tbkit.orbital.OrbitalSystem.set_rashba"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_rashba()</span></code></a> and
+<a class="reference internal" href="../tbkit.html#tbkit.orbital.OrbitalSystem.set_zeeman" title="tbkit.orbital.OrbitalSystem.set_zeeman"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_zeeman()</span></code></a>, made superconducting by
+<a class="reference internal" href="../tbkit.html#tbkit.bdg.bdg_ham" title="tbkit.bdg.bdg_ham"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.bdg.bdg_ham()</span></code></a> with <a class="reference internal" href="../tbkit.html#tbkit.bdg.pairing_s_wave" title="tbkit.bdg.pairing_s_wave"><code class="xref py py-func docutils literal notranslate"><span class="pre">pairing_s_wave()</span></code></a>; the
+periodic wire (a spinful <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">KSpace</span></code></a> through
+<a class="reference internal" href="../tbkit.html#tbkit.bdg.bdg_kspace" title="tbkit.bdg.bdg_kspace"><code class="xref py py-func docutils literal notranslate"><span class="pre">bdg_kspace()</span></code></a>) gives <a class="reference internal" href="../tbkit.html#tbkit.bdg.majorana_number" title="tbkit.bdg.majorana_number"><code class="xref py py-func docutils literal notranslate"><span class="pre">majorana_number()</span></code></a>.</p>
+<p><em>References:</em> R. M. Lutchyn, J. D. Sau, and S. Das Sarma, “Majorana
+Fermions and a Topological Phase Transition in
+Semiconductor-Superconductor Heterostructures,” Phys. Rev. Lett. 105,
+077001 (2010); Y. Oreg, G. Refael, and F. von Oppen, “Helical Liquids
+and Majorana Bound States in Quantum Wires,” Phys. Rev. Lett. 105,
+177002 (2010); V. Mourik et al., “Signatures of Majorana Fermions in
+Hybrid Superconductor-Semiconductor Nanowire Devices,” Science 336,
+1003-1007 (2012).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/superconductivity/plot_majorana_nanowire.py</span></code>
+confirms that the real-space and Bloch wires agree, a Majorana number of
+<span class="math notranslate nohighlight">\(-1\)</span> exactly inside <span class="math notranslate nohighlight">\(V_Z^2 &gt; \Delta^2 + \mu_0^2\)</span> (a 31x31
+grid in the phase diagram), and, with <span class="math notranslate nohighlight">\(\mu\)</span> at the band bottom, a gap that
+closes at <span class="math notranslate nohighlight">\(V_Z = \Delta\)</span> and two states at <span class="math notranslate nohighlight">\(|E| &lt; 10^{-10}\)</span>
+on the outer 20 sites of a 200-site wire beyond it.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Kitaev&#x27;s chain needs spinless fermions with p-wave pairing, which no material offers. In 2010 R. Lutchyn, J. Sau and S. Das Sarma, and independently Y. Oreg, G. Refael and F. von Oppen, built one from ordinary parts: a semiconductor nanowire with strong Rashba spin-orbit coupling \alpha, a Zeeman field V_Z perpendicular to the spin-orbit field, and s-wave pairing \Delta induced by a superconductor nearby,"><img alt="" src="../_images/sphx_glr_plot_majorana_nanowire_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/superconductivity/plot_majorana_nanowire.html"><span class="doc">Majorana Nanowires: Rashba, Zeeman and s-Wave Pairing</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Majorana Nanowires: Rashba, Zeeman and s-Wave Pairing</div>
+</div></div></section>
+<section id="magic-angle-twisted-bilayer-graphene">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">2011/2018 – Magic-Angle Twisted Bilayer Graphene</a><a class="headerlink" href="#magic-angle-twisted-bilayer-graphene" title="Link to this heading">#</a></h2>
+<p>R. Bistritzer and A. H. MacDonald showed that two graphene layers twisted
+by a small angle <span class="math notranslate nohighlight">\(\theta\)</span> form a moiré superlattice whose interlayer
+tunnelling <span class="math notranslate nohighlight">\(w\)</span> renormalizes the Dirac velocity,
+<span class="math notranslate nohighlight">\(v^*/v = (1-3\alpha^2)/(1+6\alpha^2)\)</span> with
+<span class="math notranslate nohighlight">\(\alpha = w/\hbar vk_\theta\)</span>, and flattens the two bands at charge
+neutrality at a series of <em>magic angles</em>, the first near
+<span class="math notranslate nohighlight">\(1.1°\)</span>. In 2018 Y. Cao, P. Jarillo-Herrero and co-workers found,
+in exactly those bands, correlated insulating states and
+superconductivity – the start of “twistronics” and of moiré materials as
+tunable platforms for strong correlations.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.moire.twisted_bilayer" title="tbkit.moire.twisted_bilayer"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.moire.twisted_bilayer()</span></code></a> (commensurate moiré
+cells of honeycomb or square layers, every hopping a function of the bond
+vector, <a class="reference internal" href="../tbkit.html#tbkit.moire.pz_hopping" title="tbkit.moire.pz_hopping"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.moire.pz_hopping()</span></code></a> by default),
+<a class="reference internal" href="../tbkit.html#tbkit.moire.commensurate_angle" title="tbkit.moire.commensurate_angle"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.moire.commensurate_angle()</span></code></a>, and
+<a class="reference internal" href="../tbkit.html#tbkit.moire.magic_angle_parameter" title="tbkit.moire.magic_angle_parameter"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.moire.magic_angle_parameter()</span></code></a> (<span class="math notranslate nohighlight">\(w\)</span>, <span class="math notranslate nohighlight">\(\alpha\)</span>,
+<span class="math notranslate nohighlight">\(v^*/v\)</span> of the same model).</p>
+<p><em>References:</em> R. Bistritzer and A. H. MacDonald, “Moire bands in twisted
+double-layer graphene,” PNAS 108, 12233-12237 (2011); J. M. B. Lopes dos
+Santos, N. M. R. Peres, and A. H. Castro Neto, Phys. Rev. B 86, 155449
+(2012); P. Moon and M. Koshino, Phys. Rev. B 85, 195458 (2012); Y. Cao et
+al., Nature 556, 43-50 and 80-84 (2018).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/moire/plot_magic_angle_twisted_bilayer.py</span></code>
+confirms <span class="math notranslate nohighlight">\(w \approx 110\)</span> meV and a first magic angle near
+<span class="math notranslate nohighlight">\(1.1°\)</span> for the Moon-Koshino hoppings, a tight-binding Dirac velocity
+within 3% of Bistritzer-MacDonald at 9.4°, 6.0° and 4.4°, and – at the
+magic value of <span class="math notranslate nohighlight">\(\alpha\)</span>, reached at 6.0° by scaling the interlayer
+hoppings, since the 1.05° cell (11908 orbitals) is too large for dense
+Bloch matrices – central bands more than 15 times narrower.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Twist two graphene sheets by a small angle \theta and a moiré pattern appears, with a period a/(2\sin\frac\theta2) of a hundred lattice constants. R. Bistritzer and A. H. MacDonald (2011) showed that the interlayer tunnelling w slows the Dirac electrons down,"><img alt="" src="../_images/sphx_glr_plot_magic_angle_twisted_bilayer_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/moire/plot_magic_angle_twisted_bilayer.html"><span class="doc">Magic-Angle Twisted Bilayer Graphene: Flat Moiré Bands</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Magic-Angle Twisted Bilayer Graphene: Flat Moiré Bands</div>
+</div></div></section>
+<section id="see-also">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">See Also</a><a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="index.html"><span class="doc">History</span></a> – the other chapters of this chronology.</p></li>
+<li><p><a class="reference internal" href="../tutorial.html"><span class="doc">Tutorial</span></a> – a narrative walkthrough of the same API.</p></li>
+<li><p><a class="reference internal" href="../tbkit.html"><span class="doc">API</span></a> – the full API reference.</p></li>
+<li><p><a class="reference internal" href="../api/gallery/index.html"><span class="doc">Examples</span></a> – every example, including those not linked above.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="response_breakthroughs.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Breakthroughs in Response and Transport</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="driven_breakthroughs.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Breakthroughs in Driven and Open Systems</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bcs-theory-and-the-self-consistent-gap-equation">1957 – BCS Theory and the Self-Consistent Gap Equation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-hubbard-model">1963 – The Hubbard Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-bogoliubov-de-gennes-equations">1966 – The Bogoliubov-de Gennes Equations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nagaoka-and-mielke-tasaki-flat-band-ferromagnetism">1966/1991-1992 – Nagaoka and Mielke-Tasaki Flat-Band Ferromagnetism</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frustration-and-the-120-degree-order-of-the-triangular-antiferromagnet">1973/1988 – Frustration and the 120-Degree Order of the Triangular Antiferromagnet</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lieb-s-theorem-and-flat-band-lattices">1989 – Lieb’s Theorem and Flat-Band Lattices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-topological-flat-band-on-the-kagome-lattice">2000/2011 – A Topological Flat Band on the Kagome Lattice</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-kitaev-chain-and-majorana-zero-modes">2001 – The Kitaev Chain and Majorana Zero Modes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#magnetism-of-triangular-graphene-nanoislands">2007 – Magnetism of Triangular Graphene Nanoislands</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#majorana-nanowires">2010 – Majorana Nanowires</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#magic-angle-twisted-bilayer-graphene">2011/2018 – Magic-Angle Twisted Bilayer Graphene</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See Also</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/history/interactions_breakthroughs.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2026, Charles Poli.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

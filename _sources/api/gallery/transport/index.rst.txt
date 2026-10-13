@@ -9,7 +9,8 @@ Quantum transport through a finite device attached to semi-infinite
 leads: Landauer's formula, in which the conductance is a transmission
 probability, and the quantized conductance steps of a quantum point
 contact. Leads attached automatically from their geometry, narrow
-contacts on a wide cavity.
+contacts on a wide cavity, and ragged interfaces (a graphene disc
+between zigzag leads) completed with the lead's own sites.
 
 Multi-terminal devices: Landauer-Buttiker conductance matrices and the
 quantized resistances of a Hall bar with its edge channels; bond
@@ -45,6 +46,23 @@ Wiedemann-Franz law, and their breakdown at a resonance.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Automatic Lead Attachment: Narrow Contacts on a Wide Cavity</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="attach_lead couples a lead to the outermost of its cells that the device reaches, and that cell must hold every lead orbital with a hopping into the lead. A device whose edge is ragged relative to the lead, such as a disc under a strip, does not end with such a cell.">
+
+.. only:: html
+
+  .. image:: /api/gallery/transport/images/thumb/sphx_glr_plot_completing_lead_interfaces_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/transport/plot_completing_lead_interfaces`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Completing Lead Interfaces: a Graphene Disc between Zigzag Leads</div>
     </div>
 
 
@@ -161,6 +179,7 @@ Wiedemann-Franz law, and their breakdown at a resonance.
    :hidden:
 
    /api/gallery/transport/plot_automatic_lead_attachment
+   /api/gallery/transport/plot_completing_lead_interfaces
    /api/gallery/transport/plot_hall_bar_edge_channels
    /api/gallery/transport/plot_landauer_conductance
    /api/gallery/transport/plot_recursive_green_function

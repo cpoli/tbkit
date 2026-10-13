@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Breakthroughs in Building and Solving Models &#8212; tbkit 0.6.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../_static/documentation_options.js?v=dda85ae5"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'history/models_breakthroughs';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/force_light.js?v=8e7666d6"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Breakthroughs in Fields, Strain and Disorder" href="fields_breakthroughs.html" />
+    <link rel="prev" title="History" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.6" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/tbkit_logo.png" class="logo__image only-light" alt="tbkit logo"/>
+    <img src="../_static/tbkit_logo.png" class="logo__image only-dark pst-js-only" alt="tbkit logo"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">Breakthroughs in Building and Solving Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fields_breakthroughs.html">Breakthroughs in Fields, Strain and Disorder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topology_breakthroughs.html">Breakthroughs in Band Topology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="response_breakthroughs.html">Breakthroughs in Response and Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interactions_breakthroughs.html">Breakthroughs in Flat Bands and Interactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="driven_breakthroughs.html">Breakthroughs in Driven and Open Systems</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">History</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Breakthroughs in Building and Solving Models</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="breakthroughs-in-building-and-solving-models">
+<h1>Breakthroughs in Building and Solving Models<a class="headerlink" href="#breakthroughs-in-building-and-solving-models" title="Link to this heading">#</a></h1>
+<p>How a crystal becomes a tight-binding model and how that model is solved:
+Bloch’s theorem and the Brillouin zone, Wallace’s graphene bands,
+non-orthogonal bases, the Slater-Koster and k·p frameworks (and the
+fermion doubling of k·p models on a lattice), Wannier functions, edges
+and surfaces, and the numerical methods (k-point grids, tetrahedron
+integration, surface Green’s functions, the kernel polynomial method,
+band unfolding) that make large or multi-orbital models tractable. It
+traces the ideas behind <a class="reference internal" href="../tbkit.html#module-tbkit.kspace" title="tbkit.kspace"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.kspace</span></code></a>, <a class="reference internal" href="../tbkit.html#module-tbkit.slater_koster" title="tbkit.slater_koster"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.slater_koster</span></code></a>,
+<a class="reference internal" href="../tbkit.html#module-tbkit.continuum" title="tbkit.continuum"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.continuum</span></code></a>, <a class="reference internal" href="../tbkit.html#module-tbkit.wannier" title="tbkit.wannier"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.wannier</span></code></a>, <a class="reference internal" href="../tbkit.html#module-tbkit.dos" title="tbkit.dos"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.dos</span></code></a>,
+<a class="reference internal" href="../tbkit.html#module-tbkit.transport" title="tbkit.transport"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.transport</span></code></a>, <a class="reference internal" href="../tbkit.html#module-tbkit.kpm" title="tbkit.kpm"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.kpm</span></code></a> and <a class="reference internal" href="../tbkit.html#module-tbkit.moire" title="tbkit.moire"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.moire</span></code></a>.</p>
+<nav class="contents local" id="timeline">
+<p class="topic-title">Timeline</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#bloch-s-theorem-and-band-theory" id="id1">1928 – Bloch’s Theorem and Band Theory</a></p></li>
+<li><p><a class="reference internal" href="#brillouin-zones-and-standard-high-symmetry-paths" id="id2">1930/2010 – Brillouin Zones and Standard High-Symmetry Paths</a></p></li>
+<li><p><a class="reference internal" href="#wallace-s-tight-binding-prediction-of-graphene" id="id3">1947 – Wallace’s Tight-Binding Prediction of Graphene</a></p></li>
+<li><p><a class="reference internal" href="#lowdin-orthogonalization-and-non-orthogonal-tight-binding" id="id4">1950 – Löwdin Orthogonalization and Non-Orthogonal Tight Binding</a></p></li>
+<li><p><a class="reference internal" href="#the-slater-koster-tight-binding-framework" id="id5">1954 – The Slater-Koster Tight-Binding Framework</a></p></li>
+<li><p><a class="reference internal" href="#the-kp-method-and-effective-mass-theory" id="id6">1955/1957 – The k·p Method and Effective-Mass Theory</a></p></li>
+<li><p><a class="reference internal" href="#the-tetrahedron-method-for-the-density-of-states" id="id7">1971/1972 – The Tetrahedron Method for the Density of States</a></p></li>
+<li><p><a class="reference internal" href="#monkhorst-pack-k-point-grids" id="id8">1976 – Monkhorst-Pack k-Point Grids</a></p></li>
+<li><p><a class="reference internal" href="#fermion-doubling-the-nielsen-ninomiya-theorem" id="id9">1981 – Fermion Doubling: the Nielsen-Ninomiya Theorem</a></p></li>
+<li><p><a class="reference internal" href="#lopez-sancho-decimation-and-the-surface-green-s-function" id="id10">1985 – Lopez Sancho Decimation and the Surface Green’s Function</a></p></li>
+<li><p><a class="reference internal" href="#zigzag-edge-states-of-graphene-ribbons" id="id11">1996 – Zigzag Edge States of Graphene Ribbons</a></p></li>
+<li><p><a class="reference internal" href="#maximally-localized-wannier-functions" id="id12">1997/2008 – Maximally Localized Wannier Functions</a></p></li>
+<li><p><a class="reference internal" href="#disentanglement-of-entangled-bands" id="id13">2001 – Disentanglement of Entangled Bands</a></p></li>
+<li><p><a class="reference internal" href="#isolation-of-graphene" id="id14">2004 – Isolation of Graphene</a></p></li>
+<li><p><a class="reference internal" href="#the-kernel-polynomial-method" id="id15">2006 – The Kernel Polynomial Method</a></p></li>
+<li><p><a class="reference internal" href="#band-unfolding-effective-band-structures-of-supercells" id="id16">2010 – Band Unfolding: Effective Band Structures of Supercells</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id17">See Also</a></p></li>
+</ul>
+</nav>
+<section id="bloch-s-theorem-and-band-theory">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">1928 – Bloch’s Theorem and Band Theory</a><a class="headerlink" href="#bloch-s-theorem-and-band-theory" title="Link to this heading">#</a></h2>
+<p>F. Bloch showed that the eigenstates of a single electron in a
+perfectly periodic crystal potential <span class="math notranslate nohighlight">\(V(\mathbf{r}) = V(\mathbf{r}
++ \mathbf{R})\)</span> take the form</p>
+<div class="math notranslate nohighlight">
+\[\psi_{n\mathbf{k}}(\mathbf{r}) = e^{i\mathbf{k}\cdot\mathbf{r}}\, u_{n\mathbf{k}}(\mathbf{r}),
+\qquad u_{n\mathbf{k}}(\mathbf{r} + \mathbf{R}) = u_{n\mathbf{k}}(\mathbf{r}),\]</div>
+<p>turning the Schrodinger equation for an infinite solid into a <em>finite</em>
+eigenvalue problem <span class="math notranslate nohighlight">\(H(\mathbf{k})u_{n\mathbf{k}} = E_n(\mathbf{k})
+u_{n\mathbf{k}}\)</span> at each crystal momentum <span class="math notranslate nohighlight">\(\mathbf{k}\)</span>, periodic on
+the Brillouin zone torus. This single idea – that a crystal’s electronic
+structure decomposes into bands <span class="math notranslate nohighlight">\(E_n(\mathbf{k})\)</span> – is the
+foundation every model in <strong>tbkit</strong> is built on.</p>
+<p>Everything below starts from the same two ingredients: a <em>unit cell</em> (the
+motif, drawn solid and labelled) and the <em>primitive vectors</em>
+<span class="math notranslate nohighlight">\(\mathbf{a}_i\)</span> that repeat it. The shaded parallelogram is one unit
+cell; every faded site is a copy of a solid one, translated by some
+<span class="math notranslate nohighlight">\(\mathbf{R} = n_1\mathbf{a}_1 + n_2\mathbf{a}_2\)</span>.</p>
+<figure class="align-default">
+<img alt="../_images/models_breakthroughs-1.png" class="plot-directive" src="../_images/models_breakthroughs-1.png" />
+</figure>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace</span></code></a> builds <span class="math notranslate nohighlight">\(H(\mathbf{k})\)</span>
+directly by Bloch-summing real-space hoppings tagged by which
+neighboring unit cell they connect to; <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.get_bands" title="tbkit.kspace.KSpace.get_bands"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_bands()</span></code></a>,
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.k_path" title="tbkit.kspace.KSpace.k_path"><code class="xref py py-meth docutils literal notranslate"><span class="pre">k_path()</span></code></a>, and <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.mesh_bands" title="tbkit.kspace.KSpace.mesh_bands"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mesh_bands()</span></code></a>
+diagonalize it at a point, along a path, or over the whole Brillouin
+zone. <a class="reference internal" href="../tbkit.html#tbkit.kspace.reciprocal_vectors" title="tbkit.kspace.reciprocal_vectors"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.kspace.reciprocal_vectors()</span></code></a> gives the dual lattice
+vectors <span class="math notranslate nohighlight">\(\mathbf{b}_i\)</span> (<span class="math notranslate nohighlight">\(\mathbf{a}_i\cdot\mathbf{b}_j =
+2\pi\delta_{ij}\)</span>) that the Brillouin zone is built from.</p>
+<p><em>References:</em> F. Bloch, “Uber die Quantenmechanik der Elektronen in
+Kristallgittern,” Z. Phys. 52, 555-600 (1929).</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The smallest complete illustration of Bloch&#x27;s theorem: one orbital per unit cell on a square lattice, nearest-neighbor hopping only. With a single orbital the Bloch Hamiltonian H(\mathbf{k}) is a 1\times1 matrix, so &quot;diagonalizing&quot; it is nothing but reading it off, and the whole band structure is one closed-form expression,"><img alt="" src="../_images/sphx_glr_plot_square_lattice_bands_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/tight_binding/plot_square_lattice_bands.html"><span class="doc">The Square Lattice: Bloch’s Theorem in its Simplest Form</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Square Lattice: Bloch's Theorem in its Simplest Form</div>
+</div></div></section>
+<section id="brillouin-zones-and-standard-high-symmetry-paths">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">1930/2010 – Brillouin Zones and Standard High-Symmetry Paths</a><a class="headerlink" href="#brillouin-zones-and-standard-high-symmetry-paths" title="Link to this heading">#</a></h2>
+<p>L. Brillouin (1930) showed where the bands of a nearly free electron
+open their gaps: on the planes <span class="math notranslate nohighlight">\(|\mathbf{k}| = |\mathbf{k} -
+\mathbf{G}|\)</span> where a wave is Bragg-reflected by the reciprocal lattice
+vector <span class="math notranslate nohighlight">\(\mathbf{G}\)</span>. The innermost cell those planes enclose, the
+points closer to <span class="math notranslate nohighlight">\(\Gamma\)</span> than to any other <span class="math notranslate nohighlight">\(\mathbf{G}\)</span>, is
+the first Brillouin zone: the Wigner-Seitz cell of the reciprocal
+lattice, and the domain of every <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> in Bloch’s theorem.
+Its centre, face centres and corners are the points of highest
+symmetry, where bands reach their extrema and become degenerate, so a
+band structure is drawn along a path through them. For decades each
+paper chose its own path. W. Setyawan and S. Curtarolo (2010) fixed one
+standard path per Bravais lattice for high-throughput calculations, the
+path that many codes and databases now draw.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.kspace.high_symmetry_path" title="tbkit.kspace.high_symmetry_path"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.kspace.high_symmetry_path()</span></code></a> recognizes the
+Bravais lattice from <code class="docutils literal notranslate"><span class="pre">lat.prim_vec</span></code>, whatever the choice of primitive
+vectors or the orientation, and returns the standard path and its labels
+for <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.k_path" title="tbkit.kspace.KSpace.k_path"><code class="xref py py-meth docutils literal notranslate"><span class="pre">k_path()</span></code></a> and
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.plot_bands" title="tbkit.kspace.KSpace.plot_bands"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_bands()</span></code></a>: the five 2D lattices, and the
+simple cubic, fcc, bcc, simple tetragonal and hexagonal lattices in 3D.
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.cubic_path" title="tbkit.kspace.cubic_path"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.kspace.cubic_path()</span></code></a> builds any other path of a cubic crystal
+from the tabulated points, in units of <span class="math notranslate nohighlight">\(2\pi/a\)</span> along the cubic
+axes.</p>
+<p><em>References:</em> L. Brillouin, “Les électrons libres dans les métaux et le
+rôle des réflexions de Bragg,” J. Phys. Radium 1, 377-400 (1930); W.
+Setyawan and S. Curtarolo, “High-throughput electronic band structure
+calculations: Challenges and tools,” Comput. Mater. Sci. 49, 299-312
+(2010).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/tight_binding/plot_brillouin_zones_and_high_symmetry_paths.py</span></code>
+checks that every point of the paths of the five 2D lattices lies on the
+boundary of the zone, that two bases and a rotation of the triangular
+lattice give the same <span class="math notranslate nohighlight">\(M\)</span> and <span class="math notranslate nohighlight">\(K\)</span>, and that the s band of
+the fcc and bcc lattices takes its closed-form values at every labelled
+point. <code class="docutils literal notranslate"><span class="pre">cubic_path</span></code> rebuilds the fcc path from its table and follows
+the cube diagonal to <span class="math notranslate nohighlight">\((1,1,1)\,2\pi/a\)</span>, an image of
+<span class="math notranslate nohighlight">\(\Gamma\)</span>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="L. Brillouin (1930) gave the zone that carries his name: the set of \mathbf{k} closer to the origin than to any other reciprocal lattice vector \mathbf{G}, the Wigner-Seitz cell of the reciprocal lattice. Its faces are the planes where Bragg reflection |\mathbf{k}| = |\mathbf{k} - \mathbf{G}| opens band gaps, and its corners and face centres are the points of highest symmetry, where bands reach their extrema, cross or are degenerate. A band structure is therefore drawn along a path through them. W. Setyawan and S. Curtarolo (2010) fixed one standard path per Bravais lattice, so that band structures from different codes can be compared at a glance."><img alt="" src="../_images/sphx_glr_plot_brillouin_zones_and_high_symmetry_paths_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/tight_binding/plot_brillouin_zones_and_high_symmetry_paths.html"><span class="doc">Brillouin Zones and Standard High-Symmetry Paths</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Brillouin Zones and Standard High-Symmetry Paths</div>
+</div></div></section>
+<section id="wallace-s-tight-binding-prediction-of-graphene">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">1947 – Wallace’s Tight-Binding Prediction of Graphene</a><a class="headerlink" href="#wallace-s-tight-binding-prediction-of-graphene" title="Link to this heading">#</a></h2>
+<p>Thirty-nine years before it had a name and fifty-seven years before it
+was isolated, graphene’s electronic structure was already known: P. R.
+Wallace worked out the tight-binding band structure of a single
+honeycomb sheet of carbon (as a stepping stone to understanding bulk
+graphite) and found something no one had seen in a solid before. The two
+bands touch at the corners of the hexagonal Brillouin zone, and
+expanding the dispersion around one such point <span class="math notranslate nohighlight">\(\mathbf{K}\)</span> gives,
+to leading order,</p>
+<div class="math notranslate nohighlight">
+\[E(\mathbf{K}+\mathbf{q}) \approx \pm \frac{3}{2}\,t\,a\,|\mathbf{q}|\, ,\]</div>
+<p>a dispersion that is <em>linear</em> in momentum rather than the usual quadratic
+<span class="math notranslate nohighlight">\(\hbar^2q^2/2m^*\)</span>. Electrons near <span class="math notranslate nohighlight">\(\mathbf{K}\)</span> therefore
+behave as massless, relativistic (Dirac) particles with an effective
+speed of light <span class="math notranslate nohighlight">\(v_F = 3ta/2\)</span>, decades before “Dirac fermions in
+condensed matter” became a field in its own right.</p>
+<p>The two bands are the two orbitals of the honeycomb unit cell – one on
+each of the interpenetrating triangular sublattices <code class="docutils literal notranslate"><span class="pre">'a'</span></code> and <code class="docutils literal notranslate"><span class="pre">'b'</span></code>:</p>
+<figure class="align-default">
+<img alt="../_images/models_breakthroughs-2.png" class="plot-directive" src="../_images/models_breakthroughs-2.png" />
+</figure>
+<p><em>Implementation:</em> no new code – this is the same honeycomb
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace</span></code></a> Hamiltonian used throughout this chronology,
+evaluated at momenta offset from <span class="math notranslate nohighlight">\(\mathbf{K}\)</span> by a small
+<span class="math notranslate nohighlight">\(\mathbf{q}\)</span>.</p>
+<p><em>References:</em> P. R. Wallace, “The Band Theory of Graphite,” Phys. Rev.
+71, 622-634 (1947).</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A from-scratch walkthrough of tbkit&#x27;s two complementary ways of looking at a Tight-Binding model:"><img alt="" src="../_images/sphx_glr_plot_graphene_bands_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/tight_binding/plot_graphene_bands.html"><span class="doc">Graphene: Real-Space Flake and Reciprocal-Space Bands</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Graphene: Real-Space Flake and Reciprocal-Space Bands</div>
+</div></div></section>
+<section id="lowdin-orthogonalization-and-non-orthogonal-tight-binding">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">1950 – Löwdin Orthogonalization and Non-Orthogonal Tight Binding</a><a class="headerlink" href="#lowdin-orthogonalization-and-non-orthogonal-tight-binding" title="Link to this heading">#</a></h2>
+<p>Atomic orbitals on neighbouring atoms overlap, so in an LCAO basis the
+Schrödinger equation is the generalized eigenproblem <span class="math notranslate nohighlight">\(H\mathbf{c} =
+ES\mathbf{c}\)</span>, with the overlap matrix <span class="math notranslate nohighlight">\(S\)</span>. P.-O. Löwdin (1950)
+removed <span class="math notranslate nohighlight">\(S\)</span> by the symmetric orthogonalization <span class="math notranslate nohighlight">\(|\psi\rangle
+= S^{-1/2}|\phi\rangle\)</span>: of all orthonormal sets, the closest to the
+atomic orbitals, and one that treats every orbital alike, so it keeps
+the symmetry of the crystal. In this basis the Hamiltonian is
+<span class="math notranslate nohighlight">\(S^{-1/2}HS^{-1/2}\)</span>, with the same bands. It is the justification
+of orthogonal tight-binding models, with a caveat: the Löwdin orbitals
+have tails on the neighbouring atoms, so the hoppings between them reach
+further than the bonds. A model with a few hoppings truncates that
+series. The same orthogonalization turns projected trial orbitals into
+the starting gauge of maximally localized Wannier functions (see the
+1997/2008 entry).</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.set_overlap" title="tbkit.kspace.KSpace.set_overlap"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.set_overlap()</span></code></a> sets the
+overlaps in the format of <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.set_hopping" title="tbkit.kspace.KSpace.set_hopping"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_hopping()</span></code></a>, after
+which every band is the solution of <span class="math notranslate nohighlight">\(H(\mathbf{k})v =
+ES(\mathbf{k})v\)</span>; <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.get_overlap" title="tbkit.kspace.KSpace.get_overlap"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_overlap()</span></code></a> returns
+<span class="math notranslate nohighlight">\(S(\mathbf{k})\)</span>, and the topological tools use the
+Löwdin-orthonormalized states <span class="math notranslate nohighlight">\(S^{1/2}v\)</span>.</p>
+<p><em>References:</em> P.-O. Löwdin, “On the Non-Orthogonality Problem Connected
+with the Use of Atomic Wave Functions in the Theory of Molecules and
+Crystals,” J. Chem. Phys. 18, 365-375 (1950).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/orbitals/plot_lowdin_orthogonalization.py</span></code> solves
+a chain with overlap <span class="math notranslate nohighlight">\(s = 0.2\)</span> against the closed form
+<span class="math notranslate nohighlight">\((\epsilon + 2t\cos ka)/(1 + 2s\cos ka)\)</span>, checks that
+<span class="math notranslate nohighlight">\(S^{-1/2}HS^{-1/2}\)</span> has the same spectrum, that the hoppings between
+Löwdin orbitals fall by the factor <span class="math notranslate nohighlight">\(x = (1 - \sqrt{1 - 4s^2})/2s\)</span>
+per neighbour, as does the error of the truncated model, and that on a
+ring Löwdin’s orbitals move half as far as Gram-Schmidt’s, all by the
+same amount.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Atomic orbitals on neighbouring atoms overlap: s = \langle\phi_i|\phi_j\rangle \neq 0. In such a basis the Schrödinger equation is the generalized eigenproblem H\mathbf{c} = ES\mathbf{c}, with S the overlap matrix. P.-O. Löwdin (1950) removed S with the symmetric orthogonalization |\psi\rangle = S^{-1/2}|\phi\rangle. Among all orthonormal sets, it is the one closest to the original orbitals, and it treats every orbital alike, so the new basis keeps the symmetry of the crystal. In that basis the problem is an ordinary eigenproblem for S^{-1/2}HS^{-1/2}, with the same bands. The cost is range: the orthogonalized orbitals have tails on the neighbours, so the hoppings between them reach further than those of H. An orthogonal tight-binding model with a few hoppings is a truncation of this exact one."><img alt="" src="../_images/sphx_glr_plot_lowdin_orthogonalization_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/orbitals/plot_lowdin_orthogonalization.html"><span class="doc">Löwdin Orthogonalization and Non-Orthogonal Tight Binding</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Löwdin Orthogonalization and Non-Orthogonal Tight Binding</div>
+</div></div></section>
+<section id="the-slater-koster-tight-binding-framework">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">1954 – The Slater-Koster Tight-Binding Framework</a><a class="headerlink" href="#the-slater-koster-tight-binding-framework" title="Link to this heading">#</a></h2>
+<p>J. Slater and G. Koster showed how to build realistic band
+structures from a <em>minimal</em> empirical basis: a linear combination of
+atomic orbitals (LCAO), with hopping matrix elements between neighboring
+orbitals as fitting parameters rather than computed from first
+principles. This traded first-principles rigor for tractability and
+physical transparency, and remains the standard language for
+model-building in condensed matter theory – it is, in effect, the
+specification <strong>tbkit</strong> itself implements: define a unit cell of
+orbitals, define hoppings between them, and let the code Bloch-sum or
+diagonalize the result.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.lattice.Lattice" title="tbkit.lattice.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.lattice.Lattice</span></code></a> (the unit cell and its
+translations), <a class="reference internal" href="../tbkit.html#tbkit.system.System" title="tbkit.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.system.System</span></code></a> (finite, real-space
+Hamiltonians) and <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace</span></code></a> (periodic, reciprocal-space
+Hamiltonians) are exactly this LCAO philosophy, general enough to cover
+every other model in this chronology. The Slater-Koster table itself is
+<a class="reference internal" href="../tbkit.html#tbkit.slater_koster.sk_block" title="tbkit.slater_koster.sk_block"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.slater_koster.sk_block()</span></code></a> (s, p and d orbitals, generated from
+the rotation of the bond frame); <a class="reference internal" href="../tbkit.html#tbkit.orbital.OrbitalSystem" title="tbkit.orbital.OrbitalSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.orbital.OrbitalSystem</span></code></a>
+(real space, several orbitals and spin per site) and
+<a class="reference internal" href="../tbkit.html#tbkit.slater_koster.sk_kspace" title="tbkit.slater_koster.sk_kspace"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.slater_koster.sk_kspace()</span></code></a> (Bloch bands) build Hamiltonians
+from bond integrals, with the overlap matrix of a non-orthogonal basis
+(<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.set_overlap" title="tbkit.kspace.KSpace.set_overlap"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.set_overlap()</span></code></a>) when it is given.</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/orbitals/plot_slater_koster.py</span></code> builds graphene’s
+<span class="math notranslate nohighlight">\(sp^3\)</span> bands, confirms that <span class="math notranslate nohighlight">\(p_z\)</span> decouples into Wallace’s
+<span class="math notranslate nohighlight">\(\pi\)</span> bands with <span class="math notranslate nohighlight">\(t = V_{pp\pi}\)</span>, that the overlap turns them
+into <span class="math notranslate nohighlight">\((\epsilon_p\pm t|f|)/(1\pm s|f|)\)</span>, and that the real-space
+flake and the Bloch model agree.</p>
+<p><em>References:</em> J. C. Slater and G. F. Koster, “Simplified LCAO Method for
+the Periodic Potential Problem,” Phys. Rev. 94, 1498-1524 (1954).</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="J. Slater and G. Koster (1954) turned the linear combination of atomic orbitals into a practical band-structure method: the hopping between orbital \alpha on one atom and \beta on a neighbour along \hat{\mathbf{d}} = (l, m, n) follows from a few bond integrals V_{ss\sigma}, V_{sp\sigma}, V_{pp\sigma}, V_{pp\pi}, \dots through the geometry alone, e.g."><img alt="" src="../_images/sphx_glr_plot_slater_koster_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/orbitals/plot_slater_koster.html"><span class="doc">The Slater-Koster Method: Graphene’s sigma and pi Bands</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Slater-Koster Method: Graphene's sigma and pi Bands</div>
+</div></div></section>
+<section id="the-kp-method-and-effective-mass-theory">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">1955/1957 – The k·p Method and Effective-Mass Theory</a><a class="headerlink" href="#the-kp-method-and-effective-mass-theory" title="Link to this heading">#</a></h2>
+<p>Near a band edge, the Bloch functions at <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> can be
+expanded in those at the band extremum, and the crystal Hamiltonian
+becomes a small matrix polynomial in <span class="math notranslate nohighlight">\(\mathbf{k}\)</span>: the <em>k·p</em>
+Hamiltonian. J. M. Luttinger and W. Kohn (1955) turned this into the
+effective-mass theory of electrons and holes in slowly varying fields,
+where <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> is replaced by <span class="math notranslate nohighlight">\(-i\nabla\)</span> acting on an
+envelope function. E. O. Kane (1957) used it to explain the band structure of
+InSb from a handful of parameters. Since then k·p models (the Kane and
+Luttinger models, and B. A. Bernevig, T. L. Hughes and S.-C. Zhang’s
+(2006) model of the band inversion in HgTe quantum wells) describe
+semiconductor heterostructures, nanowires and topological insulators
+from a few numbers fitted to experiment or to first-principles bands.</p>
+<p>A computer solves a k·p model by discretizing the envelope functions on a
+grid. <span class="math notranslate nohighlight">\(k_x = -i\partial_x\)</span> becomes a finite difference, which
+turns the continuum Hamiltonian into a Tight-Binding model on a square or
+cubic lattice: <span class="math notranslate nohighlight">\(k_x^2 \to (2 - 2\cos k_xa)/a^2\)</span>,
+<span class="math notranslate nohighlight">\(k_x \to \sin(k_xa)/a\)</span>. It agrees with the continuum model to
+<span class="math notranslate nohighlight">\(O(a^2)\)</span> near <span class="math notranslate nohighlight">\(\mathbf{k}=0\)</span>, and its Brillouin zone is
+compact, which makes topological invariants integers.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.continuum.discretize" title="tbkit.continuum.discretize"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.continuum.discretize()</span></code></a> takes a sympy
+expression or a string in <code class="docutils literal notranslate"><span class="pre">k_x,</span> <span class="pre">k_y,</span> <span class="pre">k_z</span></code> (scalar, or a matrix built
+with <code class="docutils literal notranslate"><span class="pre">sigma_x</span></code>, <code class="docutils literal notranslate"><span class="pre">kron</span></code>, …) and returns a
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">KSpace</span></code></a> on a chain, square or cubic grid. Its free
+symbols become parameters, set by
+<code class="docutils literal notranslate"><span class="pre">get_ham(k,</span> <span class="pre">M=...)</span></code> or <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.set_params" title="tbkit.kspace.KSpace.set_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_params()</span></code></a>.
+<a class="reference internal" href="../tbkit.html#tbkit.continuum.discretize_symbolic" title="tbkit.continuum.discretize_symbolic"><code class="xref py py-func docutils literal notranslate"><span class="pre">discretize_symbolic()</span></code></a> shows the hopping matrices
+in terms of the grid spacing <span class="math notranslate nohighlight">\(a\)</span>. The scheme (half-step differences,
+step <span class="math notranslate nohighlight">\(a\)</span> for even powers and <span class="math notranslate nohighlight">\(2a\)</span> for odd ones) is that of
+Kwant’s <code class="docutils literal notranslate"><span class="pre">kwant.continuum</span></code>. <a class="reference internal" href="../tbkit.html#tbkit.bridges.finite_system" title="tbkit.bridges.finite_system"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.bridges.finite_system()</span></code></a> turns
+the lattice model into a real-space <a class="reference internal" href="../tbkit.html#tbkit.system.System" title="tbkit.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">System</span></code></a>.</p>
+<p><em>References:</em> J. M. Luttinger and W. Kohn, “Motion of Electrons and Holes
+in Perturbed Periodic Fields,” Phys. Rev. 97, 869-883 (1955); E. O. Kane,
+“Band structure of indium antimonide,” J. Phys. Chem. Solids 1, 249-261
+(1957); B. A. Bernevig, T. L. Hughes, and S.-C. Zhang, “Quantum Spin Hall
+Effect and Topological Phase Transition in HgTe Quantum Wells,” Science
+314, 1757-1761 (2006); C. W. Groth, M. Wimmer, A. R. Akhmerov, and X.
+Waintal, “Kwant: a software package for quantum transport,” New J. Phys.
+16, 063065 (2014).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/models/plot_kp_theory_on_a_lattice.py</span></code> derives the
+nearest-neighbour chain of the effective mass symbolically. It then
+discretizes the BHZ model, checks that its bands converge to the
+continuum ones as <span class="math notranslate nohighlight">\(a^2\)</span>, that the lattice model has Chern number
+<span class="math notranslate nohighlight">\(|C| = 1\)</span> exactly when the bands are inverted (<span class="math notranslate nohighlight">\(M/B &gt; 0\)</span>),
+and that a finite flake cut from it has edge states in the gap only then.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The k·p method of J. M. Luttinger and W. Kohn (1955) and E. O. Kane (1957) describes the electrons of a semiconductor near a band edge by a small matrix that is a polynomial in the crystal momentum \mathbf{k}. The effective mass k^2/2m^* is its simplest case. The Bernevig-Hughes-Zhang (BHZ) model of HgTe quantum wells is a two-band one. Devices and topology are computed on lattices, so the continuum model is discretized: k_x = -i\partial_x becomes a finite difference on a square grid of spacing a."><img alt="" src="../_images/sphx_glr_plot_kp_theory_on_a_lattice_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/models/plot_kp_theory_on_a_lattice.html"><span class="doc">k·p Theory on a Lattice: from a Continuum Hamiltonian to Tight-Binding</span></a></p>
+  <div class="sphx-glr-thumbnail-title">k·p Theory on a Lattice: from a Continuum Hamiltonian to Tight-Binding</div>
+</div></div></section>
+<section id="the-tetrahedron-method-for-the-density-of-states">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">1971/1972 – The Tetrahedron Method for the Density of States</a><a class="headerlink" href="#the-tetrahedron-method-for-the-density-of-states" title="Link to this heading">#</a></h2>
+<p>The density of states and every Fermi-surface property are integrals over
+the Brillouin zone of functions that are singular: a delta function
+<span class="math notranslate nohighlight">\(\delta(E - E_n(\mathbf{k}))\)</span>, or a step at the Fermi level.
+Sampling the bands on a mesh and broadening each level smears the
+features that matter most – the <span class="math notranslate nohighlight">\(\sqrt{E}\)</span> band edges and the van
+Hove singularities at the saddle points of <span class="math notranslate nohighlight">\(E_n(\mathbf{k})\)</span> – by
+a width chosen by hand. O. Jepsen and O. K. Andersen (1971) and,
+independently, G. Lehmann and M. Taut (1972) split the zone into
+tetrahedra with the mesh points at their corners, interpolated each band
+linearly inside every tetrahedron, and integrated that interpolation
+<em>exactly</em>: within a tetrahedron the density of states is a polynomial in
+<span class="math notranslate nohighlight">\(E\)</span> known in closed form. Nothing has to be broadened, and the
+error falls with the mesh. P. E. Blochl, Jepsen and Andersen (1994) gave
+the formulas in their standard form (with a correction for the curvature
+of the bands), and the method has been the default for densities of
+states and Fermi-level integrals in band-structure codes ever since.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.dos.tetrahedron_dos" title="tbkit.dos.tetrahedron_dos"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.dos.tetrahedron_dos()</span></code></a> (the linear method,
+on segments, triangles or tetrahedra of a 1D, 2D or 3D mesh) and
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.plot_dos" title="tbkit.kspace.KSpace.plot_dos"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_dos()</span></code></a> with <code class="docutils literal notranslate"><span class="pre">kernel='tetrahedron'</span></code>. The
+same decomposition of the mesh gives the constant-energy contours of
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.fermi_surface" title="tbkit.kspace.KSpace.fermi_surface"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fermi_surface()</span></code></a>.</p>
+<p><em>References:</em> O. Jepsen and O. K. Andersen, “The electronic structure of
+h.c.p. ytterbium,” Solid State Commun. 9, 1763-1767 (1971); G. Lehmann
+and M. Taut, “On the numerical calculation of the density of states and
+related properties,” Phys. Status Solidi B 54, 469-477 (1972); P. E.
+Blochl, O. Jepsen, and O. K. Andersen, “Improved tetrahedron method for
+Brillouin-zone integrations,” Phys. Rev. B 49, 16223-16233 (1994).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/tight_binding/plot_tetrahedron_method.py</span></code>
+reproduces the logarithmic van Hove singularity of the square lattice
+(within 0.3% of the exact elliptic-integral result on an 80 x 80 mesh,
+where a Gaussian broadening is off by 6%), and in 3D puts no states
+below the band bottom and converges ten times faster than the Gaussian.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The density of states \rho(E) = \sum_n\int\frac{d\mathbf{k}}{V_{BZ}}\, \delta(E - E_n(\mathbf{k})) needs an integral over the Brillouin zone, but a calculation only knows the bands on a finite mesh. Broadening each eigenvalue into a Gaussian of width \sigma turns the sum into a smooth curve, at the price of smearing exactly the features that matter: band edges, and the van Hove singularities where \nabla_k E = 0."><img alt="" src="../_images/sphx_glr_plot_tetrahedron_method_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/tight_binding/plot_tetrahedron_method.html"><span class="doc">The Tetrahedron Method for the Density of States</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Tetrahedron Method for the Density of States</div>
+</div></div></section>
+<section id="monkhorst-pack-k-point-grids">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">1976 – Monkhorst-Pack k-Point Grids</a><a class="headerlink" href="#monkhorst-pack-k-point-grids" title="Link to this heading">#</a></h2>
+<p>Total energies, densities and forces are averages over the Brillouin
+zone. D. J. Chadi and M. L. Cohen (1973), after A. Baldereschi’s mean-value
+point (1973), chose sets of <em>special points</em> that average the low
+Fourier components of a periodic function exactly. H. J. Monkhorst and
+J. D. Pack (1976) gave the general recipe: a uniform grid of <span class="math notranslate nohighlight">\(q\)</span>
+points along each reciprocal vector, <span class="math notranslate nohighlight">\(u_r = (2r - q - 1)/2q\)</span>. Such
+a grid integrates exactly every Fourier component
+<span class="math notranslate nohighlight">\(e^{i\mathbf{k}\cdot\mathbf{R}}\)</span> with every <span class="math notranslate nohighlight">\(|R_i| &lt; q\)</span>, so
+for an insulator, whose band energies and projectors are analytic in
+<span class="math notranslate nohighlight">\(\mathbf{k}\)</span>, the error falls exponentially with <span class="math notranslate nohighlight">\(q\)</span>. For even
+<span class="math notranslate nohighlight">\(q\)</span> the grid avoids <span class="math notranslate nohighlight">\(\Gamma\)</span> and the other high-symmetry
+points, and fewer of its points are independent under the point group.
+Monkhorst-Pack grids are still the default k-point sampling of
+band-structure codes. In a metal the occupations jump at the Fermi
+surface and convergence is only algebraic, which is what smearing and
+the tetrahedron method (see the 1971/1972 entry) address.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.mesh_grid" title="tbkit.kspace.KSpace.mesh_grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.mesh_grid()</span></code></a> and
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.mesh_bands" title="tbkit.kspace.KSpace.mesh_bands"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mesh_bands()</span></code></a> with <code class="docutils literal notranslate"><span class="pre">monkhorst_pack=True</span></code>
+build the Monkhorst-Pack grid. Without it they build the
+<span class="math notranslate nohighlight">\(\Gamma\)</span>-centred grid <span class="math notranslate nohighlight">\(r/q\)</span> that the Fermi level and the
+mesh integrals of <strong>tbkit</strong> use: the same points for odd <span class="math notranslate nohighlight">\(q\)</span>, and
+shifted by half a step for even <span class="math notranslate nohighlight">\(q\)</span>.</p>
+<p><em>References:</em> H. J. Monkhorst and J. D. Pack, “Special points for
+Brillouin-zone integrations,” Phys. Rev. B 13, 5188-5192 (1976); D. J.
+Chadi and M. L. Cohen, “Special Points in the Brillouin Zone,” Phys. Rev.
+B 8, 5747-5753 (1973); A. Baldereschi, “Mean-Value Point in the Brillouin
+Zone,” Phys. Rev. B 7, 5212-5215 (1973).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/tight_binding/plot_monkhorst_pack_grids.py</span></code> checks
+that a <span class="math notranslate nohighlight">\(q\times q\)</span> grid gets the moments <span class="math notranslate nohighlight">\(\overline{E^2} =
+4t^2\)</span> and <span class="math notranslate nohighlight">\(\overline{E^4} = 36t^4\)</span> of the square lattice exactly for
+<span class="math notranslate nohighlight">\(q &gt; p\)</span>, with the aliased terms of the opposite sign on the shifted
+grid. The band energy of gapped graphene converges to <span class="math notranslate nohighlight">\(10^{-14}\)</span> on
+a <span class="math notranslate nohighlight">\(24\times24\)</span> grid, that of the half-filled square lattice as
+<span class="math notranslate nohighlight">\(q^{-2}\)</span>, and the shifted <span class="math notranslate nohighlight">\(4\times4\)</span> grid reduces to the
+three special points <span class="math notranslate nohighlight">\((1,1), (1,3), (3,3)\,\pi/4a\)</span>, with weights
+1/4, 1/2 and 1/4.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Total energies, charge densities and every ground-state property of a crystal are averages over the Brillouin zone, \bar f = \frac{1}{V_{BZ}}\int f(\mathbf{k})\,d\mathbf{k}. H. J. Monkhorst and J. D. Pack (1976) replaced the integral by the mean over a uniform grid of q points along each reciprocal vector, u_r = (2r - q - 1)/2q, r = 1, \dots, q. A smooth periodic function is a Fourier series f(\mathbf{k}) = \sum_\mathbf{R} f_\mathbf{R}e^{i\mathbf{k}\cdot\mathbf{R}}, and such a grid averages every term to zero except those with all R_i multiples of q: it integrates exactly every Fourier component of range below q lattice vectors. For an insulator the components decay exponentially, and so does the error. For even q the grid is shifted off \Gamma, and its points fall into fewer orbits of the point group, so fewer have to be computed. Monkhorst-Pack grids have been the default k-point sampling of band-structure codes ever since."><img alt="" src="../_images/sphx_glr_plot_monkhorst_pack_grids_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/tight_binding/plot_monkhorst_pack_grids.html"><span class="doc">Monkhorst-Pack k-Point Grids</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Monkhorst-Pack k-Point Grids</div>
+</div></div></section>
+<section id="fermion-doubling-the-nielsen-ninomiya-theorem">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">1981 – Fermion Doubling: the Nielsen-Ninomiya Theorem</a><a class="headerlink" href="#fermion-doubling-the-nielsen-ninomiya-theorem" title="Link to this heading">#</a></h2>
+<p>A band is periodic in <span class="math notranslate nohighlight">\(\mathbf{k}\)</span>: a branch that crosses the
+Fermi level going up must come back down somewhere in the Brillouin zone.
+H. B. Nielsen and M. Ninomiya (1981) made this a theorem: a local,
+Hermitian lattice Hamiltonian has as many left- as right-handed chiral
+fermions, and the chiralities of its Weyl points add up to zero. Lattice
+gauge theory had met it as <em>fermion doubling</em>: discretizing the Dirac
+operator by <span class="math notranslate nohighlight">\(k \to \sin(ka)/a\)</span> creates a copy of every fermion at
+each corner of the zone. K. Wilson’s term, <span class="math notranslate nohighlight">\(\propto(1 - \cos ka)\)</span>,
+gaps the copies at the zone boundary, but for a chiral fermion it can
+only move them, never remove the last partner. In condensed matter it
+is why Weyl points come in pairs in every crystal, and it is the caveat
+of every k·p model put on a lattice: the lattice model has extra
+low-energy states away from <span class="math notranslate nohighlight">\(\mathbf{k} = 0\)</span> unless a Wilson-like
+term (the <span class="math notranslate nohighlight">\(Bk^2\)</span> of the BHZ model) gaps them.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.continuum.discretize" title="tbkit.continuum.discretize"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.continuum.discretize()</span></code></a> turns
+<span class="math notranslate nohighlight">\(k_i\)</span> into <span class="math notranslate nohighlight">\(\sin(k_ia)/a\)</span> and <span class="math notranslate nohighlight">\(k_i^2\)</span> into
+<span class="math notranslate nohighlight">\((2 - 2\cos k_ia)/a^2\)</span>, so the doublers and Wilson’s term appear on
+their own; <a class="reference internal" href="../tbkit.html#tbkit.topology.find_weyl_points" title="tbkit.topology.find_weyl_points"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.topology.find_weyl_points()</span></code></a> locates the Weyl
+points of the lattice model and their chiralities, which add up to zero.</p>
+<p><em>References:</em> H. B. Nielsen and M. Ninomiya, “Absence of neutrinos on a
+lattice (I). Proof by homotopy theory,” Nucl. Phys. B 185, 20-40 (1981);
+“(II). Intuitive topological proof,” Nucl. Phys. B 193, 173-194 (1981);
+K. G. Wilson, “Quarks and Strings on a Lattice,” in <em>New Phenomena in
+Subnuclear Physics</em>, ed. A. Zichichi (Plenum, New York, 1977).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/models/plot_fermion_doubling.py</span></code> discretizes a
+single right mover <span class="math notranslate nohighlight">\(E = k\)</span> into <span class="math notranslate nohighlight">\(\sin ka\)</span>, with a left mover
+of velocity <span class="math notranslate nohighlight">\(-1\)</span> at <span class="math notranslate nohighlight">\(ka = \pi\)</span>, and the single Weyl point
+<span class="math notranslate nohighlight">\(\mathbf{k}\cdot\boldsymbol\sigma\)</span> into eight, four of each
+chirality. With Wilson’s term <span class="math notranslate nohighlight">\(Bk^2\sigma_z\)</span>, two Weyl points of
+opposite chirality are left for each of <span class="math notranslate nohighlight">\(B = 1/4, 1/2, 1, 2\)</span>, the
+partner at <span class="math notranslate nohighlight">\(k_z = -2\arctan(1/2B)\)</span>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A k·p model can have a single Dirac or Weyl point. A lattice model cannot. H. B. Nielsen and M. Ninomiya (1981) proved that on a lattice, with local hoppings and the symmetry of the Hamiltonian kept, chiral fermions come in pairs: the band is periodic in \mathbf{k}, so every right-moving branch must turn back into a left-moving one somewhere in the Brillouin zone, and the chiralities of all the Weyl points add up to zero. Lattice gauge theory met the problem first, as fermion doubling: the naive discretization k \to \sin(ka)/a vanishes at ka = \pi too, with the opposite velocity. K. Wilson&#x27;s cure adds a term \propto (1 - \cos ka) that gaps the doublers at the zone boundary, but in a Weyl semimetal it can only push them together in pairs, never leave one alone."><img alt="" src="../_images/sphx_glr_plot_fermion_doubling_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/models/plot_fermion_doubling.html"><span class="doc">Fermion Doubling: the Nielsen-Ninomiya Theorem</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Fermion Doubling: the Nielsen-Ninomiya Theorem</div>
+</div></div></section>
+<section id="lopez-sancho-decimation-and-the-surface-green-s-function">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">1985 – Lopez Sancho Decimation and the Surface Green’s Function</a><a class="headerlink" href="#lopez-sancho-decimation-and-the-surface-green-s-function" title="Link to this heading">#</a></h2>
+<p>The local density of states of a surface,
+<span class="math notranslate nohighlight">\(-\frac{1}{\pi}\mathrm{Im}\,G_{00}(E + i\eta)\)</span>, is the Green’s
+function of the outermost layer of a semi-infinite crystal. A finite
+slab approximates it with discrete levels and a second surface; adding
+layers one at a time, <span class="math notranslate nohighlight">\(g = [E - h_0 - vgv^\dagger]^{-1}\)</span>,
+converges only as fast as <span class="math notranslate nohighlight">\(\eta\)</span> damps the waves coming back from
+the bulk, in about <span class="math notranslate nohighlight">\(1/\eta\)</span> steps. M. P. Lopez Sancho, J. M. Lopez
+Sancho and J. Rubio (1984, 1985) decimated instead: eliminating every
+other layer leaves a chain of the same form with renormalized couplings,
+so step <span class="math notranslate nohighlight">\(n\)</span> accounts for <span class="math notranslate nohighlight">\(2^n\)</span> layers and a few tens of steps
+reach the semi-infinite limit. Their scheme made surface Green’s
+functions routine: the surface states of photoemission, the edge and
+surface states of topological insulators, and the self-energies of the
+semi-infinite leads of quantum transport.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.transport.surface_green" title="tbkit.transport.surface_green"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.transport.surface_green()</span></code></a> decimates any
+chain of cells <span class="math notranslate nohighlight">\((h_0, v)\)</span>; it gives the lead self-energies of
+<a class="reference internal" href="../tbkit.html#tbkit.transport.Transport" title="tbkit.transport.Transport"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transport</span></code></a>.
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.surface_spectral_function" title="tbkit.kspace.KSpace.surface_spectral_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.surface_spectral_function()</span></code></a> and
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.plot_surface_spectral_function" title="tbkit.kspace.KSpace.plot_surface_spectral_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_surface_spectral_function()</span></code></a> group the
+cells of a periodic model into principal layers along any primitive
+vector and decimate them at many <span class="math notranslate nohighlight">\(\mathbf{k}_\parallel\)</span> and
+energies at once, for the surface (either side) or a bulk cell.</p>
+<p><em>References:</em> M. P. Lopez Sancho, J. M. Lopez Sancho, and J. Rubio,
+“Quick iterative scheme for the calculation of transfer matrices:
+application to Mo (100),” J. Phys. F 14, 1205-1215 (1984); M. P. Lopez
+Sancho, J. M. Lopez Sancho, and J. Rubio, “Highly convergent schemes for
+the calculation of bulk and surface Green functions,” J. Phys. F 15,
+851-858 (1985).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/tight_binding/plot_surface_greens_function.py</span></code>
+recovers the closed form <span class="math notranslate nohighlight">\(g(E) = (E - i\sqrt{4t^2 - E^2})/2t^2\)</span>
+of the semi-infinite chain, needs 10 to 20 decimation steps where the
+layer-by-layer recursion needs about <span class="math notranslate nohighlight">\(18/\eta\)</span> (at <span class="math notranslate nohighlight">\(E =
+0.7t\)</span>), and finds the end
+state of an SSH chain with weight <span class="math notranslate nohighlight">\(1 - (t_1/t_2)^2\)</span> on the
+outermost cell, on both ends, and none when the chain ends on a strong
+bond.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A surface is a crystal cut in half: periodic along the surface, but semi-infinite in depth. Its local density of states is -\frac{1}{\pi}\mathrm{Im}\,G_{00}(E + i\eta), the Green&#x27;s function of the outermost layer, which depends on every layer below it. A finite slab only approximates it, with discrete levels and a second surface. The recursion g = [E - h_0 - v\,g\,v^\dagger]^{-1}, which adds one layer at a time, converges only as fast as the broadening \eta damps the waves coming back from the bulk: \sim1/\eta steps."><img alt="" src="../_images/sphx_glr_plot_surface_greens_function_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/tight_binding/plot_surface_greens_function.html"><span class="doc">The Surface Green’s Function by Lopez Sancho Decimation</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Surface Green's Function by Lopez Sancho Decimation</div>
+</div></div></section>
+<section id="zigzag-edge-states-of-graphene-ribbons">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">1996 – Zigzag Edge States of Graphene Ribbons</a><a class="headerlink" href="#zigzag-edge-states-of-graphene-ribbons" title="Link to this heading">#</a></h2>
+<p>M. Fujita, K. Wakabayashi, K. Nakada and K. Kusakabe (1996) found that
+the edges of a graphene ribbon decide its low-energy physics. Along a
+zigzag edge, a band of states sits at exactly <span class="math notranslate nohighlight">\(E = 0\)</span> over a third
+of the one-dimensional Brillouin zone, <span class="math notranslate nohighlight">\(2\pi/3 \le |ka| \le \pi\)</span>:
+states on one sublattice only, whose amplitude falls by
+<span class="math notranslate nohighlight">\(|2\cos(ka/2)|\)</span> from one zigzag chain to the next, so that they
+are bound to the edge everywhere but at the projections of the Dirac
+points. Their flat band puts a peak in the density of states at the
+Fermi level, which makes the edges magnetic once electrons interact (see
+the Hubbard entry of <a class="reference internal" href="interactions_breakthroughs.html"><span class="doc">Breakthroughs in Flat Bands and Interactions</span></a>). K. Nakada, M.
+Fujita, G. Dresselhaus and M. S. Dresselhaus showed in the same year
+that armchair edges carry no edge states, and that an armchair ribbon of
+<span class="math notranslate nohighlight">\(N\)</span> dimer lines is metallic only for <span class="math notranslate nohighlight">\(N = 3m + 2\)</span>. Ribbons
+became the standard test of edge physics in tight-binding models.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.kspace.ribbon" title="tbkit.kspace.ribbon"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.kspace.ribbon()</span></code></a> cuts a ribbon out of any
+2D <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">KSpace</span></code></a> model (a slab out of a 3D one),
+periodic along one primitive vector and finite along the other; the
+choice of primitive vectors sets the edge.
+<a class="reference internal" href="../tbkit.html#tbkit.graphene.GrapheneLattice" title="tbkit.graphene.GrapheneLattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.graphene.GrapheneLattice</span></code></a> cuts finite flakes with zigzag
+or armchair edges in real space.</p>
+<p><em>References:</em> M. Fujita, K. Wakabayashi, K. Nakada, and K. Kusakabe,
+“Peculiar Localized State at Zigzag Graphite Edge,” J. Phys. Soc. Jpn.
+65, 1920-1923 (1996); K. Nakada, M. Fujita, G. Dresselhaus, and M. S.
+Dresselhaus, “Edge state in graphene ribbons: Nanometer size effect and
+edge shape dependence,” Phys. Rev. B 54, 17954-17961 (1996).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/tight_binding/plot_zigzag_edge_states.py</span></code> finds
+the zero-energy band of a 40-cell zigzag ribbon for
+<span class="math notranslate nohighlight">\(|ka| \ge 2\pi/3\)</span>, an edge state on one sublattice decaying by
+<span class="math notranslate nohighlight">\(|2\cos(0.4\pi)| = 0.618\)</span> per chain at <span class="math notranslate nohighlight">\(ka = 0.8\pi\)</span>, about
+1/3 of a state per edge and per k-point at <span class="math notranslate nohighlight">\(E = 0\)</span>, and armchair
+ribbons that are metallic exactly for <span class="math notranslate nohighlight">\(N = 3m + 2\)</span>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="M. Fujita, K. Wakabayashi, K. Nakada and K. Kusakabe (1996) cut graphene into ribbons and found that the shape of the edge decides the low-energy physics. A ribbon with zigzag edges has a band of states at exactly E = 0, localized at the edges, over a third of its Brillouin zone, 2\pi/3 \le |ka| \le \pi. Each such state lives on one sublattice only, with amplitude (-2\cos\tfrac{ka}{2})^n on the n-th zigzag chain from its edge: localized when |2\cos\tfrac{ka}{2}| &lt; 1, most strongly at the zone boundary. The flat band piles up states at the Fermi level, a peak in the density of states that makes the edges magnetic once electrons interact. A ribbon with armchair edges has no edge states. Nakada et al. showed that it is metallic only when its number N of dimer lines is N = 3m + 2, and gapped otherwise."><img alt="" src="../_images/sphx_glr_plot_zigzag_edge_states_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/tight_binding/plot_zigzag_edge_states.html"><span class="doc">Zigzag Edge States of Graphene Ribbons</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Zigzag Edge States of Graphene Ribbons</div>
+</div></div></section>
+<section id="maximally-localized-wannier-functions">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">1997/2008 – Maximally Localized Wannier Functions</a><a class="headerlink" href="#maximally-localized-wannier-functions" title="Link to this heading">#</a></h2>
+<p>The Wannier functions of a band are defined only up to a gauge: a
+k-dependent unitary mixing of the Bloch states. N. Marzari and D.
+Vanderbilt fixed it by minimizing their spread, which gives maximally
+localized Wannier functions; I. Souza, N. Marzari and D. Vanderbilt
+extended the construction to entangled bands (2001). In this basis a
+first-principles Hamiltonian becomes an exact, short-ranged
+tight-binding model, <span class="math notranslate nohighlight">\(H_{mn}(\mathbf{R}) = \langle m\mathbf{0}|H|n\mathbf{R}\rangle\)</span>,
+whose Fourier interpolation gives bands, Berry curvatures and transport
+at any k. The Wannier90 code (2008) made these models a routine output
+of density-functional calculations, and brought tight-binding back to
+materials-specific accuracy.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.wannier.wannierize" title="tbkit.wannier.wannierize"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.wannier.wannierize()</span></code></a> builds the maximally
+localized Wannier functions of an isolated band group of any
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">KSpace</span></code></a> model: projection onto trial orbitals,
+Lowdin orthogonalization, then conjugate-gradient minimization of the
+Marzari-Vanderbilt spread. It returns the functions on the sites of a
+finite <a class="reference internal" href="../tbkit.html#tbkit.system.System" title="tbkit.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">System</span></code></a>, their centres, their spreads and
+<span class="math notranslate nohighlight">\(\Omega_I, \tilde\Omega_D, \tilde\Omega_{OD}\)</span> (entangled bands
+are disentangled first, see the 2001 entry). <a class="reference internal" href="../tbkit.html#tbkit.io.read_wannier90" title="tbkit.io.read_wannier90"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.io.read_wannier90()</span></code></a>
+reads <code class="docutils literal notranslate"><span class="pre">seedname_hr.dat</span></code> (with the degeneracy weights of the
+Wigner-Seitz supercell), the lattice vectors of <code class="docutils literal notranslate"><span class="pre">seedname.win</span></code> and the
+Wannier centres of <code class="docutils literal notranslate"><span class="pre">seedname_centres.xyz</span></code> into a
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">KSpace</span></code></a>; <a class="reference internal" href="../tbkit.html#tbkit.io.read_hr" title="tbkit.io.read_hr"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_hr()</span></code></a>,
+<a class="reference internal" href="../tbkit.html#tbkit.io.read_win_cell" title="tbkit.io.read_win_cell"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_win_cell()</span></code></a> and <a class="reference internal" href="../tbkit.html#tbkit.io.read_centres" title="tbkit.io.read_centres"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_centres()</span></code></a> read
+the files themselves.</p>
+<p><em>References:</em> N. Marzari and D. Vanderbilt, “Maximally localized
+generalized Wannier functions for composite energy bands,” Phys. Rev. B
+56, 12847-12865 (1997); I. Souza, N. Marzari, and D. Vanderbilt, Phys.
+Rev. B 65, 035109 (2001); A. A. Mostofi et al., “wannier90: A tool for
+obtaining maximally-localised Wannier functions,” Comput. Phys. Commun.
+178, 685-699 (2008); N. Marzari et al., Rev. Mod. Phys. 84, 1419 (2012).</p>
+<p><em>Examples:</em> <code class="docutils literal notranslate"><span class="pre">examples/models/plot_building_maximally_localized_wannier_functions.py</span></code>
+builds them for the SSH chain, where the minimization reaches the bound
+<span class="math notranslate nohighlight">\(\Omega = \Omega_I\)</span> with the centre on the Wilson-loop value 0.75,
+and for gapped graphene, whose Wannier function sits on a <code class="docutils literal notranslate"><span class="pre">b</span></code> site with
+<span class="math notranslate nohighlight">\(\langle 0|H|0\rangle\)</span> equal to the band’s mean energy.
+<code class="docutils literal notranslate"><span class="pre">examples/models/plot_maximally_localized_wannier_functions.py</span></code>
+imports graphene’s <span class="math notranslate nohighlight">\(p_z\)</span> bands from Wannier90-format files shipped
+with it, checks the degeneracy weights and the decay of the hoppings, and
+recovers the closed-form energies at <span class="math notranslate nohighlight">\(\Gamma\)</span> and at the Dirac point.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The Wannier functions of a band are the Fourier transforms of its Bloch states,"><img alt="" src="../_images/sphx_glr_plot_building_maximally_localized_wannier_functions_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/models/plot_building_maximally_localized_wannier_functions.html"><span class="doc">Maximally Localized Wannier Functions: Projection and Spread Minimization</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Maximally Localized Wannier Functions: Projection and Spread Minimization</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Marzari and Vanderbilt (1997) showed how to choose the gauge of the Bloch states so that their Fourier transforms, the Wannier functions |m\mathbf{R}\rangle, are as localized as possible. In that basis the first-principles Hamiltonian is a tight-binding model, H_{mn}(\mathbf{R}) = \langle m\mathbf{0}|H|n\mathbf{R}\rangle, whose hoppings decay quickly with distance. The Wannier90 code writes it to seedname_hr.dat, which tbkit.io.read_wannier90 turns into a KSpace, ready for every band and topology tool:"><img alt="" src="../_images/sphx_glr_plot_maximally_localized_wannier_functions_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/models/plot_maximally_localized_wannier_functions.html"><span class="doc">Maximally Localized Wannier Functions: Graphene from a Wannier90 File</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Maximally Localized Wannier Functions: Graphene from a Wannier90 File</div>
+</div></div></section>
+<section id="disentanglement-of-entangled-bands">
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">2001 – Disentanglement of Entangled Bands</a><a class="headerlink" href="#disentanglement-of-entangled-bands" title="Link to this heading">#</a></h2>
+<p>Maximally localized Wannier functions need a group of bands separated
+from the rest of the spectrum, and the bands of interest rarely are:
+graphene’s π bands cross its σ bands, and the d bands of transition
+metals are entangled with s bands. I. Souza, N. Marzari and D. Vanderbilt
+split the construction in two. First, at each k, choose the
+<span class="math notranslate nohighlight">\(n_W\)</span>-dimensional subspace of the states in an outer energy window
+that changes least from k to k: the one that minimizes the
+gauge-invariant spread <span class="math notranslate nohighlight">\(\Omega_I\)</span>, a variational problem solved by
+iterating an eigenvalue problem at each k. States in an inner, frozen
+window are kept unchanged, so the Wannier functions reproduce the bands
+there exactly. Then localize within that subspace as for an isolated
+group. Disentanglement is what made Wannier functions usable for metals
+and for the low-energy bands of real materials, and it is the first step
+of nearly every Wannier90 calculation. The Hamiltonian in the resulting
+basis interpolates the bands between the mesh points (Wannier
+interpolation).</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.wannier.wannierize" title="tbkit.wannier.wannierize"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.wannier.wannierize()</span></code></a> disentangles when it
+gets more bands than trial orbitals, or an outer <code class="docutils literal notranslate"><span class="pre">window</span></code>, with an
+optional <code class="docutils literal notranslate"><span class="pre">frozen</span></code> window: the subspace iteration with linear mixing
+(<code class="docutils literal notranslate"><span class="pre">dis_history</span></code> records <span class="math notranslate nohighlight">\(\Omega_I\)</span> at each step), then the
+spread minimization within it.
+<a class="reference internal" href="../tbkit.html#tbkit.wannier.WannierFunctions.kspace" title="tbkit.wannier.WannierFunctions.kspace"><code class="xref py py-meth docutils literal notranslate"><span class="pre">kspace()</span></code></a> returns the Wannier-basis
+Hamiltonian <span class="math notranslate nohighlight">\(H_{mn}(\mathbf{R})\)</span> as a
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">KSpace</span></code></a> (Wigner-Seitz images, as in Wannier90), the
+model <a class="reference internal" href="../tbkit.html#tbkit.io.read_wannier90" title="tbkit.io.read_wannier90"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.io.read_wannier90()</span></code></a> would read.</p>
+<p><em>References:</em> I. Souza, N. Marzari, and D. Vanderbilt, “Maximally
+localized Wannier functions for entangled energy bands,” Phys. Rev. B 65,
+035109 (2001); J. R. Yates, X. Wang, D. Vanderbilt, and I. Souza,
+“Spectral and Fermi surface properties from Wannier interpolation,”
+Phys. Rev. B 75, 195121 (2007).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/models/plot_disentangling_entangled_bands.py</span></code>
+takes the eight sp<sup>3</sup> bands of graphene, where the π band starts
+6 eV below the top of the σ bands. In flat graphene the disentangled
+subspace is exactly the <span class="math notranslate nohighlight">\(p_z\)</span> one (<span class="math notranslate nohighlight">\(\Omega_I = 0\)</span>), and the
+Wannier model is Wallace’s, with the single hopping <span class="math notranslate nohighlight">\(V_{pp\pi}\)</span>.
+In buckled graphene the π and σ states mix: <span class="math notranslate nohighlight">\(\Omega_I\)</span> decreases at
+every step, the frozen bands are reproduced on the mesh to
+<span class="math notranslate nohighlight">\(10^{-14}\)</span>, and the error between mesh points falls from 0.23 eV to
+0.04 eV as the mesh goes from 6 x 6 to 12 x 12.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Maximal localization needs an isolated group of bands. Most bands of interest are not isolated: in graphene with its four valence orbitals s, p_x, p_y, p_z per carbon, the π bands cross the σ bands, so no set of band indices follows the π bands over the whole Brillouin zone."><img alt="" src="../_images/sphx_glr_plot_disentangling_entangled_bands_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/models/plot_disentangling_entangled_bands.html"><span class="doc">Disentanglement: Wannier Functions of the π Bands of Graphene</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Disentanglement: Wannier Functions of the π Bands of Graphene</div>
+</div></div></section>
+<section id="isolation-of-graphene">
+<h2><a class="toc-backref" href="#id14" role="doc-backlink">2004 – Isolation of Graphene</a><a class="headerlink" href="#isolation-of-graphene" title="Link to this heading">#</a></h2>
+<p>A. Geim, K. Novoselov, and coworkers mechanically exfoliated a
+single atomic layer of carbon from graphite, producing the first
+genuinely 2D crystal. Graphene’s low-energy quasiparticles obey a
+massless relativistic (Dirac) equation rather than the usual Schrodinger
+equation: expanding the honeycomb-lattice <span class="math notranslate nohighlight">\(H(\mathbf{k})\)</span> near
+either inequivalent Brillouin-zone corner <span class="math notranslate nohighlight">\(K\)</span>, <span class="math notranslate nohighlight">\(K'\)</span> gives a
+linear dispersion, <span class="math notranslate nohighlight">\(E(\mathbf{k}) = \pm\hbar v_F|\mathbf{k}|\)</span>, with
+the two bands touching at exactly zero energy – turning a tabletop
+condensed matter experiment into a laboratory for relativistic quantum
+phenomena, and putting the honeycomb lattice, and Haldane’s sixteen-year
+old model built on it, at the center of the field. Geim and Novoselov
+shared the 2010 Nobel Prize in Physics for this work.</p>
+<figure class="align-default">
+<img alt="../_images/models_breakthroughs-3.png" class="plot-directive" src="../_images/models_breakthroughs-3.png" />
+</figure>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.lattices.honeycomb" title="tbkit.lattices.honeycomb"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.lattices.honeycomb()</span></code></a>, or the equivalent
+hand-built unit cell used throughout this package’s graphene examples;
+<a class="reference internal" href="../tbkit.html#tbkit.graphene.GrapheneLattice" title="tbkit.graphene.GrapheneLattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.graphene.GrapheneLattice</span></code></a> additionally provides ready-made
+finite flakes of several shapes and terminations (triangular/hexagonal,
+zigzag/armchair).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/tight_binding/plot_isolation_of_graphene.py</span></code>
+confirms the Berry phase <span class="math notranslate nohighlight">\(\pi\)</span> around both Dirac points, with
+opposite pseudospin windings, the <span class="math notranslate nohighlight">\(||A|-|B||\)</span> zero modes of
+zigzag triangles, and the different scaling of the lowest levels of
+zigzag and armchair hexagons.</p>
+<p><em>References:</em> K. S. Novoselov, A. K. Geim, S. V. Morozov, D. Jiang, Y.
+Zhang, S. V. Dubonos, I. V. Grigorieva, and A. A. Firsov, “Electric Field
+Effect in Atomically Thin Carbon Films,” Science 306, 666-669 (2004).</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="When Novoselov, Geim and coworkers isolated graphene in 2004, the tight-binding picture was ready: two Dirac cones, at the inequivalent corners K and K&#x27; of the Brillouin zone. The experiments of 2005 (Novoselov et al.; Zhang, Tan, Stormer and Kim) confirmed its most striking prediction through the anomalous quantum Hall effect: the Bloch states carry a sublattice pseudospin that winds once around each Dirac point -- in opposite senses at the two valleys -- so an electron circling either one picks up a Berry phase of \pi."><img alt="" src="../_images/sphx_glr_plot_isolation_of_graphene_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/tight_binding/plot_isolation_of_graphene.html"><span class="doc">The Isolation of Graphene: Flakes, Edges, and a Berry Phase of pi</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Isolation of Graphene: Flakes, Edges, and a Berry Phase of pi</div>
+</div></div></section>
+<section id="the-kernel-polynomial-method">
+<h2><a class="toc-backref" href="#id15" role="doc-backlink">2006 – The Kernel Polynomial Method</a><a class="headerlink" href="#the-kernel-polynomial-method" title="Link to this heading">#</a></h2>
+<p>Weisse, Wellein, Alvermann and Fehske turned the Chebyshev expansions of
+Silver and Roder (1994) into the standard way of computing spectral
+properties of very large sparse Hamiltonians without diagonalizing them:
+expand <span class="math notranslate nohighlight">\(\delta(E - H)\)</span> in Chebyshev polynomials of the rescaled
+Hamiltonian, compute each moment with one sparse matrix-vector product,
+estimate traces with a few random vectors, and damp the truncation’s
+Gibbs oscillations with a kernel. The cost grows linearly with the number
+of sites – millions of them, for densities of states, local densities
+of states, and Kubo conductivities.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#module-tbkit.kpm" title="tbkit.kpm"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.kpm</span></code></a> (<a class="reference internal" href="../tbkit.html#tbkit.kpm.dos" title="tbkit.kpm.dos"><code class="xref py py-func docutils literal notranslate"><span class="pre">dos()</span></code></a>,
+<a class="reference internal" href="../tbkit.html#tbkit.kpm.ldos" title="tbkit.kpm.ldos"><code class="xref py py-func docutils literal notranslate"><span class="pre">ldos()</span></code></a>, <a class="reference internal" href="../tbkit.html#tbkit.kpm.conductivity" title="tbkit.kpm.conductivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">conductivity()</span></code></a>, with the Jackson
+and Lorentz kernels).</p>
+<p><em>References:</em> A. Weisse, G. Wellein, A. Alvermann, and H. Fehske, “The
+Kernel Polynomial Method,” Rev. Mod. Phys. 78, 275-306 (2006); R. N.
+Silver and H. Roder, Int. J. Mod. Phys. C 5, 735 (1994).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/large_scale/plot_kernel_polynomial_method.py</span></code>
+computes the density of states of a 45,000-site graphene sheet, confirms
+it against the Brillouin-zone result to within 3% and against the Dirac
+law near <span class="math notranslate nohighlight">\(E = 0\)</span>, finds the van Hove peak at <span class="math notranslate nohighlight">\(|t|\)</span>, and the
+zero-energy states bound by 2% of vacancies.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Diagonalizing N sites costs N^3 operations and N^2 memory: a few thousand sites at most. The kernel polynomial method (Silver and Roder, 1994; reviewed by Weisse, Wellein, Alvermann and Fehske, Rev. Mod. Phys. 78, 275 (2006)) never diagonalizes. It expands the spectral density in Chebyshev polynomials of the rescaled Hamiltonian,"><img alt="" src="../_images/sphx_glr_plot_kernel_polynomial_method_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/large_scale/plot_kernel_polynomial_method.html"><span class="doc">The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites</div>
+</div></div></section>
+<section id="band-unfolding-effective-band-structures-of-supercells">
+<h2><a class="toc-backref" href="#id16" role="doc-backlink">2010 – Band Unfolding: Effective Band Structures of Supercells</a><a class="headerlink" href="#band-unfolding-effective-band-structures-of-supercells" title="Link to this heading">#</a></h2>
+<p>Alloys, dopants, vacancies and disorder break the translation symmetry,
+and a calculation in a supercell folds the bands into a Brillouin zone
+<span class="math notranslate nohighlight">\(N\)</span> times smaller, burying the band structure that photoemission
+actually measures. W. Ku, T. Berlijn and C.-C. Lee, and independently V.
+Popescu and A. Zunger, unfolded it: the weight of each supercell state
+<span class="math notranslate nohighlight">\(|\mathbf{K}J\rangle\)</span> on the primitive Bloch states at every
+<span class="math notranslate nohighlight">\(\mathbf{k}\)</span> folding onto <span class="math notranslate nohighlight">\(\mathbf{K}\)</span> gives an <em>effective</em>
+spectral function <span class="math notranslate nohighlight">\(A(\mathbf{k},\omega) = \sum_J W_J(\mathbf{k})
+\delta(\omega - E_J)\)</span> in the primitive zone: sharp bands where the
+crystal is ordered, broadened ones where disorder scatters the electrons.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.moire.supercell" title="tbkit.moire.supercell"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.moire.supercell()</span></code></a> (any integer supercell
+matrix, spinful models and overlaps included),
+<a class="reference internal" href="../tbkit.html#tbkit.moire.unfold" title="tbkit.moire.unfold"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.moire.unfold()</span></code></a> and <a class="reference internal" href="../tbkit.html#tbkit.moire.spectral_function" title="tbkit.moire.spectral_function"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.moire.spectral_function()</span></code></a>.</p>
+<p><em>References:</em> W. Ku, T. Berlijn, and C.-C. Lee, “Unfolding First-Principles
+Band Structures,” Phys. Rev. Lett. 104, 216401 (2010); V. Popescu and A.
+Zunger, “Extracting E versus k effective band structure from supercell
+calculations on alloys and impurities,” Phys. Rev. B 85, 085201 (2012).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/moire/plot_band_unfolding.py</span></code> confirms that a
+pristine <span class="math notranslate nohighlight">\(3\times3\)</span> graphene supercell unfolds exactly onto the two
+graphene bands, the coherence factors <span class="math notranslate nohighlight">\((1\pm\epsilon_k/E_k)/2\)</span> of a
+staggered chain, the sum rule <span class="math notranslate nohighlight">\(\int A\,d\omega = 2\)</span>, and a peak
+width that grows with the Anderson disorder of a <span class="math notranslate nohighlight">\(6\times6\)</span>
+supercell.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Disorder, defects and superstructures need a supercell, and a supercell folds the bands into a smaller Brillouin zone: N times more bands, most of them spectators. W. Ku, T. Berlijn and C.-C. Lee (2010), and V. Popescu and A. Zunger, unfolded them back: each supercell state |\mathbf{K}J\rangle gets the weight W_J(\mathbf{k}) = \sum_o|\langle\mathbf{k}o|\mathbf{K}J\rangle|^2 at every primitive \mathbf{k} folding onto \mathbf{K}, and the spectral function A(\mathbf{k},\omega) = \sum_J W_J(\mathbf{k}) \delta(\omega-E_J) -- what angle-resolved photoemission measures -- is drawn in the primitive zone again."><img alt="" src="../_images/sphx_glr_plot_band_unfolding_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/moire/plot_band_unfolding.html"><span class="doc">Band Unfolding: the Effective Band Structure of a Disordered Supercell</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Band Unfolding: the Effective Band Structure of a Disordered Supercell</div>
+</div></div></section>
+<section id="see-also">
+<h2><a class="toc-backref" href="#id17" role="doc-backlink">See Also</a><a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="index.html"><span class="doc">History</span></a> – the other chapters of this chronology.</p></li>
+<li><p><a class="reference internal" href="../tutorial.html"><span class="doc">Tutorial</span></a> – a narrative walkthrough of the same API.</p></li>
+<li><p><a class="reference internal" href="../tbkit.html"><span class="doc">API</span></a> – the full API reference.</p></li>
+<li><p><a class="reference internal" href="../api/gallery/index.html"><span class="doc">Examples</span></a> – every example, including those not linked above.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">History</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="fields_breakthroughs.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Breakthroughs in Fields, Strain and Disorder</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bloch-s-theorem-and-band-theory">1928 – Bloch’s Theorem and Band Theory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brillouin-zones-and-standard-high-symmetry-paths">1930/2010 – Brillouin Zones and Standard High-Symmetry Paths</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wallace-s-tight-binding-prediction-of-graphene">1947 – Wallace’s Tight-Binding Prediction of Graphene</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lowdin-orthogonalization-and-non-orthogonal-tight-binding">1950 – Löwdin Orthogonalization and Non-Orthogonal Tight Binding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-slater-koster-tight-binding-framework">1954 – The Slater-Koster Tight-Binding Framework</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-kp-method-and-effective-mass-theory">1955/1957 – The k·p Method and Effective-Mass Theory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-tetrahedron-method-for-the-density-of-states">1971/1972 – The Tetrahedron Method for the Density of States</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monkhorst-pack-k-point-grids">1976 – Monkhorst-Pack k-Point Grids</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fermion-doubling-the-nielsen-ninomiya-theorem">1981 – Fermion Doubling: the Nielsen-Ninomiya Theorem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lopez-sancho-decimation-and-the-surface-green-s-function">1985 – Lopez Sancho Decimation and the Surface Green’s Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zigzag-edge-states-of-graphene-ribbons">1996 – Zigzag Edge States of Graphene Ribbons</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximally-localized-wannier-functions">1997/2008 – Maximally Localized Wannier Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disentanglement-of-entangled-bands">2001 – Disentanglement of Entangled Bands</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#isolation-of-graphene">2004 – Isolation of Graphene</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-kernel-polynomial-method">2006 – The Kernel Polynomial Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#band-unfolding-effective-band-structures-of-supercells">2010 – Band Unfolding: Effective Band Structures of Supercells</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See Also</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/history/models_breakthroughs.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2026, Charles Poli.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

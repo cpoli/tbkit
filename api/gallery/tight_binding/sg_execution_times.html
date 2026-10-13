@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 
@@ -8,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Computation times &#8212; tbkit 0.5.0 documentation</title>
+    <title>Computation times &#8212; tbkit 0.6.0 documentation</title>
   
   
   
@@ -27,23 +26,23 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../../_static/documentation_options.js?v=70f82a29"></script>
+    <script src="../../../_static/documentation_options.js?v=dda85ae5"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,8 +52,9 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.5" />
+  <meta name="docsearch:version" content="0.6" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -102,7 +102,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -148,7 +148,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../history.html">
+  <a class="nav-link nav-internal" href="../../../history/index.html">
     History
   </a>
 </li>
@@ -178,7 +178,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -219,7 +219,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -228,7 +228,7 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -268,7 +268,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../history.html">
+  <a class="nav-link nav-internal" href="../../../history/index.html">
     History
   </a>
 </li>
@@ -381,7 +381,7 @@
                   
   <section id="computation-times">
 <span id="sphx-glr-api-gallery-tight-binding-sg-execution-times"></span><h1>Computation times<a class="headerlink" href="#computation-times" title="Link to this heading">#</a></h1>
-<p><strong>00:03.366</strong> total execution time for 11 files <strong>from api/gallery/tight_binding</strong>:</p>
+<p><strong>00:12.758</strong> total execution time for 15 files <strong>from api/gallery/tight_binding</strong>:</p>
 <div class="docutils container">
 <style scoped>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
@@ -402,48 +402,64 @@ $(document).ready( function () {
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="plot_tetrahedron_method.html#sphx-glr-api-gallery-tight-binding-plot-tetrahedron-method-py"><span class="std std-ref">The Tetrahedron Method for the Density of States</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_tetrahedron_method.py</span></code>)</p></td>
-<td><p>00:01.004</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="plot_zigzag_edge_states.html#sphx-glr-api-gallery-tight-binding-plot-zigzag-edge-states-py"><span class="std std-ref">Zigzag Edge States of Graphene Ribbons</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_zigzag_edge_states.py</span></code>)</p></td>
+<td><p>00:02.213</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="plot_square_lattice_bands.html#sphx-glr-api-gallery-tight-binding-plot-square-lattice-bands-py"><span class="std std-ref">The Square Lattice: Bloch’s Theorem in its Simplest Form</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_square_lattice_bands.py</span></code>)</p></td>
-<td><p>00:00.873</p></td>
+<td><p>00:02.025</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="plot_fermi_surfaces.html#sphx-glr-api-gallery-tight-binding-plot-fermi-surfaces-py"><span class="std std-ref">Fermi Surfaces and Constant-Energy Contours</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_fermi_surfaces.py</span></code>)</p></td>
-<td><p>00:00.278</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="plot_tetrahedron_method.html#sphx-glr-api-gallery-tight-binding-plot-tetrahedron-method-py"><span class="std std-ref">The Tetrahedron Method for the Density of States</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_tetrahedron_method.py</span></code>)</p></td>
+<td><p>00:01.953</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="plot_brillouin_zones_and_high_symmetry_paths.html#sphx-glr-api-gallery-tight-binding-plot-brillouin-zones-and-high-symmetry-paths-py"><span class="std std-ref">Brillouin Zones and Standard High-Symmetry Paths</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_brillouin_zones_and_high_symmetry_paths.py</span></code>)</p></td>
+<td><p>00:01.253</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="plot_surface_greens_function.html#sphx-glr-api-gallery-tight-binding-plot-surface-greens-function-py"><span class="std std-ref">The Surface Green’s Function by Lopez Sancho Decimation</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_surface_greens_function.py</span></code>)</p></td>
+<td><p>00:00.937</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="plot_parametrized_hamiltonians.html#sphx-glr-api-gallery-tight-binding-plot-parametrized-hamiltonians-py"><span class="std std-ref">Parametrized Hamiltonians: Sweeping Without Rebuilding</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_parametrized_hamiltonians.py</span></code>)</p></td>
-<td><p>00:00.275</p></td>
+<td><p>00:00.679</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="plot_projected_bands_and_spin_textures.html#sphx-glr-api-gallery-tight-binding-plot-projected-bands-and-spin-textures-py"><span class="std std-ref">Projected Bands and Spin Textures</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_projected_bands_and_spin_textures.py</span></code>)</p></td>
-<td><p>00:00.213</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="plot_fermi_surfaces.html#sphx-glr-api-gallery-tight-binding-plot-fermi-surfaces-py"><span class="std std-ref">Fermi Surfaces and Constant-Energy Contours</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_fermi_surfaces.py</span></code>)</p></td>
+<td><p>00:00.676</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="plot_visualizing_a_model.html#sphx-glr-api-gallery-tight-binding-plot-visualizing-a-model-py"><span class="std std-ref">Visualizing a Model: tbkit.plot.Plot</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_visualizing_a_model.py</span></code>)</p></td>
-<td><p>00:00.206</p></td>
+<td><p>00:00.662</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="plot_periodic_boundaries.html#sphx-glr-api-gallery-tight-binding-plot-periodic-boundaries-py"><span class="std std-ref">Periodic Boundaries in Real Space: Tori and Cylinders</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_periodic_boundaries.py</span></code>)</p></td>
-<td><p>00:00.172</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="plot_projected_bands_and_spin_textures.html#sphx-glr-api-gallery-tight-binding-plot-projected-bands-and-spin-textures-py"><span class="std std-ref">Projected Bands and Spin Textures</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_projected_bands_and_spin_textures.py</span></code>)</p></td>
+<td><p>00:00.593</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="plot_periodic_boundaries.html#sphx-glr-api-gallery-tight-binding-plot-periodic-boundaries-py"><span class="std std-ref">Periodic Boundaries in Real Space: Tori and Cylinders</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_periodic_boundaries.py</span></code>)</p></td>
+<td><p>00:00.410</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="plot_monkhorst_pack_grids.html#sphx-glr-api-gallery-tight-binding-plot-monkhorst-pack-grids-py"><span class="std std-ref">Monkhorst-Pack k-Point Grids</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_monkhorst_pack_grids.py</span></code>)</p></td>
+<td><p>00:00.363</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="plot_building_finite_lattices.html#sphx-glr-api-gallery-tight-binding-plot-building-finite-lattices-py"><span class="std std-ref">Building Finite Lattices: Unit Cells, Cuts, and Lattice Arithmetic</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_building_finite_lattices.py</span></code>)</p></td>
-<td><p>00:00.105</p></td>
+<td><p>00:00.264</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="plot_isolation_of_graphene.html#sphx-glr-api-gallery-tight-binding-plot-isolation-of-graphene-py"><span class="std std-ref">The Isolation of Graphene: Flakes, Edges, and a Berry Phase of pi</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_isolation_of_graphene.py</span></code>)</p></td>
-<td><p>00:00.085</p></td>
+<td><p>00:00.256</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="plot_defects_and_impurities.html#sphx-glr-api-gallery-tight-binding-plot-defects-and-impurities-py"><span class="std std-ref">Defects and Impurities in a Graphene Flake: Vacancy Zero Modes and Bound States</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_defects_and_impurities.py</span></code>)</p></td>
-<td><p>00:00.085</p></td>
+<td><p>00:00.255</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="plot_graphene_bands.html#sphx-glr-api-gallery-tight-binding-plot-graphene-bands-py"><span class="std std-ref">Graphene: Real-Space Flake and Reciprocal-Space Bands</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_graphene_bands.py</span></code>)</p></td>
-<td><p>00:00.071</p></td>
+<td><p>00:00.219</p></td>
 <td><p>0.0</p></td>
 </tr>
 </tbody>
@@ -495,8 +511,8 @@ $(document).ready( function () {
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -517,7 +533,6 @@ $(document).ready( function () {
 
   <p class="sphinx-version">
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
-    <br/>
   </p>
 </div>
       
@@ -530,7 +545,7 @@ $(document).ready( function () {
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
 </p></div>
       
     </div>

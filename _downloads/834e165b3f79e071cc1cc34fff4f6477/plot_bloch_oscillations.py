@@ -10,7 +10,7 @@ units where :math:`\hbar=1`). In real crystals scattering happens on a far
 shorter timescale than :math:`T_B`, which is why the effect went
 unobserved for over 60 years -- it took artificial semiconductor
 superlattices (Waschke et al., 1993), with a far larger effective lattice
-constant, to see it directly. See :doc:`/history` for the full historical
+constant, to see it directly. See :doc:`/history/driven_breakthroughs` for the full historical
 context.
 
 Nothing new needs to be added to tbkit for this: a linear onsite potential

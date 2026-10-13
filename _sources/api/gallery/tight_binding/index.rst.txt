@@ -7,11 +7,15 @@ Tight-Binding
 
 The generic real-space and reciprocal-space machinery: the square
 lattice, whose single band is simple enough to check by hand, as the
-smallest complete illustration of Bloch's theorem; a graphene flake
+smallest complete illustration of Bloch's theorem; Brillouin zones and
+the standard high-symmetry paths of the 2D and 3D Bravais lattices;
+Monkhorst-Pack k-point grids; a graphene flake
 diagonalized directly and its Bloch band structure along a k-path,
 including Wallace's 1947 linear (Dirac) dispersion near the K point;
 the physics behind the 2004 isolation of graphene -- flakes, edge
-states, and the Berry phase of pi of its Dirac cones; and
+states, and the Berry phase of pi of its Dirac cones; the zigzag edge
+states of graphene ribbons and the 3m + 2 rule of armchair ribbons;
+surface Green's functions by Lopez Sancho decimation; and
 :class:`tbkit.plot.Plot`'s lattice, spectrum, density-of-states, and
 eigenstate-intensity plots; parametrized Hamiltonians, whose value
 functions let a flux or dimerization sweep re-evaluate the hoppings
@@ -32,6 +36,23 @@ and the tetrahedron method for the density of states.
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="L. Brillouin (1930) gave the zone that carries his name: the set of \mathbf{k} closer to the origin than to any other reciprocal lattice vector \mathbf{G}, the Wigner-Seitz cell of the reciprocal lattice. Its faces are the planes where Bragg reflection |\mathbf{k}| = |\mathbf{k} - \mathbf{G}| opens band gaps, and its corners and face centres are the points of highest symmetry, where bands reach their extrema, cross or are degenerate. A band structure is therefore drawn along a path through them. W. Setyawan and S. Curtarolo (2010) fixed one standard path per Bravais lattice, so that band structures from different codes can be compared at a glance.">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_brillouin_zones_and_high_symmetry_paths_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_brillouin_zones_and_high_symmetry_paths`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Brillouin Zones and Standard High-Symmetry Paths</div>
+    </div>
+
 
 .. raw:: html
 
@@ -120,6 +141,23 @@ and the tetrahedron method for the density of states.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Total energies, charge densities and every ground-state property of a crystal are averages over the Brillouin zone, \bar f = \frac{1}{V_{BZ}}\int f(\mathbf{k})\,d\mathbf{k}. H. J. Monkhorst and J. D. Pack (1976) replaced the integral by the mean over a uniform grid of q points along each reciprocal vector, u_r = (2r - q - 1)/2q, r = 1, \dots, q. A smooth periodic function is a Fourier series f(\mathbf{k}) = \sum_\mathbf{R} f_\mathbf{R}e^{i\mathbf{k}\cdot\mathbf{R}}, and such a grid averages every term to zero except those with all R_i multiples of q: it integrates exactly every Fourier component of range below q lattice vectors. For an insulator the components decay exponentially, and so does the error. For even q the grid is shifted off \Gamma, and its points fall into fewer orbits of the point group, so fewer have to be computed. Monkhorst-Pack grids have been the default k-point sampling of band-structure codes ever since.">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_monkhorst_pack_grids_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_monkhorst_pack_grids`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Monkhorst-Pack k-Point Grids</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="A sweep over a magnetic field, a gate voltage or a dimerization usually rebuilds the model at every step: find the bonds, set the hoppings, apply the field. A value function replaces a number by a callable of the sites and of named parameters, t(site_i, site_j, params) or onsite(site, params). The model stores its bonds once, and get_ham (``sys.get_ham(alpha=...)``) or get_ham (``ks.get_ham(k, v=...)``) only re-evaluates the values. site_i and site_j are structured arrays holding every bond at once (fields &#x27;x&#x27;, &#x27;y&#x27;, &#x27;tag&#x27;, &#x27;index&#x27;), so each function runs once per Hamiltonian, vectorized.">
 
 .. only:: html
@@ -188,6 +226,23 @@ and the tetrahedron method for the density of states.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="A surface is a crystal cut in half: periodic along the surface, but semi-infinite in depth. Its local density of states is -\frac{1}{\pi}\mathrm{Im}\,G_{00}(E + i\eta), the Green&#x27;s function of the outermost layer, which depends on every layer below it. A finite slab only approximates it, with discrete levels and a second surface. The recursion g = [E - h_0 - v\,g\,v^\dagger]^{-1}, which adds one layer at a time, converges only as fast as the broadening \eta damps the waves coming back from the bulk: \sim1/\eta steps.">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_surface_greens_function_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_surface_greens_function`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Surface Green's Function by Lopez Sancho Decimation</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The density of states \rho(E) = \sum_n\int\frac{d\mathbf{k}}{V_{BZ}}\, \delta(E - E_n(\mathbf{k})) needs an integral over the Brillouin zone, but a calculation only knows the bands on a finite mesh. Broadening each eigenvalue into a Gaussian of width \sigma turns the sum into a smooth curve, at the price of smearing exactly the features that matter: band edges, and the van Hove singularities where \nabla_k E = 0.">
 
 .. only:: html
@@ -220,6 +275,23 @@ and the tetrahedron method for the density of states.
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="M. Fujita, K. Wakabayashi, K. Nakada and K. Kusakabe (1996) cut graphene into ribbons and found that the shape of the edge decides the low-energy physics. A ribbon with zigzag edges has a band of states at exactly E = 0, localized at the edges, over a third of its Brillouin zone, 2\pi/3 \le |ka| \le \pi. Each such state lives on one sublattice only, with amplitude (-2\cos\tfrac{ka}{2})^n on the n-th zigzag chain from its edge: localized when |2\cos\tfrac{ka}{2}| &lt; 1, most strongly at the zone boundary. The flat band piles up states at the Fermi level, a peak in the density of states that makes the edges magnetic once electrons interact. A ribbon with armchair edges has no edge states. Nakada et al. showed that it is metallic only when its number N of dimer lines is N = 3m + 2, and gapped otherwise.">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_zigzag_edge_states_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_zigzag_edge_states`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Zigzag Edge States of Graphene Ribbons</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -230,15 +302,19 @@ and the tetrahedron method for the density of states.
 .. toctree::
    :hidden:
 
+   /api/gallery/tight_binding/plot_brillouin_zones_and_high_symmetry_paths
    /api/gallery/tight_binding/plot_building_finite_lattices
    /api/gallery/tight_binding/plot_defects_and_impurities
    /api/gallery/tight_binding/plot_fermi_surfaces
    /api/gallery/tight_binding/plot_graphene_bands
    /api/gallery/tight_binding/plot_isolation_of_graphene
+   /api/gallery/tight_binding/plot_monkhorst_pack_grids
    /api/gallery/tight_binding/plot_parametrized_hamiltonians
    /api/gallery/tight_binding/plot_periodic_boundaries
    /api/gallery/tight_binding/plot_projected_bands_and_spin_textures
    /api/gallery/tight_binding/plot_square_lattice_bands
+   /api/gallery/tight_binding/plot_surface_greens_function
    /api/gallery/tight_binding/plot_tetrahedron_method
    /api/gallery/tight_binding/plot_visualizing_a_model
+   /api/gallery/tight_binding/plot_zigzag_edge_states
 

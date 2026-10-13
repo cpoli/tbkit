@@ -1,0 +1,154 @@
+r"""
+The Surface Green's Function by Lopez Sancho Decimation
+=============================================================
+
+A surface is a crystal cut in half: periodic along the surface, but
+semi-infinite in depth. Its local density of states is
+:math:`-\frac{1}{\pi}\mathrm{Im}\,G_{00}(E + i\eta)`, the Green's function
+of the outermost layer, which depends on every layer below it. A finite
+slab only approximates it, with discrete levels and a second surface. The
+recursion :math:`g = [E - h_0 - v\,g\,v^\dagger]^{-1}`, which adds one
+layer at a time, converges only as fast as the broadening :math:`\eta`
+damps the waves coming back from the bulk: :math:`\sim1/\eta` steps.
+
+M. P. Lopez Sancho, J. M. Lopez Sancho and J. Rubio (1984, 1985)
+decimated instead. Each step eliminates every other layer, which leaves a
+chain of the same form with renormalized couplings, so step :math:`n`
+accounts for :math:`2^n` layers and the renormalized couplings vanish
+after a few tens of steps. This made surface Green's functions a routine
+calculation: the surface states and resonances of photoemission, and the
+self-energies of the semi-infinite leads of quantum transport.
+
+:func:`tbkit.transport.surface_green` decimates any chain of cells
+:math:`(h_0, v)`, and :meth:`tbkit.kspace.KSpace.surface_spectral_function`
+applies it to the surface of a periodic model.
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+
+from tbkit.lattice import Lattice
+from tbkit.kspace import KSpace
+from tbkit.transport import surface_green
+
+
+# %%
+# The semi-infinite chain
+# ---------------------------
+# For a chain with hopping :math:`t` the recursion
+# :math:`g = 1/(E - t^2g)` is a quadratic equation, and its retarded root
+# is :math:`g(E) = (E - i\sqrt{4t^2 - E^2})/2t^2` inside the band. The
+# surface density of states :math:`\sqrt{4t^2 - E^2}/2\pi t^2` vanishes at
+# the band edges like a square root, where the bulk one,
+# :math:`1/\pi\sqrt{4t^2 - E^2}`, diverges.
+
+t = 1.
+energies = np.linspace(-1.99, 1.99, 81)
+g_dec = np.array([surface_green([[0.]], [[t]], e)[0, 0] for e in energies])
+g_exact = (energies - 1j * np.sqrt(4 * t ** 2 - energies ** 2)) / (2 * t ** 2)
+print('Decimation vs closed form: max |g - g_exact| = {:.1e}'.format(np.abs(g_dec - g_exact).max()))
+assert np.allclose(g_dec, g_exact, atol=1e-6)
+rho_surface = -g_dec.imag / np.pi
+assert np.allclose(rho_surface, np.sqrt(4 * t ** 2 - energies ** 2) / (2 * np.pi * t ** 2), atol=1e-6)
+
+# %%
+# Twenty steps instead of :math:`1/\eta`
+# ------------------------------------------
+# The number of decimation steps needed grows like
+# :math:`\log_2(1/\eta)`; the layer-by-layer recursion needs about
+# :math:`1/\eta` iterations to reach the same Green's function.
+
+
+def decimation_steps(energy, eta):
+    '''Fewest decimation steps for which surface_green converges.'''
+    n = 1
+    while True:
+        try:
+            return n, surface_green([[0.]], [[t]], energy, eta=eta, max_iter=n)[0, 0]
+        except RuntimeError:
+            n += 1
+
+
+def recursion_steps(energy, eta, target, tol=1e-8):
+    '''Iterations of g = 1/(E + i eta - t^2 g) from g = 0 until within tol of target.'''
+    g, n = 0., 0
+    while abs(g - target) > tol * abs(target):
+        g = 1. / (energy + 1j * eta - t ** 2 * g)
+        n += 1
+    return n
+
+
+etas = np.array([1e-1, 1e-2, 1e-3, 1e-4])
+n_dec, n_rec = [], []
+for eta in etas:
+    steps, g = decimation_steps(0.7, eta)
+    n_dec.append(steps)
+    n_rec.append(recursion_steps(0.7, eta, g))
+    print('eta = {:.0e}: {:3d} decimation steps, {:6d} recursion steps'.format(eta, n_dec[-1], n_rec[-1]))
+n_dec, n_rec = np.array(n_dec), np.array(n_rec)
+assert np.all(n_dec <= 25)
+assert np.all(np.diff(n_dec) <= 4)                  # about log2(10) = 3.3 more per decade
+assert n_rec[-1] > 100 * n_dec[-1]
+assert np.allclose(n_rec[1:] / n_rec[:-1], 10., rtol=0.05)   # proportional to 1/eta
+
+# %%
+# A surface state: the end of an SSH chain
+# --------------------------------------------
+# The Su-Schrieffer-Heeger chain alternates hoppings :math:`t_1`
+# (inside the cell) and :math:`t_2`. When the chain ends on a weak bond
+# (:math:`|t_1| < |t_2|`), a state at :math:`E = 0` is bound to the end,
+# with amplitude :math:`(-t_1/t_2)^n` on the :math:`a` site of cell
+# :math:`n`: a weight :math:`1 - (t_1/t_2)^2` on the outermost cell. It is
+# a delta function in the surface spectral function,
+# :math:`A(0) = [1 - (t_1/t_2)^2]/\pi\eta` at small :math:`\eta`, with no
+# bulk state at that energy. When the chain ends on a strong bond there is
+# none. Here the crystal is the semi-infinite chain of cells
+# :math:`0, 1, 2, \dots`; ``side=-1`` gives the opposite end.
+
+
+def ssh(t1, t2):
+    lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (0.5, 0.)}],
+                  prim_vec=[(1., 0.)])
+    ks = KSpace(lat)
+    ks.set_hopping([{'i': 0, 'j': 1, 'R': (0,), 't': t1}, {'i': 1, 'j': 0, 'R': (1,), 't': t2}])
+    return ks
+
+
+eta = 1e-4
+t1, t2 = 0.4, 1.
+for side in (1, -1):
+    weight = ssh(t1, t2).surface_spectral_function([[0.]], [0.], direction=0, side=side, eta=eta)[0, 0] * np.pi * eta
+    print('t1/t2 = {}: end-state weight on the outer cell {:.4f} (side {:+d}), expected {:.4f}'.format(
+        t1 / t2, weight, side, 1 - (t1 / t2) ** 2))
+    assert np.isclose(weight, 1 - (t1 / t2) ** 2, rtol=1e-4)
+trivial = ssh(t2, t1).surface_spectral_function([[0.]], [0.], direction=0, eta=eta)[0, 0] * np.pi * eta
+print('t1/t2 = {}: weight at E = 0 {:.1e}'.format(t2 / t1, trivial))
+assert trivial < 1e-6
+
+e_grid = np.linspace(-1.6, 1.6, 641)
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4.5))
+ax1.plot(energies, rho_surface, lw=2, label='surface (decimation)')
+ax1.plot(energies, 1 / (np.pi * np.sqrt(4 * t ** 2 - energies ** 2)), '--', lw=2, label='bulk')
+ax1.set_xlabel('$E/t$')
+ax1.set_ylabel('local density of states')
+ax1.set_ylim(0, 1.)
+ax1.set_title('Semi-infinite chain')
+ax1.legend()
+for (a, b), label in (((t1, t2), 'weak end bond: end state'), ((t2, t1), 'strong end bond')):
+    spec = ssh(a, b).surface_spectral_function([[0.]], e_grid, direction=0, eta=1e-2)[0]
+    ax2.semilogy(e_grid, spec, lw=1.5, label=label)
+ax2.semilogy(e_grid, ssh(t1, t2).surface_spectral_function([[0.]], e_grid, direction=0, eta=1e-2,
+                                                           bulk=True)[0], 'k:', lw=1.5, label='bulk cell')
+ax2.set_xlabel('$E/t_2$')
+ax2.set_ylabel(r'$A(E)$')
+ax2.set_title('End of the SSH chain ($t_1/t_2 = 0.4$)')
+ax2.legend(fontsize=9)
+fig.tight_layout()
+
+fig_steps, ax = plt.subplots(figsize=(6, 4))
+ax.loglog(1 / etas, n_rec, 's-', label='layer-by-layer recursion')
+ax.loglog(1 / etas, n_dec, 'o-', label='Lopez Sancho decimation')
+ax.set_xlabel(r'$1/\eta$')
+ax.set_ylabel('steps to converge')
+ax.legend()
+ax.set_title(r'Cost of $g_s(E + i\eta)$')
+fig_steps.tight_layout()

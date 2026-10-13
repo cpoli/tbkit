@@ -133,7 +133,7 @@ number in the gap at :math:`\pi/T` is 1.
 
  .. code-block:: none
 
-    max |quasienergy| = 1.0e-15, C = 2.8e-16, W(pi/T) = 1.000000000000
+    max |quasienergy| = 1.0e-15, C = 9.3e-17, W(pi/T) = 1.000000000000
 
 
 
@@ -250,7 +250,7 @@ unit cell (two sites) per period, and around the flake counterclockwise.
     Bulk particle: [(np.float64(4.0), np.float64(4.0)), (np.float64(4.0), np.float64(4.0)), (np.float64(4.0), np.float64(4.0))] ...
     Edge particle: [(np.float64(2.0), np.float64(0.0)), (np.float64(4.0), np.float64(0.0)), (np.float64(6.0), np.float64(0.0)), (np.float64(8.0), np.float64(0.0)), (np.float64(9.0), np.float64(1.0)), (np.float64(9.0), np.float64(3.0)), (np.float64(9.0), np.float64(5.0))]
 
-    <matplotlib.legend.Legend object at 0x115da82f0>
+    <matplotlib.legend.Legend object at 0x7fdce5fa7610>
 
 
 
@@ -328,7 +328,7 @@ below). It fails in both non-trivial phases.
      1.950e-01 1.000e+00 1.000e+00 1.000e+00 1.000e+00 1.004e+00]
     W_pi     : [ 0.    -0.     0.     0.167  1.     1.     1.     1.     1.     1.
       1.     1.     1.   ]
-    C_up     : [ 0.  0. -0. -0. -1. -1. -1. -1.  0.  0.  0. -0.  0.]
+    C_up     : [ 0. -0. -0.  0. -1. -1. -1. -1.  0. -0.  0. -0.  0.]
     The Chern numbers of H_F miss the edge states at J (pi/T) = [1.4 1.6 1.8 2.2 2.4 2.6 2.8 3. ]
 
 
@@ -381,14 +381,14 @@ states in both gaps; in the Chern phase only at :math:`\pi/T`.
     J = 1.6 pi/T: bottom-edge states at 0 and pi/T: +0.0000 +1.0000
     J = 2.4 pi/T: bottom-edge states at 0 and pi/T: +1.0000 +1.0000
 
-    <matplotlib.legend.Legend object at 0x10fade120>
+    <matplotlib.legend.Legend object at 0x7fdcd48dfc50>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.387 seconds)
+   **Total running time of the script:** (0 minutes 14.153 seconds)
 
 
 .. _sphx_glr_download_api_gallery_floquet_plot_anomalous_floquet_phases.py:

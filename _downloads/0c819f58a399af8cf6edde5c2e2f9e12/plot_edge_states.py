@@ -1,28 +1,24 @@
 r"""
-Edge States on Ribbons
-===========================
+Helical Edge States of the Kane-Mele Ribbon
+================================================
 
 Cutting a periodic 2D model into a ribbon (periodic in one direction,
 finite/open in the other -- see :func:`tbkit.kspace.ribbon`) is the
-standard way to see edge physics in a tight-binding band structure. Two
-classic examples:
-
-1. A zigzag graphene ribbon has a partially-flat band pinned at E=0,
-   built entirely from states localized on the two edges.
-2. Adding Kane-Mele intrinsic spin-orbit coupling (see
-   :doc:`plot_haldane_topology` for the closely related Haldane model)
-   opens a bulk gap and produces *helical* edge states: gapless,
-   spin-momentum-locked modes that cross the bulk gap, one Kramers pair
-   per edge. This is the original model of a 2D (Z2) topological
-   insulator.
+standard way to see edge physics in a tight-binding band structure.
+Adding Kane-Mele intrinsic spin-orbit coupling to graphene (see
+:doc:`plot_haldane_topology` for the closely related Haldane model)
+opens a bulk gap and produces *helical* edge states: gapless,
+spin-momentum-locked modes that cross the bulk gap, one Kramers pair per
+edge. This is the original model of a 2D (Z2) topological insulator.
+Without spin-orbit coupling, the same zigzag ribbon has a flat band of
+edge states at E=0 instead (see
+:doc:`/api/gallery/tight_binding/plot_zigzag_edge_states`).
 """
 import numpy as np
 import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice
 from tbkit.kspace import ribbon, PAULI
-from tbkit.system import System
-from tbkit.plot import Plot
 
 
 DX, DY = 0.5 * 3 ** 0.5, 0.5
@@ -37,50 +33,6 @@ width = 30
 
 
 # %%
-# Zigzag graphene ribbon: the E=0 edge flat band
-# --------------------------------------------------------
-
-# A narrow version of the same ribbon, drawn: periodic left-to-right and
-# open top and bottom. It is those two zigzag edges that carry the states
-# found below.
-rib_small = ribbon(lat, graphene_hop, width=6, direction=1)
-# ribbon() stacks its rows along the other primitive vector, which here has
-# a component along the periodic direction too, so tiling its cell as-is
-# draws a slanted parallelogram. Sliding each site back by whole multiples
-# of a1 is the same lattice, drawn as the strip one pictures.
-a1 = np.array(rib_small.lat.prim_vec[0])
-folded = [{'tag': d['tag'],
-               'r0': tuple(np.array(d['r0']) - round(np.dot(d['r0'], a1)/(a1 @ a1))*a1)}
-              for d in rib_small.lat.unit_cell]
-lat_draw = Lattice(unit_cell=folded, prim_vec=rib_small.lat.prim_vec)
-lat_draw.get_lattice(n1=9)
-vis = System(lat_draw)
-vis.set_hopping([{'n': 1, 't': t1}])
-fig_rib = Plot(vis).lattice(plt_hop=True, ms=9, figsize=(8, 4.5))
-
-# %%
-# The ribbon actually diagonalized is 30 cells wide:
-
-rib = ribbon(lat, graphene_hop, width=width, direction=1)
-ks = np.linspace(-np.pi, np.pi, 400)
-en = rib.get_bands(ks[:, None])
-
-tol = 1e-2  # a finite-width ribbon splits the edge-state degeneracy by an
-              # amount exponentially small in the width, so "zero energy"
-              # needs a little tolerance away from the zone boundary.
-n_zero_modes = np.sum(np.any(np.abs(en) < tol, axis=1))
-print('Zigzag ribbon: {} k-points host a (near-)zero mode (out of {}), '
-           'vs. the 1/3 expected analytically.'.format(n_zero_modes, len(ks)))
-assert n_zero_modes > len(ks) // 4
-
-fig, ax = plt.subplots()
-ax.plot(ks, en, 'b', lw=0.7)
-ax.set_xlabel('$k$')
-ax.set_ylabel('$E$')
-ax.set_title('Zigzag graphene ribbon ({} unit cells wide)'.format(width))
-ax.set_xlim([ks[0], ks[-1]])
-
-# %%
 # Kane-Mele ribbon: helical edge states inside a spin-orbit gap
 # --------------------------------------------------------------------
 # The intrinsic (sz-conserving) spin-orbit term opens a bulk gap, but a
@@ -88,9 +40,9 @@ ax.set_xlim([ks[0], ks[-1]])
 # Brillouin zone (its momentum is set by where the bulk Dirac points K, K'
 # project onto this ribbon's 1D Brillouin zone) -- Kramers' theorem forbids
 # gapping out a single pair of counter-propagating edge modes, which is
-# the hallmark of a Z2 topological insulator (contrast with the zigzag
-# ribbon above, where *nothing* protects the flat band from a generic
-# perturbation).
+# the hallmark of a Z2 topological insulator (contrast with the flat band
+# of the zigzag ribbon without spin-orbit coupling, which *nothing*
+# protects from a generic perturbation).
 
 lam = 0.1
 kane_mele_hop = list(graphene_hop)
@@ -100,6 +52,7 @@ for R in [(0, 1), (-1, 0), (1, -1)]:
     kane_mele_hop.append({'i': 1, 'j': 1, 'R': R, 't': -1j*lam*PAULI['z']})
 
 rib_km = ribbon(lat, kane_mele_hop, width=width, direction=1, spin=True)
+ks = np.linspace(-np.pi, np.pi, 400)
 en_km = rib_km.get_bands(ks[:, None])
 
 min_abs_e_per_k = np.min(np.abs(en_km), axis=1)

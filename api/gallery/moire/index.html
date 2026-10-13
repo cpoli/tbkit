@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 
@@ -8,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Supercells and Moiré Structures &#8212; tbkit 0.5.0 documentation</title>
+    <title>Supercells and Moiré Structures &#8212; tbkit 0.6.0 documentation</title>
   
   
   
@@ -27,23 +26,23 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../../_static/documentation_options.js?v=70f82a29"></script>
+    <script src="../../../_static/documentation_options.js?v=dda85ae5"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,8 +54,9 @@
     <link rel="next" title="Band Unfolding: the Effective Band Structure of a Disordered Supercell" href="plot_band_unfolding.html" />
     <link rel="prev" title="Saving and Reloading Models: a Kane-Mele Model on Disk" href="../models/plot_save_load.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.5" />
+  <meta name="docsearch:version" content="0.6" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -104,7 +104,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -150,7 +150,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../history.html">
+  <a class="nav-link nav-internal" href="../../../history/index.html">
     History
   </a>
 </li>
@@ -180,7 +180,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -221,7 +221,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -230,7 +230,7 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -268,7 +268,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../history.html">
+  <a class="nav-link nav-internal" href="../../../history/index.html">
     History
   </a>
 </li>
@@ -328,7 +328,7 @@
   </div>
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
   <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
     <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
   </svg>
@@ -342,17 +342,25 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../correlations/index.html">Correlations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../correlations/plot_flat_band_ferromagnetism.html">Flat-Band Ferromagnetism: Nagaoka, Mielke and Tasaki</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../correlations/plot_hubbard_edge_magnetism.html">The Hubbard Model: Magnetism of Graphene’s Zigzag Edges</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../correlations/plot_lieb_theorem.html">Lieb’s Theorem: The Total Spin of Graphene Triangles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../correlations/plot_lieb_theorem.html">Lieb’s Theorem: The Ferrimagnet of the Lieb Lattice</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../correlations/plot_noncollinear_120_degree_order.html">Frustrated Magnetism: the 120-Degree Order of the Triangular Hubbard Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../correlations/plot_triangular_graphene_nanoislands.html">Magnetism of Triangular Graphene Nanoislands</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../disorder/index.html">Disorder</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../disorder/plot_anderson_localization.html">Anderson Localization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../disorder/plot_aubry_andre_localization.html">Aubry-André Localization: a Self-Dual Metal-Insulator Transition in 1D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../disorder/plot_inverse_participation_ratio.html">The Inverse Participation Ratio and Multifractal Wave Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../disorder/plot_lifshitz_tails.html">Lifshitz Tails in the Density of States of a Disordered Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../disorder/plot_vacancy_zero_modes.html">Vacancy-Induced Zero Modes in Graphene</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../dynamics/index.html">Dynamics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../dynamics/plot_bloch_oscillations.html">Bloch Oscillations and the Wannier-Stark Ladder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dynamics/plot_discrete_optics_in_waveguide_arrays.html">Discrete Optics in Waveguide Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dynamics/plot_landau_zener_tunnelling.html">Landau-Zener Tunnelling and Zener Breakdown</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../dynamics/plot_wavepacket_interference.html">Wave Propagation: Interference on a Ring and a Trapped Domain-Wall State</a></li>
 </ul>
 </details></li>
@@ -362,7 +370,9 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../floquet/index.html">Floquet</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../floquet/plot_anomalous_floquet_phases.html">Anomalous Floquet Topological Phases: Edge States With Zero Chern Numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../floquet/plot_dynamic_localization.html">Dynamic Localization and Coherent Destruction of Tunnelling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../floquet/plot_floquet_chern_insulator.html">Floquet Engineering: A Chern Insulator From Circularly Polarized Light</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../floquet/plot_photovoltaic_hall_effect.html">The Photovoltaic Hall Effect in Graphene</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../hall_effects/index.html">Hall effects</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -386,6 +396,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_hofstadter_butterfly.html">Hofstadter’s Butterfly</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_landau_levels.html">Landau Levels: Square Lattice vs. Graphene</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_magnetic_field.html">Aharonov-Bohm Ring: A Magnetic Field on a Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_magnetic_translation_group.html">Zak’s Magnetic Translation Group: the Magnetic Supercell at Rational Flux</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_orbital_magnetization.html">The Modern Theory of Orbital Magnetization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../magnetic_field/plot_peierls_substitution.html">The Peierls Substitution: Flux Through the Plaquettes, in Any Gauge</a></li>
 </ul>
@@ -393,6 +404,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../models/index.html">Building, Bridging and Saving Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../models/plot_building_maximally_localized_wannier_functions.html">Maximally Localized Wannier Functions: Projection and Spread Minimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/plot_disentangling_entangled_bands.html">Disentanglement: Wannier Functions of the π Bands of Graphene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/plot_fermion_doubling.html">Fermion Doubling: the Nielsen-Ninomiya Theorem</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/plot_kp_theory_on_a_lattice.html">k·p Theory on a Lattice: from a Continuum Hamiltonian to Tight-Binding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/plot_maximally_localized_wannier_functions.html">Maximally Localized Wannier Functions: Graphene from a Wannier90 File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/plot_neighbour_hoppings.html">Hoppings by Neighbour Order in k-Space: Third-Nearest-Neighbour Graphene</a></li>
@@ -400,7 +412,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../models/plot_save_load.html">Saving and Reloading Models: a Kane-Mele Model on Disk</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Supercells and Moiré Structures</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 current active has-children"><a aria-current="page" class="current reference internal" href="#">Supercells and Moiré Structures</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="plot_band_unfolding.html">Band Unfolding: the Effective Band Structure of a Disordered Supercell</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_magic_angle_twisted_bilayer.html">Magic-Angle Twisted Bilayer Graphene: Flat Moiré Bands</a></li>
 </ul>
@@ -410,8 +422,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../non_hermitian/plot_exceptional_point_vorticity.html">Exceptional Points in Momentum Space: Vorticity and Exceptional Rings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../non_hermitian/plot_exceptional_points_chern_number.html">Exceptional Points in Momentum Space: the Chern Number until the Line Gap Closes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../non_hermitian/plot_exceptional_points_fermi_arcs.html">Exceptional Points in Momentum Space: Complex Bands and the Bulk Fermi Arc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../non_hermitian/plot_generalized_brillouin_zone.html">The Generalized Brillouin Zone and Non-Bloch Band Theory</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../non_hermitian/plot_pt_symmetry.html">PT Symmetry, Exceptional Points, and a Selectively Amplified Edge Mode</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../non_hermitian/plot_skin_effect.html">The Non-Hermitian Skin Effect and the Generalized Brillouin Zone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../non_hermitian/plot_skin_effect.html">The Non-Hermitian Skin Effect</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../optics/index.html">Optics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -421,6 +434,8 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../orbitals/index.html">Orbitals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../orbitals/plot_lowdin_orthogonalization.html">Löwdin Orthogonalization and Non-Orthogonal Tight Binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../orbitals/plot_rashba_spin_orbit_coupling.html">Rashba Spin-Orbit Coupling: Spin-Split Bands from Broken Inversion Symmetry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../orbitals/plot_slater_koster.html">The Slater-Koster Method: Graphene’s sigma and pi Bands</a></li>
 </ul>
 </details></li>
@@ -431,7 +446,9 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../superconductivity/index.html">Superconductivity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_andreev_reflection.html">Andreev Reflection: the BTK Conductance of a Normal-Superconductor Junction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_bcs_gap_equation.html">The BCS Gap Equation: Delta(T) and the Universal Ratio Delta(0)/T_c = 1.764</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_bogoliubov_de_gennes_equations.html">The Bogoliubov-de Gennes Equations: Andreev Bound States</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_kitaev_chain.html">The Kitaev Chain: Majorana Zero Modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_majorana_nanowire.html">Majorana Nanowires: Rashba, Zeeman and s-Wave Pairing</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../three_dimensions/index.html">Three dimensions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -440,17 +457,21 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tight_binding/index.html">Tight-Binding</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_brillouin_zones_and_high_symmetry_paths.html">Brillouin Zones and Standard High-Symmetry Paths</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_building_finite_lattices.html">Building Finite Lattices: Unit Cells, Cuts, and Lattice Arithmetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_defects_and_impurities.html">Defects and Impurities in a Graphene Flake: Vacancy Zero Modes and Bound States</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_fermi_surfaces.html">Fermi Surfaces and Constant-Energy Contours</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_graphene_bands.html">Graphene: Real-Space Flake and Reciprocal-Space Bands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_isolation_of_graphene.html">The Isolation of Graphene: Flakes, Edges, and a Berry Phase of pi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_monkhorst_pack_grids.html">Monkhorst-Pack k-Point Grids</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_parametrized_hamiltonians.html">Parametrized Hamiltonians: Sweeping Without Rebuilding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_periodic_boundaries.html">Periodic Boundaries in Real Space: Tori and Cylinders</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_projected_bands_and_spin_textures.html">Projected Bands and Spin Textures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_square_lattice_bands.html">The Square Lattice: Bloch’s Theorem in its Simplest Form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_surface_greens_function.html">The Surface Green’s Function by Lopez Sancho Decimation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_tetrahedron_method.html">The Tetrahedron Method for the Density of States</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_visualizing_a_model.html">Visualizing a Model: tbkit.plot.Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_zigzag_edge_states.html">Zigzag Edge States of Graphene Ribbons</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../topology/index.html">Topology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -458,7 +479,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_axion_angle.html">The Axion Angle and the Topological Magnetoelectric Effect</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_bott_index.html">The Bott Index: the Chern Number of a Disordered Torus</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_diabolical_points.html">Diabolical Points: Conical Intersections in a Two-Parameter Family</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../topology/plot_edge_states.html">Edge States on Ribbons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/plot_edge_states.html">Helical Edge States of the Kane-Mele Ribbon</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_entanglement_spectrum.html">The Entanglement Spectrum: Edge States Without an Edge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_fu_kane_parity.html">The Fu-Kane Parity Criterion: Z2 from Inversion Eigenvalues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../topology/plot_haldane_topology.html">The Haldane Model: Berry Curvature and a Topological Phase Transition</a></li>
@@ -478,6 +499,7 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../transport/index.html">Transport</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../transport/plot_automatic_lead_attachment.html">Automatic Lead Attachment: Narrow Contacts on a Wide Cavity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transport/plot_completing_lead_interfaces.html">Completing Lead Interfaces: a Graphene Disc between Zigzag Leads</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transport/plot_hall_bar_edge_channels.html">Buttiker’s Edge Channels: the Quantized Resistances of a Hall Bar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transport/plot_landauer_conductance.html">The Landauer Formula: Quantized Conductance of a Point Contact</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transport/plot_recursive_green_function.html">The Recursive Green’s Function: Localization Length of Long Disordered Wires</a></li>
@@ -622,8 +644,8 @@ bilayers, down to the flat bands of magic-angle twisted bilayer graphene.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -644,7 +666,6 @@ bilayers, down to the flat bands of magic-angle twisted bilayer graphene.</p>
 
   <p class="sphinx-version">
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
-    <br/>
   </p>
 </div>
       
@@ -657,7 +678,7 @@ bilayers, down to the flat bands of magic-angle twisted bilayer graphene.</p>
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
 </p></div>
       
     </div>

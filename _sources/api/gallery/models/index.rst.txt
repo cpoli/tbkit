@@ -9,7 +9,8 @@ Tools that make realistic models easy to build and move around: Bloch
 Hamiltonians set up by neighbour order (1st, 2nd, 3rd, ... neighbours) as
 in real space, bridges between the real-space :class:`~tbkit.system.System`
 and the reciprocal-space :class:`~tbkit.kspace.KSpace` pipelines, k·p
-(continuum) Hamiltonians discretized into lattice models, models
+(continuum) Hamiltonians discretized into lattice models and the fermion
+doubling that comes with it, models
 saved to and loaded from disk, tight-binding models imported from
 Wannier90's ``_hr.dat`` files, and Wannier functions built from any model
 (isolated or entangled bands), with their Wannier-interpolated model.
@@ -57,6 +58,23 @@ Wannier90's ``_hr.dat`` files, and Wannier functions built from any model
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Disentanglement: Wannier Functions of the π Bands of Graphene</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A k·p model can have a single Dirac or Weyl point. A lattice model cannot. H. B. Nielsen and M. Ninomiya (1981) proved that on a lattice, with local hoppings and the symmetry of the Hamiltonian kept, chiral fermions come in pairs: the band is periodic in \mathbf{k}, so every right-moving branch must turn back into a left-moving one somewhere in the Brillouin zone, and the chiralities of all the Weyl points add up to zero. Lattice gauge theory met the problem first, as fermion doubling: the naive discretization k \to \sin(ka)/a vanishes at ka = \pi too, with the opposite velocity. K. Wilson&#x27;s cure adds a term \propto (1 - \cos ka) that gaps the doublers at the zone boundary, but in a Weyl semimetal it can only push them together in pairs, never leave one alone.">
+
+.. only:: html
+
+  .. image:: /api/gallery/models/images/thumb/sphx_glr_plot_fermion_doubling_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/models/plot_fermion_doubling`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Fermion Doubling: the Nielsen-Ninomiya Theorem</div>
     </div>
 
 
@@ -157,6 +175,7 @@ Wannier90's ``_hr.dat`` files, and Wannier functions built from any model
 
    /api/gallery/models/plot_building_maximally_localized_wannier_functions
    /api/gallery/models/plot_disentangling_entangled_bands
+   /api/gallery/models/plot_fermion_doubling
    /api/gallery/models/plot_kp_theory_on_a_lattice
    /api/gallery/models/plot_maximally_localized_wannier_functions
    /api/gallery/models/plot_neighbour_hoppings

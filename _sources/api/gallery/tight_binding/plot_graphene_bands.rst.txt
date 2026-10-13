@@ -31,7 +31,7 @@ a Tight-Binding model:
   k-path.
 
 Graphene's honeycomb lattice is the running example throughout tbkit's
-:doc:`/history` -- its two bands touch linearly at the Brillouin zone
+:doc:`history </history/index>` -- its two bands touch linearly at the Brillouin zone
 corners, the massless-Dirac-fermion dispersion P. R. Wallace predicted in
 1947, fifty-seven years before the material itself was isolated.
 
@@ -200,7 +200,7 @@ through the high-symmetry points :math:`\Gamma`, K, M.
 
  .. code-block:: none
 
-    Energies at K: [-1.11022302e-16  1.11022302e-16] (should be ~0, ~0 -- the Dirac point)
+    Energies at K: [-2.22044605e-16  2.22044605e-16] (should be ~0, ~0 -- the Dirac point)
 
 
 
@@ -213,7 +213,7 @@ The historically defining result: near K the dispersion isn't just
 gapless, it is *linear* (massless Dirac fermions),
 :math:`E(\mathbf{K}+\mathbf{q}) \approx \pm\frac{3}{2}ta|\mathbf{q}|`,
 with :math:`a` the nearest-neighbor distance. See
-:doc:`/history` for the historical context.
+:doc:`/history/models_breakthroughs` for the historical context.
 
 .. GENERATED FROM PYTHON SOURCE LINES 107-116
 
@@ -247,7 +247,7 @@ with :math:`a` the nearest-neighbor distance. See
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.071 seconds)
+   **Total running time of the script:** (0 minutes 0.219 seconds)
 
 
 .. _sphx_glr_download_api_gallery_tight_binding_plot_graphene_bands.py:

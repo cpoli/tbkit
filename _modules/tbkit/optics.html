@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 
@@ -7,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tbkit.optics &#8212; tbkit 0.5.0 documentation</title>
+    <title>tbkit.optics &#8212; tbkit 0.6.0 documentation</title>
   
   
   
@@ -26,23 +25,23 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=70f82a29"></script>
+    <script src="../../_static/documentation_options.js?v=dda85ae5"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -52,8 +51,9 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.5" />
+  <meta name="docsearch:version" content="0.6" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -101,7 +101,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -147,7 +147,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../history.html">
+  <a class="nav-link nav-internal" href="../../history/index.html">
     History
   </a>
 </li>
@@ -177,7 +177,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -218,7 +218,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -263,7 +263,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../history.html">
+  <a class="nav-link nav-internal" href="../../history/index.html">
     History
   </a>
 </li>
@@ -378,7 +378,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for tbkit.optics</h1><div class="highlight"><pre>
-<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">Linear and nonlinear optical response of 2D Bloch models (:class:`~tbkit.kspace.KSpace`)</span>
 <span class="sd">over a uniform Brillouin-zone mesh.</span>
 
@@ -410,7 +410,7 @@
 <span class="sd">    omega = np.linspace(0.05, 3., 60)</span>
 <span class="sd">    sigma = optical_conductivity(graphene, omega, e_fermi=0., nk=300)</span>
 <span class="sd">    # Re sigma ~ pi/4 e^2/h per spin for hbar omega &lt;&lt; t</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span>
@@ -423,27 +423,27 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">KSpace</span>
 
 
-<span class="n">_AXES</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">_AXES</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'x'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
 <span class="n">_DEGENERATE</span> <span class="o">=</span> <span class="mf">1e-9</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_mesh</span><span class="p">(</span><span class="n">ks</span><span class="p">:</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">positions</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">'''</span>
 <span class="sd">    Private function. Validate the model (a static, Hermitian, 2D KSpace)</span>
 <span class="sd">    and return the k-points of a uniform Brillouin-zone mesh.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">kspace</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">KSpace</span><span class="p">)</span>
     <span class="n">ks</span><span class="o">.</span><span class="n">_check_static</span><span class="p">()</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">dim_exact</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">hermitian_model</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">is_hermitian</span><span class="p">())</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="s1">&#39;positions&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="s1">'positions'</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ks</span><span class="o">.</span><span class="n">mesh_grid</span><span class="p">(</span><span class="n">nk</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="cell_area">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.optics.cell_area">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">cell_area</span><span class="p">(</span><span class="n">ks</span><span class="p">:</span> <span class="n">KSpace</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Get the area :math:`A_c = |\mathbf{a}_1\times\mathbf{a}_2|` of the unit</span>
 <span class="sd">    cell of a 2D model (in the units of *prim_vec*), which turns a</span>
 <span class="sd">    Brillouin-zone average into an integral:</span>
@@ -453,7 +453,7 @@
 
 <span class="sd">    :returns:</span>
 <span class="sd">        * **area** -- Positive real.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">kspace</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">KSpace</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">dim_exact</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
@@ -466,19 +466,19 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">_bands</span><span class="p">(</span>
     <span class="n">ks</span><span class="p">:</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">kpts</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">positions</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">second</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Private function. Over chunks of the k-points *kpts*: the band energies</span>
 <span class="sd">    (nk, n), the velocity matrices :math:`v^a_{nm} = \langle n|\partial_aH|m\rangle`</span>
 <span class="sd">    in the eigenbasis (2, nk, n, n) and, with *second*, the matrices</span>
 <span class="sd">    :math:`w^{ab}_{nm} = \langle n|\partial_a\partial_bH|m\rangle` (2, 2, nk, n, n).</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
     <span class="n">directions</span> <span class="o">=</span> <span class="p">[</span><span class="n">ks</span><span class="o">.</span><span class="n">k_basis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">ks</span><span class="o">.</span><span class="n">k_basis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]]</span>
     <span class="n">chunk</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">200000</span> <span class="o">//</span> <span class="n">ks</span><span class="o">.</span><span class="n">norb</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">second</span><span class="p">:</span>
         <span class="c1"># d^2 H / dk_a dk_b is the first derivative of the Bloch sum of the</span>
         <span class="c1"># hoppings t * i(d.u_a): the same _bloch_sum, with rescaled amplitudes.</span>
         <span class="n">hops</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">_hop</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">h</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">hops</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">hops</span><span class="p">),</span> <span class="n">ks</span><span class="o">.</span><span class="n">space_dim</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">h</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">hops</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">hops</span><span class="p">),</span> <span class="n">ks</span><span class="o">.</span><span class="n">space_dim</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">positions</span><span class="p">:</span>
             <span class="n">tau</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">orbital_positions</span><span class="p">()</span>
             <span class="n">d</span> <span class="o">=</span> <span class="n">d</span> <span class="o">+</span> <span class="n">tau</span><span class="p">[[</span><span class="n">h</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">hops</span><span class="p">]]</span> <span class="o">-</span> <span class="n">tau</span><span class="p">[[</span><span class="n">h</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">hops</span><span class="p">]]</span>
@@ -499,9 +499,9 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_as_output</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">like</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">'''</span>
 <span class="sd">    Private function. A scalar for a scalar input, else shaped like it.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">like</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">like</span><span class="p">)</span> <span class="o">+</span> <span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
@@ -511,10 +511,10 @@
 <a class="viewcode-back" href="../../tbkit.html#tbkit.optics.optical_conductivity">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">optical_conductivity</span><span class="p">(</span>
     <span class="n">ks</span><span class="p">:</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">omega</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">e_fermi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span>
-    <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">component</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;xx&#39;</span><span class="p">,</span>
+    <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">component</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'xx'</span><span class="p">,</span>
     <span class="n">positions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">complex</span> <span class="o">|</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Get the optical conductivity :math:`\sigma_{ab}(\omega)` of a 2D model</span>
 <span class="sd">    from the Kubo-Greenwood formula over a uniform Brillouin-zone mesh,</span>
 
@@ -530,12 +530,12 @@
 <span class="sd">    Pairs of degenerate states, :math:`n = m` included, enter through the</span>
 <span class="sd">    limit :math:`(f_n-f_m)/(E_m-E_n)\to-\partial f/\partial E`: the</span>
 <span class="sd">    intraband (Drude) term :math:`\frac{i}{\hbar\omega+i\eta}\sum_n</span>
-<span class="sd">    (-f&#39;_n)v^a_{nn}v^b_{nn}`. It samples the Fermi surface only through the</span>
+<span class="sd">    (-f'_n)v^a_{nn}v^b_{nn}`. It samples the Fermi surface only through the</span>
 <span class="sd">    thermal window, so it needs a *temperature* larger than the level</span>
 <span class="sd">    spacing of the mesh; at ``temperature=0`` only the interband part is</span>
 <span class="sd">    computed.</span>
 
-<span class="sd">    It is the Ohm&#39;s-law tensor, :math:`j_a = \sigma_{ab}E_b`. In a gap its</span>
+<span class="sd">    It is the Ohm's-law tensor, :math:`j_a = \sigma_{ab}E_b`. In a gap its</span>
 <span class="sd">    static Hall part is the TKNN conductance:</span>
 <span class="sd">    :math:`\sigma_{yx}(0) = -\sigma_{xy}(0)` equals</span>
 <span class="sd">    *KSpace.hall_conductivity* (which returns :math:`\sigma^{\mathrm{Ohm}}_{yx}`,</span>
@@ -556,22 +556,22 @@
 <span class="sd">    :param eta: Positive real. Default value 0.05. Broadening, larger than</span>
 <span class="sd">        the spacing of the transition energies on the mesh.</span>
 <span class="sd">    :param nk: Positive integer, or tuple of 2. Default value 100. k-mesh.</span>
-<span class="sd">    :param component: &#39;xx&#39;, &#39;xy&#39;, &#39;yx&#39; or &#39;yy&#39;. Default value &#39;xx&#39;.</span>
+<span class="sd">    :param component: 'xx', 'xy', 'yx' or 'yy'. Default value 'xx'.</span>
 <span class="sd">    :param positions: Boolean. Default value True. Orbital positions in the</span>
 <span class="sd">        bond vectors (see *KSpace.hall_conductivity*).</span>
 
 <span class="sd">    :returns:</span>
 <span class="sd">        * **sigma** -- Complex number (or ndarray shaped like *omega*), in</span>
 <span class="sd">          units of :math:`e^2/h`.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
     <span class="n">kpts</span> <span class="o">=</span> <span class="n">_mesh</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">nk</span><span class="p">,</span> <span class="n">positions</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">frequencies</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="s1">&#39;omega&#39;</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">e_fermi</span><span class="p">,</span> <span class="s1">&#39;e_fermi&#39;</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span> <span class="s1">&#39;eta&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">frequencies</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="s1">'omega'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">e_fermi</span><span class="p">,</span> <span class="s1">'e_fermi'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">'temperature'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span> <span class="s1">'eta'</span><span class="p">)</span>
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">error_handling</span><span class="o">.</span><span class="n">tensor_component</span><span class="p">(</span><span class="n">component</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">w_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-    <span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w_arr</span><span class="p">),</span> <span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+    <span class="n">w_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">))</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w_arr</span><span class="p">),</span> <span class="s1">'c16'</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">en</span><span class="p">,</span> <span class="n">vel</span> <span class="ow">in</span> <span class="n">_bands</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">kpts</span><span class="p">,</span> <span class="n">positions</span><span class="p">):</span>
         <span class="n">f</span> <span class="o">=</span> <span class="n">occupation</span><span class="o">.</span><span class="n">fermi_dirac</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="n">e_fermi</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
         <span class="n">minus_df</span> <span class="o">=</span> <span class="n">f</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">f</span><span class="p">)</span> <span class="o">/</span> <span class="n">temperature</span> <span class="k">if</span> <span class="n">temperature</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -597,7 +597,7 @@
     <span class="n">ks</span><span class="p">:</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">omega</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">e_fermi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span>
     <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Get the joint density of states of the vertical (interband) transitions,</span>
 <span class="sd">    per unit cell,</span>
 
@@ -622,13 +622,13 @@
 <span class="sd">    :returns:</span>
 <span class="sd">        * **jdos** -- Real number (or ndarray shaped like *omega*), in states</span>
 <span class="sd">          per unit cell and per unit energy.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
     <span class="n">kpts</span> <span class="o">=</span> <span class="n">_mesh</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">nk</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">frequencies</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="s1">&#39;omega&#39;</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">e_fermi</span><span class="p">,</span> <span class="s1">&#39;e_fermi&#39;</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span> <span class="s1">&#39;eta&#39;</span><span class="p">)</span>
-    <span class="n">w_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">frequencies</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="s1">'omega'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">e_fermi</span><span class="p">,</span> <span class="s1">'e_fermi'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">'temperature'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span> <span class="s1">'eta'</span><span class="p">)</span>
+    <span class="n">w_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">))</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
     <span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w_arr</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">en</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">_bands</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">kpts</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
         <span class="n">f</span> <span class="o">=</span> <span class="n">occupation</span><span class="o">.</span><span class="n">fermi_dirac</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="n">e_fermi</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
@@ -645,10 +645,10 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">_gaussian_sum</span><span class="p">(</span>
     <span class="n">x</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">centers</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">weights</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Private function. :math:`\sum_i w_i\,g(x - c_i)` with the normalized</span>
 <span class="sd">    Gaussian :math:`g` of standard deviation *eta*, in chunks of the centers.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
     <span class="n">step</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2000000</span> <span class="o">//</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">c0</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">centers</span><span class="p">),</span> <span class="n">step</span><span class="p">):</span>
@@ -663,7 +663,7 @@
     <span class="n">ks</span><span class="p">:</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">e_fermi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">positions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Get the Berry curvature dipole of a 2D model (Sodemann and Fu, Phys.</span>
 <span class="sd">    Rev. Lett. 115, 216806 (2015)),</span>
 
@@ -692,7 +692,7 @@
 <span class="sd">    the conduction band (:math:`\mu &gt; |m|`), the first order in the tilt is</span>
 <span class="sd">    :math:`D_x = -\frac{3\,t\,m\,(\mu^2 - m^2)}{8\pi\mu^4}`,</span>
 <span class="sd">    :math:`D_y = 0`, from :math:`\Omega_c = -mv^2/2\varepsilon^3`</span>
-<span class="sd">    (Sodemann and Fu&#39;s model, in these conventions).</span>
+<span class="sd">    (Sodemann and Fu's model, in these conventions).</span>
 
 <span class="sd">    :param ks: **KSpace** instance, 2D, Hermitian.</span>
 <span class="sd">    :param e_fermi: Real number, or array of real numbers. Fermi energies.</span>
@@ -703,11 +703,11 @@
 <span class="sd">    :returns:</span>
 <span class="sd">        * **dipole** -- Real ndarray of shape (2,): :math:`(D_x, D_y)` (or</span>
 <span class="sd">          ``e_fermi.shape + (2,)``), in units of length (of *prim_vec*).</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
     <span class="n">kpts</span> <span class="o">=</span> <span class="n">_mesh</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">nk</span><span class="p">,</span> <span class="n">positions</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">fermi_energies</span><span class="p">(</span><span class="n">e_fermi</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">)</span>
-    <span class="n">mus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">e_fermi</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">'temperature'</span><span class="p">)</span>
+    <span class="n">mus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">e_fermi</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">))</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
     <span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">mus</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">en</span><span class="p">,</span> <span class="n">vel</span> <span class="ow">in</span> <span class="n">_bands</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">kpts</span><span class="p">,</span> <span class="n">positions</span><span class="p">):</span>
         <span class="n">de</span> <span class="o">=</span> <span class="n">en</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">en</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
@@ -718,7 +718,7 @@
         <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">mu</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mus</span><span class="p">):</span>
             <span class="n">f</span> <span class="o">=</span> <span class="n">occupation</span><span class="o">.</span><span class="n">fermi_dirac</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">mu</span><span class="p">),</span> <span class="n">temperature</span><span class="p">)</span>
             <span class="n">window</span> <span class="o">=</span> <span class="n">f</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">f</span><span class="p">)</span> <span class="o">/</span> <span class="n">temperature</span>
-            <span class="n">total</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;kn,akn-&gt;a&#39;</span><span class="p">,</span> <span class="n">window</span> <span class="o">*</span> <span class="n">omega_n</span><span class="p">,</span> <span class="n">vdiag</span><span class="p">)</span>
+            <span class="n">total</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'kn,akn-&gt;a'</span><span class="p">,</span> <span class="n">window</span> <span class="o">*</span> <span class="n">omega_n</span><span class="p">,</span> <span class="n">vdiag</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_as_output</span><span class="p">(</span><span class="n">total</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kpts</span><span class="p">)</span> <span class="o">*</span> <span class="n">cell_area</span><span class="p">(</span><span class="n">ks</span><span class="p">)),</span> <span class="n">e_fermi</span><span class="p">)</span></div>
 
 
@@ -728,7 +728,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">generalized_derivative</span><span class="p">(</span>
     <span class="n">en</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">vel</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">w</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Get the interband position matrix elements and their generalized</span>
 <span class="sd">    derivatives from the band energies and the first and second derivatives</span>
 <span class="sd">    of :math:`H` in the eigenbasis (a sum over states, Sipe and Shkrebtii</span>
@@ -757,7 +757,7 @@
 <span class="sd">        * **r** -- Complex ndarray, shape (2, nk, n, n): r[b] is :math:`r^b_{nm}`.</span>
 <span class="sd">        * **r_der** -- Complex ndarray, shape (2, 2, nk, n, n): r_der[b, a]</span>
 <span class="sd">          is :math:`r^b_{nm;a}`.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
     <span class="n">en</span><span class="p">,</span> <span class="n">vel</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">en</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vel</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">band_derivatives</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="n">vel</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
     <span class="n">om</span> <span class="o">=</span> <span class="n">en</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">en</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
@@ -766,7 +766,7 @@
     <span class="n">diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">vel</span><span class="p">,</span> <span class="n">axis1</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis2</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># (2, nk, n)</span>
     <span class="n">delta</span> <span class="o">=</span> <span class="n">diag</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">diag</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
     <span class="n">r</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">vel</span> <span class="o">*</span> <span class="n">inv</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span>
-    <span class="n">r_der</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">om</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+    <span class="n">r_der</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">om</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s1">'c16'</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
             <span class="c1"># the full sums over p include p = n, m: those terms add</span>
@@ -783,10 +783,10 @@
 <a class="viewcode-back" href="../../tbkit.html#tbkit.optics.shift_current">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">shift_current</span><span class="p">(</span>
     <span class="n">ks</span><span class="p">:</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">omega</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">e_fermi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span>
-    <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">component</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;xxx&#39;</span><span class="p">,</span>
+    <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">component</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'xxx'</span><span class="p">,</span>
     <span class="n">positions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Get the shift-current conductivity of a 2D model under linearly</span>
 <span class="sd">    polarized light (Sipe and Shkrebtii, Phys. Rev. B 61, 5337 (2000)),</span>
 <span class="sd">    :math:`j^a = 2\sigma^{abc}(0;\omega,-\omega)E^b(\omega)E^c(-\omega)`,</span>
@@ -816,23 +816,23 @@
 <span class="sd">    :param temperature: Positive real or zero. Default value 0.</span>
 <span class="sd">    :param eta: Positive real. Default value 0.05. Gaussian width.</span>
 <span class="sd">    :param nk: Positive integer, or tuple of 2. Default value 100.</span>
-<span class="sd">    :param component: Three letters among &#39;x&#39;, &#39;y&#39; (current direction, then</span>
-<span class="sd">        the two field directions). Default value &#39;xxx&#39;.</span>
+<span class="sd">    :param component: Three letters among 'x', 'y' (current direction, then</span>
+<span class="sd">        the two field directions). Default value 'xxx'.</span>
 <span class="sd">    :param positions: Boolean. Default value True. See *KSpace.hall_conductivity*.</span>
 
 <span class="sd">    :returns:</span>
 <span class="sd">        * **sigma** -- Real number (or ndarray shaped like *omega*), in units</span>
 <span class="sd">          of :math:`e^3/\hbar\times` length / energy (:math:`\hbar = e = 1`),</span>
 <span class="sd">          counting each orbital once.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
     <span class="n">kpts</span> <span class="o">=</span> <span class="n">_mesh</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">nk</span><span class="p">,</span> <span class="n">positions</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">no_overlap</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">_overlap_hop</span><span class="p">))</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">frequencies</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="s1">&#39;omega&#39;</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">e_fermi</span><span class="p">,</span> <span class="s1">&#39;e_fermi&#39;</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span> <span class="s1">&#39;eta&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">frequencies</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="s1">'omega'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">e_fermi</span><span class="p">,</span> <span class="s1">'e_fermi'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">'temperature'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span> <span class="s1">'eta'</span><span class="p">)</span>
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">error_handling</span><span class="o">.</span><span class="n">tensor_component</span><span class="p">(</span><span class="n">component</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-    <span class="n">w_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">w_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">))</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
     <span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w_arr</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">en</span><span class="p">,</span> <span class="n">vel</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">_bands</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">kpts</span><span class="p">,</span> <span class="n">positions</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">r</span><span class="p">,</span> <span class="n">r_der</span> <span class="o">=</span> <span class="n">generalized_derivative</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="n">vel</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
@@ -875,8 +875,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -897,7 +897,6 @@
 
   <p class="sphinx-version">
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
-    <br/>
   </p>
 </div>
       
@@ -910,7 +909,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
 </p></div>
       
     </div>

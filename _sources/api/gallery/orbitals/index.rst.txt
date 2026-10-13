@@ -6,7 +6,9 @@ Orbitals
 --------
 
 Beyond one orbital per site: Slater-Koster bond integrals between s, p
-and d orbitals, non-orthogonal bases, and the band structures they give.
+and d orbitals, non-orthogonal bases and their Löwdin orthogonalization,
+spin with Rashba spin-orbit coupling and a Zeeman field, and the band
+structures they give.
 
 
 .. raw:: html
@@ -19,6 +21,40 @@ and d orbitals, non-orthogonal bases, and the band structures they give.
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Atomic orbitals on neighbouring atoms overlap: s = \langle\phi_i|\phi_j\rangle \neq 0. In such a basis the Schrödinger equation is the generalized eigenproblem H\mathbf{c} = ES\mathbf{c}, with S the overlap matrix. P.-O. Löwdin (1950) removed S with the symmetric orthogonalization |\psi\rangle = S^{-1/2}|\phi\rangle. Among all orthonormal sets, it is the one closest to the original orbitals, and it treats every orbital alike, so the new basis keeps the symmetry of the crystal. In that basis the problem is an ordinary eigenproblem for S^{-1/2}HS^{-1/2}, with the same bands. The cost is range: the orthogonalized orbitals have tails on the neighbours, so the hoppings between them reach further than those of H. An orthogonal tight-binding model with a few hoppings is a truncation of this exact one.">
+
+.. only:: html
+
+  .. image:: /api/gallery/orbitals/images/thumb/sphx_glr_plot_lowdin_orthogonalization_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/orbitals/plot_lowdin_orthogonalization`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Löwdin Orthogonalization and Non-Orthogonal Tight Binding</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="An electron moving through an electric field sees, in its rest frame, a magnetic field \propto \mathbf{E}\times\mathbf{v}. At a surface or an asymmetric quantum well the field points out of the plane, and Bychkov and Rashba (1984) wrote the coupling it produces for a 2D electron gas as">
+
+.. only:: html
+
+  .. image:: /api/gallery/orbitals/images/thumb/sphx_glr_plot_rashba_spin_orbit_coupling_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/orbitals/plot_rashba_spin_orbit_coupling`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Rashba Spin-Orbit Coupling: Spin-Split Bands from Broken Inversion Symmetry</div>
+    </div>
+
 
 .. raw:: html
 
@@ -47,5 +83,7 @@ and d orbitals, non-orthogonal bases, and the band structures they give.
 .. toctree::
    :hidden:
 
+   /api/gallery/orbitals/plot_lowdin_orthogonalization
+   /api/gallery/orbitals/plot_rashba_spin_orbit_coupling
    /api/gallery/orbitals/plot_slater_koster
 

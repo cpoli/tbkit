@@ -6,9 +6,11 @@ Floquet
 -------
 
 Periodically driven lattices: quasienergies, the Floquet Hamiltonian,
-a Chern insulator engineered with circularly polarized light, and
-anomalous Floquet phases, whose edge states the winding number counts
-while every Chern number vanishes.
+dynamic localization and coherent destruction of tunnelling, the
+photovoltaic Hall effect of graphene in circularly polarized light, a
+Chern insulator engineered with that light, and anomalous Floquet
+phases, whose edge states the winding number counts while every Chern
+number vanishes.
 
 
 .. raw:: html
@@ -41,6 +43,23 @@ while every Chern number vanishes.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Dunlap and Kenkre (1986) found that an AC field F\cos\omega t on a chain does not simply shake its electrons: averaged over a period, it renormalizes the hopping,">
+
+.. only:: html
+
+  .. image:: /api/gallery/floquet/images/thumb/sphx_glr_plot_dynamic_localization_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/floquet/plot_dynamic_localization`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Dynamic Localization and Coherent Destruction of Tunnelling</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="T. Oka and H. Aoki (2009) predicted that graphene illuminated by circularly polarized light becomes a Hall insulator; Kitagawa, Oka, Brataas, Fu and Demler (2011) showed it is a Floquet realization of Haldane&#x27;s model. A time-periodic drive H(t+T) = H(t) acts, stroboscopically, as the static Floquet Hamiltonian H_F, e^{-iH_FT} = \mathcal{T}e^{-i\int_0^TH(t)dt}. Light enters the hoppings through the Peierls phase of its vector potential, t_{ij} \to t_{ij}e^{i\mathbf{A}(t)\cdot\mathbf{d}_{ij}} with \mathbf{A}(t) = A_0(\cos\omega t, \sin\omega t). At high frequency,">
 
 .. only:: html
@@ -56,6 +75,23 @@ while every Chern number vanishes.
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Oka and Aoki (2009) asked what a DC field does to graphene that is illuminated by circularly polarized light, and found a Hall current with no magnetic field: the photovoltaic Hall effect. An electron near a Dirac point is driven around a circle in momentum space once per period, and the geometric (Aharonov-Anandan) phase it picks up acts as a Berry curvature of the Floquet states |u_\alpha(\mathbf{k})\rangle. The Hall conductivity follows from the Floquet extension of the Kubo formula,">
+
+.. only:: html
+
+  .. image:: /api/gallery/floquet/images/thumb/sphx_glr_plot_photovoltaic_hall_effect_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/floquet/plot_photovoltaic_hall_effect`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Photovoltaic Hall Effect in Graphene</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -67,5 +103,7 @@ while every Chern number vanishes.
    :hidden:
 
    /api/gallery/floquet/plot_anomalous_floquet_phases
+   /api/gallery/floquet/plot_dynamic_localization
    /api/gallery/floquet/plot_floquet_chern_insulator
+   /api/gallery/floquet/plot_photovoltaic_hall_effect
 

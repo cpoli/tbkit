@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 
@@ -8,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Computation times &#8212; tbkit 0.5.0 documentation</title>
+    <title>Computation times &#8212; tbkit 0.6.0 documentation</title>
   
   
   
@@ -27,23 +26,23 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../../_static/documentation_options.js?v=70f82a29"></script>
+    <script src="../../../_static/documentation_options.js?v=dda85ae5"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,8 +52,9 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.5" />
+  <meta name="docsearch:version" content="0.6" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -102,7 +102,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -148,7 +148,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../history.html">
+  <a class="nav-link nav-internal" href="../../../history/index.html">
     History
   </a>
 </li>
@@ -178,7 +178,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -219,7 +219,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -228,7 +228,7 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -268,7 +268,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../history.html">
+  <a class="nav-link nav-internal" href="../../../history/index.html">
     History
   </a>
 </li>
@@ -381,7 +381,7 @@
                   
   <section id="computation-times">
 <span id="sphx-glr-api-gallery-transport-sg-execution-times"></span><h1>Computation times<a class="headerlink" href="#computation-times" title="Link to this heading">#</a></h1>
-<p><strong>00:16.272</strong> total execution time for 7 files <strong>from api/gallery/transport</strong>:</p>
+<p><strong>00:53.645</strong> total execution time for 8 files <strong>from api/gallery/transport</strong>:</p>
 <div class="docutils container">
 <style scoped>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
@@ -403,31 +403,35 @@ $(document).ready( function () {
 </thead>
 <tbody>
 <tr class="row-even"><td><p><a class="reference internal" href="plot_recursive_green_function.html#sphx-glr-api-gallery-transport-plot-recursive-green-function-py"><span class="std std-ref">The Recursive Green’s Function: Localization Length of Long Disordered Wires</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_recursive_green_function.py</span></code>)</p></td>
-<td><p>00:06.210</p></td>
+<td><p>00:20.928</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="plot_thermoelectric_transport.html#sphx-glr-api-gallery-transport-plot-thermoelectric-transport-py"><span class="std std-ref">Thermoelectric Transport: the Mott Formula and the Wiedemann-Franz Law</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_thermoelectric_transport.py</span></code>)</p></td>
-<td><p>00:03.815</p></td>
+<td><p>00:14.096</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="plot_hall_bar_edge_channels.html#sphx-glr-api-gallery-transport-plot-hall-bar-edge-channels-py"><span class="std std-ref">Buttiker’s Edge Channels: the Quantized Resistances of a Hall Bar</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_hall_bar_edge_channels.py</span></code>)</p></td>
-<td><p>00:02.790</p></td>
+<td><p>00:10.971</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="plot_landauer_conductance.html#sphx-glr-api-gallery-transport-plot-landauer-conductance-py"><span class="std std-ref">The Landauer Formula: Quantized Conductance of a Point Contact</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_landauer_conductance.py</span></code>)</p></td>
-<td><p>00:02.324</p></td>
+<td><p>00:04.008</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="plot_shot_noise_fano_factor.html#sphx-glr-api-gallery-transport-plot-shot-noise-fano-factor-py"><span class="std std-ref">Shot Noise: the Fano Factor of Ballistic, Tunnel and Diffusive Conductors</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_shot_noise_fano_factor.py</span></code>)</p></td>
-<td><p>00:00.514</p></td>
+<td><p>00:01.151</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="plot_scattering_matrix.html#sphx-glr-api-gallery-transport-plot-scattering-matrix-py"><span class="std std-ref">Mode Matching: the Scattering Matrix, Lead Modes and Scattering States</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_scattering_matrix.py</span></code>)</p></td>
-<td><p>00:00.366</p></td>
+<td><p>00:01.029</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="plot_automatic_lead_attachment.html#sphx-glr-api-gallery-transport-plot-automatic-lead-attachment-py"><span class="std std-ref">Automatic Lead Attachment: Narrow Contacts on a Wide Cavity</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_automatic_lead_attachment.py</span></code>)</p></td>
-<td><p>00:00.252</p></td>
+<td><p>00:00.816</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="plot_completing_lead_interfaces.html#sphx-glr-api-gallery-transport-plot-completing-lead-interfaces-py"><span class="std std-ref">Completing Lead Interfaces: a Graphene Disc between Zigzag Leads</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_completing_lead_interfaces.py</span></code>)</p></td>
+<td><p>00:00.646</p></td>
 <td><p>0.0</p></td>
 </tr>
 </tbody>
@@ -479,8 +483,8 @@ $(document).ready( function () {
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -501,7 +505,6 @@ $(document).ready( function () {
 
   <p class="sphinx-version">
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
-    <br/>
   </p>
 </div>
       
@@ -514,7 +517,7 @@ $(document).ready( function () {
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
 </p></div>
       
     </div>

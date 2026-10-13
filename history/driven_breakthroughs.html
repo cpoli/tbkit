@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Breakthroughs in Driven and Open Systems &#8212; tbkit 0.6.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../_static/documentation_options.js?v=dda85ae5"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'history/driven_breakthroughs';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/force_light.js?v=8e7666d6"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Examples" href="../api/gallery/index.html" />
+    <link rel="prev" title="Breakthroughs in Flat Bands and Interactions" href="interactions_breakthroughs.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.6" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/tbkit_logo.png" class="logo__image only-light" alt="tbkit logo"/>
+    <img src="../_static/tbkit_logo.png" class="logo__image only-dark pst-js-only" alt="tbkit logo"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models_breakthroughs.html">Breakthroughs in Building and Solving Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fields_breakthroughs.html">Breakthroughs in Fields, Strain and Disorder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topology_breakthroughs.html">Breakthroughs in Band Topology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="response_breakthroughs.html">Breakthroughs in Response and Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interactions_breakthroughs.html">Breakthroughs in Flat Bands and Interactions</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">Breakthroughs in Driven and Open Systems</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">History</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Breakthroughs in Driven and Open Systems</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="breakthroughs-in-driven-and-open-systems">
+<h1>Breakthroughs in Driven and Open Systems<a class="headerlink" href="#breakthroughs-in-driven-and-open-systems" title="Link to this heading">#</a></h1>
+<p>Lattices out of equilibrium: wavepackets in a tilted lattice and the
+tunnelling between its bands, light in waveguide arrays, periodically
+driven (Floquet) bands, from dynamic localization to their anomalous
+topology, and non-Hermitian bands with gain, loss, exceptional points,
+the skin effect and the generalized Brillouin zone. It traces the ideas
+behind <a class="reference internal" href="../tbkit.html#module-tbkit.propagation" title="tbkit.propagation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.propagation</span></code></a>, <a class="reference internal" href="../tbkit.html#module-tbkit.floquet" title="tbkit.floquet"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.floquet</span></code></a> and
+<a class="reference internal" href="../tbkit.html#module-tbkit.exceptional" title="tbkit.exceptional"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.exceptional</span></code></a>.</p>
+<nav class="contents local" id="timeline">
+<p class="topic-title">Timeline</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#bloch-oscillations-and-the-wannier-stark-ladder" id="id1">1928/1960 – Bloch Oscillations and the Wannier-Stark Ladder</a></p></li>
+<li><p><a class="reference internal" href="#landau-zener-tunnelling-and-zener-breakdown" id="id2">1932/1934 – Landau-Zener Tunnelling and Zener Breakdown</a></p></li>
+<li><p><a class="reference internal" href="#dynamic-localization-and-coherent-destruction-of-tunnelling" id="id3">1986/1991 – Dynamic Localization and Coherent Destruction of Tunnelling</a></p></li>
+<li><p><a class="reference internal" href="#the-non-hermitian-skin-effect" id="id4">1996/2018 – The Non-Hermitian Skin Effect</a></p></li>
+<li><p><a class="reference internal" href="#pt-symmetry-exceptional-points-and-gain-loss-lattices" id="id5">1998/2015 – PT Symmetry, Exceptional Points, and Gain-Loss Lattices</a></p></li>
+<li><p><a class="reference internal" href="#discrete-optics-in-waveguide-arrays" id="id6">1999/2003 – Discrete Optics in Waveguide Arrays</a></p></li>
+<li><p><a class="reference internal" href="#the-photovoltaic-hall-effect" id="id7">2009 – The Photovoltaic Hall Effect</a></p></li>
+<li><p><a class="reference internal" href="#floquet-topological-insulators" id="id8">2011 – Floquet Topological Insulators</a></p></li>
+<li><p><a class="reference internal" href="#anomalous-floquet-topological-phases" id="id9">2010-2013 – Anomalous Floquet Topological Phases</a></p></li>
+<li><p><a class="reference internal" href="#exceptional-points-in-momentum-space-vorticity-exceptional-rings-and-bulk-fermi-arcs" id="id10">2015-2018 – Exceptional Points in Momentum Space: Vorticity, Exceptional Rings and Bulk Fermi Arcs</a></p></li>
+<li><p><a class="reference internal" href="#the-generalized-brillouin-zone-and-non-bloch-band-theory" id="id11">2018/2019 – The Generalized Brillouin Zone and Non-Bloch Band Theory</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id12">See Also</a></p></li>
+</ul>
+</nav>
+<section id="bloch-oscillations-and-the-wannier-stark-ladder">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">1928/1960 – Bloch Oscillations and the Wannier-Stark Ladder</a><a class="headerlink" href="#bloch-oscillations-and-the-wannier-stark-ladder" title="Link to this heading">#</a></h2>
+<p>Bloch pointed out an immediate, counterintuitive consequence of his own
+theorem: a <em>uniform</em> force on an electron in a periodic lattice does not
+uniformly accelerate it, the way it would in free space. Instead, Bloch’s
+argument and its later formalization by G. Wannier show the electron
+oscillates periodically in real space, with period <span class="math notranslate nohighlight">\(T_B =
+2\pi/F\)</span> (<span class="math notranslate nohighlight">\(\hbar=1\)</span>), while the spectrum of the tilted lattice
+collapses into an exactly evenly spaced ladder,</p>
+<div class="math notranslate nohighlight">
+\[E_n = E_0 + nF, \qquad n \in \mathbb{Z},\]</div>
+<p>the Wannier-Stark ladder, with every eigenstate exponentially localized
+around its own lattice site by the tilt alone – a deterministic cousin of
+Anderson localization (1958, below). In real crystals scattering happens
+on a timescale far shorter than <span class="math notranslate nohighlight">\(T_B\)</span>, which is why the effect went
+unobserved for over 60 years; it took artificial semiconductor
+superlattices, with a far larger effective lattice constant and hence
+much shorter <span class="math notranslate nohighlight">\(T_B\)</span>, to see it directly.</p>
+<figure class="align-default">
+<img alt="../_images/driven_breakthroughs-1.png" class="plot-directive" src="../_images/driven_breakthroughs-1.png" />
+</figure>
+<p><em>Implementation:</em> a uniform force is exactly a linear onsite potential
+gradient, so no dedicated function is needed:
+<a class="reference internal" href="../tbkit.html#tbkit.system.System.set_onsite_def" title="tbkit.system.System.set_onsite_def"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.system.System.set_onsite_def()</span></code></a> applies it directly, and
+<a class="reference internal" href="../tbkit.html#tbkit.propagation.Propagation" title="tbkit.propagation.Propagation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.propagation.Propagation</span></code></a> (see 1954 below for the general
+Tight-Binding framework it operates on) evolves a wavepacket under the
+resulting tilted Hamiltonian.</p>
+<p><em>References:</em> F. Bloch, Z. Phys. 52, 555-600 (1929); G. H. Wannier,
+“Wave functions and effective Hamiltonian for Bloch electrons in an
+electric field,” Phys. Rev. 117, 432-439 (1960); experimentally confirmed
+by C. Waschke et al., “Coherent submillimeter-wave emission from Bloch
+oscillations in a semiconductor superlattice,” Phys. Rev. Lett. 70,
+3319-3322 (1993).</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A uniform force on an electron in a periodic lattice does not produce uniform acceleration, the way it would in free space: Bloch&#x27;s 1929 argument (formalized by Wannier in 1960) shows the electron instead oscillates periodically in real space, with period T_B=2\pi/F (in units where \hbar=1). In real crystals scattering happens on a far shorter timescale than T_B, which is why the effect went unobserved for over 60 years -- it took artificial semiconductor superlattices (Waschke et al., 1993), with a far larger effective lattice constant, to see it directly. See /history/driven_breakthroughs for the full historical context."><img alt="" src="../_images/sphx_glr_plot_bloch_oscillations_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/dynamics/plot_bloch_oscillations.html"><span class="doc">Bloch Oscillations and the Wannier-Stark Ladder</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Bloch Oscillations and the Wannier-Stark Ladder</div>
+</div></div></section>
+<section id="landau-zener-tunnelling-and-zener-breakdown">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">1932/1934 – Landau-Zener Tunnelling and Zener Breakdown</a><a class="headerlink" href="#landau-zener-tunnelling-and-zener-breakdown" title="Link to this heading">#</a></h2>
+<p>In 1932 Landau, Zener, Stückelberg and Majorana independently solved the
+same problem: two levels swept through an avoided crossing,
+<span class="math notranslate nohighlight">\(H(t) = \frac{\alpha t}{2}\sigma_z + \Delta\sigma_x\)</span>. A slow sweep
+follows the adiabatic level; a fast one jumps the gap <span class="math notranslate nohighlight">\(2\Delta\)</span>
+with the probability</p>
+<div class="math notranslate nohighlight">
+\[P = e^{-2\pi\Delta^2/\alpha}\qquad(\hbar = 1)\, .\]</div>
+<p>Two years later Zener turned it into a theory of the electrical
+breakdown of insulators. In a uniform field <span class="math notranslate nohighlight">\(F\)</span> the Bloch momentum
+sweeps through the Brillouin zone, <span class="math notranslate nohighlight">\(\dot k = F\)</span>, and where two
+bands nearly cross the electron tunnels into the next band instead of
+being Bragg-reflected – the partner of the Bloch oscillation (1928/1960,
+above), which it ends. In a binary chain (hopping <span class="math notranslate nohighlight">\(t\)</span>, onsite
+energies <span class="math notranslate nohighlight">\(\pm\delta\)</span>), the crossing at the zone edge has
+<span class="math notranslate nohighlight">\(\alpha = 4tF\)</span> and <span class="math notranslate nohighlight">\(\Delta = \delta\)</span>, so a fraction
+<span class="math notranslate nohighlight">\(e^{-\pi\delta^2/(2tF)}\)</span> of the wavepacket changes band at each
+passage. Trompeter et al. watched it happen with light in a waveguide
+array (2006).</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.floquet.evolution_operator" title="tbkit.floquet.evolution_operator"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.floquet.evolution_operator()</span></code></a> gives the
+time-ordered evolution of any <span class="math notranslate nohighlight">\(H(t)\)</span> over a time interval, here a
+sweep rather than a period; <a class="reference internal" href="../tbkit.html#tbkit.system.System.set_onsite_def" title="tbkit.system.System.set_onsite_def"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.system.System.set_onsite_def()</span></code></a>
+applies the tilt and <a class="reference internal" href="../tbkit.html#tbkit.propagation.Propagation" title="tbkit.propagation.Propagation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.propagation.Propagation</span></code></a> evolves the
+wavepacket.</p>
+<p><em>References:</em> L. D. Landau, Phys. Z. Sowjetunion 2, 46 (1932); C. Zener,
+“Non-adiabatic crossing of energy levels,” Proc. R. Soc. Lond. A 137,
+696-702 (1932); E. C. G. Stückelberg, Helv. Phys. Acta 5, 369 (1932); E.
+Majorana, Nuovo Cimento 9, 43-50 (1932); C. Zener, “A theory of the
+electrical breakdown of solid dielectrics,” Proc. R. Soc. Lond. A 145,
+523-529 (1934); H. Trompeter, T. Pertsch, F. Lederer, D. Michaelis, U.
+Streppel, A. Bräuer, and U. Peschel, “Visual observation of Zener
+tunneling,” Phys. Rev. Lett. 96, 023901 (2006).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/dynamics/plot_landau_zener_tunnelling.py</span></code> confirms
+the Landau-Zener probability for a two-level sweep at four rates, then
+the weight a wavepacket leaves in the upper band of a tilted binary chain
+after one Bloch period, for forces from 0.05 to 0.8, both to within 0.01
+of the formula.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Two levels swept through an avoided crossing,"><img alt="" src="../_images/sphx_glr_plot_landau_zener_tunnelling_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/dynamics/plot_landau_zener_tunnelling.html"><span class="doc">Landau-Zener Tunnelling and Zener Breakdown</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Landau-Zener Tunnelling and Zener Breakdown</div>
+</div></div></section>
+<section id="dynamic-localization-and-coherent-destruction-of-tunnelling">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">1986/1991 – Dynamic Localization and Coherent Destruction of Tunnelling</a><a class="headerlink" href="#dynamic-localization-and-coherent-destruction-of-tunnelling" title="Link to this heading">#</a></h2>
+<p>A static field localizes a lattice electron into a Wannier-Stark ladder
+(1928/1960, above). Dunlap and Kenkre showed that an AC field
+<span class="math notranslate nohighlight">\(F\cos\omega t\)</span> can do the same in another way: averaged over a
+period it renormalizes the hopping,</p>
+<div class="math notranslate nohighlight">
+\[t \to t\,J_0(F/\omega)\, ,\]</div>
+<p>so at the zeros of the Bessel function <span class="math notranslate nohighlight">\(J_0\)</span> the band collapses
+and a wavepacket stops spreading – <em>dynamic localization</em>. Grossmann,
+Dittrich, Jung and Hänggi found the two-site version: in a double well
+driven by <span class="math notranslate nohighlight">\(\frac{A}{2}\cos(\omega t)\sigma_z\)</span>, the tunnel splitting
+becomes <span class="math notranslate nohighlight">\(2t|J_0(A/\omega)|\)</span> at high frequency, and the particle
+stays in the well it started in at the zeros of <span class="math notranslate nohighlight">\(J_0\)</span> –
+<em>coherent destruction of tunnelling</em>. Both were seen with light in curved
+waveguides (Longhi et al., 2006; Della Valle et al., 2007) and with
+cold atoms in shaken optical lattices (Lignier et al., 2007), where the
+same renormalization later became a tool to tune, or flip the sign of,
+the hopping.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.floquet.DrivenKSpace" title="tbkit.floquet.DrivenKSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.floquet.DrivenKSpace</span></code></a> takes any
+<span class="math notranslate nohighlight">\(H(\mathbf{k}, t)\)</span>, here the chain in an AC vector potential, and
+returns its Floquet band;
+<a class="reference internal" href="../tbkit.html#tbkit.floquet.effective_hamiltonian" title="tbkit.floquet.effective_hamiltonian"><code class="xref py py-func docutils literal notranslate"><span class="pre">effective_hamiltonian()</span></code></a>,
+<a class="reference internal" href="../tbkit.html#tbkit.floquet.quasienergies" title="tbkit.floquet.quasienergies"><code class="xref py py-func docutils literal notranslate"><span class="pre">quasienergies()</span></code></a> and
+<a class="reference internal" href="../tbkit.html#tbkit.floquet.evolution_operator" title="tbkit.floquet.evolution_operator"><code class="xref py py-func docutils literal notranslate"><span class="pre">evolution_operator()</span></code></a> handle a driven matrix such as
+the double well.</p>
+<p><em>References:</em> D. H. Dunlap and V. M. Kenkre, “Dynamic localization of a
+charged particle moving under the influence of an electric field,” Phys.
+Rev. B 34, 3625-3633 (1986); F. Grossmann, T. Dittrich, P. Jung, and P.
+Hänggi, “Coherent destruction of tunneling,” Phys. Rev. Lett. 67,
+516-519 (1991); S. Longhi, M. Marangoni, M. Lobino, R. Ramponi, P.
+Laporta, E. Cianci, and V. Foglietti, “Observation of dynamic
+localization in periodically curved waveguide arrays,” Phys. Rev. Lett.
+96, 243901 (2006); G. Della Valle, M. Ornigotti, E. Cianci, V.
+Foglietti, P. Laporta, and S. Longhi, “Visualization of coherent
+destruction of tunneling in an optical double well system,” Phys. Rev.
+Lett. 98, 263601 (2007); H. Lignier, C. Sias, D. Ciampini, Y. Singh, A.
+Zenesini, O. Morsch, and E. Arimondo, “Dynamical control of matter-wave
+tunneling in periodic potentials,” Phys. Rev. Lett. 99, 220403 (2007).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/floquet/plot_dynamic_localization.py</span></code> confirms
+that the Floquet band of the driven chain is <span class="math notranslate nohighlight">\(2tJ_0(F/\omega)\cos k\)</span>
+to <span class="math notranslate nohighlight">\(10^{-10}\)</span>, flat at <span class="math notranslate nohighlight">\(F/\omega = 2.405\)</span>; that the
+quasienergy splitting of the double well at <span class="math notranslate nohighlight">\(\omega = 20t\)</span> follows
+<span class="math notranslate nohighlight">\(2t|J_0(A/\omega)|\)</span> to within <span class="math notranslate nohighlight">\(0.01t\)</span>; and that at the zero
+of <span class="math notranslate nohighlight">\(J_0\)</span> the particle keeps more than 99% of its weight in the
+starting well for 100 periods, while without the drive it tunnels
+across completely.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Dunlap and Kenkre (1986) found that an AC field F\cos\omega t on a chain does not simply shake its electrons: averaged over a period, it renormalizes the hopping,"><img alt="" src="../_images/sphx_glr_plot_dynamic_localization_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/floquet/plot_dynamic_localization.html"><span class="doc">Dynamic Localization and Coherent Destruction of Tunnelling</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Dynamic Localization and Coherent Destruction of Tunnelling</div>
+</div></div></section>
+<section id="the-non-hermitian-skin-effect">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">1996/2018 – The Non-Hermitian Skin Effect</a><a class="headerlink" href="#the-non-hermitian-skin-effect" title="Link to this heading">#</a></h2>
+<p>N. Hatano and D. Nelson (1996) studied a chain whose hoppings to the
+right and to the left differ – a non-reciprocal, non-Hermitian lattice.
+It became the paradigm of the <em>skin effect</em> (Yao and Wang; Kunst,
+Edvardsson, Budich and Bergholtz, 2018): on a ring the spectrum winds
+around the energies inside it (a nonzero spectral winding number), while
+on an open chain it collapses onto a different, real set and every
+eigenstate piles up at one end. The open-chain bands are then no longer
+Bloch waves (see the generalized Brillouin zone, 2018/2019, below).</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.set_hopping" title="tbkit.kspace.KSpace.set_hopping"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.set_hopping()</span></code></a> with
+<code class="docutils literal notranslate"><span class="pre">hermitian=False</span></code> (non-reciprocal hoppings),
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.spectral_winding" title="tbkit.kspace.KSpace.spectral_winding"><code class="xref py py-meth docutils literal notranslate"><span class="pre">spectral_winding()</span></code></a> and
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.finite_ham" title="tbkit.kspace.KSpace.finite_ham"><code class="xref py py-meth docutils literal notranslate"><span class="pre">finite_ham()</span></code></a> (open or periodic chains).</p>
+<p><em>References:</em> N. Hatano and D. R. Nelson, “Localization Transitions in
+Non-Hermitian Quantum Mechanics,” Phys. Rev. Lett. 77, 570-573 (1996);
+S. Yao and Z. Wang, “Edge States and Topological Invariants of
+Non-Hermitian Systems,” Phys. Rev. Lett. 121, 086803 (2018); F. K.
+Kunst, E. Edvardsson, J. C. Budich, and E. J. Bergholtz, Phys. Rev.
+Lett. 121, 026808 (2018).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/non_hermitian/plot_skin_effect.py</span></code> confirms, for
+the Hatano-Nelson chain, the winding number 1, the real open-chain
+spectrum inside <span class="math notranslate nohighlight">\(\pm2\sqrt{t_Rt_L}\)</span>, and every eigenstate on the
+left end.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Hatano and Nelson (1996) studied a chain whose hoppings to the right and to the left differ, (H\psi)_n = t_R\psi_{n+1} + t_L\psi_{n-1} -- a non-reciprocal, non-Hermitian lattice. Twenty years later it became the paradigm of a phenomenon with no Hermitian counterpart, the skin effect (Yao and Wang; Kunst, Edvardsson, Budich and Bergholtz, 2018):"><img alt="" src="../_images/sphx_glr_plot_skin_effect_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/non_hermitian/plot_skin_effect.html"><span class="doc">The Non-Hermitian Skin Effect</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Non-Hermitian Skin Effect</div>
+</div></div></section>
+<section id="pt-symmetry-exceptional-points-and-gain-loss-lattices">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">1998/2015 – PT Symmetry, Exceptional Points, and Gain-Loss Lattices</a><a class="headerlink" href="#pt-symmetry-exceptional-points-and-gain-loss-lattices" title="Link to this heading">#</a></h2>
+<p>C. Bender and S. Boettcher overturned a piece of textbook folklore:
+Hermiticity is <em>sufficient</em> for a real spectrum, but it is not necessary.
+A Hamiltonian merely symmetric under the combined parity-time operation
+<span class="math notranslate nohighlight">\(\mathcal{PT}\)</span> can have an entirely real spectrum too. On a lattice
+this means balanced <strong>gain and loss</strong> – imaginary onsite energies
+<span class="math notranslate nohighlight">\(\pm i\gamma\)</span> placed symmetrically on the two sublattices – leaves
+every eigenvalue real up to a finite threshold in <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
+<p>At that threshold the eigenvalues do not cross; they collide and move off
+into the complex plane as conjugate pairs. The collision point is an
+<strong>exceptional point</strong>, and it is unlike any Hermitian degeneracy: the two
+<em>eigenvectors</em> coalesce as well, so the Hamiltonian loses a dimension of
+its eigenbasis and stops being diagonalizable altogether. How close a
+mode has come to that degeneracy is measured by the <strong>Petermann factor</strong>
+<span class="math notranslate nohighlight">\(K_n\)</span>, introduced decades earlier in laser physics to explain
+anomalously broad linewidths,</p>
+<div class="math notranslate nohighlight">
+\[K_n = \frac{\langle\psi_L^{n}|\psi_L^{n}\rangle
+            \langle\psi_R^{n}|\psi_R^{n}\rangle}
+           {|\langle\psi_L^{n}|\psi_R^{n}\rangle|^2}\, ,\]</div>
+<p>which equals 1 for an orthogonal (Hermitian) eigenbasis and diverges at
+an exceptional point. None of this is a formal game: gain and loss are
+the most accessible knobs an optics experimentalist has, and
+<span class="math notranslate nohighlight">\(\mathcal{PT}\)</span> symmetry breaking was seen directly in coupled
+optical waveguides in 2010.</p>
+<p>Combined with topology it produces an effect with no Hermitian
+counterpart at all. Chiral symmetry forces each of the SSH model’s zero
+modes (1979, above) to live entirely on <em>one</em> sublattice, so sublattice
+gain and loss is felt by them but not by the bulk states, which are
+spread evenly over both. The topological modes are therefore the <em>first</em>
+to leave the real axis, picking up energies <span class="math notranslate nohighlight">\(\pm i\gamma\)</span> at any
+gain at all, while the entire bulk stays real until <span class="math notranslate nohighlight">\(\gamma\)</span>
+reaches the bulk gap – a way to amplify a topological mode selectively,
+demonstrated in a chain of dielectric microwave resonators.</p>
+<figure class="align-default">
+<img alt="../_images/driven_breakthroughs-2.png" class="plot-directive" src="../_images/driven_breakthroughs-2.png" />
+</figure>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.system.System.set_onsite" title="tbkit.system.System.set_onsite"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.system.System.set_onsite()</span></code></a> accepts complex
+onsite energies, and <a class="reference internal" href="../tbkit.html#tbkit.system.System.get_eig" title="tbkit.system.System.get_eig"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_eig()</span></code></a> detects a
+non-Hermitian Hamiltonian and switches to the general (non-symmetric)
+eigensolver, with <code class="docutils literal notranslate"><span class="pre">left=True</span></code> returning the left eigenvectors too;
+<a class="reference internal" href="../tbkit.html#tbkit.system.System.get_petermann" title="tbkit.system.System.get_petermann"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_petermann()</span></code></a> builds <span class="math notranslate nohighlight">\(K_n\)</span> from both
+sets, and <a class="reference internal" href="../tbkit.html#tbkit.plot.Plot.spectrum_complex" title="tbkit.plot.Plot.spectrum_complex"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.plot.Plot.spectrum_complex()</span></code></a> plots the real and
+imaginary parts of the spectrum together.</p>
+<p><em>References:</em> C. M. Bender and S. Boettcher, “Real Spectra in
+Non-Hermitian Hamiltonians Having PT Symmetry,” Phys. Rev. Lett. 80,
+5243-5246 (1998); K. Petermann, “Calculated spontaneous emission factor
+for double-heterostructure injection lasers with gain-induced
+waveguiding,” IEEE J. Quantum Electron. 15, 566-570 (1979); C. E. Ruter,
+K. G. Makris, R. El-Ganainy, D. N. Christodoulides, M. Segev, and D.
+Kip, “Observation of parity-time symmetry in optics,” Nature Physics 6,
+192-195 (2010); H. Schomerus, “Topologically protected midgap states in
+complex photonic lattices,” Opt. Lett. 38, 1912-1914 (2013); C. Poli, M.
+Bellec, U. Kuhl, F. Mortessagne, and H. Schomerus, “Selective
+enhancement of topologically induced interface states in a dielectric
+resonator chain,” Nat. Commun. 6, 6710 (2015).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/non_hermitian/plot_pt_symmetry.py</span></code> confirms, for a
+gain-loss dimer, that the spectrum is real and equal to
+<span class="math notranslate nohighlight">\(\pm\sqrt{t^2-\gamma^2}\)</span> below the exceptional point at
+<span class="math notranslate nohighlight">\(\gamma=t\)</span>, purely imaginary above it, and that the Petermann
+factor matches <span class="math notranslate nohighlight">\(1/(1-\gamma^2/t^2)\)</span> to machine precision before
+diverging at the exceptional point itself. It then applies the same
+gain-loss pattern to a 40-site topological SSH chain and confirms that
+exactly two states – the edge modes – acquire imaginary parts, at
+exactly <span class="math notranslate nohighlight">\(\pm i\gamma\)</span>, that the amplified one lies entirely on the
+gain sublattice and the damped one entirely on the loss sublattice, and
+that the bulk stays real until <span class="math notranslate nohighlight">\(\gamma\)</span> exceeds <span class="math notranslate nohighlight">\(|v-w|\)</span>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A lattice with balanced gain and loss -- imaginary onsite energies \pm i\gamma on the two sublattices -- has a non-Hermitian Hamiltonian, but it commutes with the combined parity-time operation \mathcal{PT}. Bender and Boettcher&#x27;s 1998 observation was that such a Hamiltonian can still have an entirely real spectrum, up to a threshold in \gamma at which eigenvalues collide pairwise and split into complex-conjugate pairs."><img alt="" src="../_images/sphx_glr_plot_pt_symmetry_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/non_hermitian/plot_pt_symmetry.html"><span class="doc">PT Symmetry, Exceptional Points, and a Selectively Amplified Edge Mode</span></a></p>
+  <div class="sphx-glr-thumbnail-title">PT Symmetry, Exceptional Points, and a Selectively Amplified Edge Mode</div>
+</div></div></section>
+<section id="discrete-optics-in-waveguide-arrays">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">1999/2003 – Discrete Optics in Waveguide Arrays</a><a class="headerlink" href="#discrete-optics-in-waveguide-arrays" title="Link to this heading">#</a></h2>
+<p>Light in parallel optical waveguides couples from one guide to the next
+through their evanescent tails, and in coupled-mode theory the field
+amplitudes obey a Tight-Binding Schrödinger equation in which the
+propagation distance <span class="math notranslate nohighlight">\(z\)</span> plays the role of time,
+<span class="math notranslate nohighlight">\(i\,d\psi_n/dz = c(\psi_{n+1} + \psi_{n-1})\)</span>. Two guides form a
+directional coupler, whose power swaps as <span class="math notranslate nohighlight">\(\cos^2(cz)\)</span>; Jones
+(1965) predicted that light launched into one guide of an array spreads
+as <span class="math notranslate nohighlight">\(|J_n(2cz)|^2\)</span>, a <em>discrete diffraction</em> with two outer lobes
+and no Gaussian spot. Semiconductor and glass arrays made in the 1990s
+turned this into a laboratory for lattice physics, where the wave
+function can be watched along the sample: discrete solitons (predicted
+by Christodoulides and Joseph, 1988, observed by Eisenberg et al.,
+1998), diffraction that vanishes or changes sign with the phase tilt of
+the input beam (Eisenberg et al., 2000), and in 1999 optical Bloch
+oscillations (Pertsch et al.; Morandotti et al.), the first direct images
+of the 1928 prediction (above). Christodoulides, Lederer and Silberberg
+(2003) reviewed the field; Zener tunnelling, dynamic localization (above)
+and the PT-symmetric couplers (1998/2015, above) were later seen in the
+same platform.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.propagation.Propagation" title="tbkit.propagation.Propagation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.propagation.Propagation</span></code></a> integrates the
+coupled-mode equations along <span class="math notranslate nohighlight">\(z\)</span>
+(<a class="reference internal" href="../tbkit.html#tbkit.propagation.Propagation.get_propagation" title="tbkit.propagation.Propagation.get_propagation"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_propagation()</span></code></a>, Crank-Nicolson),
+and <a class="reference internal" href="../tbkit.html#tbkit.propagation.Propagation.plt_prop_dimer" title="tbkit.propagation.Propagation.plt_prop_dimer"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plt_prop_dimer()</span></code></a> draws the
+directional coupler.</p>
+<p><em>References:</em> A. L. Jones, “Coupling of optical fibers and scattering in
+fibers,” J. Opt. Soc. Am. 55, 261-271 (1965); D. N. Christodoulides and
+R. I. Joseph, “Discrete self-focusing in nonlinear arrays of coupled
+waveguides,” Opt. Lett. 13, 794-796 (1988); H. S. Eisenberg, Y.
+Silberberg, R. Morandotti, A. R. Boyd, and J. S. Aitchison, “Discrete
+spatial optical solitons in waveguide arrays,” Phys. Rev. Lett. 81,
+3383-3386 (1998); T. Pertsch, P. Dannberg, W. Elflein, A. Bräuer, and F.
+Lederer, “Optical Bloch oscillations in temperature tuned waveguide
+arrays,” Phys. Rev. Lett. 83, 4752-4755 (1999); R. Morandotti, U.
+Peschel, J. S. Aitchison, H. S. Eisenberg, and Y. Silberberg,
+“Experimental observation of linear and nonlinear optical Bloch
+oscillations,” Phys. Rev. Lett. 83, 4756-4759 (1999); H. S. Eisenberg,
+Y. Silberberg, R. Morandotti, and J. S. Aitchison, “Diffraction
+management,” Phys. Rev. Lett. 85, 1863-1866 (2000); D. N.
+Christodoulides, F. Lederer, and Y. Silberberg, “Discretizing light
+behaviour in linear and nonlinear waveguide lattices,” Nature 424,
+817-823 (2003).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/dynamics/plot_discrete_optics_in_waveguide_arrays.py</span></code>
+confirms the <span class="math notranslate nohighlight">\(\cos^2(cz)\)</span> power exchange of the coupler and the
+<span class="math notranslate nohighlight">\(|J_n(2cz)|^2\)</span> intensity of discrete diffraction to
+<span class="math notranslate nohighlight">\(10^{-4}\)</span>, with the ballistic width <span class="math notranslate nohighlight">\(\langle n^2\rangle =
+2c^2z^2\)</span>, and that a broad beam tilted by <span class="math notranslate nohighlight">\(\pi/2\)</span> per guide barely
+broadens while the untilted one triples its width.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Light guided by parallel waveguides leaks from one to the next through their evanescent tails. In coupled-mode theory the field amplitudes obey a Tight-Binding Schrödinger equation in which the propagation distance z plays the role of time,"><img alt="" src="../_images/sphx_glr_plot_discrete_optics_in_waveguide_arrays_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/dynamics/plot_discrete_optics_in_waveguide_arrays.html"><span class="doc">Discrete Optics in Waveguide Arrays</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Discrete Optics in Waveguide Arrays</div>
+</div></div></section>
+<section id="the-photovoltaic-hall-effect">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">2009 – The Photovoltaic Hall Effect</a><a class="headerlink" href="#the-photovoltaic-hall-effect" title="Link to this heading">#</a></h2>
+<p>T. Oka and H. Aoki asked what happens to graphene illuminated by
+circularly polarized light, and found a Hall current without any
+magnetic field. An electron near a Dirac point is driven once around a
+circle in momentum space per period, and the geometric
+(Aharonov-Anandan) phase it picks up acts as a Berry curvature of the
+Floquet states; the Hall conductivity is the Floquet extension of the
+TKNN formula (1982),
+<span class="math notranslate nohighlight">\(\sigma_{xy} = \frac{e^2}{h}\frac{1}{2\pi}\int d^2k\sum_\alpha f_\alpha\Omega_\alpha\)</span>,
+with <span class="math notranslate nohighlight">\(f_\alpha\)</span> the occupations of the Floquet bands. Light opens a
+gap at both Dirac points, as a staggered (Semenoff) potential would, but
+its Berry curvature has the <em>same</em> sign in both valleys, which add up to
+<span class="math notranslate nohighlight">\(\sigma_{xy} = \pm e^2/h\)</span> when the lower Floquet band is full, and to
+<span class="math notranslate nohighlight">\((e^2/h)\,m/|E_F|\)</span> at a Fermi level in the upper band near its
+edge. McIver et al.
+measured this light-induced anomalous Hall effect in graphene in 2020.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.floquet.FloquetKSpace" title="tbkit.floquet.FloquetKSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.floquet.FloquetKSpace</span></code></a> (light enters
+through the Peierls phases of <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.get_ham_peierls" title="tbkit.kspace.KSpace.get_ham_peierls"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.get_ham_peierls()</span></code></a>)
+gives the Floquet bands, whose curvature
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.berry_curvature" title="tbkit.kspace.KSpace.berry_curvature"><code class="xref py py-meth docutils literal notranslate"><span class="pre">berry_curvature()</span></code></a> maps over the Brillouin
+zone.</p>
+<p><em>References:</em> T. Oka and H. Aoki, “Photovoltaic Hall effect in
+graphene,” Phys. Rev. B 79, 081406 (2009); J. W. McIver, B. Schulte,
+F.-U. Stein, T. Matsuyama, G. Jotzu, G. Meier, and A. Cavalleri,
+“Light-induced anomalous Hall effect in graphene,” Nature Physics 16,
+38-41 (2020).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/floquet/plot_photovoltaic_hall_effect.py</span></code>
+confirms that the lower Floquet band of illuminated graphene carries
+Berry flux of the same sign at <span class="math notranslate nohighlight">\(K\)</span> and <span class="math notranslate nohighlight">\(K'\)</span>, adding up to
+<span class="math notranslate nohighlight">\(\pm1\)</span>, while a staggered potential with the same gap gives
+opposite fluxes adding up to 0; that <span class="math notranslate nohighlight">\(\sigma_{xy} = \pm e^2/h\)</span> in
+the gap; and that at <span class="math notranslate nohighlight">\(E_F = 1.25\)</span>, 1.5 and 2 times the mass
+<span class="math notranslate nohighlight">\(|\sigma_{xy}|\)</span> follows the massive Dirac value
+<span class="math notranslate nohighlight">\((e^2/h)\,m/|E_F|\)</span> to within 5%.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Oka and Aoki (2009) asked what a DC field does to graphene that is illuminated by circularly polarized light, and found a Hall current with no magnetic field: the photovoltaic Hall effect. An electron near a Dirac point is driven around a circle in momentum space once per period, and the geometric (Aharonov-Anandan) phase it picks up acts as a Berry curvature of the Floquet states |u_\alpha(\mathbf{k})\rangle. The Hall conductivity follows from the Floquet extension of the Kubo formula,"><img alt="" src="../_images/sphx_glr_plot_photovoltaic_hall_effect_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/floquet/plot_photovoltaic_hall_effect.html"><span class="doc">The Photovoltaic Hall Effect in Graphene</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Photovoltaic Hall Effect in Graphene</div>
+</div></div></section>
+<section id="floquet-topological-insulators">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">2011 – Floquet Topological Insulators</a><a class="headerlink" href="#floquet-topological-insulators" title="Link to this heading">#</a></h2>
+<p>Kitagawa, Oka, Brataas, Fu and Demler, and Lindner, Refael and
+Galitski, showed that periodic driving can <em>engineer</em> topological bands.
+Stroboscopically a drive of period <span class="math notranslate nohighlight">\(T\)</span> acts as a static Floquet
+Hamiltonian, <span class="math notranslate nohighlight">\(e^{-iH_FT} = \mathcal{T}e^{-i\int_0^TH(t)dt}\)</span>; for
+light on graphene, the setting of the photovoltaic Hall effect (2009,
+above), <span class="math notranslate nohighlight">\(H_F\)</span> gains at high frequency Haldane’s complex
+second-neighbour hopping, and its lower band becomes a Chern band.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#module-tbkit.floquet" title="tbkit.floquet"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.floquet</span></code></a> – quasienergies and the Floquet
+Hamiltonian from the time-ordered evolution, the Sambe (extended) space
+of the harmonics, and <a class="reference internal" href="../tbkit.html#tbkit.floquet.FloquetKSpace" title="tbkit.floquet.FloquetKSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">FloquetKSpace</span></code></a>, a driven
+Bloch model (light enters through
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.get_ham_peierls" title="tbkit.kspace.KSpace.get_ham_peierls"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.get_ham_peierls()</span></code></a>).</p>
+<p><em>References:</em> T. Kitagawa, T. Oka, A. Brataas, L. Fu, and E. Demler,
+Phys. Rev. B 84, 235108 (2011); N. H. Lindner, G. Refael, and V.
+Galitski, Nature Physics 7, 490 (2011).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/floquet/plot_floquet_chern_insulator.py</span></code> confirms
+that the two routes to the quasienergies agree, that circularly polarized
+light opens equal gaps at <span class="math notranslate nohighlight">\(K\)</span> and <span class="math notranslate nohighlight">\(K'\)</span> with Chern number
+<span class="math notranslate nohighlight">\(\pm1\)</span> (reversed with the helicity), and that the gap grows as
+<span class="math notranslate nohighlight">\(A_0^2\)</span> and falls as <span class="math notranslate nohighlight">\(1/\omega\)</span>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="T. Oka and H. Aoki (2009) predicted that graphene illuminated by circularly polarized light becomes a Hall insulator; Kitagawa, Oka, Brataas, Fu and Demler (2011) showed it is a Floquet realization of Haldane&#x27;s model. A time-periodic drive H(t+T) = H(t) acts, stroboscopically, as the static Floquet Hamiltonian H_F, e^{-iH_FT} = \mathcal{T}e^{-i\int_0^TH(t)dt}. Light enters the hoppings through the Peierls phase of its vector potential, t_{ij} \to t_{ij}e^{i\mathbf{A}(t)\cdot\mathbf{d}_{ij}} with \mathbf{A}(t) = A_0(\cos\omega t, \sin\omega t). At high frequency,"><img alt="" src="../_images/sphx_glr_plot_floquet_chern_insulator_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/floquet/plot_floquet_chern_insulator.html"><span class="doc">Floquet Engineering: A Chern Insulator From Circularly Polarized Light</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Floquet Engineering: A Chern Insulator From Circularly Polarized Light</div>
+</div></div></section>
+<section id="anomalous-floquet-topological-phases">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">2010-2013 – Anomalous Floquet Topological Phases</a><a class="headerlink" href="#anomalous-floquet-topological-phases" title="Link to this heading">#</a></h2>
+<p>Kitagawa, Berg, Rudner and Demler noticed that a driven lattice can have
+chiral edge states although every Floquet band has zero Chern number:
+quasienergies are defined modulo <span class="math notranslate nohighlight">\(\omega = 2\pi/T\)</span>, so edge states
+can wind around the whole Floquet zone, and the bulk-edge correspondence
+of static insulators fails. Rudner, Lindner, Berg and Levin gave the
+minimal model – a bipartite square lattice whose hopping is switched on
+along one bond direction at a time, so that at “perfect transfer” the
+evolution over a period is the identity in the bulk while particles run
+along the edges – and the invariant that counts the edge states in a
+gap <span class="math notranslate nohighlight">\(\epsilon\)</span>: the winding number <span class="math notranslate nohighlight">\(W[U_\epsilon]\)</span> of the
+evolution at all times of the period, closed by a return map built from
+<span class="math notranslate nohighlight">\(H_F\)</span> with its branch cut in that gap. Across a group of bands it
+changes by their total Chern number. The anomalous phases were observed
+in photonic waveguide lattices in 2017.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.floquet.step_drive" title="tbkit.floquet.step_drive"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.floquet.step_drive()</span></code></a> (exact
+piecewise-constant drives of <strong>KSpace</strong> models, ribbons, or real-space
+<strong>System</strong> flakes), <a class="reference internal" href="../tbkit.html#tbkit.floquet.DrivenKSpace" title="tbkit.floquet.DrivenKSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">DrivenKSpace</span></code></a> (any
+<span class="math notranslate nohighlight">\(H(\mathbf{k}, t)\)</span>), the <em>epsilon</em> branch cut of
+<a class="reference internal" href="../tbkit.html#tbkit.floquet.effective_hamiltonian" title="tbkit.floquet.effective_hamiltonian"><code class="xref py py-func docutils literal notranslate"><span class="pre">effective_hamiltonian()</span></code></a> and
+<a class="reference internal" href="../tbkit.html#tbkit.floquet.FloquetKSpace" title="tbkit.floquet.FloquetKSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">FloquetKSpace</span></code></a>,
+<a class="reference internal" href="../tbkit.html#tbkit.floquet.DrivenKSpace.winding_number" title="tbkit.floquet.DrivenKSpace.winding_number"><code class="xref py py-meth docutils literal notranslate"><span class="pre">winding_number()</span></code></a>, and
+<a class="reference internal" href="../tbkit.html#tbkit.floquet.DrivenKSpace.edge_state_count" title="tbkit.floquet.DrivenKSpace.edge_state_count"><code class="xref py py-meth docutils literal notranslate"><span class="pre">edge_state_count()</span></code></a> for ribbons.</p>
+<p><em>References:</em> T. Kitagawa, E. Berg, M. Rudner, and E. Demler, “Topological
+characterization of periodically driven quantum systems,” Phys. Rev. B 82,
+235114 (2010); M. S. Rudner, N. H. Lindner, E. Berg, and M. Levin,
+“Anomalous Edge States and the Bulk-Edge Correspondence for Periodically
+Driven Two-Dimensional Systems,” Phys. Rev. X 3, 031005 (2013); L. J.
+Maczewsky, J. M. Zeuner, S. Nolte, and A. Szameit, Nat. Commun. 8, 13756
+(2017); S. Mukherjee et al., Nat. Commun. 8, 13918 (2017).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/floquet/plot_anomalous_floquet_phases.py</span></code> builds
+the five-step model: at perfect transfer both Floquet bands sit at
+quasienergy 0 with <span class="math notranslate nohighlight">\(C = 0\)</span>, yet <span class="math notranslate nohighlight">\(W = 1\)</span> in the gap at
+<span class="math notranslate nohighlight">\(\pi/T\)</span> and a ribbon has one chiral mode per edge; on a real-space
+flake a particle in the bulk returns to its site every period while one
+on the edge moves along it. Away from perfect transfer it maps the
+trivial, Chern and anomalous phases, where the Chern numbers of
+<span class="math notranslate nohighlight">\(H_F\)</span> miss the edge states.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="In a static insulator the chiral edge states in a gap are counted by the Chern numbers of the bands below it. Kitagawa, Berg, Rudner and Demler (2010) found that a periodically driven lattice escapes this rule: since quasienergies are only defined modulo \omega = 2\pi/T, edge states can wind around the whole Floquet zone, and a driven system can have chiral edge states although every Floquet band has C = 0. Rudner, Lindner, Berg and Levin (2013) built the minimal example -- a five-step drive of the bipartite square lattice in which the hopping J is on along one bond direction \mathbf{b}_s per step (right, up, left, down, then a pause), all under a sublattice potential \delta_{AB} = \epsilon_A - \epsilon_B -- and the invariant that counts these states: the winding number"><img alt="" src="../_images/sphx_glr_plot_anomalous_floquet_phases_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/floquet/plot_anomalous_floquet_phases.html"><span class="doc">Anomalous Floquet Topological Phases: Edge States With Zero Chern Numbers</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Anomalous Floquet Topological Phases: Edge States With Zero Chern Numbers</div>
+</div></div></section>
+<section id="exceptional-points-in-momentum-space-vorticity-exceptional-rings-and-bulk-fermi-arcs">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">2015-2018 – Exceptional Points in Momentum Space: Vorticity, Exceptional Rings and Bulk Fermi Arcs</a><a class="headerlink" href="#exceptional-points-in-momentum-space-vorticity-exceptional-rings-and-bulk-fermi-arcs" title="Link to this heading">#</a></h2>
+<p>The exceptional point of a gain-loss dimer (1998/2015, above) needs a
+parameter to be tuned. In a 2D crystal the Bloch momentum supplies two
+parameters for free, and exceptional points become generic features of
+non-Hermitian band structures. Zhen et al. (2015) saw it first in a
+photonic crystal slab: radiation losses turned a Dirac cone into a <strong>ring
+of exceptional points</strong>, inside which the real parts of the two bands
+coincide. Kozii and Fu (2017) and Zhou et al. (2018) showed that a
+generic non-Hermitian term instead splits a Dirac point into <strong>a pair of
+exceptional points</strong> joined by a <strong>bulk Fermi arc</strong>, an open line of
+equal real energies and different lifetimes, observed in a photonic
+crystal. Shen, Zhen and Fu (2018) put these objects on a topological
+footing: the eigenvalue <strong>vorticity</strong>
+<span class="math notranslate nohighlight">\(\nu = -\frac{1}{2\pi}\oint\nabla_{\mathbf{k}}\arg(E_m - E_n)\cdot d\mathbf{k}\)</span>
+is <span class="math notranslate nohighlight">\(\pm1/2\)</span> around an exceptional point (the two bands swap after
+one loop) and 0 around a Dirac point, so a Dirac point can only split into
+EPs of opposite vorticity; they also defined Chern numbers of
+non-Hermitian bands from left and right eigenvectors, all equal as long as
+a line gap separates the bands. The discriminant
+<span class="math notranslate nohighlight">\(\Delta = \prod_{m&lt;n}(E_m - E_n)^2\)</span> (Yang, Schnyder, Hu and Chiu,
+2021) gives the same charges without following any band, and its
+periodicity forces the charges to add up to zero over the Brillouin zone:
+exceptional points come in pairs. Encircling an exceptional point swaps
+the two eigenstates, and restores the state only after four loops,
+as Heiss predicted and Dembowski et al. measured in a microwave cavity.</p>
+<p><em>Implementation:</em> the new module <a class="reference internal" href="../tbkit.html#module-tbkit.exceptional" title="tbkit.exceptional"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.exceptional</span></code></a>:
+<a class="reference internal" href="../tbkit.html#tbkit.exceptional.track_eigenvalues" title="tbkit.exceptional.track_eigenvalues"><code class="xref py py-func docutils literal notranslate"><span class="pre">track_eigenvalues()</span></code></a> (continuation around a
+loop, never sorting), <a class="reference internal" href="../tbkit.html#tbkit.exceptional.vorticity" title="tbkit.exceptional.vorticity"><code class="xref py py-func docutils literal notranslate"><span class="pre">vorticity()</span></code></a>,
+<a class="reference internal" href="../tbkit.html#tbkit.exceptional.discriminant" title="tbkit.exceptional.discriminant"><code class="xref py py-func docutils literal notranslate"><span class="pre">discriminant()</span></code></a> (from the resultant of the
+characteristic polynomial) and
+<a class="reference internal" href="../tbkit.html#tbkit.exceptional.discriminant_winding" title="tbkit.exceptional.discriminant_winding"><code class="xref py py-func docutils literal notranslate"><span class="pre">discriminant_winding()</span></code></a>,
+<a class="reference internal" href="../tbkit.html#tbkit.exceptional.find_exceptional_points" title="tbkit.exceptional.find_exceptional_points"><code class="xref py py-func docutils literal notranslate"><span class="pre">find_exceptional_points()</span></code></a> (charges, orders from
+the Petermann factor, exceptional rings, and the doubling theorem),
+<a class="reference internal" href="../tbkit.html#tbkit.exceptional.fermi_arcs" title="tbkit.exceptional.fermi_arcs"><code class="xref py py-func docutils literal notranslate"><span class="pre">fermi_arcs()</span></code></a>, and
+<a class="reference internal" href="../tbkit.html#tbkit.exceptional.encircle" title="tbkit.exceptional.encircle"><code class="xref py py-func docutils literal notranslate"><span class="pre">encircle()</span></code></a>;
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.biorthogonal_chern_number" title="tbkit.kspace.KSpace.biorthogonal_chern_number"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.biorthogonal_chern_number()</span></code></a> and
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.biorthogonal_berry_curvature" title="tbkit.kspace.KSpace.biorthogonal_berry_curvature"><code class="xref py py-meth docutils literal notranslate"><span class="pre">biorthogonal_berry_curvature()</span></code></a> (the LR, RL, RR
+and LL Chern numbers of line-gapped bands).</p>
+<p><em>References:</em> B. Zhen, C. W. Hsu, Y. Igarashi, L. Lu, I. Kaminer, A.
+Pick, S.-L. Chua, J. D. Joannopoulos, and M. Soljacic, “Spawning rings of
+exceptional points out of Dirac cones,” Nature 525, 354-358 (2015); V.
+Kozii and L. Fu, “Non-Hermitian topological theory of finite-lifetime
+quasiparticles: prediction of bulk Fermi arc due to exceptional point,”
+arXiv:1708.05841 (2017); H. Shen, B. Zhen, and L. Fu, “Topological band
+theory for non-Hermitian Hamiltonians,” Phys. Rev. Lett. 120, 146402
+(2018); H. Zhou, C. Peng, Y. Yoon, C. W. Hsu, K. A. Nelson, L. Fu, J. D.
+Joannopoulos, M. Soljacic, and B. Zhen, “Observation of bulk Fermi arc
+and polarization half charge from paired exceptional points,” Science
+359, 1009-1012 (2018); Z. Yang, A. P. Schnyder, J. Hu, and C.-K. Chiu,
+“Fermion doubling theorems in two-dimensional non-Hermitian systems for
+Fermi points and exceptional points,” Phys. Rev. Lett. 126, 086401
+(2021); W. D. Heiss, “Repulsion of resonance states and exceptional
+points,” Phys. Rev. E 61, 929 (2000); C. Dembowski, H.-D. Graf, H. L.
+Harney, A. Heine, W. D. Heiss, H. Rehfeld, and A. Richter, “Experimental
+observation of the topological structure of exceptional points,” Phys.
+Rev. Lett. 86, 787 (2001).</p>
+<p><em>Examples:</em>
+<code class="docutils literal notranslate"><span class="pre">examples/non_hermitian/plot_exceptional_points_fermi_arcs.py</span></code> finds
+the four EPs of graphene with a non-Hermitian <span class="math notranslate nohighlight">\(i\gamma\sigma_x\)</span>
+coupling, of charges <span class="math notranslate nohighlight">\(\pm1\)</span> adding up to zero, all second order,
+exactly where <span class="math notranslate nohighlight">\(\mathrm{Re}f = 0\)</span> and <span class="math notranslate nohighlight">\(|\mathrm{Im}f| = \gamma\)</span>,
+and the Fermi arc between each pair, on which the two eigenvalues are
+purely imaginary; it maps <span class="math notranslate nohighlight">\(\mathrm{Re}\,E\)</span> and
+<span class="math notranslate nohighlight">\(\mathrm{Im}\,E\)</span> around K.
+<code class="docutils literal notranslate"><span class="pre">examples/non_hermitian/plot_exceptional_point_vorticity.py</span></code> splits a
+Dirac point into EP pairs of vorticity <span class="math notranslate nohighlight">\(\pm1/2\)</span> whose total stays
+the Dirac point’s 0, a distance <span class="math notranslate nohighlight">\(4\gamma/3\)</span> apart for small
+<span class="math notranslate nohighlight">\(\gamma\)</span>, and turns it into an exceptional ring <span class="math notranslate nohighlight">\(|f| = \gamma\)</span>
+of radius close to <span class="math notranslate nohighlight">\(2\gamma/3\)</span> under balanced gain and loss.
+<code class="docutils literal notranslate"><span class="pre">examples/non_hermitian/plot_exceptional_point_encircling.py</span></code> confirms
+that one loop around the Dirac point returns each state with a Berry
+phase <span class="math notranslate nohighlight">\(\pi\)</span>, while around an EP one loop swaps the two states, two
+loops return the state with a factor <span class="math notranslate nohighlight">\(-1\)</span>, and four with
+<span class="math notranslate nohighlight">\(+1\)</span>. <code class="docutils literal notranslate"><span class="pre">examples/non_hermitian/plot_exceptional_points_chern_number.py</span></code>
+confirms that the four biorthogonal Chern numbers of the Haldane model
+with gain and loss <span class="math notranslate nohighlight">\(\pm i\gamma\)</span> all equal 1 until the real line gap
+<span class="math notranslate nohighlight">\(2\sqrt{1-\gamma^2}\)</span> closes at <span class="math notranslate nohighlight">\(\gamma = 1\)</span>, where three pairs
+of EPs appear around the M points and the Chern number is no longer
+defined.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A loop in the Brillouin zone around a band touching tells what kind of touching it is."><img alt="" src="../_images/sphx_glr_plot_exceptional_point_encircling_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/non_hermitian/plot_exceptional_point_encircling.html"><span class="doc">Exceptional Points in Momentum Space: Encircling an EP versus a Dirac Point</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Exceptional Points in Momentum Space: Encircling an EP versus a Dirac Point</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="What becomes of a Dirac point when a Hermitian crystal is made non-Hermitian? It depends on the non-Hermitian term, and the answer is organized by a conserved quantity, the eigenvalue vorticity of Shen, Zhen and Fu (Phys. Rev. Lett. 120, 146402 (2018)),"><img alt="" src="../_images/sphx_glr_plot_exceptional_point_vorticity_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/non_hermitian/plot_exceptional_point_vorticity.html"><span class="doc">Exceptional Points in Momentum Space: Vorticity and Exceptional Rings</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Exceptional Points in Momentum Space: Vorticity and Exceptional Rings</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="A non-Hermitian band has two eigenvectors, a right one H|R\rangle = E|R\rangle and a left one H^\dagger|L\rangle = E^*|L\rangle, so there are four Berry connections i\langle u^\alpha|\nabla u^\beta\rangle, \alpha,\beta\in\{L,R\}. Shen, Zhen and Fu (Phys. Rev. Lett. 120, 146402 (2018)) showed that their Chern numbers C^{LR}, C^{RL}, C^{RR}, C^{LL} are one and the same integer, as long as the band stays separated from the others -- here by a line gap, a line \mathrm{Re}\,E = 0 that no band crosses. The gap can close only at exceptional points; until then the Chern number cannot change."><img alt="" src="../_images/sphx_glr_plot_exceptional_points_chern_number_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/non_hermitian/plot_exceptional_points_chern_number.html"><span class="doc">Exceptional Points in Momentum Space: the Chern Number until the Line Gap Closes</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Exceptional Points in Momentum Space: the Chern Number until the Line Gap Closes</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="In a Hermitian 2D crystal, two bands touch at isolated diabolical points, such as graphene&#x27;s Dirac points. Add a non-Hermitian term (gain, loss, radiation into the environment) and each Dirac point is replaced by a pair of exceptional points (EPs), where the two eigenvalues and their eigenvectors coalesce. The complex bands E_\pm(\mathbf{k}) are then the two sheets of a square root, E_\pm = \pm\sqrt{\Delta/4}, and the EPs are its branch points. Each carries a topological charge: the winding of the discriminant \Delta(\mathbf{k}) = (E_+ - E_-)^2 around it, \pm1, or equivalently the eigenvalue vorticity \mp1/2."><img alt="" src="../_images/sphx_glr_plot_exceptional_points_fermi_arcs_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/non_hermitian/plot_exceptional_points_fermi_arcs.html"><span class="doc">Exceptional Points in Momentum Space: Complex Bands and the Bulk Fermi Arc</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Exceptional Points in Momentum Space: Complex Bands and the Bulk Fermi Arc</div>
+</div></div></section>
+<section id="the-generalized-brillouin-zone-and-non-bloch-band-theory">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">2018/2019 – The Generalized Brillouin Zone and Non-Bloch Band Theory</a><a class="headerlink" href="#the-generalized-brillouin-zone-and-non-bloch-band-theory" title="Link to this heading">#</a></h2>
+<p>With the skin effect (1996/2018, above), the open-chain eigenstates
+decay as <span class="math notranslate nohighlight">\(|\beta|^n\)</span> with <span class="math notranslate nohighlight">\(|\beta| \neq 1\)</span>, so the Bloch
+Hamiltonian on the unit circle <span class="math notranslate nohighlight">\(\beta = e^{ik}\)</span> no longer
+describes the open chain, and its topological invariants no longer count
+the edge states. Yao and Wang restored the bulk-boundary correspondence
+by continuing the Bloch Hamiltonian off the unit circle,
+<span class="math notranslate nohighlight">\(H(\beta) = \sum_n t(n)\beta^n\)</span>, onto a <em>generalized</em> Brillouin
+zone on which it reproduces the open-chain spectrum. For their
+non-Hermitian SSH chain the GBZ is a circle of radius
+<span class="math notranslate nohighlight">\(\sqrt{|(t_1-\gamma/2)/(t_1+\gamma/2)|}\)</span>; the winding number along
+it, not along the unit circle, counts the zero modes, and the transition
+moves from the Bloch gap closing <span class="math notranslate nohighlight">\(t_1 = t_2 \pm \gamma/2\)</span> to
+<span class="math notranslate nohighlight">\(t_1^2 = t_2^2 + \gamma^2/4\)</span>. Yokomizo and Murakami gave the
+general construction for any 1D model: sort the roots of
+<span class="math notranslate nohighlight">\(\det[H(\beta) - E] = 0\)</span> by modulus; <span class="math notranslate nohighlight">\(E\)</span> is in the
+open-chain spectrum when the middle two have the same modulus. The
+non-Bloch bulk-boundary correspondence was observed in quantum walks of
+photons and in electric circuits in 2020.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.get_ham_beta" title="tbkit.kspace.KSpace.get_ham_beta"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.get_ham_beta()</span></code></a> (the
+non-Bloch Hamiltonian), <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.gbz" title="tbkit.kspace.KSpace.gbz"><code class="xref py py-meth docutils literal notranslate"><span class="pre">gbz()</span></code></a> (the GBZ by the
+Yokomizo-Murakami construction) and
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.finite_ham" title="tbkit.kspace.KSpace.finite_ham"><code class="xref py py-meth docutils literal notranslate"><span class="pre">finite_ham()</span></code></a> (the open chain it describes).</p>
+<p><em>References:</em> S. Yao and Z. Wang, “Edge States and Topological
+Invariants of Non-Hermitian Systems,” Phys. Rev. Lett. 121, 086803
+(2018); K. Yokomizo and S. Murakami, “Non-Bloch Band Theory of
+Non-Hermitian Systems,” Phys. Rev. Lett. 123, 066404 (2019); L. Xiao,
+T. Deng, K. Wang, G. Zhu, Z. Wang, W. Yi, and P. Xue, “Non-Hermitian
+bulk-boundary correspondence in quantum dynamics,” Nature Physics 16,
+761-766 (2020); T. Helbig, T. Hofmann, S. Imhof, M. Abdelghany, T.
+Kiessling, L. W. Molenkamp, C. H. Lee, A. Szameit, M. Greiter, and R.
+Thomale, “Generalized bulk-boundary correspondence in non-Hermitian
+topolectrical circuits,” Nature Physics 16, 747-750 (2020).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/non_hermitian/plot_generalized_brillouin_zone.py</span></code>
+finds the GBZ of the Hatano-Nelson chain, the circle
+<span class="math notranslate nohighlight">\(|\beta| = \sqrt{t_L/t_R}\)</span>, and of the non-Hermitian SSH chain, the
+circle of radius <span class="math notranslate nohighlight">\(\sqrt{|(t_1-\gamma/2)/(t_1+\gamma/2)|}\)</span>, on which
+<span class="math notranslate nohighlight">\(H(\beta)\)</span> reproduces the real open-chain spectrum while the ring
+spectrum is complex. Scanning <span class="math notranslate nohighlight">\(t_1\)</span>, it confirms that the zero
+modes and the non-Bloch winding number 1 both end at
+<span class="math notranslate nohighlight">\(t_1 = \sqrt{t_2^2 + \gamma^2/4}\)</span>, while the Bloch winding number
+stays at <span class="math notranslate nohighlight">\(1/2\)</span> until <span class="math notranslate nohighlight">\(t_1 = t_2 + \gamma/2\)</span>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="In a non-Hermitian chain with the skin effect, the open-chain eigenstates are not Bloch waves \beta^n with |\beta| = |e^{ik}| = 1, but decay as |\beta|^n with |\beta| \neq 1. Yao and Wang (2018) put the open-chain bands on a generalized Brillouin zone (GBZ), the loop in the complex \beta plane on which H(\beta) = \sum_n t(n)\beta^n reproduces them, and Yokomizo and Murakami (2019) showed how to construct it for any 1D model: sort the roots of \det[H(\beta) - E] = 0 by modulus; E belongs to the open-chain spectrum when the middle two have equal moduli."><img alt="" src="../_images/sphx_glr_plot_generalized_brillouin_zone_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/non_hermitian/plot_generalized_brillouin_zone.html"><span class="doc">The Generalized Brillouin Zone and Non-Bloch Band Theory</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Generalized Brillouin Zone and Non-Bloch Band Theory</div>
+</div></div></section>
+<section id="see-also">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">See Also</a><a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="index.html"><span class="doc">History</span></a> – the other chapters of this chronology.</p></li>
+<li><p><a class="reference internal" href="../tutorial.html"><span class="doc">Tutorial</span></a> – a narrative walkthrough of the same API.</p></li>
+<li><p><a class="reference internal" href="../tbkit.html"><span class="doc">API</span></a> – the full API reference.</p></li>
+<li><p><a class="reference internal" href="../api/gallery/index.html"><span class="doc">Examples</span></a> – every example, including those not linked above.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="interactions_breakthroughs.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Breakthroughs in Flat Bands and Interactions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../api/gallery/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Examples</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bloch-oscillations-and-the-wannier-stark-ladder">1928/1960 – Bloch Oscillations and the Wannier-Stark Ladder</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#landau-zener-tunnelling-and-zener-breakdown">1932/1934 – Landau-Zener Tunnelling and Zener Breakdown</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-localization-and-coherent-destruction-of-tunnelling">1986/1991 – Dynamic Localization and Coherent Destruction of Tunnelling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-non-hermitian-skin-effect">1996/2018 – The Non-Hermitian Skin Effect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pt-symmetry-exceptional-points-and-gain-loss-lattices">1998/2015 – PT Symmetry, Exceptional Points, and Gain-Loss Lattices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discrete-optics-in-waveguide-arrays">1999/2003 – Discrete Optics in Waveguide Arrays</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-photovoltaic-hall-effect">2009 – The Photovoltaic Hall Effect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#floquet-topological-insulators">2011 – Floquet Topological Insulators</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anomalous-floquet-topological-phases">2010-2013 – Anomalous Floquet Topological Phases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exceptional-points-in-momentum-space-vorticity-exceptional-rings-and-bulk-fermi-arcs">2015-2018 – Exceptional Points in Momentum Space: Vorticity, Exceptional Rings and Bulk Fermi Arcs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-generalized-brillouin-zone-and-non-bloch-band-theory">2018/2019 – The Generalized Brillouin Zone and Non-Bloch Band Theory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See Also</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/history/driven_breakthroughs.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2026, Charles Poli.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

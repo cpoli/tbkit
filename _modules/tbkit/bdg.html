@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 
@@ -7,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tbkit.bdg &#8212; tbkit 0.5.0 documentation</title>
+    <title>tbkit.bdg &#8212; tbkit 0.6.0 documentation</title>
   
   
   
@@ -26,23 +25,23 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=70f82a29"></script>
+    <script src="../../_static/documentation_options.js?v=dda85ae5"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -52,8 +51,9 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.5" />
+  <meta name="docsearch:version" content="0.6" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -101,7 +101,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -147,7 +147,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../history.html">
+  <a class="nav-link nav-internal" href="../../history/index.html">
     History
   </a>
 </li>
@@ -177,7 +177,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -218,7 +218,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -263,7 +263,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../history.html">
+  <a class="nav-link nav-internal" href="../../history/index.html">
     History
   </a>
 </li>
@@ -378,7 +378,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for tbkit.bdg</h1><div class="highlight"><pre>
-<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">Superconductivity in the Bogoliubov-de Gennes (BdG) formalism. With a</span>
 <span class="sd">pairing term :math:`\sum_{ij}\Delta_{ij}c^\dagger_ic^\dagger_j + h.c.`,</span>
 <span class="sd">the Hamiltonian is :math:`\frac12\Psi^\dagger H_{BdG}\Psi` in the Nambu</span>
@@ -395,7 +395,7 @@
 <span class="sd">models come from *bdg_ham*, periodic ones from *bdg_kspace* (a</span>
 <span class="sd">:class:`tbkit.kspace.KSpace` with the holes as extra orbitals, so its bands,</span>
 <span class="sd">Berry phases, *finite_ham*, ... all apply).</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -409,7 +409,7 @@
 <div class="viewcode-block" id="bdg_ham">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.bdg.bdg_ham">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">bdg_ham</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">pairing</span><span class="p">,</span> <span class="n">mu</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Get the real-space BdG Hamiltonian (see the module docstring).</span>
 
 <span class="sd">    :param ham: Square Hermitian matrix, shape (N, N) (e.g. *System.ham*).</span>
@@ -419,14 +419,14 @@
 
 <span class="sd">    :returns:</span>
 <span class="sd">        * **ham_bdg** -- Sparse CSR matrix, shape (2N, 2N).</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">h</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
-    <span class="n">delta</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">pairing</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">square_matrix</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="s1">&#39;ham&#39;</span><span class="p">)</span>
+<span class="sd">    '''</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'c16'</span><span class="p">)</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">pairing</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'c16'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">square_matrix</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="s1">'ham'</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">hermitian</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">pairing</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">h</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="s1">&#39;mu&#39;</span><span class="p">)</span>
-    <span class="n">h</span> <span class="o">=</span> <span class="n">h</span> <span class="o">-</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">sparse</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;csr&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="s1">'mu'</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">h</span> <span class="o">-</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">sparse</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'c16'</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'csr'</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">sparse</span><span class="o">.</span><span class="n">bmat</span><span class="p">([[</span><span class="n">h</span><span class="p">,</span> <span class="n">delta</span><span class="p">],</span> <span class="p">[</span><span class="n">delta</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="o">-</span><span class="n">h</span><span class="o">.</span><span class="n">T</span><span class="p">]]))</span></div>
 
 
@@ -434,11 +434,11 @@
 <div class="viewcode-block" id="pairing_bonds">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.bdg.pairing_bonds">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">pairing_bonds</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="n">delta</span><span class="p">:</span> <span class="nb">complex</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Get a p-wave (odd) pairing on the bonds of *sys.hop*:</span>
 <span class="sd">    :math:`\Delta_{ij} = \Delta`, :math:`\Delta_{ji} = -\Delta` for every</span>
 <span class="sd">    stored hopping :math:`i\to j` (oriented as *System.set_hopping* stores</span>
-<span class="sd">    them: angle in :math:`[0, 180)`). On a chain it is Kitaev&#39;s</span>
+<span class="sd">    them: angle in :math:`[0, 180)`). On a chain it is Kitaev's</span>
 <span class="sd">    :math:`\Delta\,c^\dagger_jc^\dagger_{j+1}`.</span>
 
 <span class="sd">    :param sys: **System** instance, with hoppings.</span>
@@ -446,12 +446,12 @@
 
 <span class="sd">    :returns:</span>
 <span class="sd">        * **pairing** -- Sparse CSR matrix, shape (sites, sites).</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">empty_hop</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">hop</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">number</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="s1">&#39;delta&#39;</span><span class="p">)</span>
-    <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;i&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">sys</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;j&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">number</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="s1">'delta'</span><span class="p">)</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'i'</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">sys</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'j'</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">sites</span>
-    <span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">delta</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+    <span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">delta</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'c16'</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">vals</span><span class="p">,</span> <span class="o">-</span><span class="n">vals</span><span class="p">]),</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]))),</span>
                                       <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span></div>
 
@@ -460,7 +460,7 @@
 <div class="viewcode-block" id="pairing_s_wave">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.bdg.pairing_s_wave">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">pairing_s_wave</span><span class="p">(</span><span class="n">n_sites</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">delta</span><span class="p">:</span> <span class="nb">complex</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Get an onsite singlet (s-wave) pairing</span>
 <span class="sd">    :math:`\Delta\sum_i c^\dagger_{i\uparrow}c^\dagger_{i\downarrow} + h.c.`</span>
 <span class="sd">    for a spinful model with rows ordered site by site, spin up then down</span>
@@ -471,10 +471,10 @@
 
 <span class="sd">    :returns:</span>
 <span class="sd">        * **pairing** -- Sparse CSR matrix, shape (2 n_sites, 2 n_sites).</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n_sites</span><span class="p">,</span> <span class="s1">&#39;n_sites&#39;</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">number</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="s1">&#39;delta&#39;</span><span class="p">)</span>
-    <span class="n">block</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="n">delta</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">delta</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+<span class="sd">    '''</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n_sites</span><span class="p">,</span> <span class="s1">'n_sites'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">number</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="s1">'delta'</span><span class="p">)</span>
+    <span class="n">block</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="n">delta</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">delta</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'c16'</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">sparse</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">sparse</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">n_sites</span><span class="p">),</span> <span class="n">block</span><span class="p">))</span></div>
 
 
@@ -482,7 +482,7 @@
 <div class="viewcode-block" id="bdg_kspace">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.bdg.bdg_kspace">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">bdg_kspace</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">pairing</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">mu</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Get the BdG Bloch Hamiltonian of a periodic model,</span>
 
 <span class="sd">    .. math::</span>
@@ -497,7 +497,7 @@
 <span class="sd">    enters antisymmetrized, :math:`\Delta_{ij}(\mathbf{R}) = -\Delta_{ji}(-\mathbf{R})`.</span>
 
 <span class="sd">    :param ks: **KSpace** instance (Hermitian, orthogonal basis).</span>
-<span class="sd">    :param pairing: List of dictionaries with keys (&#39;i&#39;, &#39;j&#39;, &#39;R&#39;, &#39;delta&#39;):</span>
+<span class="sd">    :param pairing: List of dictionaries with keys ('i', 'j', 'R', 'delta'):</span>
 <span class="sd">        orbital indices of *ks* (``0 ... norb-1``; with ``spin=True``,</span>
 <span class="sd">        ``2*site + spin``), lattice vector, amplitude.</span>
 <span class="sd">    :param mu: Real number. Default value 0. Chemical potential.</span>
@@ -509,29 +509,29 @@
 
 <span class="sd">        # Kitaev chain: E(k) = +-sqrt((2t cos k - mu)^2 + 4 Delta^2 sin^2 k)</span>
 <span class="sd">        chain = KSpace(lattices.chain())</span>
-<span class="sd">        chain.set_hopping([{&#39;i&#39;: 0, &#39;j&#39;: 0, &#39;R&#39;: (1,), &#39;t&#39;: t}])</span>
-<span class="sd">        kit = bdg_kspace(chain, [{&#39;i&#39;: 0, &#39;j&#39;: 0, &#39;R&#39;: (1,), &#39;delta&#39;: delta}], mu=mu)</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">        chain.set_hopping([{'i': 0, 'j': 0, 'R': (1,), 't': t}])</span>
+<span class="sd">        kit = bdg_kspace(chain, [{'i': 0, 'j': 0, 'R': (1,), 'delta': delta}], mu=mu)</span>
+<span class="sd">    '''</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">KSpace</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">hermitian_kspace</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">is_hermitian</span><span class="p">(),</span> <span class="n">ks</span><span class="o">.</span><span class="n">_overlap_hop</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">pairing_kspace</span><span class="p">(</span><span class="n">pairing</span><span class="p">,</span> <span class="n">ks</span><span class="o">.</span><span class="n">norb</span><span class="p">,</span> <span class="n">ks</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="s1">&#39;mu&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="s1">'mu'</span><span class="p">)</span>
     <span class="n">norb</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">norb</span>
     <span class="n">tau</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">orbital_positions</span><span class="p">()</span>
     <span class="n">tags</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">tags</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="k">if</span> <span class="n">ks</span><span class="o">.</span><span class="n">spin</span> <span class="k">else</span> <span class="n">ks</span><span class="o">.</span><span class="n">tags</span>
-    <span class="n">cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">r</span><span class="p">)}</span> <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="n">tau</span><span class="p">)]</span>
+    <span class="n">cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">r</span><span class="p">)}</span> <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="n">tau</span><span class="p">)]</span>
     <span class="n">new</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">Lattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="n">cell</span> <span class="o">+</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">],</span> <span class="n">prim_vec</span><span class="o">=</span><span class="n">ks</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">prim_vec</span><span class="p">))</span>
     <span class="n">h0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">onsite</span><span class="p">)</span> <span class="o">+</span> <span class="n">ks</span><span class="o">.</span><span class="n">_onsite_offdiag</span> <span class="o">-</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">norb</span><span class="p">)</span>
-    <span class="n">new</span><span class="o">.</span><span class="n">onsite</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">h0</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">h0</span><span class="p">)])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+    <span class="n">new</span><span class="o">.</span><span class="n">onsite</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">h0</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">h0</span><span class="p">)])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'c16'</span><span class="p">)</span>
     <span class="n">off</span> <span class="o">=</span> <span class="n">h0</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">h0</span><span class="p">))</span>
-    <span class="n">new</span><span class="o">.</span><span class="n">_onsite_offdiag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">off</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">norb</span><span class="p">,</span> <span class="n">norb</span><span class="p">))],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">norb</span><span class="p">,</span> <span class="n">norb</span><span class="p">)),</span> <span class="o">-</span><span class="n">off</span><span class="o">.</span><span class="n">T</span><span class="p">]])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+    <span class="n">new</span><span class="o">.</span><span class="n">_onsite_offdiag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">off</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">norb</span><span class="p">,</span> <span class="n">norb</span><span class="p">))],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">norb</span><span class="p">,</span> <span class="n">norb</span><span class="p">)),</span> <span class="o">-</span><span class="n">off</span><span class="o">.</span><span class="n">T</span><span class="p">]])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'c16'</span><span class="p">)</span>
     <span class="n">hops</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ks</span><span class="o">.</span><span class="n">_hop</span><span class="p">]</span>
     <span class="n">hops</span> <span class="o">+=</span> <span class="p">[(</span><span class="n">j</span> <span class="o">+</span> <span class="n">norb</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="n">norb</span><span class="p">,</span> <span class="o">-</span><span class="n">R</span><span class="p">,</span> <span class="o">-</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ks</span><span class="o">.</span><span class="n">_hop</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">dic</span> <span class="ow">in</span> <span class="n">pairing</span><span class="p">:</span>
         <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">space_dim</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">&#39;R&#39;</span><span class="p">],</span> <span class="n">ks</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">prim_vec</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'R'</span><span class="p">],</span> <span class="n">ks</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">prim_vec</span><span class="p">):</span>
             <span class="n">R</span> <span class="o">+=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-        <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">dic</span><span class="p">[</span><span class="s1">&#39;i&#39;</span><span class="p">],</span> <span class="n">dic</span><span class="p">[</span><span class="s1">&#39;j&#39;</span><span class="p">],</span> <span class="nb">complex</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">&#39;delta&#39;</span><span class="p">])</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'i'</span><span class="p">],</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'j'</span><span class="p">],</span> <span class="nb">complex</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'delta'</span><span class="p">])</span>
         <span class="n">hops</span> <span class="o">+=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">norb</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="n">norb</span><span class="p">,</span> <span class="o">-</span><span class="n">R</span><span class="p">,</span> <span class="o">-</span><span class="n">d</span><span class="p">),</span>
                      <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="n">norb</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="o">-</span><span class="n">R</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">d</span><span class="p">)),</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">norb</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">d</span><span class="p">))]</span>
     <span class="n">new</span><span class="o">.</span><span class="n">_hop</span> <span class="o">=</span> <span class="n">hops</span>
@@ -542,7 +542,7 @@
 <div class="viewcode-block" id="particle_hole">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.bdg.particle_hole">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">particle_hole</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Get the unitary part :math:`\tau_x` of the BdG particle-hole symmetry</span>
 <span class="sd">    :math:`C = \tau_x\mathcal{K}` (:math:`C^2 = +1`), for *n* particle</span>
 <span class="sd">    orbitals: pass it to *KSpace.symmetry_error* (``antiunitary=True``,</span>
@@ -552,8 +552,8 @@
 
 <span class="sd">    :returns:</span>
 <span class="sd">        * **tau_x** -- Real ndarray, shape (2n, 2n).</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">)</span>
+<span class="sd">    '''</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">'n'</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">))</span></div>
 
 
@@ -561,7 +561,7 @@
 <div class="viewcode-block" id="pfaffian">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.bdg.pfaffian">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">pfaffian</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">complex</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Get the Pfaffian of an antisymmetric matrix,</span>
 <span class="sd">    :math:`\mathrm{Pf}(A)^2 = \det A`, by the Parlett-Reid reduction to</span>
 <span class="sd">    tridiagonal form with pivoting (Wimmer, ACM Trans. Math. Softw. 38, 30</span>
@@ -572,10 +572,10 @@
 
 <span class="sd">    :returns:</span>
 <span class="sd">        * **pf** -- Complex number (a float for a real matrix).</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
     <span class="n">real</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">iscomplexobj</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">square_matrix</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'c16'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">square_matrix</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">'a'</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">antisymmetric</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
@@ -601,8 +601,8 @@
 <div class="viewcode-block" id="majorana_number">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.bdg.majorana_number">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">majorana_number</span><span class="p">(</span><span class="n">ks</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Get Kitaev&#39;s Majorana number of a BdG model (Kitaev, Physics-Uspekhi</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Get Kitaev's Majorana number of a BdG model (Kitaev, Physics-Uspekhi</span>
 <span class="sd">    44, 131 (2001)): the product, over the time-reversal-invariant momenta</span>
 <span class="sd">    :math:`\Gamma_i`, of the signs of the Pfaffians of the Hamiltonian in</span>
 <span class="sd">    the Majorana basis,</span>
@@ -629,7 +629,7 @@
 
 <span class="sd">    :returns:</span>
 <span class="sd">        * **m** -- Integer, -1 (topological) or +1 (trivial).</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">KSpace</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">kspace</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">KSpace</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">bdg_orbitals</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">norb</span><span class="p">)</span>
@@ -649,7 +649,7 @@
 <div class="viewcode-block" id="GapResult">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.bdg.GapResult">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GapResult</span><span class="p">():</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Self-consistent s-wave pairing of *s_wave_gap*.</span>
 
 <span class="sd">    :ivar delta: Complex ndarray. Gap :math:`\Delta_i` on every site.</span>
@@ -658,7 +658,7 @@
 <span class="sd">    :ivar states: Complex ndarray, shape (2N, 2N). Its eigenvectors</span>
 <span class="sd">        :math:`(u_n, v_n)` (columns).</span>
 <span class="sd">    :ivar iterations: Integer. Number of iterations.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">iterations</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="n">delta</span>
@@ -668,9 +668,9 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">mean_gap</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">        Average :math:`|\Delta_i|` over the sites.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        '''</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="p">)))</span></div>
 
 
@@ -681,7 +681,7 @@
     <span class="n">ham</span><span class="p">,</span> <span class="n">V</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">mu</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">delta0</span><span class="p">:</span> <span class="nb">complex</span> <span class="o">|</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
     <span class="n">mixing</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GapResult</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Solve the real-space gap equation of an s-wave superconductor</span>
 <span class="sd">    self-consistently (the attractive Hubbard model</span>
 <span class="sd">    :math:`-\sum_iV_in_{i\uparrow}n_{i\downarrow}` in the BCS mean-field</span>
@@ -724,22 +724,22 @@
 
 <span class="sd">    :returns:</span>
 <span class="sd">        * **result** -- :class:`GapResult`.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">h</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="s1">&#39;toarray&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">square_matrix</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="s1">&#39;ham&#39;</span><span class="p">)</span>
+<span class="sd">    '''</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="s1">'toarray'</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">square_matrix</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="s1">'ham'</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">hermitian_dense</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">interaction</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="s1">&#39;mu&#39;</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="s1">'mu'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">'temperature'</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">pairing_amplitudes</span><span class="p">(</span><span class="n">delta0</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">mixing</span><span class="p">(</span><span class="n">mixing</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="s1">&#39;tol&#39;</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">max_iter</span><span class="p">,</span> <span class="s1">&#39;max_iter&#39;</span><span class="p">)</span>
-    <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">n</span><span class="p">,))</span>
-    <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">delta0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">n</span><span class="p">,))</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">xi</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-    <span class="n">big</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">),</span> <span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="s1">'tol'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">max_iter</span><span class="p">,</span> <span class="s1">'max_iter'</span><span class="p">)</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">),</span> <span class="p">(</span><span class="n">n</span><span class="p">,))</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">delta0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'c16'</span><span class="p">),</span> <span class="p">(</span><span class="n">n</span><span class="p">,))</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">xi</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'c16'</span><span class="p">)</span> <span class="o">-</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">big</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">),</span> <span class="s1">'c16'</span><span class="p">)</span>
     <span class="n">big</span><span class="p">[:</span><span class="n">n</span><span class="p">,</span> <span class="p">:</span><span class="n">n</span><span class="p">],</span> <span class="n">big</span><span class="p">[</span><span class="n">n</span><span class="p">:,</span> <span class="n">n</span><span class="p">:]</span> <span class="o">=</span> <span class="n">xi</span><span class="p">,</span> <span class="o">-</span><span class="n">xi</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span>
     <span class="n">diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
@@ -748,13 +748,13 @@
         <span class="n">en</span><span class="p">,</span> <span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">big</span><span class="p">)</span>
         <span class="n">pos</span> <span class="o">=</span> <span class="n">en</span> <span class="o">&gt;</span> <span class="mi">0</span>
         <span class="n">weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">en</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">temperature</span><span class="p">))</span> <span class="k">if</span> <span class="n">temperature</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
-        <span class="n">new</span> <span class="o">=</span> <span class="n">V</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;in,in,n-&gt;i&#39;</span><span class="p">,</span> <span class="n">vec</span><span class="p">[:</span><span class="n">n</span><span class="p">,</span> <span class="n">pos</span><span class="p">],</span> <span class="n">vec</span><span class="p">[</span><span class="n">n</span><span class="p">:,</span> <span class="n">pos</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">weight</span><span class="p">)</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="n">V</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'in,in,n-&gt;i'</span><span class="p">,</span> <span class="n">vec</span><span class="p">[:</span><span class="n">n</span><span class="p">,</span> <span class="n">pos</span><span class="p">],</span> <span class="n">vec</span><span class="p">[</span><span class="n">n</span><span class="p">:,</span> <span class="n">pos</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">weight</span><span class="p">)</span>
         <span class="n">change</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">new</span> <span class="o">-</span> <span class="n">delta</span><span class="p">))</span>
         <span class="n">delta</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">mixing</span><span class="p">)</span> <span class="o">*</span> <span class="n">delta</span> <span class="o">+</span> <span class="n">mixing</span> <span class="o">*</span> <span class="n">new</span>
         <span class="k">if</span> <span class="n">change</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
             <span class="k">break</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">error_handling</span><span class="o">.</span><span class="n">converged</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;s_wave_gap&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">converged</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s1">'s_wave_gap'</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">GapResult</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">en</span><span class="p">,</span> <span class="n">vec</span><span class="p">,</span> <span class="n">it</span><span class="p">)</span></div>
 
 </pre></div>
@@ -786,8 +786,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -808,7 +808,6 @@
 
   <p class="sphinx-version">
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
-    <br/>
   </p>
 </div>
       
@@ -821,7 +820,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
 </p></div>
       
     </div>

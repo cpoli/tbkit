@@ -6,10 +6,11 @@ Correlations
 ------------
 
 Interacting electrons, in the Hartree-Fock mean-field approximation of
-the Hubbard model: the magnetism of graphene's zigzag edges, and Lieb's
-theorem on the total spin of bipartite lattices. The non-collinear
-mean field finds the 120-degree order of the frustrated triangular
-lattice.
+the Hubbard model: the magnetism of graphene's zigzag edges and of
+triangular nanoislands, Lieb's theorem and the ferrimagnet of the Lieb
+lattice, and flat-band ferromagnetism (Nagaoka, Mielke, Tasaki). The
+non-collinear mean field finds the 120-degree order of the frustrated
+triangular lattice.
 
 
 .. raw:: html
@@ -22,6 +23,23 @@ lattice.
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Itinerant ferromagnetism is hard to get from the Hubbard model: the repulsion U favours aligned spins, which cannot share a site, but aligning them costs kinetic energy. Three exact results say when the spins align fully anyway.">
+
+.. only:: html
+
+  .. image:: /api/gallery/correlations/images/thumb/sphx_glr_plot_flat_band_ferromagnetism_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/correlations/plot_flat_band_ferromagnetism`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Flat-Band Ferromagnetism: Nagaoka, Mielke and Tasaki</div>
+    </div>
+
 
 .. raw:: html
 
@@ -53,7 +71,7 @@ lattice.
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Lieb's Theorem: The Total Spin of Graphene Triangles</div>
+      <div class="sphx-glr-thumbnail-title">Lieb's Theorem: The Ferrimagnet of the Lieb Lattice</div>
     </div>
 
 
@@ -74,6 +92,23 @@ lattice.
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="J. Fernández-Rossier and J. J. Palacios (2007) asked which graphene flakes are magnets, and found the answer in their shape. A triangle with zigzag edges has all three edges on the same sublattice, A, and more A than B sites. A bipartite Hamiltonian then has (at least) N_Z = |A| - |B| states at exactly zero energy, all on sublattice A and concentrated on the edges. At half filling they hold N_Z electrons: like the open shell of an atom, they are filled with parallel spins (Hund&#x27;s rule), and the flake carries a spin S = N_Z/2 -- for any repulsion U, however small, while a hexagonal flake needs U above a threshold. This is Lieb&#x27;s theorem made concrete: the moment grows with the size of the triangle. Triangular nanographenes (the &quot;triangulenes&quot;) were synthesized and seen to be magnetic in 2017-2021.">
+
+.. only:: html
+
+  .. image:: /api/gallery/correlations/images/thumb/sphx_glr_plot_triangular_graphene_nanoislands_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/correlations/plot_triangular_graphene_nanoislands`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Magnetism of Triangular Graphene Nanoislands</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -84,7 +119,9 @@ lattice.
 .. toctree::
    :hidden:
 
+   /api/gallery/correlations/plot_flat_band_ferromagnetism
    /api/gallery/correlations/plot_hubbard_edge_magnetism
    /api/gallery/correlations/plot_lieb_theorem
    /api/gallery/correlations/plot_noncollinear_120_degree_order
+   /api/gallery/correlations/plot_triangular_graphene_nanoislands
 

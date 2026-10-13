@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 
@@ -8,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Examples &#8212; tbkit 0.5.0 documentation</title>
+    <title>Examples &#8212; tbkit 0.6.0 documentation</title>
   
   
   
@@ -27,23 +26,23 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=70f82a29"></script>
+    <script src="../../_static/documentation_options.js?v=dda85ae5"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,10 +52,11 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Correlations" href="correlations/index.html" />
-    <link rel="prev" title="History" href="../../history.html" />
+    <link rel="prev" title="Breakthroughs in Driven and Open Systems" href="../../history/driven_breakthroughs.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.5" />
+  <meta name="docsearch:version" content="0.6" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -104,7 +104,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -150,14 +150,14 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../history.html">
+  <a class="nav-link nav-internal" href="../../history/index.html">
     History
   </a>
 </li>
 
 
 <li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+  <a class="nav-link nav-internal" href="#" aria-current="page">
     Examples
   </a>
 </li>
@@ -180,7 +180,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -221,7 +221,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -230,7 +230,7 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -268,14 +268,14 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../history.html">
+  <a class="nav-link nav-internal" href="../../history/index.html">
     History
   </a>
 </li>
 
 
 <li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+  <a class="nav-link nav-internal" href="#" aria-current="page">
     Examples
   </a>
 </li>
@@ -328,7 +328,7 @@
   </div>
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
   <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
     <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
   </svg>
@@ -342,17 +342,25 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="correlations/index.html">Correlations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="correlations/plot_flat_band_ferromagnetism.html">Flat-Band Ferromagnetism: Nagaoka, Mielke and Tasaki</a></li>
 <li class="toctree-l2"><a class="reference internal" href="correlations/plot_hubbard_edge_magnetism.html">The Hubbard Model: Magnetism of Graphene’s Zigzag Edges</a></li>
-<li class="toctree-l2"><a class="reference internal" href="correlations/plot_lieb_theorem.html">Lieb’s Theorem: The Total Spin of Graphene Triangles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="correlations/plot_lieb_theorem.html">Lieb’s Theorem: The Ferrimagnet of the Lieb Lattice</a></li>
 <li class="toctree-l2"><a class="reference internal" href="correlations/plot_noncollinear_120_degree_order.html">Frustrated Magnetism: the 120-Degree Order of the Triangular Hubbard Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="correlations/plot_triangular_graphene_nanoislands.html">Magnetism of Triangular Graphene Nanoislands</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="disorder/index.html">Disorder</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="disorder/plot_anderson_localization.html">Anderson Localization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="disorder/plot_aubry_andre_localization.html">Aubry-André Localization: a Self-Dual Metal-Insulator Transition in 1D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="disorder/plot_inverse_participation_ratio.html">The Inverse Participation Ratio and Multifractal Wave Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="disorder/plot_lifshitz_tails.html">Lifshitz Tails in the Density of States of a Disordered Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="disorder/plot_vacancy_zero_modes.html">Vacancy-Induced Zero Modes in Graphene</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="dynamics/index.html">Dynamics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="dynamics/plot_bloch_oscillations.html">Bloch Oscillations and the Wannier-Stark Ladder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dynamics/plot_discrete_optics_in_waveguide_arrays.html">Discrete Optics in Waveguide Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dynamics/plot_landau_zener_tunnelling.html">Landau-Zener Tunnelling and Zener Breakdown</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dynamics/plot_wavepacket_interference.html">Wave Propagation: Interference on a Ring and a Trapped Domain-Wall State</a></li>
 </ul>
 </details></li>
@@ -362,7 +370,9 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="floquet/index.html">Floquet</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="floquet/plot_anomalous_floquet_phases.html">Anomalous Floquet Topological Phases: Edge States With Zero Chern Numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="floquet/plot_dynamic_localization.html">Dynamic Localization and Coherent Destruction of Tunnelling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="floquet/plot_floquet_chern_insulator.html">Floquet Engineering: A Chern Insulator From Circularly Polarized Light</a></li>
+<li class="toctree-l2"><a class="reference internal" href="floquet/plot_photovoltaic_hall_effect.html">The Photovoltaic Hall Effect in Graphene</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="hall_effects/index.html">Hall effects</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -386,6 +396,7 @@
 <li class="toctree-l2"><a class="reference internal" href="magnetic_field/plot_hofstadter_butterfly.html">Hofstadter’s Butterfly</a></li>
 <li class="toctree-l2"><a class="reference internal" href="magnetic_field/plot_landau_levels.html">Landau Levels: Square Lattice vs. Graphene</a></li>
 <li class="toctree-l2"><a class="reference internal" href="magnetic_field/plot_magnetic_field.html">Aharonov-Bohm Ring: A Magnetic Field on a Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="magnetic_field/plot_magnetic_translation_group.html">Zak’s Magnetic Translation Group: the Magnetic Supercell at Rational Flux</a></li>
 <li class="toctree-l2"><a class="reference internal" href="magnetic_field/plot_orbital_magnetization.html">The Modern Theory of Orbital Magnetization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="magnetic_field/plot_peierls_substitution.html">The Peierls Substitution: Flux Through the Plaquettes, in Any Gauge</a></li>
 </ul>
@@ -393,6 +404,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="models/index.html">Building, Bridging and Saving Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="models/plot_building_maximally_localized_wannier_functions.html">Maximally Localized Wannier Functions: Projection and Spread Minimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models/plot_disentangling_entangled_bands.html">Disentanglement: Wannier Functions of the π Bands of Graphene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/plot_fermion_doubling.html">Fermion Doubling: the Nielsen-Ninomiya Theorem</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models/plot_kp_theory_on_a_lattice.html">k·p Theory on a Lattice: from a Continuum Hamiltonian to Tight-Binding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models/plot_maximally_localized_wannier_functions.html">Maximally Localized Wannier Functions: Graphene from a Wannier90 File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models/plot_neighbour_hoppings.html">Hoppings by Neighbour Order in k-Space: Third-Nearest-Neighbour Graphene</a></li>
@@ -410,8 +422,9 @@
 <li class="toctree-l2"><a class="reference internal" href="non_hermitian/plot_exceptional_point_vorticity.html">Exceptional Points in Momentum Space: Vorticity and Exceptional Rings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="non_hermitian/plot_exceptional_points_chern_number.html">Exceptional Points in Momentum Space: the Chern Number until the Line Gap Closes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="non_hermitian/plot_exceptional_points_fermi_arcs.html">Exceptional Points in Momentum Space: Complex Bands and the Bulk Fermi Arc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="non_hermitian/plot_generalized_brillouin_zone.html">The Generalized Brillouin Zone and Non-Bloch Band Theory</a></li>
 <li class="toctree-l2"><a class="reference internal" href="non_hermitian/plot_pt_symmetry.html">PT Symmetry, Exceptional Points, and a Selectively Amplified Edge Mode</a></li>
-<li class="toctree-l2"><a class="reference internal" href="non_hermitian/plot_skin_effect.html">The Non-Hermitian Skin Effect and the Generalized Brillouin Zone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="non_hermitian/plot_skin_effect.html">The Non-Hermitian Skin Effect</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="optics/index.html">Optics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -421,6 +434,8 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="orbitals/index.html">Orbitals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="orbitals/plot_lowdin_orthogonalization.html">Löwdin Orthogonalization and Non-Orthogonal Tight Binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitals/plot_rashba_spin_orbit_coupling.html">Rashba Spin-Orbit Coupling: Spin-Split Bands from Broken Inversion Symmetry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitals/plot_slater_koster.html">The Slater-Koster Method: Graphene’s sigma and pi Bands</a></li>
 </ul>
 </details></li>
@@ -431,7 +446,9 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="superconductivity/index.html">Superconductivity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="superconductivity/plot_andreev_reflection.html">Andreev Reflection: the BTK Conductance of a Normal-Superconductor Junction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="superconductivity/plot_bcs_gap_equation.html">The BCS Gap Equation: Delta(T) and the Universal Ratio Delta(0)/T_c = 1.764</a></li>
+<li class="toctree-l2"><a class="reference internal" href="superconductivity/plot_bogoliubov_de_gennes_equations.html">The Bogoliubov-de Gennes Equations: Andreev Bound States</a></li>
 <li class="toctree-l2"><a class="reference internal" href="superconductivity/plot_kitaev_chain.html">The Kitaev Chain: Majorana Zero Modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="superconductivity/plot_majorana_nanowire.html">Majorana Nanowires: Rashba, Zeeman and s-Wave Pairing</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="three_dimensions/index.html">Three dimensions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -440,17 +457,21 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="tight_binding/index.html">Tight-Binding</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="tight_binding/plot_brillouin_zones_and_high_symmetry_paths.html">Brillouin Zones and Standard High-Symmetry Paths</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tight_binding/plot_building_finite_lattices.html">Building Finite Lattices: Unit Cells, Cuts, and Lattice Arithmetic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tight_binding/plot_defects_and_impurities.html">Defects and Impurities in a Graphene Flake: Vacancy Zero Modes and Bound States</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tight_binding/plot_fermi_surfaces.html">Fermi Surfaces and Constant-Energy Contours</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tight_binding/plot_graphene_bands.html">Graphene: Real-Space Flake and Reciprocal-Space Bands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tight_binding/plot_isolation_of_graphene.html">The Isolation of Graphene: Flakes, Edges, and a Berry Phase of pi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tight_binding/plot_monkhorst_pack_grids.html">Monkhorst-Pack k-Point Grids</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tight_binding/plot_parametrized_hamiltonians.html">Parametrized Hamiltonians: Sweeping Without Rebuilding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tight_binding/plot_periodic_boundaries.html">Periodic Boundaries in Real Space: Tori and Cylinders</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tight_binding/plot_projected_bands_and_spin_textures.html">Projected Bands and Spin Textures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tight_binding/plot_square_lattice_bands.html">The Square Lattice: Bloch’s Theorem in its Simplest Form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tight_binding/plot_surface_greens_function.html">The Surface Green’s Function by Lopez Sancho Decimation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tight_binding/plot_tetrahedron_method.html">The Tetrahedron Method for the Density of States</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tight_binding/plot_visualizing_a_model.html">Visualizing a Model: tbkit.plot.Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tight_binding/plot_zigzag_edge_states.html">Zigzag Edge States of Graphene Ribbons</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="topology/index.html">Topology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -458,7 +479,7 @@
 <li class="toctree-l2"><a class="reference internal" href="topology/plot_axion_angle.html">The Axion Angle and the Topological Magnetoelectric Effect</a></li>
 <li class="toctree-l2"><a class="reference internal" href="topology/plot_bott_index.html">The Bott Index: the Chern Number of a Disordered Torus</a></li>
 <li class="toctree-l2"><a class="reference internal" href="topology/plot_diabolical_points.html">Diabolical Points: Conical Intersections in a Two-Parameter Family</a></li>
-<li class="toctree-l2"><a class="reference internal" href="topology/plot_edge_states.html">Edge States on Ribbons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topology/plot_edge_states.html">Helical Edge States of the Kane-Mele Ribbon</a></li>
 <li class="toctree-l2"><a class="reference internal" href="topology/plot_entanglement_spectrum.html">The Entanglement Spectrum: Edge States Without an Edge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="topology/plot_fu_kane_parity.html">The Fu-Kane Parity Criterion: Z2 from Inversion Eigenvalues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="topology/plot_haldane_topology.html">The Haldane Model: Berry Curvature and a Topological Phase Transition</a></li>
@@ -478,6 +499,7 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="transport/index.html">Transport</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="transport/plot_automatic_lead_attachment.html">Automatic Lead Attachment: Narrow Contacts on a Wide Cavity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transport/plot_completing_lead_interfaces.html">Completing Lead Interfaces: a Graphene Disc between Zigzag Leads</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transport/plot_hall_bar_edge_channels.html">Buttiker’s Edge Channels: the Quantized Resistances of a Hall Bar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transport/plot_landauer_conductance.html">The Landauer Formula: Quantized Conductance of a Point Contact</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transport/plot_recursive_green_function.html">The Recursive Green’s Function: Localization Length of Long Disordered Wires</a></li>
@@ -547,7 +569,7 @@
 <h1>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h1>
 <p>Runnable scripts demonstrating the conceptual breakthroughs behind
 <strong>tbkit</strong>, from Bloch’s band theory to Floquet topological insulators –
-see <a class="reference internal" href="../../history.html"><span class="doc">History</span></a> for the full chronology each script illustrates.</p>
+see <a class="reference internal" href="../../history/index.html"><span class="doc">History</span></a> for the full chronology each script illustrates.</p>
 <p>See also the narrative walkthrough: <a class="reference internal" href="../../tutorial.html"><span class="doc">Tutorial</span></a>.</p>
 <p>Each script in this gallery is self-contained and can be run directly with
 <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">examples/&lt;section&gt;/&lt;script&gt;.py</span></code>. Every script also carries an
@@ -623,35 +645,67 @@ photovoltaic effect.</p></li>
 <section id="correlations">
 <h2>Correlations<a class="headerlink" href="#correlations" title="Link to this heading">#</a></h2>
 <p>Interacting electrons, in the Hartree-Fock mean-field approximation of
-the Hubbard model: the magnetism of graphene’s zigzag edges, and Lieb’s
-theorem on the total spin of bipartite lattices. The non-collinear
-mean field finds the 120-degree order of the frustrated triangular
-lattice.</p>
-<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="J. Hubbard (1963) -- together with Gutzwiller and Kanamori, the same year -- reduced the problem of interacting electrons in narrow bands to its bare bones: hopping between neighbouring sites, and a repulsion U between two electrons on the same site,"><img alt="" src="../../_images/sphx_glr_plot_hubbard_edge_magnetism_thumb.png" />
+the Hubbard model: the magnetism of graphene’s zigzag edges and of
+triangular nanoislands, Lieb’s theorem and the ferrimagnet of the Lieb
+lattice, and flat-band ferromagnetism (Nagaoka, Mielke, Tasaki). The
+non-collinear mean field finds the 120-degree order of the frustrated
+triangular lattice.</p>
+<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Itinerant ferromagnetism is hard to get from the Hubbard model: the repulsion U favours aligned spins, which cannot share a site, but aligning them costs kinetic energy. Three exact results say when the spins align fully anyway."><img alt="" src="../../_images/sphx_glr_plot_flat_band_ferromagnetism_thumb.png" />
+<p><a class="reference internal" href="correlations/plot_flat_band_ferromagnetism.html"><span class="doc">Flat-Band Ferromagnetism: Nagaoka, Mielke and Tasaki</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Flat-Band Ferromagnetism: Nagaoka, Mielke and Tasaki</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="J. Hubbard (1963) -- together with Gutzwiller and Kanamori, the same year -- reduced the problem of interacting electrons in narrow bands to its bare bones: hopping between neighbouring sites, and a repulsion U between two electrons on the same site,"><img alt="" src="../../_images/sphx_glr_plot_hubbard_edge_magnetism_thumb.png" />
 <p><a class="reference internal" href="correlations/plot_hubbard_edge_magnetism.html"><span class="doc">The Hubbard Model: Magnetism of Graphene’s Zigzag Edges</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Hubbard Model: Magnetism of Graphene's Zigzag Edges</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="E. Lieb proved in 1989 one of the few exact results on the Hubbard model: on a bipartite lattice at half filling, for any repulsion U &gt; 0, the ground state has total spin"><img alt="" src="../../_images/sphx_glr_plot_lieb_theorem_thumb.png" />
-<p><a class="reference internal" href="correlations/plot_lieb_theorem.html"><span class="doc">Lieb’s Theorem: The Total Spin of Graphene Triangles</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Lieb's Theorem: The Total Spin of Graphene Triangles</div>
+<p><a class="reference internal" href="correlations/plot_lieb_theorem.html"><span class="doc">Lieb’s Theorem: The Ferrimagnet of the Lieb Lattice</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Lieb's Theorem: The Ferrimagnet of the Lieb Lattice</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="On a triangle, three antiparallel spins cannot all be satisfied: the antiferromagnet is frustrated. G. Wannier (1950) found that the Ising triangular antiferromagnet never orders; P. W. Anderson (1973) proposed that the quantum Heisenberg one is a spin liquid; the answer, settled numerically in the late 1980s (Huse and Elser 1988), is a compromise: the spins order non-collinearly, at 120 degrees from each other on the three sublattices, with zero total moment."><img alt="" src="../../_images/sphx_glr_plot_noncollinear_120_degree_order_thumb.png" />
 <p><a class="reference internal" href="correlations/plot_noncollinear_120_degree_order.html"><span class="doc">Frustrated Magnetism: the 120-Degree Order of the Triangular Hubbard Model</span></a></p>
   <div class="sphx-glr-thumbnail-title">Frustrated Magnetism: the 120-Degree Order of the Triangular Hubbard Model</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="J. Fernández-Rossier and J. J. Palacios (2007) asked which graphene flakes are magnets, and found the answer in their shape. A triangle with zigzag edges has all three edges on the same sublattice, A, and more A than B sites. A bipartite Hamiltonian then has (at least) N_Z = |A| - |B| states at exactly zero energy, all on sublattice A and concentrated on the edges. At half filling they hold N_Z electrons: like the open shell of an atom, they are filled with parallel spins (Hund&#x27;s rule), and the flake carries a spin S = N_Z/2 -- for any repulsion U, however small, while a hexagonal flake needs U above a threshold. This is Lieb&#x27;s theorem made concrete: the moment grows with the size of the triangle. Triangular nanographenes (the &quot;triangulenes&quot;) were synthesized and seen to be magnetic in 2017-2021."><img alt="" src="../../_images/sphx_glr_plot_triangular_graphene_nanoislands_thumb.png" />
+<p><a class="reference internal" href="correlations/plot_triangular_graphene_nanoislands.html"><span class="doc">Magnetism of Triangular Graphene Nanoislands</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Magnetism of Triangular Graphene Nanoislands</div>
 </div></div></section>
 <section id="disorder">
 <h2>Disorder<a class="headerlink" href="#disorder" title="Link to this heading">#</a></h2>
 <p>Anderson localization: the Inverse Participation Ratio vs. disorder
-strength, and an extended state shown side by side with a localized one.</p>
+strength, and an extended state shown side by side with a localized one.
+The IPR’s scaling with size and the multifractal states of a critical
+chain, the self-dual Aubry-André transition of a quasiperiodic chain,
+Lifshitz tails of the density of states, and the zero modes bound by
+vacancies in graphene.</p>
 <div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="In a 1D (or 2D) tight-binding chain, any nonzero amount of uncorrelated onsite disorder exponentially localizes every eigenstate -- interference between all the scattering paths off the random potential, rather than merely reducing a mean free path. A state&#x27;s degree of localization is diagnosed by its Inverse Participation Ratio,"><img alt="" src="../../_images/sphx_glr_plot_anderson_localization_thumb.png" />
 <p><a class="reference internal" href="disorder/plot_anderson_localization.html"><span class="doc">Anderson Localization</span></a></p>
   <div class="sphx-glr-thumbnail-title">Anderson Localization</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="In one dimension, any random disorder localizes every state (Anderson). Aubry and André (1980) replaced the random potential by a quasiperiodic one, incommensurate with the lattice,"><img alt="" src="../../_images/sphx_glr_plot_aubry_andre_localization_thumb.png" />
+<p><a class="reference internal" href="disorder/plot_aubry_andre_localization.html"><span class="doc">Aubry-André Localization: a Self-Dual Metal-Insulator Transition in 1D</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Aubry-André Localization: a Self-Dual Metal-Insulator Transition in 1D</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Bell and Dean (1970) measured how many atoms of a glass take part in a vibration with the participation ratio; its inverse,"><img alt="" src="../../_images/sphx_glr_plot_inverse_participation_ratio_thumb.png" />
+<p><a class="reference internal" href="disorder/plot_inverse_participation_ratio.html"><span class="doc">The Inverse Participation Ratio and Multifractal Wave Functions</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Inverse Participation Ratio and Multifractal Wave Functions</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Disorder moves states beyond the band edge of the clean crystal, but very few. Lifshitz (1964) explained why: a state deep in the tail needs a large region of size \ell where the disorder happens to conspire (every site low, or every site present), which costs a probability exponentially small in the volume \ell^d, while the kinetic energy of a state confined to that region only falls as 1/\ell^2. Balancing the two gives the integrated density of states near the lowest possible energy E_0,"><img alt="" src="../../_images/sphx_glr_plot_lifshitz_tails_thumb.png" />
+<p><a class="reference internal" href="disorder/plot_lifshitz_tails.html"><span class="doc">Lifshitz Tails in the Density of States of a Disordered Lattice</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Lifshitz Tails in the Density of States of a Disordered Lattice</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Pereira, Guinea, Lopes dos Santos, Peres and Castro Neto (2006) showed that removing a single carbon atom from graphene binds a state at exactly the Dirac energy E = 0. It lives only on the sublattice opposite to the vacancy and is quasi-localized: its amplitude falls as 1/r, so slowly that it is not normalizable in an infinite sheet."><img alt="" src="../../_images/sphx_glr_plot_vacancy_zero_modes_thumb.png" />
+<p><a class="reference internal" href="disorder/plot_vacancy_zero_modes.html"><span class="doc">Vacancy-Induced Zero Modes in Graphene</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Vacancy-Induced Zero Modes in Graphene</div>
 </div></div></section>
 <section id="dynamics">
 <h2>Dynamics<a class="headerlink" href="#dynamics" title="Link to this heading">#</a></h2>
 <p>Real-time wavepacket propagation: Bloch oscillations and the
-Wannier-Stark ladder under a uniform lattice tilt.</p>
-<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A uniform force on an electron in a periodic lattice does not produce uniform acceleration, the way it would in free space: Bloch&#x27;s 1929 argument (formalized by Wannier in 1960) shows the electron instead oscillates periodically in real space, with period T_B=2\pi/F (in units where \hbar=1). In real crystals scattering happens on a far shorter timescale than T_B, which is why the effect went unobserved for over 60 years -- it took artificial semiconductor superlattices (Waschke et al., 1993), with a far larger effective lattice constant, to see it directly. See /history for the full historical context."><img alt="" src="../../_images/sphx_glr_plot_bloch_oscillations_thumb.png" />
+Wannier-Stark ladder under a uniform lattice tilt, Landau-Zener
+tunnelling and Zener breakdown between bands, and light in waveguide
+arrays (the directional coupler, discrete diffraction and diffraction
+management).</p>
+<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A uniform force on an electron in a periodic lattice does not produce uniform acceleration, the way it would in free space: Bloch&#x27;s 1929 argument (formalized by Wannier in 1960) shows the electron instead oscillates periodically in real space, with period T_B=2\pi/F (in units where \hbar=1). In real crystals scattering happens on a far shorter timescale than T_B, which is why the effect went unobserved for over 60 years -- it took artificial semiconductor superlattices (Waschke et al., 1993), with a far larger effective lattice constant, to see it directly. See /history/driven_breakthroughs for the full historical context."><img alt="" src="../../_images/sphx_glr_plot_bloch_oscillations_thumb.png" />
 <p><a class="reference internal" href="dynamics/plot_bloch_oscillations.html"><span class="doc">Bloch Oscillations and the Wannier-Stark Ladder</span></a></p>
   <div class="sphx-glr-thumbnail-title">Bloch Oscillations and the Wannier-Stark Ladder</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Light guided by parallel waveguides leaks from one to the next through their evanescent tails. In coupled-mode theory the field amplitudes obey a Tight-Binding Schrödinger equation in which the propagation distance z plays the role of time,"><img alt="" src="../../_images/sphx_glr_plot_discrete_optics_in_waveguide_arrays_thumb.png" />
+<p><a class="reference internal" href="dynamics/plot_discrete_optics_in_waveguide_arrays.html"><span class="doc">Discrete Optics in Waveguide Arrays</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Discrete Optics in Waveguide Arrays</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Two levels swept through an avoided crossing,"><img alt="" src="../../_images/sphx_glr_plot_landau_zener_tunnelling_thumb.png" />
+<p><a class="reference internal" href="dynamics/plot_landau_zener_tunnelling.html"><span class="doc">Landau-Zener Tunnelling and Zener Breakdown</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Landau-Zener Tunnelling and Zener Breakdown</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Propagation evolves a state in time (Crank-Nicolson, \hbar = 1). Two classic effects of lattice waves:"><img alt="" src="../../_images/sphx_glr_plot_wavepacket_interference_thumb.png" />
 <p><a class="reference internal" href="dynamics/plot_wavepacket_interference.html"><span class="doc">Wave Propagation: Interference on a Ring and a Trapped Domain-Wall State</span></a></p>
   <div class="sphx-glr-thumbnail-title">Wave Propagation: Interference on a Ring and a Trapped Domain-Wall State</div>
@@ -667,15 +721,23 @@ strong-correlation physics via Lieb’s theorem.</p>
 <section id="floquet">
 <h2>Floquet<a class="headerlink" href="#floquet" title="Link to this heading">#</a></h2>
 <p>Periodically driven lattices: quasienergies, the Floquet Hamiltonian,
-a Chern insulator engineered with circularly polarized light, and
-anomalous Floquet phases, whose edge states the winding number counts
-while every Chern number vanishes.</p>
+dynamic localization and coherent destruction of tunnelling, the
+photovoltaic Hall effect of graphene in circularly polarized light, a
+Chern insulator engineered with that light, and anomalous Floquet
+phases, whose edge states the winding number counts while every Chern
+number vanishes.</p>
 <div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="In a static insulator the chiral edge states in a gap are counted by the Chern numbers of the bands below it. Kitagawa, Berg, Rudner and Demler (2010) found that a periodically driven lattice escapes this rule: since quasienergies are only defined modulo \omega = 2\pi/T, edge states can wind around the whole Floquet zone, and a driven system can have chiral edge states although every Floquet band has C = 0. Rudner, Lindner, Berg and Levin (2013) built the minimal example -- a five-step drive of the bipartite square lattice in which the hopping J is on along one bond direction \mathbf{b}_s per step (right, up, left, down, then a pause), all under a sublattice potential \delta_{AB} = \epsilon_A - \epsilon_B -- and the invariant that counts these states: the winding number"><img alt="" src="../../_images/sphx_glr_plot_anomalous_floquet_phases_thumb.png" />
 <p><a class="reference internal" href="floquet/plot_anomalous_floquet_phases.html"><span class="doc">Anomalous Floquet Topological Phases: Edge States With Zero Chern Numbers</span></a></p>
   <div class="sphx-glr-thumbnail-title">Anomalous Floquet Topological Phases: Edge States With Zero Chern Numbers</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Dunlap and Kenkre (1986) found that an AC field F\cos\omega t on a chain does not simply shake its electrons: averaged over a period, it renormalizes the hopping,"><img alt="" src="../../_images/sphx_glr_plot_dynamic_localization_thumb.png" />
+<p><a class="reference internal" href="floquet/plot_dynamic_localization.html"><span class="doc">Dynamic Localization and Coherent Destruction of Tunnelling</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Dynamic Localization and Coherent Destruction of Tunnelling</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="T. Oka and H. Aoki (2009) predicted that graphene illuminated by circularly polarized light becomes a Hall insulator; Kitagawa, Oka, Brataas, Fu and Demler (2011) showed it is a Floquet realization of Haldane&#x27;s model. A time-periodic drive H(t+T) = H(t) acts, stroboscopically, as the static Floquet Hamiltonian H_F, e^{-iH_FT} = \mathcal{T}e^{-i\int_0^TH(t)dt}. Light enters the hoppings through the Peierls phase of its vector potential, t_{ij} \to t_{ij}e^{i\mathbf{A}(t)\cdot\mathbf{d}_{ij}} with \mathbf{A}(t) = A_0(\cos\omega t, \sin\omega t). At high frequency,"><img alt="" src="../../_images/sphx_glr_plot_floquet_chern_insulator_thumb.png" />
 <p><a class="reference internal" href="floquet/plot_floquet_chern_insulator.html"><span class="doc">Floquet Engineering: A Chern Insulator From Circularly Polarized Light</span></a></p>
   <div class="sphx-glr-thumbnail-title">Floquet Engineering: A Chern Insulator From Circularly Polarized Light</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Oka and Aoki (2009) asked what a DC field does to graphene that is illuminated by circularly polarized light, and found a Hall current with no magnetic field: the photovoltaic Hall effect. An electron near a Dirac point is driven around a circle in momentum space once per period, and the geometric (Aharonov-Anandan) phase it picks up acts as a Berry curvature of the Floquet states |u_\alpha(\mathbf{k})\rangle. The Hall conductivity follows from the Floquet extension of the Kubo formula,"><img alt="" src="../../_images/sphx_glr_plot_photovoltaic_hall_effect_thumb.png" />
+<p><a class="reference internal" href="floquet/plot_photovoltaic_hall_effect.html"><span class="doc">The Photovoltaic Hall Effect in Graphene</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Photovoltaic Hall Effect in Graphene</div>
 </div></div></section>
 <section id="hall-effects">
 <h2>Hall effects<a class="headerlink" href="#hall-effects" title="Link to this heading">#</a></h2>
@@ -731,7 +793,8 @@ fine meshes are diagonalized in batches, optionally across threads.</p>
 <h2>Magnetic Field<a class="headerlink" href="#magnetic-field" title="Link to this heading">#</a></h2>
 <p>The Peierls substitution on a lattice: gauge-invariant flux through the
 plaquettes, an Aharonov-Bohm ring’s flux-periodic spectrum, Landau
-levels of the square lattice and of graphene, and the self-similar,
+levels of the square lattice and of graphene, Zak’s magnetic translations
+and the magnetic supercell at rational flux, and the self-similar,
 fractal Hofstadter butterfly swept continuously in flux, and the orbital
 magnetization of a Chern insulator, checked against the Streda formula on
 a flake.</p>
@@ -744,6 +807,9 @@ a flake.</p>
 </div><div class="sphx-glr-thumbcontainer" tooltip="tbkit applies a magnetic field via the Peierls substitution (~tbkit.system.System.set_peierls_phase / set_magnetic_field): each hopping amplitude gets multiplied by a phase equal to the line integral of the vector potential along the bond. This script builds a simple N-site ring threaded by a perpendicular field and reproduces the textbook Aharonov-Bohm result: the energy spectrum is periodic in the flux threading the ring, with period exactly one flux quantum."><img alt="" src="../../_images/sphx_glr_plot_magnetic_field_thumb.png" />
 <p><a class="reference internal" href="magnetic_field/plot_magnetic_field.html"><span class="doc">Aharonov-Bohm Ring: A Magnetic Field on a Lattice</span></a></p>
   <div class="sphx-glr-thumbnail-title">Aharonov-Bohm Ring: A Magnetic Field on a Lattice</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="A uniform magnetic field breaks the translation symmetry of a lattice&#x27;s Hamiltonian: the vector potential grows across the sample, so the Peierls phases of a bond and of its translate differ. Zak (1964) showed that a translation followed by a gauge transformation is still a symmetry -- a magnetic translation -- but two of them commute only up to the flux they enclose,"><img alt="" src="../../_images/sphx_glr_plot_magnetic_translation_group_thumb.png" />
+<p><a class="reference internal" href="magnetic_field/plot_magnetic_translation_group.html"><span class="doc">Zak’s Magnetic Translation Group: the Magnetic Supercell at Rational Flux</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Zak's Magnetic Translation Group: the Magnetic Supercell at Rational Flux</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="The orbital magnetization of a crystal, \mathbf{M} = \frac{1}{2V}\int \mathbf{r}\times\mathbf{j}, resisted a bulk formula for decades: the position operator is unbounded in a periodic solid, as for the polarization. In 2005 Thonhauser, Ceresoli, Vanderbilt and Resta (Wannier functions) and Xiao, Shi and Niu (semiclassical wavepackets) found it:"><img alt="" src="../../_images/sphx_glr_plot_orbital_magnetization_thumb.png" />
 <p><a class="reference internal" href="magnetic_field/plot_orbital_magnetization.html"><span class="doc">The Modern Theory of Orbital Magnetization</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Modern Theory of Orbital Magnetization</div>
@@ -757,7 +823,8 @@ a flake.</p>
 Hamiltonians set up by neighbour order (1st, 2nd, 3rd, … neighbours) as
 in real space, bridges between the real-space <a class="reference internal" href="../../tbkit.html#tbkit.system.System" title="tbkit.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">System</span></code></a>
 and the reciprocal-space <a class="reference internal" href="../../tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">KSpace</span></code></a> pipelines, k·p
-(continuum) Hamiltonians discretized into lattice models, models
+(continuum) Hamiltonians discretized into lattice models and the fermion
+doubling that comes with it, models
 saved to and loaded from disk, tight-binding models imported from
 Wannier90’s <code class="docutils literal notranslate"><span class="pre">_hr.dat</span></code> files, and Wannier functions built from any model
 (isolated or entangled bands), with their Wannier-interpolated model.</p>
@@ -767,6 +834,9 @@ Wannier90’s <code class="docutils literal notranslate"><span class="pre">_hr.d
 </div><div class="sphx-glr-thumbcontainer" tooltip="Maximal localization needs an isolated group of bands. Most bands of interest are not isolated: in graphene with its four valence orbitals s, p_x, p_y, p_z per carbon, the π bands cross the σ bands, so no set of band indices follows the π bands over the whole Brillouin zone."><img alt="" src="../../_images/sphx_glr_plot_disentangling_entangled_bands_thumb.png" />
 <p><a class="reference internal" href="models/plot_disentangling_entangled_bands.html"><span class="doc">Disentanglement: Wannier Functions of the π Bands of Graphene</span></a></p>
   <div class="sphx-glr-thumbnail-title">Disentanglement: Wannier Functions of the π Bands of Graphene</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="A k·p model can have a single Dirac or Weyl point. A lattice model cannot. H. B. Nielsen and M. Ninomiya (1981) proved that on a lattice, with local hoppings and the symmetry of the Hamiltonian kept, chiral fermions come in pairs: the band is periodic in \mathbf{k}, so every right-moving branch must turn back into a left-moving one somewhere in the Brillouin zone, and the chiralities of all the Weyl points add up to zero. Lattice gauge theory met the problem first, as fermion doubling: the naive discretization k \to \sin(ka)/a vanishes at ka = \pi too, with the opposite velocity. K. Wilson&#x27;s cure adds a term \propto (1 - \cos ka) that gaps the doublers at the zone boundary, but in a Weyl semimetal it can only push them together in pairs, never leave one alone."><img alt="" src="../../_images/sphx_glr_plot_fermion_doubling_thumb.png" />
+<p><a class="reference internal" href="models/plot_fermion_doubling.html"><span class="doc">Fermion Doubling: the Nielsen-Ninomiya Theorem</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Fermion Doubling: the Nielsen-Ninomiya Theorem</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="The k·p method of J. M. Luttinger and W. Kohn (1955) and E. O. Kane (1957) describes the electrons of a semiconductor near a band edge by a small matrix that is a polynomial in the crystal momentum \mathbf{k}. The effective mass k^2/2m^* is its simplest case. The Bernevig-Hughes-Zhang (BHZ) model of HgTe quantum wells is a two-band one. Devices and topology are computed on lattices, so the continuum model is discretized: k_x = -i\partial_x becomes a finite difference on a square grid of spacing a."><img alt="" src="../../_images/sphx_glr_plot_kp_theory_on_a_lattice_thumb.png" />
 <p><a class="reference internal" href="models/plot_kp_theory_on_a_lattice.html"><span class="doc">k·p Theory on a Lattice: from a Continuum Hamiltonian to Tight-Binding</span></a></p>
   <div class="sphx-glr-thumbnail-title">k·p Theory on a Lattice: from a Continuum Hamiltonian to Tight-Binding</div>
@@ -821,12 +891,15 @@ number of a line-gapped band.</p>
 </div><div class="sphx-glr-thumbcontainer" tooltip="In a Hermitian 2D crystal, two bands touch at isolated diabolical points, such as graphene&#x27;s Dirac points. Add a non-Hermitian term (gain, loss, radiation into the environment) and each Dirac point is replaced by a pair of exceptional points (EPs), where the two eigenvalues and their eigenvectors coalesce. The complex bands E_\pm(\mathbf{k}) are then the two sheets of a square root, E_\pm = \pm\sqrt{\Delta/4}, and the EPs are its branch points. Each carries a topological charge: the winding of the discriminant \Delta(\mathbf{k}) = (E_+ - E_-)^2 around it, \pm1, or equivalently the eigenvalue vorticity \mp1/2."><img alt="" src="../../_images/sphx_glr_plot_exceptional_points_fermi_arcs_thumb.png" />
 <p><a class="reference internal" href="non_hermitian/plot_exceptional_points_fermi_arcs.html"><span class="doc">Exceptional Points in Momentum Space: Complex Bands and the Bulk Fermi Arc</span></a></p>
   <div class="sphx-glr-thumbnail-title">Exceptional Points in Momentum Space: Complex Bands and the Bulk Fermi Arc</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="In a non-Hermitian chain with the skin effect, the open-chain eigenstates are not Bloch waves \beta^n with |\beta| = |e^{ik}| = 1, but decay as |\beta|^n with |\beta| \neq 1. Yao and Wang (2018) put the open-chain bands on a generalized Brillouin zone (GBZ), the loop in the complex \beta plane on which H(\beta) = \sum_n t(n)\beta^n reproduces them, and Yokomizo and Murakami (2019) showed how to construct it for any 1D model: sort the roots of \det[H(\beta) - E] = 0 by modulus; E belongs to the open-chain spectrum when the middle two have equal moduli."><img alt="" src="../../_images/sphx_glr_plot_generalized_brillouin_zone_thumb.png" />
+<p><a class="reference internal" href="non_hermitian/plot_generalized_brillouin_zone.html"><span class="doc">The Generalized Brillouin Zone and Non-Bloch Band Theory</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Generalized Brillouin Zone and Non-Bloch Band Theory</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="A lattice with balanced gain and loss -- imaginary onsite energies \pm i\gamma on the two sublattices -- has a non-Hermitian Hamiltonian, but it commutes with the combined parity-time operation \mathcal{PT}. Bender and Boettcher&#x27;s 1998 observation was that such a Hamiltonian can still have an entirely real spectrum, up to a threshold in \gamma at which eigenvalues collide pairwise and split into complex-conjugate pairs."><img alt="" src="../../_images/sphx_glr_plot_pt_symmetry_thumb.png" />
 <p><a class="reference internal" href="non_hermitian/plot_pt_symmetry.html"><span class="doc">PT Symmetry, Exceptional Points, and a Selectively Amplified Edge Mode</span></a></p>
   <div class="sphx-glr-thumbnail-title">PT Symmetry, Exceptional Points, and a Selectively Amplified Edge Mode</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Hatano and Nelson (1996) studied a chain whose hoppings to the right and to the left differ, (H\psi)_n = t_R\psi_{n+1} + t_L\psi_{n-1} -- a non-reciprocal, non-Hermitian lattice. Twenty years later it became the paradigm of a phenomenon with no Hermitian counterpart, the skin effect (Yao and Wang; Kunst, Edvardsson, Budich and Bergholtz, 2018):"><img alt="" src="../../_images/sphx_glr_plot_skin_effect_thumb.png" />
-<p><a class="reference internal" href="non_hermitian/plot_skin_effect.html"><span class="doc">The Non-Hermitian Skin Effect and the Generalized Brillouin Zone</span></a></p>
-  <div class="sphx-glr-thumbnail-title">The Non-Hermitian Skin Effect and the Generalized Brillouin Zone</div>
+<p><a class="reference internal" href="non_hermitian/plot_skin_effect.html"><span class="doc">The Non-Hermitian Skin Effect</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Non-Hermitian Skin Effect</div>
 </div></div></section>
 <section id="optics">
 <h2>Optics<a class="headerlink" href="#optics" title="Link to this heading">#</a></h2>
@@ -847,8 +920,16 @@ of the bulk photovoltaic effect.</p>
 <section id="orbitals">
 <h2>Orbitals<a class="headerlink" href="#orbitals" title="Link to this heading">#</a></h2>
 <p>Beyond one orbital per site: Slater-Koster bond integrals between s, p
-and d orbitals, non-orthogonal bases, and the band structures they give.</p>
-<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="J. Slater and G. Koster (1954) turned the linear combination of atomic orbitals into a practical band-structure method: the hopping between orbital \alpha on one atom and \beta on a neighbour along \hat{\mathbf{d}} = (l, m, n) follows from a few bond integrals V_{ss\sigma}, V_{sp\sigma}, V_{pp\sigma}, V_{pp\pi}, \dots through the geometry alone, e.g."><img alt="" src="../../_images/sphx_glr_plot_slater_koster_thumb.png" />
+and d orbitals, non-orthogonal bases and their Löwdin orthogonalization,
+spin with Rashba spin-orbit coupling and a Zeeman field, and the band
+structures they give.</p>
+<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Atomic orbitals on neighbouring atoms overlap: s = \langle\phi_i|\phi_j\rangle \neq 0. In such a basis the Schrödinger equation is the generalized eigenproblem H\mathbf{c} = ES\mathbf{c}, with S the overlap matrix. P.-O. Löwdin (1950) removed S with the symmetric orthogonalization |\psi\rangle = S^{-1/2}|\phi\rangle. Among all orthonormal sets, it is the one closest to the original orbitals, and it treats every orbital alike, so the new basis keeps the symmetry of the crystal. In that basis the problem is an ordinary eigenproblem for S^{-1/2}HS^{-1/2}, with the same bands. The cost is range: the orthogonalized orbitals have tails on the neighbours, so the hoppings between them reach further than those of H. An orthogonal tight-binding model with a few hoppings is a truncation of this exact one."><img alt="" src="../../_images/sphx_glr_plot_lowdin_orthogonalization_thumb.png" />
+<p><a class="reference internal" href="orbitals/plot_lowdin_orthogonalization.html"><span class="doc">Löwdin Orthogonalization and Non-Orthogonal Tight Binding</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Löwdin Orthogonalization and Non-Orthogonal Tight Binding</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="An electron moving through an electric field sees, in its rest frame, a magnetic field \propto \mathbf{E}\times\mathbf{v}. At a surface or an asymmetric quantum well the field points out of the plane, and Bychkov and Rashba (1984) wrote the coupling it produces for a 2D electron gas as"><img alt="" src="../../_images/sphx_glr_plot_rashba_spin_orbit_coupling_thumb.png" />
+<p><a class="reference internal" href="orbitals/plot_rashba_spin_orbit_coupling.html"><span class="doc">Rashba Spin-Orbit Coupling: Spin-Split Bands from Broken Inversion Symmetry</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Rashba Spin-Orbit Coupling: Spin-Split Bands from Broken Inversion Symmetry</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="J. Slater and G. Koster (1954) turned the linear combination of atomic orbitals into a practical band-structure method: the hopping between orbital \alpha on one atom and \beta on a neighbour along \hat{\mathbf{d}} = (l, m, n) follows from a few bond integrals V_{ss\sigma}, V_{sp\sigma}, V_{pp\sigma}, V_{pp\pi}, \dots through the geometry alone, e.g."><img alt="" src="../../_images/sphx_glr_plot_slater_koster_thumb.png" />
 <p><a class="reference internal" href="orbitals/plot_slater_koster.html"><span class="doc">The Slater-Koster Method: Graphene’s sigma and pi Bands</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Slater-Koster Method: Graphene's sigma and pi Bands</div>
 </div></div></section>
@@ -865,20 +946,29 @@ time-reversal symmetry intact.</p>
 <section id="superconductivity">
 <h2>Superconductivity<a class="headerlink" href="#superconductivity" title="Link to this heading">#</a></h2>
 <p>Superconductors in the Bogoliubov-de Gennes formalism: particle-hole
-symmetric spectra, and the Majorana zero modes at the ends of Kitaev’s
-p-wave chain, with its Pfaffian bulk invariant, the Majorana number. The self-consistent BCS gap equation in real space, with
-its universal ratio Delta(0)/T_c = 1.764 and the proximity effect. Andreev reflection at a normal-superconductor
-junction and the BTK conductance, from the scattering matrix resolved
-into electrons and holes.</p>
+symmetric spectra and Andreev bound states in junctions, and the
+Majorana zero modes at the ends of Kitaev’s p-wave chain, with its
+Pfaffian bulk invariant, the Majorana number, and of a Rashba nanowire
+in a Zeeman field. The self-consistent BCS gap equation in real space,
+with its universal ratio Delta(0)/T_c = 1.764 and the proximity effect.
+Andreev reflection at a normal-superconductor junction and the BTK
+conductance, from the scattering matrix resolved into electrons and
+holes.</p>
 <div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="An electron from a normal metal, with an energy inside the superconducting gap \Delta, cannot enter the superconductor alone. Andreev (1964) showed that it is retro-reflected as a hole while a Cooper pair enters the condensate, which carries a charge 2e across the interface. Blonder, Tinkham and Klapwijk (BTK, 1982) turned this into the conductance of a normal-superconductor (NS) junction with a barrier of strength Z,"><img alt="" src="../../_images/sphx_glr_plot_andreev_reflection_thumb.png" />
 <p><a class="reference internal" href="superconductivity/plot_andreev_reflection.html"><span class="doc">Andreev Reflection: the BTK Conductance of a Normal-Superconductor Junction</span></a></p>
   <div class="sphx-glr-thumbnail-title">Andreev Reflection: the BTK Conductance of a Normal-Superconductor Junction</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="J. Bardeen, L. Cooper and J. R. Schrieffer (1957) explained superconductivity by the pairing of electrons with opposite momenta and spins into a condensate, whose gap \Delta solves the self-consistent gap equation"><img alt="" src="../../_images/sphx_glr_plot_bcs_gap_equation_thumb.png" />
 <p><a class="reference internal" href="superconductivity/plot_bcs_gap_equation.html"><span class="doc">The BCS Gap Equation: Delta(T) and the Universal Ratio Delta(0)/T_c = 1.764</span></a></p>
   <div class="sphx-glr-thumbnail-title">The BCS Gap Equation: Delta(T) and the Universal Ratio Delta(0)/T_c = 1.764</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="P.-G. de Gennes (1966) wrote the BCS mean field site by site: a quasiparticle is a two-component wave function (u_i, v_i), an electron and a hole, solving"><img alt="" src="../../_images/sphx_glr_plot_bogoliubov_de_gennes_equations_thumb.png" />
+<p><a class="reference internal" href="superconductivity/plot_bogoliubov_de_gennes_equations.html"><span class="doc">The Bogoliubov-de Gennes Equations: Andreev Bound States</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Bogoliubov-de Gennes Equations: Andreev Bound States</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="A. Kitaev (2001) wrote down the simplest topological superconductor: a chain of spinless fermions with nearest-neighbour hopping t and p-wave pairing \Delta,"><img alt="" src="../../_images/sphx_glr_plot_kitaev_chain_thumb.png" />
 <p><a class="reference internal" href="superconductivity/plot_kitaev_chain.html"><span class="doc">The Kitaev Chain: Majorana Zero Modes</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Kitaev Chain: Majorana Zero Modes</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Kitaev&#x27;s chain needs spinless fermions with p-wave pairing, which no material offers. In 2010 R. Lutchyn, J. Sau and S. Das Sarma, and independently Y. Oreg, G. Refael and F. von Oppen, built one from ordinary parts: a semiconductor nanowire with strong Rashba spin-orbit coupling \alpha, a Zeeman field V_Z perpendicular to the spin-orbit field, and s-wave pairing \Delta induced by a superconductor nearby,"><img alt="" src="../../_images/sphx_glr_plot_majorana_nanowire_thumb.png" />
+<p><a class="reference internal" href="superconductivity/plot_majorana_nanowire.html"><span class="doc">Majorana Nanowires: Rashba, Zeeman and s-Wave Pairing</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Majorana Nanowires: Rashba, Zeeman and s-Wave Pairing</div>
 </div></div></section>
 <section id="three-dimensions">
 <h2>Three dimensions<a class="headerlink" href="#three-dimensions" title="Link to this heading">#</a></h2>
@@ -897,11 +987,15 @@ monopoles of Berry curvature with Fermi-arc surface states.</p>
 <h2>Tight-Binding<a class="headerlink" href="#tight-binding" title="Link to this heading">#</a></h2>
 <p>The generic real-space and reciprocal-space machinery: the square
 lattice, whose single band is simple enough to check by hand, as the
-smallest complete illustration of Bloch’s theorem; a graphene flake
+smallest complete illustration of Bloch’s theorem; Brillouin zones and
+the standard high-symmetry paths of the 2D and 3D Bravais lattices;
+Monkhorst-Pack k-point grids; a graphene flake
 diagonalized directly and its Bloch band structure along a k-path,
 including Wallace’s 1947 linear (Dirac) dispersion near the K point;
 the physics behind the 2004 isolation of graphene – flakes, edge
-states, and the Berry phase of pi of its Dirac cones; and
+states, and the Berry phase of pi of its Dirac cones; the zigzag edge
+states of graphene ribbons and the 3m + 2 rule of armchair ribbons;
+surface Green’s functions by Lopez Sancho decimation; and
 <a class="reference internal" href="../../tbkit.html#tbkit.plot.Plot" title="tbkit.plot.Plot"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.plot.Plot</span></code></a>’s lattice, spectrum, density-of-states, and
 eigenstate-intensity plots; parametrized Hamiltonians, whose value
 functions let a flux or dimerization sweep re-evaluate the hoppings
@@ -910,7 +1004,10 @@ tori and cylinders whose spectra match the Bloch bands on a k-mesh;
 and the analysis of a band structure: Fermi surfaces and their Lifshitz
 transitions, bands projected on sublattices or spins and spin textures,
 and the tetrahedron method for the density of states.</p>
-<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Every real-space model starts from a finite set of sites. A Lattice repeats a unit cell along its primitive vectors (get_lattice), and the result can be cut and combined:"><img alt="" src="../../_images/sphx_glr_plot_building_finite_lattices_thumb.png" />
+<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="L. Brillouin (1930) gave the zone that carries his name: the set of \mathbf{k} closer to the origin than to any other reciprocal lattice vector \mathbf{G}, the Wigner-Seitz cell of the reciprocal lattice. Its faces are the planes where Bragg reflection |\mathbf{k}| = |\mathbf{k} - \mathbf{G}| opens band gaps, and its corners and face centres are the points of highest symmetry, where bands reach their extrema, cross or are degenerate. A band structure is therefore drawn along a path through them. W. Setyawan and S. Curtarolo (2010) fixed one standard path per Bravais lattice, so that band structures from different codes can be compared at a glance."><img alt="" src="../../_images/sphx_glr_plot_brillouin_zones_and_high_symmetry_paths_thumb.png" />
+<p><a class="reference internal" href="tight_binding/plot_brillouin_zones_and_high_symmetry_paths.html"><span class="doc">Brillouin Zones and Standard High-Symmetry Paths</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Brillouin Zones and Standard High-Symmetry Paths</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Every real-space model starts from a finite set of sites. A Lattice repeats a unit cell along its primitive vectors (get_lattice), and the result can be cut and combined:"><img alt="" src="../../_images/sphx_glr_plot_building_finite_lattices_thumb.png" />
 <p><a class="reference internal" href="tight_binding/plot_building_finite_lattices.html"><span class="doc">Building Finite Lattices: Unit Cells, Cuts, and Lattice Arithmetic</span></a></p>
   <div class="sphx-glr-thumbnail-title">Building Finite Lattices: Unit Cells, Cuts, and Lattice Arithmetic</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Local modifications of a finite model -- the business of remove_sites, set_onsite_def and change_hopping_ellipse -- and two exact consequences on a bipartite lattice:"><img alt="" src="../../_images/sphx_glr_plot_defects_and_impurities_thumb.png" />
@@ -925,6 +1022,9 @@ and the tetrahedron method for the density of states.</p>
 </div><div class="sphx-glr-thumbcontainer" tooltip="When Novoselov, Geim and coworkers isolated graphene in 2004, the tight-binding picture was ready: two Dirac cones, at the inequivalent corners K and K&#x27; of the Brillouin zone. The experiments of 2005 (Novoselov et al.; Zhang, Tan, Stormer and Kim) confirmed its most striking prediction through the anomalous quantum Hall effect: the Bloch states carry a sublattice pseudospin that winds once around each Dirac point -- in opposite senses at the two valleys -- so an electron circling either one picks up a Berry phase of \pi."><img alt="" src="../../_images/sphx_glr_plot_isolation_of_graphene_thumb.png" />
 <p><a class="reference internal" href="tight_binding/plot_isolation_of_graphene.html"><span class="doc">The Isolation of Graphene: Flakes, Edges, and a Berry Phase of pi</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Isolation of Graphene: Flakes, Edges, and a Berry Phase of pi</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Total energies, charge densities and every ground-state property of a crystal are averages over the Brillouin zone, \bar f = \frac{1}{V_{BZ}}\int f(\mathbf{k})\,d\mathbf{k}. H. J. Monkhorst and J. D. Pack (1976) replaced the integral by the mean over a uniform grid of q points along each reciprocal vector, u_r = (2r - q - 1)/2q, r = 1, \dots, q. A smooth periodic function is a Fourier series f(\mathbf{k}) = \sum_\mathbf{R} f_\mathbf{R}e^{i\mathbf{k}\cdot\mathbf{R}}, and such a grid averages every term to zero except those with all R_i multiples of q: it integrates exactly every Fourier component of range below q lattice vectors. For an insulator the components decay exponentially, and so does the error. For even q the grid is shifted off \Gamma, and its points fall into fewer orbits of the point group, so fewer have to be computed. Monkhorst-Pack grids have been the default k-point sampling of band-structure codes ever since."><img alt="" src="../../_images/sphx_glr_plot_monkhorst_pack_grids_thumb.png" />
+<p><a class="reference internal" href="tight_binding/plot_monkhorst_pack_grids.html"><span class="doc">Monkhorst-Pack k-Point Grids</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Monkhorst-Pack k-Point Grids</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="A sweep over a magnetic field, a gate voltage or a dimerization usually rebuilds the model at every step: find the bonds, set the hoppings, apply the field. A value function replaces a number by a callable of the sites and of named parameters, t(site_i, site_j, params) or onsite(site, params). The model stores its bonds once, and get_ham (``sys.get_ham(alpha=...)``) or get_ham (``ks.get_ham(k, v=...)``) only re-evaluates the values. site_i and site_j are structured arrays holding every bond at once (fields &#x27;x&#x27;, &#x27;y&#x27;, &#x27;tag&#x27;, &#x27;index&#x27;), so each function runs once per Hamiltonian, vectorized."><img alt="" src="../../_images/sphx_glr_plot_parametrized_hamiltonians_thumb.png" />
 <p><a class="reference internal" href="tight_binding/plot_parametrized_hamiltonians.html"><span class="doc">Parametrized Hamiltonians: Sweeping Without Rebuilding</span></a></p>
   <div class="sphx-glr-thumbnail-title">Parametrized Hamiltonians: Sweeping Without Rebuilding</div>
@@ -937,20 +1037,25 @@ and the tetrahedron method for the density of states.</p>
 </div><div class="sphx-glr-thumbcontainer" tooltip="The smallest complete illustration of Bloch&#x27;s theorem: one orbital per unit cell on a square lattice, nearest-neighbor hopping only. With a single orbital the Bloch Hamiltonian H(\mathbf{k}) is a 1\times1 matrix, so &quot;diagonalizing&quot; it is nothing but reading it off, and the whole band structure is one closed-form expression,"><img alt="" src="../../_images/sphx_glr_plot_square_lattice_bands_thumb.png" />
 <p><a class="reference internal" href="tight_binding/plot_square_lattice_bands.html"><span class="doc">The Square Lattice: Bloch’s Theorem in its Simplest Form</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Square Lattice: Bloch's Theorem in its Simplest Form</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="A surface is a crystal cut in half: periodic along the surface, but semi-infinite in depth. Its local density of states is -\frac{1}{\pi}\mathrm{Im}\,G_{00}(E + i\eta), the Green&#x27;s function of the outermost layer, which depends on every layer below it. A finite slab only approximates it, with discrete levels and a second surface. The recursion g = [E - h_0 - v\,g\,v^\dagger]^{-1}, which adds one layer at a time, converges only as fast as the broadening \eta damps the waves coming back from the bulk: \sim1/\eta steps."><img alt="" src="../../_images/sphx_glr_plot_surface_greens_function_thumb.png" />
+<p><a class="reference internal" href="tight_binding/plot_surface_greens_function.html"><span class="doc">The Surface Green’s Function by Lopez Sancho Decimation</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Surface Green's Function by Lopez Sancho Decimation</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="The density of states \rho(E) = \sum_n\int\frac{d\mathbf{k}}{V_{BZ}}\, \delta(E - E_n(\mathbf{k})) needs an integral over the Brillouin zone, but a calculation only knows the bands on a finite mesh. Broadening each eigenvalue into a Gaussian of width \sigma turns the sum into a smooth curve, at the price of smearing exactly the features that matter: band edges, and the van Hove singularities where \nabla_k E = 0."><img alt="" src="../../_images/sphx_glr_plot_tetrahedron_method_thumb.png" />
 <p><a class="reference internal" href="tight_binding/plot_tetrahedron_method.html"><span class="doc">The Tetrahedron Method for the Density of States</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Tetrahedron Method for the Density of States</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Every other example in this gallery reaches straight for matplotlib to plot a spectrum or a band structure by hand. tbkit.plot.Plot instead wraps the handful of plots that come up for any real-space model, directly from a System instance: the lattice itself (with or without its hoppings drawn on), the spectrum (optionally colored by sublattice polarization), the density of states, and an eigenstate&#x27;s spatial intensity."><img alt="" src="../../_images/sphx_glr_plot_visualizing_a_model_thumb.png" />
 <p><a class="reference internal" href="tight_binding/plot_visualizing_a_model.html"><span class="doc">Visualizing a Model: tbkit.plot.Plot</span></a></p>
   <div class="sphx-glr-thumbnail-title">Visualizing a Model: tbkit.plot.Plot</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="M. Fujita, K. Wakabayashi, K. Nakada and K. Kusakabe (1996) cut graphene into ribbons and found that the shape of the edge decides the low-energy physics. A ribbon with zigzag edges has a band of states at exactly E = 0, localized at the edges, over a third of its Brillouin zone, 2\pi/3 \le |ka| \le \pi. Each such state lives on one sublattice only, with amplitude (-2\cos\tfrac{ka}{2})^n on the n-th zigzag chain from its edge: localized when |2\cos\tfrac{ka}{2}| &lt; 1, most strongly at the zone boundary. The flat band piles up states at the Fermi level, a peak in the density of states that makes the edges magnetic once electrons interact. A ribbon with armchair edges has no edge states. Nakada et al. showed that it is metallic only when its number N of dimer lines is N = 3m + 2, and gapped otherwise."><img alt="" src="../../_images/sphx_glr_plot_zigzag_edge_states_thumb.png" />
+<p><a class="reference internal" href="tight_binding/plot_zigzag_edge_states.html"><span class="doc">Zigzag Edge States of Graphene Ribbons</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Zigzag Edge States of Graphene Ribbons</div>
 </div></div></section>
 <section id="topology">
 <h2>Topology<a class="headerlink" href="#topology" title="Link to this heading">#</a></h2>
 <p>Topological band theory: the SSH model’s bulk-boundary correspondence
 and its Zak phase, the Haldane model’s Chern-number phase transition and
 Berry curvature, the TKNN quantized Hall conductance of the Hofstadter
-bands, zigzag graphene and Kane-Mele helical edge states cut from
-ribbons, the Kane-Mele Z2 invariant from Wannier-centre flow and the
+bands, Kane-Mele helical edge states cut from ribbons, the Kane-Mele Z2 invariant from Wannier-centre flow and the
 Fu-Kane parity criterion, the surface Dirac cone of a 3D topological
 insulator (surface spectral function of a semi-infinite crystal), the Thouless quantum pump’s exactly quantized
 charge transport, a topological (Chern) flat band on the kagome lattice,
@@ -976,9 +1081,9 @@ two-parameter family.</p>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Berry and Wilkinson (1984) asked when two energy levels of a real symmetric Hamiltonian -- the quantum billiard in a triangle, in their case -- can be degenerate. The answer goes back to von Neumann and Wigner: a real symmetric 2\times2 block has two conditions for degeneracy (equal diagonal elements, vanishing off-diagonal one), so without a symmetry one parameter is not enough. Levels avoid crossing along any one-parameter path, and meet only at isolated points of a two-parameter plane. There the two sheets of the spectrum touch like the tips of two cones -- a double cone, the &quot;diabolo&quot; that gave diabolical points their name."><img alt="" src="../../_images/sphx_glr_plot_diabolical_points_thumb.png" />
 <p><a class="reference internal" href="topology/plot_diabolical_points.html"><span class="doc">Diabolical Points: Conical Intersections in a Two-Parameter Family</span></a></p>
   <div class="sphx-glr-thumbnail-title">Diabolical Points: Conical Intersections in a Two-Parameter Family</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Cutting a periodic 2D model into a ribbon (periodic in one direction, finite/open in the other -- see tbkit.kspace.ribbon) is the standard way to see edge physics in a tight-binding band structure. Two classic examples:"><img alt="" src="../../_images/sphx_glr_plot_edge_states_thumb.png" />
-<p><a class="reference internal" href="topology/plot_edge_states.html"><span class="doc">Edge States on Ribbons</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Edge States on Ribbons</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Cutting a periodic 2D model into a ribbon (periodic in one direction, finite/open in the other -- see tbkit.kspace.ribbon) is the standard way to see edge physics in a tight-binding band structure. Adding Kane-Mele intrinsic spin-orbit coupling to graphene (see plot_haldane_topology for the closely related Haldane model) opens a bulk gap and produces helical edge states: gapless, spin-momentum-locked modes that cross the bulk gap, one Kramers pair per edge. This is the original model of a 2D (Z2) topological insulator. Without spin-orbit coupling, the same zigzag ribbon has a flat band of edge states at E=0 instead (see /api/gallery/tight_binding/plot_zigzag_edge_states)."><img alt="" src="../../_images/sphx_glr_plot_edge_states_thumb.png" />
+<p><a class="reference internal" href="topology/plot_edge_states.html"><span class="doc">Helical Edge States of the Kane-Mele Ribbon</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Helical Edge States of the Kane-Mele Ribbon</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Cut a system in two halves A and B, and ask how the ground state entangles them. The answer is the reduced density matrix \rho_A = e^{-H_E}/Z, and H. Li and F. D. M. Haldane (2008) showed that the spectrum of the entanglement Hamiltonian H_E of a topological phase looks like its edge spectrum, as if the cut were a physical edge. For free fermions H_E is quadratic (Peschel 2003): its single-particle levels follow from the eigenvalues \xi_n of the correlation matrix C_{ij} = \langle c_i^\dagger c_j\rangle restricted to A. States that live entirely in A or in B give \xi = 1 or 0. Values inside (0, 1) come from states shared across the cuts, and topology forces some of them there (Fidkowski 2010; Turner, Zhang and Vishwanath 2010)."><img alt="" src="../../_images/sphx_glr_plot_entanglement_spectrum_thumb.png" />
 <p><a class="reference internal" href="topology/plot_entanglement_spectrum.html"><span class="doc">The Entanglement Spectrum: Edge States Without an Edge</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Entanglement Spectrum: Edge States Without an Edge</div>
@@ -1031,7 +1136,8 @@ two-parameter family.</p>
 leads: Landauer’s formula, in which the conductance is a transmission
 probability, and the quantized conductance steps of a quantum point
 contact. Leads attached automatically from their geometry, narrow
-contacts on a wide cavity.</p>
+contacts on a wide cavity, and ragged interfaces (a graphene disc
+between zigzag leads) completed with the lead’s own sites.</p>
 <p>Multi-terminal devices: Landauer-Buttiker conductance matrices and the
 quantized resistances of a Hall bar with its edge channels; bond
 currents; shot noise and the Fano factor; and the recursive Green’s
@@ -1042,6 +1148,9 @@ Wiedemann-Franz law, and their breakdown at a resonance.</p>
 <div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A lead is a semi-infinite repetition of a unit cell. To attach it, one needs the device sites it touches and the hoppings \tau between them and the lead&#x27;s first cell. For a straight strip, these are the edge column and the identity times t; for anything else, writing them by hand is error-prone."><img alt="" src="../../_images/sphx_glr_plot_automatic_lead_attachment_thumb.png" />
 <p><a class="reference internal" href="transport/plot_automatic_lead_attachment.html"><span class="doc">Automatic Lead Attachment: Narrow Contacts on a Wide Cavity</span></a></p>
   <div class="sphx-glr-thumbnail-title">Automatic Lead Attachment: Narrow Contacts on a Wide Cavity</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="attach_lead couples a lead to the outermost of its cells that the device reaches, and that cell must hold every lead orbital with a hopping into the lead. A device whose edge is ragged relative to the lead, such as a disc under a strip, does not end with such a cell."><img alt="" src="../../_images/sphx_glr_plot_completing_lead_interfaces_thumb.png" />
+<p><a class="reference internal" href="transport/plot_completing_lead_interfaces.html"><span class="doc">Completing Lead Interfaces: a Graphene Disc between Zigzag Leads</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Completing Lead Interfaces: a Graphene Disc between Zigzag Leads</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Buttiker (1986) wrote the currents of a phase-coherent conductor with many leads as I_p = \frac{e^2}{h}\sum_q G_{pq}V_q, from the transmissions between leads, and treated voltage probes as leads that draw no net current. In 1988 he applied it to the quantum Hall effect: in a strong field the current flows in \nu chiral edge channels, one per filled Landau level, which carry electrons from each contact to the next one downstream without backscattering. The Landauer-Buttiker equations then give, for any sample shape and any probes,"><img alt="" src="../../_images/sphx_glr_plot_hall_bar_edge_channels_thumb.png" />
 <p><a class="reference internal" href="transport/plot_hall_bar_edge_channels.html"><span class="doc">Buttiker’s Edge Channels: the Quantized Resistances of a Hall Bar</span></a></p>
   <div class="sphx-glr-thumbnail-title">Buttiker's Edge Channels: the Quantized Resistances of a Hall Bar</div>
@@ -1077,12 +1186,12 @@ Wiedemann-Franz law, and their breakdown at a resonance.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../../history.html"
+       href="../../history/driven_breakthroughs.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">History</p>
+        <p class="prev-next-title">Breakthroughs in Driven and Open Systems</p>
       </div>
     </a>
     <a class="right-next"
@@ -1159,8 +1268,8 @@ Wiedemann-Franz law, and their breakdown at a resonance.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1181,7 +1290,6 @@ Wiedemann-Franz law, and their breakdown at a resonance.</p>
 
   <p class="sphinx-version">
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
-    <br/>
   </p>
 </div>
       
@@ -1194,7 +1302,7 @@ Wiedemann-Franz law, and their breakdown at a resonance.</p>
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
 </p></div>
       
     </div>

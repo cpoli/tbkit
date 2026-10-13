@@ -7,7 +7,8 @@ Magnetic Field
 
 The Peierls substitution on a lattice: gauge-invariant flux through the
 plaquettes, an Aharonov-Bohm ring's flux-periodic spectrum, Landau
-levels of the square lattice and of graphene, and the self-similar,
+levels of the square lattice and of graphene, Zak's magnetic translations
+and the magnetic supercell at rational flux, and the self-similar,
 fractal Hofstadter butterfly swept continuously in flux, and the orbital
 magnetization of a Chern insulator, checked against the Streda formula on
 a flake.
@@ -77,6 +78,23 @@ a flake.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="A uniform magnetic field breaks the translation symmetry of a lattice&#x27;s Hamiltonian: the vector potential grows across the sample, so the Peierls phases of a bond and of its translate differ. Zak (1964) showed that a translation followed by a gauge transformation is still a symmetry -- a magnetic translation -- but two of them commute only up to the flux they enclose,">
+
+.. only:: html
+
+  .. image:: /api/gallery/magnetic_field/images/thumb/sphx_glr_plot_magnetic_translation_group_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/magnetic_field/plot_magnetic_translation_group`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Zak's Magnetic Translation Group: the Magnetic Supercell at Rational Flux</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The orbital magnetization of a crystal, \mathbf{M} = \frac{1}{2V}\int \mathbf{r}\times\mathbf{j}, resisted a bulk formula for decades: the position operator is unbounded in a periodic solid, as for the polarization. In 2005 Thonhauser, Ceresoli, Vanderbilt and Resta (Wannier functions) and Xiao, Shi and Niu (semiclassical wavepackets) found it:">
 
 .. only:: html
@@ -122,6 +140,7 @@ a flake.
    /api/gallery/magnetic_field/plot_hofstadter_butterfly
    /api/gallery/magnetic_field/plot_landau_levels
    /api/gallery/magnetic_field/plot_magnetic_field
+   /api/gallery/magnetic_field/plot_magnetic_translation_group
    /api/gallery/magnetic_field/plot_orbital_magnetization
    /api/gallery/magnetic_field/plot_peierls_substitution
 

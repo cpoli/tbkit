@@ -7,6 +7,10 @@ Disorder
 
 Anderson localization: the Inverse Participation Ratio vs. disorder
 strength, and an extended state shown side by side with a localized one.
+The IPR's scaling with size and the multifractal states of a critical
+chain, the self-dual Aubry-André transition of a quasiperiodic chain,
+Lifshitz tails of the density of states, and the zero modes bound by
+vacancies in graphene.
 
 
 .. raw:: html
@@ -37,6 +41,74 @@ strength, and an extended state shown side by side with a localized one.
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In one dimension, any random disorder localizes every state (Anderson). Aubry and André (1980) replaced the random potential by a quasiperiodic one, incommensurate with the lattice,">
+
+.. only:: html
+
+  .. image:: /api/gallery/disorder/images/thumb/sphx_glr_plot_aubry_andre_localization_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/disorder/plot_aubry_andre_localization`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Aubry-André Localization: a Self-Dual Metal-Insulator Transition in 1D</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Bell and Dean (1970) measured how many atoms of a glass take part in a vibration with the participation ratio; its inverse,">
+
+.. only:: html
+
+  .. image:: /api/gallery/disorder/images/thumb/sphx_glr_plot_inverse_participation_ratio_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/disorder/plot_inverse_participation_ratio`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Inverse Participation Ratio and Multifractal Wave Functions</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Disorder moves states beyond the band edge of the clean crystal, but very few. Lifshitz (1964) explained why: a state deep in the tail needs a large region of size \ell where the disorder happens to conspire (every site low, or every site present), which costs a probability exponentially small in the volume \ell^d, while the kinetic energy of a state confined to that region only falls as 1/\ell^2. Balancing the two gives the integrated density of states near the lowest possible energy E_0,">
+
+.. only:: html
+
+  .. image:: /api/gallery/disorder/images/thumb/sphx_glr_plot_lifshitz_tails_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/disorder/plot_lifshitz_tails`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Lifshitz Tails in the Density of States of a Disordered Lattice</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Pereira, Guinea, Lopes dos Santos, Peres and Castro Neto (2006) showed that removing a single carbon atom from graphene binds a state at exactly the Dirac energy E = 0. It lives only on the sublattice opposite to the vacancy and is quasi-localized: its amplitude falls as 1/r, so slowly that it is not normalizable in an infinite sheet.">
+
+.. only:: html
+
+  .. image:: /api/gallery/disorder/images/thumb/sphx_glr_plot_vacancy_zero_modes_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/disorder/plot_vacancy_zero_modes`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Vacancy-Induced Zero Modes in Graphene</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -48,4 +120,8 @@ strength, and an extended state shown side by side with a localized one.
    :hidden:
 
    /api/gallery/disorder/plot_anderson_localization
+   /api/gallery/disorder/plot_aubry_andre_localization
+   /api/gallery/disorder/plot_inverse_participation_ratio
+   /api/gallery/disorder/plot_lifshitz_tails
+   /api/gallery/disorder/plot_vacancy_zero_modes
 

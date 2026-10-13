@@ -161,7 +161,7 @@ Wallace's, with the single hopping :math:`V_{pp\pi}`, exact everywhere.
  .. code-block:: none
 
     isolated group: The bands [3, 4] touch band 2 on the k-mesh
-    Omega_I = 7.1e-15, weight on pz = [1. 1.]
+    Omega_I = 2.8e-14, weight on pz = [1. 1.]
     Wannier model: |t| = [3.03 3.03 3.03 3.03 3.03 3.03] (the three bonds and their conjugates)
 
 
@@ -218,8 +218,8 @@ leave it).
 
  .. code-block:: none
 
-    nk =  6: Omega_I 0.1279 -> 0.0250 in 362 steps; frozen bands on the mesh to 4e-15, on the path to 0.232 eV
-    nk = 12: Omega_I 0.3809 -> 0.0591 in 870 steps; frozen bands on the mesh to 4e-15, on the path to 0.036 eV
+    nk =  6: Omega_I 0.1279 -> 0.0250 in 362 steps; frozen bands on the mesh to 5e-15, on the path to 0.232 eV
+    nk = 12: Omega_I 0.3809 -> 0.0591 in 870 steps; frozen bands on the mesh to 5e-15, on the path to 0.036 eV
 
 
 
@@ -273,7 +273,7 @@ from the 12 x 12 mesh, and the descent of :math:`\Omega_I`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.290 seconds)
+   **Total running time of the script:** (0 minutes 2.826 seconds)
 
 
 .. _sphx_glr_download_api_gallery_models_plot_disentangling_entangled_bands.py:

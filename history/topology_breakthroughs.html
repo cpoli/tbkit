@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Breakthroughs in Band Topology &#8212; tbkit 0.6.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../_static/documentation_options.js?v=dda85ae5"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'history/topology_breakthroughs';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/force_light.js?v=8e7666d6"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Breakthroughs in Response and Transport" href="response_breakthroughs.html" />
+    <link rel="prev" title="Breakthroughs in Fields, Strain and Disorder" href="fields_breakthroughs.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.6" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/tbkit_logo.png" class="logo__image only-light" alt="tbkit logo"/>
+    <img src="../_static/tbkit_logo.png" class="logo__image only-dark pst-js-only" alt="tbkit logo"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models_breakthroughs.html">Breakthroughs in Building and Solving Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fields_breakthroughs.html">Breakthroughs in Fields, Strain and Disorder</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">Breakthroughs in Band Topology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="response_breakthroughs.html">Breakthroughs in Response and Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interactions_breakthroughs.html">Breakthroughs in Flat Bands and Interactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="driven_breakthroughs.html">Breakthroughs in Driven and Open Systems</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">History</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Breakthroughs in Band Topology</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="breakthroughs-in-band-topology">
+<h1>Breakthroughs in Band Topology<a class="headerlink" href="#breakthroughs-in-band-topology" title="Link to this heading">#</a></h1>
+<p>How band structures acquire integer invariants: from the SSH chain, the
+TKNN invariant and the Zak phase, through the Haldane and Kane-Mele models
+and the tenfold way, to three-dimensional, crystalline, Weyl and
+higher-order topological phases, and the real-space markers that detect
+them without a Brillouin zone. It traces the ideas behind
+<a class="reference internal" href="../tbkit.html#module-tbkit.kspace" title="tbkit.kspace"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.kspace</span></code></a>’s Berry-phase tools, <a class="reference internal" href="../tbkit.html#module-tbkit.topology" title="tbkit.topology"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.topology</span></code></a> and
+<a class="reference internal" href="../tbkit.html#module-tbkit.higher_order" title="tbkit.higher_order"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.higher_order</span></code></a>.</p>
+<nav class="contents local" id="timeline">
+<p class="topic-title">Timeline</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#the-su-schrieffer-heeger-ssh-model" id="id1">1979 – The Su-Schrieffer-Heeger (SSH) Model</a></p></li>
+<li><p><a class="reference internal" href="#the-quantum-metric" id="id2">1980 – The Quantum Metric</a></p></li>
+<li><p><a class="reference internal" href="#the-tknn-invariant" id="id3">1982 – The TKNN Invariant</a></p></li>
+<li><p><a class="reference internal" href="#the-thouless-quantum-pump" id="id4">1983 – The Thouless Quantum Pump</a></p></li>
+<li><p><a class="reference internal" href="#diabolical-points-conical-intersections-and-the-sign-of-the-eigenvector" id="id5">1984 – Diabolical Points: Conical Intersections and the Sign of the Eigenvector</a></p></li>
+<li><p><a class="reference internal" href="#the-wannier-obstruction-of-chern-bands" id="id6">1984/2007 – The Wannier Obstruction of Chern Bands</a></p></li>
+<li><p><a class="reference internal" href="#the-haldane-model" id="id7">1988 – The Haldane Model</a></p></li>
+<li><p><a class="reference internal" href="#the-zak-phase" id="id8">1989 – The Zak Phase</a></p></li>
+<li><p><a class="reference internal" href="#the-tenfold-way" id="id9">1997 – The Tenfold Way</a></p></li>
+<li><p><a class="reference internal" href="#the-kane-mele-model-and-the-quantum-spin-hall-effect" id="id10">2005-2007 – The Kane-Mele Model and the Quantum Spin Hall Effect</a></p></li>
+<li><p><a class="reference internal" href="#the-spin-chern-number" id="id11">2006/2009 – The Spin Chern Number</a></p></li>
+<li><p><a class="reference internal" href="#the-fu-kane-parity-criterion" id="id12">2007 – The Fu-Kane Parity Criterion</a></p></li>
+<li><p><a class="reference internal" href="#three-dimensional-topological-insulators" id="id13">2007/2009 – Three-Dimensional Topological Insulators</a></p></li>
+<li><p><a class="reference internal" href="#the-entanglement-spectrum" id="id14">2008 – The Entanglement Spectrum</a></p></li>
+<li><p><a class="reference internal" href="#topological-crystalline-insulators-and-mirror-chern-numbers" id="id15">2008/2012 – Topological Crystalline Insulators and Mirror Chern Numbers</a></p></li>
+<li><p><a class="reference internal" href="#the-axion-angle-and-the-topological-magnetoelectric-effect" id="id16">2008/2009 – The Axion Angle and the Topological Magnetoelectric Effect</a></p></li>
+<li><p><a class="reference internal" href="#the-bott-index" id="id17">2010 – The Bott Index</a></p></li>
+<li><p><a class="reference internal" href="#the-local-chern-marker" id="id18">2011 – The Local Chern Marker</a></p></li>
+<li><p><a class="reference internal" href="#weyl-semimetals" id="id19">2011/2015 – Weyl Semimetals</a></p></li>
+<li><p><a class="reference internal" href="#quantized-electric-multipole-insulators-and-higher-order-topology" id="id20">2017 – Quantized Electric Multipole Insulators and Higher-Order Topology</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id21">See Also</a></p></li>
+</ul>
+</nav>
+<section id="the-su-schrieffer-heeger-ssh-model">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">1979 – The Su-Schrieffer-Heeger (SSH) Model</a><a class="headerlink" href="#the-su-schrieffer-heeger-ssh-model" title="Link to this heading">#</a></h2>
+<p>Su, Schrieffer, and Heeger showed that a 1D dimerized chain –
+alternating intracell (<span class="math notranslate nohighlight">\(v\)</span>) and intercell (<span class="math notranslate nohighlight">\(w\)</span>) bonds,
+modeling polyacetylene – hosts domain-wall solitons. Cut open into a
+finite chain, the same physics produces a pair of protected,
+exponentially localized zero-energy states, one at each end, whenever
+<span class="math notranslate nohighlight">\(w&gt;v\)</span>. It is the earliest and simplest example of the
+bulk-boundary correspondence that would come to define topological band
+theory: a bulk property predicting the existence of boundary modes.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}H(k) = \begin{pmatrix} 0 &amp; v + w\,e^{-ik} \\ v + w\,e^{ik} &amp; 0 \end{pmatrix},
+\qquad E_\pm(k) = \pm|v + w\,e^{-ik}|\, .\end{split}\]</div>
+<p>Which phase the chain is in is visible in the geometry: it is set by
+whether the chain is cut so that the <em>weak</em> bond or the <em>strong</em> one sits
+at the end.</p>
+<figure class="align-default">
+<img alt="../_images/topology_breakthroughs-1.png" class="plot-directive" src="../_images/topology_breakthroughs-1.png" />
+</figure>
+<p>The bulk gap <span class="math notranslate nohighlight">\(2\min_k|v+we^{-ik}| = 2|v-w|\)</span> closes only at
+<span class="math notranslate nohighlight">\(v=w\)</span>; for <span class="math notranslate nohighlight">\(v&lt;w\)</span> the chain is topological (protected
+zero-energy edge modes under open boundaries), and for <span class="math notranslate nohighlight">\(v&gt;w\)</span> it is
+trivial (no edge modes).</p>
+<p><em>Implementation:</em> built directly from <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace</span></code></a> (the
+Bloch form above) and <a class="reference internal" href="../tbkit.html#tbkit.system.System.set_hopping_manual" title="tbkit.system.System.set_hopping_manual"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.system.System.set_hopping_manual()</span></code></a> (the
+open, real-space chain exposing the edge modes) – no dedicated SSH
+function is needed, since the general hopping-list framework already
+covers it exactly.</p>
+<p><em>References:</em> W. P. Su, J. R. Schrieffer, and A. J. Heeger, “Solitons in
+Polyacetylene,” Phys. Rev. Lett. 42, 1698-1701 (1979).</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A 1D dimerized chain -- alternating intracell hopping v and intercell hopping w -- is the earliest and simplest example of a topological insulator: for w &gt; v the chain is topological and an open finite chain hosts a pair of exponentially localized, near-zero-energy edge modes, one per end. For v &gt; w it is trivial and no such modes exist. The bulk gap (2|v-w|) closes exactly at the transition, v = w."><img alt="" src="../_images/sphx_glr_plot_ssh_model_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_ssh_model.html"><span class="doc">The SSH Model: Bulk-Boundary Correspondence</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The SSH Model: Bulk-Boundary Correspondence</div>
+</div></div></section>
+<section id="the-quantum-metric">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">1980 – The Quantum Metric</a><a class="headerlink" href="#the-quantum-metric" title="Link to this heading">#</a></h2>
+<p>J. P. Provost and G. Vallee showed that the manifold of quantum states
+carries a natural metric – how distinguishable two neighbouring states
+are. For a Bloch band it combines with the Berry curvature into the
+quantum geometric tensor,</p>
+<div class="math notranslate nohighlight">
+\[Q_{\mu\nu} = \mathrm{Tr}\left[P\,\partial_\mu P\,\partial_\nu P\right]\, ,\qquad
+g_{\mu\nu} = \mathrm{Re}\,Q_{\mu\nu}\, ,\qquad \Omega_{xy} = -2\,\mathrm{Im}\,Q_{xy}\, .\]</div>
+<p>The metric bounds the curvature, <span class="math notranslate nohighlight">\(\sqrt{\det g}\ge|\Omega_{xy}|/2\)</span>,
+so a Chern band has a minimal quantum geometry; its integral bounds the
+spread of the Wannier functions, and it sets the superfluid weight of
+flat-band superconductors (Peotta and Torma, 2015).</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.quantum_geometric_tensor" title="tbkit.kspace.KSpace.quantum_geometric_tensor"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.quantum_geometric_tensor()</span></code></a>.</p>
+<p><em>References:</em> J. P. Provost and G. Vallee, “Riemannian Structure on
+Manifolds of Quantum States,” Commun. Math. Phys. 76, 289-301 (1980);
+N. Marzari and D. Vanderbilt, Phys. Rev. B 56, 12847 (1997); R. Roy,
+Phys. Rev. B 90, 165139 (2014).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_quantum_geometry.py</span></code> maps the metric
+and the curvature of the Haldane model’s lower band, confirms the bound
+at every k-point, and recovers the Chern number from the curvature.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="J. P. Provost and G. Vallee (1980) showed that the manifold of quantum states carries a natural metric -- how distinguishable two nearby states are -- which, together with the Berry curvature, forms the quantum geometric tensor"><img alt="" src="../_images/sphx_glr_plot_quantum_geometry_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_quantum_geometry.html"><span class="doc">The Quantum Metric: The Geometry of a Bloch Band</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Quantum Metric: The Geometry of a Bloch Band</div>
+</div></div></section>
+<section id="the-tknn-invariant">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">1982 – The TKNN Invariant</a><a class="headerlink" href="#the-tknn-invariant" title="Link to this heading">#</a></h2>
+<p>Thouless, Kohmoto, Nightingale, and den Nijs (TKNN) showed that a
+2D band’s quantized Hall conductance is a topological invariant: the
+integral of its Berry curvature <span class="math notranslate nohighlight">\(\Omega(\mathbf{k})\)</span> over the
+Brillouin zone,</p>
+<div class="math notranslate nohighlight">
+\[C = \frac{1}{2\pi}\int_{\mathrm{BZ}} \Omega(\mathbf{k})\, d^2k \in \mathbb{Z}\, ,\]</div>
+<p>now called the (first) Chern number. Because <span class="math notranslate nohighlight">\(C\)</span> can only change
+when a bulk energy gap closes, it is invariant under any smooth,
+gap-preserving perturbation – the single idea that turned “band theory”
+into “topological band theory,” and the direct theoretical explanation
+for why the integer quantum Hall effect (measured by von Klitzing two
+years earlier) is quantized with such extraordinary precision.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.kspace.magnetic_supercell" title="tbkit.kspace.magnetic_supercell"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.kspace.magnetic_supercell()</span></code></a> builds the
+magnetic unit cell of a lattice threaded by a rational flux
+<span class="math notranslate nohighlight">\(p/q\)</span> per unit cell, whose bands are the Hofstadter subbands;
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.berry_curvature" title="tbkit.kspace.KSpace.berry_curvature"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.berry_curvature()</span></code></a> computes
+<span class="math notranslate nohighlight">\(\Omega(\mathbf{k})\)</span> over a Brillouin-zone mesh by the
+gauge-invariant Fukui-Hatsugai-Suzuki lattice method (the phase of a
+product of overlaps between neighboring-plaquette occupied subspaces,
+which needs no smooth gauge choice for <span class="math notranslate nohighlight">\(u_{n\mathbf{k}}\)</span> at all);
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.chern_number" title="tbkit.kspace.KSpace.chern_number"><code class="xref py py-meth docutils literal notranslate"><span class="pre">chern_number()</span></code></a> is its sum divided by
+<span class="math notranslate nohighlight">\(2\pi\)</span>, returning an integer to within the mesh resolution.</p>
+<p><em>References:</em> D. J. Thouless, M. Kohmoto, M. P. Nightingale, and M. den
+Nijs, “Quantized Hall Conductance in a Two-Dimensional Periodic
+Potential,” Phys. Rev. Lett. 49, 405-408 (1982).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_tknn_hofstadter.py</span></code> confirms that
+the Chern numbers of the square lattice’s Hofstadter subbands, at fluxes
+1/3, 1/5, 2/5 and 3/7, are those of the TKNN Diophantine equation
+<span class="math notranslate nohighlight">\(r = qs_r + pt_r\)</span>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Thouless, Kohmoto, Nightingale and den Nijs (1982) computed the Hall conductance of electrons on a lattice in a magnetic field, and found it to be a topological integer -- the first Chern number of the occupied bands. For a flux \alpha = p/q per plaquette, the square lattice&#x27;s band splits into q Hofstadter subbands, and the Hall conductance with r bands filled, \sigma_{xy} = t_r\,e^2/h, solves the Diophantine equation"><img alt="" src="../_images/sphx_glr_plot_tknn_hofstadter_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_tknn_hofstadter.html"><span class="doc">TKNN: The Quantized Hall Conductance of the Hofstadter Bands</span></a></p>
+  <div class="sphx-glr-thumbnail-title">TKNN: The Quantized Hall Conductance of the Hofstadter Bands</div>
+</div></div></section>
+<section id="the-thouless-quantum-pump">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">1983 – The Thouless Quantum Pump</a><a class="headerlink" href="#the-thouless-quantum-pump" title="Link to this heading">#</a></h2>
+<p>Thouless asked what the TKNN invariant means for a 1D system rather than
+a 2D one, and found a direct physical answer: if a 1D insulator’s
+Hamiltonian is cycled slowly and periodically through a parameter
+<span class="math notranslate nohighlight">\(\phi\)</span> (a pump cycle) back to itself, the charge transported across
+any cross-section over one full cycle is exactly quantized,</p>
+<div class="math notranslate nohighlight">
+\[Q = \int_0^{2\pi} \frac{dP}{d\phi}\, d\phi \in \mathbb{Z}\, ,\]</div>
+<p>an integer number of electrons per cycle, regardless of how the cycle is
+driven – provided the bulk gap never closes. The reason is exactly the
+TKNN argument one dimension down: treating the pump parameter
+<span class="math notranslate nohighlight">\(\phi\)</span> as a second, <em>synthetic</em> crystal momentum turns the 1D pump
+into a 2D Chern insulator on the <span class="math notranslate nohighlight">\((k,\phi)\)</span> torus, with <span class="math notranslate nohighlight">\(Q\)</span>
+equal to its Chern number. The idea now underlies “topological pumps”
+realized with cold atoms in modulated optical lattices, decades after
+the original proposal.</p>
+<p><em>Implementation:</em> no new code – a pump is simply an ordinary
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace</span></code></a> Bloch Hamiltonian built with the pump
+parameter as a second reciprocal direction, so
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.chern_number" title="tbkit.kspace.KSpace.chern_number"><code class="xref py py-meth docutils literal notranslate"><span class="pre">chern_number()</span></code></a> (1982, above) applies directly
+and needs no special-casing for the synthetic-dimension trick.</p>
+<p><em>References:</em> D. J. Thouless, “Quantization of particle transport,”
+Phys. Rev. B 27, 6083-6087 (1983); M. J. Rice and E. J. Mele, “Elementary
+Excitations of a Linearly Conjugated Diatomic Polymer,” Phys. Rev. Lett.
+49, 1455-1459 (1982) (the pumped model itself).</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Take the SSH model (plot_ssh_model) and cycle its two parameters -- the dimerization v-w and a staggered onsite potential -- slowly around a closed loop enclosing the SSH gap-closing point. Thouless showed that the charge transported around one full cycle is exactly quantized, equal to the Chern number of the (k,\phi) torus swept out by the cycle -- a 1D adiabatic pump is, in this sense, a slice through a 2D Chern insulator, with the pump parameter \phi playing the role of a second crystal momentum."><img alt="" src="../_images/sphx_glr_plot_thouless_pump_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_thouless_pump.html"><span class="doc">The Thouless Quantum Pump (Rice-Mele Model)</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Thouless Quantum Pump (Rice-Mele Model)</div>
+</div></div></section>
+<section id="diabolical-points-conical-intersections-and-the-sign-of-the-eigenvector">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">1984 – Diabolical Points: Conical Intersections and the Sign of the Eigenvector</a><a class="headerlink" href="#diabolical-points-conical-intersections-and-the-sign-of-the-eigenvector" title="Link to this heading">#</a></h2>
+<p>When can two levels of a quantum system be degenerate? Von Neumann and
+Wigner (1929) had counted the conditions: two for a real symmetric
+Hamiltonian, three for a complex Hermitian one. Without a symmetry, a
+degeneracy therefore does not occur along a one-parameter path – the
+levels <em>avoid</em> crossing – but at isolated points of a two-parameter
+family. M. Berry and M. Wilkinson found such points numerically in the
+spectra of triangular billiards, varying the triangle’s two angles, and
+named them <strong>diabolical points</strong>: near one, the two energy sheets form a
+double cone, a “diabolo”. The same year Berry showed that such a
+degeneracy is the source of a geometric phase: the real eigenvector of
+either level changes sign after one loop around it, a phase <span class="math notranslate nohighlight">\(\pi\)</span>
+that no choice of gauge can remove. Graphene’s Dirac points (1947, above)
+are diabolical points pinned by symmetry; Berry and Wilkinson’s are
+accidental, and move when the system is deformed.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.exceptional.encircle" title="tbkit.exceptional.encircle"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.exceptional.encircle()</span></code></a> carries an eigenvector
+around a loop in any two-parameter family (a <strong>KSpace</strong>, or a callable
+returning a matrix) by parallel transport, and returns the phase it
+comes back with; <a class="reference internal" href="../tbkit.html#tbkit.exceptional.vorticity" title="tbkit.exceptional.vorticity"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.exceptional.vorticity()</span></code></a> and
+<a class="reference internal" href="../tbkit.html#tbkit.exceptional.discriminant_winding" title="tbkit.exceptional.discriminant_winding"><code class="xref py py-func docutils literal notranslate"><span class="pre">discriminant_winding()</span></code></a> are 0 around a diabolical
+point, which tells it apart from an exceptional point (2015-2018, below).</p>
+<p><em>References:</em> M. V. Berry and M. Wilkinson, “Diabolical points in the
+spectra of triangles,” Proc. R. Soc. Lond. A 392, 15-43 (1984); M. V.
+Berry, “Quantal phase factors accompanying adiabatic changes,” Proc. R.
+Soc. Lond. A 392, 45-57 (1984); J. von Neumann and E. P. Wigner, “Über
+das Verhalten von Eigenwerten bei adiabatischen Prozessen,” Phys. Z. 30,
+467 (1929).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_diabolical_points.py</span></code> builds a
+10-site triangular flake whose hoppings along two bond directions play
+the part of the triangle’s angles, with a potential that breaks every
+mirror symmetry. It locates a degeneracy of levels 5 and 6 off the
+symmetric lines, confirms the conical dispersion (gap proportional to the
+distance in every direction), the avoided crossings along lines that miss
+it, the sign change of the eigenvector (phase <span class="math notranslate nohighlight">\(\pi\)</span> around it, 0
+around a loop that misses it, and vorticity 0), and that the point moves
+continuously, without disappearing, as the potential is changed.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Berry and Wilkinson (1984) asked when two energy levels of a real symmetric Hamiltonian -- the quantum billiard in a triangle, in their case -- can be degenerate. The answer goes back to von Neumann and Wigner: a real symmetric 2\times2 block has two conditions for degeneracy (equal diagonal elements, vanishing off-diagonal one), so without a symmetry one parameter is not enough. Levels avoid crossing along any one-parameter path, and meet only at isolated points of a two-parameter plane. There the two sheets of the spectrum touch like the tips of two cones -- a double cone, the &quot;diabolo&quot; that gave diabolical points their name."><img alt="" src="../_images/sphx_glr_plot_diabolical_points_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_diabolical_points.html"><span class="doc">Diabolical Points: Conical Intersections in a Two-Parameter Family</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Diabolical Points: Conical Intersections in a Two-Parameter Family</div>
+</div></div></section>
+<section id="the-wannier-obstruction-of-chern-bands">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">1984/2007 – The Wannier Obstruction of Chern Bands</a><a class="headerlink" href="#the-wannier-obstruction-of-chern-bands" title="Link to this heading">#</a></h2>
+<p>D. J. Thouless pointed out that a band with a nonzero Chern number cannot
+be built from exponentially localized Wannier functions: these need a
+gauge of the Bloch states that is smooth and periodic over the whole
+Brillouin zone, and the Chern number counts the phase winding that
+forbids one. C. Brouder, G. Panati, M. Calandra, C. Mourougane and N.
+Marzari proved the converse in 2007: exponentially localized Wannier
+functions exist exactly when every Chern number vanishes. A Chern band’s
+Wannier functions decay only as a power law, and their spread diverges.
+The obstruction separates topological bands from atomic insulators, and
+it is the starting point of the later classifications by elementary band
+representations and fragile topology.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.wannier.wannierize" title="tbkit.wannier.wannierize"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.wannier.wannierize()</span></code></a> reports the smallest
+singular value of the projection onto the trial orbitals
+(<code class="docutils literal notranslate"><span class="pre">min_singular_value</span></code>) and refuses an exactly singular one; its
+gauge-invariant spread <span class="math notranslate nohighlight">\(\Omega_I\)</span> stays finite while the total
+spread grows with the mesh.</p>
+<p><em>References:</em> D. J. Thouless, “Wannier functions for magnetic sub-bands,”
+J. Phys. C 17, L325-L327 (1984); C. Brouder, G. Panati, M. Calandra, C.
+Mourougane, and N. Marzari, “Exponential Localization of Wannier
+Functions in Insulators,” Phys. Rev. Lett. 98, 046402 (2007); T.
+Thonhauser and D. Vanderbilt, “Insulator/Chern-insulator transition in
+the Haldane model,” Phys. Rev. B 74, 235111 (2006).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_wannier_obstruction_of_chern_bands.py</span></code>
+wannierizes the lower band of the Haldane model in its trivial and Chern
+phases. It shows both trial orbitals failing exactly at K or K’ in the
+Chern phase, the minimized spread converging in the trivial phase but
+growing by about 0.3 per doubling of the mesh in the Chern phase (with
+<span class="math notranslate nohighlight">\(\Omega_I\)</span> converged and the smallest projection falling as
+<span class="math notranslate nohighlight">\(1/N\)</span>), and power-law tails <span class="math notranslate nohighlight">\(|W|^2 \sim r^{-4}\)</span> against
+exponential ones.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A band with a nonzero Chern number has no exponentially localized Wannier functions. D. J. Thouless (1984) saw the conflict: localized Wannier functions need a gauge |u_{\mathbf{k}}\rangle that is smooth and periodic over the whole Brillouin zone, and the Chern number is exactly the obstruction to one, the winding of the phase that any gauge must pick up somewhere. C. Brouder, G. Panati, M. Calandra, C. Mourougane and N. Marzari (2007) proved the converse for any number of bands: exponentially localized Wannier functions exist if and only if the Chern numbers vanish."><img alt="" src="../_images/sphx_glr_plot_wannier_obstruction_of_chern_bands_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_wannier_obstruction_of_chern_bands.html"><span class="doc">The Wannier Obstruction of Chern Bands</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Wannier Obstruction of Chern Bands</div>
+</div></div></section>
+<section id="the-haldane-model">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">1988 – The Haldane Model</a><a class="headerlink" href="#the-haldane-model" title="Link to this heading">#</a></h2>
+<p>D. Haldane asked whether the integer quantum Hall effect requires a
+net magnetic field at all – and showed it does not. His model threads
+complex second-neighbor hopping <span class="math notranslate nohighlight">\(t_2e^{i\phi}\)</span> through a honeycomb
+lattice in a pattern with zero <em>net</em> flux per unit cell (opposite
+chirality on the two sublattices), yet nonzero local curvature that
+breaks time-reversal symmetry. The result is a Chern insulator,
+<span class="math notranslate nohighlight">\(C=\pm1\)</span>, from lattice-scale “orbital magnetism” alone – the
+first concrete example of what is now called the quantum anomalous Hall
+effect, and the direct template for the Kane-Mele model below.</p>
+<p><em>Implementation:</em> built directly from <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace</span></code></a>’s
+general complex-hopping machinery (no dedicated function needed): real
+nearest-neighbor hopping plus complex, sublattice-alternating
+next-nearest-neighbor hopping, evaluated with
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.chern_number" title="tbkit.kspace.KSpace.chern_number"><code class="xref py py-meth docutils literal notranslate"><span class="pre">chern_number()</span></code></a>.</p>
+<p><em>References:</em> F. D. M. Haldane, “Model for a Quantum Hall Effect without
+Landau Levels,” Phys. Rev. Lett. 61, 2015-2018 (1988).</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The Haldane model is honeycomb graphene with a complex next-nearest-neighbor hopping t_2 e^{i\phi} (breaking time-reversal symmetry, e.g. via a staggered flux pattern with zero net flux) and a staggered sublattice onsite energy \pm M (breaking inversion symmetry). It is the first model shown to realize a Chern insulator -- a gapped phase with quantized Hall conductance and no net magnetic field."><img alt="" src="../_images/sphx_glr_plot_haldane_topology_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_haldane_topology.html"><span class="doc">The Haldane Model: Berry Curvature and a Topological Phase Transition</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Haldane Model: Berry Curvature and a Topological Phase Transition</div>
+</div></div></section>
+<section id="the-zak-phase">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">1989 – The Zak Phase</a><a class="headerlink" href="#the-zak-phase" title="Link to this heading">#</a></h2>
+<p>J. Zak showed that the Berry phase of a Bloch band carried once across
+the Brillouin zone, <span class="math notranslate nohighlight">\(\gamma = \oint\mathbf{A}\cdot d\mathbf{k}\)</span>,
+is a property of the whole band, quantized to 0 or <span class="math notranslate nohighlight">\(\pi\)</span> by
+inversion symmetry – and that <span class="math notranslate nohighlight">\(\gamma/2\pi\)</span> locates the centre of
+its Wannier functions in the cell. Through King-Smith and Vanderbilt
+(1993) it became the modern theory of electric polarization, and its
+matrix generalization, the Wilson loop, the standard tool for computing
+topological invariants.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.berry_phase" title="tbkit.kspace.KSpace.berry_phase"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.berry_phase()</span></code></a>,
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.wannier_centers" title="tbkit.kspace.KSpace.wannier_centers"><code class="xref py py-meth docutils literal notranslate"><span class="pre">wannier_centers()</span></code></a> (the eigenphases of the
+discrete Wilson loop, with the orbital positions included) and
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.wannier_flow" title="tbkit.kspace.KSpace.wannier_flow"><code class="xref py py-meth docutils literal notranslate"><span class="pre">wannier_flow()</span></code></a> (hybrid Wannier centres across
+the zone).</p>
+<p><em>References:</em> J. Zak, “Berry’s Phase for Energy Bands in Solids,” Phys.
+Rev. Lett. 62, 2747-2750 (1989); R. D. King-Smith and D. Vanderbilt,
+Phys. Rev. B 47, 1651 (1993).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_zak_phase.py</span></code> confirms that the SSH
+chain’s Wannier centre sits on the strong bond – at <span class="math notranslate nohighlight">\(1/4\)</span> for
+<span class="math notranslate nohighlight">\(v &gt; w\)</span>, <span class="math notranslate nohighlight">\(3/4\)</span> for <span class="math notranslate nohighlight">\(w &gt; v\)</span> – a jump of the Zak phase by
+<span class="math notranslate nohighlight">\(\pi\)</span> at the transition.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="J. Zak showed in 1989 that the Berry phase acquired by a Bloch state carried once across the Brillouin zone,"><img alt="" src="../_images/sphx_glr_plot_zak_phase_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_zak_phase.html"><span class="doc">The Zak Phase: Where the SSH Chain’s Electrons Sit</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Zak Phase: Where the SSH Chain's Electrons Sit</div>
+</div></div></section>
+<section id="the-tenfold-way">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">1997 – The Tenfold Way</a><a class="headerlink" href="#the-tenfold-way" title="Link to this heading">#</a></h2>
+<p>A. Altland and M. Zirnbauer completed Dyson’s classification of random
+matrices: time reversal <span class="math notranslate nohighlight">\(T\)</span>, particle-hole <span class="math notranslate nohighlight">\(C\)</span> (each squaring
+to <span class="math notranslate nohighlight">\(\pm1\)</span>, or absent) and their product, the chiral symmetry
+<span class="math notranslate nohighlight">\(S\)</span>, sort every Hamiltonian into exactly ten symmetry classes.
+Schnyder, Ryu, Furusaki and Ludwig, and Kitaev, then showed (2008-2009)
+that the class and the dimension alone decide which topological
+invariant a gapped phase can carry – the periodic table of topological
+insulators and superconductors.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.symmetry_error" title="tbkit.kspace.KSpace.symmetry_error"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.symmetry_error()</span></code></a> checks a
+(unitary or antiunitary) symmetry of the Bloch Hamiltonian;
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.tenfold_class" title="tbkit.kspace.KSpace.tenfold_class"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tenfold_class()</span></code></a> names the class.</p>
+<p><em>References:</em> A. Altland and M. R. Zirnbauer, “Nonstandard Symmetry
+Classes in Mesoscopic Normal-Superconducting Hybrid Structures,” Phys.
+Rev. B 55, 1142-1161 (1997); A. P. Schnyder, S. Ryu, A. Furusaki, and
+A. W. W. Ludwig, Phys. Rev. B 78, 195125 (2008); A. Kitaev, AIP Conf.
+Proc. 1134, 22 (2009).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_tenfold_way.py</span></code> classifies the
+models of this gallery: the SSH chain (BDI, or AIII with complex
+hoppings), the Haldane model (A), spinless graphene (BDI), the
+Kane-Mele model (AII), and the Kitaev chain (BDI, or D).</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A. Altland and M. Zirnbauer (1997) completed Dyson&#x27;s classification of random matrices: a Hamiltonian&#x27;s non-spatial symmetries -- time reversal T = U_T\mathcal{K}, particle-hole C = U_C\mathcal{K} (each squaring to +1 or -1, or absent) and their product, the chiral symmetry S -- sort it into exactly ten classes. Schnyder, Ryu, Furusaki and Ludwig, and Kitaev, then showed (2008-2009) that the class and the dimension alone decide which topological invariant a gapped phase can carry: the periodic table of topological insulators and superconductors. In 1D, for instance, classes AIII and BDI carry an integer winding number, D a \mathbb{Z}_2; in 2D, classes A and D carry a Chern number, AII a \mathbb{Z}_2."><img alt="" src="../_images/sphx_glr_plot_tenfold_way_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_tenfold_way.html"><span class="doc">The Tenfold Way: Symmetry Classes of Tight-Binding Models</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Tenfold Way: Symmetry Classes of Tight-Binding Models</div>
+</div></div></section>
+<section id="the-kane-mele-model-and-the-quantum-spin-hall-effect">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">2005-2007 – The Kane-Mele Model and the Quantum Spin Hall Effect</a><a class="headerlink" href="#the-kane-mele-model-and-the-quantum-spin-hall-effect" title="Link to this heading">#</a></h2>
+<p>C. Kane and E. Mele showed in 2005 that adding <em>intrinsic
+spin-orbit coupling</em> to graphene – two time-reversed copies of Haldane’s
+model, one per spin, with opposite Chern number so the <em>total</em> Chern
+number vanishes – produces a new, time-reversal-symmetric topological
+phase protected by a <span class="math notranslate nohighlight">\(\mathbb{Z}_2\)</span> (rather than integer) invariant:
+the quantum spin Hall effect. A finite ribbon of this model hosts a
+Kramers pair of helical, counter-propagating, spin-momentum-locked edge
+states that cannot be gapped out by any time-reversal-symmetric
+perturbation – immune to backscattering because a spin-up right-mover
+has no same-momentum, same-spin partner to scatter into. Konig et al.
+observed exactly this two-terminal quantized conductance in HgTe/CdTe
+quantum wells in 2007, the first experimentally realized topological
+insulator of any kind.</p>
+<p>Edge states need an edge, so the model is cut into a ribbon: periodic
+along one primitive vector, finite along the other. The shaded column is
+the repeating unit; the ribbon is that column tiled sideways, and its two
+open edges are where the helical states live.</p>
+<figure class="align-default">
+<img alt="../_images/topology_breakthroughs-2.png" class="plot-directive" src="../_images/topology_breakthroughs-2.png" />
+</figure>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace</span></code></a> constructed with
+<code class="docutils literal notranslate"><span class="pre">spin=True</span></code> gives every site a spin-1/2 degree of freedom, with
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.set_hopping" title="tbkit.kspace.KSpace.set_hopping"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_hopping()</span></code></a>/<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.set_onsite" title="tbkit.kspace.KSpace.set_onsite"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_onsite()</span></code></a>
+accepting 2x2 (Pauli) matrices – built from <a class="reference internal" href="../tbkit.html#tbkit.kspace.PAULI" title="tbkit.kspace.PAULI"><code class="xref py py-data docutils literal notranslate"><span class="pre">tbkit.kspace.PAULI</span></code></a> –
+for spin-dependent terms such as Kane-Mele’s <span class="math notranslate nohighlight">\(i\lambda_{SO}\sigma_z\)</span>
+next-nearest-neighbor coupling or Rashba spin-orbit coupling;
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.ribbon" title="tbkit.kspace.ribbon"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.kspace.ribbon()</span></code></a> cuts the open, finite-width ribbon that exposes
+the helical edge states directly in the spectrum.
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.z2_invariant" title="tbkit.kspace.KSpace.z2_invariant"><code class="xref py py-meth docutils literal notranslate"><span class="pre">z2_invariant()</span></code></a> computes the <span class="math notranslate nohighlight">\(\mathbb{Z}_2\)</span>
+invariant from the flow of the hybrid Wannier centres (with or without
+Rashba coupling), and <a class="reference internal" href="../tbkit.html#tbkit.orbital.OrbitalSystem" title="tbkit.orbital.OrbitalSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.orbital.OrbitalSystem</span></code></a> builds the
+spinful model on a finite flake
+(<a class="reference internal" href="../tbkit.html#tbkit.orbital.OrbitalSystem.set_spin_orbit" title="tbkit.orbital.OrbitalSystem.set_spin_orbit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_spin_orbit()</span></code></a>,
+<a class="reference internal" href="../tbkit.html#tbkit.orbital.OrbitalSystem.set_rashba" title="tbkit.orbital.OrbitalSystem.set_rashba"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_rashba()</span></code></a>).</p>
+<p><em>References:</em> C. L. Kane and E. J. Mele, “Z2 Topological Order and the
+Quantum Spin Hall Effect,” Phys. Rev. Lett. 95, 146802 (2005); C. L. Kane
+and E. J. Mele, “Quantum Spin Hall Effect in Graphene,” Phys. Rev. Lett.
+95, 226801 (2005); M. Konig et al., “Quantum Spin Hall Insulator State
+in HgTe Quantum Wells,” Science 318, 766-770 (2007).</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Cutting a periodic 2D model into a ribbon (periodic in one direction, finite/open in the other -- see tbkit.kspace.ribbon) is the standard way to see edge physics in a tight-binding band structure. Adding Kane-Mele intrinsic spin-orbit coupling to graphene (see plot_haldane_topology for the closely related Haldane model) opens a bulk gap and produces helical edge states: gapless, spin-momentum-locked modes that cross the bulk gap, one Kramers pair per edge. This is the original model of a 2D (Z2) topological insulator. Without spin-orbit coupling, the same zigzag ribbon has a flat band of edge states at E=0 instead (see /api/gallery/tight_binding/plot_zigzag_edge_states)."><img alt="" src="../_images/sphx_glr_plot_edge_states_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_edge_states.html"><span class="doc">Helical Edge States of the Kane-Mele Ribbon</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Helical Edge States of the Kane-Mele Ribbon</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Kane and Mele&#x27;s quantum spin Hall insulator has zero Chern number -- its two spins carry opposite ones -- yet it is topological: it carries a \mathbb{Z}_2 invariant \nu, protected by time reversal, that survives even when spin-orbit terms mix the two spins."><img alt="" src="../_images/sphx_glr_plot_kane_mele_z2_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_kane_mele_z2.html"><span class="doc">The Kane-Mele Z2 Invariant from Wannier-Centre Flow</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Kane-Mele Z2 Invariant from Wannier-Centre Flow</div>
+</div></div></section>
+<section id="the-spin-chern-number">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">2006/2009 – The Spin Chern Number</a><a class="headerlink" href="#the-spin-chern-number" title="Link to this heading">#</a></h2>
+<p>The Chern numbers of the two spins of the Kane-Mele model are
+<span class="math notranslate nohighlight">\(\pm1\)</span>, and their half-difference, the spin Chern number
+<span class="math notranslate nohighlight">\(C_s\)</span>, counts its helical edge pairs. Rashba coupling mixes the
+spins, and the picture seems lost. D. N. Sheng, Z. Y. Weng, L. Sheng and
+F. D. M. Haldane (2006) found numerically, from spin-twisted boundary
+conditions, that <span class="math notranslate nohighlight">\(C_s\)</span> survives. E. Prodan (2009) gave the exact
+construction: project the spin onto the occupied bands, <span class="math notranslate nohighlight">\(Ps_zP\)</span>. As
+long as its spectrum keeps a gap around zero, its positive and negative
+eigenvectors split the bands into two sectors with well-defined Chern
+numbers <span class="math notranslate nohighlight">\(C_\pm\)</span>, and <span class="math notranslate nohighlight">\(C_s = (C_+ - C_-)/2\)</span>. With time reversal,
+<span class="math notranslate nohighlight">\(C_s\)</span> modulo 2 is the <span class="math notranslate nohighlight">\(\mathbb{Z}_2\)</span> invariant, and
+<span class="math notranslate nohighlight">\(C_s\)</span> stays quantized when time reversal is broken too, as long as
+both gaps stay open.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.spin_chern_number" title="tbkit.kspace.KSpace.spin_chern_number"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.spin_chern_number()</span></code></a>, built on
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.sector_chern_numbers" title="tbkit.kspace.KSpace.sector_chern_numbers"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sector_chern_numbers()</span></code></a> (the Chern numbers of
+the two sectors of any Hermitian operator projected on a group of bands).</p>
+<p><em>References:</em> D. N. Sheng, Z. Y. Weng, L. Sheng, and F. D. M. Haldane,
+“Quantum Spin-Hall Effect and Topologically Invariant Chern Numbers,”
+Phys. Rev. Lett. 97, 036808 (2006); E. Prodan, “Robustness of the Spin-Chern
+Number,” Phys. Rev. B 80, 125327 (2009).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_spin_chern_number.py</span></code> confirms
+<span class="math notranslate nohighlight">\(C_\pm = \pm1\)</span> without Rashba coupling, <span class="math notranslate nohighlight">\(C_s = 1\)</span> with it –
+equal to <span class="math notranslate nohighlight">\(\nu\)</span> across a Rashba sweep, while the spin gap stays open and
+<span class="math notranslate nohighlight">\(s_z\)</span> is not conserved – the drop to 0 where the bulk gap closes, and
+<span class="math notranslate nohighlight">\(C_s = 1\)</span> with time reversal broken by an in-plane Zeeman field.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="In Kane and Mele&#x27;s model each spin is a Haldane model: spin up has Chern number +1, spin down -1, and the spin Chern number C_s = (C_\uparrow - C_\downarrow)/2 = 1 counts the helical edge pairs. Rashba coupling ruins this picture, since s_z is no longer conserved and the bands are no longer spin up or spin down."><img alt="" src="../_images/sphx_glr_plot_spin_chern_number_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_spin_chern_number.html"><span class="doc">The Spin Chern Number: Quantum Spin Hall Without Spin Conservation</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Spin Chern Number: Quantum Spin Hall Without Spin Conservation</div>
+</div></div></section>
+<section id="the-fu-kane-parity-criterion">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">2007 – The Fu-Kane Parity Criterion</a><a class="headerlink" href="#the-fu-kane-parity-criterion" title="Link to this heading">#</a></h2>
+<p>L. Fu and C. Kane showed that with inversion symmetry the
+<span class="math notranslate nohighlight">\(\mathbb{Z}_2\)</span> invariant needs no Wilson loop: it is the product of
+the parities of the occupied Kramers pairs at the time-reversal-invariant
+momenta, <span class="math notranslate nohighlight">\((-1)^\nu = \prod_i\delta_i\)</span>. A band inversion at one of
+them makes the insulator topological – the criterion that predicted
+Bi<sub>1-x</sub>Sb<sub>x</sub> and Bi<sub>2</sub>Se<sub>3</sub>. The same year,
+Konig et al. confirmed the Bernevig-Hughes-Zhang prediction of the
+quantum spin Hall effect in HgTe quantum wells.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.parity_z2" title="tbkit.kspace.KSpace.parity_z2"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.parity_z2()</span></code></a>.</p>
+<p><em>References:</em> L. Fu and C. L. Kane, “Topological Insulators with
+Inversion Symmetry,” Phys. Rev. B 76, 045302 (2007); B. A. Bernevig, T.
+L. Hughes, and S.-C. Zhang, Science 314, 1757 (2006).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_fu_kane_parity.py</span></code> confirms, across
+the phase diagram of the BHZ model, that the parity criterion and the
+Wannier-centre flow give the same <span class="math notranslate nohighlight">\(\nu\)</span>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="L. Fu and C. Kane showed in 2007 that for a crystal with inversion symmetry the \mathbb{Z}_2 invariant needs no Wilson loop at all: it is fixed by the parities \xi = \pm1 of the occupied Kramers pairs at the four time-reversal-invariant momenta \Gamma_i,"><img alt="" src="../_images/sphx_glr_plot_fu_kane_parity_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_fu_kane_parity.html"><span class="doc">The Fu-Kane Parity Criterion: Z2 from Inversion Eigenvalues</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Fu-Kane Parity Criterion: Z2 from Inversion Eigenvalues</div>
+</div></div></section>
+<section id="three-dimensional-topological-insulators">
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">2007/2009 – Three-Dimensional Topological Insulators</a><a class="headerlink" href="#three-dimensional-topological-insulators" title="Link to this heading">#</a></h2>
+<p>L. Fu, C. Kane and E. Mele, J. Moore and L. Balents, and R. Roy showed
+that the <span class="math notranslate nohighlight">\(\mathbb{Z}_2\)</span> topology of the quantum spin Hall effect
+survives in three dimensions: a time-reversal-invariant insulator has
+four <span class="math notranslate nohighlight">\(\mathbb{Z}_2\)</span> indices, and an odd <em>strong</em> index
+<span class="math notranslate nohighlight">\(\nu_0\)</span> forces an odd number of Dirac cones onto every surface –
+metallic, spin-momentum-locked surface states that no time-reversal
+invariant perturbation can gap. Hsieh et al. observed them by
+photoemission in Bi<sub>1-x</sub>Sb<sub>x</sub> (2008); Xia et al. and
+Zhang et al. then found a single cone in Bi<sub>2</sub>Se<sub>3</sub>
+(2009). The tight-binding counterpart of a photoemission map is the
+spectral function of the surface of a semi-infinite crystal (the surface
+Green’s function, see the 1985 entry of <a class="reference internal" href="models_breakthroughs.html"><span class="doc">Breakthroughs in Building and Solving Models</span></a>) –
+no finite slab, so the surface states are never mixed with those of an
+opposite surface.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.surface_spectral_function" title="tbkit.kspace.KSpace.surface_spectral_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.surface_spectral_function()</span></code></a>
+(surface or bulk, either side, any primitive vector as surface normal);
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.z2_indices_3d" title="tbkit.kspace.KSpace.z2_indices_3d"><code class="xref py py-meth docutils literal notranslate"><span class="pre">z2_indices_3d()</span></code></a> gives the four indices
+<span class="math notranslate nohighlight">\((\nu_0;\nu_1\nu_2\nu_3)\)</span> from the Wannier-centre flow on the six
+time-reversal-invariant planes, and
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.parity_z2" title="tbkit.kspace.KSpace.parity_z2"><code class="xref py py-meth docutils literal notranslate"><span class="pre">parity_z2()</span></code></a> the strong index of
+inversion-symmetric models.</p>
+<p><em>References:</em> L. Fu, C. L. Kane, and E. J. Mele, “Topological Insulators
+in Three Dimensions,” Phys. Rev. Lett. 98, 106803 (2007); J. E. Moore and
+L. Balents, Phys. Rev. B 75, 121306(R) (2007); R. Roy, Phys. Rev. B 79,
+195322 (2009); D. Hsieh et al., Nature 452, 970 (2008); Y. Xia et al.,
+Nat. Phys. 5, 398 (2009); H. Zhang et al., Nat. Phys. 5, 438 (2009).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_3d_topological_insulator.py</span></code>
+confirms the four indices of a cubic model across its phases – trivial,
+strong, the weak <span class="math notranslate nohighlight">\((0;111)\)</span> and strong <span class="math notranslate nohighlight">\((1;111)\)</span> – an empty
+bulk gap, a single surface Dirac cone of velocity 1 at
+<span class="math notranslate nohighlight">\(\bar\Gamma\)</span> (at <span class="math notranslate nohighlight">\(\bar{M}\)</span> when the band inversion moves to
+<span class="math notranslate nohighlight">\(R\)</span>), and no surface state in the trivial phase.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="In 2007 Fu, Kane and Mele, Moore and Balents, and Roy showed that the \mathbb{Z}_2 topology of the quantum spin Hall effect has a 3D sequel. A time-reversal-invariant insulator in three dimensions carries four \mathbb{Z}_2 indices, and the strong index \nu_0 -- with inversion symmetry, the product of the parities of the occupied Kramers pairs at all eight time-reversal-invariant momenta -- forces every surface to host an odd number of Dirac cones: metallic, spin-momentum-locked surface states that no time-reversal-invariant perturbation can gap. Hsieh et al. saw them by photoemission in Bi\ 1-x\ Sb\ x (2008), then Xia et al. and Zhang et al. found the simplest case, a single cone, in Bi\ 2\ Se\ 3 (2009)."><img alt="" src="../_images/sphx_glr_plot_3d_topological_insulator_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_3d_topological_insulator.html"><span class="doc">Three-Dimensional Topological Insulators: the Surface Dirac Cone</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Three-Dimensional Topological Insulators: the Surface Dirac Cone</div>
+</div></div></section>
+<section id="the-entanglement-spectrum">
+<h2><a class="toc-backref" href="#id14" role="doc-backlink">2008 – The Entanglement Spectrum</a><a class="headerlink" href="#the-entanglement-spectrum" title="Link to this heading">#</a></h2>
+<p>H. Li and F. D. M. Haldane showed that the entanglement between two halves
+of a topological ground state carries more than a number. The spectrum
+of the reduced density matrix, <span class="math notranslate nohighlight">\(\rho_A = e^{-H_E}/Z\)</span>, reproduces the
+edge spectrum at the cut, as if the cut were a physical edge. For free
+fermions the entanglement Hamiltonian <span class="math notranslate nohighlight">\(H_E\)</span> is quadratic (I. Peschel,
+2003), and its levels follow from the eigenvalues <span class="math notranslate nohighlight">\(\xi_n\)</span> of the
+correlation matrix restricted to one half. L. Fidkowski, and A. Turner, Y.
+Zhang and A. Vishwanath (2010), showed that topology then forces
+entanglement modes inside <span class="math notranslate nohighlight">\((0, 1)\)</span>: a mode pinned at
+<span class="math notranslate nohighlight">\(\xi = 1/2\)</span> at each cut of a chiral-symmetric chain, and a branch
+that flows across the whole interval with the momentum along the cut of
+a Chern insulator. The diagnostic depends on the ground state alone,
+not on the basis of the Hamiltonian, and needs no physical edge.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.topology.entanglement_spectrum" title="tbkit.topology.entanglement_spectrum"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.topology.entanglement_spectrum()</span></code></a> (finite
+samples, any region) and <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.entanglement_spectrum" title="tbkit.kspace.KSpace.entanglement_spectrum"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.entanglement_spectrum()</span></code></a>
+(k-resolved, for ribbons and supercells).</p>
+<p><em>References:</em> H. Li and F. D. M. Haldane, “Entanglement Spectrum as a
+Generalization of Entanglement Entropy,” Phys. Rev. Lett. 101, 010504
+(2008); I. Peschel, J. Phys. A 36, L205 (2003); L. Fidkowski, Phys. Rev.
+Lett. 104, 130502 (2010); A. M. Turner, Y. Zhang, and A. Vishwanath, Phys.
+Rev. B 82, 241102(R) (2010).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_entanglement_spectrum.py</span></code> confirms
+two modes at <span class="math notranslate nohighlight">\(\xi = 1/2\)</span> (to <span class="math notranslate nohighlight">\(10^{-10}\)</span>) for half of a
+topological SSH ring and none near 1/2 in the trivial phase, and the
+k-resolved spectrum of a Haldane cylinder filling <span class="math notranslate nohighlight">\((0.1, 0.9)\)</span> in the
+Chern phase and staying out of it in the trivial one.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Cut a system in two halves A and B, and ask how the ground state entangles them. The answer is the reduced density matrix \rho_A = e^{-H_E}/Z, and H. Li and F. D. M. Haldane (2008) showed that the spectrum of the entanglement Hamiltonian H_E of a topological phase looks like its edge spectrum, as if the cut were a physical edge. For free fermions H_E is quadratic (Peschel 2003): its single-particle levels follow from the eigenvalues \xi_n of the correlation matrix C_{ij} = \langle c_i^\dagger c_j\rangle restricted to A. States that live entirely in A or in B give \xi = 1 or 0. Values inside (0, 1) come from states shared across the cuts, and topology forces some of them there (Fidkowski 2010; Turner, Zhang and Vishwanath 2010)."><img alt="" src="../_images/sphx_glr_plot_entanglement_spectrum_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_entanglement_spectrum.html"><span class="doc">The Entanglement Spectrum: Edge States Without an Edge</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Entanglement Spectrum: Edge States Without an Edge</div>
+</div></div></section>
+<section id="topological-crystalline-insulators-and-mirror-chern-numbers">
+<h2><a class="toc-backref" href="#id15" role="doc-backlink">2008/2012 – Topological Crystalline Insulators and Mirror Chern Numbers</a><a class="headerlink" href="#topological-crystalline-insulators-and-mirror-chern-numbers" title="Link to this heading">#</a></h2>
+<p>J. Teo, L. Fu and C. Kane (2008) showed that a crystal symmetry can
+protect a topology that time reversal misses. On a plane of the zone
+invariant under a mirror, the mirror commutes with <span class="math notranslate nohighlight">\(H(\mathbf{k})\)</span>, the
+bands split into mirror sectors, and the <em>mirror Chern number</em>
+<span class="math notranslate nohighlight">\(n_M = (C_{+i} - C_{-i})/2\)</span> is an integer whose parity is the
+<span class="math notranslate nohighlight">\(\mathbb{Z}_2\)</span> index of the plane. L. Fu (2011) called insulators
+protected this way <em>topological crystalline insulators</em>, and T. Hsieh,
+H. Lin, J. Liu, W. Duan, A. Bansil and L. Fu (2012) predicted that SnTe
+is one: <span class="math notranslate nohighlight">\(n_M = 2\)</span>, all <span class="math notranslate nohighlight">\(\mathbb{Z}_2\)</span> indices zero, and surface
+Dirac cones on the mirror-symmetric surfaces. Tanaka et al., Dziawa et al.
+and Xu et al. observed them the same year in SnTe and
+Pb<sub>1-x</sub>Sn<sub>x</sub>(Se, Te).</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.mirror_chern_number" title="tbkit.kspace.KSpace.mirror_chern_number"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.mirror_chern_number()</span></code></a> (a
+<em>mirror</em> operator with <span class="math notranslate nohighlight">\(M^2 = \pm1\)</span>, checked to commute with
+<span class="math notranslate nohighlight">\(H(\mathbf{k})\)</span> on the chosen plane).</p>
+<p><em>References:</em> J. C. Y. Teo, L. Fu, and C. L. Kane, “Surface States and
+Topological Invariants in Three-Dimensional Topological Insulators:
+Application to Bi<sub>1-x</sub>Sb<sub>x</sub>,” Phys. Rev. B 78, 045426 (2008);
+L. Fu, Phys. Rev. Lett. 106, 106802 (2011); T. H. Hsieh, H. Lin, J. Liu,
+W. Duan, A. Bansil, and L. Fu, “Topological Crystalline Insulators in the
+SnTe Material Class,” Nat. Commun. 3, 982 (2012); Y. Tanaka et al., Nat.
+Phys. 8, 800 (2012); P. Dziawa et al., Nat. Mater. 11, 1023 (2012); S.-Y.
+Xu et al., Nat. Commun. 3, 1192 (2012).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_mirror_chern_number.py</span></code> confirms
+<span class="math notranslate nohighlight">\(\nu = n_M\)</span> modulo 2 on the mirror planes of a 3D topological
+insulator, then <span class="math notranslate nohighlight">\(n_M = 2\)</span> with all four <span class="math notranslate nohighlight">\(\mathbb{Z}_2\)</span> indices
+zero for two coupled copies, and surface states across the bulk gap on
+the mirror line of their (100) surface, absent in the trivial phase.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Two copies of a strong topological insulator make a trivial one, as far as time reversal can tell: the \mathbb{Z}_2 indices add modulo 2, so all four vanish, and the two surface Dirac cones can in principle annihilate. Teo, Fu and Kane (2008) pointed out that a crystal symmetry can still protect them. On a plane of the Brillouin zone left invariant by a mirror M (here z\to-z, the plane k_z = 0), M commutes with H(\mathbf{k}), the bands split into the mirror sectors M = \pm i, and each sector has its own Chern number. Their half-difference is the mirror Chern number"><img alt="" src="../_images/sphx_glr_plot_mirror_chern_number_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_mirror_chern_number.html"><span class="doc">Mirror Chern Numbers: a Topological Crystalline Insulator</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Mirror Chern Numbers: a Topological Crystalline Insulator</div>
+</div></div></section>
+<section id="the-axion-angle-and-the-topological-magnetoelectric-effect">
+<h2><a class="toc-backref" href="#id16" role="doc-backlink">2008/2009 – The Axion Angle and the Topological Magnetoelectric Effect</a><a class="headerlink" href="#the-axion-angle-and-the-topological-magnetoelectric-effect" title="Link to this heading">#</a></h2>
+<p>In an insulator, a magnetic field can induce a polarization,
+<span class="math notranslate nohighlight">\(\mathbf{P} = \frac{\theta}{2\pi}\frac{e^2}{h}\mathbf{B}\)</span>, through the
+axion term <span class="math notranslate nohighlight">\(\frac{\theta e^2}{2\pi h}\mathbf{E}\cdot\mathbf{B}\)</span> of the
+electromagnetic Lagrangian (F. Wilczek 1987). X.-L. Qi, T. Hughes and S.-C.
+Zhang (2008) and A. Essin, J. Moore and D. Vanderbilt (2009) found that
+for Bloch electrons <span class="math notranslate nohighlight">\(\theta\)</span> is the Chern-Simons integral of the
+Berry connection of the occupied bands. It is defined modulo
+<span class="math notranslate nohighlight">\(2\pi\)</span>, and time reversal or inversion pin it to 0 or <span class="math notranslate nohighlight">\(\pi\)</span>:
+<span class="math notranslate nohighlight">\(\theta = \pi\)</span> is the 3D topological insulator, a quantized
+magnetoelectric response. Breaking those symmetries (a magnetic
+topological insulator, an antiferromagnet) frees <span class="math notranslate nohighlight">\(\theta\)</span>, and a
+cycle of Hamiltonians changes it by <span class="math notranslate nohighlight">\(2\pi\)</span> times the second Chern
+number, the 4D quantum Hall effect.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.axion_angle" title="tbkit.kspace.KSpace.axion_angle"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.axion_angle()</span></code></a> integrates the
+second Chern form along a gapped path of a value-function parameter
+(gauge invariant: no smooth gauge is needed).</p>
+<p><em>References:</em> F. Wilczek, “Two applications of axion electrodynamics,”
+Phys. Rev. Lett. 58, 1799 (1987); X.-L. Qi, T. L. Hughes, and S.-C. Zhang,
+“Topological field theory of time-reversal invariant insulators,” Phys.
+Rev. B 78, 195424 (2008); A. M. Essin, J. E. Moore, and D. Vanderbilt,
+“Magnetoelectric Polarizability and Axion Electrodynamics in Crystalline
+Insulators,” Phys. Rev. Lett. 102, 146805 (2009).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_axion_angle.py</span></code> pumps a lattice
+Dirac model through a cycle: <span class="math notranslate nohighlight">\(\theta\)</span> goes from 0 at the trivial
+point to <span class="math notranslate nohighlight">\(\pi\)</span> at the topological one and <span class="math notranslate nohighlight">\(2\pi\)</span> at the end
+(<span class="math notranslate nohighlight">\(C_2 = 1\)</span>), within <span class="math notranslate nohighlight">\(10^{-3}\pi\)</span>, matching the strong
+<span class="math notranslate nohighlight">\(\mathbb{Z}_2\)</span> index at both time-reversal symmetric points, while a
+trivial model’s <span class="math notranslate nohighlight">\(\theta\)</span> stays at 0.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="An insulator responds to an electric field with a magnetization and to a magnetic field with a polarization. Part of that response is a single number \theta, entering the electromagnetic action as the axion term of Wilczek (1987), \frac{\theta e^2}{2\pi h}\int\mathbf{E}\cdot\mathbf{B}: the polarization \mathbf{P} = \frac{\theta}{2\pi}\frac{e^2}{h}\mathbf{B}. Qi, Hughes and Zhang (2008) and Essin, Moore and Vanderbilt (2009) showed that for Bloch electrons \theta is the Chern-Simons integral of the Berry connection of the occupied bands. It is defined modulo 2\pi (a surface can always gain a quantum Hall layer), and time reversal or inversion force \theta = 0 or \pi: \pi is the strong 3D topological insulator."><img alt="" src="../_images/sphx_glr_plot_axion_angle_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_axion_angle.html"><span class="doc">The Axion Angle and the Topological Magnetoelectric Effect</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Axion Angle and the Topological Magnetoelectric Effect</div>
+</div></div></section>
+<section id="the-bott-index">
+<h2><a class="toc-backref" href="#id17" role="doc-backlink">2010 – The Bott Index</a><a class="headerlink" href="#the-bott-index" title="Link to this heading">#</a></h2>
+<p>T. Loring and M. Hastings found a Chern number for finite samples
+without translation symmetry. On a torus the positions are defined only
+modulo the sides, but their exponentials <span class="math notranslate nohighlight">\(e^{2\pi iX_{1,2}}\)</span> are well
+defined. Projected on the occupied states, <span class="math notranslate nohighlight">\(\tilde U\)</span> and
+<span class="math notranslate nohighlight">\(\tilde V\)</span>, they almost commute in an insulator, and the winding of
+their commutator,
+<span class="math notranslate nohighlight">\(B = \frac{1}{2\pi}\mathrm{Im}\,\mathrm{Tr}\log(\tilde V\tilde U\tilde V^\dagger\tilde U^\dagger)\)</span>,
+is an integer: the <em>Bott index</em>. It equals the Chern number of a clean
+crystal, and it applies to disordered lattices, amorphous solids and
+quasicrystals, where it locates the topological Anderson transitions.
+It complements the local Chern marker below, which needs open edges and
+a bulk average.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.topology.bott_index" title="tbkit.topology.bott_index"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.topology.bott_index()</span></code></a> (any Hermitian
+Hamiltonian on a torus, e.g. from <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.finite_ham" title="tbkit.kspace.KSpace.finite_ham"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace.finite_ham()</span></code></a>
+with <code class="docutils literal notranslate"><span class="pre">periodic=True</span></code>, and its orbital positions).</p>
+<p><em>References:</em> T. A. Loring and M. B. Hastings, “Disordered Topological
+Insulators via C*-Algebras,” EPL 92, 67004 (2010); T. A. Loring, Ann.
+Phys. 356, 383 (2015).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_bott_index.py</span></code> confirms, on a Haldane
+torus, a Bott index equal to the Chern number across the phase diagram,
+an integer for every disordered sample, and a value of 1 up to disorder
+<span class="math notranslate nohighlight">\(W = 5\)</span> (more than twice the clean gap) that drops to 0 for
+<span class="math notranslate nohighlight">\(W \geq 8\)</span>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The Chern number is an integral over the Brillouin zone, and disorder removes the Brillouin zone. T. Loring and M. Hastings (2010) found an invariant of a finite sample that needs none. Put the sample on a torus, where the coordinates X_1, X_2 (in units of the torus sides) are only defined modulo 1, but their exponentials e^{2\pi iX_{1,2}} are well defined. Project them onto the occupied states, \tilde U = Pe^{2\pi iX_1}P and \tilde V = Pe^{2\pi iX_2}P. In a gapped or localized phase they almost commute, and the winding of their commutator,"><img alt="" src="../_images/sphx_glr_plot_bott_index_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_bott_index.html"><span class="doc">The Bott Index: the Chern Number of a Disordered Torus</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Bott Index: the Chern Number of a Disordered Torus</div>
+</div></div></section>
+<section id="the-local-chern-marker">
+<h2><a class="toc-backref" href="#id18" role="doc-backlink">2011 – The Local Chern Marker</a><a class="headerlink" href="#the-local-chern-marker" title="Link to this heading">#</a></h2>
+<p>R. Bianco and R. Resta showed that the Chern number, an integral over
+the Brillouin zone, is also a <em>local</em> property of the ground state: the
+marker <span class="math notranslate nohighlight">\(C(\mathbf{r}) = -\frac{4\pi}{a}\mathrm{Im}\langle\mathbf{r}|PxQyP|\mathbf{r}\rangle\)</span>,
+built from the projector on the occupied states of a finite sample,
+equals the Chern number in its bulk and compensates at its edges. It
+applies where no Brillouin zone exists – disordered, amorphous or
+quasicrystalline samples – and follows the topological Anderson
+transitions of disordered Chern insulators.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.system.System.get_local_chern_marker" title="tbkit.system.System.get_local_chern_marker"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.system.System.get_local_chern_marker()</span></code></a>.</p>
+<p><em>References:</em> R. Bianco and R. Resta, “Mapping Topological Order in
+Coordinate Space,” Phys. Rev. B 84, 241106 (2011).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/topology/plot_local_chern_marker.py</span></code> confirms, on
+a Haldane flake, a bulk marker equal to the Chern number with a total of
+zero, robust to weak disorder and destroyed by strong disorder.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A Chern number is an integral over the Brillouin zone -- but a disordered, amorphous or finite sample has none. R. Bianco and R. Resta (2011) showed that it is nevertheless a local property: the marker"><img alt="" src="../_images/sphx_glr_plot_local_chern_marker_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/topology/plot_local_chern_marker.html"><span class="doc">The Local Chern Marker: Topology Without a Brillouin Zone</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Local Chern Marker: Topology Without a Brillouin Zone</div>
+</div></div></section>
+<section id="weyl-semimetals">
+<h2><a class="toc-backref" href="#id19" role="doc-backlink">2011/2015 – Weyl Semimetals</a><a class="headerlink" href="#weyl-semimetals" title="Link to this heading">#</a></h2>
+<p>Wan, Turner, Vishwanath and Savrasov predicted that band touchings of a
+new kind – Weyl points, where two bands meet linearly in every
+direction, each a monopole of Berry curvature – exist in real 3D
+crystals. In 2015 Xu et al. and Lv et al. observed them in TaAs, through
+their surface signature: open Fermi arcs. Every plane of constant
+<span class="math notranslate nohighlight">\(k_z\)</span> is a 2D insulator whose Chern number jumps across a Weyl
+point; each plane with <span class="math notranslate nohighlight">\(C \neq 0\)</span> contributes a chiral surface
+state, and together they draw the arc between the projected Weyl points.</p>
+<p><em>Implementation:</em> 3D <strong>KSpace</strong> models (<em>prim_vec</em> as three 3-tuples);
+<a class="reference internal" href="../tbkit.html#tbkit.topology.find_weyl_points" title="tbkit.topology.find_weyl_points"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.topology.find_weyl_points()</span></code></a> locates the Weyl points (gap
+minima on a mesh, Newton refinement) with their chiralities, the Berry
+flux through a small sphere around each;
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.chern_number" title="tbkit.kspace.KSpace.chern_number"><code class="xref py py-meth docutils literal notranslate"><span class="pre">chern_number()</span></code></a> of a plane of the zone
+(<em>plane</em>, <em>k_fixed</em>); <a class="reference internal" href="../tbkit.html#tbkit.kspace.ribbon" title="tbkit.kspace.ribbon"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.kspace.ribbon()</span></code></a> cuts a slab.</p>
+<p><em>References:</em> X. Wan, A. M. Turner, A. Vishwanath, and S. Y. Savrasov,
+“Topological Semimetal and Fermi-Arc Surface States in the Electronic
+Structure of Pyrochlore Iridates,” Phys. Rev. B 83, 205101 (2011); S.-Y.
+Xu et al., Science 349, 613 (2015); B. Q. Lv et al., Phys. Rev. X 5,
+031013 (2015).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/three_dimensions/plot_weyl_semimetal.py</span></code> finds
+two linear Weyl points of chirality <span class="math notranslate nohighlight">\(\mp1\)</span>, confirms that
+<span class="math notranslate nohighlight">\(C(k_z)\)</span> jumps by the chirality across each (<span class="math notranslate nohighlight">\(|C| = 1\)</span> between
+them, 0 outside),
+and zero-energy surface states of a slab only between the projected
+Weyl points.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A 3D band touching where two bands meet linearly in every direction, H \approx \mathbf{v}\cdot\mathbf{q}\,\boldsymbol\sigma, is a Weyl point: a source or sink of Berry curvature, of charge \pm1. Wan, Turner, Vishwanath and Savrasov (2011) predicted Weyl semimetals in real materials, and in 2015 Xu et al. and Lv et al. observed them in TaAs by photoemission -- through their unmistakable surface signature, open Fermi arcs."><img alt="" src="../_images/sphx_glr_plot_weyl_semimetal_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/three_dimensions/plot_weyl_semimetal.html"><span class="doc">Weyl Semimetals: Monopoles of Berry Curvature and Fermi Arcs</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Weyl Semimetals: Monopoles of Berry Curvature and Fermi Arcs</div>
+</div></div></section>
+<section id="quantized-electric-multipole-insulators-and-higher-order-topology">
+<h2><a class="toc-backref" href="#id20" role="doc-backlink">2017 – Quantized Electric Multipole Insulators and Higher-Order Topology</a><a class="headerlink" href="#quantized-electric-multipole-insulators-and-higher-order-topology" title="Link to this heading">#</a></h2>
+<p>The topological insulators above all announce themselves by states one
+dimension below the bulk: edge states of a 2D insulator, surface states
+of a 3D one. W. A. Benalcazar, B. A. Bernevig and T. L. Hughes showed
+that a crystal can instead have <em>gapped</em> edges and protected states two
+dimensions down, at its corners. Their model – four orbitals per square
+cell, intra- and inter-cell hoppings <span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\lambda\)</span>,
+a <span class="math notranslate nohighlight">\(\pi\)</span> flux per plaquette – has no Chern number and no bulk
+dipole, but a quantized electric <strong>quadrupole</strong> moment
+<span class="math notranslate nohighlight">\(q_{xy} = 1/2\)</span> for <span class="math notranslate nohighlight">\(|\gamma| &lt; |\lambda|\)</span>. The invariant
+lives in the Wannier functions: the Wilson loop along <span class="math notranslate nohighlight">\(x\)</span> splits
+the occupied bands into two gapped <em>Wannier sectors</em>, and a second,
+<em>nested</em> Wilson loop of one sector along <span class="math notranslate nohighlight">\(y\)</span> gives the
+Wannier-sector polarization <span class="math notranslate nohighlight">\(p_y^{\nu_x^-} = 1/2\)</span>. On a finite
+square it binds a fractional charge <span class="math notranslate nohighlight">\(\pm e/2\)</span> and a zero-energy
+state to each corner. Corner states were observed in 2018 in a phononic
+metamaterial, microwave circuits and topolectrical circuits, and
+higher-order topology has since been found in bismuth and in many
+crystalline insulators.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#module-tbkit.higher_order" title="tbkit.higher_order"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.higher_order</span></code></a>:
+<a class="reference internal" href="../tbkit.html#tbkit.higher_order.bbh_model" title="tbkit.higher_order.bbh_model"><code class="xref py py-func docutils literal notranslate"><span class="pre">bbh_model()</span></code></a>,
+<a class="reference internal" href="../tbkit.html#tbkit.higher_order.wannier_bands" title="tbkit.higher_order.wannier_bands"><code class="xref py py-func docutils literal notranslate"><span class="pre">wannier_bands()</span></code></a> (Wannier bands and sector
+states from the Wilson loop at every base point, over a mesh
+diagonalized with one vectorized Bloch sum),
+<a class="reference internal" href="../tbkit.html#tbkit.higher_order.wannier_sector_polarization" title="tbkit.higher_order.wannier_sector_polarization"><code class="xref py py-func docutils literal notranslate"><span class="pre">wannier_sector_polarization()</span></code></a> (nested Wilson
+loop), <a class="reference internal" href="../tbkit.html#tbkit.higher_order.quadrupole_moment" title="tbkit.higher_order.quadrupole_moment"><code class="xref py py-func docutils literal notranslate"><span class="pre">quadrupole_moment()</span></code></a>, and
+<a class="reference internal" href="../tbkit.html#tbkit.higher_order.corner_charges" title="tbkit.higher_order.corner_charges"><code class="xref py py-func docutils literal notranslate"><span class="pre">corner_charges()</span></code></a> of a finite flake
+(<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.finite_ham" title="tbkit.kspace.KSpace.finite_ham"><code class="xref py py-meth docutils literal notranslate"><span class="pre">finite_ham()</span></code></a>).</p>
+<p><em>References:</em> W. A. Benalcazar, B. A. Bernevig, and T. L. Hughes,
+“Quantized electric multipole insulators,” Science 357, 61-66 (2017);
+“Electric multipole moments, topological multipole moment pumping, and
+chiral hinge states in crystalline insulators,” Phys. Rev. B 96, 245115
+(2017); M. Serra-Garcia et al., Nature 555, 342-345 (2018); C. W.
+Peterson et al., Nature 555, 346-350 (2018); S. Imhof et al., Nat.
+Phys. 14, 925-929 (2018); F. Schindler et al., Nat. Phys. 14, 918-924
+(2018).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/higher_order/plot_quadrupole_insulator.py</span></code>
+confirms gapped Wannier sectors <span class="math notranslate nohighlight">\(\pm\nu_x(k_y)\)</span>,
+<span class="math notranslate nohighlight">\(p_y^{\nu_x^-} = q_{xy} = 1/2\)</span> for <span class="math notranslate nohighlight">\(|\gamma| &lt; |\lambda|\)</span>
+and 0 beyond, four zero-energy states in the gap of a <span class="math notranslate nohighlight">\(16\times16\)</span>
+flake, and corner charges <span class="math notranslate nohighlight">\(\pm 1/2\)</span> (to <span class="math notranslate nohighlight">\(2\cdot10^{-3}\)</span>)
+that vanish in the trivial phase.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="In 2017 W. Benalcazar, B. A. Bernevig and T. L. Hughes showed that a crystal can carry a quantized electric quadrupole moment while having no dipole moment at all. Their model (BBH) has four orbitals per square cell, intra-cell hoppings \gamma, inter-cell hoppings \lambda, and a \pi flux through every plaquette. For |\gamma| &lt; |\lambda|:"><img alt="" src="../_images/sphx_glr_plot_quadrupole_insulator_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/higher_order/plot_quadrupole_insulator.html"><span class="doc">Quantized Electric Quadrupole Insulators: the Benalcazar-Bernevig-Hughes Model</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Quantized Electric Quadrupole Insulators: the Benalcazar-Bernevig-Hughes Model</div>
+</div></div></section>
+<section id="see-also">
+<h2><a class="toc-backref" href="#id21" role="doc-backlink">See Also</a><a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="index.html"><span class="doc">History</span></a> – the other chapters of this chronology.</p></li>
+<li><p><a class="reference internal" href="../tutorial.html"><span class="doc">Tutorial</span></a> – a narrative walkthrough of the same API.</p></li>
+<li><p><a class="reference internal" href="../tbkit.html"><span class="doc">API</span></a> – the full API reference.</p></li>
+<li><p><a class="reference internal" href="../api/gallery/index.html"><span class="doc">Examples</span></a> – every example, including those not linked above.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="fields_breakthroughs.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Breakthroughs in Fields, Strain and Disorder</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="response_breakthroughs.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Breakthroughs in Response and Transport</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-su-schrieffer-heeger-ssh-model">1979 – The Su-Schrieffer-Heeger (SSH) Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-quantum-metric">1980 – The Quantum Metric</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-tknn-invariant">1982 – The TKNN Invariant</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-thouless-quantum-pump">1983 – The Thouless Quantum Pump</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diabolical-points-conical-intersections-and-the-sign-of-the-eigenvector">1984 – Diabolical Points: Conical Intersections and the Sign of the Eigenvector</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-wannier-obstruction-of-chern-bands">1984/2007 – The Wannier Obstruction of Chern Bands</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-haldane-model">1988 – The Haldane Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-zak-phase">1989 – The Zak Phase</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-tenfold-way">1997 – The Tenfold Way</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-kane-mele-model-and-the-quantum-spin-hall-effect">2005-2007 – The Kane-Mele Model and the Quantum Spin Hall Effect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-spin-chern-number">2006/2009 – The Spin Chern Number</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-fu-kane-parity-criterion">2007 – The Fu-Kane Parity Criterion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#three-dimensional-topological-insulators">2007/2009 – Three-Dimensional Topological Insulators</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-entanglement-spectrum">2008 – The Entanglement Spectrum</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topological-crystalline-insulators-and-mirror-chern-numbers">2008/2012 – Topological Crystalline Insulators and Mirror Chern Numbers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-axion-angle-and-the-topological-magnetoelectric-effect">2008/2009 – The Axion Angle and the Topological Magnetoelectric Effect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-bott-index">2010 – The Bott Index</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-local-chern-marker">2011 – The Local Chern Marker</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weyl-semimetals">2011/2015 – Weyl Semimetals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantized-electric-multipole-insulators-and-higher-order-topology">2017 – Quantized Electric Multipole Insulators and Higher-Order Topology</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See Also</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/history/topology_breakthroughs.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2026, Charles Poli.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

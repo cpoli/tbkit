@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Breakthroughs in Fields, Strain and Disorder &#8212; tbkit 0.6.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../_static/documentation_options.js?v=dda85ae5"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'history/fields_breakthroughs';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/force_light.js?v=8e7666d6"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Breakthroughs in Band Topology" href="topology_breakthroughs.html" />
+    <link rel="prev" title="Breakthroughs in Building and Solving Models" href="models_breakthroughs.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.6" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/tbkit_logo.png" class="logo__image only-light" alt="tbkit logo"/>
+    <img src="../_static/tbkit_logo.png" class="logo__image only-dark pst-js-only" alt="tbkit logo"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models_breakthroughs.html">Breakthroughs in Building and Solving Models</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">Breakthroughs in Fields, Strain and Disorder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topology_breakthroughs.html">Breakthroughs in Band Topology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="response_breakthroughs.html">Breakthroughs in Response and Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interactions_breakthroughs.html">Breakthroughs in Flat Bands and Interactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="driven_breakthroughs.html">Breakthroughs in Driven and Open Systems</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">History</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Breakthroughs in Fields, Strain and Disorder</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="breakthroughs-in-fields-strain-and-disorder">
+<h1>Breakthroughs in Fields, Strain and Disorder<a class="headerlink" href="#breakthroughs-in-fields-strain-and-disorder" title="Link to this heading">#</a></h1>
+<p>What happens to a lattice under a magnetic field, under strain, and with
+disorder: the Peierls phase and the Aharonov-Bohm effect, Landau levels,
+Zak’s magnetic translations and Hofstadter’s butterfly, Rashba
+spin-orbit coupling, strain as a pseudo-magnetic field, and disorder
+from Anderson localization and its scaling theory to Lifshitz tails,
+multifractal wave functions, quasiperiodic localization and vacancy
+zero modes. It traces the ideas behind
+<a class="reference internal" href="../tbkit.html#tbkit.system.System" title="tbkit.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.system.System</span></code></a>’s field, strain and disorder modifiers and
+<a class="reference internal" href="../tbkit.html#module-tbkit.graphene" title="tbkit.graphene"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.graphene</span></code></a>.</p>
+<nav class="contents local" id="timeline">
+<p class="topic-title">Timeline</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#landau-levels-from-free-electrons-to-graphene-s-dirac-fermions" id="id1">1930/2005 – Landau Levels: From Free Electrons to Graphene’s Dirac Fermions</a></p></li>
+<li><p><a class="reference internal" href="#the-peierls-substitution" id="id2">1933 – The Peierls Substitution</a></p></li>
+<li><p><a class="reference internal" href="#anderson-localization" id="id3">1958 – Anderson Localization</a></p></li>
+<li><p><a class="reference internal" href="#the-aharonov-bohm-effect" id="id4">1959 – The Aharonov-Bohm Effect</a></p></li>
+<li><p><a class="reference internal" href="#rashba-spin-orbit-coupling" id="id5">1959/1984 – Rashba Spin-Orbit Coupling</a></p></li>
+<li><p><a class="reference internal" href="#zak-s-magnetic-translation-group" id="id6">1964 – Zak’s Magnetic Translation Group</a></p></li>
+<li><p><a class="reference internal" href="#lifshitz-tails" id="id7">1964 – Lifshitz Tails</a></p></li>
+<li><p><a class="reference internal" href="#the-inverse-participation-ratio-and-multifractality" id="id8">1970/1980 – The Inverse Participation Ratio and Multifractality</a></p></li>
+<li><p><a class="reference internal" href="#hofstadter-s-butterfly" id="id9">1976 – Hofstadter’s Butterfly</a></p></li>
+<li><p><a class="reference internal" href="#the-scaling-theory-of-localization" id="id10">1979 – The Scaling Theory of Localization</a></p></li>
+<li><p><a class="reference internal" href="#aubry-andre-quasiperiodic-localization" id="id11">1980 – Aubry-André Quasiperiodic Localization</a></p></li>
+<li><p><a class="reference internal" href="#vacancy-induced-zero-modes-in-graphene" id="id12">2006 – Vacancy-Induced Zero Modes in Graphene</a></p></li>
+<li><p><a class="reference internal" href="#strain-as-a-gauge-field-pseudo-magnetic-fields" id="id13">2010 – Strain as a Gauge Field: Pseudo-Magnetic Fields</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id14">See Also</a></p></li>
+</ul>
+</nav>
+<section id="landau-levels-from-free-electrons-to-graphene-s-dirac-fermions">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">1930/2005 – Landau Levels: From Free Electrons to Graphene’s Dirac Fermions</a><a class="headerlink" href="#landau-levels-from-free-electrons-to-graphene-s-dirac-fermions" title="Link to this heading">#</a></h2>
+<p>L. Landau showed in 1930 that a charged particle confined to a plane
+under a uniform perpendicular magnetic field has a spectrum that
+collapses from a continuum into a ladder of discrete, macroscopically
+degenerate levels – Landau levels – each level’s degeneracy set purely
+by the number of flux quanta threading the sample. Applied to a lattice
+via the Peierls substitution above, at <em>weak</em> field (magnetic length
+much larger than the lattice spacing) the same quantization survives
+near a band’s parabolic edge, evenly spaced by the cyclotron frequency
+<span class="math notranslate nohighlight">\(\omega_c = eB/m^*\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[E_n = E_0 + \hbar\omega_c\left(n+\tfrac12\right), \qquad n = 0, 1, 2, \dots\]</div>
+<p>Seventy-five years later, K. Novoselov, A. Geim, and
+coworkers, and independently Y. Zhang, Y.-W. Tan, H. Stormer,
+and P. Kim, measured graphene’s Landau levels directly and found
+something Landau’s original theory never anticipated: because
+graphene’s low-energy electrons obey Wallace’s linear (massless-Dirac)
+dispersion above rather than the usual parabolic one, the ladder is
+spaced by <span class="math notranslate nohighlight">\(\sqrt{n}\)</span> rather than <span class="math notranslate nohighlight">\(n\)</span>, and centered on an
+<em>exact</em> zero-energy level present at any field strength – a direct
+experimental fingerprint, via the resulting anomalous quantum Hall
+sequence, that graphene’s charge carriers behave as massless Dirac
+fermions rather than ordinary electrons.</p>
+<div class="math notranslate nohighlight">
+\[E_n = \mathrm{sign}(n)\, v_F\sqrt{2\hbar e B|n|}, \qquad n = 0, \pm1, \pm2, \dots\]</div>
+<p>The two ladders below are the same field applied to two different finite
+flakes – a square lattice (parabolic band edge) and a graphene flake
+(linear Dirac cone):</p>
+<figure class="align-default">
+<img alt="../_images/fields_breakthroughs-1.png" class="plot-directive" src="../_images/fields_breakthroughs-1.png" />
+</figure>
+<p><em>Implementation:</em> both ladders come from exactly the same
+<a class="reference internal" href="../tbkit.html#tbkit.system.System.set_magnetic_field" title="tbkit.system.System.set_magnetic_field"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.system.System.set_magnetic_field()</span></code></a> used throughout this
+chronology, applied to two different finite flakes: a square lattice
+(parabolic band edge) and a graphene flake built from
+<a class="reference internal" href="../tbkit.html#tbkit.graphene.GrapheneLattice" title="tbkit.graphene.GrapheneLattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.graphene.GrapheneLattice</span></code></a> (linear Dirac dispersion). No
+dedicated Landau-level function is needed – the quantization is an
+emergent, weak-field limit of the same Peierls-substituted Hamiltonian
+Hofstadter’s full flux sweep uses below.</p>
+<p><em>References:</em> L. Landau, “Diamagnetismus der Metalle,” Zeitschrift fur
+Physik 64, 629-637 (1930); K. S. Novoselov, A. K. Geim, S. V. Morozov,
+D. Jiang, M. I. Katsnelson, I. V. Grigorieva, S. V. Dubonos, and A. A.
+Firsov, “Two-Dimensional Gas of Massless Dirac Fermions in Graphene,”
+Nature 438, 197-200 (2005); Y. Zhang, Y.-W. Tan, H. L. Stormer, and P.
+Kim, “Experimental Observation of the Quantum Hall Effect and Berry’s
+Phase in Graphene,” Nature 438, 201-204 (2005).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/magnetic_field/plot_landau_levels.py</span></code> builds a 60x60 square-lattice
+flake and a 1936-site triangular graphene flake at the same weak flux,
+confirms exact particle-hole symmetry in both (the Peierls substitution
+preserves bipartite chiral symmetry), confirms the square lattice’s
+lowest 72 nearly-degenerate states average to within 15% of the
+predicted <span class="math notranslate nohighlight">\(E_0+\omega_c/2\)</span>, and confirms graphene’s clean n=1
+plateau (102 states) matches the predicted <span class="math notranslate nohighlight">\(v_F\sqrt{2eB}\)</span> to
+within 1%.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A weak, uniform magnetic field (~tbkit.system.System.set_magnetic_field, same Peierls substitution as the Aharonov-Bohm and Hofstadter-butterfly examples) quantizes a 2D band&#x27;s low-energy spectrum into discrete Landau levels. Two flakes, two very different ladders:"><img alt="" src="../_images/sphx_glr_plot_landau_levels_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/magnetic_field/plot_landau_levels.html"><span class="doc">Landau Levels: Square Lattice vs. Graphene</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Landau Levels: Square Lattice vs. Graphene</div>
+</div></div></section>
+<section id="the-peierls-substitution">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">1933 – The Peierls Substitution</a><a class="headerlink" href="#the-peierls-substitution" title="Link to this heading">#</a></h2>
+<p>R. Peierls showed how to add a magnetic field to a tight-binding
+model without abandoning the lattice: each hopping amplitude picks up a
+phase equal to the line integral of the vector potential along the bond,</p>
+<div class="math notranslate nohighlight">
+\[t_{ij} \to t_{ij}\, e^{i\phi_{ij}}\, ,\qquad
+\phi_{ij} = \frac{2\pi}{\Phi_0}\int_{\mathbf{r}_i}^{\mathbf{r}_j}
+\mathbf{A}\cdot d\mathbf{l}\, ,\]</div>
+<p>with <span class="math notranslate nohighlight">\(\Phi_0 = h/e\)</span> the flux quantum. Because the phase around any
+closed loop of bonds is gauge-invariant and equals <span class="math notranslate nohighlight">\(2\pi\)</span> times the
+flux threading it, this recipe reproduces the Aharonov-Bohm and quantum
+Hall physics below directly on a lattice, without ever solving the
+continuum Schrodinger equation in a field.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.system.System.set_peierls_phase" title="tbkit.system.System.set_peierls_phase"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.system.System.set_peierls_phase()</span></code></a> applies an
+arbitrary phase function (any gauge, any spatial field profile);
+<a class="reference internal" href="../tbkit.html#tbkit.system.System.set_magnetic_field" title="tbkit.system.System.set_magnetic_field"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_magnetic_field()</span></code></a> is a symmetric-gauge
+convenience wrapper for a uniform field, <span class="math notranslate nohighlight">\(\phi_{ij} =
+\pi\alpha(x_iy_j - x_jy_i)\)</span> with <span class="math notranslate nohighlight">\(\alpha = B/\Phi_0\)</span>.</p>
+<p><em>References:</em> R. Peierls, “Zur Theorie des Diamagnetismus von
+Leitungselektronen,” Z. Phys. 80, 763-791 (1933).</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="R. Peierls (1933) put a magnetic field on a lattice by attaching to each hopping the line integral of the vector potential along its bond,"><img alt="" src="../_images/sphx_glr_plot_peierls_substitution_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/magnetic_field/plot_peierls_substitution.html"><span class="doc">The Peierls Substitution: Flux Through the Plaquettes, in Any Gauge</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Peierls Substitution: Flux Through the Plaquettes, in Any Gauge</div>
+</div></div></section>
+<section id="anderson-localization">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">1958 – Anderson Localization</a><a class="headerlink" href="#anderson-localization" title="Link to this heading">#</a></h2>
+<p>P. Anderson showed that quenched, random disorder is not a small
+perturbative correction to a metal’s conductivity but can halt transport
+outright: interference between all the scattering paths off a random
+potential exponentially localizes the electronic eigenstates, turning a
+metal into an insulator with no gap and no broken symmetry. Anderson’s
+own argument established this for strong enough disorder; the scaling
+theory of Abrahams, Anderson, Licciardello, and Ramakrishnan sharpened
+it two decades later to the statement that in one and two dimensions
+<em>every</em> state localizes at <em>any</em> nonzero disorder strength, so that only
+in three dimensions is there a genuine metal-insulator transition at
+finite disorder. A localized state is told from an extended one by its
+inverse participation ratio (1970/1980, below).</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.system.System.set_onsite_dis" title="tbkit.system.System.set_onsite_dis"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.system.System.set_onsite_dis()</span></code></a> and
+<a class="reference internal" href="../tbkit.html#tbkit.system.System.set_hopping_dis" title="tbkit.system.System.set_hopping_dis"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_hopping_dis()</span></code></a> add uniform random disorder to
+the onsite energies/hoppings; <a class="reference internal" href="../tbkit.html#tbkit.system.System.get_ipr" title="tbkit.system.System.get_ipr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_ipr()</span></code></a> computes
+<span class="math notranslate nohighlight">\(\mathrm{IPR}_n\)</span> for every eigenstate.</p>
+<p><em>References:</em> P. W. Anderson, “Absence of Diffusion in Certain Random
+Lattices,” Phys. Rev. 109, 1492-1505 (1958); E. Abrahams, P. W. Anderson,
+D. C. Licciardello, and T. V. Ramakrishnan, “Scaling Theory of
+Localization,” Phys. Rev. Lett. 42, 673-676 (1979).</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="In a 1D (or 2D) tight-binding chain, any nonzero amount of uncorrelated onsite disorder exponentially localizes every eigenstate -- interference between all the scattering paths off the random potential, rather than merely reducing a mean free path. A state&#x27;s degree of localization is diagnosed by its Inverse Participation Ratio,"><img alt="" src="../_images/sphx_glr_plot_anderson_localization_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/disorder/plot_anderson_localization.html"><span class="doc">Anderson Localization</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Anderson Localization</div>
+</div></div></section>
+<section id="the-aharonov-bohm-effect">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">1959 – The Aharonov-Bohm Effect</a><a class="headerlink" href="#the-aharonov-bohm-effect" title="Link to this heading">#</a></h2>
+<p>Y. Aharonov and D. Bohm pointed out a startling consequence of
+quantum mechanics: a charged particle’s phase is affected by the vector
+potential <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> even in a region where the magnetic field
+<span class="math notranslate nohighlight">\(\mathbf{B}=\nabla\times\mathbf{A}\)</span> itself vanishes identically –
+only the <em>enclosed flux</em> <span class="math notranslate nohighlight">\(\Phi = \oint\mathbf{A}\cdot d\mathbf{l}\)</span>
+matters, and only modulo the flux quantum <span class="math notranslate nohighlight">\(\Phi_0\)</span>. On a ring
+threaded by flux <span class="math notranslate nohighlight">\(\Phi\)</span>, this makes the energy spectrum exactly
+periodic in <span class="math notranslate nohighlight">\(\Phi\)</span> with period <span class="math notranslate nohighlight">\(\Phi_0\)</span>.</p>
+<p>A ring is not a Bravais lattice, so its sites are placed by hand – the
+flux that matters is the one enclosed by the polygon they span:</p>
+<figure class="align-default">
+<img alt="../_images/fields_breakthroughs-2.png" class="plot-directive" src="../_images/fields_breakthroughs-2.png" />
+</figure>
+<p><em>Implementation:</em> directly reproduced by
+<a class="reference internal" href="../tbkit.html#tbkit.system.System.set_magnetic_field" title="tbkit.system.System.set_magnetic_field"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.system.System.set_magnetic_field()</span></code></a> (see 1933 above) applied to
+a ring-shaped <a class="reference internal" href="../tbkit.html#tbkit.lattice.Lattice" title="tbkit.lattice.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a>.</p>
+<p><em>References:</em> Y. Aharonov and D. Bohm, “Significance of Electromagnetic
+Potentials in the Quantum Theory,” Phys. Rev. 115, 485-491 (1959).</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="tbkit applies a magnetic field via the Peierls substitution (~tbkit.system.System.set_peierls_phase / set_magnetic_field): each hopping amplitude gets multiplied by a phase equal to the line integral of the vector potential along the bond. This script builds a simple N-site ring threaded by a perpendicular field and reproduces the textbook Aharonov-Bohm result: the energy spectrum is periodic in the flux threading the ring, with period exactly one flux quantum."><img alt="" src="../_images/sphx_glr_plot_magnetic_field_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/magnetic_field/plot_magnetic_field.html"><span class="doc">Aharonov-Bohm Ring: A Magnetic Field on a Lattice</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Aharonov-Bohm Ring: A Magnetic Field on a Lattice</div>
+</div></div></section>
+<section id="rashba-spin-orbit-coupling">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">1959/1984 – Rashba Spin-Orbit Coupling</a><a class="headerlink" href="#rashba-spin-orbit-coupling" title="Link to this heading">#</a></h2>
+<p>An electron moving at velocity <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> through an electric
+field <span class="math notranslate nohighlight">\(\mathbf{E}\)</span> sees, in its own frame, a magnetic field
+<span class="math notranslate nohighlight">\(\propto \mathbf{E}\times\mathbf{v}\)</span> that acts on its spin. In a
+crystal with inversion symmetry these fields cancel on average; without
+it they do not. E. Rashba worked out the spin splitting of bands in
+wurtzite crystals, which lack an inversion centre (with V. Sheka, 1959,
+and in 1960), and Yu. Bychkov and E. Rashba (1984) applied it to the 2D
+electron gas at a surface or an asymmetric quantum well, where the
+electric field points out of the plane:</p>
+<div class="math notranslate nohighlight">
+\[H_R = \lambda\,(\boldsymbol\sigma\times\mathbf{k})\cdot\hat{\mathbf{z}}\, .\]</div>
+<p>The coupling needs no magnet and keeps time-reversal symmetry, so the
+states at <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> and <span class="math notranslate nohighlight">\(-\mathbf{k}\)</span> stay degenerate in
+Kramers pairs, yet every band splits in two away from
+<span class="math notranslate nohighlight">\(\mathbf{k} = 0\)</span>, with its spin locked perpendicular to the
+momentum. Because the electric field can be set by a gate (Nitta et al.,
+1997), Rashba coupling became the knob of spintronics proposals such as
+the Datta-Das transistor, and one of the three ingredients, with a
+Zeeman field and superconductivity, of Majorana nanowires.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.orbital.OrbitalSystem.set_rashba" title="tbkit.orbital.OrbitalSystem.set_rashba"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.orbital.OrbitalSystem.set_rashba()</span></code></a> adds
+<span class="math notranslate nohighlight">\(i\lambda(\boldsymbol\sigma\times\hat{\mathbf{d}}_{ij})_z\)</span> to the
+bonds of a spinful (<code class="docutils literal notranslate"><span class="pre">spin=True</span></code>) model, and
+<a class="reference internal" href="../tbkit.html#tbkit.orbital.OrbitalSystem.set_zeeman" title="tbkit.orbital.OrbitalSystem.set_zeeman"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_zeeman()</span></code></a> a field
+<span class="math notranslate nohighlight">\(\mathbf{b}\cdot\boldsymbol\sigma\)</span> that breaks time reversal. In
+reciprocal space, the same term is a <a class="reference internal" href="../tbkit.html#tbkit.kspace.PAULI" title="tbkit.kspace.PAULI"><code class="xref py py-data docutils literal notranslate"><span class="pre">tbkit.kspace.PAULI</span></code></a> matrix
+hopping of a <code class="docutils literal notranslate"><span class="pre">spin=True</span></code> <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">KSpace</span></code></a>.</p>
+<p><em>References:</em> E. I. Rashba and V. I. Sheka, “Symmetry of energy bands in
+crystals of wurtzite type. II. Symmetry of bands with spin-orbit
+interaction included,” Fiz. Tverd. Tela: Collected Papers 2, 162-176
+(1959); E. I. Rashba, “Properties of semiconductors with an extremum
+loop. I. Cyclotron and combinational resonance in a magnetic field
+perpendicular to the plane of the loop,” Sov. Phys. Solid State 2, 1109
+(1960); Yu. A. Bychkov and
+E. I. Rashba, “Properties of a 2D electron gas with lifted spectral
+degeneracy,” JETP Lett. 39, 78-81 (1984); J. Nitta, T. Akazaki, H.
+Takayanagi, and T. Enoki, “Gate Control of Spin-Orbit Interaction in an
+Inverted In0.53Ga0.47As/In0.52Al0.48As Heterostructure,” Phys. Rev.
+Lett. 78, 1335-1338 (1997).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/orbitals/plot_rashba_spin_orbit_coupling.py</span></code>
+confirms that the spectrum of a <span class="math notranslate nohighlight">\(12\times12\)</span> spinful square-lattice
+torus is exactly the Rashba dispersion
+<span class="math notranslate nohighlight">\(E_\pm = 2t(\cos k_x + \cos k_y) \pm \sqrt{b_z^2 +
+4\lambda^2(\sin^2k_x + \sin^2k_y)}\)</span>, with and without a Zeeman field;
+that every level is a Kramers pair until <span class="math notranslate nohighlight">\(b_z\)</span> splits it (a gap
+<span class="math notranslate nohighlight">\(2b_z\)</span> at <span class="math notranslate nohighlight">\(\mathbf{k} = 0\)</span>); and that the spin of both bands
+lies in the plane, perpendicular to <span class="math notranslate nohighlight">\((\sin k_x, \sin k_y)\)</span>, and
+opposite for the two.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="An electron moving through an electric field sees, in its rest frame, a magnetic field \propto \mathbf{E}\times\mathbf{v}. At a surface or an asymmetric quantum well the field points out of the plane, and Bychkov and Rashba (1984) wrote the coupling it produces for a 2D electron gas as"><img alt="" src="../_images/sphx_glr_plot_rashba_spin_orbit_coupling_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/orbitals/plot_rashba_spin_orbit_coupling.html"><span class="doc">Rashba Spin-Orbit Coupling: Spin-Split Bands from Broken Inversion Symmetry</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Rashba Spin-Orbit Coupling: Spin-Split Bands from Broken Inversion Symmetry</div>
+</div></div></section>
+<section id="zak-s-magnetic-translation-group">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">1964 – Zak’s Magnetic Translation Group</a><a class="headerlink" href="#zak-s-magnetic-translation-group" title="Link to this heading">#</a></h2>
+<p>A uniform magnetic field leaves a crystal physically homogeneous, but
+its vector potential is not: it grows across the sample, so the Peierls
+phases of a bond and of its translate differ and Bloch’s theorem seems
+lost. J. Zak (and, independently, E. Brown) restored it in 1964. A
+lattice translation followed by a gauge transformation – a <em>magnetic
+translation</em> – commutes with the Hamiltonian, but two of them commute
+with each other only up to the flux they enclose,</p>
+<div class="math notranslate nohighlight">
+\[T_{\mathbf{a}_1} T_{\mathbf{a}_2} = e^{2\pi i\alpha}\,
+T_{\mathbf{a}_2} T_{\mathbf{a}_1}\, ,\]</div>
+<p>with <span class="math notranslate nohighlight">\(\alpha\)</span> the flux per unit cell in flux quanta. For a rational
+flux <span class="math notranslate nohighlight">\(\alpha = p/q\)</span>, <span class="math notranslate nohighlight">\(T_{\mathbf{a}_1}^q\)</span> and
+<span class="math notranslate nohighlight">\(T_{\mathbf{a}_2}\)</span> commute: a <em>magnetic unit cell</em> of <span class="math notranslate nohighlight">\(q\)</span>
+cells carries Bloch states, the band splits into <span class="math notranslate nohighlight">\(q\)</span> subbands
+(Harper’s equation of 1955, for the square lattice), and since
+<span class="math notranslate nohighlight">\(T_{\mathbf{a}_1}\)</span> moves a Bloch state across the magnetic
+Brillouin zone, every level is <span class="math notranslate nohighlight">\(q\)</span>-fold degenerate there. This is
+the band theory on which Hofstadter’s butterfly (1976) and the TKNN
+integers of the quantum Hall effect are built.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.kspace.magnetic_supercell" title="tbkit.kspace.magnetic_supercell"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.kspace.magnetic_supercell()</span></code></a> turns any 2D
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">KSpace</span></code></a> model into the Bloch Hamiltonian of its
+magnetic unit cell at flux <span class="math notranslate nohighlight">\(p/q\)</span>, a <a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">KSpace</span></code></a>
+like any other, with the Peierls phases of a Landau gauge periodic along
+<span class="math notranslate nohighlight">\(\mathbf{a}_2\)</span>.</p>
+<p><em>References:</em> J. Zak, “Magnetic Translation Group,” Phys. Rev. 134,
+A1602-A1606 (1964); J. Zak, “Magnetic Translation Group. II. Irreducible
+Representations,” Phys. Rev. 134, A1607-A1611 (1964); E. Brown, “Bloch
+Electrons in a Uniform Magnetic Field,” Phys. Rev. 133, A1038-A1044
+(1964); P. G. Harper, “Single Band Motion of Conduction Electrons in a
+Uniform Magnetic Field,” Proc. Phys. Soc. A 68, 874-878 (1955).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/magnetic_field/plot_magnetic_translation_group.py</span></code>
+confirms that the magnetic supercell of the square lattice is Harper’s
+<span class="math notranslate nohighlight">\(q\times q\)</span> matrix at <span class="math notranslate nohighlight">\(\alpha = 1/3, 2/5, 3/7\)</span>; that at
+<span class="math notranslate nohighlight">\(\alpha = 1/3\)</span> its spectrum repeats under
+<span class="math notranslate nohighlight">\(k_2 \to k_2 + 2\pi/3\)</span>, a symmetry the same 3-cell supercell
+lacks without the field; and that every flux <span class="math notranslate nohighlight">\(p/q\)</span> with
+<span class="math notranslate nohighlight">\(q \le 13\)</span> gives exactly <span class="math notranslate nohighlight">\(q\)</span> subbands, separated by gaps for
+odd <span class="math notranslate nohighlight">\(q\)</span>, which together draw Hofstadter’s butterfly from bulk bands
+alone.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A uniform magnetic field breaks the translation symmetry of a lattice&#x27;s Hamiltonian: the vector potential grows across the sample, so the Peierls phases of a bond and of its translate differ. Zak (1964) showed that a translation followed by a gauge transformation is still a symmetry -- a magnetic translation -- but two of them commute only up to the flux they enclose,"><img alt="" src="../_images/sphx_glr_plot_magnetic_translation_group_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/magnetic_field/plot_magnetic_translation_group.html"><span class="doc">Zak’s Magnetic Translation Group: the Magnetic Supercell at Rational Flux</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Zak's Magnetic Translation Group: the Magnetic Supercell at Rational Flux</div>
+</div></div></section>
+<section id="lifshitz-tails">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">1964 – Lifshitz Tails</a><a class="headerlink" href="#lifshitz-tails" title="Link to this heading">#</a></h2>
+<p>Disorder pushes states beyond the band edge of the clean crystal, but
+I. Lifshitz showed in 1964 that it pushes remarkably few. A state deep
+in the tail needs a large region, of size <span class="math notranslate nohighlight">\(\ell\)</span>, where the
+disorder happens to conspire – every onsite energy low, or every site
+present in a diluted lattice. The probability of such a region is
+exponentially small in its volume <span class="math notranslate nohighlight">\(\ell^d\)</span>, while the kinetic
+energy of a state confined in it only falls as <span class="math notranslate nohighlight">\(1/\ell^2\)</span>.
+Balancing the two gives an integrated density of states near the lowest
+possible energy <span class="math notranslate nohighlight">\(E_0\)</span></p>
+<div class="math notranslate nohighlight">
+\[N(E) \sim \exp\!\left[-c\,(E - E_0)^{-d/2}\right]\, ,\]</div>
+<p>an essential singularity, smaller than any power of <span class="math notranslate nohighlight">\(E - E_0\)</span>, and
+the states of the tail are localized in the rare regions that make them.
+Lifshitz tails are why band edges of alloys and amorphous semiconductors
+are soft but still sharp, and they bound the density of states that
+every localization argument at the band edge starts from.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.lattice.Lattice.remove_sites" title="tbkit.lattice.Lattice.remove_sites"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.lattice.Lattice.remove_sites()</span></code></a> dilutes a
+lattice and <a class="reference internal" href="../tbkit.html#tbkit.system.System.set_onsite_dis" title="tbkit.system.System.set_onsite_dis"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.system.System.set_onsite_dis()</span></code></a> adds uniform
+onsite disorder; <a class="reference internal" href="../tbkit.html#tbkit.kpm.dos" title="tbkit.kpm.dos"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.kpm.dos()</span></code></a> gives the density of states of
+lattices too large to diagonalize.</p>
+<p><em>References:</em> I. M. Lifshitz, “The energy spectrum of disordered
+systems,” Adv. Phys. 13, 483-536 (1964); I. M. Lifshitz, S. A.
+Gredeskul, and L. A. Pastur, <em>Introduction to the Theory of Disordered
+Systems</em> (Wiley, 1988).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/disorder/plot_lifshitz_tails.py</span></code> removes 40% of
+the sites of a 200 000-site chain at random and confirms that no state
+falls below the clean band edge, while the integrated density of states
+just above the lowest level <span class="math notranslate nohighlight">\(E_\ell\)</span> of an <span class="math notranslate nohighlight">\(\ell\)</span>-site
+segment falls as <span class="math notranslate nohighlight">\(p^\ell\)</span> (fitted slope within 5% of
+<span class="math notranslate nohighlight">\(\ln p\)</span>), the exact 1D Lifshitz law
+<span class="math notranslate nohighlight">\(\ln N \propto -(E + 2t)^{-1/2}\)</span>. In 2D the asymptotic law sets
+in only where <span class="math notranslate nohighlight">\(N\)</span> is far below one state per sample, so the example
+checks its hallmark instead. With the kernel polynomial method on a
+<span class="math notranslate nohighlight">\(400\times400\)</span> square lattice missing 5% of its sites, the local
+exponent <span class="math notranslate nohighlight">\(d\ln N/d\ln(E - E_0)\)</span> rises from 1.3 to above 5 between
+<span class="math notranslate nohighlight">\(E - E_0 = 0.8t\)</span> and <span class="math notranslate nohighlight">\(0.05t\)</span>, against 1 (within 0.1) at the
+clean band edge: faster than any power. With uniform disorder
+<span class="math notranslate nohighlight">\(W = 2t\)</span>, the density of states spills past the clean edge
+<span class="math notranslate nohighlight">\(-4t\)</span> but stops at the sample’s lowest eigenvalue, more than
+<span class="math notranslate nohighlight">\(t\)</span> above <span class="math notranslate nohighlight">\(E_0 = -4t - W\)</span>, with no state below it: the
+cutoff is set by the sample, not by the method.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Disorder moves states beyond the band edge of the clean crystal, but very few. Lifshitz (1964) explained why: a state deep in the tail needs a large region of size \ell where the disorder happens to conspire (every site low, or every site present), which costs a probability exponentially small in the volume \ell^d, while the kinetic energy of a state confined to that region only falls as 1/\ell^2. Balancing the two gives the integrated density of states near the lowest possible energy E_0,"><img alt="" src="../_images/sphx_glr_plot_lifshitz_tails_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/disorder/plot_lifshitz_tails.html"><span class="doc">Lifshitz Tails in the Density of States of a Disordered Lattice</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Lifshitz Tails in the Density of States of a Disordered Lattice</div>
+</div></div></section>
+<section id="the-inverse-participation-ratio-and-multifractality">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">1970/1980 – The Inverse Participation Ratio and Multifractality</a><a class="headerlink" href="#the-inverse-participation-ratio-and-multifractality" title="Link to this heading">#</a></h2>
+<p>R. Bell and P. Dean (1970), studying the vibrations of vitreous silica,
+asked how many atoms take part in a normal mode, and measured it with
+the participation ratio. Its inverse,</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{IPR}_n = \frac{\sum_i|\psi_i^{(n)}|^4}{\left(\sum_i|\psi_i^{(n)}|^2\right)^2}\, ,\]</div>
+<p>became the standard probe of localization: <span class="math notranslate nohighlight">\(O(1/N)\)</span> for a state
+spread over all <span class="math notranslate nohighlight">\(N\)</span> sites (extended), <span class="math notranslate nohighlight">\(O(1)\)</span> for a state
+pinned to a handful of them (localized). F. Wegner (1980) showed that its
+scaling with size carries more: generalizing it to every moment,</p>
+<div class="math notranslate nohighlight">
+\[P_q = \sum_i|\psi_i|^{2q} \sim N^{-D_q(q-1)}\, ,\]</div>
+<p>the exponents are <span class="math notranslate nohighlight">\(D_q = 1\)</span> for extended states and <span class="math notranslate nohighlight">\(0\)</span> for
+localized ones, but at a localization transition they are fractal
+dimensions that change with <span class="math notranslate nohighlight">\(q\)</span>. The critical wave function is
+<em>multifractal</em>: its strong and weak peaks fill the lattice with
+different dimensions. The spectrum of <span class="math notranslate nohighlight">\(D_q\)</span> has since become a
+fingerprint of each class of Anderson transition.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.system.System.get_ipr" title="tbkit.system.System.get_ipr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.system.System.get_ipr()</span></code></a> computes
+<span class="math notranslate nohighlight">\(\mathrm{IPR}_n\)</span> for every eigenstate from
+<a class="reference internal" href="../tbkit.html#tbkit.system.System.get_eig" title="tbkit.system.System.get_eig"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_eig()</span></code></a> (<code class="docutils literal notranslate"><span class="pre">eigenvec=True</span></code>); the other
+moments <span class="math notranslate nohighlight">\(P_q\)</span> follow from the same normalized weights,
+<code class="docutils literal notranslate"><span class="pre">sys.intensity</span></code>.</p>
+<p><em>References:</em> R. J. Bell and P. Dean, “Atomic vibrations in vitreous
+silica,” Discuss. Faraday Soc. 50, 55-61 (1970); F. Wegner, “Inverse
+participation ratio in 2+ε dimensions,” Z. Phys. B 36, 209-214 (1980);
+F. Evers and A. D. Mirlin, “Anderson transitions,” Rev. Mod. Phys. 80,
+1355-1417 (2008).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/disorder/plot_inverse_participation_ratio.py</span></code>
+confirms that <em>get_ipr</em> is the definition above, then fits <span class="math notranslate nohighlight">\(D_2\)</span>,
+<span class="math notranslate nohighlight">\(D_3\)</span> and <span class="math notranslate nohighlight">\(D_4\)</span> over chains of 89 to 1597 sites: within 0.05
+of 1 for a clean chain, within 0.05 of 0 for an Anderson chain, and
+between 0.3 and 0.7, falling with <span class="math notranslate nohighlight">\(q\)</span>, for the Harper chain at its
+critical point.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Bell and Dean (1970) measured how many atoms of a glass take part in a vibration with the participation ratio; its inverse,"><img alt="" src="../_images/sphx_glr_plot_inverse_participation_ratio_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/disorder/plot_inverse_participation_ratio.html"><span class="doc">The Inverse Participation Ratio and Multifractal Wave Functions</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Inverse Participation Ratio and Multifractal Wave Functions</div>
+</div></div></section>
+<section id="hofstadter-s-butterfly">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">1976 – Hofstadter’s Butterfly</a><a class="headerlink" href="#hofstadter-s-butterfly" title="Link to this heading">#</a></h2>
+<p>D. Hofstadter solved the tight-binding square lattice threaded by a
+<em>continuously varying</em> flux per plaquette <span class="math notranslate nohighlight">\(\alpha = p/q\)</span> (in units
+of <span class="math notranslate nohighlight">\(\Phi_0\)</span>) and found a spectrum of startling, self-similar
+complexity: at each rational flux <span class="math notranslate nohighlight">\(p/q\)</span>, the band splits into
+<span class="math notranslate nohighlight">\(q\)</span> sub-bands, and plotting energy against <span class="math notranslate nohighlight">\(\alpha\)</span> traces
+out a fractal, recursively structured pattern now known as Hofstadter’s
+butterfly – one of the earliest and most famous numerically-discovered
+fractals in physics, and a direct illustration of how sensitively a
+Bloch spectrum can depend on a magnetic field via the Peierls
+substitution above.</p>
+<p><em>Implementation:</em> the same <a class="reference internal" href="../tbkit.html#tbkit.system.System.set_magnetic_field" title="tbkit.system.System.set_magnetic_field"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.system.System.set_magnetic_field()</span></code></a>
+used for the Aharonov-Bohm ring, swept continuously over a finite 2D
+flake.</p>
+<p><em>References:</em> D. R. Hofstadter, “Energy levels and wave functions of
+Bloch electrons in rational and irrational magnetic fields,” Phys. Rev.
+B 14, 2239-2249 (1976).</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Sweeping the flux per plaquette continuously (rather than fixing it, as the Aharonov-Bohm ring example does) reveals a self-similar, fractal spectrum: at rational flux p/q, each Landau-level-like band splits into q sub-bands, and the whole pattern is periodic in the flux with period one flux quantum. This script sweeps set_magnetic_field over a finite square-lattice flake and plots the resulting &quot;butterfly&quot;."><img alt="" src="../_images/sphx_glr_plot_hofstadter_butterfly_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/magnetic_field/plot_hofstadter_butterfly.html"><span class="doc">Hofstadter’s Butterfly</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Hofstadter's Butterfly</div>
+</div></div></section>
+<section id="the-scaling-theory-of-localization">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">1979 – The Scaling Theory of Localization</a><a class="headerlink" href="#the-scaling-theory-of-localization" title="Link to this heading">#</a></h2>
+<p>Abrahams, Anderson, Licciardello and Ramakrishnan – the “gang of four”
+– argued that the conductance <span class="math notranslate nohighlight">\(g\)</span> of a disordered sample flows,
+as its size <span class="math notranslate nohighlight">\(L\)</span> grows, by a single scaling function
+<span class="math notranslate nohighlight">\(\beta(g) = d\ln g/d\ln L\)</span>. It is negative for every <span class="math notranslate nohighlight">\(g\)</span> in
+one and two dimensions – every state localizes, at any disorder – but
+changes sign in three: a genuine metal-insulator transition, at a
+critical disorder <span class="math notranslate nohighlight">\(W_c \approx 16.5\,t\)</span> for the Anderson model of
+the cubic lattice (onsite energies uniform in <span class="math notranslate nohighlight">\([-W/2, W/2]\)</span>). The
+transition is visible in the level statistics: extended states repel
+(random-matrix statistics), localized ones do not (Poisson statistics),
+and the mean ratio of consecutive level spacings flows towards the first
+in the metal and the second in the insulator.</p>
+<p><em>Implementation:</em> 3D lattices (<em>unit_cell</em> and <em>prim_vec</em> as 3-tuples:
+<a class="reference internal" href="../tbkit.html#tbkit.lattice.Lattice" title="tbkit.lattice.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.lattice.Lattice</span></code></a>, <a class="reference internal" href="../tbkit.html#tbkit.system.System" title="tbkit.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.system.System</span></code></a>,
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace</span></code></a>); beyond <em>System.dense_max</em> sites, the
+neighbours come from a k-d tree, and
+<a class="reference internal" href="../tbkit.html#tbkit.system.System.get_eig_sparse" title="tbkit.system.System.get_eig_sparse"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_eig_sparse()</span></code></a> targets the states near an
+energy.</p>
+<p><em>References:</em> E. Abrahams, P. W. Anderson, D. C. Licciardello, and T. V.
+Ramakrishnan, “Scaling Theory of Localization: Absence of Quantum
+Diffusion in Two Dimensions,” Phys. Rev. Lett. 42, 673-676 (1979); B. I.
+Shklovskii et al., Phys. Rev. B 47, 11487 (1993); V. Oganesyan and D.
+Huse, Phys. Rev. B 75, 155111 (2007).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/three_dimensions/plot_anderson_transition.py</span></code>
+confirms random-matrix statistics at weak disorder and near-Poisson
+statistics at strong disorder, and that the curves of two sizes cross
+between <span class="math notranslate nohighlight">\(W = 12t\)</span> and <span class="math notranslate nohighlight">\(20t\)</span>, around <span class="math notranslate nohighlight">\(W_c\)</span>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Abrahams, Anderson, Licciardello and Ramakrishnan (1979) argued that the conductance of a disordered sample flows, as its size L grows, according to a single scaling function of the conductance itself. The consequence: in one and two dimensions every state is localized by any disorder, but in three dimensions a genuine metal-insulator transition survives, at a critical disorder -- W_c \approx 16.5\,t for the Anderson model on the cubic lattice, with onsite energies uniform in [-W/2, W/2]."><img alt="" src="../_images/sphx_glr_plot_anderson_transition_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/three_dimensions/plot_anderson_transition.html"><span class="doc">The Scaling Theory of Localization: the 3D Anderson Transition</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The Scaling Theory of Localization: the 3D Anderson Transition</div>
+</div></div></section>
+<section id="aubry-andre-quasiperiodic-localization">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">1980 – Aubry-André Quasiperiodic Localization</a><a class="headerlink" href="#aubry-andre-quasiperiodic-localization" title="Link to this heading">#</a></h2>
+<p>In one dimension, any random disorder localizes every state. S. Aubry
+and G. André (1980) replaced the random potential by a <em>quasiperiodic</em>
+one, a cosine incommensurate with the lattice,</p>
+<div class="math notranslate nohighlight">
+\[H = t\sum_n \left(c_n^\dagger c_{n+1} + \mathrm{h.c.}\right)
+  + \lambda\sum_n \cos(2\pi\beta n + \phi)\, c_n^\dagger c_n\, ,
+\qquad \beta \notin \mathbb{Q}\, ,\]</div>
+<p>and found what random disorder forbids in 1D: a sharp metal-insulator
+transition. Every state is extended for <span class="math notranslate nohighlight">\(\lambda &lt; 2t\)</span> and every
+state is localized for <span class="math notranslate nohighlight">\(\lambda &gt; 2t\)</span>, with the same localization
+length <span class="math notranslate nohighlight">\(1/\ln(\lambda/2t)\)</span> at all energies. The critical point
+follows from a self-duality: a Fourier transform maps the model with
+<span class="math notranslate nohighlight">\((t, \lambda)\)</span> onto itself with <span class="math notranslate nohighlight">\((\lambda/2, 2t)\)</span>, exchanging
+extended and localized states, so the two phases meet where the model is
+its own dual. At <span class="math notranslate nohighlight">\(\lambda = 2t\)</span> it is Harper’s equation for the
+square lattice in a field (1955), whose critical states are
+multifractal. The transition was observed with ultracold atoms in a
+bichromatic optical lattice (Roati et al., 2008) and in photonic
+waveguide lattices (Lahini et al., 2009).</p>
+<p><em>Implementation:</em> the quasiperiodic potential is a value function of the
+site index passed to <a class="reference internal" href="../tbkit.html#tbkit.system.System.set_onsite" title="tbkit.system.System.set_onsite"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.system.System.set_onsite()</span></code></a> (<em>site</em> has
+an <code class="docutils literal notranslate"><span class="pre">'index'</span></code> field), with <span class="math notranslate nohighlight">\(\lambda\)</span> and <span class="math notranslate nohighlight">\(\phi\)</span> set by
+<a class="reference internal" href="../tbkit.html#tbkit.system.System.get_ham" title="tbkit.system.System.get_ham"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_ham()</span></code></a>; <a class="reference internal" href="../tbkit.html#tbkit.system.System.get_ipr" title="tbkit.system.System.get_ipr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_ipr()</span></code></a>
+tells the phases apart.</p>
+<p><em>References:</em> S. Aubry and G. André, “Analyticity breaking and Anderson
+localization in incommensurate lattices,” Ann. Israel Phys. Soc. 3,
+133-164 (1980); G. Roati, C. D’Errico, L. Fallani, M. Fattori, C. Fort,
+M. Zaccanti, G. Modugno, M. Modugno, and M. Inguscio, “Anderson
+localization of a non-interacting Bose-Einstein condensate,” Nature 453,
+895-898 (2008); Y. Lahini, R. Pugatch, F. Pozzi, M. Sorel, R. Morandotti,
+N. Davidson, and Y. Silberberg, “Observation of a Localization
+Transition in Quasiperiodic Photonic Lattices,” Phys. Rev. Lett. 103,
+013901 (2009).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/disorder/plot_aubry_andre_localization.py</span></code>
+confirms on a 377-site chain that the mean IPR stays below <span class="math notranslate nohighlight">\(5/N\)</span>
+up to <span class="math notranslate nohighlight">\(\lambda = 1.5t\)</span> and exceeds 0.25 from <span class="math notranslate nohighlight">\(\lambda =
+2.2t\)</span>; that at <span class="math notranslate nohighlight">\(\lambda = W = t\)</span> its IPR falls as <span class="math notranslate nohighlight">\(1/N\)</span>
+while that of an Anderson chain saturates; and that on a 233-site ring
+with <span class="math notranslate nohighlight">\(\beta = 144/233\)</span> the spectrum at <span class="math notranslate nohighlight">\(\lambda\)</span> is exactly
+<span class="math notranslate nohighlight">\(\lambda/2t\)</span> times the spectrum at <span class="math notranslate nohighlight">\(4t^2/\lambda\)</span>.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="In one dimension, any random disorder localizes every state (Anderson). Aubry and André (1980) replaced the random potential by a quasiperiodic one, incommensurate with the lattice,"><img alt="" src="../_images/sphx_glr_plot_aubry_andre_localization_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/disorder/plot_aubry_andre_localization.html"><span class="doc">Aubry-André Localization: a Self-Dual Metal-Insulator Transition in 1D</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Aubry-André Localization: a Self-Dual Metal-Insulator Transition in 1D</div>
+</div></div></section>
+<section id="vacancy-induced-zero-modes-in-graphene">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">2006 – Vacancy-Induced Zero Modes in Graphene</a><a class="headerlink" href="#vacancy-induced-zero-modes-in-graphene" title="Link to this heading">#</a></h2>
+<p>V. Pereira, F. Guinea, J. Lopes dos Santos, N. Peres and A. Castro Neto
+showed in 2006 that removing a single carbon atom from graphene binds a
+state at exactly the Dirac energy <span class="math notranslate nohighlight">\(E = 0\)</span>. It lives only on the
+sublattice opposite to the vacancy and is quasi-localized: its amplitude
+falls as <span class="math notranslate nohighlight">\(1/r\)</span>, so slowly that it cannot be normalized in an
+infinite sheet. The count is set by the bipartite structure, the same
+sublattice imbalance behind Lieb’s theorem (see
+<a class="reference internal" href="interactions_breakthroughs.html"><span class="doc">Breakthroughs in Flat Bands and Interactions</span></a>): a nearest-neighbour Hamiltonian on
+sublattices A and B has at least <span class="math notranslate nohighlight">\(\bigl||A| - |B|\bigr|\)</span> states at
+<span class="math notranslate nohighlight">\(E = 0\)</span>, all on the majority sublattice. Vacancies on one
+sublattice add zero modes; vacancies on both pair up and push them away
+from zero. The same physics makes any strong enough impurity a
+resonance near the Dirac point, and the vacancy is its limit. With
+interactions, the zero mode carries a local magnetic moment, seen by
+scanning tunnelling microscopy at single vacancies (Ugeda et al., 2010).</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.lattice.Lattice.remove_sites" title="tbkit.lattice.Lattice.remove_sites"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.lattice.Lattice.remove_sites()</span></code></a> removes
+sites before the <a class="reference internal" href="../tbkit.html#tbkit.system.System" title="tbkit.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">System</span></code></a> is built, and
+<a class="reference internal" href="../tbkit.html#tbkit.system.System.set_onsite_def" title="tbkit.system.System.set_onsite_def"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_onsite_def()</span></code></a> sets the onsite energy of
+single sites; <a class="reference internal" href="../tbkit.html#tbkit.system.System.get_eig_sparse" title="tbkit.system.System.get_eig_sparse"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_eig_sparse()</span></code></a> finds the
+states nearest <span class="math notranslate nohighlight">\(E = 0\)</span> by shift-invert.</p>
+<p><em>References:</em> V. M. Pereira, F. Guinea, J. M. B. Lopes dos Santos, N. M.
+R. Peres, and A. H. Castro Neto, “Disorder Induced Localized States in
+Graphene,” Phys. Rev. Lett. 96, 036801 (2006); M. M. Ugeda, I.
+Brihuega, F. Guinea, and J. M. Gómez-Rodríguez, “Missing Atom as a
+Source of Carbon Magnetism,” Phys. Rev. Lett. 104, 096804 (2010).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/disorder/plot_vacancy_zero_modes.py</span></code> removes one
+site from a <span class="math notranslate nohighlight">\(32\times32\)</span> graphene torus (no state within <span class="math notranslate nohighlight">\(0.1t\)</span>
+of <span class="math notranslate nohighlight">\(E = 0\)</span> before) and confirms one zero mode, entirely on the other
+sublattice, with a ring-averaged weight falling as <span class="math notranslate nohighlight">\(r^{-2}\)</span>
+(fitted exponent within 0.15). It confirms that an onsite energy
+<span class="math notranslate nohighlight">\(U\)</span> on the same site brings a state monotonically to <span class="math notranslate nohighlight">\(E = 0\)</span>
+and onto the other sublattice as <span class="math notranslate nohighlight">\(U\)</span> grows to <span class="math notranslate nohighlight">\(1000t\)</span>, and
+that a second vacancy leaves two zero modes on the same sublattice and
+none on the opposite one.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Pereira, Guinea, Lopes dos Santos, Peres and Castro Neto (2006) showed that removing a single carbon atom from graphene binds a state at exactly the Dirac energy E = 0. It lives only on the sublattice opposite to the vacancy and is quasi-localized: its amplitude falls as 1/r, so slowly that it is not normalizable in an infinite sheet."><img alt="" src="../_images/sphx_glr_plot_vacancy_zero_modes_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/disorder/plot_vacancy_zero_modes.html"><span class="doc">Vacancy-Induced Zero Modes in Graphene</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Vacancy-Induced Zero Modes in Graphene</div>
+</div></div></section>
+<section id="strain-as-a-gauge-field-pseudo-magnetic-fields">
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">2010 – Strain as a Gauge Field: Pseudo-Magnetic Fields</a><a class="headerlink" href="#strain-as-a-gauge-field-pseudo-magnetic-fields" title="Link to this heading">#</a></h2>
+<p>F. Guinea, M. Katsnelson, and A. Geim pointed out that
+graphene offers a way to build a magnetic field out of nothing but
+mechanical deformation. Straining the sheet changes its bond lengths and
+therefore its hopping amplitudes, and near the Dirac point a <em>smooth</em>
+modulation of the three nearest-neighbor hoppings enters the Dirac
+equation in precisely the slot a vector potential occupies: it displaces
+the Dirac cone in momentum space rather than shifting its energy. A
+<em>triaxial</em> strain whose modulation grows linearly with distance from the
+center therefore acts on the electrons as a uniform <strong>pseudo-magnetic
+field</strong>,</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{A} = \tfrac{1}{2}B_s(-y,\, x)\, ,\qquad B_s = |\beta|/2\, ,\]</div>
+<p>(<span class="math notranslate nohighlight">\(\beta\)</span> the strain strength in the convention below,
+<span class="math notranslate nohighlight">\(\hbar=e=a=1\)</span>), quantizing the spectrum into exactly the
+relativistic ladder <span class="math notranslate nohighlight">\(E_n = \mathrm{sign}(n)v_F\sqrt{2B_s|n|}\)</span> that
+a real field produces.</p>
+<p>What makes this more than an analogy is what is <em>missing</em>. Every hopping
+stays real, so the Hamiltonian is real, time-reversal symmetry is never
+broken – and a time-reversal-symmetric Hamiltonian cannot host a genuine
+magnetic field. The resolution is that the pseudo-field must point the
+<em>opposite</em> way at the second valley <span class="math notranslate nohighlight">\(\mathbf{K}'\)</span>: carriers in the
+two valleys bend in opposite directions, so the sample carries no net
+Hall current even while each valley is fully Landau-quantized. Nor is
+the effect bounded by what a laboratory magnet can deliver, since
+nothing is being magnetized: Levy and coworkers measured pseudo-Landau
+levels in strained graphene nanobubbles corresponding to fields above
+300 T, an order of magnitude beyond the strongest static fields
+available anywhere.</p>
+<p><em>Implementation:</em>
+<a class="reference internal" href="../tbkit.html#tbkit.graphene.GrapheneSystem.set_hop_linear_strain" title="tbkit.graphene.GrapheneSystem.set_hop_linear_strain"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tbkit.graphene.GrapheneSystem.set_hop_linear_strain()</span></code></a> sets every
+nearest-neighbor bond to <span class="math notranslate nohighlight">\(t_{ij} = t(1 + \tfrac14\beta\,
+\hat{\boldsymbol\delta}_{ij}\cdot\mathbf{r}_{ij})\)</span>, with
+<span class="math notranslate nohighlight">\(\hat{\boldsymbol\delta}_{ij}\)</span> the bond direction and
+<span class="math notranslate nohighlight">\(\mathbf{r}_{ij}\)</span> its midpoint – linear triaxial strain, measured
+from the coordinate origin, so the flake must be centered on it.
+<a class="reference internal" href="../tbkit.html#tbkit.graphene.GrapheneSystem.get_beta_lims" title="tbkit.graphene.GrapheneSystem.get_beta_lims"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_beta_lims()</span></code></a> returns the range of
+strains that still leaves every hopping positive, and
+<a class="reference internal" href="../tbkit.html#tbkit.graphene.GrapheneSystem.get_butterfly" title="tbkit.graphene.GrapheneSystem.get_butterfly"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_butterfly()</span></code></a> sweeps
+<span class="math notranslate nohighlight">\(\beta\)</span> across that whole range – the strain analogue of
+Hofstadter’s flux sweep (1976, above).</p>
+<p><em>References:</em> F. Guinea, M. I. Katsnelson, and A. K. Geim, “Energy gaps
+and a zero-field quantum Hall effect in graphene by strain engineering,”
+Nature Physics 6, 30-33 (2010); N. Levy, S. A. Burke, K. L. Meaker, M.
+Panlasigui, A. Zettl, F. Guinea, A. H. Castro Neto, and M. F. Crommie,
+“Strain-Induced Pseudo-Magnetic Fields Greater Than 300 Tesla in
+Graphene Nanobubbles,” Science 329, 544-547 (2010); the strain gauge
+field itself goes back to H. Suzuura and T. Ando, “Phonons and
+electron-phonon scattering in carbon nanotubes,” Phys. Rev. B 65, 235412
+(2002).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/strain/plot_pseudo_magnetic_field.py</span></code> strains a
+1728-site circular graphene flake at <span class="math notranslate nohighlight">\(\beta=-0.05\)</span>, confirms the
+Hamiltonian is exactly real (unlike the complex, Peierls-substituted one
+it is compared against), and confirms that its bulk states nevertheless
+bunch onto the first four pseudo-Landau levels
+<span class="math notranslate nohighlight">\(E_n = \tfrac32 t\sqrt{|\beta| n}\)</span> to within 3%, with the
+<span class="math notranslate nohighlight">\(\sqrt{n}\)</span> spacing of a Dirac cone rather than the even spacing of
+a parabolic band. It then confirms that <span class="math notranslate nohighlight">\(E_1\)</span> tracks
+<span class="math notranslate nohighlight">\(\sqrt{|\beta|}\)</span> across a range of strains, and that a <em>real</em> field
+of the same strength, <span class="math notranslate nohighlight">\(\alpha = B_s/2\pi\)</span>, reproduces the same
+<span class="math notranslate nohighlight">\(E_1\)</span> to within 3% through a complex Hamiltonian.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Stretching graphene changes its bond lengths, and therefore its hopping amplitudes. Near the Dirac point a smooth modulation of the three nearest-neighbor hoppings enters the Dirac equation exactly the way a vector potential does -- it shifts the Dirac point in momentum space -- so a strain field whose modulation grows linearly with position acts on the electrons as a uniform magnetic field, and quantizes their spectrum into Landau levels."><img alt="" src="../_images/sphx_glr_plot_pseudo_magnetic_field_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/strain/plot_pseudo_magnetic_field.html"><span class="doc">Strain as a Gauge Field: Pseudo-Landau Levels in Graphene</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Strain as a Gauge Field: Pseudo-Landau Levels in Graphene</div>
+</div></div></section>
+<section id="see-also">
+<h2><a class="toc-backref" href="#id14" role="doc-backlink">See Also</a><a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="index.html"><span class="doc">History</span></a> – the other chapters of this chronology.</p></li>
+<li><p><a class="reference internal" href="../tutorial.html"><span class="doc">Tutorial</span></a> – a narrative walkthrough of the same API.</p></li>
+<li><p><a class="reference internal" href="../tbkit.html"><span class="doc">API</span></a> – the full API reference.</p></li>
+<li><p><a class="reference internal" href="../api/gallery/index.html"><span class="doc">Examples</span></a> – every example, including those not linked above.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="models_breakthroughs.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Breakthroughs in Building and Solving Models</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="topology_breakthroughs.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Breakthroughs in Band Topology</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#landau-levels-from-free-electrons-to-graphene-s-dirac-fermions">1930/2005 – Landau Levels: From Free Electrons to Graphene’s Dirac Fermions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-peierls-substitution">1933 – The Peierls Substitution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anderson-localization">1958 – Anderson Localization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-aharonov-bohm-effect">1959 – The Aharonov-Bohm Effect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rashba-spin-orbit-coupling">1959/1984 – Rashba Spin-Orbit Coupling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zak-s-magnetic-translation-group">1964 – Zak’s Magnetic Translation Group</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lifshitz-tails">1964 – Lifshitz Tails</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-inverse-participation-ratio-and-multifractality">1970/1980 – The Inverse Participation Ratio and Multifractality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hofstadter-s-butterfly">1976 – Hofstadter’s Butterfly</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-scaling-theory-of-localization">1979 – The Scaling Theory of Localization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aubry-andre-quasiperiodic-localization">1980 – Aubry-André Quasiperiodic Localization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vacancy-induced-zero-modes-in-graphene">2006 – Vacancy-Induced Zero Modes in Graphene</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#strain-as-a-gauge-field-pseudo-magnetic-fields">2010 – Strain as a Gauge Field: Pseudo-Magnetic Fields</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See Also</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/history/fields_breakthroughs.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2026, Charles Poli.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

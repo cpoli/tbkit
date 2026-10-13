@@ -1,6 +1,6 @@
 r"""
-The Non-Hermitian Skin Effect and the Generalized Brillouin Zone
-======================================================================
+The Non-Hermitian Skin Effect
+===================================
 
 Hatano and Nelson (1996) studied a chain whose hoppings to the right
 and to the left differ, :math:`(H\psi)_n = t_R\psi_{n+1} + t_L\psi_{n-1}`
@@ -15,13 +15,10 @@ effect* (Yao and Wang; Kunst, Edvardsson, Budich and Bergholtz, 2018):
   :math:`|E| < 2\sqrt{t_Rt_L}`, and *every* eigenstate piles up at one
   end -- the bulk becomes a skin.
 
-The open-chain spectrum is not given by Bloch waves on the unit circle
-:math:`|\beta| = |e^{ik}| = 1`, but on a *generalized* Brillouin zone,
-here a circle of radius :math:`|\beta| = \sqrt{t_L/t_R}`; the
-eigenstates decay as :math:`|\beta|^n`.
-:meth:`~tbkit.kspace.KSpace.spectral_winding`,
-:meth:`~tbkit.kspace.KSpace.finite_ham` and
-:meth:`~tbkit.kspace.KSpace.gbz` compute all three.
+:meth:`~tbkit.kspace.KSpace.spectral_winding` and
+:meth:`~tbkit.kspace.KSpace.finite_ham` compute both. The open-chain
+bands live on a generalized Brillouin zone, see
+``plot_generalized_brillouin_zone.py``.
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -56,17 +53,6 @@ weight = np.abs(vec) ** 2 / np.sum(np.abs(vec) ** 2, axis=0)
 left = weight[:n // 4].sum(axis=0)
 print('Weight on the leftmost quarter: at least {:.0%} for every eigenstate.'.format(left.min()))
 assert left.min() > 0.9
-
-# %%
-# The generalized Brillouin zone
-# ----------------------------------
-
-beta = hn.gbz(en)
-print('|beta| on the GBZ: {:.6f} (sqrt(t_L/t_R) = {:.6f})'.format(np.abs(beta).mean(), np.sqrt(t_left/t_right)))
-assert np.allclose(np.abs(beta), np.sqrt(t_left / t_right))
-# the open-chain spectrum is H(beta) on it
-for e, b in zip(en[:10], beta[:10, 0]):
-    assert np.isclose(hn.get_ham_beta(b)[0, 0], e)
 
 fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 axes[0].plot(ring.real, ring.imag, 'ob', ms=3, label='ring')

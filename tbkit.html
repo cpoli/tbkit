@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 
@@ -8,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API &#8212; tbkit 0.5.0 documentation</title>
+    <title>API &#8212; tbkit 0.6.0 documentation</title>
   
   
   
@@ -27,23 +26,23 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=70f82a29"></script>
+    <script src="_static/documentation_options.js?v=dda85ae5"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,8 +54,9 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Thermoelectric Transport: the Mott Formula and the Wiedemann-Franz Law" href="api/gallery/transport/plot_thermoelectric_transport.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.5" />
+  <meta name="docsearch:version" content="0.6" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -104,7 +104,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -150,7 +150,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="history.html">
+  <a class="nav-link nav-internal" href="history/index.html">
     History
   </a>
 </li>
@@ -164,7 +164,7 @@
 
 
 <li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+  <a class="nav-link nav-internal" href="#" aria-current="page">
     API
   </a>
 </li>
@@ -180,7 +180,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -221,7 +221,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -230,7 +230,7 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -268,7 +268,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="history.html">
+  <a class="nav-link nav-internal" href="history/index.html">
     History
   </a>
 </li>
@@ -282,7 +282,7 @@
 
 
 <li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+  <a class="nav-link nav-internal" href="#" aria-current="page">
     API
   </a>
 </li>
@@ -328,7 +328,7 @@
   </div>
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
   <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
     <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
   </svg>
@@ -444,7 +444,7 @@ about the z axis, cylinders, vertical planes), and <em>plot</em> draws the
 projection on the <span class="math notranslate nohighlight">\((x, y)\)</span> plane.</p>
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Line-Centered Square lattice</span>
-<span class="n">unit_cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)},</span> <span class="p">{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)}]</span>
+<span class="n">unit_cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'a'</span><span class="p">,</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)},</span> <span class="p">{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'a'</span><span class="p">,</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)}]</span>
 <span class="n">prim_vec</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
 <span class="n">lat</span> <span class="o">=</span> <span class="n">lattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="n">unit_cell</span><span class="p">,</span> <span class="n">prim_vec</span><span class="o">=</span><span class="n">prim_vec</span><span class="p">)</span>
 </pre></div>
@@ -467,7 +467,7 @@ Number of unit cells along <span class="math notranslate nohighlight">\(\mathbf{
 </dl>
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Line-Centered Square lattice</span>
-<span class="n">unit_cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)},</span> <span class="p">{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)}]</span>
+<span class="n">unit_cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'a'</span><span class="p">,</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)},</span> <span class="p">{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'a'</span><span class="p">,</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)}]</span>
 <span class="n">prim_vec</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
 <span class="n">lat</span> <span class="o">=</span> <span class="n">lattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="n">unit_cell</span><span class="p">,</span> <span class="n">prim_vec</span><span class="o">=</span><span class="n">prim_vec</span><span class="p">)</span>
 <span class="n">lat</span><span class="o">.</span><span class="n">get_lattice</span><span class="p">(</span><span class="n">n1</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">n2</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
@@ -501,12 +501,12 @@ Number of unit cells along <span class="math notranslate nohighlight">\(\mathbf{
 </dl>
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Square lattice</span>
-<span class="n">unit_cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)}]</span>
+<span class="n">unit_cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'a'</span><span class="p">,</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)}]</span>
 <span class="n">prim_vec</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
 <span class="n">lat</span> <span class="o">=</span> <span class="n">lattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="n">unit_cell</span><span class="p">,</span> <span class="n">prim_vec</span><span class="o">=</span><span class="n">prim_vec</span><span class="p">)</span>
 <span class="n">lat</span><span class="o">.</span><span class="n">get_lattice</span><span class="p">(</span><span class="n">n1</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n2</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">coor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">2.</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">)],</span>
-                          <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;tag&#39;</span><span class="p">,</span> <span class="s1">&#39;U1&#39;</span><span class="p">)])</span>
+<span class="n">coor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">2.</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">)],</span>
+                          <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'f8'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'y'</span><span class="p">,</span> <span class="s1">'f8'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'tag'</span><span class="p">,</span> <span class="s1">'U1'</span><span class="p">)])</span>
 <span class="n">lat</span><span class="o">.</span><span class="n">add_sites</span><span class="p">(</span><span class="n">coor</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -525,7 +525,7 @@ to get access to the site indices).</p>
 </dl>
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Square lattice</span>
-<span class="n">unit_cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)}]</span>
+<span class="n">unit_cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'a'</span><span class="p">,</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)}]</span>
 <span class="n">prim_vec</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
 <span class="n">lat</span> <span class="o">=</span> <span class="n">lattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="n">unit_cell</span><span class="p">,</span> <span class="n">prim_vec</span><span class="o">=</span><span class="n">prim_vec</span><span class="p">)</span>
 <span class="n">lat</span><span class="o">.</span><span class="n">get_lattice</span><span class="p">(</span><span class="n">n1</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n2</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
@@ -817,9 +817,9 @@ adds to it.</p>
 </dl>
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Line-Centered Square lattice</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="n">j</span><span class="p">})</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">'a'</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="n">j</span><span class="p">})</span>
 <span class="c1"># a gate voltage V across the sample, set by get_ham(V=...)</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">site</span><span class="p">,</span> <span class="n">V</span><span class="p">:</span> <span class="n">V</span> <span class="o">*</span> <span class="n">site</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mf">0.</span><span class="p">})</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">'a'</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">site</span><span class="p">,</span> <span class="n">V</span><span class="p">:</span> <span class="n">V</span> <span class="o">*</span> <span class="n">site</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">/</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">:</span> <span class="mf">0.</span><span class="p">})</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">get_ham</span><span class="p">(</span><span class="n">V</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -919,33 +919,33 @@ the Hamiltonian upper part.</p></li>
 </dl>
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># fill upper part:</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}])</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}])</span>
 <span class="c1"># fill lower part:</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}],</span> <span class="n">upper_part</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}],</span> <span class="n">upper_part</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="c1"># fill upper part: specifying the angles:</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ang&#39;</span><span class="p">:</span> <span class="mf">0.</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ang&#39;</span><span class="p">:</span> <span class="mf">90.</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">2.</span><span class="p">}])</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'ang'</span><span class="p">:</span> <span class="mf">0.</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span> <span class="p">{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'ang'</span><span class="p">:</span> <span class="mf">90.</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">2.</span><span class="p">}])</span>
 <span class="c1"># fill lower part:</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ang&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">180.</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ang&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">90.</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">2.</span><span class="p">}],</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'ang'</span><span class="p">:</span> <span class="o">-</span><span class="mf">180.</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span> <span class="p">{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'ang'</span><span class="p">:</span> <span class="o">-</span><span class="mf">90.</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">2.</span><span class="p">}],</span>
                            <span class="n">upper_part</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="c1"># fill upper part: specifying the tags:</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;ab&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;ba&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">2.</span><span class="p">}])</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'ab'</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span> <span class="p">{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'ba'</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">2.</span><span class="p">}])</span>
 <span class="c1"># fill lower part:</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;ab&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;ba&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">2.</span><span class="p">}],</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'ab'</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span> <span class="p">{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'ba'</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">2.</span><span class="p">}],</span>
                            <span class="n">upper_part</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="c1"># fill upper part: specifying the angles and tags:</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ang&#39;</span><span class="p">:</span> <span class="mf">0.</span><span class="p">,</span> <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;ab&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
-                            <span class="p">{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ang&#39;</span><span class="p">:</span> <span class="mf">0.</span><span class="p">,</span> <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;ba&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">2.</span><span class="p">},</span>
-                            <span class="p">{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ang&#39;</span><span class="p">:</span> <span class="mf">90.</span><span class="p">,</span> <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;ab&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">3.</span><span class="p">},</span>
-                            <span class="p">{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ang&#39;</span><span class="p">:</span> <span class="mf">90.</span><span class="p">,</span> <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;ba&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">4.</span><span class="p">}])</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'ang'</span><span class="p">:</span> <span class="mf">0.</span><span class="p">,</span> <span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'ab'</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
+                            <span class="p">{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'ang'</span><span class="p">:</span> <span class="mf">0.</span><span class="p">,</span> <span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'ba'</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">2.</span><span class="p">},</span>
+                            <span class="p">{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'ang'</span><span class="p">:</span> <span class="mf">90.</span><span class="p">,</span> <span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'ab'</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">3.</span><span class="p">},</span>
+                            <span class="p">{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'ang'</span><span class="p">:</span> <span class="mf">90.</span><span class="p">,</span> <span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'ba'</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">4.</span><span class="p">}])</span>
 <span class="c1"># fill lower part:</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ang&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">180.</span><span class="p">,</span> <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;ab&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
-                            <span class="p">{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ang&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">180.</span><span class="p">,</span> <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;ba&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">2.</span><span class="p">},</span>
-                            <span class="p">{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ang&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">90.</span><span class="p">,</span> <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;ab&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">3.</span><span class="p">},</span>
-                            <span class="p">{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ang&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">90.</span><span class="p">,</span> <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;ba&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">4.</span><span class="p">}],</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'ang'</span><span class="p">:</span> <span class="o">-</span><span class="mf">180.</span><span class="p">,</span> <span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'ab'</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
+                            <span class="p">{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'ang'</span><span class="p">:</span> <span class="o">-</span><span class="mf">180.</span><span class="p">,</span> <span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'ba'</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">2.</span><span class="p">},</span>
+                            <span class="p">{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'ang'</span><span class="p">:</span> <span class="o">-</span><span class="mf">90.</span><span class="p">,</span> <span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'ab'</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">3.</span><span class="p">},</span>
+                            <span class="p">{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'ang'</span><span class="p">:</span> <span class="o">-</span><span class="mf">90.</span><span class="p">,</span> <span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'ba'</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">4.</span><span class="p">}],</span>
                            <span class="n">upper_part</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="c1"># value function: a hopping that decays along x, swept without</span>
 <span class="c1"># rebuilding the model</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">si</span><span class="p">,</span> <span class="n">sj</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">xi</span><span class="p">:</span> <span class="n">t0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">si</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">xi</span><span class="p">)}])</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">si</span><span class="p">,</span> <span class="n">sj</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">xi</span><span class="p">:</span> <span class="n">t0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">si</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">/</span> <span class="n">xi</span><span class="p">)}])</span>
 <span class="k">for</span> <span class="n">xi</span> <span class="ow">in</span> <span class="p">(</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">20.</span><span class="p">):</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">get_ham</span><span class="p">(</span><span class="n">t0</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">xi</span><span class="o">=</span><span class="n">xi</span><span class="p">)</span>
 </pre></div>
@@ -1295,8 +1295,11 @@ real part) and, with <em>eigenvec</em>, <em>rn</em>, <em>intensity</em> and <em>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>n_eig</strong> – Positive integer. Default value 10. Number of eigenpairs
 (at most sites - 2).</p></li>
-<li><p><strong>sigma</strong> – Real or complex number. Default value 0. Target energy
-(if it is exactly an eigenvalue, it is shifted by about 1e-9).</p></li>
+<li><p><strong>sigma</strong> – Real or complex number. Default value 0. Target energy.
+The factorization uses <em>sigma</em> shifted by about 1e-9 (relative to
+the largest matrix element), so that it may be exactly an
+eigenvalue, e.g. zero modes at the default <em>sigma</em> = 0; the
+eigenvalues themselves are not shifted.</p></li>
 <li><p><strong>eigenvec</strong> – Boolean. Default value False.</p></li>
 </ul>
 </dd>
@@ -1561,7 +1564,7 @@ whose occupied states are gapped or localized.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lat</span> <span class="o">=</span> <span class="n">lattices</span><span class="o">.</span><span class="n">honeycomb</span><span class="p">()</span>
 <span class="n">lat</span><span class="o">.</span><span class="n">get_lattice</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
 <span class="n">sys</span> <span class="o">=</span> <span class="n">System</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">periodic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}])</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}])</span>
 <span class="o">...</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">get_ham</span><span class="p">()</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">get_bott_index</span><span class="p">()</span>
@@ -1637,13 +1640,13 @@ numbers, to build spin-orbit coupling or Zeeman terms – see
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># graphene, nearest-neighbor hopping t</span>
 <span class="n">DX</span><span class="p">,</span> <span class="n">DY</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span>
-<span class="n">unit_cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)},</span> <span class="p">{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="n">DY</span><span class="p">)}]</span>
+<span class="n">unit_cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'a'</span><span class="p">,</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)},</span> <span class="p">{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="n">DY</span><span class="p">)}]</span>
 <span class="n">prim_vec</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">2</span><span class="o">*</span><span class="n">DX</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)]</span>
 <span class="n">lat</span> <span class="o">=</span> <span class="n">Lattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="n">unit_cell</span><span class="p">,</span> <span class="n">prim_vec</span><span class="o">=</span><span class="n">prim_vec</span><span class="p">)</span>
 <span class="n">gra</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
-<span class="n">gra</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
-                        <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
-                        <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}])</span>
+<span class="n">gra</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}])</span>
 </pre></div>
 </div>
 <dl class="py attribute">
@@ -1698,12 +1701,12 @@ then returns complex energies, sorted by their real part.</p>
 </dd>
 </dl>
 <p>Example usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kag</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.</span><span class="p">})</span>
-<span class="c1"># spinful: same onsite energy for both spins on &#39;a&#39;, a Zeeman</span>
-<span class="c1"># splitting along z on &#39;b&#39;:</span>
-<span class="n">kag_spin</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">)})</span>
-<span class="c1"># spinful: an in-plane Zeeman field on &#39;a&#39;:</span>
-<span class="n">kag_spin</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="n">Bx</span><span class="o">*</span><span class="n">PAULI</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]})</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kag</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">'a'</span><span class="p">:</span> <span class="mf">1.</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.</span><span class="p">})</span>
+<span class="c1"># spinful: same onsite energy for both spins on 'a', a Zeeman</span>
+<span class="c1"># splitting along z on 'b':</span>
+<span class="n">kag_spin</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">'a'</span><span class="p">:</span> <span class="mf">1.</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">:</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">)})</span>
+<span class="c1"># spinful: an in-plane Zeeman field on 'a':</span>
+<span class="n">kag_spin</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">'a'</span><span class="p">:</span> <span class="n">Bx</span><span class="o">*</span><span class="n">PAULI</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]})</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1762,19 +1765,19 @@ explicitly, with its own amplitude.</p></li>
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># graphene, by neighbour order: nearest (t) and next-nearest</span>
 <span class="c1"># (t2) neighbours, as in System.set_hopping</span>
-<span class="n">gra</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t2</span><span class="p">}])</span>
+<span class="n">gra</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span> <span class="p">{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t2</span><span class="p">}])</span>
 <span class="c1"># square lattice, anisotropic nearest neighbours</span>
-<span class="n">sq</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ang&#39;</span><span class="p">:</span> <span class="mf">0.</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">tx</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ang&#39;</span><span class="p">:</span> <span class="mf">90.</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">ty</span><span class="p">}])</span>
+<span class="n">sq</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'ang'</span><span class="p">:</span> <span class="mf">0.</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">tx</span><span class="p">},</span> <span class="p">{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'ang'</span><span class="p">:</span> <span class="mf">90.</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">ty</span><span class="p">}])</span>
 
 <span class="c1"># 1D chain, nearest-neighbor hopping t between the only orbital</span>
 <span class="c1"># and its right neighbor:</span>
-<span class="n">chain</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}])</span>
+<span class="n">chain</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}])</span>
 <span class="c1"># spinful: spin-independent hopping t, plus a Rashba-like</span>
 <span class="c1"># spin-flip term of strength alpha:</span>
-<span class="n">chain_spin</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span>
-                                        <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="o">*</span><span class="n">PAULI</span><span class="p">[</span><span class="s1">&#39;0&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">alpha</span><span class="o">*</span><span class="n">PAULI</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]}])</span>
+<span class="n">chain_spin</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span>
+                                        <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="o">*</span><span class="n">PAULI</span><span class="p">[</span><span class="s1">'0'</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">alpha</span><span class="o">*</span><span class="n">PAULI</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]}])</span>
 <span class="c1"># value function: a staggered hopping, swept without rebuilding</span>
-<span class="n">chain</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">si</span><span class="p">,</span> <span class="n">sj</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="n">t</span> <span class="o">+</span> <span class="n">d</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="n">si</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">]}])</span>
+<span class="n">chain</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">si</span><span class="p">,</span> <span class="n">sj</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="n">t</span> <span class="o">+</span> <span class="n">d</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="n">si</span><span class="p">[</span><span class="s1">'index'</span><span class="p">]}])</span>
 <span class="n">ham</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">get_ham</span><span class="p">((</span><span class="mf">0.</span><span class="p">,),</span> <span class="n">t</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1979,14 +1982,26 @@ to be used as the x-axis of a band-structure plot.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tbkit.kspace.KSpace.mesh_grid">
-<span class="sig-name descname"><span class="pre">mesh_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/kspace.html#KSpace.mesh_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.kspace.KSpace.mesh_grid" title="Link to this definition">#</a></dt>
-<dd><p>Private method. Build a uniform grid of fractional coordinates
-spanning the Brillouin zone (each in [0, 1)), and the corresponding
-Cartesian k-points.</p>
+<span class="sig-name descname"><span class="pre">mesh_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monkhorst_pack</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/kspace.html#KSpace.mesh_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.kspace.KSpace.mesh_grid" title="Link to this definition">#</a></dt>
+<dd><p>Build a uniform grid of fractional coordinates spanning the
+Brillouin zone, and the corresponding Cartesian k-points. By
+default the grid contains <span class="math notranslate nohighlight">\(\Gamma\)</span>: <span class="math notranslate nohighlight">\(r/q\)</span>,
+<span class="math notranslate nohighlight">\(r = 0, \dots, q-1\)</span> (each in [0, 1)). With <em>monkhorst_pack</em>,
+it is the grid of Monkhorst and Pack (Phys. Rev. B 13, 5188 (1976)),
+<span class="math notranslate nohighlight">\((2r - q - 1)/2q\)</span>, <span class="math notranslate nohighlight">\(r = 1, \dots, q\)</span> (each in
+(-1/2, 1/2)), symmetric about <span class="math notranslate nohighlight">\(\Gamma\)</span>: the same points for
+odd <span class="math notranslate nohighlight">\(q\)</span>, shifted by half a step (off <span class="math notranslate nohighlight">\(\Gamma\)</span> and the
+zone boundary) for even <span class="math notranslate nohighlight">\(q\)</span>. Both integrate exactly every
+Fourier component <span class="math notranslate nohighlight">\(e^{i\mathbf{k}\cdot\mathbf{R}}\)</span> with
+<span class="math notranslate nohighlight">\(|R_i| &lt; q\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>nk</strong> – Positive integer, or tuple of <em>dim</em> positive integers.
-Number of k-points along each reciprocal lattice vector.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nk</strong> – Positive integer, or tuple of <em>dim</em> positive integers.
+Number of k-points along each reciprocal lattice vector.</p></li>
+<li><p><strong>monkhorst_pack</strong> – Boolean. Default value False. If True, the
+Monkhorst-Pack grid.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
@@ -2001,14 +2016,18 @@ Number of k-points along each reciprocal lattice vector.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tbkit.kspace.KSpace.mesh_bands">
-<span class="sig-name descname"><span class="pre">mesh_bands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/kspace.html#KSpace.mesh_bands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.kspace.KSpace.mesh_bands" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">mesh_bands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monkhorst_pack</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/kspace.html#KSpace.mesh_bands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.kspace.KSpace.mesh_bands" title="Link to this definition">#</a></dt>
 <dd><p>Diagonalize <span class="math notranslate nohighlight">\(H(\mathbf{k})\)</span> over a uniform mesh spanning the
 Brillouin zone. Unlike <em>get_bands</em>, it leaves the band structure kept
 for <em>plot_bands</em> untouched.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>nk</strong> – Positive integer, or tuple of <em>dim</em> positive integers.
-Number of k-points along each reciprocal lattice vector.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nk</strong> – Positive integer, or tuple of <em>dim</em> positive integers.
+Number of k-points along each reciprocal lattice vector.</p></li>
+<li><p><strong>monkhorst_pack</strong> – Boolean. Default value False. If True, the
+Monkhorst-Pack grid (see <em>mesh_grid</em>).</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
@@ -2713,7 +2732,7 @@ at each value, not reduced modulo <span class="math notranslate nohighlight">\(2
 </dl>
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">41</span><span class="p">)</span>
-<span class="n">theta</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">axion_angle</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;phi&#39;</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>  <span class="c1"># theta[-1] = 2 pi C2</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">axion_angle</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">'phi'</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>  <span class="c1"># theta[-1] = 2 pi C2</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -3336,7 +3355,7 @@ k-points of the last <em>get_bands</em> or <em>k_path</em>.</p></li>
 </dl>
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ks</span><span class="o">.</span><span class="n">k_path</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">nk</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">ks</span><span class="o">.</span><span class="n">plot_bands</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">ks</span><span class="o">.</span><span class="n">band_weights</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>
+<span class="n">ks</span><span class="o">.</span><span class="n">plot_bands</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">ks</span><span class="o">.</span><span class="n">band_weights</span><span class="p">(</span><span class="s1">'a'</span><span class="p">))</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -3700,9 +3719,9 @@ repeated once per row across the ribbon; row <em>w</em>’s copy of site
 </dl>
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># zigzag graphene ribbon, 20 unit cells wide</span>
-<span class="n">list_hop</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
-                  <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
-                  <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}]</span>
+<span class="n">list_hop</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
+                  <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">1.</span><span class="p">},</span>
+                  <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}]</span>
 <span class="n">rib</span> <span class="o">=</span> <span class="n">ribbon</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">list_hop</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -3753,6 +3772,46 @@ displaced by <span class="math notranslate nohighlight">\(m\mathbf{a}_1\)</span>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># square lattice, flux 1/3 per plaquette: three Hofstadter bands</span>
 <span class="n">mag</span> <span class="o">=</span> <span class="n">magnetic_supercell</span><span class="p">(</span><span class="n">lattices</span><span class="o">.</span><span class="n">square</span><span class="p">(),</span> <span class="n">list_hop</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">chern</span> <span class="o">=</span> <span class="p">[</span><span class="n">mag</span><span class="o">.</span><span class="n">chern_number</span><span class="p">(</span><span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="n">n</span><span class="p">])</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tbkit.kspace.cubic_path">
+<span class="sig-prename descclassname"><span class="pre">tbkit.kspace.</span></span><span class="sig-name descname"><span class="pre">cubic_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ArrayLike</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/kspace.html#cubic_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.kspace.cubic_path" title="Link to this definition">#</a></dt>
+<dd><p>Build a path through k-points given in the conventional coordinates of
+a cubic crystal: in units of <span class="math notranslate nohighlight">\(2\pi/a\)</span> along the cubic axes, with
+<span class="math notranslate nohighlight">\(a\)</span> the side of the conventional cube, as tables of high-symmetry
+points list them (e.g. <span class="math notranslate nohighlight">\(X = (0, 1, 0)\)</span> and
+<span class="math notranslate nohighlight">\(L = (\tfrac12, \tfrac12, \tfrac12)\)</span> for fcc). <em>high_symmetry_path</em>
+builds the standard simple cubic, fcc and bcc paths with it; use it
+for another path, or other points, of the same lattices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>points</strong> – Dictionary. key: label, val: tuple of 3 real numbers,
+the point in units of <span class="math notranslate nohighlight">\(2\pi/a\)</span>.</p></li>
+<li><p><strong>names</strong> – List of at least two labels (keys of <em>points</em>), the
+nodes of the path in order.</p></li>
+<li><p><strong>a</strong> – Positive real. Default value 1. Side of the conventional cube.</p></li>
+<li><p><strong>axes</strong> – Real array, shape (3, 3). Default value None: the
+Cartesian axes. Rows: the three orthonormal cubic axes, in the
+coordinates of <em>KSpace.get_ham</em> (for a crystal whose cube is rotated).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>points</strong> – List of real ndarrays, the k-points, for <em>KSpace.k_path</em>.</p></li>
+<li><p><strong>labels</strong> – List of strings, <em>names</em>, for <em>node_labels</em>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p>Example usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># fcc, along Gamma - X - U and K - Gamma - L</span>
+<span class="n">pts</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'G'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'X'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'U'</span><span class="p">:</span> <span class="p">(</span><span class="mf">.25</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">.25</span><span class="p">),</span>
+          <span class="s1">'K'</span><span class="p">:</span> <span class="p">(</span><span class="mf">.75</span><span class="p">,</span> <span class="mf">.75</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'L'</span><span class="p">:</span> <span class="p">(</span><span class="mf">.5</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.5</span><span class="p">)}</span>
+<span class="n">points</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">cubic_path</span><span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="p">[</span><span class="s1">'G'</span><span class="p">,</span> <span class="s1">'X'</span><span class="p">,</span> <span class="s1">'U'</span><span class="p">],</span> <span class="n">a</span><span class="o">=</span><span class="mf">3.6</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -3884,12 +3943,12 @@ flat band (at E = -2t for hopping amplitude t).</p>
 <p>Example usage (nearest-neighbor hopping, for <a class="reference internal" href="#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace</span></code></a>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lat</span> <span class="o">=</span> <span class="n">lattices</span><span class="o">.</span><span class="n">kagome</span><span class="p">()</span>
 <span class="n">kag</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
-<span class="n">kag</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span>
-                        <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span>
-                        <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span>
-                        <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span>
-                        <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span>
-                        <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">}])</span>
+<span class="n">kag</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">}])</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -3909,10 +3968,10 @@ band (at E = 0), squeezed between two dispersive bands.</p>
 <p>Example usage (nearest-neighbor hopping, for <a class="reference internal" href="#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.kspace.KSpace</span></code></a>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lat</span> <span class="o">=</span> <span class="n">lattices</span><span class="o">.</span><span class="n">lieb</span><span class="p">()</span>
 <span class="n">lb</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
-<span class="n">lb</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span>
-                       <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span>
-                       <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span>
-                       <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">}])</span>
+<span class="n">lb</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span>
+                       <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span>
+                       <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span>
+                       <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">}])</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -4672,7 +4731,7 @@ fills the ones of the system.</p>
 <span class="n">lat</span> <span class="o">=</span> <span class="n">GrapheneLattice</span><span class="p">()</span>
 <span class="n">lat</span><span class="o">.</span><span class="n">hexagon_zigzag</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <span class="n">sys</span> <span class="o">=</span> <span class="n">GrapheneSystem</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}])</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}])</span>
 </pre></div>
 </div>
 <dl class="py method">
@@ -5251,7 +5310,7 @@ Default value None. Its blocks are numbered in increasing eigenvalue.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tbkit.transport.Transport.attach_lead">
-<span class="sig-name descname"><span class="pre">attach_lead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sys</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conservation_law</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/tbkit/transport.html#Transport.attach_lead"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.Transport.attach_lead" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">attach_lead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sys</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conservation_law</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.18.0)"><span class="pre">csr_matrix</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/tbkit/transport.html#Transport.attach_lead"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.Transport.attach_lead" title="Link to this definition">#</a></dt>
 <dd><p>Attach a semi-infinite lead given as a 1D <em>KSpace</em> model (e.g. a
 ribbon, see <em>kspace.ribbon</em>) to the device built from <em>sys</em>, without
 writing the coupling by hand.</p>
@@ -5264,20 +5323,42 @@ starts at the next cell, and couples to the interface sites through
 its own hoppings: <span class="math notranslate nohighlight">\(\tau = v\)</span> restricted to their orbitals (see
 <em>lead_from_kspace</em>, which also gives <span class="math notranslate nohighlight">\(h_0\)</span> and <span class="math notranslate nohighlight">\(v\)</span>).
 Every lead orbital with a hopping into the next cell must be present
-in the interface cell; the device is not extended.</p>
+in the interface cell.</p>
+<p>With <em>extend</em>, a device whose edge is ragged relative to the lead
+(a disc under a strip, a flake under a zigzag lead) is completed
+first, as Kwant’s <em>attach_lead</em> does: starting from the lead’s first
+cell, every lead site reached through the lead’s hoppings and absent
+from the device is added to it, cell by cell towards the device,
+until the sites reached are all present. The added sites take the
+lead’s onsite energies and its hoppings to their neighbours (device
+or added sites at lead positions). They come after the device
+sites, so the sites of the leads already attached keep their
+indices, and a later <em>attach_lead</em> with the same <em>sys</em> knows of them.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sys</strong> – <strong>System</strong> instance (one orbital per site) whose
 Hamiltonian, in the same site order, is the device of this
-<em>Transport</em>.</p></li>
+<em>Transport</em> (followed by the sites added by earlier <em>extend</em> calls).</p></li>
 <li><p><strong>ks</strong> – <strong>KSpace</strong> instance, 1D and spinless, with hoppings
 between neighbouring cells only.</p></li>
 <li><p><strong>direction</strong> – +1 or -1. Default value 1. Direction, along the
 lead’s primitive vector, in which the lead extends away from the device.</p></li>
 <li><p><strong>conservation_law</strong> – Hermitian complex array, shape (norb, norb),
 or None. Default value None. See <em>add_lead</em>.</p></li>
+<li><p><strong>extend</strong> – Boolean. Default value False. Add the missing lead
+sites to the device instead of refusing an incomplete interface.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>With <em>extend</em>, the enlarged device (None otherwise):</p>
+<ul class="simple">
+<li><p><strong>ham</strong> – Sparse CSR complex matrix. The device Hamiltonian,
+the added sites last.</p></li>
+<li><p><strong>positions</strong> – Real ndarray, shape (n_sites, space_dim). The
+positions of its sites, those of <em>sys</em> first.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 <p>Example usage:</p>
@@ -5285,6 +5366,7 @@ or None. Default value None. See <em>add_lead</em>.</p></li>
 <span class="n">tr</span> <span class="o">=</span> <span class="n">Transport</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">ham</span><span class="p">)</span>
 <span class="n">tr</span><span class="o">.</span><span class="n">attach_lead</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="n">strip</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>   <span class="c1"># at the left end of the device</span>
 <span class="n">tr</span><span class="o">.</span><span class="n">attach_lead</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="n">strip</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>    <span class="c1"># at the right end</span>
+<span class="n">ham</span><span class="p">,</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">attach_lead</span><span class="p">(</span><span class="n">disc</span><span class="p">,</span> <span class="n">strip</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># ragged edge</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -5783,7 +5865,7 @@ order of <code class="docutils literal notranslate"><span class="pre">slices[0]<
 </dd>
 </dl>
 <p>Example usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">slices</span> <span class="o">=</span> <span class="n">slices_from_positions</span><span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">slices</span> <span class="o">=</span> <span class="n">slices_from_positions</span><span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">'x'</span><span class="p">])</span>
 <span class="n">rgf</span> <span class="o">=</span> <span class="n">RecursiveTransport</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">ham</span><span class="p">,</span> <span class="n">slices</span><span class="p">,</span> <span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">v_left</span><span class="p">,</span> <span class="n">tau</span><span class="p">),</span> <span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">v_right</span><span class="p">,</span> <span class="n">tau</span><span class="p">))</span>
 <span class="n">T</span> <span class="o">=</span> <span class="n">rgf</span><span class="o">.</span><span class="n">transmission</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
 </pre></div>
@@ -6306,12 +6388,12 @@ come from <em>set_slater_koster</em>, <em>set_spin_orbit</em>, <em>set_rashba</e
 <em>set_hopping_block</em>. Call <em>set_peierls_phase</em> / <em>set_magnetic_field</em>
 last: they multiply every hopping (and block) set so far.</p>
 <p>Example usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># graphene&#39;s sp3 bands: four orbitals per carbon</span>
-<span class="n">sys</span> <span class="o">=</span> <span class="n">OrbitalSystem</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">orbitals</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;px&#39;</span><span class="p">,</span> <span class="s1">&#39;py&#39;</span><span class="p">,</span> <span class="s1">&#39;pz&#39;</span><span class="p">],</span>
-                                                <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;px&#39;</span><span class="p">,</span> <span class="s1">&#39;py&#39;</span><span class="p">,</span> <span class="s1">&#39;pz&#39;</span><span class="p">]})</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">8.87</span><span class="p">},</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">8.87</span><span class="p">}})</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">set_slater_koster</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;ss_sigma&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.77</span><span class="p">,</span> <span class="s1">&#39;sp_sigma&#39;</span><span class="p">:</span> <span class="mf">5.58</span><span class="p">,</span>
-                                     <span class="s1">&#39;pp_sigma&#39;</span><span class="p">:</span> <span class="mf">5.04</span><span class="p">,</span> <span class="s1">&#39;pp_pi&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.03</span><span class="p">})</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># graphene's sp3 bands: four orbitals per carbon</span>
+<span class="n">sys</span> <span class="o">=</span> <span class="n">OrbitalSystem</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">orbitals</span><span class="o">=</span><span class="p">{</span><span class="s1">'a'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'s'</span><span class="p">,</span> <span class="s1">'px'</span><span class="p">,</span> <span class="s1">'py'</span><span class="p">,</span> <span class="s1">'pz'</span><span class="p">],</span>
+                                                <span class="s1">'b'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'s'</span><span class="p">,</span> <span class="s1">'px'</span><span class="p">,</span> <span class="s1">'py'</span><span class="p">,</span> <span class="s1">'pz'</span><span class="p">]})</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">'a'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'s'</span><span class="p">:</span> <span class="o">-</span><span class="mf">8.87</span><span class="p">},</span> <span class="s1">'b'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'s'</span><span class="p">:</span> <span class="o">-</span><span class="mf">8.87</span><span class="p">}})</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">set_slater_koster</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="s1">'ss_sigma'</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.77</span><span class="p">,</span> <span class="s1">'sp_sigma'</span><span class="p">:</span> <span class="mf">5.58</span><span class="p">,</span>
+                                     <span class="s1">'pp_sigma'</span><span class="p">:</span> <span class="mf">5.04</span><span class="p">,</span> <span class="s1">'pp_pi'</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.03</span><span class="p">})</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">get_ham</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -6348,7 +6430,7 @@ dictionary {orbital: energy} (orbitals not given get 0).</p>
 </dd>
 </dl>
 <p>Example usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sys</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">8.87</span><span class="p">,</span> <span class="s1">&#39;pz&#39;</span><span class="p">:</span> <span class="mf">0.</span><span class="p">}})</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sys</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">'a'</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'s'</span><span class="p">:</span> <span class="o">-</span><span class="mf">8.87</span><span class="p">,</span> <span class="s1">'pz'</span><span class="p">:</span> <span class="mf">0.</span><span class="p">}})</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -7264,8 +7346,8 @@ orbital indices of <em>ks</em> (<code class="docutils literal notranslate"><span
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Kitaev chain: E(k) = +-sqrt((2t cos k - mu)^2 + 4 Delta^2 sin^2 k)</span>
 <span class="n">chain</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">lattices</span><span class="o">.</span><span class="n">chain</span><span class="p">())</span>
-<span class="n">chain</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">}])</span>
-<span class="n">kit</span> <span class="o">=</span> <span class="n">bdg_kspace</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span> <span class="p">[{</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="s1">&#39;delta&#39;</span><span class="p">:</span> <span class="n">delta</span><span class="p">}],</span> <span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">)</span>
+<span class="n">chain</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">}])</span>
+<span class="n">kit</span> <span class="o">=</span> <span class="n">bdg_kspace</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span> <span class="p">[{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="s1">'delta'</span><span class="p">:</span> <span class="n">delta</span><span class="p">}],</span> <span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -8131,7 +8213,7 @@ sorted by (n, i, j, R).</p></li>
 </dl>
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bonds</span> <span class="o">=</span> <span class="n">neighbour_bonds</span><span class="p">(</span><span class="n">lattices</span><span class="o">.</span><span class="n">honeycomb</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
-<span class="c1"># three &#39;ab&#39;/&#39;ba&#39; bonds of length 1, at angles 30, 90 and 150</span>
+<span class="c1"># three 'ab'/'ba' bonds of length 1, at angles 30, 90 and 150</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -8180,7 +8262,7 @@ orientations are independent hoppings (non-reciprocal models).</p></li>
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># graphene: nearest (t) and next-nearest (t2) neighbours</span>
 <span class="n">explicit</span> <span class="o">=</span> <span class="n">neighbour_hoppings</span><span class="p">(</span><span class="n">lattices</span><span class="o">.</span><span class="n">honeycomb</span><span class="p">(),</span>
-                                        <span class="p">[{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}])</span>
+                                        <span class="p">[{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.</span><span class="p">},</span> <span class="p">{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}])</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -8939,7 +9021,7 @@ with the <em>unit_cell</em> and <em>prim_vec</em> of <em>sys.lat</em>.</p></li>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lat</span> <span class="o">=</span> <span class="n">lattices</span><span class="o">.</span><span class="n">honeycomb</span><span class="p">()</span>
 <span class="n">lat</span><span class="o">.</span><span class="n">get_lattice</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 <span class="n">sys</span> <span class="o">=</span> <span class="n">System</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}])</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.</span><span class="p">},</span> <span class="p">{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}])</span>
 <span class="n">gra</span> <span class="o">=</span> <span class="n">kspace_from_system</span><span class="p">(</span><span class="n">sys</span><span class="p">)</span>   <span class="c1"># the Bloch model of the same graphene</span>
 </pre></div>
 </div>
@@ -9086,7 +9168,7 @@ the symbol <code class="docutils literal notranslate"><span class="pre">a</span>
 </dd>
 </dl>
 <p>Example usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">discretize_symbolic</span><span class="p">(</span><span class="s1">&#39;k_x**2&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">discretize_symbolic</span><span class="p">(</span><span class="s1">'k_x**2'</span><span class="p">)</span>
 <span class="c1"># {(-1,): Matrix([[-1/a**2]]), (0,): Matrix([[2/a**2]]), (1,): Matrix([[-1/a**2]])}</span>
 </pre></div>
 </div>
@@ -9135,8 +9217,8 @@ lattice has <em>prim_vec</em> <span class="math notranslate nohighlight">\(a\hat
 </dl>
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># the BHZ model of HgTe quantum wells, one spin block</span>
-<span class="n">bhz</span> <span class="o">=</span> <span class="n">discretize</span><span class="p">(</span><span class="s1">&#39;A*(k_x*sigma_x - k_y*sigma_y)&#39;</span>
-                        <span class="s1">&#39;+ (M - B*(k_x**2 + k_y**2))*sigma_z&#39;</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">bhz</span> <span class="o">=</span> <span class="n">discretize</span><span class="p">(</span><span class="s1">'A*(k_x*sigma_x - k_y*sigma_y)'</span>
+                        <span class="s1">'+ (M - B*(k_x**2 + k_y**2))*sigma_z'</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">bhz</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
 <span class="n">bhz</span><span class="o">.</span><span class="n">chern_number</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">sys</span> <span class="o">=</span> <span class="n">finite_system</span><span class="p">(</span><span class="n">bhz</span><span class="p">,</span> <span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">))</span>   <span class="c1"># a real-space flake</span>
@@ -9207,8 +9289,8 @@ or a driven (Floquet) model cannot be saved.</p>
 </dd>
 </dl>
 <p>Example usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">save_model</span><span class="p">(</span><span class="n">gra</span><span class="p">,</span> <span class="s1">&#39;graphene.npz&#39;</span><span class="p">)</span>
-<span class="n">gra2</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s1">&#39;graphene.npz&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">save_model</span><span class="p">(</span><span class="n">gra</span><span class="p">,</span> <span class="s1">'graphene.npz'</span><span class="p">)</span>
+<span class="n">gra2</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s1">'graphene.npz'</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -9360,8 +9442,8 @@ Hermiticity and 2D checks (the file has 6 decimals).</p></li>
 </dd>
 </dl>
 <p>Example usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ks</span> <span class="o">=</span> <span class="n">read_wannier90</span><span class="p">(</span><span class="s1">&#39;graphene_hr.dat&#39;</span><span class="p">,</span> <span class="n">win</span><span class="o">=</span><span class="s1">&#39;graphene.win&#39;</span><span class="p">,</span>
-                             <span class="n">centres</span><span class="o">=</span><span class="s1">&#39;graphene_centres.xyz&#39;</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ks</span> <span class="o">=</span> <span class="n">read_wannier90</span><span class="p">(</span><span class="s1">'graphene_hr.dat'</span><span class="p">,</span> <span class="n">win</span><span class="o">=</span><span class="s1">'graphene.win'</span><span class="p">,</span>
+                             <span class="n">centres</span><span class="o">=</span><span class="s1">'graphene_centres.xyz'</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -11168,6 +11250,19 @@ orbitals coupled to the next cell but absent from the device).</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="tbkit.error_handling.lead_extension">
+<span class="sig-prename descclassname"><span class="pre">tbkit.error_handling.</span></span><span class="sig-name descname"><span class="pre">lead_extension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inside</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tbkit/error_handling.html#lead_extension"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.error_handling.lead_extension" title="Link to this definition">#</a></dt>
+<dd><p>Check that the lead sites added to complete an interface stay within the
+device’s extent along the lead (<em>inside</em> False when they would pass the
+innermost lead cell holding a device site).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – The lead cannot be closed against the device.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="tbkit.error_handling.lead_index">
 <span class="sig-prename descclassname"><span class="pre">tbkit.error_handling.</span></span><span class="sig-name descname"><span class="pre">lead_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lead</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_leads</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tbkit/error_handling.html#lead_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.error_handling.lead_index" title="Link to this definition">#</a></dt>
 <dd><p>Check a lead index.</p>
@@ -12574,6 +12669,22 @@ band and k-point of the stored band structure.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="tbkit.error_handling.cubic_path">
+<span class="sig-prename descclassname"><span class="pre">tbkit.error_handling.</span></span><span class="sig-name descname"><span class="pre">cubic_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tbkit/error_handling.html#cubic_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.error_handling.cubic_path" title="Link to this definition">#</a></dt>
+<dd><p>Check the parameters of <em>kspace.cubic_path</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#TypeError" title="(in Python v3.15)"><strong>TypeError</strong></a> – Parameter points must be a dictionary.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – Each point must have 3 real coordinates.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – Parameter names must list at least two keys of points.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – Parameter axes must be 3 orthonormal rows.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="tbkit.error_handling.bravais_lattice">
 <span class="sig-prename descclassname"><span class="pre">tbkit.error_handling.</span></span><span class="sig-name descname"><span class="pre">bravais_lattice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tbkit/error_handling.html#bravais_lattice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.error_handling.bravais_lattice" title="Link to this definition">#</a></dt>
 <dd><p>Check that <em>kspace.high_symmetry_path</em> recognized the Bravais lattice.</p>
@@ -13248,6 +13359,7 @@ counting each orbital once.</p></li>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.kspace.ribbon"><code class="docutils literal notranslate"><span class="pre">ribbon()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.kspace.magnetic_supercell"><code class="docutils literal notranslate"><span class="pre">magnetic_supercell()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.kspace.cubic_path"><code class="docutils literal notranslate"><span class="pre">cubic_path()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.kspace.high_symmetry_path"><code class="docutils literal notranslate"><span class="pre">high_symmetry_path()</span></code></a></li>
 </ul>
 </li>
@@ -13713,6 +13825,7 @@ counting each orbital once.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.lead_space_dim"><code class="docutils literal notranslate"><span class="pre">lead_space_dim()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.lead_overlap"><code class="docutils literal notranslate"><span class="pre">lead_overlap()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.lead_interface"><code class="docutils literal notranslate"><span class="pre">lead_interface()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.lead_extension"><code class="docutils literal notranslate"><span class="pre">lead_extension()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.lead_index"><code class="docutils literal notranslate"><span class="pre">lead_index()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.lead_band_edge"><code class="docutils literal notranslate"><span class="pre">lead_band_edge()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.conservation_law"><code class="docutils literal notranslate"><span class="pre">conservation_law()</span></code></a></li>
@@ -13828,6 +13941,7 @@ counting each orbital once.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.band_weights"><code class="docutils literal notranslate"><span class="pre">band_weights()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.weight_style"><code class="docutils literal notranslate"><span class="pre">weight_style()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.contour_found"><code class="docutils literal notranslate"><span class="pre">contour_found()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.cubic_path"><code class="docutils literal notranslate"><span class="pre">cubic_path()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.bravais_lattice"><code class="docutils literal notranslate"><span class="pre">bravais_lattice()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.sympy_module"><code class="docutils literal notranslate"><span class="pre">sympy_module()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.continuum_type"><code class="docutils literal notranslate"><span class="pre">continuum_type()</span></code></a></li>
@@ -13880,8 +13994,8 @@ counting each orbital once.</p></li>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -13902,7 +14016,6 @@ counting each orbital once.</p></li>
 
   <p class="sphinx-version">
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
-    <br/>
   </p>
 </div>
       
@@ -13915,7 +14028,7 @@ counting each orbital once.</p></li>
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
 </p></div>
       
     </div>
