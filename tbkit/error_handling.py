@@ -1711,7 +1711,21 @@ def lead_interface(missing):
     if missing:
         raise ValueError('\n\nThe device lacks lead orbitals {} in its outermost lead cell: '
                                     'extend the device so that it ends with a complete lead '
-                                    'cell.\n'.format([int(o) for o in missing]))
+                                    'cell (or pass extend=True).\n'.format([int(o) for o in missing]))
+
+
+def lead_extension(inside):
+    '''
+    Check that the lead sites added to complete an interface stay within the
+    device's extent along the lead (*inside* False when they would pass the
+    innermost lead cell holding a device site).
+
+    :raises ValueError: The lead cannot be closed against the device.
+    '''
+    if not inside:
+        raise ValueError('\n\nThe lead sites missing from the device reach past its far end: '
+                                    'the lead is not closed off by the device (wider than it, or '
+                                    'off its edge).\n')
 
 
 def lead_index(lead, n_leads):

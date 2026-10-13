@@ -5,7 +5,8 @@ Quantum transport through a finite device attached to semi-infinite
 leads: Landauer's formula, in which the conductance is a transmission
 probability, and the quantized conductance steps of a quantum point
 contact. Leads attached automatically from their geometry, narrow
-contacts on a wide cavity.
+contacts on a wide cavity, and ragged interfaces (a graphene disc
+between zigzag leads) completed with the lead's own sites.
 
 Multi-terminal devices: Landauer-Buttiker conductance matrices and the
 quantized resistances of a Hall bar with its edge channels; bond

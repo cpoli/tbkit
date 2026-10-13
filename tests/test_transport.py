@@ -156,6 +156,55 @@ class TestTransmission(unittest.TestCase):
         self.assertEqual(sorted((lat.coor['x'][s], lat.coor['y'][s]) for s in sites),
                          [(length - 1., 1.), (length - 1., 2.)])
 
+    def test_attach_lead_extend(self):
+        # a strip with sites missing at both ends: extend puts them back with the
+        # strip's hoppings, so the device and the transmission are the full strip's
+        width, length = 4, 6
+        rib = ribbon(lattices.square(), SQUARE, width=width, direction=1)
+
+        def strip(missing=()):
+            lat = lattices.square()
+            lat.get_lattice(length, width)
+            lat.coor = lat.coor[[(x, y) not in missing for x, y in zip(lat.coor['x'], lat.coor['y'])]]
+            lat.sites = len(lat.coor)
+            sys = System(lat)
+            sys.set_hopping([{'n': 1, 't': 1.}])
+            sys.get_ham()
+            return sys
+
+        full = strip()
+        ref = Transport(full.ham)
+        ref.attach_lead(full, rib, -1)
+        ref.attach_lead(full, rib, 1)
+        missing = {(0., 3.), (5., 0.), (5., 1.), (4., 0.)}
+        sys = strip(missing)
+        tr = Transport(sys.ham)
+        ham, pos = tr.attach_lead(sys, rib, -1, extend=True)
+        self.assertEqual(ham.shape, (sys.lat.sites + 1,) * 2)
+        self.assertTrue(np.allclose(pos[-1], (0., 3.)))
+        sites_left = tr.leads[0][3]
+        ham, pos = tr.attach_lead(sys, rib, 1, extend=True)
+        self.assertEqual(tr.leads[0][3], sites_left)
+        self.assertEqual({tuple(p) for p in pos[sys.lat.sites:]}, missing)
+        ref_pos = np.stack([full.lat.coor['x'], full.lat.coor['y']], axis=1)
+        order = [int(np.flatnonzero(np.all(np.isclose(ref_pos, p), axis=1))[0]) for p in pos]
+        self.assertTrue(np.allclose(ham.toarray(), full.ham.toarray()[np.ix_(order, order)]))
+        self.assertTrue(np.allclose(tr.ham, ham.toarray()))
+        energies = np.linspace(-3.5, 3.5, 9)
+        self.assertTrue(np.allclose(tr.transmission(energies), ref.transmission(energies)))
+        # nothing missing: the device is unchanged
+        tr2 = Transport(full.ham)
+        ham, pos = tr2.attach_lead(full, rib, 1, extend=True)
+        self.assertTrue(np.allclose(ham.toarray(), full.ham.toarray()))
+        self.assertEqual(len(pos), full.lat.sites)
+        self.assertIsNone(tr2.attach_lead(full, rib, -1))
+        # a lead wider than the device is not closed off by it; extend not a bool
+        wide = ribbon(lattices.square(), SQUARE, width=width + 1, direction=1)
+        tr3 = Transport(full.ham)
+        self.assertRaises(ValueError, tr3.attach_lead, full, wide, 1, None, True)
+        self.assertRaises(TypeError, tr3.attach_lead, full, rib, 1, None, 1)
+        self.assertEqual((tr3.leads, tr3._ham.shape), ([], (full.lat.sites,) * 2))
+
     def test_attach_lead_checks(self):
         lat = lattices.square()
         lat.get_lattice(3, 2)

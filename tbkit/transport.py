@@ -480,6 +480,8 @@ class Transport():
         self._dense: NDArray[np.complex128] | None = None
         self.leads: list = []  # list of (h0, v, coupling, sites)
         self._laws: list = []  # eigenspaces of each lead's conservation law, or None
+        self._added_pos = np.zeros((0, 0))  # sites added by attach_lead(extend=True), and tags
+        self._added_tags: list[str] = []
 
     @property
     def ham(self) -> NDArray[np.complex128]:
@@ -524,7 +526,8 @@ class Transport():
 
     def attach_lead(
         self, sys, ks, direction: int = 1, conservation_law: ArrayLike | None = None,
-    ) -> None:
+        extend: bool = False,
+    ) -> tuple[sp.csr_matrix, NDArray[np.float64]] | None:
         r'''
         Attach a semi-infinite lead given as a 1D *KSpace* model (e.g. a
         ribbon, see *kspace.ribbon*) to the device built from *sys*, without
@@ -539,17 +542,38 @@ class Transport():
         its own hoppings: :math:`\tau = v` restricted to their orbitals (see
         *lead_from_kspace*, which also gives :math:`h_0` and :math:`v`).
         Every lead orbital with a hopping into the next cell must be present
-        in the interface cell; the device is not extended.
+        in the interface cell.
+
+        With *extend*, a device whose edge is ragged relative to the lead
+        (a disc under a strip, a flake under a zigzag lead) is completed
+        first, as Kwant's *attach_lead* does: starting from the lead's first
+        cell, every lead site reached through the lead's hoppings and absent
+        from the device is added to it, cell by cell towards the device,
+        until the sites reached are all present. The added sites take the
+        lead's onsite energies and its hoppings to their neighbours (device
+        or added sites at lead positions). They come after the device
+        sites, so the sites of the leads already attached keep their
+        indices, and a later *attach_lead* with the same *sys* knows of them.
 
         :param sys: **System** instance (one orbital per site) whose
             Hamiltonian, in the same site order, is the device of this
-            *Transport*.
+            *Transport* (followed by the sites added by earlier *extend* calls).
         :param ks: **KSpace** instance, 1D and spinless, with hoppings
             between neighbouring cells only.
         :param direction: +1 or -1. Default value 1. Direction, along the
             lead's primitive vector, in which the lead extends away from the device.
         :param conservation_law: Hermitian complex array, shape (norb, norb),
             or None. Default value None. See *add_lead*.
+        :param extend: Boolean. Default value False. Add the missing lead
+            sites to the device instead of refusing an incomplete interface.
+
+        :returns:
+            With *extend*, the enlarged device (None otherwise):
+
+            * **ham** -- Sparse CSR complex matrix. The device Hamiltonian,
+              the added sites last.
+            * **positions** -- Real ndarray, shape (n_sites, space_dim). The
+              positions of its sites, those of *sys* first.
 
         Example usage::
 
@@ -557,16 +581,20 @@ class Transport():
             tr = Transport(sys.ham)
             tr.attach_lead(sys, strip, -1)   # at the left end of the device
             tr.attach_lead(sys, strip, 1)    # at the right end
+            ham, pos = tr.attach_lead(disc, strip, 1, extend=True)  # ragged edge
         '''
         from tbkit.orbital import OrbitalSystem
         error_handling.sys(sys)
         error_handling.not_orbital_system(sys, OrbitalSystem)
         error_handling.empty_coor(sys.lat.coor)
-        error_handling.lead_device_size(sys.lat.sites, self._ham.shape[0])
+        error_handling.boolean(extend, 'extend')
+        error_handling.lead_device_size(sys.lat.sites + len(self._added_tags), self._ham.shape[0])
         error_handling.spinless(ks.spin)
         h0, v = lead_from_kspace(ks, direction)
         error_handling.lead_space_dim(ks.space_dim, sys.lat.space_dim)
-        pos = np.stack([sys.lat.coor[f] for f in ('x', 'y', 'z')[:sys.lat.space_dim]], axis=1)
+        _law_blocks(h0, v, conservation_law)
+        pos = self._site_positions(sys)
+        tags = np.concatenate([sys.lat.coor['tag'], np.array(self._added_tags, dtype='U1')])
         a = np.array(ks.lat.prim_vec[0], dtype='f8')
         tau = ks.orbital_positions()
         cell = np.zeros(len(pos), int)
@@ -575,16 +603,90 @@ class Transport():
             rel = pos - tau[o]
             n = np.rint(rel @ a / (a @ a)).astype(int)
             hit = (orb < 0) & (np.linalg.norm(rel - n[:, None] * a, axis=1) < error_handling.ATOL) \
-                & (sys.lat.coor['tag'] == ks.tags[o])
+                & (tags == ks.tags[o])
             cell[hit], orb[hit] = n[hit], o
         on_lead = orb >= 0
         error_handling.lead_overlap(bool(on_lead.any()))
         edge = direction * np.max(direction * cell[on_lead])
+        if extend:
+            added = self._extend(h0, v, direction, cell, orb, edge)
+            new = np.reshape([tau[o] + n * a for n, o in added], (-1, pos.shape[1]))
+            self._added_pos = np.concatenate([self._added_pos.reshape(-1, pos.shape[1]), new])
+            self._added_tags += [str(ks.tags[o]) for _, o in added]
+            cell = np.concatenate([cell, [n for n, _ in added]]).astype(int)
+            orb = np.concatenate([orb, [o for _, o in added]]).astype(int)
+            on_lead = orb >= 0
         interface = np.flatnonzero(on_lead & (cell == edge))
         bonded = np.flatnonzero(np.any(v != 0, axis=1))  # orbitals coupled to the next cell
         error_handling.lead_interface(sorted(set(bonded) - set(orb[interface])))
         sites = interface[np.isin(orb[interface], bonded)]
         self.add_lead(h0, v, v[orb[sites]], [int(s) for s in sites], conservation_law)
+        if extend:
+            return self._ham.copy(), self._site_positions(sys)
+        return None
+
+    def _site_positions(self, sys) -> NDArray[np.float64]:
+        r'''
+        Private method. The positions of the device sites: those of *sys*,
+        then the sites added by *attach_lead* (*extend*).
+        '''
+        pos = np.stack([sys.lat.coor[f] for f in ('x', 'y', 'z')[:sys.lat.space_dim]], axis=1)
+        return np.concatenate([pos, self._added_pos.reshape(-1, pos.shape[1])])
+
+    def _extend(
+        self, h0: NDArray[np.complex128], v: NDArray[np.complex128], direction: int,
+        cell: NDArray[np.int64], orb: NDArray[np.int64], edge: int,
+    ) -> list[tuple[int, int]]:
+        r'''
+        Private method. Add to the device the lead sites missing between the
+        lead and the device (see *attach_lead*): a flood fill from the lead's
+        first cell (*edge* + *direction*) over the lead's hoppings, which
+        stops at the device sites (*cell*, *orb*: their lead cell and
+        orbital, -1 off the lead) and may not go past the device's innermost
+        lead cell. Returns the added sites as (cell, orbital), in the order
+        they are appended to the device.
+        '''
+        norb = len(h0)
+        present = {(int(n), int(o)): s for s, (n, o) in enumerate(zip(cell, orb)) if o >= 0}
+        inner = np.min(direction * cell[orb >= 0])
+        hop = (h0 != 0) & ~np.eye(norb, dtype=bool)
+
+        def neighbours(n, o):
+            return [(n, int(j)) for j in np.flatnonzero(hop[o] | hop[:, o])] \
+                + [(n + direction, int(j)) for j in np.flatnonzero(v[o])] \
+                + [(n - direction, int(i)) for i in np.flatnonzero(v[:, o])]
+
+        stack = [(int(edge) + direction, o) for o in range(norb)]
+        seen = set(stack)
+        added: list[tuple[int, int]] = []
+        while stack:
+            for n, o in neighbours(*stack.pop()):
+                if direction * n > direction * edge or (n, o) in seen:
+                    continue
+                seen.add((n, o))
+                if (n, o) not in present:
+                    error_handling.lead_extension(direction * n >= inner)
+                    added.append((n, o))
+                    stack.append((n, o))
+        n_dev = self._ham.shape[0]
+        index = {**present, **{site: n_dev + k for k, site in enumerate(added)}}
+        rows, cols, vals = [], [], []
+        for n, o in added:
+            s = index[(n, o)]
+            for m, p in [(n, o)] + neighbours(n, o):
+                r = index.get((m, p))
+                if r is None:
+                    continue
+                t = h0[o, p] if m == n else v[o, p] if m == n + direction else np.conj(v[p, o])
+                rows += [s] if r >= n_dev else [s, r]
+                cols += [r] if r >= n_dev else [r, s]
+                vals += [t] if r >= n_dev else [t, np.conj(t)]
+        size = n_dev + len(added)
+        self._ham = sp.csr_matrix(
+            sp.block_diag([self._ham, sp.csr_matrix((len(added), len(added)))], format='csr')
+            + sp.csr_matrix((vals, (rows, cols)), shape=(size, size)), dtype='c16')
+        self._dense = None
+        return added
 
     def self_energy(self, lead: int, energy: float, eta: float = 1e-9) -> NDArray[np.complex128]:
         r'''
