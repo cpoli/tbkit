@@ -12,7 +12,7 @@ a Tight-Binding model:
   k-path.
 
 Graphene's honeycomb lattice is the running example throughout tbkit's
-:doc:`/history` -- its two bands touch linearly at the Brillouin zone
+:doc:`history </history/index>` -- its two bands touch linearly at the Brillouin zone
 corners, the massless-Dirac-fermion dispersion P. R. Wallace predicted in
 1947, fifty-seven years before the material itself was isolated.
 """
@@ -103,7 +103,7 @@ print('Energies at K: {} (should be ~0, ~0 -- the Dirac point)'.format(en_K))
 # gapless, it is *linear* (massless Dirac fermions),
 # :math:`E(\mathbf{K}+\mathbf{q}) \approx \pm\frac{3}{2}ta|\mathbf{q}|`,
 # with :math:`a` the nearest-neighbor distance. See
-# :doc:`/history` for the historical context.
+# :doc:`/history/models_breakthroughs` for the historical context.
 
 a = 1.
 for q in (0.001, 0.01, 0.05):

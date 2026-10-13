@@ -284,9 +284,12 @@ periodic model, keeping its hoppings intact::
     fig = rib.plot_bands()
 
 For a zigzag graphene ribbon this reproduces the famous zero-energy edge
-flat band; cutting a ribbon from the Kane-Mele model above instead shows
-helical edge states crossing the bulk gap, protected by Kramers' theorem.
-See ``examples/topology/plot_edge_states.py``, where both are checked numerically.
+flat band (``examples/tight_binding/plot_zigzag_edge_states.py``);
+cutting a ribbon from the Kane-Mele model above instead shows helical
+edge states crossing the bulk gap, protected by Kramers' theorem
+(``examples/topology/plot_edge_states.py``). Both are checked numerically.
+
+.. minigallery:: ../../examples/tight_binding/plot_zigzag_edge_states.py
 
 .. minigallery:: ../../examples/topology/plot_edge_states.py
 
@@ -508,7 +511,10 @@ hoppings::
 :meth:`~tbkit.transport.Transport.add_lead` attaches a lead by hand: its
 cell Hamiltonian and coupling (:func:`~tbkit.transport.lead_from_kspace`
 cuts them from a *KSpace* model), a coupling matrix and the device sites
-it touches. See ``examples/transport/``.
+it touches. A device whose edge is ragged relative to the lead (a disc
+under a strip) is completed with ``attach_lead(sys, strip, 1,
+extend=True)``, which adds the missing lead sites and returns the
+enlarged Hamiltonian and site positions. See ``examples/transport/``.
 
 .. minigallery:: ../../examples/transport/plot_landauer_conductance.py ../../examples/transport/plot_automatic_lead_attachment.py
 

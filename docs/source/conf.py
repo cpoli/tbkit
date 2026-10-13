@@ -21,7 +21,7 @@ import os
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('../../'))
 # lattice_figures.py lives next to this file and is imported by the
-# ".. plot::" blocks in tutorial.rst / history.rst.
+# ".. plot::" blocks in tutorial.rst / history/.
 sys.path.insert(0, os.path.abspath('.'))
 numpydoc_show_class_members = False
 # -- General configuration ------------------------------------------------
@@ -67,7 +67,7 @@ sphinx_gallery_conf = {
     'download_all_examples': False,
     'within_subsection_order': 'FileNameSortKey',
     'remove_config_comments': True,
-    # Lets ".. minigallery::" (used throughout history.rst) resolve
+    # Lets ".. minigallery::" (used throughout history/) resolve
     # fully-qualified object names in addition to the file paths/globs it
     # already handles, and is required for it to not warn about falling
     # back to file-path resolution on every single invocation.

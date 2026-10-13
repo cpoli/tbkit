@@ -113,7 +113,7 @@ ax.set_title("Square lattice ({}x{}): Landau staircase near the band bottom".for
 # separated in energy from the bulk Landau ladder, which is what makes
 # the plateaus below so clean. (The cluster right at E=0 is a mix of
 # the field-induced n=0 Landau level and the flake's own sublattice
-# zero modes from Lieb's theorem -- see :doc:`/history`, 1989.)
+# zero modes from Lieb's theorem -- see :doc:`/history/interactions_breakthroughs`, 1989.)
 
 glat = GrapheneLattice()
 glat.triangle_zigzag(n=44)

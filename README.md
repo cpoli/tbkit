@@ -199,8 +199,9 @@ Rendered docs (tutorial, API reference, example gallery): https://cpoli.github.i
 * [`docs/source/tutorial.rst`](docs/source/tutorial.rst) -- a narrative walkthrough of the
   package, from building a lattice through topology, spin-orbit coupling,
   and edge states.
-* [`docs/source/history.rst`](docs/source/history.rst) -- a chronology of the breakthroughs
-  behind Tight-Binding theory (Bloch's theorem through the Kane-Mele model),
+* [`docs/source/history/`](docs/source/history/) -- a chronology of the breakthroughs
+  behind Tight-Binding theory (Bloch's theorem through higher-order topology),
+  one page per theme,
   each one linked to the corresponding **tbkit** functionality and example
   above.
 * `docs/source/tbkit.rst` -- the API reference (auto-generated from docstrings).

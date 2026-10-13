@@ -9,34 +9,19 @@ tbkit already covers more physics than either package: band topology,
 Hall and optical response, non-Hermitian and Floquet models, mean field,
 moiré systems. What it lacks is mostly transport machinery and
 scalability. The scattering matrix, conservation laws, finite
-temperature and automatic lead attachment are in place (see Done). What
-remains for mesoscopic device work is completing lead interfaces (item 1)
-and, above all, scale (item 2). Until then, Kwant remains the right tool
-for large transport calculations. Items 4 and 6 are smaller, and item 5
-(interactions) holds the next additions on the physics side.
+temperature and automatic lead attachment, including the completion of
+ragged interfaces, are in place (see Done). What remains for mesoscopic
+device work is, above all, scale (item 1). Until then, Kwant remains the
+right tool for large transport calculations. Items 3 and 5 are smaller,
+and item 4 (interactions) holds the next additions on the physics side.
+Item 6 lists history breakthroughs still missing from the docs.
 
 Each item lists why it matters, the current state, and a sketch of the
 approach. The project conventions (validation in `error_handling.py`, 100%
 line coverage, an asserted gallery example, a history entry when there is
 a breakthrough to tell) apply to all of them.
 
-## 1. Completing lead interfaces
-
-**Why.** `Transport.attach_lead` (see Done) needs the device to end with
-a complete lead cell. A device whose edge is ragged relative to the lead,
-such as a graphene flake under a zigzag lead or a disc under a strip,
-has to be trimmed or padded by hand first.
-
-**Now.** `attach_lead` refuses an incomplete interface cell and names the
-missing lead orbitals.
-
-**Approach.** An `extend=True` option that adds the missing lead sites to
-the device, as Kwant's `attach_lead` does. Their bonds come from the
-lead's hoppings, and the method returns the enlarged Hamiltonian and site
-positions. Repeat cell by cell until every lead orbital with a hopping
-into the next cell is present.
-
-## 2. Performance and scale
+## 1. Performance and scale
 
 **Why.** Many workflows (Wilson loops on fine meshes, `System.get_eig` on
 large flakes, transport of 2D devices) are dense and single-threaded.
@@ -60,7 +45,7 @@ and single-threaded.
   quantum geometric tensor, and the Floquet `get_ham` (one evolution
   per k-point today).
 
-## 3. Interoperability and API limits
+## 2. Interoperability and API limits
 
 - Import and export Kwant `Builder`s, PythTB `tb_model`s, pybinding
   models and ASE `Atoms` geometries. That makes cross-checks against these
@@ -73,12 +58,12 @@ and single-threaded.
 - Optional physical units (eV, Å, tesla) for magnetic fields and
   conductances. The current dimensionless conventions stay the default.
 
-## 4. Time-dependent transport
+## 3. Time-dependent transport
 
 Transient currents and pulses through a device, like tkwant. This is
 niche. It can build on the scattering states (`Transport.wave_function`).
 
-## 5. Interactions beyond on-site Hubbard mean field
+## 4. Interactions beyond on-site Hubbard mean field
 
 **Why.** Magnetic order in a bulk crystal, charge-density waves, and the
 correlated phases of moiré bands all need mean-field theory in k-space or
@@ -100,7 +85,7 @@ torus.
 - Self-consistent Hartree-Poisson for gated devices, on the sparse
   scattering states (`Transport.ldos`).
 
-## 6. Project infrastructure
+## 5. Project infrastructure
 
 - **Activate releases and the DOI**: the workflow is in place
   (`.github/workflows/release.yml`, see Done); register it as a PyPI
@@ -111,7 +96,88 @@ torus.
   mostly from the strictness of the NumPy stubs. Fix them module by module,
   then drop `continue-on-error` from the `typecheck` job.
 
+## 6. History breakthroughs to add
+
+**Why.** Two pages of `docs/source/history/` have fewer than 15
+breakthroughs: interactions (11) and driven (11).
+The candidates below have no entry of their own on any page yet. The aim
+is to tell the missing stories, not to reach a count.
+
+**Now.** Unless marked *new code*, the functionality is already in
+tbkit. What is missing is the history entry and a dedicated gallery
+example per breakthrough (no example shared between two entries).
+
+**Flat bands and interactions** (`interactions_breakthroughs.rst`)
+- Optional, *new code*: 2015, flat-band superconductivity and the
+  superfluid weight bounded by the quantum metric (Peotta-Törmä).
+  `quantum_geometric_tensor` exists; a superfluid-weight function does
+  not.
+
+**Driven and open systems** (`driven_breakthroughs.rst`)
+- Optional, *new code*: 2018/2019, the 38-fold non-Hermitian symmetry
+  classification (Kawabata et al.; Zhou-Lee), mirroring
+  `KSpace.tenfold_class`.
+
+**Approach.** One breakthrough per change: the entry (references, link to
+the tbkit functions, `.. minigallery::`) and a new asserted example whose
+title names the breakthrough. Where an entry today mentions the subject in
+passing, move that text into the new entry rather than repeat it.
+
 ## Done
+
+- **Driven and open systems history breakthroughs** (unreleased): five
+  entries in `driven_breakthroughs.rst` (now 11), each with its own
+  asserted example: Landau-Zener tunnelling and Zener breakdown
+  (1932/1934), dynamic localization and coherent destruction of
+  tunnelling (1986/1991), discrete optics in waveguide arrays
+  (1999/2003), the photovoltaic Hall effect (2009) and the generalized
+  Brillouin zone (2018/2019). Oka-Aoki moved out of the Floquet
+  topological insulator entry (now 2011), and the GBZ out of the skin
+  effect entry; `non_hermitian/plot_skin_effect.py` dropped its GBZ
+  section for `non_hermitian/plot_generalized_brillouin_zone.py`.
+
+- **Fields history breakthroughs** (unreleased): six entries in
+  `fields_breakthroughs.rst` (now 13), each with its own asserted
+  example: Rashba spin-orbit coupling (1959/1984), Zak's magnetic
+  translation group (1964), Lifshitz tails (1964), the inverse
+  participation ratio and multifractality (1970/1980), Aubry-André
+  localization (1980) and vacancy zero modes in graphene (2006). The IPR
+  definition moved from the Anderson entry into its own.
+
+- **Flat bands and interactions history breakthroughs** (unreleased):
+  four entries in `interactions_breakthroughs.rst` (now 11), each with
+  its own asserted example: the Bogoliubov-de Gennes equations (1966,
+  Andreev bound states), Nagaoka and Mielke-Tasaki flat-band
+  ferromagnetism (1966/1991-1992, exact diagonalization of one-hole
+  clusters and the kagome flat band), magnetism of triangular graphene
+  nanoislands (2007) and Majorana nanowires (2010). The de Gennes text of
+  the BCS entry and the nanowire sentence of the Kitaev entry moved to
+  the new entries. `correlations/plot_lieb_theorem.py` now shows the
+  ferrimagnet of the Lieb lattice, leaving the graphene triangles to
+  `correlations/plot_triangular_graphene_nanoislands.py`.
+
+- **Models history breakthroughs** (unreleased): six entries in
+  `models_breakthroughs.rst` (now 16), each with its own asserted
+  example: Brillouin zones and the Setyawan-Curtarolo paths (1930/2010),
+  Löwdin orthogonalization (1950), Monkhorst-Pack grids (1976), fermion
+  doubling (1981), Lopez Sancho decimation (1985) and zigzag edge states
+  of graphene ribbons (1996). The zigzag half of
+  `topology/plot_edge_states.py` moved to
+  `tight_binding/plot_zigzag_edge_states.py`. New API along the way:
+  `mesh_grid`/`mesh_bands(..., monkhorst_pack=True)` and a public
+  `kspace.cubic_path`.
+
+- **Completing lead interfaces** (unreleased):
+  `Transport.attach_lead(..., extend=True)` adds to the device the lead
+  sites it lacks, as Kwant's `attach_lead` does: a flood fill from the
+  lead's first cell over the lead's hoppings, cell by cell towards the
+  device, until every site reached is present (refused if it would pass
+  the device's far end). The added sites carry the lead's onsite energies
+  and hoppings and come after the device's, so earlier leads keep their
+  sites; the method returns the enlarged Hamiltonian and the site
+  positions. Example: `examples/transport/plot_completing_lead_interfaces.py`
+  (a ragged strip gives back the full one; a graphene disc between zigzag
+  leads).
 
 - **Project infrastructure for review** (unreleased): the docs build,
   which re-runs every asserted gallery example, and the paper's code
@@ -256,7 +322,7 @@ torus.
 | | tbkit | Kwant | PythTB |
 |---|---|---|---|
 | Model building | Real-space `System` and Bloch `KSpace`, with bridges between them, value functions (`get_ham(**params)`) and k·p discretization | Graph `Builder` with symmetries and value functions | `TBModel` (2.0; `tb_model` kept as an alias), any periodic and real-space dimensions, parametrized terms |
-| Transport | S-matrix from exact lead modes (sparse), automatic lead attachment, conservation-law blocks, scattering states and LDOS, finite temperature and thermoelectrics; Landauer, multi-terminal, currents, shot noise (dense, finite `eta`), recursive Green's function | S-matrix, lead modes, wavefunctions, conservation laws, sparse solver | None |
+| Transport | S-matrix from exact lead modes (sparse), automatic lead attachment (completing ragged interfaces), conservation-law blocks, scattering states and LDOS, finite temperature and thermoelectrics; Landauer, multi-terminal, currents, shot noise (dense, finite `eta`), recursive Green's function | S-matrix, lead modes, wavefunctions, conservation laws, sparse solver | None |
 | Band topology | Chern, spin and mirror Chern, Wilson loops, 2D Z2 and the four 3D indices, Fu-Kane parities, Majorana number, Weyl points, quantum geometry, tenfold way, higher order, local Chern marker, Bott index, entanglement spectrum | Minimal (via qsymm) | Berry phases, Wilson loops, hybrid Wannier centres; since 2.0 also Chern numbers, Berry curvature, quantum metric, local Chern marker, axion angle, Wannier functions |
 | Surface states | Ribbons and slabs, semi-infinite surface spectral function | Leads and `kwant.physics` | Finite slabs (`cut_piece`) |
 | Response | Anomalous and spin Hall, orbital magnetization, anomalous Nernst and thermal Hall, axion angle, Kubo-Bastin, optics, Berry curvature dipole, shift current | Kubo conductivity (KPM) | Berry curvature and velocities, no conductivity routines |

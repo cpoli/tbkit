@@ -3,7 +3,7 @@ Examples
 
 Runnable scripts demonstrating the conceptual breakthroughs behind
 **tbkit**, from Bloch's band theory to Floquet topological insulators --
-see :doc:`/history` for the full chronology each script illustrates.
+see :doc:`/history/index` for the full chronology each script illustrates.
 
 See also the narrative walkthrough: :doc:`/tutorial`.
 

@@ -2,6 +2,82 @@
 
 ## Unreleased
 
+### Added
+
+- **The history page is split by theme**: `docs/source/history.rst`
+  became `docs/source/history/`, an index plus one page per section of
+  the example gallery (models, fields, topology, response, interactions,
+  driven).
+
+- **Five history breakthroughs on driven and open systems**, each with
+  its own asserted example: Landau-Zener tunnelling and Zener breakdown
+  (1932/1934, `dynamics/plot_landau_zener_tunnelling.py`), dynamic
+  localization and coherent destruction of tunnelling (1986/1991,
+  `floquet/plot_dynamic_localization.py`), discrete optics in waveguide
+  arrays (1999/2003, `dynamics/plot_discrete_optics_in_waveguide_arrays.py`),
+  the photovoltaic Hall effect (2009,
+  `floquet/plot_photovoltaic_hall_effect.py`) and the generalized
+  Brillouin zone (2018/2019,
+  `non_hermitian/plot_generalized_brillouin_zone.py`, which takes over
+  the GBZ section of `non_hermitian/plot_skin_effect.py`).
+
+- **Four history breakthroughs on flat bands and interactions**, each
+  with its own asserted example: the Bogoliubov-de Gennes equations
+  (1966, `superconductivity/plot_bogoliubov_de_gennes_equations.py`),
+  Nagaoka and Mielke-Tasaki flat-band ferromagnetism (1966/1991-1992,
+  `correlations/plot_flat_band_ferromagnetism.py`), magnetism of
+  triangular graphene nanoislands (2007,
+  `correlations/plot_triangular_graphene_nanoislands.py`, which takes
+  over the graphene triangles of `correlations/plot_lieb_theorem.py`; that
+  example now shows the ferrimagnet of the Lieb lattice) and Majorana
+  nanowires (2010, `superconductivity/plot_majorana_nanowire.py`).
+
+- **Six history breakthroughs on fields, strain and disorder**, each with
+  its own asserted example: Rashba spin-orbit coupling (1959/1984,
+  `orbitals/plot_rashba_spin_orbit_coupling.py`), Zak's magnetic
+  translation group (1964, `magnetic_field/plot_magnetic_translation_group.py`),
+  Lifshitz tails (1964, `disorder/plot_lifshitz_tails.py`), the inverse
+  participation ratio and multifractality (1970/1980,
+  `disorder/plot_inverse_participation_ratio.py`), Aubry-André
+  localization (1980, `disorder/plot_aubry_andre_localization.py`) and
+  vacancy-induced zero modes in graphene (2006,
+  `disorder/plot_vacancy_zero_modes.py`). The IPR definition moved from
+  the Anderson entry into its own.
+
+- **`Transport.attach_lead(..., extend=True)` completes a ragged
+  interface.** A device whose edge does not end with a complete lead cell
+  (a disc under a strip, a graphene flake under a zigzag lead) was refused.
+  With `extend=True`, the missing lead sites are added to the device, with
+  the lead's onsite energies and hoppings, by a flood fill from the lead
+  towards the device (as in Kwant). They are appended after the device's
+  sites, and the method returns the enlarged Hamiltonian and the site
+  positions. The default (`extend=False`) is unchanged. Example:
+  `transport/plot_completing_lead_interfaces.py`.
+
+- **`KSpace.mesh_grid(..., monkhorst_pack=True)` and `mesh_bands(...,
+  monkhorst_pack=True)` build the Monkhorst-Pack grid** (2r - q - 1)/2q,
+  symmetric about Gamma: the same points as the default Gamma-centred
+  grid for odd q, shifted by half a step for even q. The default
+  (`False`) is unchanged.
+
+- **`kspace.cubic_path(points, names, a, axes)`** builds a k-path of a
+  cubic crystal from high-symmetry points tabulated in units of 2pi/a
+  along the cubic axes (optionally rotated). It was a helper nested in
+  `high_symmetry_path`, which now uses the public function; exported from
+  `tbkit`.
+
+- **Six history breakthroughs on building and solving models**, each with
+  its own asserted example: Brillouin zones and the Setyawan-Curtarolo
+  paths (1930/2010, `tight_binding/plot_brillouin_zones_and_high_symmetry_paths.py`),
+  Löwdin orthogonalization (1950, `orbitals/plot_lowdin_orthogonalization.py`),
+  Monkhorst-Pack grids (1976, `tight_binding/plot_monkhorst_pack_grids.py`),
+  fermion doubling (1981, `models/plot_fermion_doubling.py`), Lopez Sancho
+  decimation (1985, `tight_binding/plot_surface_greens_function.py`) and
+  zigzag edge states of graphene ribbons (1996,
+  `tight_binding/plot_zigzag_edge_states.py`, which takes over the zigzag
+  half of `topology/plot_edge_states.py`; that example now covers only the
+  Kane-Mele helical edge states).
+
 ### Changed
 
 - **`System.get_eig()` is about twice as fast on real Hamiltonians.** The
@@ -12,6 +88,19 @@
   1000 sites. The eigenvector path is unchanged (`rn` stays complex). The
   3D Anderson-transition example runs in half the time, and the whole
   gallery about 14% faster.
+
+### Fixed
+
+- **`System.get_eig_sparse` killed the Python process at a two-fold
+  eigenvalue.** It first factorized `H - sigma` at `sigma` itself and
+  shifted only if SuperLU raised. With an eigenvalue exactly at `sigma`
+  that is two-fold (two vacancies on one sublattice of graphene, at the
+  default `sigma = 0`), SuperLU passes a negative size to BLAS instead of
+  raising, and Apple's Accelerate aborts the process (`BLAS error:
+  Parameter m passed to cblas_zgemv was -1`), real or complex matrices
+  alike. The factorization now always uses `sigma` offset by about 1e-9
+  (relative to the largest matrix element); the eigenvalues are
+  unchanged.
 
 ## 0.5.0 -- 2026-10-03
 

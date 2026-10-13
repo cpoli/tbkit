@@ -70,8 +70,9 @@ There are two independent pipelines. Both start from a `Lattice`:
 - `tbkit/__init__.py` imports classes explicitly, never with `from tbkit.<module> import *`. A wildcard would rebind the `tbkit.lattice` submodule attribute to the alias class of the same name and break `import tbkit.lattice as lattice`. Keep it that way.
 - A bug fix gets a pinning test (see `tests/test_regressions.py`) and an entry in `CHANGELOG.md` saying what numbers were wrong and why.
 - Gallery examples (`examples/<topic>/plot_*.py`, one topic per folder, each with a `README.rst`) are self-contained and check their key numeric claims with `assert` before plotting. Nothing is claimed in the docs that the code doesn't verify.
-- `docs/source/history.rst` is a chronology of Tight-Binding breakthroughs, each linked to the tbkit functionality and to gallery examples via `.. minigallery::`.
+- `docs/source/history/` is a chronology of Tight-Binding breakthroughs: `index.rst` plus one `<theme>_breakthroughs.rst` per subsection of the `docs/source/index.rst` examples (models, fields, topology, response, interactions, driven), each breakthrough linked to the tbkit functionality and to gallery examples via `.. minigallery::`.
   - Every breakthrough links to one or more gallery examples, and no example is linked from two breakthroughs.
+  - An entry has a single `.. minigallery::` directive, with one example path per line in its body when there are several, so the thumbnails sit side by side in one row rather than stacked.
   - Each example's title and content must show that breakthrough's subject, so a reader can tell at a glance why it illustrates that entry.
   - Split an example that covers several breakthroughs into focused ones, one per breakthrough, and delete the combined file.
   - When the match is unclear, change the example, not the breakthrough's title or text.
