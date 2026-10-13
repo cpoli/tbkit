@@ -9,10 +9,18 @@ name: release
 # - GitHub: create the environment "pypi" in the repository settings.
 # - Zenodo: enable the repository at zenodo.org/account/settings/github;
 #   every GitHub Release is then archived with its own DOI.
+#
+# Zenodo mints the version DOI only after the GitHub Release, so the job
+# zenodo-doi waits for it, then writes it to CITATION.cff and the README
+# badge in a commit on master.
 
 on:
   push:
     tags: ["v*"]
+
+env:
+  # Zenodo concept record of tbkit: all its versions share it.
+  ZENODO_CONCEPT: "23116497"
 
 jobs:
   build:
@@ -67,6 +75,61 @@ jobs:
       - run: gh release create "$GITHUB_REF_NAME" dist/* --title "tbkit ${GITHUB_REF_NAME#v}" --notes-file notes.md
         env:
           GH_TOKEN: ${{ github.token }}
+
+  zenodo-doi:
+    needs: github-release
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - name: Wait for the Zenodo version DOI
+        run: |
+          query="https://zenodo.org/api/records?q=conceptrecid:${ZENODO_CONCEPT}&all_versions=true&sort=mostrecent&size=25"
+          for attempt in $(seq 60); do
+            doi=$(curl -sf "$query" | jq -r --arg v "$GITHUB_REF_NAME" \
+              '.hits.hits[] | select(.metadata.version == $v) | .doi' | head -1) || true
+            if [ -n "$doi" ]; then
+              echo "DOI=$doi" >> "$GITHUB_ENV"
+              exit 0
+            fi
+            sleep 60
+          done
+          echo "Zenodo has not archived $GITHUB_REF_NAME after an hour" >&2
+          exit 1
+      - name: Write the DOI to CITATION.cff and the README badge
+        run: |
+          python3 - <<'EOF'
+          import os, re
+          doi = os.environ["DOI"]
+          cff = open("CITATION.cff").read()
+          if re.search(r"(?m)^doi: ", cff):
+              cff = re.sub(r"(?m)^doi: .*$", "doi: " + doi, cff)
+          else:
+              cff = re.sub(r"(?m)^(date-released: .*)$", r"\1\ndoi: " + doi, cff)
+          open("CITATION.cff", "w").write(cff)
+          badge = ("[![DOI](https://zenodo.org/badge/DOI/{0}.svg)]"
+                   "(https://doi.org/{0})".format(doi))
+          readme = open("README.md").read()
+          readme, n = re.subn(r"\[!\[DOI\]\([^)]*\)\]\([^)]*\)", lambda m: badge, readme)
+          assert n == 1, "expected one DOI badge in README.md, found {}".format(n)
+          open("README.md", "w").write(readme)
+          EOF
+          git diff
+      - name: Commit and push to master
+        run: |
+          git diff --quiet && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Add the Zenodo DOI of ${GITHUB_REF_NAME#v} to CITATION.cff and the README badge"
+          for attempt in 1 2 3; do
+            git pull --rebase origin master && git push origin HEAD:master && exit 0
+            sleep 10
+          done
+          exit 1
 
   docs:
     needs: pypi
