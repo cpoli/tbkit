@@ -805,5 +805,31 @@ class TestCoverageGaps(unittest.TestCase):
         plt.close(fig)
 
 
+class TestSparseTwoFoldZeroMode(unittest.TestCase):
+
+    def test_get_eig_sparse_at_a_two_fold_eigenvalue(self):
+        # get_eig_sparse factorized H - sigma at sigma first. With a two-fold
+        # eigenvalue at sigma (two vacancies on one sublattice of graphene,
+        # sigma = 0), SuperLU passed m = -1 to BLAS and Apple's Accelerate
+        # aborted the process instead of raising. Run it in a subprocess so
+        # a reappearance fails this test rather than killing the worker.
+        import subprocess
+        import sys
+        code = (
+            'import numpy as np, tbkit.lattices as lattices\n'
+            'from tbkit.system import System\n'
+            'lat = lattices.honeycomb(); lat.get_lattice(n1=8, n2=8)\n'
+            'a = np.flatnonzero(lat.coor["tag"] == "a")\n'
+            'lat.remove_sites([int(a[9]), int(a[40])])\n'
+            'sys = System(lat, periodic=True)\n'
+            'sys.set_hopping([{"n": 1, "t": -1.}]); sys.get_ham()\n'
+            'sys.get_eig_sparse(n_eig=6, eigenvec=True)\n'
+            'assert np.sum(np.abs(sys.en) < 1e-9) == 2\n'
+            'assert np.allclose(sys.ham @ sys.rn, sys.rn * sys.en)\n')
+        run = subprocess.run([sys.executable, '-c', code], capture_output=True, text=True,
+                             cwd=os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        self.assertEqual(run.returncode, 0, run.stderr)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -1043,8 +1043,11 @@ class System():
 
         :param n_eig: Positive integer. Default value 10. Number of eigenpairs
             (at most sites - 2).
-        :param sigma: Real or complex number. Default value 0. Target energy
-            (if it is exactly an eigenvalue, it is shifted by about 1e-9).
+        :param sigma: Real or complex number. Default value 0. Target energy.
+            The factorization uses *sigma* shifted by about 1e-9 (relative to
+            the largest matrix element), so that it may be exactly an
+            eigenvalue, e.g. zero modes at the default *sigma* = 0; the
+            eigenvalues themselves are not shifted.
         :param eigenvec: Boolean. Default value False.
         '''
         error_handling.empty_ham(self.ham)
@@ -1054,19 +1057,15 @@ class System():
         self.ln = np.array([], 'c16')
         ham = self.ham.tocsc()
         hermitian = not (self.ham.conj().T != self.ham).nnz
-
-        def solve(target):
-            if hermitian:
-                return SLA.eigsh(ham, k=n_eig, sigma=float(np.real(target)),
-                                         return_eigenvectors=eigenvec)
-            return SLA.eigs(ham, k=n_eig, sigma=target, return_eigenvectors=eigenvec)
-
-        try:
-            out = solve(sigma)
-        except RuntimeError:
-            # sigma is exactly an eigenvalue (a zero mode at the default
-            # sigma = 0, say): H - sigma is singular. Shift it slightly.
-            out = solve(sigma + 1e-9 * (1. + abs(sigma) + abs(ham).max()))
+        # Never factorize H - sigma at sigma itself: when sigma is exactly an
+        # eigenvalue, SuperLU usually raises, but with a two-fold one it
+        # passes a negative size to BLAS, and Apple's Accelerate then aborts
+        # the whole process (no exception to catch).
+        target = sigma + 1e-9 * (1. + abs(sigma) + abs(ham).max())
+        if hermitian:
+            out = SLA.eigsh(ham, k=n_eig, sigma=float(np.real(target)), return_eigenvectors=eigenvec)
+        else:
+            out = SLA.eigs(ham, k=n_eig, sigma=target, return_eigenvectors=eigenvec)
         en, vec = out if eigenvec else (out, None)
         ind = np.argsort(en.real, kind='stable')
         self.en = en[ind]
