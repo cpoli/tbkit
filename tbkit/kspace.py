@@ -645,15 +645,25 @@ class KSpace():
         return self.ks_dist, self.en
 
     def mesh_grid(
-        self, nk: int | tuple[int, ...],
+        self, nk: int | tuple[int, ...], monkhorst_pack: bool = False,
     ) -> tuple[list[NDArray[np.float64]], NDArray[np.float64]]:
-        '''
-        Private method. Build a uniform grid of fractional coordinates
-        spanning the Brillouin zone (each in [0, 1)), and the corresponding
-        Cartesian k-points.
+        r'''
+        Build a uniform grid of fractional coordinates spanning the
+        Brillouin zone, and the corresponding Cartesian k-points. By
+        default the grid contains :math:`\Gamma`: :math:`r/q`,
+        :math:`r = 0, \dots, q-1` (each in [0, 1)). With *monkhorst_pack*,
+        it is the grid of Monkhorst and Pack (Phys. Rev. B 13, 5188 (1976)),
+        :math:`(2r - q - 1)/2q`, :math:`r = 1, \dots, q` (each in
+        (-1/2, 1/2)), symmetric about :math:`\Gamma`: the same points for
+        odd :math:`q`, shifted by half a step (off :math:`\Gamma` and the
+        zone boundary) for even :math:`q`. Both integrate exactly every
+        Fourier component :math:`e^{i\mathbf{k}\cdot\mathbf{R}}` with
+        :math:`|R_i| < q`.
 
         :param nk: Positive integer, or tuple of *dim* positive integers.
             Number of k-points along each reciprocal lattice vector.
+        :param monkhorst_pack: Boolean. Default value False. If True, the
+            Monkhorst-Pack grid.
 
         :returns:
             * **fracs** -- List of *dim* real ndarrays, shape (nk1, nk2) each
@@ -661,15 +671,20 @@ class KSpace():
             * **ks** -- Real ndarray, shape (nk1*nk2, dim) (or (nk1, dim) in 1D).
         '''
         error_handling.nk(nk, self.dim)
+        error_handling.boolean(monkhorst_pack, 'monkhorst_pack')
         if isinstance(nk, int):
             nk = (nk,) * self.dim
-        fracs = np.meshgrid(*[np.arange(n)/n for n in nk], indexing='ij')
+        if monkhorst_pack:
+            axes = [(2 * np.arange(1, n + 1) - n - 1) / (2 * n) for n in nk]
+        else:
+            axes = [np.arange(n) / n for n in nk]
+        fracs = np.meshgrid(*axes, indexing='ij')
         ks = sum(f.ravel()[:, None] * b[None, :] for f, b in zip(fracs, self.rec_vec_k))
         if self.dim == 1:
             return [fracs[0]], ks
         return list(fracs), ks
 
-    def mesh_bands(self, nk: int | tuple[int, ...]) -> NDArray[np.float64]:
+    def mesh_bands(self, nk: int | tuple[int, ...], monkhorst_pack: bool = False) -> NDArray[np.float64]:
         '''
         Diagonalize :math:`H(\\mathbf{k})` over a uniform mesh spanning the
         Brillouin zone. Unlike *get_bands*, it leaves the band structure kept
@@ -677,12 +692,14 @@ class KSpace():
 
         :param nk: Positive integer, or tuple of *dim* positive integers.
             Number of k-points along each reciprocal lattice vector.
+        :param monkhorst_pack: Boolean. Default value False. If True, the
+            Monkhorst-Pack grid (see *mesh_grid*).
 
         :returns:
             * **en** -- Real ndarray, shape (nk1*nk2, norb). Band energies
               over the mesh (flattened).
         '''
-        _, ks = self.mesh_grid(nk)
+        _, ks = self.mesh_grid(nk, monkhorst_pack)
         return self._diagonalize(ks)
 
     def get_fermi_level(
@@ -3691,6 +3708,44 @@ def _orthogonal_axes(shell: NDArray[np.float64]) -> NDArray[np.float64]:
     return np.array([x, y, np.cross(x, y)])
 
 
+def cubic_path(
+    points: dict[str, ArrayLike], names: list[str], a: float = 1., axes: ArrayLike | None = None,
+) -> tuple[list[NDArray[np.float64]], list[str]]:
+    r'''
+    Build a path through k-points given in the conventional coordinates of
+    a cubic crystal: in units of :math:`2\pi/a` along the cubic axes, with
+    :math:`a` the side of the conventional cube, as tables of high-symmetry
+    points list them (e.g. :math:`X = (0, 1, 0)` and
+    :math:`L = (\tfrac12, \tfrac12, \tfrac12)` for fcc). *high_symmetry_path*
+    builds the standard simple cubic, fcc and bcc paths with it; use it
+    for another path, or other points, of the same lattices.
+
+    :param points: Dictionary. key: label, val: tuple of 3 real numbers,
+        the point in units of :math:`2\pi/a`.
+    :param names: List of at least two labels (keys of *points*), the
+        nodes of the path in order.
+    :param a: Positive real. Default value 1. Side of the conventional cube.
+    :param axes: Real array, shape (3, 3). Default value None: the
+        Cartesian axes. Rows: the three orthonormal cubic axes, in the
+        coordinates of *KSpace.get_ham* (for a crystal whose cube is rotated).
+
+    :returns:
+        * **points** -- List of real ndarrays, the k-points, for *KSpace.k_path*.
+        * **labels** -- List of strings, *names*, for *node_labels*.
+
+    Example usage::
+
+        # fcc, along Gamma - X - U and K - Gamma - L
+        pts = {'G': (0, 0, 0), 'X': (0, 1, 0), 'U': (.25, 1, .25),
+                  'K': (.75, .75, 0), 'L': (.5, .5, .5)}
+        points, labels = cubic_path(pts, ['G', 'X', 'U'], a=3.6)
+    '''
+    error_handling.cubic_path(points, names, axes)
+    error_handling.positive_real(a, 'a')
+    axes = np.eye(3) if axes is None else np.asarray(axes, dtype='f8')
+    return [2 * PI / a * np.asarray(points[n], dtype='f8') @ axes for n in names], list(names)
+
+
 def _bravais_3d(vecs: NDArray[np.float64]):
     '''
     Private function. The points and labels of the high-symmetry path of a
@@ -3704,13 +3759,10 @@ def _bravais_3d(vecs: NDArray[np.float64]):
     equal = {p: abs(lengths[p[0]] - lengths[p[1]]) < 1e-6 * lengths[2] for p in pairs}
     right = {p: cosine[p] < 1e-6 for p in pairs}
     G = r'$\Gamma$'
-
-    def cubic_path(pts, names, axes, a):
-        return [2 * PI / a * np.array(pts[n]) @ axes for n in names], names
     if all(right.values()):
         if all(equal.values()):  # simple cubic
             return cubic_path({G: (0, 0, 0), 'X': (0, .5, 0), 'M': (.5, .5, 0), 'R': (.5, .5, .5)},
-                                   [G, 'X', 'M', G, 'R', 'X'], minima / lengths[:, None], lengths[0])
+                                   [G, 'X', 'M', G, 'R', 'X'], lengths[0], minima / lengths[:, None])
         if sum(equal.values()) != 1:  # orthorhombic
             return None, None
         # simple tetragonal: a, a, c
@@ -3740,11 +3792,11 @@ def _bravais_3d(vecs: NDArray[np.float64]):
         return cubic_path({G: (0, 0, 0), 'X': (0, 1, 0), 'W': (.5, 1, 0), 'K': (.75, .75, 0),
                                   'L': (.5, .5, .5), 'U': (.25, 1, .25)},
                                  [G, 'X', 'W', 'K', G, 'L', 'U', 'W', 'L', 'K'],
-                                 _orthogonal_axes(shells[1]), radii[1])
+                                 radii[1], _orthogonal_axes(shells[1]))
     if len(shells[0]) == 8 and all(abs(c - 1 / 3) < 1e-6 for c in cosine.values()):
         # bcc: 8 nearest neighbours at a sqrt(3)/2, then 6 at a
         return cubic_path({G: (0, 0, 0), 'H': (0, 0, 1), 'N': (.5, 0, .5), 'P': (.5, .5, .5)},
-                                 [G, 'H', 'N', G, 'P', 'H'], _orthogonal_axes(shells[1]), radii[1])
+                                 [G, 'H', 'N', G, 'P', 'H'], radii[1], _orthogonal_axes(shells[1]))
     return None, None
 
 

@@ -3302,6 +3302,30 @@ def contour_found(n_elements, energy):
                                     'constant-energy contour.\n'.format(energy))
 
 
+def cubic_path(points, names, axes):
+    '''
+    Check the parameters of *kspace.cubic_path*.
+
+    :raises TypeError: Parameter points must be a dictionary.
+    :raises ValueError: Each point must have 3 real coordinates.
+    :raises ValueError: Parameter names must list at least two keys of points.
+    :raises ValueError: Parameter axes must be 3 orthonormal rows.
+    '''
+    if not isinstance(points, dict):
+        raise TypeError('\n\nParameter points must be a dictionary (label: point).\n')
+    for key, point in points.items():
+        point = np.asarray(point)
+        if point.shape != (3,) or not np.isrealobj(point) or not np.all(np.isfinite(point)):
+            raise ValueError('\n\nPoint {} must have 3 real coordinates.\n'.format(key))
+    if (not isinstance(names, (list, tuple)) or len(names) < 2
+            or any(n not in points for n in names)):
+        raise ValueError('\n\nParameter names must list at least two keys of points.\n')
+    if axes is not None:
+        axes = np.asarray(axes)
+        if axes.shape != (3, 3) or not np.isrealobj(axes) or not np.allclose(axes @ axes.T, np.eye(3)):
+            raise ValueError('\n\nParameter axes must be 3 orthonormal rows (shape (3, 3)).\n')
+
+
 def bravais_lattice(kind, dim):
     '''
     Check that *kspace.high_symmetry_path* recognized the Bravais lattice.

@@ -730,6 +730,20 @@ class TestAnalysisPlotting(unittest.TestCase):
         eh.bravais_lattice(['X'], 3)
         self.assertRaises(ValueError, eh.bravais_lattice, None, 3)
 
+    def test_cubic_path(self):
+        pts = {'G': (0, 0, 0), 'X': (0, 1, 0)}
+        eh.cubic_path(pts, ['G', 'X'], None)
+        eh.cubic_path(pts, ('G', 'X'), np.eye(3))
+        self.assertRaises(TypeError, eh.cubic_path, [(0, 0, 0)], ['G', 'X'], None)
+        self.assertRaises(ValueError, eh.cubic_path, {'G': (0, 0)}, ['G', 'G'], None)
+        self.assertRaises(ValueError, eh.cubic_path, {'G': (0, 1j, 0)}, ['G', 'G'], None)
+        self.assertRaises(ValueError, eh.cubic_path, {'G': (0, np.nan, 0)}, ['G', 'G'], None)
+        self.assertRaises(ValueError, eh.cubic_path, pts, ['G'], None)
+        self.assertRaises(ValueError, eh.cubic_path, pts, 'GX', None)
+        self.assertRaises(ValueError, eh.cubic_path, pts, ['G', 'Y'], None)
+        self.assertRaises(ValueError, eh.cubic_path, pts, ['G', 'X'], np.eye(2))
+        self.assertRaises(ValueError, eh.cubic_path, pts, ['G', 'X'], 2 * np.eye(3))
+
 
 class TestContinuumChecks(unittest.TestCase):
 

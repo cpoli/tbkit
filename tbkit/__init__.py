@@ -6,7 +6,7 @@
 
 """tbkit: build and solve Tight-Binding models."""
 
-__version__ = "0.5.0"
+__version__ = "0.6.0"
 
 __all__ = [
     "Lattice", "System", "Plot", "Propagation", "Save", "KSpace",
@@ -51,8 +51,8 @@ __all__ += ["RecursiveTransport"]
 from tbkit.topology import WeylPoints, find_weyl_points, bott_index
 __all__ += ["WeylPoints", "find_weyl_points", "bott_index"]
 # Analysis and plotting: standard k-paths
-from tbkit.kspace import high_symmetry_path
-__all__ += ["high_symmetry_path"]
+from tbkit.kspace import high_symmetry_path, cubic_path
+__all__ += ["high_symmetry_path", "cubic_path"]
 # Continuum (k.p) models discretized on a grid; sympy is imported on first use
 from tbkit.continuum import discretize, discretize_symbolic
 __all__ += ["discretize", "discretize_symbolic"]

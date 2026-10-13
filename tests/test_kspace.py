@@ -435,6 +435,23 @@ class TestBatchedDiagonalization(unittest.TestCase):
             self.assertTrue(np.allclose(v.conj().T @ s @ v, np.eye(2)))
         self.assertTrue(np.allclose(hal.mesh_bands(7), hal._eigs(hal.mesh_grid(7)[1], True)[0]))
 
+    def test_monkhorst_pack_grid(self):
+        hal = haldane(M=0.3)
+        # odd q: the same points as the Gamma-centred grid, folded into (-1/2, 1/2)
+        fr_g, _ = hal.mesh_grid(5)
+        fr_mp, ks_mp = hal.mesh_grid(5, monkhorst_pack=True)
+        for g, m in zip(fr_g, fr_mp):
+            self.assertTrue(np.allclose(np.sort(((g + .5) % 1 - .5).ravel()), np.sort(m.ravel())))
+        # even q: (2r - q - 1)/2q, symmetric about Gamma and missing it
+        fr, ks = hal.mesh_grid((4, 2), monkhorst_pack=True)
+        self.assertTrue(np.allclose(fr[0][:, 0], [-3 / 8, -1 / 8, 1 / 8, 3 / 8]))
+        self.assertTrue(np.allclose(fr[1][0], [-1 / 4, 1 / 4]))
+        self.assertTrue(np.allclose(np.sort(ks, axis=0), np.sort(-ks, axis=0)))
+        self.assertFalse(np.any(np.all(np.isclose(ks, 0.), axis=1)))
+        self.assertTrue(np.allclose(hal.mesh_bands(4, monkhorst_pack=True),
+                                    hal._eigs(hal.mesh_grid(4, True)[1], True)[0]))
+        self.assertRaises(TypeError, hal.mesh_grid, 4, 1)
+
     def test_non_hermitian(self):
         for overlap in (False, True):
             hal = haldane(M=0.3)

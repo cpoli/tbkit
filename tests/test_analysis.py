@@ -12,7 +12,7 @@ from scipy.special import ellipk
 import tbkit.dos as dos
 import tbkit.lattices as lattices
 from tbkit.lattice import Lattice
-from tbkit.kspace import KSpace, PAULI, high_symmetry_path
+from tbkit.kspace import KSpace, PAULI, high_symmetry_path, cubic_path
 
 S3 = np.sqrt(3)
 
@@ -378,6 +378,24 @@ class TestHighSymmetryPath(unittest.TestCase):
         rot = np.linalg.qr(np.array([[1., 2., 0.], [0., 1., 3.], [1., 0., 1.]]))[0]
         p, _ = high_symmetry_path(lattice([tuple(r) for r in rot]))
         self.assertAlmostEqual(np.linalg.norm(p[4]), np.sqrt(3) * np.pi)
+
+    def test_cubic_path(self):
+        G = r'$\Gamma$'
+        pts = {G: (0, 0, 0), 'X': (0, 1, 0), 'L': (.5, .5, .5)}
+        p, l = cubic_path(pts, [G, 'X', 'L'], a=2.)
+        self.assertEqual(l, [G, 'X', 'L'])
+        self.assertTrue(np.allclose(np.array(p), [[0, 0, 0], [0, np.pi, 0], [np.pi / 2] * 3]))
+        # the fcc path of high_symmetry_path, rebuilt from its table
+        fcc = {G: (0, 0, 0), 'X': (0, 1, 0), 'W': (.5, 1, 0), 'K': (.75, .75, 0),
+               'L': (.5, .5, .5), 'U': (.25, 1, .25)}
+        p_std, names = high_symmetry_path(lattice([(0., .5, .5), (.5, 0., .5), (.5, .5, 0.)]))
+        self.assertTrue(np.allclose(np.array(cubic_path(fcc, names)[0]), np.array(p_std)))
+        # rotated cubic axes
+        rot = np.linalg.qr(np.array([[1., 2., 0.], [0., 1., 3.], [1., 0., 1.]]))[0]
+        p, _ = cubic_path(pts, ['X', 'L'], axes=rot)
+        self.assertTrue(np.allclose(p[0], 2 * np.pi * rot[1]))
+        self.assertRaises(ValueError, cubic_path, pts, [G, 'Q'])
+        self.assertRaises(ValueError, cubic_path, pts, [G, 'X'], a=0.)
 
     def test_k_path_and_unsupported(self):
         gra = graphene()
