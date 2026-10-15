@@ -3,6 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. Google Search Console ownership check (same token as cpoli.github.io).
+.. meta::
+   :google-site-verification: -kU_m9kdHUpm0800RreI0ftx_vcH5XIWWkT0mzcWWTE
+
 tbkit
 =====
 
