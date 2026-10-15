@@ -149,6 +149,9 @@ jobs:
       - run: make -C docs html
       # The coverage report linked from the README lives at /coverage/.
       - run: pytest tests/ --cov=tbkit --cov-report=html:docs/build/html/coverage
+      # coverage.py writes a .gitignore of "*" into its HTML directory, which
+      # would keep the report out of the gh-pages commit.
+      - run: rm -f docs/build/html/coverage/.gitignore
       - run: touch docs/build/html/.nojekyll
       - uses: peaceiris/actions-gh-pages@v4
         with:

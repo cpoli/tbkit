@@ -171,6 +171,10 @@ todo_include_todos = True
 # physicskit's dark default.
 html_theme = 'pydata_sphinx_theme'
 
+# Where the docs are published (GitHub Pages): each page gets a
+# <link rel="canonical"> to its address there, for search engines.
+html_baseurl = 'https://cpoli.github.io/tbkit/'
+
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.

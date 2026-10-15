@@ -20,6 +20,17 @@
   only the lead rows of the solution, from a sparse right-hand side
   densified in column blocks, which lowers the peak memory.
 
+### Fixed
+
+- **Published coverage report.** The README's link to the HTML
+  coverage report (https://cpoli.github.io/tbkit/coverage/) returned
+  404: coverage.py writes a `.gitignore` of `*` into its HTML
+  directory, so the git-based gh-pages deploy left the report out.
+  The release workflow now deletes that file before deploying.
+- **Canonical docs URL.** `html_baseurl` is set, so every docs page
+  declares its canonical `https://cpoli.github.io/tbkit/` address to
+  search engines.
+
 ## 0.6.0 -- 2026-10-13
 
 ### Added
