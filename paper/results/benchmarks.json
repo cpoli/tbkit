@@ -1,6 +1,6 @@
 {
   "versions": {
-    "tbkit": "0.4.2",
+    "tbkit": "0.6.1",
     "kwant": "1.5.0",
     "pythtb": "2.0.2",
     "numpy": "2.5.3",
@@ -8,7 +8,7 @@
   },
   "platform": "macOS-26.6.2-arm64-arm-64bit",
   "processor": "arm",
-  "python": "3.12.14",
+  "python": "3.12.15",
   "threads": 1,
   "kspace": [
     {
@@ -16,7 +16,7 @@
       "norb": 2,
       "nk": 25,
       "package": "tbkit",
-      "seconds": 0.0003886660560965538,
+      "seconds": 0.0004124169936403632,
       "peak_mb": 0.0,
       "value": null
     },
@@ -25,7 +25,7 @@
       "norb": 2,
       "nk": 25,
       "package": "pythtb",
-      "seconds": 0.00025962491054087877,
+      "seconds": 0.00024937500711530447,
       "peak_mb": 0.0,
       "value": null
     },
@@ -34,8 +34,8 @@
       "norb": 2,
       "nk": 50,
       "package": "tbkit",
-      "seconds": 0.0012402079300954938,
-      "peak_mb": 0.46875,
+      "seconds": 0.0011733749997802079,
+      "peak_mb": 0.0,
       "value": null
     },
     {
@@ -43,7 +43,7 @@
       "norb": 2,
       "nk": 50,
       "package": "pythtb",
-      "seconds": 0.0007207919843494892,
+      "seconds": 0.0007344589976128191,
       "peak_mb": 0.0,
       "value": null
     },
@@ -52,71 +52,71 @@
       "norb": 2,
       "nk": 100,
       "package": "tbkit",
-      "seconds": 0.005086167016997933,
+      "seconds": 0.0049077919975388795,
+      "peak_mb": 6.34375,
+      "value": null
+    },
+    {
+      "task": "bands",
+      "norb": 2,
+      "nk": 100,
+      "package": "pythtb",
+      "seconds": 0.002644916996359825,
+      "peak_mb": 1.890625,
+      "value": null
+    },
+    {
+      "task": "bands",
+      "norb": 2,
+      "nk": 200,
+      "package": "tbkit",
+      "seconds": 0.019222959002945572,
+      "peak_mb": 40.828125,
+      "value": null
+    },
+    {
+      "task": "bands",
+      "norb": 2,
+      "nk": 200,
+      "package": "pythtb",
+      "seconds": 0.01069779199315235,
+      "peak_mb": 14.828125,
+      "value": null
+    },
+    {
+      "task": "bands",
+      "norb": 8,
+      "nk": 25,
+      "package": "tbkit",
+      "seconds": 0.004164415993727744,
       "peak_mb": 7.0,
       "value": null
     },
     {
       "task": "bands",
-      "norb": 2,
-      "nk": 100,
+      "norb": 8,
+      "nk": 25,
       "package": "pythtb",
-      "seconds": 0.0027442920254543424,
-      "peak_mb": 1.765625,
+      "seconds": 0.0020931659964844584,
+      "peak_mb": 1.296875,
       "value": null
     },
     {
       "task": "bands",
-      "norb": 2,
-      "nk": 200,
+      "norb": 8,
+      "nk": 50,
       "package": "tbkit",
-      "seconds": 0.01962095801718533,
+      "seconds": 0.016413040983024985,
       "peak_mb": 38.21875,
       "value": null
     },
     {
       "task": "bands",
-      "norb": 2,
-      "nk": 200,
-      "package": "pythtb",
-      "seconds": 0.011080084019340575,
-      "peak_mb": 12.8125,
-      "value": null
-    },
-    {
-      "task": "bands",
-      "norb": 8,
-      "nk": 25,
-      "package": "tbkit",
-      "seconds": 0.00415279099252075,
-      "peak_mb": 6.859375,
-      "value": null
-    },
-    {
-      "task": "bands",
-      "norb": 8,
-      "nk": 25,
-      "package": "pythtb",
-      "seconds": 0.0019857080187648535,
-      "peak_mb": 0.5625,
-      "value": null
-    },
-    {
-      "task": "bands",
-      "norb": 8,
-      "nk": 50,
-      "package": "tbkit",
-      "seconds": 0.016215207986533642,
-      "peak_mb": 38.09375,
-      "value": null
-    },
-    {
-      "task": "bands",
       "norb": 8,
       "nk": 50,
       "package": "pythtb",
-      "seconds": 0.011456542066298425,
-      "peak_mb": 13.390625,
+      "seconds": 0.007944542012410238,
+      "peak_mb": 8.609375,
       "value": null
     },
     {
@@ -124,8 +124,8 @@
       "norb": 8,
       "nk": 100,
       "package": "tbkit",
-      "seconds": 0.0680426670005545,
-      "peak_mb": 103.53125,
+      "seconds": 0.06723924999823794,
+      "peak_mb": 102.03125,
       "value": null
     },
     {
@@ -133,8 +133,8 @@
       "norb": 8,
       "nk": 100,
       "package": "pythtb",
-      "seconds": 0.03065916697960347,
-      "peak_mb": 49.984375,
+      "seconds": 0.030503999994834885,
+      "peak_mb": 52.453125,
       "value": null
     },
     {
@@ -142,8 +142,8 @@
       "norb": 8,
       "nk": 200,
       "package": "tbkit",
-      "seconds": 0.2549857080448419,
-      "peak_mb": 130.03125,
+      "seconds": 0.25230366599862464,
+      "peak_mb": 140.265625,
       "value": null
     },
     {
@@ -151,8 +151,8 @@
       "norb": 8,
       "nk": 200,
       "package": "pythtb",
-      "seconds": 0.12779549998231232,
-      "peak_mb": 211.203125,
+      "seconds": 0.12847383299958892,
+      "peak_mb": 209.5,
       "value": null
     },
     {
@@ -160,8 +160,8 @@
       "norb": 32,
       "nk": 25,
       "package": "tbkit",
-      "seconds": 0.062111582956276834,
-      "peak_mb": 133.453125,
+      "seconds": 0.06307458301307634,
+      "peak_mb": 115.71875,
       "value": null
     },
     {
@@ -169,8 +169,8 @@
       "norb": 32,
       "nk": 25,
       "package": "pythtb",
-      "seconds": 0.028570709051564336,
-      "peak_mb": 47.828125,
+      "seconds": 0.02920925000216812,
+      "peak_mb": 47.953125,
       "value": null
     },
     {
@@ -178,8 +178,8 @@
       "norb": 32,
       "nk": 50,
       "package": "tbkit",
-      "seconds": 0.2457006669137627,
-      "peak_mb": 148.578125,
+      "seconds": 0.24420200000167824,
+      "peak_mb": 105.5,
       "value": null
     },
     {
@@ -187,8 +187,8 @@
       "norb": 32,
       "nk": 50,
       "package": "pythtb",
-      "seconds": 0.11863354197703302,
-      "peak_mb": 202.65625,
+      "seconds": 0.11981933398055844,
+      "peak_mb": 199.71875,
       "value": null
     },
     {
@@ -196,8 +196,8 @@
       "norb": 32,
       "nk": 100,
       "package": "tbkit",
-      "seconds": 0.9801929169334471,
-      "peak_mb": 177.78125,
+      "seconds": 0.9747193749935832,
+      "peak_mb": 177.953125,
       "value": null
     },
     {
@@ -205,8 +205,8 @@
       "norb": 32,
       "nk": 100,
       "package": "pythtb",
-      "seconds": 0.4708295000018552,
-      "peak_mb": 568.234375,
+      "seconds": 0.4882165840244852,
+      "peak_mb": 557.96875,
       "value": null
     },
     {
@@ -214,8 +214,8 @@
       "norb": 32,
       "nk": 200,
       "package": "tbkit",
-      "seconds": 3.978174832998775,
-      "peak_mb": 206.1875,
+      "seconds": 3.9020140829961747,
+      "peak_mb": 193.375,
       "value": null
     },
     {
@@ -223,8 +223,8 @@
       "norb": 32,
       "nk": 200,
       "package": "pythtb",
-      "seconds": 1.8852318339049816,
-      "peak_mb": 2257.671875,
+      "seconds": 1.9627922500076238,
+      "peak_mb": 2257.984375,
       "value": null
     },
     {
@@ -232,7 +232,7 @@
       "norb": 2,
       "nk": 25,
       "package": "tbkit",
-      "seconds": 0.0006412080256268382,
+      "seconds": 0.0006397090037353337,
       "peak_mb": 0.0,
       "value": 7.592469942729749e-18
     },
@@ -241,7 +241,7 @@
       "norb": 2,
       "nk": 25,
       "package": "pythtb",
-      "seconds": 0.0007206670707091689,
+      "seconds": 0.0006740830140188336,
       "peak_mb": 0.0,
       "value": -5.964277916430193e-14
     },
@@ -250,8 +250,8 @@
       "norb": 2,
       "nk": 50,
       "package": "tbkit",
-      "seconds": 0.0018711660522967577,
-      "peak_mb": 0.0,
+      "seconds": 0.0018878330010920763,
+      "peak_mb": 1.28125,
       "value": -1.9809444305122165e-17
     },
     {
@@ -259,8 +259,8 @@
       "norb": 2,
       "nk": 50,
       "package": "pythtb",
-      "seconds": 0.001996333012357354,
-      "peak_mb": 0.75,
+      "seconds": 0.002028374990914017,
+      "peak_mb": 1.28125,
       "value": -3.279505271553493e-18
     },
     {
@@ -268,8 +268,8 @@
       "norb": 2,
       "nk": 100,
       "package": "tbkit",
-      "seconds": 0.007271333015523851,
-      "peak_mb": 8.625,
+      "seconds": 0.007178500003647059,
+      "peak_mb": 6.875,
       "value": -6.02911135906767e-17
     },
     {
@@ -277,8 +277,8 @@
       "norb": 2,
       "nk": 100,
       "package": "pythtb",
-      "seconds": 0.007305582985281944,
-      "peak_mb": 13.171875,
+      "seconds": 0.007067750004353002,
+      "peak_mb": 11.109375,
       "value": -5.088887490341626e-19
     },
     {
@@ -286,8 +286,8 @@
       "norb": 2,
       "nk": 200,
       "package": "tbkit",
-      "seconds": 0.02923220896627754,
-      "peak_mb": 46.140625,
+      "seconds": 0.02836879200185649,
+      "peak_mb": 44.09375,
       "value": 3.547754136875537e-17
     },
     {
@@ -295,8 +295,8 @@
       "norb": 2,
       "nk": 200,
       "package": "pythtb",
-      "seconds": 0.02835879090707749,
-      "peak_mb": 70.140625,
+      "seconds": 0.028402708005160093,
+      "peak_mb": 67.03125,
       "value": -5.654319433712918e-19
     },
     {
@@ -304,8 +304,8 @@
       "norb": 8,
       "nk": 25,
       "package": "tbkit",
-      "seconds": 0.005703791975975037,
-      "peak_mb": 7.734375,
+      "seconds": 0.005258249992039055,
+      "peak_mb": 7.21875,
       "value": -1.1043592643970545e-18
     },
     {
@@ -313,8 +313,8 @@
       "norb": 8,
       "nk": 25,
       "package": "pythtb",
-      "seconds": 0.0045374579494819045,
-      "peak_mb": 12.734375,
+      "seconds": 0.004678124998463318,
+      "peak_mb": 9.71875,
       "value": 3.952302337023235e-12
     },
     {
@@ -322,8 +322,8 @@
       "norb": 8,
       "nk": 50,
       "package": "tbkit",
-      "seconds": 0.022726583993062377,
-      "peak_mb": 38.328125,
+      "seconds": 0.021345333982026204,
+      "peak_mb": 37.296875,
       "value": 1.1043592643970545e-18
     },
     {
@@ -331,8 +331,8 @@
       "norb": 8,
       "nk": 50,
       "package": "pythtb",
-      "seconds": 0.01845979201607406,
-      "peak_mb": 41.484375,
+      "seconds": 0.0186398750229273,
+      "peak_mb": 40.96875,
       "value": -2.895011550061014e-17
     },
     {
@@ -340,8 +340,8 @@
       "norb": 8,
       "nk": 100,
       "package": "tbkit",
-      "seconds": 0.09348691697232425,
-      "peak_mb": 116.046875,
+      "seconds": 0.08444199999212287,
+      "peak_mb": 126.609375,
       "value": -1.1043592643970545e-18
     },
     {
@@ -349,8 +349,8 @@
       "norb": 8,
       "nk": 100,
       "package": "pythtb",
-      "seconds": 0.07156524993479252,
-      "peak_mb": 148.96875,
+      "seconds": 0.0719594580004923,
+      "peak_mb": 149.546875,
       "value": -7.237528875152536e-18
     },
     {
@@ -358,8 +358,8 @@
       "norb": 8,
       "nk": 200,
       "package": "tbkit",
-      "seconds": 0.3637405829504132,
-      "peak_mb": 209.578125,
+      "seconds": 0.3289957919914741,
+      "peak_mb": 193.734375,
       "value": -5.521796321985272e-19
     },
     {
@@ -367,8 +367,8 @@
       "norb": 8,
       "nk": 200,
       "package": "pythtb",
-      "seconds": 0.28767500002868474,
-      "peak_mb": 640.765625,
+      "seconds": 0.29196225001942366,
+      "peak_mb": 632.203125,
       "value": 9.04691109394067e-19
     },
     {
@@ -376,8 +376,8 @@
       "norb": 32,
       "nk": 25,
       "package": "tbkit",
-      "seconds": 0.08400458400137722,
-      "peak_mb": 132.40625,
+      "seconds": 0.08351600001333281,
+      "peak_mb": 128.171875,
       "value": 1.766974823035287e-17
     },
     {
@@ -385,8 +385,8 @@
       "norb": 32,
       "nk": 25,
       "package": "pythtb",
-      "seconds": 0.09404854208696634,
-      "peak_mb": 147.09375,
+      "seconds": 0.09289404199807905,
+      "peak_mb": 147.34375,
       "value": -5.797416311789674e-07
     },
     {
@@ -394,8 +394,8 @@
       "norb": 32,
       "nk": 50,
       "package": "tbkit",
-      "seconds": 0.33389741694554687,
-      "peak_mb": 204.765625,
+      "seconds": 0.3296149169909768,
+      "peak_mb": 216.671875,
       "value": 8.834874115176436e-18
     },
     {
@@ -403,8 +403,8 @@
       "norb": 32,
       "nk": 50,
       "package": "pythtb",
-      "seconds": 0.3762331249890849,
-      "peak_mb": 602.703125,
+      "seconds": 0.3787678749940824,
+      "peak_mb": 597.765625,
       "value": 8.556134260916577e-13
     },
     {
@@ -412,8 +412,8 @@
       "norb": 32,
       "nk": 100,
       "package": "tbkit",
-      "seconds": 1.3910752090159804,
-      "peak_mb": 455.546875,
+      "seconds": 1.3030957079899963,
+      "peak_mb": 460.546875,
       "value": 0.0
     },
     {
@@ -421,8 +421,8 @@
       "norb": 32,
       "nk": 100,
       "package": "pythtb",
-      "seconds": 1.4975639170734212,
-      "peak_mb": 2047.1875,
+      "seconds": 1.5314110000035726,
+      "peak_mb": 2042.828125,
       "value": 3.6187644375762676e-17
     },
     {
@@ -430,8 +430,8 @@
       "norb": 32,
       "nk": 200,
       "package": "tbkit",
-      "seconds": 5.269781165989116,
-      "peak_mb": 1423.65625,
+      "seconds": 5.173733832983999,
+      "peak_mb": 1412.421875,
       "value": 0.0
     },
     {
@@ -439,8 +439,8 @@
       "norb": 32,
       "nk": 200,
       "package": "pythtb",
-      "seconds": 8.188996959012002,
-      "peak_mb": 6917.125,
+      "seconds": 7.892645582993282,
+      "peak_mb": 7324.03125,
       "value": -7.237528875152536e-18
     },
     {
@@ -448,7 +448,7 @@
       "norb": 2,
       "nk": 25,
       "package": "tbkit",
-      "seconds": 0.0023301669862121344,
+      "seconds": 0.0022598330106120557,
       "peak_mb": 0.0,
       "value": null
     },
@@ -457,7 +457,7 @@
       "norb": 2,
       "nk": 25,
       "package": "pythtb",
-      "seconds": 0.0015247500268742442,
+      "seconds": 0.0015224590024445206,
       "peak_mb": 0.0,
       "value": null
     },
@@ -466,7 +466,7 @@
       "norb": 2,
       "nk": 50,
       "package": "tbkit",
-      "seconds": 0.006278874934650958,
+      "seconds": 0.0062076250032987446,
       "peak_mb": 0.0,
       "value": null
     },
@@ -475,7 +475,7 @@
       "norb": 2,
       "nk": 50,
       "package": "pythtb",
-      "seconds": 0.004290916956961155,
+      "seconds": 0.004161958990152925,
       "peak_mb": 0.0,
       "value": null
     },
@@ -484,7 +484,7 @@
       "norb": 2,
       "nk": 100,
       "package": "tbkit",
-      "seconds": 0.01937145902775228,
+      "seconds": 0.018905832985183224,
       "peak_mb": 0.0,
       "value": null
     },
@@ -493,8 +493,8 @@
       "norb": 2,
       "nk": 100,
       "package": "pythtb",
-      "seconds": 0.01435020798817277,
-      "peak_mb": 4.125,
+      "seconds": 0.014106042013736442,
+      "peak_mb": 3.671875,
       "value": null
     },
     {
@@ -502,7 +502,7 @@
       "norb": 2,
       "nk": 200,
       "package": "tbkit",
-      "seconds": 0.06528837501537055,
+      "seconds": 0.06476454198127612,
       "peak_mb": 0.0,
       "value": null
     },
@@ -511,8 +511,8 @@
       "norb": 2,
       "nk": 200,
       "package": "pythtb",
-      "seconds": 0.05624820804223418,
-      "peak_mb": 24.828125,
+      "seconds": 0.05328220801311545,
+      "peak_mb": 16.328125,
       "value": null
     },
     {
@@ -520,7 +520,7 @@
       "norb": 8,
       "nk": 25,
       "package": "tbkit",
-      "seconds": 0.007780833984725177,
+      "seconds": 0.007332542008953169,
       "peak_mb": 0.0,
       "value": null
     },
@@ -529,8 +529,8 @@
       "norb": 8,
       "nk": 25,
       "package": "pythtb",
-      "seconds": 0.004212833009660244,
-      "peak_mb": 0.890625,
+      "seconds": 0.004259665991412476,
+      "peak_mb": 2.28125,
       "value": null
     },
     {
@@ -538,8 +538,8 @@
       "norb": 8,
       "nk": 50,
       "package": "tbkit",
-      "seconds": 0.06772729102522135,
-      "peak_mb": 5.734375,
+      "seconds": 0.02437091601314023,
+      "peak_mb": 0.0,
       "value": null
     },
     {
@@ -547,8 +547,8 @@
       "norb": 8,
       "nk": 50,
       "package": "pythtb",
-      "seconds": 0.015410666004754603,
-      "peak_mb": 14.953125,
+      "seconds": 0.015036500000860542,
+      "peak_mb": 12.484375,
       "value": null
     },
     {
@@ -556,8 +556,8 @@
       "norb": 8,
       "nk": 100,
       "package": "tbkit",
-      "seconds": 0.09753708401694894,
-      "peak_mb": 1.265625,
+      "seconds": 0.08708162500988692,
+      "peak_mb": 2.0,
       "value": null
     },
     {
@@ -565,8 +565,8 @@
       "norb": 8,
       "nk": 100,
       "package": "pythtb",
-      "seconds": 0.05957791698165238,
-      "peak_mb": 61.53125,
+      "seconds": 0.057320249994518235,
+      "peak_mb": 67.046875,
       "value": null
     },
     {
@@ -574,8 +574,8 @@
       "norb": 8,
       "nk": 200,
       "package": "tbkit",
-      "seconds": 0.37748345802538097,
-      "peak_mb": 8.484375,
+      "seconds": 0.3377502090006601,
+      "peak_mb": 4.8125,
       "value": null
     },
     {
@@ -583,8 +583,8 @@
       "norb": 8,
       "nk": 200,
       "package": "pythtb",
-      "seconds": 0.2394213330699131,
-      "peak_mb": 288.765625,
+      "seconds": 0.23530291698989458,
+      "peak_mb": 254.515625,
       "value": null
     },
     {
@@ -592,8 +592,8 @@
       "norb": 32,
       "nk": 25,
       "package": "tbkit",
-      "seconds": 0.09438541694544256,
-      "peak_mb": 19.4375,
+      "seconds": 0.09324883299996145,
+      "peak_mb": 5.84375,
       "value": null
     },
     {
@@ -601,8 +601,8 @@
       "norb": 32,
       "nk": 25,
       "package": "pythtb",
-      "seconds": 0.052625332958996296,
-      "peak_mb": 58.953125,
+      "seconds": 0.051977583003463224,
+      "peak_mb": 58.09375,
       "value": null
     },
     {
@@ -610,8 +610,8 @@
       "norb": 32,
       "nk": 50,
       "package": "tbkit",
-      "seconds": 0.3546119589591399,
-      "peak_mb": 44.125,
+      "seconds": 0.344535584008554,
+      "peak_mb": 46.140625,
       "value": null
     },
     {
@@ -619,8 +619,8 @@
       "norb": 32,
       "nk": 50,
       "package": "pythtb",
-      "seconds": 0.21488441701512784,
-      "peak_mb": 242.90625,
+      "seconds": 0.2091544580180198,
+      "peak_mb": 240.375,
       "value": null
     },
     {
@@ -628,8 +628,8 @@
       "norb": 32,
       "nk": 100,
       "package": "tbkit",
-      "seconds": 1.3994153330568224,
-      "peak_mb": 92.890625,
+      "seconds": 1.3685927079932299,
+      "peak_mb": 94.359375,
       "value": null
     },
     {
@@ -637,8 +637,8 @@
       "norb": 32,
       "nk": 100,
       "package": "pythtb",
-      "seconds": 0.872233625035733,
-      "peak_mb": 682.65625,
+      "seconds": 0.8383685419976246,
+      "peak_mb": 673.234375,
       "value": null
     },
     {
@@ -646,8 +646,8 @@
       "norb": 32,
       "nk": 200,
       "package": "tbkit",
-      "seconds": 5.728650374920107,
-      "peak_mb": 161.75,
+      "seconds": 5.230174708995037,
+      "peak_mb": 132.84375,
       "value": null
     },
     {
@@ -655,8 +655,8 @@
       "norb": 32,
       "nk": 200,
       "package": "pythtb",
-      "seconds": 3.6759938340401277,
-      "peak_mb": 2258.296875,
+      "seconds": 3.4204469170072116,
+      "peak_mb": 2258.421875,
       "value": null
     }
   ],
@@ -665,96 +665,96 @@
       "width": 20,
       "sites": 400,
       "package": "tbkit",
-      "seconds": 0.004778583999723196,
+      "seconds": 0.0030642500205431134,
       "peak_mb": 0.0,
-      "value": 5.823581265269944
+      "value": 5.823581265269954
     },
     {
       "width": 20,
       "sites": 400,
       "package": "kwant",
-      "seconds": 0.01088316598907113,
-      "peak_mb": 0.9375,
+      "seconds": 0.009076458984054625,
+      "peak_mb": 0.96875,
       "value": 5.823581265269851
     },
     {
       "width": 40,
       "sites": 1600,
       "package": "tbkit",
-      "seconds": 0.025774457957595587,
-      "peak_mb": 5.609375,
-      "value": 9.769295626807281
+      "seconds": 0.012546208978164941,
+      "peak_mb": 3.984375,
+      "value": 9.769295626807267
     },
     {
       "width": 40,
       "sites": 1600,
       "package": "kwant",
-      "seconds": 0.016091750003397465,
-      "peak_mb": 3.125,
+      "seconds": 0.015145249984925613,
+      "peak_mb": 3.78125,
       "value": 9.769295626807216
     },
     {
       "width": 80,
       "sites": 6400,
       "package": "tbkit",
-      "seconds": 0.16905004088766873,
-      "peak_mb": 46.203125,
-      "value": 13.328795144318168
+      "seconds": 0.07106962500256486,
+      "peak_mb": 40.921875,
+      "value": 13.328795144318242
     },
     {
       "width": 80,
       "sites": 6400,
       "package": "kwant",
-      "seconds": 0.062482082983478904,
-      "peak_mb": 17.3125,
+      "seconds": 0.06142608300433494,
+      "peak_mb": 16.0625,
       "value": 13.328795144319386
     },
     {
       "width": 160,
       "sites": 25600,
       "package": "tbkit",
-      "seconds": 1.456531458068639,
-      "peak_mb": 334.109375,
-      "value": 17.435103395952062
+      "seconds": 0.5264554170134943,
+      "peak_mb": 257.484375,
+      "value": 17.435103395952154
     },
     {
       "width": 160,
       "sites": 25600,
       "package": "kwant",
-      "seconds": 0.34117337490897626,
-      "peak_mb": 93.046875,
+      "seconds": 0.326654917007545,
+      "peak_mb": 75.140625,
       "value": 17.435103395958418
     },
     {
       "width": 320,
       "sites": 102400,
       "package": "tbkit",
-      "seconds": 16.766389083932154,
-      "peak_mb": 2049.203125,
-      "value": 20.77211643619582
+      "seconds": 5.260759166994831,
+      "peak_mb": 1090.328125,
+      "value": 20.77211643620128
     },
     {
       "width": 320,
       "sites": 102400,
       "package": "kwant",
-      "seconds": 2.5760164170060307,
-      "peak_mb": 361.1875,
+      "seconds": 2.224823208001908,
+      "peak_mb": 356.109375,
       "value": 20.772116436221904
     },
     {
       "width": 640,
       "sites": 409600,
       "package": "tbkit",
-      "seconds": 175.87257020792458,
-      "peak_mb": 6830.328125,
-      "value": 22.109830071386952
+      "seconds": 45.7877265419811,
+      "peak_mb": 5361.828125,
+      "value": 22.10983007138738
     },
     {
       "width": 640,
       "sites": 409600,
       "package": "kwant",
-      "seconds": 16.99154208402615,
-      "peak_mb": 1450.15625,
+      "seconds": 16.71391812499496,
+      "peak_mb": 1450.0,
       "value": 22.10983007137419
     }
   ]

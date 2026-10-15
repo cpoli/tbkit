@@ -285,7 +285,9 @@ evaluates the Kubo--Bastin formula on large disordered tori.
 \paragraph{Scattering matrix.} \code{Transport} holds a sparse device and
 its leads. A lead is given as matrices or attached automatically from a
 ribbon \code{KSpace}, by matching positions and tags. The lead modes solve
-the transfer-matrix pencil with a QZ decomposition. They are normalized to
+the transfer-matrix eigenproblem, as an ordinary eigenproblem when the
+inter-cell hopping is invertible and with a QZ decomposition of the pencil
+otherwise. They are normalized to
 unit current, and evanescent modes are kept in an ordered Schur basis. The
 scattering matrix then follows from one sparse LU factorization of the
 device with the lead boundary conditions, as in Kwant~\cite{groth2014}.
@@ -490,15 +492,17 @@ On Bloch meshes, tbkit and PythTB~2 scale alike [Fig.~\ref{fig:benchmarks}(a)--(
 Both are vectorized over $k$, and their run times stay within a factor of
 about two. PythTB is faster for band energies and Wilson loops, and tbkit
 is faster for the Chern number. tbkit's chunked eigensolver bounds its
-memory, which is 5 to 14 times lower on the largest meshes. It can also use threads
+memory, which is 5 to 17 times lower on the largest meshes. It can also use threads
 (\code{KSpace.set\_workers}), which this single-thread comparison leaves
-out. For transport, Kwant's MUMPS solver beats tbkit's SuperLU
-factorization from about a thousand sites on, and the gap widens with size
-[Fig.~\ref{fig:benchmarks}(d)]. At about $4\times10^5$ sites, Kwant is ten
-times faster and uses less than a quarter of the memory. For large devices,
-Kwant is the right tool. tbkit's transport is aimed at the models that a
-user already builds for its band and topology tools, and at devices of up
-to about $10^5$ sites, where it takes under 20 seconds on one thread.
+out. For transport, tbkit is as fast as Kwant up to a few thousand
+sites. Beyond that, Kwant's MUMPS factorization, with its nested-dissection
+ordering, pulls ahead of tbkit's SuperLU, and the gap widens slowly with size
+[Fig.~\ref{fig:benchmarks}(d)]. At about $10^5$ sites, Kwant is 2.4 times
+faster, and at about $4\times10^5$ sites 2.7 times faster, using a quarter of
+the memory. For the largest devices, Kwant is the right tool. tbkit's
+transport is aimed at the models that a user already builds for its band and
+topology tools, and at devices of up to about $10^5$ sites, where it takes
+about 5 seconds on one thread.
 
 %----------------------------------------------------------------------------
 \section{Teaching}

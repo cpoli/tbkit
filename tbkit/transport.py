@@ -251,7 +251,9 @@ def lead_modes(
         \begin{pmatrix} 1 & 0\\ 0 & v\end{pmatrix}
         \begin{pmatrix}\phi\\ \lambda\phi\end{pmatrix}\, ,
 
-    solved by the QZ algorithm, so that a singular :math:`v` is allowed. The
+    solved as an ordinary eigenproblem when :math:`v` is well conditioned,
+    and by the QZ algorithm otherwise, so that a singular :math:`v` is
+    allowed (in real arithmetic for a real lead). The
     modes with :math:`|\lambda| = 1` propagate with the velocity
     :math:`dE/dk = -2\,\mathrm{Im}(\lambda\phi^\dagger v\phi)` (diagonalized
     within degenerate modes). There is no broadening :math:`\eta`, so the
@@ -335,15 +337,28 @@ def _lead_modes(
         return modes, sum(len(b) for b in block), np.hstack(out0 + ev0), np.hstack(out1 + ev1)
     error_handling.hermitian_operator(h0)
     m = len(h0)
+    # real arithmetic for a real lead: about twice as fast
+    real = not (np.any(h0.imag) or np.any(v.imag))
+    hr, vr = (h0.real, v.real) if real else (h0, v)
+    output = 'real' if real else 'complex'
     eye, zero = np.eye(m), np.zeros((m, m))
-    a = np.block([[zero, eye], [-v.conj().T, energy * eye - h0]])
-    b = np.block([[eye, zero], [zero, v]])
+    a = np.block([[zero, eye], [-vr.conj().T, energy * eye - hr]])
     # decaying (|lambda| < 1, including lambda = 0) first; beta = 0 is lambda = infinity
-    _, _, alpha, beta, _, z = LA.ordqz(a, b, sort=lambda al, be: np.abs(al) < (1 - tol) * np.abs(be),
-                                       output='complex')
-    decay = np.abs(alpha) < (1 - tol) * np.abs(beta)
-    unit = ~decay & (np.abs(np.abs(alpha) - np.abs(beta)) <= tol * np.abs(beta)) & (beta != 0)
-    lams = alpha[unit] / beta[unit]
+    if np.linalg.cond(v) < 1e4:
+        # invertible v: the ordinary eigenproblem of B^-1 A, an order of magnitude faster than QZ
+        a[m:] = LA.solve(vr, a[m:])
+        sort = (lambda x, y: np.hypot(x, y) < 1 - tol) if real else (lambda x: np.abs(x) < 1 - tol)
+        _, z, n_dec = LA.schur(a, output=output, sort=sort)
+        alpha, vecs = LA.eig(a)
+        beta = np.ones(2 * m)
+    else:
+        b = np.block([[eye, zero], [zero, vr]])
+        _, _, alpha, beta, _, z = LA.ordqz(a, b, sort=lambda al, be: np.abs(al) < (1 - tol) * np.abs(be),
+                                           output=output)
+        n_dec = int(np.sum(np.abs(alpha) < (1 - tol) * np.abs(beta)))
+        (alpha, beta), vecs = LA.eig(a, b, homogeneous_eigvals=True)
+    unit = (np.abs(np.abs(alpha) - np.abs(beta)) <= tol * np.abs(beta)) & (beta != 0)
+    lams, vecs = alpha[unit] / beta[unit], vecs[:m, unit]
     phi_cols: list = []
     k_list: list = []
     vel_list: list = []
@@ -355,8 +370,12 @@ def _lead_modes(
         left = [i for i in left if i not in group]
         lam = np.mean(lams[group])
         lam /= abs(lam)
-        w, u = np.linalg.eigh(energy * eye - h0 - lam * v - np.conj(lam) * v.conj().T)
-        phi = u[:, np.argsort(np.abs(w))[:len(group)]]
+        if len(group) == 1:
+            phi = vecs[:, group] / np.linalg.norm(vecs[:, group])
+        else:
+            # an orthonormal basis of the kernel, which eig does not guarantee
+            w, u = np.linalg.eigh(energy * eye - h0 - lam * v - np.conj(lam) * v.conj().T)
+            phi = u[:, np.argsort(np.abs(w))[:len(group)]]
         vel, rot = np.linalg.eigh(1j * (lam * phi.conj().T @ v @ phi
                                         - np.conj(lam) * phi.conj().T @ v.conj().T @ phi))
         error_handling.lead_band_edge(np.min(np.abs(vel)) > tol, energy)
@@ -367,7 +386,7 @@ def _lead_modes(
     ks, vels = np.array(k_list), np.concatenate(vel_list) if vel_list else np.zeros(0)
     order = np.lexsort((ks, vels > 0))  # incoming (v < 0) first, then by momentum
     phis, ks, vels = phis[:, order], ks[order], vels[order]
-    n_in, n_dec = int(np.sum(vels < 0)), int(np.sum(decay))
+    n_in = int(np.sum(vels < 0))
     error_handling.lead_band_edge(2 * n_in == len(vels) and n_in + n_dec == m, energy)
     out = phis[:, n_in:]
     u0 = np.hstack([out, z[:m, :n_dec]])
@@ -753,8 +772,8 @@ class Transport():
         if eta is None and hermitian and lead_in != lead_out:
             out = np.zeros(len(energies))
             for n, e in enumerate(energies):
-                modes, sol = self._scattering(float(e), [lead_in])
-                a = self._ham.shape[0] + sum(len(h0) for h0, _, _, _ in self.leads[:lead_out])
+                modes, sol = self._scattering(float(e), [lead_in], slice(self._ham.shape[0], None))
+                a = sum(len(h0) for h0, _, _, _ in self.leads[:lead_out])
                 n_out = int(np.sum(modes[lead_out].velocities > 0))
                 out[n] = np.sum(np.abs(sol[a:a + n_out]) ** 2)
             return out
@@ -773,7 +792,7 @@ class Transport():
     # Scattering matrix and scattering states
     # ------------------------------------------------------------------
 
-    def _scattering(self, energy: float, inject: list[int]) -> tuple:
+    def _scattering(self, energy: float, inject: list[int], keep: slice = slice(None)) -> tuple:
         r'''
         Private method. Solve the scattering problem for every incoming mode
         of the leads *inject* (Groth et al. 2014). In lead :math:`l`, the
@@ -790,28 +809,30 @@ class Transport():
             -\tau_l^\dagger\psi + [(E - h_0)U_0 - vU_1]b_l = -(E - h_0 - \lambda_{in}v)\phi^{in}_l\, ,
 
         one sparse system of size n_sites + sum_l m_l, factorized once
-        (*scipy.sparse.linalg.splu*) for every right-hand side.
+        (*scipy.sparse.linalg.splu*) for every right-hand side. Only the rows
+        *keep* of the solution are stored (e.g. the lead amplitudes for the
+        scattering matrix).
 
         :returns:
             * **modes** -- List of **LeadModes**, one per lead.
-            * **sol** -- Complex ndarray, shape (n_sites + sum_l m_l, n_in): one
-              column per incoming mode of the leads *inject*, in order.
+            * **sol** -- Complex ndarray, shape (n_sites + sum_l m_l, n_in) before
+              *keep*: one column per incoming mode of the leads *inject*, in order.
         '''
         error_handling.real_number(energy, 'energy')
         n = self._ham.shape[0]
         found = [_lead_modes(h0, v, energy, law) for (h0, v, _, _), law in zip(self.leads, self._laws)]
         size = n + sum(len(h0) for h0, _, _, _ in self.leads)
         device = (energy * sp.eye(n, dtype='c16') - self._ham).tocoo()
-        rows, cols, vals = [device.row], [device.col], [device.data]
+        coo = ([device.row], [device.col], [device.data])
+        rhs_coo: tuple = ([], [], [])
 
-        def block(r, c, values):
+        def block(r, c, values, out=coo):
             rr, cc = np.meshgrid(r, c, indexing='ij')
-            rows.append(rr.ravel())
-            cols.append(cc.ravel())
-            vals.append(values.ravel())
+            out[0].append(rr.ravel())
+            out[1].append(cc.ravel())
+            out[2].append(values.ravel())
 
-        rhs_cols: list = []
-        a = n
+        n_rhs, a = 0, n
         for l, ((h0, v, tau, sites), (modes, n_in, u0, u1)) in enumerate(zip(self.leads, found)):
             m = len(h0)
             lead = np.arange(a, a + m)
@@ -821,17 +842,19 @@ class Transport():
             block(lead, lead, e_h0 @ u0 - v @ u1)
             if l in inject:
                 phi = modes.wave_functions[:, :n_in]
-                col = np.zeros((size, n_in), 'c16')
-                col[sites] = tau @ phi
-                col[a:a + m] = -(e_h0 @ phi - v @ phi * np.exp(1j * modes.momenta[:n_in]))
-                rhs_cols.append(col)
+                cols = np.arange(n_rhs, n_rhs + n_in)
+                block(sites, cols, tau @ phi, rhs_coo)
+                block(lead, cols, -(e_h0 @ phi - v @ phi * np.exp(1j * modes.momenta[:n_in])), rhs_coo)
+                n_rhs += n_in
             a += m
-        rhs = np.hstack(rhs_cols) if rhs_cols else np.zeros((size, 0), 'c16')
-        if rhs.shape[1] == 0:
-            return [f[0] for f in found], rhs
-        mat = sp.csc_matrix((np.concatenate(vals), (np.concatenate(rows), np.concatenate(cols))),
-                            shape=(size, size))
-        sol = spla.splu(mat).solve(rhs)
+        if n_rhs == 0:
+            return [f[0] for f in found], np.zeros((size, 0), 'c16')[keep]
+        mat, rhs = (sp.csc_matrix((np.concatenate(x), (np.concatenate(r), np.concatenate(c))), shape=(size, s))
+                    for (r, c, x), s in ((coo, size), (rhs_coo, n_rhs)))
+        lu = spla.splu(mat)
+        # the right-hand sides are dense in blocks of at most 64 MB
+        chunk = max(1, 2**22 // size)
+        sol = np.hstack([lu.solve(rhs[:, c:c + chunk].toarray())[keep] for c in range(0, n_rhs, chunk)])
         return [f[0] for f in found], sol
 
     def smatrix(self, energy: float) -> SMatrix:
@@ -855,8 +878,8 @@ class Transport():
             t = s.submatrix(1, 0)           # transmission amplitudes, lead 0 to lead 1
             T = s.transmission(1, 0)        # = tr.transmission(0.3, 0, 1)
         '''
-        modes, sol = self._scattering(energy, list(range(len(self.leads))))
-        rows, a = [], self._ham.shape[0]
+        modes, sol = self._scattering(energy, list(range(len(self.leads))), slice(self._ham.shape[0], None))
+        rows, a = [], 0
         for (h0, _, _, _), mode in zip(self.leads, modes):
             rows.append(sol[a:a + int(np.sum(mode.velocities > 0))])
             a += len(h0)

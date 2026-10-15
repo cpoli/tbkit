@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.6.1 -- 2026-10-13
+
+### Changed
+
+- **Faster scattering matrices.** `Transport.smatrix` and the default
+  `Transport.transmission` are 3.2 to 3.8 times faster on the
+  benchmark of the paper (a disordered square device with two
+  square leads: 16.8 s to 5.3 s at 102,400 sites, 176 s to 46 s at
+  409,600 sites, one thread), with the same transmissions to 1e-11.
+  Kwant is now 2.4 to 2.7 times faster at those sizes, down from 6.5
+  to 10.
+  The lead modes took most of the time: a complex QZ of the 2m x 2m
+  transfer-matrix pencil, then one m x m `eigh` per propagating
+  mode. `_lead_modes` now uses the ordinary eigenproblem when the
+  lead hopping `v` is well conditioned (QZ only for a singular `v`),
+  real arithmetic for real leads, and the eigenvectors of one `eig`
+  for the non-degenerate propagating modes. The device solve keeps
+  only the lead rows of the solution, from a sparse right-hand side
+  densified in column blocks, which lowers the peak memory.
+
 ## 0.6.0 -- 2026-10-13
 
 ### Added

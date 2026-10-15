@@ -1,21 +1,21 @@
 {
   "versions": {
-    "tbkit": "0.4.2",
+    "tbkit": "0.6.1",
     "kwant": "1.5.0",
     "pythtb": "2.0.2",
     "numpy": "2.5.3",
     "scipy": "1.18.1"
   },
   "platform": "macOS-26.6.2-arm64-arm-64bit",
-  "python": "3.12.14",
+  "python": "3.12.15",
   "cross_checks": {
     "kwant": {
-      "square strip + antidot: transmission": 2.1227464230832993e-13,
-      "square strip + antidot: transmission eigenvalues": 1.084687895058778e-13,
-      "square strip + antidot: lead momenta and velocities": 3.141931159689193e-14,
-      "disordered graphene, zigzag leads: transmission": 4.3298697960381105e-14,
+      "square strip + antidot: transmission": 2.1316282072803006e-13,
+      "square strip + antidot: transmission eigenvalues": 1.0758061108617767e-13,
+      "square strip + antidot: lead momenta and velocities": 4.75175454539567e-14,
+      "disordered graphene, zigzag leads: transmission": 4.218847493575595e-14,
       "disordered graphene, zigzag leads: transmission eigenvalues": 3.9745984281580604e-14,
-      "Rashba strip: spin-resolved transmission blocks": 7.460698725481052e-14
+      "Rashba strip: spin-resolved transmission blocks": 7.349676423018536e-14
     },
     "pythtb": {
       "Haldane: band energies (400 k-points)": 1.7763568394002505e-15,
@@ -42,7 +42,7 @@
       "example": "topology/plot_zak_phase.py",
       "tolerance": "$10^{-8}$",
       "passed": true,
-      "seconds": 0.02
+      "seconds": 0.01
     },
     {
       "result": "Anomalous Hall conductivity in the gap equals the Chern number",
@@ -50,7 +50,7 @@
       "example": "hall_effects/plot_anomalous_hall_effect.py",
       "tolerance": "$10^{-6}$",
       "passed": true,
-      "seconds": 1.09
+      "seconds": 1.05
     },
     {
       "result": "Streda slope of the orbital magnetization equals the Chern number",
@@ -58,7 +58,7 @@
       "example": "magnetic_field/plot_orbital_magnetization.py",
       "tolerance": "$10^{-6}$",
       "passed": true,
-      "seconds": 1.64
+      "seconds": 1.95
     },
     {
       "result": "Clean strip: transmission equals the number of open subbands",
@@ -66,7 +66,7 @@
       "example": "transport/plot_landauer_conductance.py",
       "tolerance": "$10^{-6}$",
       "passed": true,
-      "seconds": 2.24
+      "seconds": 1.88
     },
     {
       "result": "Impurity in a chain: $T = v^2/(v^2 + \\varepsilon^2)$ up to the band edge",
@@ -74,7 +74,7 @@
       "example": "transport/plot_scattering_matrix.py",
       "tolerance": "$10^{-9}$ (relative)",
       "passed": true,
-      "seconds": 0.14
+      "seconds": 0.13
     },
     {
       "result": "Graphene absorbance $\\pi\\alpha = 2.29$% at low frequency",
@@ -82,7 +82,7 @@
       "example": "optics/plot_graphene_universal_absorption.py",
       "tolerance": "$2\\times10^{-4}$",
       "passed": true,
-      "seconds": 0.54
+      "seconds": 0.53
     },
     {
       "result": "BCS ratio $\\Delta_0/k_BT_c = 1.764$",
@@ -90,7 +90,7 @@
       "example": "superconductivity/plot_bcs_gap_equation.py",
       "tolerance": "2% (finite size)",
       "passed": true,
-      "seconds": 18.39
+      "seconds": 18.62
     },
     {
       "result": "Perfect NS interface: $R_{he} = 1$, $G = 2e^2/h$",
@@ -98,7 +98,7 @@
       "example": "superconductivity/plot_andreev_reflection.py",
       "tolerance": "$2\\times10^{-3}$",
       "passed": true,
-      "seconds": 0.21
+      "seconds": 0.26
     },
     {
       "result": "Kitaev chain: Majorana number $-1$ exactly in the topological phase",
@@ -114,7 +114,7 @@
       "example": "floquet/plot_anomalous_floquet_phases.py",
       "tolerance": "$10^{-10}$",
       "passed": true,
-      "seconds": 5.81
+      "seconds": 5.54
     },
     {
       "result": "PT dimer: $E = \\pm\\sqrt{t^2 - \\gamma^2}$ and its Petermann factor",
@@ -122,7 +122,7 @@
       "example": "non_hermitian/plot_pt_symmetry.py",
       "tolerance": "$10^{-8}$",
       "passed": true,
-      "seconds": 0.26
+      "seconds": 0.25
     },
     {
       "result": "Exceptional points carry vorticity $\\pm 1/2$",
@@ -130,7 +130,7 @@
       "example": "non_hermitian/plot_exceptional_point_vorticity.py",
       "tolerance": "$10^{-10}$",
       "passed": true,
-      "seconds": 0.97
+      "seconds": 0.94
     },
     {
       "result": "Encircling an exceptional point swaps the bands, Berry phase $\\pi$",
@@ -138,7 +138,7 @@
       "example": "non_hermitian/plot_exceptional_point_encircling.py",
       "tolerance": "$10^{-8}$",
       "passed": true,
-      "seconds": 0.32
+      "seconds": 0.3
     },
     {
       "result": "Hatano-Nelson chain: spectral winding $1$ and skin modes",
