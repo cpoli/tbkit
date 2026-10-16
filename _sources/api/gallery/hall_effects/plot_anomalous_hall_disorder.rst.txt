@@ -49,7 +49,7 @@ A caveat of the method: its random-vector trace, cheap and accurate in a
 :math:`1/\sqrt{RN}` (:math:`R` random vectors, :math:`N` orbitals). The
 plateaus are the reliable part of the curves below.
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-61
+.. GENERATED FROM PYTHON SOURCE LINES 33-63
 
 .. code-block:: Python
 
@@ -59,7 +59,9 @@ plateaus are the reliable part of the curves below.
 
     import tbkit.kpm as kpm
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
 
 
     def haldane(M, t2=0.2):
@@ -88,7 +90,37 @@ plateaus are the reliable part of the curves below.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-69
+.. GENERATED FROM PYTHON SOURCE LINES 64-72
+
+The lattice
+-----------
+The Haldane model on a patch of :math:`5\times4` cells
+(:func:`~tbkit.bridges.finite_system`), each bond drawn with a width
+proportional to its amplitude: the honeycomb lattice's two sublattices
+('a' and 'b', in two colours), the nearest-neighbour hopping :math:`t`
+(thick) and the complex second-neighbour hoppings :math:`\pm it_2`
+within each sublattice (thin), which break time-reversal symmetry.
+
+.. GENERATED FROM PYTHON SOURCE LINES 72-75
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(haldane(0.3), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_hall_disorder_001.png
+   :alt: plot anomalous hall disorder
+   :srcset: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_hall_disorder_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 76-83
 
 The clean torus
 ------------------
@@ -98,7 +130,7 @@ In the bands it scatters about the Bloch result
 (:meth:`~tbkit.kspace.KSpace.hall_conductivity`, dotted) by the noise of
 the random-vector trace.
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-79
+.. GENERATED FROM PYTHON SOURCE LINES 83-93
 
 .. code-block:: Python
 
@@ -125,7 +157,7 @@ the random-vector trace.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 80-88
+.. GENERATED FROM PYTHON SOURCE LINES 94-102
 
 Adding disorder
 ------------------
@@ -136,7 +168,7 @@ random potential fills the gap with states -- the density of states at
 carry no current: the plateau survives in a *mobility* gap. At
 :math:`W = 8`, the disorder has destroyed it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-117
+.. GENERATED FROM PYTHON SOURCE LINES 102-131
 
 .. code-block:: Python
 
@@ -172,9 +204,9 @@ carry no current: the plateau survives in a *mobility* gap. At
 
 
 
-.. image-sg:: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_hall_disorder_001.png
+.. image-sg:: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_hall_disorder_002.png
    :alt: Haldane torus, 20,000 orbitals: Kubo-Bastin (KPM)
-   :srcset: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_hall_disorder_001.png
+   :srcset: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_hall_disorder_002.png
    :class: sphx-glr-single-img
 
 
@@ -187,14 +219,14 @@ carry no current: the plateau survives in a *mobility* gap. At
     W = 4: sigma_xy(0) = 0.989 e^2/h, DOS(0) = 0.0366 per orbital
     W = 8: sigma_xy(0) = 0.107 e^2/h, DOS(0) = 0.0973 per orbital
 
-    <matplotlib.legend.Legend object at 0x7fead6990190>
+    <matplotlib.legend.Legend object at 0x10f1e0ec0>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 25.083 seconds)
+   **Total running time of the script:** (0 minutes 5.758 seconds)
 
 
 .. _sphx_glr_download_api_gallery_hall_effects_plot_anomalous_hall_disorder.py:

@@ -38,7 +38,7 @@ states hybridize, but their splitting shrinks faster than the
 confinement gap :math:`\propto 1/L` of a hexagon with armchair edges,
 which carry no edge states at all.
 
-.. GENERATED FROM PYTHON SOURCE LINES 22-36
+.. GENERATED FROM PYTHON SOURCE LINES 22-37
 
 .. code-block:: Python
 
@@ -48,6 +48,7 @@ which carry no edge states at all.
     import tbkit.lattices as lattices
     from tbkit.graphene import GrapheneLattice
     from tbkit.kspace import KSpace, reciprocal_vectors
+    from tbkit.plot import Plot
     from tbkit.system import System
 
     t = -1.
@@ -63,12 +64,12 @@ which carry no edge states at all.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-39
+.. GENERATED FROM PYTHON SOURCE LINES 38-40
 
 Two valleys: a Berry phase of pi, opposite pseudospin windings
 ------------------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-62
+.. GENERATED FROM PYTHON SOURCE LINES 40-63
 
 .. code-block:: Python
 
@@ -108,12 +109,12 @@ Two valleys: a Berry phase of pi, opposite pseudospin windings
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-65
+.. GENERATED FROM PYTHON SOURCE LINES 64-66
 
 Zigzag edges: zero modes; armchair edges: a gap
 ----------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-110
+.. GENERATED FROM PYTHON SOURCE LINES 66-103
 
 .. code-block:: Python
 
@@ -154,21 +155,8 @@ Zigzag edges: zero modes; armchair edges: a gap
               .format(lat_zz.sites, lat_ac.sites, np.min(np.abs(sys_zz.en)), np.min(np.abs(sys_ac.en))))
     assert np.min(np.abs(sys_zz.en)) < 0.6 * np.min(np.abs(sys_ac.en))
 
-    fig, axes = plt.subplots(1, 2, figsize=(10, 4), sharey=True)
-    for ax, sys, name in ((axes[0], sys_zz, 'zigzag hexagon'), (axes[1], sys_ac, 'armchair hexagon')):
-        ax.plot(sys.en, 'ob', ms=3)
-        ax.set_ylim(-1.5, 1.5)
-        ax.set_title('{} ({} sites)'.format(name, sys.lat.sites))
-        ax.set_xlabel('$n$')
-    axes[0].set_ylabel('$E_n/|t|$')
-    fig.set_layout_engine('tight')
 
 
-
-.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_isolation_of_graphene_001.png
-   :alt: zigzag hexagon (216 sites), armchair hexagon (222 sites)
-   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_isolation_of_graphene_001.png
-   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -185,10 +173,71 @@ Zigzag edges: zero modes; armchair edges: a gap
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 104-106
+
+The two hexagons: the same honeycomb lattice (sublattices 'a' and 'b' in
+two colours), cut along zigzag edges (left) and armchair edges (right).
+
+.. GENERATED FROM PYTHON SOURCE LINES 106-111
+
+.. code-block:: Python
+
+
+    fig_lat, axes_lat = plt.subplots(1, 2, figsize=(10, 4.5))
+    Plot(sys_zz).lattice(plt_hop=True, ms=5, ax=axes_lat[0])
+    Plot(sys_ac).lattice(plt_hop=True, ms=5, ax=axes_lat[1])
+
+
+
+
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_isolation_of_graphene_001.png
+   :alt: plot isolation of graphene
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_isolation_of_graphene_001.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    <Figure size 1000x450 with 2 Axes>
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 112-113
+
+Their spectra:
+
+.. GENERATED FROM PYTHON SOURCE LINES 113-122
+
+.. code-block:: Python
+
+
+    fig, axes = plt.subplots(1, 2, figsize=(10, 4), sharey=True)
+    for ax, sys, name in ((axes[0], sys_zz, 'zigzag hexagon'), (axes[1], sys_ac, 'armchair hexagon')):
+        ax.plot(sys.en, 'ob', ms=3)
+        ax.set_ylim(-1.5, 1.5)
+        ax.set_title('{} ({} sites)'.format(name, sys.lat.sites))
+        ax.set_xlabel('$n$')
+    axes[0].set_ylabel('$E_n/|t|$')
+    fig.set_layout_engine('tight')
+
+
+
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_isolation_of_graphene_002.png
+   :alt: zigzag hexagon (216 sites), armchair hexagon (222 sites)
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_isolation_of_graphene_002.png
+   :class: sphx-glr-single-img
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.262 seconds)
+   **Total running time of the script:** (0 minutes 0.175 seconds)
 
 
 .. _sphx_glr_download_api_gallery_tight_binding_plot_isolation_of_graphene.py:

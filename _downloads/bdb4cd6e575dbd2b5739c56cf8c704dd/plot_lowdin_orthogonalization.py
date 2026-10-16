@@ -35,11 +35,26 @@ from scipy.linalg import sqrtm
 
 import tbkit.lattices as lattices
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
+from tbkit.system import System
 
 
 eps, t, s = 0., -1., 0.2      # onsite energy, hopping, overlap (|s| < 1/2)
 k = np.linspace(-np.pi, np.pi, 401)
 exact = (eps + 2 * t * np.cos(k)) / (1 + 2 * s * np.cos(k))
+
+# %%
+# The lattice
+# -----------
+# The chain: one orbital per site, and between nearest neighbours both a
+# hopping :math:`t` and an overlap :math:`s` -- the orbitals of
+# neighbouring sites are not orthogonal.
+
+patch = lattices.chain()
+patch.get_lattice(n1=10)
+vis = System(patch)
+vis.set_hopping([{'n': 1, 't': t}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
 
 # %%
 # The generalized eigenproblem
@@ -119,6 +134,7 @@ errors = np.array(errors)
 print('max band error vs range:', np.array2string(errors, precision=2))
 assert np.allclose(errors[1:] / errors[:-1], x, rtol=1e-3)
 
+# sphinx_gallery_thumbnail_number = 2
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4.5))
 ax1.plot(k, exact, lw=2.5, label=r'$H c = E S c$ (overlap $s=0.2$)')
 ax1.plot(k, naive, '--', lw=2, label='overlap ignored')

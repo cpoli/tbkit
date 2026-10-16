@@ -41,18 +41,22 @@ and 3 dimensions (segments, triangles, tetrahedra), and
 :meth:`~tbkit.kspace.KSpace.plot_dos` uses it with
 ``kernel='tetrahedron'``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-34
+.. GENERATED FROM PYTHON SOURCE LINES 25-38
 
 .. code-block:: Python
 
     import numpy as np
     import matplotlib.pyplot as plt
     from scipy.special import ellipk
+    from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
     import tbkit.dos as dos
     import tbkit.lattices as lattices
     from tbkit.lattice import Lattice
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
+    from tbkit.system import System
 
 
 
@@ -61,7 +65,7 @@ and 3 dimensions (segments, triangles, tetrahedra), and
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-43
+.. GENERATED FROM PYTHON SOURCE LINES 39-47
 
 The square lattice: a logarithmic van Hove singularity
 -----------------------------------------------------------
@@ -72,13 +76,54 @@ complete elliptic integral. On the same 80 x 80 mesh, the tetrahedron
 method is within 0.3% of it (away from the divergence itself), the
 Gaussian of width one mesh spacing in energy off by 6%.
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-80
+.. GENERATED FROM PYTHON SOURCE LINES 47-51
 
 .. code-block:: Python
 
 
     sq = KSpace(lattices.square())
     sq.set_hopping([{'i': 0, 'j': 0, 'R': (1, 0), 't': -1.}, {'i': 0, 'j': 0, 'R': (0, 1), 't': -1.}])
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 52-54
+
+The square lattice, one site per cell with nearest-neighbour hopping, on
+:math:`6\times6` cells (:func:`~tbkit.bridges.finite_system`):
+
+.. GENERATED FROM PYTHON SOURCE LINES 54-57
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(sq, (6, 6))).lattice(plt_hop=True, ms=10, figsize=(4, 4))
+
+
+
+
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_tetrahedron_method_001.png
+   :alt: plot tetrahedron method
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_tetrahedron_method_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 58-59
+
+Its density of states, exact and on a mesh:
+
+.. GENERATED FROM PYTHON SOURCE LINES 59-94
+
+.. code-block:: Python
+
+
     e_grid = np.linspace(-3.9, 3.9, 157)
     exact = ellipk(1 - e_grid ** 2 / 16) / (2 * np.pi ** 2)
     away = np.abs(e_grid) > 0.3
@@ -116,9 +161,9 @@ Gaussian of width one mesh spacing in energy off by 6%.
 
 
 
-.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_tetrahedron_method_001.png
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_tetrahedron_method_002.png
    :alt: Square lattice, 80 x 80 k-points
-   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_tetrahedron_method_001.png
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_tetrahedron_method_002.png
    :class: sphx-glr-single-img
 
 
@@ -132,7 +177,7 @@ Gaussian of width one mesh spacing in energy off by 6%.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-88
+.. GENERATED FROM PYTHON SOURCE LINES 96-103
 
 The simple cubic lattice: band edges
 -------------------------------------------
@@ -142,7 +187,7 @@ states below the band bottom :math:`E_0 = -6t`; the tetrahedron method
 puts none there, and converges to a 64 x 64 x 64 reference about ten
 times faster.
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-110
+.. GENERATED FROM PYTHON SOURCE LINES 103-108
 
 .. code-block:: Python
 
@@ -150,6 +195,58 @@ times faster.
     cubic = KSpace(Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0., 0.)}],
                                   prim_vec=[(1., 0., 0.), (0., 1., 0.), (0., 0., 1.)]))
     cubic.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': -1.} for R in [(1, 0, 0), (0, 1, 0), (0, 0, 1)]])
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 109-111
+
+The simple cubic lattice, one site per cell and six nearest neighbours,
+here :math:`4\times4\times4` sites of it:
+
+.. GENERATED FROM PYTHON SOURCE LINES 111-125
+
+.. code-block:: Python
+
+
+    lat_vis = Lattice(unit_cell=cubic.lat.unit_cell, prim_vec=cubic.lat.prim_vec)
+    lat_vis.get_lattice(4, 4, 4)
+    vis = System(lat_vis)
+    vis.set_hopping([{'n': 1, 't': 1.}])
+    pos = np.column_stack([lat_vis.coor[f] for f in 'xyz'])
+    bonds = np.stack([pos[vis.hop['i'].astype(int)], pos[vis.hop['j'].astype(int)]], axis=1)
+    fig_lat = plt.figure(figsize=(4.5, 4.5))
+    ax_lat = fig_lat.add_subplot(projection='3d')
+    ax_lat.add_collection3d(Line3DCollection(bonds, colors='k', linewidths=1))
+    ax_lat.scatter(*pos.T, s=30, c='b', depthshade=False)
+    ax_lat.set_aspect('equal')
+    ax_lat.set_axis_off()
+
+
+
+
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_tetrahedron_method_003.png
+   :alt: plot tetrahedron method
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_tetrahedron_method_003.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 126-127
+
+Its density of states near the band bottom:
+
+.. GENERATED FROM PYTHON SOURCE LINES 127-146
+
+.. code-block:: Python
+
+
     e_grid = np.linspace(-6.5, 6.5, 131)
     ref = dos.tetrahedron_dos(cubic.mesh_bands(64).reshape(64, 64, 64, 1), e_grid)[1] / 64 ** 3
 
@@ -182,12 +279,12 @@ times faster.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 111-113
+.. GENERATED FROM PYTHON SOURCE LINES 147-149
 
 The same in one call: :meth:`~tbkit.kspace.KSpace.plot_dos` with
 ``kernel='tetrahedron'`` (no broadening to choose).
 
-.. GENERATED FROM PYTHON SOURCE LINES 113-115
+.. GENERATED FROM PYTHON SOURCE LINES 149-151
 
 .. code-block:: Python
 
@@ -196,9 +293,9 @@ The same in one call: :meth:`~tbkit.kspace.KSpace.plot_dos` with
 
 
 
-.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_tetrahedron_method_002.png
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_tetrahedron_method_004.png
    :alt: Density of states
-   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_tetrahedron_method_002.png
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_tetrahedron_method_004.png
    :class: sphx-glr-single-img
 
 
@@ -208,7 +305,7 @@ The same in one call: :meth:`~tbkit.kspace.KSpace.plot_dos` with
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.005 seconds)
+   **Total running time of the script:** (0 minutes 0.891 seconds)
 
 
 .. _sphx_glr_download_api_gallery_tight_binding_plot_tetrahedron_method.py:

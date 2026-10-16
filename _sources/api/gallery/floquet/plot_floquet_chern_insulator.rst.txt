@@ -42,7 +42,7 @@ insulator made by light, observed in graphene by McIver et al. (2020).
 :class:`~tbkit.floquet.FloquetKSpace` makes the driven Bloch model;
 its bands and Chern numbers are those of :math:`H_F`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-47
+.. GENERATED FROM PYTHON SOURCE LINES 26-49
 
 .. code-block:: Python
 
@@ -50,8 +50,10 @@ its bands and Chern numbers are those of :math:`H_F`.
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.floquet import FloquetKSpace, harmonics, quasienergies, sambe_hamiltonian
     from tbkit.kspace import KSpace, reciprocal_vectors
+    from tbkit.plot import Plot
 
     graphene = KSpace(lattices.honeycomb())
     graphene.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
@@ -74,14 +76,42 @@ its bands and Chern numbers are those of :math:`H_F`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-52
+.. GENERATED FROM PYTHON SOURCE LINES 50-56
+
+The lattice
+-----------
+Graphene's honeycomb lattice on a patch of :math:`5\times4` cells
+(:func:`~tbkit.bridges.finite_system`): two sites per unit cell
+(sublattices 'a' and 'b', in two colours), each bonded to its three
+nearest neighbours on the other sublattice.
+
+.. GENERATED FROM PYTHON SOURCE LINES 56-59
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(graphene, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/floquet/images/sphx_glr_plot_floquet_chern_insulator_001.png
+   :alt: plot floquet chern insulator
+   :srcset: /api/gallery/floquet/images/sphx_glr_plot_floquet_chern_insulator_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 60-64
 
 Two routes to the quasienergies
 -----------------------------------
 The time-ordered evolution over a period, and the static Sambe-space
 problem of the drive's harmonics, agree.
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-58
+.. GENERATED FROM PYTHON SOURCE LINES 64-70
 
 .. code-block:: Python
 
@@ -98,12 +128,12 @@ problem of the drive's harmonics, agree.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-61
+.. GENERATED FROM PYTHON SOURCE LINES 71-73
 
 Light opens the Dirac points: a Chern insulator
 ------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-74
+.. GENERATED FROM PYTHON SOURCE LINES 73-86
 
 .. code-block:: Python
 
@@ -133,12 +163,12 @@ Light opens the Dirac points: a Chern insulator
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-77
+.. GENERATED FROM PYTHON SOURCE LINES 87-89
 
 The gap grows as the intensity, and falls as 1/omega
 ----------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-98
+.. GENERATED FROM PYTHON SOURCE LINES 89-110
 
 .. code-block:: Python
 
@@ -166,9 +196,9 @@ The gap grows as the intensity, and falls as 1/omega
 
 
 
-.. image-sg:: /api/gallery/floquet/images/sphx_glr_plot_floquet_chern_insulator_001.png
+.. image-sg:: /api/gallery/floquet/images/sphx_glr_plot_floquet_chern_insulator_002.png
    :alt: Graphene in circularly polarized light: Floquet bands
-   :srcset: /api/gallery/floquet/images/sphx_glr_plot_floquet_chern_insulator_001.png
+   :srcset: /api/gallery/floquet/images/sphx_glr_plot_floquet_chern_insulator_002.png
    :class: sphx-glr-single-img
 
 
@@ -186,7 +216,7 @@ The gap grows as the intensity, and falls as 1/omega
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 8.107 seconds)
+   **Total running time of the script:** (0 minutes 1.809 seconds)
 
 
 .. _sphx_glr_download_api_gallery_floquet_plot_floquet_chern_insulator.py:

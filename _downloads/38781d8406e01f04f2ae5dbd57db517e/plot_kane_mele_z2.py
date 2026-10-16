@@ -24,6 +24,8 @@ import matplotlib.pyplot as plt
 import tbkit.lattices as lattices
 from tbkit.kspace import KSpace, PAULI
 from tbkit.orbital import OrbitalSystem
+from tbkit.plot import Plot
+from tbkit.system import System
 
 
 lat = lattices.honeycomb()
@@ -50,9 +52,25 @@ def kane_mele(M=0., rashba=0.):
 
 
 # %%
+# The lattice
+# -----------
+# The Kane-Mele model lives on the honeycomb lattice: sublattices 'a' and
+# 'b' in two colours, each site holding a spin-1/2 orbital, with the
+# nearest-neighbour hopping (thick) and the spin-orbit hoppings
+# :math:`\pm i\lambda\sigma_z` between second neighbours (thin, not to
+# scale; their spin matrices are not drawn).
+
+patch = lattices.honeycomb()
+patch.get_lattice(n1=5, n2=4)
+vis = System(patch)
+vis.set_hopping([{'n': 1, 't': 1.}, {'n': 2, 't': 0.3}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+# %%
 # The flow: Kramers pairs swap partners
 # ------------------------------------------
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(9, 4), sharey=True)
 for ax, M, title in [(axes[0], 0.1, 'topological'), (axes[1], 0.5, 'trivial')]:
     fracs, centres = kane_mele(M).wannier_flow([0, 1], nk=60, nk_perp=41, k_range=(0., 0.5),

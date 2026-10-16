@@ -49,7 +49,7 @@ What a finite lattice, with any method, can show is its hallmark,
 :math:`N(E)` falling faster than every power of :math:`E - E_0`, and
 where the sample's own tail stops.
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-43
+.. GENERATED FROM PYTHON SOURCE LINES 33-44
 
 .. code-block:: Python
 
@@ -60,6 +60,7 @@ where the sample's own tail stops.
 
     import tbkit.kpm as kpm
     import tbkit.lattices as lattices
+    from tbkit.plot import Plot
     from tbkit.system import System
 
 
@@ -70,7 +71,7 @@ where the sample's own tail stops.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-51
+.. GENERATED FROM PYTHON SOURCE LINES 45-52
 
 The diluted chain: the exact Lifshitz law
 ---------------------------------------------
@@ -80,7 +81,7 @@ a zero bond wherever a site is missing, so its full spectrum is cheap.
 The integrated density of states just above :math:`E_\ell` falls by
 :math:`p` per added site, :math:`\ln N(E_\ell) \simeq \ell\ln p`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-96
+.. GENERATED FROM PYTHON SOURCE LINES 52-91
 
 .. code-block:: Python
 
@@ -123,12 +124,6 @@ The integrated density of states just above :math:`E_\ell` falls by
         return sys
 
 
-    def kpm_dos(sys, e, bounds):
-        '''Density of states per site, and integrated density of states in states.'''
-        rho = kpm.dos(sys.ham, n_moments=1024, n_random=8, e_grid=e, seed=1, bounds=bounds)[1]
-        return rho / sys.lat.sites, cumulative_trapezoid(rho, e, initial=0.)
-
-
 
 
 
@@ -142,7 +137,46 @@ The integrated density of states just above :math:`E_\ell` falls by
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-113
+.. GENERATED FROM PYTHON SOURCE LINES 92-95
+
+The diluted lattices, drawn: 30 sites of the chain with 40% removed
+(top), and a :math:`16\times16` square with 5% removed (bottom). A
+missing site cuts every bond it carried.
+
+.. GENERATED FROM PYTHON SOURCE LINES 95-112
+
+.. code-block:: Python
+
+
+    lat_vis = lattices.chain()
+    lat_vis.get_lattice(n1=30)
+    lat_vis.remove_sites(np.flatnonzero(np.random.default_rng(0).random(30) > p).tolist())
+    vis = System(lat_vis)
+    vis.set_hopping([{'n': 1, 't': -1.}])
+    fig_lat, axes_lat = plt.subplots(2, 1, figsize=(7, 7.5), height_ratios=(1, 6))
+    Plot(vis).lattice(plt_hop=True, ms=8, ax=axes_lat[0])
+    Plot(square(16, p=0.95)).lattice(plt_hop=True, ms=8, ax=axes_lat[1])
+
+
+    def kpm_dos(sys, e, bounds):
+        '''Density of states per site, and integrated density of states in states.'''
+        rho = kpm.dos(sys.ham, n_moments=1024, n_random=8, e_grid=e, seed=1, bounds=bounds)[1]
+        return rho / sys.lat.sites, cumulative_trapezoid(rho, e, initial=0.)
+
+
+
+
+
+.. image-sg:: /api/gallery/disorder/images/sphx_glr_plot_lifshitz_tails_001.png
+   :alt: plot lifshitz tails
+   :srcset: /api/gallery/disorder/images/sphx_glr_plot_lifshitz_tails_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 113-129
 
 The diluted square lattice: faster than any power
 -----------------------------------------------------
@@ -161,7 +195,7 @@ The asymptotic constant itself, :math:`(E - E_0)\ln N \to
 :math:`E - E_0 \lesssim 0.01t`, where :math:`N \sim e^{-90}`: no sample
 holds such a state, which is why the quantitative test is the 1D one.
 
-.. GENERATED FROM PYTHON SOURCE LINES 113-128
+.. GENERATED FROM PYTHON SOURCE LINES 129-144
 
 .. code-block:: Python
 
@@ -196,7 +230,7 @@ holds such a state, which is why the quantitative test is the 1D one.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 129-140
+.. GENERATED FROM PYTHON SOURCE LINES 145-156
 
 Uniform disorder: where a finite sample's tail stops
 --------------------------------------------------------
@@ -210,7 +244,7 @@ below it, as it should: the cutoff is the sample's, not the method's.
 Further down the integrated density of states is less than one state
 per 40 000 sites, so the rest of the tail exists only in larger samples.
 
-.. GENERATED FROM PYTHON SOURCE LINES 140-155
+.. GENERATED FROM PYTHON SOURCE LINES 156-171
 
 .. code-block:: Python
 
@@ -242,12 +276,12 @@ per 40 000 sites, so the rest of the tail exists only in larger samples.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 156-158
+.. GENERATED FROM PYTHON SOURCE LINES 172-174
 
 The three tails
 -------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 158-190
+.. GENERATED FROM PYTHON SOURCE LINES 174-206
 
 .. code-block:: Python
 
@@ -286,9 +320,9 @@ The three tails
 
 
 
-.. image-sg:: /api/gallery/disorder/images/sphx_glr_plot_lifshitz_tails_001.png
+.. image-sg:: /api/gallery/disorder/images/sphx_glr_plot_lifshitz_tails_002.png
    :alt: 1D, $p = 0.6$: $\ln N$ linear in $(E-E_0)^{-1/2}$, 2D diluted: faster than any power, 2D uniform disorder: the sample ends before $E_0$
-   :srcset: /api/gallery/disorder/images/sphx_glr_plot_lifshitz_tails_001.png
+   :srcset: /api/gallery/disorder/images/sphx_glr_plot_lifshitz_tails_002.png
    :class: sphx-glr-single-img
 
 
@@ -298,7 +332,7 @@ The three tails
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 23.747 seconds)
+   **Total running time of the script:** (0 minutes 11.068 seconds)
 
 
 .. _sphx_glr_download_api_gallery_disorder_plot_lifshitz_tails.py:

@@ -23,6 +23,7 @@ at the transition.
 """
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
 from tbkit.lattice import Lattice
 from tbkit.system import System
@@ -56,6 +57,26 @@ def mean_ratio(sys, W, samples, seed=0):
 
 
 # %%
+# The lattice
+# -----------
+# The simple cubic lattice, one site per cell and six nearest neighbours,
+# here :math:`4\times4\times4` sites of it. Each site gets a random onsite
+# energy in :math:`[-W/2, W/2]`.
+
+lat_vis = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0., 0.)}], prim_vec=cubic)
+lat_vis.get_lattice(4, 4, 4)
+vis = System(lat_vis)
+vis.set_hopping([{'n': 1, 't': 1.}])
+pos = np.column_stack([lat_vis.coor[f] for f in 'xyz'])
+bonds = np.stack([pos[vis.hop['i'].astype(int)], pos[vis.hop['j'].astype(int)]], axis=1)
+fig_lat = plt.figure(figsize=(4.5, 4.5))
+ax_lat = fig_lat.add_subplot(projection='3d')
+ax_lat.add_collection3d(Line3DCollection(bonds, colors='k', linewidths=1))
+ax_lat.scatter(*pos.T, s=30, c='b', depthshade=False)
+ax_lat.set_aspect('equal')
+ax_lat.set_axis_off()
+
+# %%
 # Level statistics across the transition
 # -------------------------------------------
 
@@ -83,6 +104,7 @@ assert grows(12.) > 2 and grows(20.) < -2
 print('<r> grows with L at W = 12 ({:+.1f} sigma), shrinks at W = 20 ({:+.1f} sigma): '
           'the curves cross between them, around W_c = 16.5.'.format(grows(12.), grows(20.)))
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(6.2, 4))
 for L, curve in curves.items():
     ax.errorbar(disorders, curve[:, 0], yerr=curve[:, 1], fmt='o-', ms=4, label='$L = {}$'.format(L))

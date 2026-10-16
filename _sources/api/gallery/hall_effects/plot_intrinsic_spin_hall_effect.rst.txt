@@ -41,7 +41,7 @@ Rashba coupling :math:`\lambda_R` mixes the spins: the plateau is no longer
 quantized, although the gap -- and the :math:`\mathbb{Z}_2` topological
 phase -- survive.
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-65
+.. GENERATED FROM PYTHON SOURCE LINES 25-67
 
 .. code-block:: Python
 
@@ -49,7 +49,9 @@ phase -- survive.
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace, PAULI
+    from tbkit.plot import Plot
 
     NN = [(0, 0), (-1, 0), (0, -1)]
     NNN = [(0, 1), (-1, 0), (1, -1)]  # a2, -a1, a1 - a2: 120 degrees apart
@@ -92,7 +94,39 @@ phase -- survive.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-73
+.. GENERATED FROM PYTHON SOURCE LINES 68-77
+
+The lattice
+-----------
+The Kane-Mele model without Rashba coupling is two copies of the
+Haldane model, one per spin. The spin-up copy on a patch of
+:math:`5\times4` cells (:func:`~tbkit.bridges.finite_system`), bond
+widths proportional to the amplitudes: the honeycomb lattice's two
+sublattices ('a' and 'b', in two colours), the nearest-neighbour hopping
+:math:`t` (thick) and the spin-orbit hoppings :math:`\pm i\lambda_{SO}`
+between second neighbours (thin). Spin down has the opposite signs.
+
+.. GENERATED FROM PYTHON SOURCE LINES 77-81
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(haldane_sector(lam_so, +1), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+
+.. image-sg:: /api/gallery/hall_effects/images/sphx_glr_plot_intrinsic_spin_hall_effect_001.png
+   :alt: plot intrinsic spin hall effect
+   :srcset: /api/gallery/hall_effects/images/sphx_glr_plot_intrinsic_spin_hall_effect_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 82-89
 
 The quantized plateau, and the decoupled spin sectors
 -----------------------------------------------------------
@@ -102,7 +136,7 @@ plateau; in the bands, the spin Hall conductivity is half the difference
 of the two sectors' Hall conductivities (each spin carries
 :math:`\pm\hbar/2`).
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-91
+.. GENERATED FROM PYTHON SOURCE LINES 89-107
 
 .. code-block:: Python
 
@@ -138,7 +172,7 @@ of the two sectors' Hall conductivities (each spin carries
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-100
+.. GENERATED FROM PYTHON SOURCE LINES 108-116
 
 Rashba coupling breaks the quantization
 ------------------------------------------
@@ -149,7 +183,7 @@ stays 1: the gap stays open (it closes at :math:`\lambda_R = 2\sqrt3\,\lambda_{S
 The values are converged in the mesh (150 x 150 against 300 x 300) to
 :math:`10^{-5}`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 100-125
+.. GENERATED FROM PYTHON SOURCE LINES 116-141
 
 .. code-block:: Python
 
@@ -181,9 +215,9 @@ The values are converged in the mesh (150 x 150 against 300 x 300) to
 
 
 
-.. image-sg:: /api/gallery/hall_effects/images/sphx_glr_plot_intrinsic_spin_hall_effect_001.png
+.. image-sg:: /api/gallery/hall_effects/images/sphx_glr_plot_intrinsic_spin_hall_effect_002.png
    :alt: Kane-Mele model, $\lambda_{SO} = 0.06$: spin Hall conductivity
-   :srcset: /api/gallery/hall_effects/images/sphx_glr_plot_intrinsic_spin_hall_effect_001.png
+   :srcset: /api/gallery/hall_effects/images/sphx_glr_plot_intrinsic_spin_hall_effect_002.png
    :class: sphx-glr-single-img
 
 
@@ -195,14 +229,14 @@ The values are converged in the mesh (150 x 150 against 300 x 300) to
     lambda_R = 0.05: gap 0.474, sigma_s(E_F = 0) = 1.0220 e/2pi, Z2 = 1
     lambda_R = 0.10: gap 0.322, sigma_s(E_F = 0) = 1.0994 e/2pi, Z2 = 1
 
-    <matplotlib.legend.Legend object at 0x7fead6785310>
+    <matplotlib.legend.Legend object at 0x10f07d2b0>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.102 seconds)
+   **Total running time of the script:** (0 minutes 2.751 seconds)
 
 
 .. _sphx_glr_download_api_gallery_hall_effects_plot_intrinsic_spin_hall_effect.py:

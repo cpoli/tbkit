@@ -47,7 +47,7 @@ Three 1D chains show the three cases: a clean chain, an Anderson chain,
 and the Harper (Aubry-André) chain at its critical point
 :math:`\lambda = 2t`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-67
+.. GENERATED FROM PYTHON SOURCE LINES 31-68
 
 .. code-block:: Python
 
@@ -55,6 +55,7 @@ and the Harper (Aubry-André) chain at its critical point
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.plot import Plot
     from tbkit.system import System
 
 
@@ -94,13 +95,41 @@ and the Harper (Aubry-André) chain at its critical point
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-71
+.. GENERATED FROM PYTHON SOURCE LINES 69-74
+
+The chain
+---------
+All three models share one open chain with uniform nearest-neighbour
+hopping; clean, critical (Aubry-Andre at :math:`\lambda = 2t`) and
+Anderson differ only in their onsite energies.
+
+.. GENERATED FROM PYTHON SOURCE LINES 74-78
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(chain(12, 'clean')).lattice(plt_hop=True, ms=12, figsize=(8, 1.2))
+
+
+
+
+
+.. image-sg:: /api/gallery/disorder/images/sphx_glr_plot_inverse_participation_ratio_001.png
+   :alt: plot inverse participation ratio
+   :srcset: /api/gallery/disorder/images/sphx_glr_plot_inverse_participation_ratio_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 79-82
 
 The IPR is the q = 2 moment
 -------------------------------
 *get_ipr* is the definition above, applied to every eigenvector.
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-76
+.. GENERATED FROM PYTHON SOURCE LINES 82-87
 
 .. code-block:: Python
 
@@ -116,14 +145,14 @@ The IPR is the q = 2 moment
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-81
+.. GENERATED FROM PYTHON SOURCE LINES 88-92
 
 Scaling with the size: the exponents :math:`D_q`
 ----------------------------------------------------
 :math:`D_q` is minus the slope of :math:`\ln P_q` against
 :math:`\ln N`, divided by :math:`q - 1`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-95
+.. GENERATED FROM PYTHON SOURCE LINES 92-106
 
 .. code-block:: Python
 
@@ -157,12 +186,12 @@ Scaling with the size: the exponents :math:`D_q`
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 96-98
+.. GENERATED FROM PYTHON SOURCE LINES 107-109
 
 The three scalings, and a critical wave function
 ----------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-114
+.. GENERATED FROM PYTHON SOURCE LINES 109-125
 
 .. code-block:: Python
 
@@ -185,9 +214,9 @@ The three scalings, and a critical wave function
 
 
 
-.. image-sg:: /api/gallery/disorder/images/sphx_glr_plot_inverse_participation_ratio_001.png
+.. image-sg:: /api/gallery/disorder/images/sphx_glr_plot_inverse_participation_ratio_002.png
    :alt: $\mathrm{IPR} \sim N^{-D_2}$, critical state ($\lambda = 2t$): peaks on every scale
-   :srcset: /api/gallery/disorder/images/sphx_glr_plot_inverse_participation_ratio_001.png
+   :srcset: /api/gallery/disorder/images/sphx_glr_plot_inverse_participation_ratio_002.png
    :class: sphx-glr-single-img
 
 
@@ -197,7 +226,7 @@ The three scalings, and a critical wave function
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 12.086 seconds)
+   **Total running time of the script:** (0 minutes 4.136 seconds)
 
 
 .. _sphx_glr_download_api_gallery_disorder_plot_inverse_participation_ratio.py:

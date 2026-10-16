@@ -31,6 +31,8 @@ import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
 from tbkit.orbital import OrbitalSystem
+from tbkit.plot import Plot
+from tbkit.system import System
 
 
 L, t, lam = 12, -1., 0.3
@@ -66,6 +68,21 @@ def bloch_block(sys, k):
     u[rows[:, 1], 1] = wave
     return u.conj().T @ (sys.ham @ u)
 
+
+# %%
+# The lattice
+# -----------
+# The square lattice, one site per cell with a spin-1/2 orbital, and its
+# nearest-neighbour bonds. On each bond the Rashba term adds a spin flip
+# :math:`i\lambda(\boldsymbol\sigma\times\hat{\mathbf{d}})_z` to the
+# hopping :math:`t`; the spin is not drawn. The torus used below is
+# :math:`12\times12` sites; the bonds that close it are not drawn.
+
+patch = lattices.square()
+patch.get_lattice(n1=L, n2=L)
+vis = System(patch)
+vis.set_hopping([{'n': 1, 't': t}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=10, figsize=(5, 5))
 
 # %%
 # The spectrum of the real-space model is the Rashba dispersion
@@ -127,6 +144,7 @@ print('spin in-plane, perpendicular to sin k, opposite on the two bands at {} mo
 # ----------------------------
 
 kc = np.linspace(-np.pi, np.pi, 401)
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(10, 4.3))
 for bz, ls in ((0., '-'), (0.4, '--')):
     lo, hi = bands(kc, 0., bz)

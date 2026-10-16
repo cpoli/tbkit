@@ -42,7 +42,7 @@ For :math:`|\gamma| > |\lambda|` all of these vanish. :mod:`tbkit.higher_order`
 computes each one: *bbh_model*, *wannier_bands*,
 *wannier_sector_polarization*, *quadrupole_moment* and *corner_charges*.
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-42
+.. GENERATED FROM PYTHON SOURCE LINES 26-44
 
 .. code-block:: Python
 
@@ -50,8 +50,10 @@ computes each one: *bbh_model*, *wannier_bands*,
     import matplotlib.pyplot as plt
     import scipy.linalg as LA
 
+    from tbkit.bridges import finite_system
     from tbkit.higher_order import (bbh_model, corner_charges, flake_positions, quadrupole_moment,
                                                         wannier_bands, wannier_sector_polarization)
+    from tbkit.plot import Plot
 
 
     def circ(a, b):
@@ -69,7 +71,38 @@ computes each one: *bbh_model*, *wannier_bands*,
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-48
+.. GENERATED FROM PYTHON SOURCE LINES 45-54
+
+The lattice
+-----------
+The BBH model (:func:`~tbkit.higher_order.bbh_model`) on a patch of
+:math:`4\times4` cells (:func:`~tbkit.bridges.finite_system`): four
+orbitals per square cell (one colour each), bond widths proportional to
+the amplitudes -- the intra-cell hoppings :math:`\gamma` (thin, here
+:math:`\gamma/\lambda = 1/2`) and the inter-cell ones :math:`\lambda`
+(thick). Their signs, which thread a :math:`\pi` flux through every
+plaquette, are not drawn.
+
+.. GENERATED FROM PYTHON SOURCE LINES 54-57
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(bbh_model(0.5, 1.), (4, 4))).lattice(plt_hop=True, ms=10, figsize=(4.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/higher_order/images/sphx_glr_plot_quadrupole_insulator_001.png
+   :alt: plot quadrupole insulator
+   :srcset: /api/gallery/higher_order/images/sphx_glr_plot_quadrupole_insulator_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 58-63
 
 Wannier bands: two gapped sectors
 -----------------------------------
@@ -77,7 +110,7 @@ The hybrid Wannier centres :math:`\nu_x(k_y)` of the occupied bands come in
 pairs :math:`\pm\nu_x`, separated by gaps at 0 and 1/2 in both phases: the
 Wannier sectors are well defined.
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-64
+.. GENERATED FROM PYTHON SOURCE LINES 63-79
 
 .. code-block:: Python
 
@@ -100,16 +133,16 @@ Wannier sectors are well defined.
 
 
 
-.. image-sg:: /api/gallery/higher_order/images/sphx_glr_plot_quadrupole_insulator_001.png
+.. image-sg:: /api/gallery/higher_order/images/sphx_glr_plot_quadrupole_insulator_002.png
    :alt: $\gamma/\lambda = 0.5$, $\gamma/\lambda = 1.5$
-   :srcset: /api/gallery/higher_order/images/sphx_glr_plot_quadrupole_insulator_001.png
+   :srcset: /api/gallery/higher_order/images/sphx_glr_plot_quadrupole_insulator_002.png
    :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-70
+.. GENERATED FROM PYTHON SOURCE LINES 81-86
 
 The nested Wilson loop and the quadrupole moment
 ---------------------------------------------------
@@ -117,7 +150,7 @@ The nested Wilson loop and the quadrupole moment
 :math:`|\gamma| = |\lambda|`, where the bulk gap closes, and so does
 :math:`q_{xy}`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-79
+.. GENERATED FROM PYTHON SOURCE LINES 86-95
 
 .. code-block:: Python
 
@@ -151,7 +184,7 @@ The nested Wilson loop and the quadrupole moment
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 80-88
+.. GENERATED FROM PYTHON SOURCE LINES 96-104
 
 Four corner states and the corner charges
 ---------------------------------------------
@@ -162,7 +195,7 @@ them to :math:`-\delta` and two to :math:`+\delta`; at half filling the
 corners then carry :math:`\mp e/2` (the excess electron number of each
 quadrant of the flake, over a neutralizing background).
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-127
+.. GENERATED FROM PYTHON SOURCE LINES 104-143
 
 .. code-block:: Python
 
@@ -208,9 +241,9 @@ quadrant of the flake, over a neutralizing background).
 
 
 
-.. image-sg:: /api/gallery/higher_order/images/sphx_glr_plot_quadrupole_insulator_002.png
+.. image-sg:: /api/gallery/higher_order/images/sphx_glr_plot_quadrupole_insulator_003.png
    :alt: flake spectrum, weight of the four zero modes, excess density, $\delta = 10^{-3}$
-   :srcset: /api/gallery/higher_order/images/sphx_glr_plot_quadrupole_insulator_002.png
+   :srcset: /api/gallery/higher_order/images/sphx_glr_plot_quadrupole_insulator_003.png
    :class: sphx-glr-single-img
 
 
@@ -231,7 +264,7 @@ quadrant of the flake, over a neutralizing background).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.468 seconds)
+   **Total running time of the script:** (0 minutes 1.441 seconds)
 
 
 .. _sphx_glr_download_api_gallery_higher_order_plot_quadrupole_insulator.py:

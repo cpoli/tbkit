@@ -45,7 +45,7 @@ the end charges and zero modes of an open topological chain.
 :meth:`~tbkit.kspace.KSpace.wannier_centers` compute both, from the
 gauge-invariant discrete Wilson loop.
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-45
+.. GENERATED FROM PYTHON SOURCE LINES 29-47
 
 .. code-block:: Python
 
@@ -53,7 +53,9 @@ gauge-invariant discrete Wilson loop.
     import matplotlib.pyplot as plt
 
     from tbkit.lattice import Lattice
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
 
 
     def ssh(v, w):
@@ -72,12 +74,48 @@ gauge-invariant discrete Wilson loop.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-48
+.. GENERATED FROM PYTHON SOURCE LINES 48-54
+
+The lattice
+-----------
+Eight cells of the SSH chain (:func:`~tbkit.bridges.finite_system`),
+orbitals a and b in two colours, bond widths proportional to the
+hoppings: :math:`v` inside each cell, :math:`w` between cells, for
+:math:`v > w` (top) and :math:`v < w` (bottom).
+
+.. GENERATED FROM PYTHON SOURCE LINES 54-59
+
+.. code-block:: Python
+
+
+    fig_lat, axes_lat = plt.subplots(2, 1, figsize=(7, 2.2))
+    Plot(finite_system(ssh(1., 0.4), 8)).lattice(plt_hop=True, ms=7, c=4., ax=axes_lat[0])
+    Plot(finite_system(ssh(0.4, 1.), 8)).lattice(plt_hop=True, ms=7, c=4., ax=axes_lat[1])
+
+
+
+
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_zak_phase_001.png
+   :alt: plot zak phase
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_zak_phase_001.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    <Figure size 700x220 with 2 Axes>
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 60-62
 
 The Wannier centre sits on the strong bond
 -------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-54
+.. GENERATED FROM PYTHON SOURCE LINES 62-68
 
 .. code-block:: Python
 
@@ -101,14 +139,14 @@ The Wannier centre sits on the strong bond
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-59
+.. GENERATED FROM PYTHON SOURCE LINES 69-73
 
 Across the transition: a jump of pi
 -------------------------------------
 The Zak phase is pinned while the gap stays open, and jumps by
 :math:`\pi` where it closes, at :math:`v = w`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-76
+.. GENERATED FROM PYTHON SOURCE LINES 73-90
 
 .. code-block:: Python
 
@@ -132,9 +170,9 @@ The Zak phase is pinned while the gap stays open, and jumps by
 
 
 
-.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_zak_phase_001.png
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_zak_phase_002.png
    :alt: Zak phase of the SSH chain
-   :srcset: /api/gallery/topology/images/sphx_glr_plot_zak_phase_001.png
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_zak_phase_002.png
    :class: sphx-glr-single-img
 
 
@@ -147,14 +185,14 @@ The Zak phase is pinned while the gap stays open, and jumps by
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-81
+.. GENERATED FROM PYTHON SOURCE LINES 92-96
 
 The polarization is a property of the band, not of the gauge
 -------------------------------------------------------------------
 Placing both orbitals on the cell origin (``positions=False``) shifts
 each phase, but not the quantized difference between the two phases.
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-86
+.. GENERATED FROM PYTHON SOURCE LINES 96-101
 
 .. code-block:: Python
 
@@ -179,7 +217,7 @@ each phase, but not the quantized difference between the two phases.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.161 seconds)
+   **Total running time of the script:** (0 minutes 0.077 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_zak_phase.py:

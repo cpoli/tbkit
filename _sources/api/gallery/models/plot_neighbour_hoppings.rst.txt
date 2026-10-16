@@ -37,7 +37,7 @@ by S. Reich, J. Maultzsch, C. Thomsen and P. Ordejon, Phys. Rev. B 66,
 035412 (2002), with its non-orthogonal overlaps, and checks it against the
 closed-form energies at the high-symmetry points.
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-29
+.. GENERATED FROM PYTHON SOURCE LINES 21-31
 
 .. code-block:: Python
 
@@ -47,6 +47,8 @@ closed-form energies at the high-symmetry points.
     from tbkit import lattices
     from tbkit.kspace import KSpace
     from tbkit.neighbours import neighbour_bonds, neighbour_hoppings
+    from tbkit.plot import Plot
+    from tbkit.system import System
 
 
 
@@ -56,7 +58,7 @@ closed-form energies at the high-symmetry points.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-37
+.. GENERATED FROM PYTHON SOURCE LINES 32-39
 
 The neighbour shells of the honeycomb lattice
 ---------------------------------------------------
@@ -66,7 +68,7 @@ shells once (oriented so that its angle lies in [0, 180), as in
 distances :math:`a`, :math:`\sqrt{3}a` and :math:`2a` -- the nearest and
 third neighbours on the other sublattice, the second on the same one.
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-49
+.. GENERATED FROM PYTHON SOURCE LINES 39-51
 
 .. code-block:: Python
 
@@ -96,14 +98,44 @@ third neighbours on the other sublattice, the second on the same one.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-54
+.. GENERATED FROM PYTHON SOURCE LINES 52-56
+
+The three shells on a patch of the lattice (sublattices 'a' and 'b' in
+two colours), drawn with decreasing widths: nearest neighbours
+(thickest), second neighbours within each sublattice, and third
+neighbours across the hexagons (thinnest).
+
+.. GENERATED FROM PYTHON SOURCE LINES 56-63
+
+.. code-block:: Python
+
+
+    patch = lattices.honeycomb()
+    patch.get_lattice(n1=5, n2=4)
+    vis = System(patch)
+    vis.set_hopping([{'n': 1, 't': 1.}, {'n': 2, 't': 0.4}, {'n': 3, 't': 0.15}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/models/images/sphx_glr_plot_neighbour_hoppings_001.png
+   :alt: plot neighbour hoppings
+   :srcset: /api/gallery/models/images/sphx_glr_plot_neighbour_hoppings_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 64-68
 
 Nearest neighbours: the same as the explicit list
 ----------------------------------------------------
 ``{'n': 1, 't': t}`` generates exactly the three bonds one would write by
 hand.
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-67
+.. GENERATED FROM PYTHON SOURCE LINES 68-81
 
 .. code-block:: Python
 
@@ -133,7 +165,7 @@ hand.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-73
+.. GENERATED FROM PYTHON SOURCE LINES 82-87
 
 The third-nearest-neighbour fit of Reich et al.
 ----------------------------------------------------
@@ -141,7 +173,7 @@ Hoppings :math:`\gamma_0, \gamma_1, \gamma_2` and overlaps
 :math:`s_0, s_1, s_2` for the first three shells, and the on-site energy
 :math:`\epsilon_{2p}` (eV):
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-81
+.. GENERATED FROM PYTHON SOURCE LINES 87-95
 
 .. code-block:: Python
 
@@ -160,7 +192,7 @@ Hoppings :math:`\gamma_0, \gamma_1, \gamma_2` and overlaps
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-89
+.. GENERATED FROM PYTHON SOURCE LINES 96-103
 
 At :math:`\Gamma` every Bloch sum is the number of neighbours, so the
 generalized eigenproblem :math:`Hv = ESv` gives
@@ -170,7 +202,7 @@ survives), and the six second neighbours add up to :math:`-3`: both
 bands meet at :math:`E_K = (\epsilon - 3\gamma_1)/(1 - 3s_1)`, which is
 no longer zero -- second neighbours break electron-hole symmetry.
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-102
+.. GENERATED FROM PYTHON SOURCE LINES 103-116
 
 .. code-block:: Python
 
@@ -201,7 +233,7 @@ no longer zero -- second neighbours break electron-hole symmetry.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 103-108
+.. GENERATED FROM PYTHON SOURCE LINES 117-122
 
 Band structures
 ---------------------
@@ -209,7 +241,7 @@ Nearest neighbours only (orthogonal, :math:`\pm 3|\gamma_0|` at
 :math:`\Gamma`) against the full fit: the :math:`\pi^*` band is pushed up
 and the :math:`\pi` band compressed by the overlaps.
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-131
+.. GENERATED FROM PYTHON SOURCE LINES 122-145
 
 .. code-block:: Python
 
@@ -239,9 +271,9 @@ and the :math:`\pi` band compressed by the overlaps.
 
 
 
-.. image-sg:: /api/gallery/models/images/sphx_glr_plot_neighbour_hoppings_001.png
+.. image-sg:: /api/gallery/models/images/sphx_glr_plot_neighbour_hoppings_002.png
    :alt: Graphene by neighbour order in k-space
-   :srcset: /api/gallery/models/images/sphx_glr_plot_neighbour_hoppings_001.png
+   :srcset: /api/gallery/models/images/sphx_glr_plot_neighbour_hoppings_002.png
    :class: sphx-glr-single-img
 
 
@@ -251,7 +283,7 @@ and the :math:`\pi` band compressed by the overlaps.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.096 seconds)
+   **Total running time of the script:** (0 minutes 0.067 seconds)
 
 
 .. _sphx_glr_download_api_gallery_models_plot_neighbour_hoppings.py:

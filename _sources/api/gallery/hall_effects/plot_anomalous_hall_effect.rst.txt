@@ -43,7 +43,7 @@ no longer zero even in a topologically trivial phase.
 behind it at any Fermi level, for the Haldane model below (the sign is that
 of :meth:`~tbkit.kspace.KSpace.chern_number`, see its docstring).
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-44
+.. GENERATED FROM PYTHON SOURCE LINES 27-46
 
 .. code-block:: Python
 
@@ -51,7 +51,9 @@ of :meth:`~tbkit.kspace.KSpace.chern_number`, see its docstring).
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
 
 
     def haldane(M, t2=0.2):
@@ -71,7 +73,38 @@ of :meth:`~tbkit.kspace.KSpace.chern_number`, see its docstring).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-51
+.. GENERATED FROM PYTHON SOURCE LINES 47-55
+
+The lattice
+-----------
+The Haldane model on a patch of :math:`5\times4` cells
+(:func:`~tbkit.bridges.finite_system`), each bond drawn with a width
+proportional to its amplitude: the honeycomb lattice's two sublattices
+('a' and 'b', in two colours), the nearest-neighbour hopping :math:`t`
+(thick) and the complex second-neighbour hoppings :math:`\pm it_2`
+within each sublattice (thin), which break time-reversal symmetry.
+
+.. GENERATED FROM PYTHON SOURCE LINES 55-59
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(haldane(0.3), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+
+.. image-sg:: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_hall_effect_001.png
+   :alt: plot anomalous hall effect
+   :srcset: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_hall_effect_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 60-66
 
 The Hall conductivity across the spectrum
 ---------------------------------------------
@@ -80,7 +113,7 @@ The topological phase (:math:`M = 0.3`, below Haldane's
 :math:`M_c = 3\sqrt3\,t_2 \approx 1.04`) and the trivial one
 (:math:`M = 1.5`):
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-88
+.. GENERATED FROM PYTHON SOURCE LINES 66-103
 
 .. code-block:: Python
 
@@ -124,9 +157,9 @@ The topological phase (:math:`M = 0.3`, below Haldane's
 
 
 
-.. image-sg:: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_hall_effect_001.png
+.. image-sg:: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_hall_effect_002.png
    :alt: Haldane model: anomalous Hall conductivity
-   :srcset: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_hall_effect_001.png
+   :srcset: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_hall_effect_002.png
    :class: sphx-glr-single-img
 
 
@@ -139,11 +172,11 @@ The topological phase (:math:`M = 0.3`, below Haldane's
     topological, M = 0.3: sigma_xy(E_F = -1.20) = 0.4184 e^2/h
     trivial, M = 1.5: sigma_xy(E_F = -1.20) = 0.1695 e^2/h
 
-    <matplotlib.legend.Legend object at 0x7fead5e3c190>
+    <matplotlib.legend.Legend object at 0x10f311e80>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-99
+.. GENERATED FROM PYTHON SOURCE LINES 105-115
 
 Where the curvature sits
 ---------------------------
@@ -156,7 +189,7 @@ at one valley and not at the other), so :math:`\sigma_{xy}` rises and
 then falls back to exactly 0 as the band fills: a Hall current carried
 by a metal whose filled bands are topologically trivial.
 
-.. GENERATED FROM PYTHON SOURCE LINES 99-107
+.. GENERATED FROM PYTHON SOURCE LINES 115-123
 
 .. code-block:: Python
 
@@ -181,7 +214,7 @@ by a metal whose filled bands are topologically trivial.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-114
+.. GENERATED FROM PYTHON SOURCE LINES 124-130
 
 Temperature and convergence
 ------------------------------
@@ -190,7 +223,7 @@ empty the top of the lower band), and speeds up the convergence in the
 mesh: at :math:`T = 0.05`, a 60 x 60 mesh already agrees with 240 x 240
 to :math:`10^{-4}` in the bands.
 
-.. GENERATED FROM PYTHON SOURCE LINES 114-130
+.. GENERATED FROM PYTHON SOURCE LINES 130-146
 
 .. code-block:: Python
 
@@ -213,9 +246,9 @@ to :math:`10^{-4}` in the bands.
 
 
 
-.. image-sg:: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_hall_effect_002.png
+.. image-sg:: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_hall_effect_003.png
    :alt: Topological phase: the plateau at $C = 1$, smoothed by temperature
-   :srcset: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_hall_effect_002.png
+   :srcset: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_hall_effect_003.png
    :class: sphx-glr-single-img
 
 
@@ -225,14 +258,14 @@ to :math:`10^{-4}` in the bands.
 
     T = 0.05, nk = 60 vs 240: max difference 1.37e-07
 
-    <matplotlib.legend.Legend object at 0x7feac44dd590>
+    <matplotlib.legend.Legend object at 0x10f536e40>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.712 seconds)
+   **Total running time of the script:** (0 minutes 1.133 seconds)
 
 
 .. _sphx_glr_download_api_gallery_hall_effects_plot_anomalous_hall_effect.py:

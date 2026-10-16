@@ -28,6 +28,7 @@ from tbkit import lattices
 from tbkit.system import System
 from tbkit.kspace import KSpace
 from tbkit.bridges import kspace_from_system, finite_system, finite_model
+from tbkit.plot import Plot
 
 
 # %%
@@ -53,6 +54,15 @@ onsite = {'a': M, 'b': -M}
 hal = KSpace(lattices.honeycomb())
 hal.set_hopping(list_hop)
 hal.set_onsite(onsite)
+
+# %%
+# The model on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`), bond widths proportional to the
+# amplitudes: sublattices a and b in two colours, the nearest-neighbour
+# bonds :math:`t_1` (thick) and the second-neighbour ones :math:`t_2`
+# (thin).
+
+fig_lat = Plot(finite_system(hal, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # Real space to k-space
@@ -120,6 +130,7 @@ assert positions.shape == (2 * N * N, 2)
 # Spectra
 # -------------
 
+# sphinx_gallery_thumbnail_number = 2
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 4))
 ax1.plot(mesh, 'o', ms=5, mfc='none', color='C0', label='KSpace: mesh bands')
 ax1.plot(torus.en, '.', ms=2, color='C3', label='System: torus')

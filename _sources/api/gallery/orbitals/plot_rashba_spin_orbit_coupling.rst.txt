@@ -45,7 +45,7 @@ nearest-neighbour hopping :math:`t`,
 with :math:`b_z` a Zeeman field (:meth:`~tbkit.orbital.OrbitalSystem.set_zeeman`)
 that breaks time reversal and opens a gap at :math:`\mathbf{k} = 0`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-70
+.. GENERATED FROM PYTHON SOURCE LINES 29-72
 
 .. code-block:: Python
 
@@ -54,6 +54,8 @@ that breaks time reversal and opens a gap at :math:`\mathbf{k} = 0`.
 
     import tbkit.lattices as lattices
     from tbkit.orbital import OrbitalSystem
+    from tbkit.plot import Plot
+    from tbkit.system import System
 
 
     L, t, lam = 12, -1., 0.3
@@ -97,7 +99,40 @@ that breaks time reversal and opens a gap at :math:`\mathbf{k} = 0`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-76
+.. GENERATED FROM PYTHON SOURCE LINES 73-80
+
+The lattice
+-----------
+The square lattice, one site per cell with a spin-1/2 orbital, and its
+nearest-neighbour bonds. On each bond the Rashba term adds a spin flip
+:math:`i\lambda(\boldsymbol\sigma\times\hat{\mathbf{d}})_z` to the
+hopping :math:`t`; the spin is not drawn. The torus used below is
+:math:`12\times12` sites; the bonds that close it are not drawn.
+
+.. GENERATED FROM PYTHON SOURCE LINES 80-87
+
+.. code-block:: Python
+
+
+    patch = lattices.square()
+    patch.get_lattice(n1=L, n2=L)
+    vis = System(patch)
+    vis.set_hopping([{'n': 1, 't': t}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=10, figsize=(5, 5))
+
+
+
+
+.. image-sg:: /api/gallery/orbitals/images/sphx_glr_plot_rashba_spin_orbit_coupling_001.png
+   :alt: plot rashba spin orbit coupling
+   :srcset: /api/gallery/orbitals/images/sphx_glr_plot_rashba_spin_orbit_coupling_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 88-93
 
 The spectrum of the real-space model is the Rashba dispersion
 -----------------------------------------------------------------
@@ -105,7 +140,7 @@ On a 12 x 12 torus the momenta are :math:`2\pi n/12`; the
 :math:`2 \times 144` eigenvalues of the real-space Hamiltonian are
 exactly :math:`E_\pm` at those momenta.
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-84
+.. GENERATED FROM PYTHON SOURCE LINES 93-101
 
 .. code-block:: Python
 
@@ -130,7 +165,7 @@ exactly :math:`E_\pm` at those momenta.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 85-93
+.. GENERATED FROM PYTHON SOURCE LINES 102-110
 
 Kramers pairs, and the Zeeman field that splits them
 --------------------------------------------------------
@@ -141,7 +176,7 @@ torus is (at least) doubly degenerate. A Zeeman field breaks time
 reversal and lifts it, opening a gap :math:`2b_z` at
 :math:`\mathbf{k} = 0`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-102
+.. GENERATED FROM PYTHON SOURCE LINES 110-119
 
 .. code-block:: Python
 
@@ -167,7 +202,7 @@ reversal and lifts it, opening a gap :math:`2b_z` at
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 103-110
+.. GENERATED FROM PYTHON SOURCE LINES 120-127
 
 Spin-momentum locking
 -------------------------
@@ -177,7 +212,7 @@ eigenstates lies in the plane, perpendicular to
 :math:`(\sin k_x, \sin k_y)` (to :math:`\mathbf{k}` near
 :math:`\Gamma`), and opposite for the two bands.
 
-.. GENERATED FROM PYTHON SOURCE LINES 110-125
+.. GENERATED FROM PYTHON SOURCE LINES 127-142
 
 .. code-block:: Python
 
@@ -209,12 +244,12 @@ eigenstates lies in the plane, perpendicular to
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-128
+.. GENERATED FROM PYTHON SOURCE LINES 143-145
 
 The two spin-split bands
 ----------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 128-151
+.. GENERATED FROM PYTHON SOURCE LINES 145-168
 
 .. code-block:: Python
 
@@ -244,9 +279,9 @@ The two spin-split bands
 
 
 
-.. image-sg:: /api/gallery/orbitals/images/sphx_glr_plot_rashba_spin_orbit_coupling_001.png
+.. image-sg:: /api/gallery/orbitals/images/sphx_glr_plot_rashba_spin_orbit_coupling_002.png
    :alt: Rashba (solid), with Zeeman $b_z = 0.4$ (dashed), spin of the lower band (torus momenta)
-   :srcset: /api/gallery/orbitals/images/sphx_glr_plot_rashba_spin_orbit_coupling_001.png
+   :srcset: /api/gallery/orbitals/images/sphx_glr_plot_rashba_spin_orbit_coupling_002.png
    :class: sphx-glr-single-img
 
 
@@ -256,7 +291,7 @@ The two spin-split bands
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.653 seconds)
+   **Total running time of the script:** (0 minutes 0.930 seconds)
 
 
 .. _sphx_glr_download_api_gallery_orbitals_plot_rashba_spin_orbit_coupling.py:

@@ -24,6 +24,7 @@ import matplotlib.pyplot as plt
 
 from tbkit.graphene import GrapheneLattice
 from tbkit.meanfield import hubbard_mean_field
+from tbkit.plot import Plot
 from tbkit.system import System
 
 
@@ -45,6 +46,17 @@ def ground_state(lat, sys, U, starts=2):
     results += [hubbard_mean_field(sys.ham, U, lat.sites, seed=seed, max_iter=100000) for seed in range(starts)]
     return min(results, key=lambda r: r.energy)
 
+
+# %%
+# The two flakes
+# --------------
+# A zigzag triangle (left): all three edges end on sublattice A (tag 'a'),
+# so A has more sites than B. A zigzag hexagon (right) alternates A and B
+# edges and keeps the two sublattices balanced.
+
+fig_lat, axes_lat = plt.subplots(1, 2, figsize=(10, 4.5))
+Plot(flake('triangle_zigzag', 5)[1]).lattice(plt_hop=True, ms=8, ax=axes_lat[0])
+Plot(flake('hexagon_zigzag', 3)[1]).lattice(plt_hop=True, ms=8, ax=axes_lat[1])
 
 # %%
 # Zero modes: one per extra A site
@@ -85,6 +97,7 @@ m_hex = ground_state(hexagon, sys_hex, 0.1).magnetization
 print('Hexagon ({} sites), U = 0.1|t|: largest |m_i| = {:.1e}.'.format(hexagon.sites, np.abs(m_hex).max()))
 assert np.abs(m_hex).max() < 1e-6
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 3, figsize=(14, 4.5))
 panels = ((rho / 2, 'zero-mode density / 2'),
               (m_small * np.sign(m_small.sum()), r'$m_i$, $U = 0.05|t|$'),

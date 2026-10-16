@@ -42,7 +42,7 @@ one-parameter scaling.
 :class:`~tbkit.transport.RecursiveTransport` implements it; it agrees with
 the dense :class:`~tbkit.transport.Transport` wherever both apply.
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-38
+.. GENERATED FROM PYTHON SOURCE LINES 26-39
 
 .. code-block:: Python
 
@@ -52,6 +52,7 @@ the dense :class:`~tbkit.transport.Transport` wherever both apply.
 
     import tbkit.lattices as lattices
     from tbkit.kspace import ribbon
+    from tbkit.plot import Plot
     from tbkit.system import System
     from tbkit.transport import Transport, RecursiveTransport, lead_from_kspace, slices_from_positions
 
@@ -65,14 +66,14 @@ the dense :class:`~tbkit.transport.Transport` wherever both apply.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-43
+.. GENERATED FROM PYTHON SOURCE LINES 40-44
 
 The same numbers as the dense inversion
 -------------------------------------------
 A disordered square-lattice strip, 30 x 6 sites, between two clean
 strips of the same width.
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-64
+.. GENERATED FROM PYTHON SOURCE LINES 44-57
 
 .. code-block:: Python
 
@@ -85,6 +86,31 @@ strips of the same width.
     sys.set_onsite({'a': 0.})
     sys.onsite[:] = 2. * (rng.random(lat.sites) - 0.5)
     sys.get_ham()
+    # the strip, with its nearest-neighbour bonds (the random onsite energies
+    # are not drawn); each column of six sites is one slice of the recursion
+    fig_lat = Plot(sys).lattice(plt_hop=True, ms=6, c=1.5, figsize=(9, 2.4))
+
+
+
+
+.. image-sg:: /api/gallery/transport/images/sphx_glr_plot_recursive_green_function_001.png
+   :alt: plot recursive green function
+   :srcset: /api/gallery/transport/images/sphx_glr_plot_recursive_green_function_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 58-59
+
+The recursive and the dense transmissions:
+
+.. GENERATED FROM PYTHON SOURCE LINES 59-72
+
+.. code-block:: Python
+
+
     strip = ribbon(lattices.square(), [{'i': 0, 'j': 0, 'R': (1, 0), 't': t},
                                                    {'i': 0, 'j': 0, 'R': (0, 1), 't': t}], width=width, direction=1)
     (h_l, v_l), (h_r, v_r) = lead_from_kspace(strip, -1), lead_from_kspace(strip, 1)
@@ -110,7 +136,7 @@ strips of the same width.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-73
+.. GENERATED FROM PYTHON SOURCE LINES 73-81
 
 Anderson localization in a chain, thousands of sites long
 --------------------------------------------------------------
@@ -121,7 +147,7 @@ of width :math:`W`, perturbation theory (Thouless 1979) gives
 :math:`E = 0.5`. Chains up to 12 localization lengths long, 300
 disorder samples each:
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-96
+.. GENERATED FROM PYTHON SOURCE LINES 81-104
 
 .. code-block:: Python
 
@@ -161,7 +187,7 @@ disorder samples each:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-103
+.. GENERATED FROM PYTHON SOURCE LINES 105-111
 
 A wire of 100 000 sites
 ---------------------------
@@ -170,7 +196,7 @@ A strip 20 sites wide and 5000 long would need a dense matrix of
 length even weak disorder (:math:`W = 0.5`) cuts the transmission far
 below the number of open channels.
 
-.. GENERATED FROM PYTHON SOURCE LINES 103-130
+.. GENERATED FROM PYTHON SOURCE LINES 111-138
 
 .. code-block:: Python
 
@@ -204,9 +230,9 @@ below the number of open channels.
 
 
 
-.. image-sg:: /api/gallery/transport/images/sphx_glr_plot_recursive_green_function_001.png
+.. image-sg:: /api/gallery/transport/images/sphx_glr_plot_recursive_green_function_002.png
    :alt: Localization length from the recursive Green function
-   :srcset: /api/gallery/transport/images/sphx_glr_plot_recursive_green_function_001.png
+   :srcset: /api/gallery/transport/images/sphx_glr_plot_recursive_green_function_002.png
    :class: sphx-glr-single-img
 
 
@@ -222,7 +248,7 @@ below the number of open channels.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 21.308 seconds)
+   **Total running time of the script:** (0 minutes 5.941 seconds)
 
 
 .. _sphx_glr_download_api_gallery_transport_plot_recursive_green_function.py:

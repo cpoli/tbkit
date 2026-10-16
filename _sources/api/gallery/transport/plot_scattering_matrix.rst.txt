@@ -46,7 +46,7 @@ modes (:func:`~tbkit.transport.lead_modes`, with no broadening
 states and :meth:`~tbkit.transport.Transport.ldos` the density of states
 they carry. Here they are applied to a strip with an antidot.
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-64
+.. GENERATED FROM PYTHON SOURCE LINES 30-65
 
 .. code-block:: Python
 
@@ -55,6 +55,7 @@ they carry. Here they are applied to a strip with an antidot.
 
     import tbkit.lattices as lattices
     from tbkit.kspace import ribbon
+    from tbkit.plot import Plot
     from tbkit.system import System
     from tbkit.transport import Transport, lead_from_kspace, lead_modes
 
@@ -91,7 +92,35 @@ they carry. Here they are applied to a strip with an antidot.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-71
+.. GENERATED FROM PYTHON SOURCE LINES 66-72
+
+The device
+----------
+A :math:`30\times16` strip of the square lattice with its
+nearest-neighbour bonds, between two semi-infinite leads that continue
+it to the left and right. The antidot is a smooth onsite potential above
+the axis of the strip (not drawn).
+
+.. GENERATED FROM PYTHON SOURCE LINES 72-75
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(sys).lattice(plt_hop=True, ms=4, c=1., figsize=(8, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/transport/images/sphx_glr_plot_scattering_matrix_001.png
+   :alt: plot scattering matrix
+   :srcset: /api/gallery/transport/images/sphx_glr_plot_scattering_matrix_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 76-82
 
 The modes of a lead
 ---------------------
@@ -100,7 +129,7 @@ Subband :math:`n` of the strip has the band :math:`E = 2t\cos k +
 (velocity towards the device) and one outgoing mode, each normalized to
 carry unit current.
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-83
+.. GENERATED FROM PYTHON SOURCE LINES 82-94
 
 .. code-block:: Python
 
@@ -129,7 +158,7 @@ carry unit current.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-90
+.. GENERATED FROM PYTHON SOURCE LINES 95-101
 
 The scattering matrix
 -----------------------
@@ -138,7 +167,7 @@ transmitted or reflected. The sum of its transmission block is the
 Caroli transmission, which the broadening :math:`\eta` of the Green's
 function approximates.
 
-.. GENERATED FROM PYTHON SOURCE LINES 90-99
+.. GENERATED FROM PYTHON SOURCE LINES 101-110
 
 .. code-block:: Python
 
@@ -164,7 +193,7 @@ function approximates.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 100-105
+.. GENERATED FROM PYTHON SOURCE LINES 111-116
 
 A scattering state
 --------------------
@@ -172,7 +201,7 @@ The scattering state of each incoming mode carries its own current,
 the same through every cross-section of the strip: the transmission
 :math:`\sum_a|t_{ab}|^2` of that mode.
 
-.. GENERATED FROM PYTHON SOURCE LINES 105-120
+.. GENERATED FROM PYTHON SOURCE LINES 116-131
 
 .. code-block:: Python
 
@@ -204,7 +233,7 @@ the same through every cross-section of the strip: the transmission
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 121-128
+.. GENERATED FROM PYTHON SOURCE LINES 132-139
 
 No broadening: exact up to the band edges
 -------------------------------------------
@@ -214,7 +243,7 @@ velocity. As :math:`E` approaches the band edge, :math:`v \to 0`, and the
 Caroli formula with :math:`\eta = 10^{-9}` drifts away from that value,
 while the lead modes stay exact.
 
-.. GENERATED FROM PYTHON SOURCE LINES 128-185
+.. GENERATED FROM PYTHON SOURCE LINES 139-196
 
 .. code-block:: Python
 
@@ -278,9 +307,9 @@ while the lead modes stay exact.
 
 
 
-.. image-sg:: /api/gallery/transport/images/sphx_glr_plot_scattering_matrix_001.png
+.. image-sg:: /api/gallery/transport/images/sphx_glr_plot_scattering_matrix_002.png
    :alt: Lead modes at $E_F$, $|t_{ab}|^2$, $T = 3.946$, LDOS of the scattering states, Impurity in a chain
-   :srcset: /api/gallery/transport/images/sphx_glr_plot_scattering_matrix_001.png
+   :srcset: /api/gallery/transport/images/sphx_glr_plot_scattering_matrix_002.png
    :class: sphx-glr-single-img
 
 
@@ -288,7 +317,7 @@ while the lead modes stay exact.
 
  .. code-block:: none
 
-    At 1e-9 from the band edge: relative error 1.1e-07 (S-matrix), 2.1e-01 (eta = 1e-9).
+    At 1e-9 from the band edge: relative error 6.6e-08 (S-matrix), 2.1e-01 (eta = 1e-9).
 
 
 
@@ -296,7 +325,7 @@ while the lead modes stay exact.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.060 seconds)
+   **Total running time of the script:** (0 minutes 0.406 seconds)
 
 
 .. _sphx_glr_download_api_gallery_transport_plot_scattering_matrix.py:

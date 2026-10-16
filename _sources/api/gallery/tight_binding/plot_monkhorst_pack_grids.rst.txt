@@ -43,7 +43,7 @@ grid (fractional coordinates :math:`r/q`) or, with
 are the same points; for even :math:`q` the Monkhorst-Pack grid is
 shifted by half a step.
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-43
+.. GENERATED FROM PYTHON SOURCE LINES 27-46
 
 .. code-block:: Python
 
@@ -51,7 +51,10 @@ shifted by half a step.
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
+    from tbkit.system import System
 
 
     def grid(ks, q, monkhorst_pack):
@@ -70,7 +73,47 @@ shifted by half a step.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-54
+.. GENERATED FROM PYTHON SOURCE LINES 47-53
+
+The lattices
+------------
+The square lattice (left, :func:`~tbkit.bridges.finite_system` of the
+model above), and the honeycomb lattice of gapped graphene (right,
+sublattices 'a' and 'b' in two colours), each with its nearest-neighbour
+bonds.
+
+.. GENERATED FROM PYTHON SOURCE LINES 53-62
+
+.. code-block:: Python
+
+
+    fig_lat, axes_lat = plt.subplots(1, 2, figsize=(10, 4.5))
+    Plot(finite_system(square, (6, 6))).lattice(plt_hop=True, ms=10, ax=axes_lat[0])
+    patch = lattices.honeycomb()
+    patch.get_lattice(n1=5, n2=4)
+    vis = System(patch)
+    vis.set_hopping([{'n': 1, 't': 1.}])
+    Plot(vis).lattice(plt_hop=True, ms=10, ax=axes_lat[1])
+
+
+
+
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_monkhorst_pack_grids_001.png
+   :alt: plot monkhorst pack grids
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_monkhorst_pack_grids_001.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    <Figure size 1000x450 with 2 Axes>
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 63-73
 
 Exact moments of the band
 -----------------------------
@@ -83,7 +126,7 @@ the components with :math:`R_i = \pm q` are aliased: they add
 :math:`+1` per term on the :math:`\Gamma`-centred grid, and
 :math:`(-1)^{R_x/q + R_y/q}` on the shifted one.
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-70
+.. GENERATED FROM PYTHON SOURCE LINES 73-89
 
 .. code-block:: Python
 
@@ -120,7 +163,7 @@ the components with :math:`R_i = \pm q` are aliased: they add
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-82
+.. GENERATED FROM PYTHON SOURCE LINES 90-101
 
 Insulators converge exponentially, metals do not
 ----------------------------------------------------
@@ -134,7 +177,7 @@ does the error: about :math:`q^{-2}` for the half-filled square lattice,
 whose band energy is :math:`-8t/\pi^2` per site. That slow convergence
 is why metals need dense grids, smearing, or the tetrahedron method.
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-113
+.. GENERATED FROM PYTHON SOURCE LINES 101-132
 
 .. code-block:: Python
 
@@ -172,9 +215,9 @@ is why metals need dense grids, smearing, or the tetrahedron method.
 
 
 
-.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_monkhorst_pack_grids_001.png
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_monkhorst_pack_grids_002.png
    :alt: Brillouin-zone sampling error
-   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_monkhorst_pack_grids_001.png
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_monkhorst_pack_grids_002.png
    :class: sphx-glr-single-img
 
 
@@ -196,7 +239,7 @@ is why metals need dense grids, smearing, or the tetrahedron method.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 114-123
+.. GENERATED FROM PYTHON SOURCE LINES 134-143
 
 Fewer irreducible points
 ----------------------------
@@ -208,7 +251,7 @@ points :math:`(1,1)`, :math:`(1,3)` and :math:`(3,3)` in units of
 :math:`\pi/4a`, with weights 1/4, 1/2 and 1/4. It needs half the
 diagonalizations for the same Fourier accuracy.
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-161
+.. GENERATED FROM PYTHON SOURCE LINES 143-181
 
 .. code-block:: Python
 
@@ -253,9 +296,9 @@ diagonalizations for the same Fourier accuracy.
 
 
 
-.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_monkhorst_pack_grids_002.png
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_monkhorst_pack_grids_003.png
    :alt: $\Gamma$-centred $4\times4$: 6 irreducible, Monkhorst-Pack $4\times4$: 3 irreducible
-   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_monkhorst_pack_grids_002.png
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_monkhorst_pack_grids_003.png
    :class: sphx-glr-single-img
 
 
@@ -272,7 +315,7 @@ diagonalizations for the same Fourier accuracy.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.372 seconds)
+   **Total running time of the script:** (0 minutes 0.144 seconds)
 
 
 .. _sphx_glr_download_api_gallery_tight_binding_plot_monkhorst_pack_grids.py:

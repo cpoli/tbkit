@@ -63,7 +63,7 @@ reversal is unbroken, and the pseudo-field must therefore point the
 bubbles were measured showing pseudo-fields in excess of 300 T, far
 beyond any real laboratory field.
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-87
+.. GENERATED FROM PYTHON SOURCE LINES 47-88
 
 .. code-block:: Python
 
@@ -72,6 +72,7 @@ beyond any real laboratory field.
 
     from tbkit.system import System
     from tbkit.graphene import GrapheneLattice, GrapheneSystem
+    from tbkit.plot import Plot
 
 
     t = 1.
@@ -114,7 +115,7 @@ beyond any real laboratory field.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-94
+.. GENERATED FROM PYTHON SOURCE LINES 89-95
 
 The strained Hamiltonian is real: no field, no broken time reversal
 ----------------------------------------------------------------------
@@ -123,7 +124,7 @@ Unlike the Peierls substitution (see
 hoppings by complex phases, strain only rescales them. The Hamiltonian
 stays real symmetric.
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-105
+.. GENERATED FROM PYTHON SOURCE LINES 95-106
 
 .. code-block:: Python
 
@@ -153,7 +154,33 @@ stays real symmetric.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 106-111
+.. GENERATED FROM PYTHON SOURCE LINES 107-111
+
+The flake: the honeycomb lattice (sublattices 'a' and 'b' in two
+colours) cut into a disc, with its nearest-neighbour bonds drawn with
+widths proportional to their hoppings. Strain rescales them across the
+flake, over the range printed above -- too little to see at this scale.
+
+.. GENERATED FROM PYTHON SOURCE LINES 111-114
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(gsys).lattice(plt_hop=True, ms=2.5, c=1.5, figsize=(6, 6))
+
+
+
+
+.. image-sg:: /api/gallery/strain/images/sphx_glr_plot_pseudo_magnetic_field_001.png
+   :alt: plot pseudo magnetic field
+   :srcset: /api/gallery/strain/images/sphx_glr_plot_pseudo_magnetic_field_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 115-120
 
 The spectrum nevertheless collapses onto a relativistic Landau ladder
 -------------------------------------------------------------------------
@@ -161,7 +188,7 @@ With :math:`B_s = |\beta|/2`, the predicted levels are
 :math:`E_n = \tfrac32 t\sqrt{|\beta| n}`. The bulk states bunch onto them
 to within a couple of percent.
 
-.. GENERATED FROM PYTHON SOURCE LINES 111-128
+.. GENERATED FROM PYTHON SOURCE LINES 120-137
 
 .. code-block:: Python
 
@@ -200,7 +227,7 @@ to within a couple of percent.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 129-134
+.. GENERATED FROM PYTHON SOURCE LINES 138-143
 
 The spacing is the Dirac one, not the ordinary one
 --------------------------------------------------------
@@ -208,7 +235,7 @@ The telltale signature is the *ratio* of successive levels: a
 parabolic band gives equally spaced levels, whereas a Dirac cone gives
 :math:`E_n/E_1 = \sqrt{n}`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 134-146
+.. GENERATED FROM PYTHON SOURCE LINES 143-155
 
 .. code-block:: Python
 
@@ -238,12 +265,12 @@ parabolic band gives equally spaced levels, whereas a Dirac cone gives
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 147-149
+.. GENERATED FROM PYTHON SOURCE LINES 156-158
 
 The ladder scales as sqrt(strain), exactly as it scales as sqrt(B)
 ----------------------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 149-161
+.. GENERATED FROM PYTHON SOURCE LINES 158-170
 
 .. code-block:: Python
 
@@ -275,7 +302,7 @@ The ladder scales as sqrt(strain), exactly as it scales as sqrt(B)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 162-167
+.. GENERATED FROM PYTHON SOURCE LINES 171-176
 
 Cross-check: the same flake in a *real* field of the same strength
 ----------------------------------------------------------------------
@@ -283,7 +310,7 @@ A real field of :math:`B = B_s` -- i.e. :math:`\alpha = B_s/2\pi` flux
 quanta per unit cell -- must produce the same ladder, through a
 Hamiltonian that is complex rather than real.
 
-.. GENERATED FROM PYTHON SOURCE LINES 167-184
+.. GENERATED FROM PYTHON SOURCE LINES 176-193
 
 .. code-block:: Python
 
@@ -319,12 +346,12 @@ Hamiltonian that is complex rather than real.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 185-187
+.. GENERATED FROM PYTHON SOURCE LINES 194-196
 
 The pseudo-Landau fan
 ---------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 187-198
+.. GENERATED FROM PYTHON SOURCE LINES 196-207
 
 .. code-block:: Python
 
@@ -342,9 +369,9 @@ The pseudo-Landau fan
 
 
 
-.. image-sg:: /api/gallery/strain/images/sphx_glr_plot_pseudo_magnetic_field_001.png
+.. image-sg:: /api/gallery/strain/images/sphx_glr_plot_pseudo_magnetic_field_002.png
    :alt: Strained graphene ($\beta=-0.05$, 1728 sites): pseudo-Landau levels
-   :srcset: /api/gallery/strain/images/sphx_glr_plot_pseudo_magnetic_field_001.png
+   :srcset: /api/gallery/strain/images/sphx_glr_plot_pseudo_magnetic_field_002.png
    :class: sphx-glr-single-img
 
 
@@ -357,14 +384,14 @@ The pseudo-Landau fan
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 199-203
+.. GENERATED FROM PYTHON SOURCE LINES 209-213
 
 The strain pattern itself
 ---------------------------
 Each bond is colored by its hopping amplitude: the threefold
 (triaxial) pattern is what makes the pseudo-field uniform.
 
-.. GENERATED FROM PYTHON SOURCE LINES 203-216
+.. GENERATED FROM PYTHON SOURCE LINES 213-226
 
 .. code-block:: Python
 
@@ -384,9 +411,9 @@ Each bond is colored by its hopping amplitude: the threefold
 
 
 
-.. image-sg:: /api/gallery/strain/images/sphx_glr_plot_pseudo_magnetic_field_002.png
+.. image-sg:: /api/gallery/strain/images/sphx_glr_plot_pseudo_magnetic_field_003.png
    :alt: Bond amplitudes under triaxial strain ($\beta=-0.05$)
-   :srcset: /api/gallery/strain/images/sphx_glr_plot_pseudo_magnetic_field_002.png
+   :srcset: /api/gallery/strain/images/sphx_glr_plot_pseudo_magnetic_field_003.png
    :class: sphx-glr-single-img
 
 
@@ -395,14 +422,14 @@ Each bond is colored by its hopping amplitude: the threefold
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7feaaf5ad090>
+    <matplotlib.colorbar.Colorbar object at 0x118433b60>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 16.411 seconds)
+   **Total running time of the script:** (0 minutes 6.242 seconds)
 
 
 .. _sphx_glr_download_api_gallery_strain_plot_pseudo_magnetic_field.py:

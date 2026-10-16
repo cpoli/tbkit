@@ -35,9 +35,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import quad
 
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace, PAULI
 from tbkit.lattice import Lattice
 from tbkit.optics import berry_curvature_dipole
+from tbkit.plot import Plot
 
 
 def tilted_dirac(m, tilt, B=0.12, v=1.):
@@ -69,6 +71,17 @@ def thermal(mu, T, m, tilt):
 
 m, tilt, T = 0.07, 0.02, 0.01
 dirac = tilted_dirac(m, tilt)
+
+# %%
+# The lattice
+# -----------
+# The model on :math:`6\times6` cells (:func:`~tbkit.bridges.finite_system`):
+# a square lattice, each site holding two orbitals ('a' and 'b', drawn on
+# top of each other), joined by the nearest-neighbour hoppings along
+# :math:`x` and :math:`y`. The tilt, a small extra term on the bonds
+# along :math:`x`, is too weak to show at this scale.
+
+fig_lat = Plot(finite_system(dirac, (6, 6))).lattice(plt_hop=True, ms=10, figsize=(4.5, 4.5))
 
 # %%
 # The dipole across the conduction band
@@ -109,6 +122,7 @@ forward = berry_curvature_dipole(dirac, 0.12, T, nk=500)
 assert np.allclose(straight, 0., atol=1e-12)
 assert np.isclose(reversed_tilt[0], -forward[0], rtol=1e-8)
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(6, 4))
 ax.plot(mus / m, 1e3 * dipole[:, 0], 'ob', ms=3, label='tbkit, lattice')
 ax.plot(mus / m, 1e3 * reference, '-k', lw=1, label='Sodemann-Fu (thermal average)')

@@ -32,6 +32,7 @@ from scipy.integrate import trapezoid
 import tbkit.kpm as kpm
 import tbkit.lattices as lattices
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 from tbkit.system import System
 
 t = 1.
@@ -49,6 +50,26 @@ def graphene(vacancies=0., seed=0):
     sys.get_ham()
     return sys
 
+
+# %%
+# The lattice
+# -----------
+# The honeycomb lattice -- sublattices 'a' and 'b' in two colours --
+# with 2% of its sites removed at random, here on a :math:`12\times12`
+# corner of the flake. The flake used below is 150 cells on a side.
+
+lat_vis = lattices.honeycomb()
+lat_vis.get_lattice(12, 12)
+rng_vis = np.random.default_rng(0)
+lat_vis.remove_sites(sorted(rng_vis.choice(lat_vis.sites, int(0.02 * lat_vis.sites),
+                                                    replace=False).tolist()))
+vis = System(lat_vis)
+vis.set_hopping([{'n': 1, 't': t}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=6, figsize=(7, 4.5))
+
+# %%
+# The density of states of the clean flake and of one with 2% vacancies,
+# by the kernel polynomial method:
 
 e_grid = np.linspace(-3., 3., 241)
 clean = graphene()
@@ -99,6 +120,7 @@ assert np.isclose(trapezoid(rho_clean, e_grid), 1., atol=0.01)
 print('rho(0): clean {:.4f}, with vacancies {:.4f}.'.format(rho_clean[120], rho_dirty[120]))
 assert rho_dirty[120] > 2 * rho_clean[120]
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(6.5, 4))
 ax.plot(e_grid, rho_bz, color='0.6', lw=4, label='Brillouin zone')
 ax.plot(e_grid, rho_clean, 'b', label='clean')

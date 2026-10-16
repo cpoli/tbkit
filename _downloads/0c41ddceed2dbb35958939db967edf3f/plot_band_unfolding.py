@@ -31,13 +31,26 @@ import matplotlib.pyplot as plt
 from scipy.integrate import trapezoid
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
 from tbkit.moire import spectral_function, supercell, unfold
+from tbkit.plot import Plot
 
 t = -1.
 gra = KSpace(lattices.honeycomb())
 gra.set_hopping([{'i': 0, 'j': 1, 'R': (0, 0), 't': t}, {'i': 0, 'j': 1, 'R': (-1, 0), 't': t},
                           {'i': 0, 'j': 1, 'R': (0, -1), 't': t}])
+
+# %%
+# The lattice
+# -----------
+# Graphene's honeycomb lattice on a patch of :math:`6\times6` cells
+# (:func:`~tbkit.bridges.finite_system`): two sites per unit cell
+# (sublattices 'a' and 'b', in two colours), each bonded to its three
+# nearest neighbours. A :math:`3\times3` supercell, as used below, holds
+# nine of these cells.
+
+fig_lat = Plot(finite_system(gra, (6, 6))).lattice(plt_hop=True, ms=9, figsize=(6.5, 4.5))
 
 # %%
 # A pristine supercell unfolds exactly
@@ -103,6 +116,7 @@ assert abs(norm - 2.) < 2e-3
 assert widths[0.] < widths[0.8] < widths[2.]
 print('half widths at M: ' + ', '.join('W = {}: {:.3f}'.format(W, h) for W, h in widths.items()))
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 3, figsize=(12, 4), sharey=True)
 x = np.arange(len(path))
 for ax, (W, a) in zip(axes, maps.items()):

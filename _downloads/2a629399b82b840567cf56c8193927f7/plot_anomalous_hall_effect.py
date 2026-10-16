@@ -28,7 +28,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 
 
 def haldane(M, t2=0.2):
@@ -39,6 +41,19 @@ def haldane(M, t2=0.2):
         hal.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j*t2}, {'i': 1, 'j': 1, 'R': R, 't': -1j*t2}])
     hal.set_onsite({'a': M, 'b': -M})
     return hal
+
+
+# %%
+# The lattice
+# -----------
+# The Haldane model on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`), each bond drawn with a width
+# proportional to its amplitude: the honeycomb lattice's two sublattices
+# ('a' and 'b', in two colours), the nearest-neighbour hopping :math:`t`
+# (thick) and the complex second-neighbour hoppings :math:`\pm it_2`
+# within each sublattice (thin), which break time-reversal symmetry.
+
+fig_lat = Plot(finite_system(haldane(0.3), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 
 # %%
@@ -75,6 +90,7 @@ for name in phases:
     print('{}: sigma_xy(E_F = {:.2f}) = {:.4f} e^2/h'.format(name, e_f[mid], sigma[name][mid]))
     assert 0.1 < sigma[name][mid] < 0.9
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(7, 4.5))
 for (name, s), color in zip(sigma.items(), ('C0', 'C3')):
     ax.plot(e_f, s, color=color, label=name)

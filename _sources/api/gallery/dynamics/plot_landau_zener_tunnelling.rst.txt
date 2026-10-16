@@ -52,7 +52,7 @@ bands :math:`\pm2t\cos k` cross at :math:`k = \pi/2` with relative slope
 of the two-level sweep, and :class:`~tbkit.propagation.Propagation`
 evolves a wavepacket in the tilted binary chain.
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-44
+.. GENERATED FROM PYTHON SOURCE LINES 36-45
 
 .. code-block:: Python
 
@@ -61,6 +61,7 @@ evolves a wavepacket in the tilted binary chain.
 
     from tbkit.floquet import evolution_operator
     from tbkit.lattice import Lattice
+    from tbkit.plot import Plot
     from tbkit.system import System
     from tbkit.propagation import Propagation
 
@@ -71,7 +72,7 @@ evolves a wavepacket in the tilted binary chain.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-50
+.. GENERATED FROM PYTHON SOURCE LINES 46-51
 
 Two levels swept through an avoided crossing
 --------------------------------------------------
@@ -79,7 +80,7 @@ The sweep runs from :math:`t = -T/2` to :math:`T/2`, long enough for the
 levels to end far apart. The evolution over the sweep is the one-period
 evolution operator of the drive, with "period" the sweep time.
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-68
+.. GENERATED FROM PYTHON SOURCE LINES 51-69
 
 .. code-block:: Python
 
@@ -114,7 +115,7 @@ evolution operator of the drive, with "period" the sweep time.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-77
+.. GENERATED FROM PYTHON SOURCE LINES 70-78
 
 Zener breakdown between two bands
 -------------------------------------
@@ -125,7 +126,7 @@ weight it has left in the upper band is the Zener probability. The
 tilt is centred on the packet, so that the Crank-Nicolson step sees only
 small onsite energies.
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-115
+.. GENERATED FROM PYTHON SOURCE LINES 78-96
 
 .. code-block:: Python
 
@@ -145,6 +146,52 @@ small onsite energies.
         sys.set_onsite_def({i: d * (-1) ** i + force * (i - x0) for i in range(n)})
         sys.get_ham()
         return sys
+
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 97-100
+
+The binary chain: one hopping :math:`t` and onsite energies alternating
+between :math:`+d` and :math:`-d` (two colours), so a two-site unit cell
+and two bands separated by a gap :math:`2d` at the zone edge.
+
+.. GENERATED FROM PYTHON SOURCE LINES 100-108
+
+.. code-block:: Python
+
+
+    lat_vis = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (1., 0.)}],
+                            prim_vec=[(2., 0.)])
+    lat_vis.get_lattice(n1=6)
+    vis = System(lat_vis)
+    vis.set_hopping([{'n': 1, 't': t}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
+
+
+
+
+.. image-sg:: /api/gallery/dynamics/images/sphx_glr_plot_landau_zener_tunnelling_001.png
+   :alt: plot landau zener tunnelling
+   :srcset: /api/gallery/dynamics/images/sphx_glr_plot_landau_zener_tunnelling_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 109-110
+
+The packet, projected onto the lower band, under five forces:
+
+.. GENERATED FROM PYTHON SOURCE LINES 110-131
+
+.. code-block:: Python
 
 
     bands = binary_chain(0.)
@@ -180,14 +227,14 @@ small onsite energies.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 116-120
+.. GENERATED FROM PYTHON SOURCE LINES 132-136
 
 Each passage through the gap, at half-integer multiples of :math:`T_B`,
 moves weight between the bands. From the second passage on, the two
 paths interfere (Landau-Zener-Stückelberg interference), so a jump can
 go either way.
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-144
+.. GENERATED FROM PYTHON SOURCE LINES 136-160
 
 .. code-block:: Python
 
@@ -218,9 +265,9 @@ go either way.
 
 
 
-.. image-sg:: /api/gallery/dynamics/images/sphx_glr_plot_landau_zener_tunnelling_001.png
+.. image-sg:: /api/gallery/dynamics/images/sphx_glr_plot_landau_zener_tunnelling_002.png
    :alt: Landau-Zener formula, Zener breakdown, $F = 0.2$: a jump at each passage
-   :srcset: /api/gallery/dynamics/images/sphx_glr_plot_landau_zener_tunnelling_001.png
+   :srcset: /api/gallery/dynamics/images/sphx_glr_plot_landau_zener_tunnelling_002.png
    :class: sphx-glr-single-img
 
 
@@ -230,7 +277,7 @@ go either way.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.967 seconds)
+   **Total running time of the script:** (0 minutes 1.388 seconds)
 
 
 .. _sphx_glr_download_api_gallery_dynamics_plot_landau_zener_tunnelling.py:

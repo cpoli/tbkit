@@ -46,7 +46,7 @@ Omelyanchuk, 1977): the current it carries is the Josephson current.
 Hamiltonian (here an :class:`~tbkit.orbital.OrbitalSystem` chain) and a
 pairing such as :func:`~tbkit.bdg.pairing_s_wave`, scaled site by site.
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-60
+.. GENERATED FROM PYTHON SOURCE LINES 30-62
 
 .. code-block:: Python
 
@@ -57,6 +57,8 @@ pairing such as :func:`~tbkit.bdg.pairing_s_wave`, scaled site by site.
     import tbkit.lattices as lattices
     from tbkit.bdg import bdg_ham, pairing_s_wave, particle_hole
     from tbkit.orbital import OrbitalSystem
+    from tbkit.plot import Plot
+    from tbkit.system import System
 
     t, delta = -1., 0.1  # half filling: coherence length 2|t|/delta = 20 sites
 
@@ -87,7 +89,38 @@ pairing such as :func:`~tbkit.bdg.pairing_s_wave`, scaled site by site.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-66
+.. GENERATED FROM PYTHON SOURCE LINES 63-68
+
+The lattice
+-----------
+Every model below lives on a chain with one site per cell and a
+nearest-neighbour hopping :math:`t`, each site holding a spin-1/2
+orbital; the s-wave pairing :math:`\Delta` binds the two spins of a site.
+
+.. GENERATED FROM PYTHON SOURCE LINES 68-75
+
+.. code-block:: Python
+
+
+    patch = lattices.chain()
+    patch.get_lattice(n1=10)
+    vis = System(patch)
+    vis.set_hopping([{'n': 1, 't': t}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
+
+
+
+
+.. image-sg:: /api/gallery/superconductivity/images/sphx_glr_plot_bogoliubov_de_gennes_equations_001.png
+   :alt: plot bogoliubov de gennes equations
+   :srcset: /api/gallery/superconductivity/images/sphx_glr_plot_bogoliubov_de_gennes_equations_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 76-81
 
 A clean superconductor: the BCS spectrum
 --------------------------------------------
@@ -95,7 +128,7 @@ On a ring of 40 sites, the 160 BdG energies are :math:`\pm E_k`, each
 twice (spin), and the matrix anticommutes with the particle-hole
 operator :math:`\tau_x\mathcal{K}`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-77
+.. GENERATED FROM PYTHON SOURCE LINES 81-92
 
 .. code-block:: Python
 
@@ -123,7 +156,7 @@ operator :math:`\tau_x\mathcal{K}`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-83
+.. GENERATED FROM PYTHON SOURCE LINES 93-98
 
 A phase jump: the Kulik-Omelyanchuk level
 -----------------------------------------
@@ -131,7 +164,7 @@ Two superconductors of 200 sites each, in direct contact, with a phase
 difference. One Andreev level (twice, for spin) leaves the continuum and
 follows the Kulik-Omelyanchuk law.
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-94
+.. GENERATED FROM PYTHON SOURCE LINES 98-109
 
 .. code-block:: Python
 
@@ -159,14 +192,14 @@ follows the Kulik-Omelyanchuk law.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 95-99
+.. GENERATED FROM PYTHON SOURCE LINES 110-114
 
 A normal region: de Gennes-Saint-James states
 ---------------------------------------------------
 At equal phases, a normal region of growing length L traps more and
 more Andreev levels below the gap, ever closer to zero energy.
 
-.. GENERATED FROM PYTHON SOURCE LINES 99-125
+.. GENERATED FROM PYTHON SOURCE LINES 114-140
 
 .. code-block:: Python
 
@@ -199,9 +232,9 @@ more Andreev levels below the gap, ever closer to zero energy.
 
 
 
-.. image-sg:: /api/gallery/superconductivity/images/sphx_glr_plot_bogoliubov_de_gennes_equations_001.png
+.. image-sg:: /api/gallery/superconductivity/images/sphx_glr_plot_bogoliubov_de_gennes_equations_002.png
    :alt: de Gennes-Saint-James states
-   :srcset: /api/gallery/superconductivity/images/sphx_glr_plot_bogoliubov_de_gennes_equations_001.png
+   :srcset: /api/gallery/superconductivity/images/sphx_glr_plot_bogoliubov_de_gennes_equations_002.png
    :class: sphx-glr-single-img
 
 
@@ -217,7 +250,7 @@ more Andreev levels below the gap, ever closer to zero energy.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 22.332 seconds)
+   **Total running time of the script:** (0 minutes 6.912 seconds)
 
 
 .. _sphx_glr_download_api_gallery_superconductivity_plot_bogoliubov_de_gennes_equations.py:

@@ -24,9 +24,11 @@ The model: :math:`H(\mathbf{k}) = \sin k_x\,\sigma_x + \sin k_y\,\sigma_y
 """
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
 from tbkit.lattice import Lattice
 from tbkit.kspace import KSpace, PAULI, ribbon
+from tbkit.system import System
 from tbkit.topology import find_weyl_points
 
 k0 = np.pi / 2
@@ -40,6 +42,27 @@ onsite = {'a': (2. + np.cos(k0)) * PAULI['z']}
 weyl = KSpace(lat, spin=True)
 weyl.set_hopping(hops)
 weyl.set_onsite(onsite)
+
+# %%
+# The lattice
+# -----------
+# The simple cubic lattice, here :math:`4\times4\times4` sites, with its
+# nearest-neighbour bonds. Each site holds a two-component orbital, and
+# the hoppings along :math:`x` and :math:`y` are :math:`2\times2` matrices
+# that act on it (not drawn).
+
+lat_vis = Lattice(unit_cell=lat.unit_cell, prim_vec=cubic)
+lat_vis.get_lattice(4, 4, 4)
+vis = System(lat_vis)
+vis.set_hopping([{'n': 1, 't': 1.}])
+pos = np.column_stack([lat_vis.coor[f] for f in 'xyz'])
+bonds = np.stack([pos[vis.hop['i'].astype(int)], pos[vis.hop['j'].astype(int)]], axis=1)
+fig_lat = plt.figure(figsize=(4.5, 4.5))
+ax_lat = fig_lat.add_subplot(projection='3d')
+ax_lat.add_collection3d(Line3DCollection(bonds, colors='k', linewidths=1))
+ax_lat.scatter(*pos.T, s=30, c='b', depthshade=False)
+ax_lat.set_aspect('equal')
+ax_lat.set_axis_off()
 
 # %%
 # The Weyl points and their chirality
@@ -99,6 +122,7 @@ surface = rows[:3].sum() + rows[-3:].sum()
 print('Zero-energy slab state at k_z = 0: {:.0%} of its weight on the outer 3 layers.'.format(surface))
 assert surface > 0.9
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(6, 4))
 ax.plot(kz_fracs * 2 * np.pi, chern, 'o-b')
 for kz, chi in zip(k_weyl[:, 2], chirality):

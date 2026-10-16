@@ -44,7 +44,7 @@ Here: the density of states of a graphene sheet of 45,000 sites
 van Hove peaks at :math:`E = \pm t` -- and with 2% of the sites removed,
 which piles up states at :math:`E = 0` (vacancy-bound zero modes).
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-62
+.. GENERATED FROM PYTHON SOURCE LINES 28-54
 
 .. code-block:: Python
 
@@ -55,6 +55,7 @@ which piles up states at :math:`E = 0` (vacancy-bound zero modes).
     import tbkit.kpm as kpm
     import tbkit.lattices as lattices
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
     from tbkit.system import System
 
     t = 1.
@@ -71,6 +72,57 @@ which piles up states at :math:`E = 0` (vacancy-bound zero modes).
         sys.set_hopping([{'n': 1, 't': t}])
         sys.get_ham()
         return sys
+
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 55-60
+
+The lattice
+-----------
+The honeycomb lattice -- sublattices 'a' and 'b' in two colours --
+with 2% of its sites removed at random, here on a :math:`12\times12`
+corner of the flake. The flake used below is 150 cells on a side.
+
+.. GENERATED FROM PYTHON SOURCE LINES 60-70
+
+.. code-block:: Python
+
+
+    lat_vis = lattices.honeycomb()
+    lat_vis.get_lattice(12, 12)
+    rng_vis = np.random.default_rng(0)
+    lat_vis.remove_sites(sorted(rng_vis.choice(lat_vis.sites, int(0.02 * lat_vis.sites),
+                                                        replace=False).tolist()))
+    vis = System(lat_vis)
+    vis.set_hopping([{'n': 1, 't': t}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=6, figsize=(7, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/large_scale/images/sphx_glr_plot_kernel_polynomial_method_001.png
+   :alt: plot kernel polynomial method
+   :srcset: /api/gallery/large_scale/images/sphx_glr_plot_kernel_polynomial_method_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 71-73
+
+The density of states of the clean flake and of one with 2% vacancies,
+by the kernel polynomial method:
+
+.. GENERATED FROM PYTHON SOURCE LINES 73-83
+
+.. code-block:: Python
 
 
     e_grid = np.linspace(-3., 3., 241)
@@ -95,7 +147,7 @@ which piles up states at :math:`E = 0` (vacancy-bound zero modes).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-71
+.. GENERATED FROM PYTHON SOURCE LINES 84-92
 
 Against the Brillouin zone, and the Dirac law
 -------------------------------------------------
@@ -106,7 +158,7 @@ point, per site,
 :math:`\rho(E) = \frac{A_c}{2\pi v_F^2}|E| = \frac{|E|}{\sqrt3\,\pi t^2}`
 (:math:`A_c = 3\sqrt3/2` the cell area, :math:`v_F = 3t/2`).
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-93
+.. GENERATED FROM PYTHON SOURCE LINES 92-114
 
 .. code-block:: Python
 
@@ -148,14 +200,14 @@ point, per site,
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-98
+.. GENERATED FROM PYTHON SOURCE LINES 115-119
 
 Vacancies: states at zero energy
 -------------------------------------
 Each vacancy binds a state at :math:`E = 0` on the other sublattice: 2%
 of vacancies more than double the (broadened) density of states there.
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-114
+.. GENERATED FROM PYTHON SOURCE LINES 119-135
 
 .. code-block:: Python
 
@@ -178,9 +230,9 @@ of vacancies more than double the (broadened) density of states there.
 
 
 
-.. image-sg:: /api/gallery/large_scale/images/sphx_glr_plot_kernel_polynomial_method_001.png
+.. image-sg:: /api/gallery/large_scale/images/sphx_glr_plot_kernel_polynomial_method_002.png
    :alt: Kernel polynomial method, 45,000 sites
-   :srcset: /api/gallery/large_scale/images/sphx_glr_plot_kernel_polynomial_method_001.png
+   :srcset: /api/gallery/large_scale/images/sphx_glr_plot_kernel_polynomial_method_002.png
    :class: sphx-glr-single-img
 
 
@@ -196,7 +248,7 @@ of vacancies more than double the (broadened) density of states there.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.453 seconds)
+   **Total running time of the script:** (0 minutes 2.417 seconds)
 
 
 .. _sphx_glr_download_api_gallery_large_scale_plot_kernel_polynomial_method.py:

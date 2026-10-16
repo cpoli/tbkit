@@ -46,7 +46,7 @@ reversal is broken, as long as the bulk gap and the spin gap stay open.
 (:meth:`~tbkit.kspace.KSpace.sector_chern_numbers` gives :math:`C_\pm` for any
 operator).
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-67
+.. GENERATED FROM PYTHON SOURCE LINES 30-69
 
 .. code-block:: Python
 
@@ -55,6 +55,8 @@ operator).
 
     import tbkit.lattices as lattices
     from tbkit.kspace import KSpace, PAULI
+    from tbkit.plot import Plot
+    from tbkit.system import System
 
 
     lat = lattices.honeycomb()
@@ -94,14 +96,47 @@ operator).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-72
+.. GENERATED FROM PYTHON SOURCE LINES 70-77
+
+The lattice
+-----------
+The Kane-Mele model lives on the honeycomb lattice: sublattices 'a'
+(onsite :math:`+M`) and 'b' (:math:`-M`) in two colours, each site
+holding a spin-1/2 orbital, with the nearest-neighbour hopping (thick)
+and the spin-orbit hoppings :math:`\pm i\lambda\sigma_z` between second
+neighbours (thin, not to scale; their spin matrices are not drawn).
+
+.. GENERATED FROM PYTHON SOURCE LINES 77-84
+
+.. code-block:: Python
+
+
+    patch = lattices.honeycomb()
+    patch.get_lattice(n1=5, n2=4)
+    vis = System(patch)
+    vis.set_hopping([{'n': 1, 't': 1.}, {'n': 2, 't': 0.3}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_spin_chern_number_001.png
+   :alt: plot spin chern number
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_spin_chern_number_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 85-89
 
 Without Rashba coupling: the Chern numbers of the two spins
 ----------------------------------------------------------------
 :math:`P s_z P` has eigenvalues exactly :math:`\pm1`: the sectors are spin
 up and spin down, with Chern numbers :math:`\pm1`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-77
+.. GENERATED FROM PYTHON SOURCE LINES 89-94
 
 .. code-block:: Python
 
@@ -123,7 +158,7 @@ up and spin down, with Chern numbers :math:`\pm1`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-86
+.. GENERATED FROM PYTHON SOURCE LINES 95-103
 
 With Rashba coupling: the spin gap, and the invariant
 ---------------------------------------------------------
@@ -134,7 +169,7 @@ Chern number stays 1 until the *bulk* gap closes (between
 agrees with the :math:`\mathbb{Z}_2` invariant of the Wannier-centre flow
 throughout.
 
-.. GENERATED FROM PYTHON SOURCE LINES 86-107
+.. GENERATED FROM PYTHON SOURCE LINES 103-124
 
 .. code-block:: Python
 
@@ -172,12 +207,12 @@ throughout.
     lambda_R = 0.10: C_s = +1.000, nu = 1, spin gap 0.943, bulk gap 0.207
     lambda_R = 0.15: C_s = +1.000, nu = 1, spin gap 0.828, bulk gap 0.063
     lambda_R = 0.20: C_s = +0.000, nu = 0, spin gap 0.439, bulk gap 0.085
-    lambda_R = 0.30: C_s = -0.000, nu = 0, spin gap 0.148, bulk gap 0.186
+    lambda_R = 0.30: C_s = +0.000, nu = 0, spin gap 0.148, bulk gap 0.186
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-114
+.. GENERATED FROM PYTHON SOURCE LINES 125-131
 
 Without time reversal
 -------------------------
@@ -186,7 +221,7 @@ no :math:`\mathbb{Z}_2` invariant any more) and conserves no spin
 component, yet the spin Chern number is still 1, with a total Chern
 number of zero.
 
-.. GENERATED FROM PYTHON SOURCE LINES 114-123
+.. GENERATED FROM PYTHON SOURCE LINES 131-140
 
 .. code-block:: Python
 
@@ -213,12 +248,12 @@ number of zero.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 124-126
+.. GENERATED FROM PYTHON SOURCE LINES 141-143
 
 The spectrum of P s_z P along a path
 ----------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-146
+.. GENERATED FROM PYTHON SOURCE LINES 143-163
 
 .. code-block:: Python
 
@@ -245,9 +280,9 @@ The spectrum of P s_z P along a path
 
 
 
-.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_spin_chern_number_001.png
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_spin_chern_number_002.png
    :alt: the spin gap stays open
-   :srcset: /api/gallery/topology/images/sphx_glr_plot_spin_chern_number_001.png
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_spin_chern_number_002.png
    :class: sphx-glr-single-img
 
 
@@ -257,7 +292,7 @@ The spectrum of P s_z P along a path
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.741 seconds)
+   **Total running time of the script:** (0 minutes 0.328 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_spin_chern_number.py:

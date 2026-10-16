@@ -34,17 +34,21 @@ one exactly -- the same decomposition as the tetrahedron density of
 states -- and folds every piece into the first Brillouin zone.
 :meth:`~tbkit.kspace.KSpace.plot_fermi_surface` draws them, with the zone.
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-26
+.. GENERATED FROM PYTHON SOURCE LINES 18-30
 
 .. code-block:: Python
 
     import numpy as np
     import matplotlib.pyplot as plt
     from matplotlib.collections import LineCollection
+    from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
     import tbkit.lattices as lattices
     from tbkit.lattice import Lattice
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace, high_symmetry_path
+    from tbkit.plot import Plot
+    from tbkit.system import System
 
 
 
@@ -53,7 +57,7 @@ states -- and folds every piece into the first Brillouin zone.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-34
+.. GENERATED FROM PYTHON SOURCE LINES 31-38
 
 The square lattice at half filling: a perfectly nested square
 ---------------------------------------------------------------------
@@ -63,13 +67,54 @@ maps each of its edges onto the opposite one (nesting), which drives
 the antiferromagnetic and charge-density-wave instabilities of the
 half-filled square lattice.
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-47
+.. GENERATED FROM PYTHON SOURCE LINES 38-42
 
 .. code-block:: Python
 
 
     sq = KSpace(lattices.square())
     sq.set_hopping([{'i': 0, 'j': 0, 'R': (1, 0), 't': -1.}, {'i': 0, 'j': 0, 'R': (0, 1), 't': -1.}])
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 43-45
+
+The square lattice, one site per cell with nearest-neighbour hopping, on
+:math:`6\times6` cells (:func:`~tbkit.bridges.finite_system`):
+
+.. GENERATED FROM PYTHON SOURCE LINES 45-48
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(sq, (6, 6))).lattice(plt_hop=True, ms=10, figsize=(4, 4))
+
+
+
+
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_fermi_surfaces_001.png
+   :alt: plot fermi surfaces
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_fermi_surfaces_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 49-50
+
+Its Fermi surface at half filling:
+
+.. GENERATED FROM PYTHON SOURCE LINES 50-61
+
+.. code-block:: Python
+
+
     segs = sq.fermi_surface(0., nk=64)[0]
     pts = segs.reshape(-1, 2)
     assert np.allclose(np.abs(pts).sum(axis=1), np.pi)
@@ -83,9 +128,9 @@ half-filled square lattice.
 
 
 
-.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_fermi_surfaces_001.png
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_fermi_surfaces_002.png
    :alt: $E = 0$
-   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_fermi_surfaces_001.png
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_fermi_surfaces_002.png
    :class: sphx-glr-single-img
 
 
@@ -98,7 +143,7 @@ half-filled square lattice.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-56
+.. GENERATED FROM PYTHON SOURCE LINES 63-71
 
 Graphene: Dirac pockets, trigonal warping, a Lifshitz transition
 ----------------------------------------------------------------------
@@ -109,7 +154,7 @@ around each zone corner. Further up the cones warp into triangles, and at
 :math:`E = t` -- the van Hove saddle point at M -- the six pockets merge
 into one contour around :math:`\Gamma`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-91
+.. GENERATED FROM PYTHON SOURCE LINES 71-78
 
 .. code-block:: Python
 
@@ -119,6 +164,48 @@ into one contour around :math:`\Gamma`.
                       prim_vec=[(2 * DX, 0.), (DX, 1.5)])
     gra = KSpace(lat)
     gra.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': -1.} for R in [(0, 0), (-1, 0), (0, -1)]])
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 79-82
+
+The honeycomb lattice, two sites per cell (sublattices 'a' and 'b', in
+two colours) and nearest-neighbour hopping, on :math:`5\times4` cells
+(:func:`~tbkit.bridges.finite_system`):
+
+.. GENERATED FROM PYTHON SOURCE LINES 82-85
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(gra, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_fermi_surfaces_003.png
+   :alt: plot fermi surfaces
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_fermi_surfaces_003.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 86-87
+
+Its Fermi surfaces, below and above the Lifshitz transition:
+
+.. GENERATED FROM PYTHON SOURCE LINES 87-117
+
+.. code-block:: Python
+
+
     points, labels = high_symmetry_path(lat)
     M, K = points[1], points[2]
     corners = [np.array([[np.cos(a), -np.sin(a)], [np.sin(a), np.cos(a)]]) @ K for a in np.arange(6) * np.pi / 3]
@@ -151,9 +238,9 @@ into one contour around :math:`\Gamma`.
 
 
 
-.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_fermi_surfaces_002.png
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_fermi_surfaces_004.png
    :alt: Graphene: Fermi surface vs doping
-   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_fermi_surfaces_002.png
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_fermi_surfaces_004.png
    :class: sphx-glr-single-img
 
 
@@ -169,7 +256,7 @@ into one contour around :math:`\Gamma`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-98
+.. GENERATED FROM PYTHON SOURCE LINES 118-124
 
 The simple cubic lattice: from a sphere to an open surface
 -----------------------------------------------------------------
@@ -178,7 +265,7 @@ Fermi surface is a small sphere around :math:`\Gamma`. At :math:`E = -2t`
 it touches the zone faces at the X points (saddle points), and above, it
 is an open surface that runs through the faces into the next zone.
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-109
+.. GENERATED FROM PYTHON SOURCE LINES 124-129
 
 .. code-block:: Python
 
@@ -186,6 +273,58 @@ is an open surface that runs through the faces into the next zone.
     cubic = KSpace(Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0., 0.)}],
                                   prim_vec=[(1., 0., 0.), (0., 1., 0.), (0., 0., 1.)]))
     cubic.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': -1.} for R in [(1, 0, 0), (0, 1, 0), (0, 0, 1)]])
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 130-132
+
+The simple cubic lattice, one site per cell and six nearest neighbours,
+here :math:`4\times4\times4` sites of it:
+
+.. GENERATED FROM PYTHON SOURCE LINES 132-146
+
+.. code-block:: Python
+
+
+    lat_vis = Lattice(unit_cell=cubic.lat.unit_cell, prim_vec=cubic.lat.prim_vec)
+    lat_vis.get_lattice(4, 4, 4)
+    vis = System(lat_vis)
+    vis.set_hopping([{'n': 1, 't': 1.}])
+    pos = np.column_stack([lat_vis.coor[f] for f in 'xyz'])
+    bonds = np.stack([pos[vis.hop['i'].astype(int)], pos[vis.hop['j'].astype(int)]], axis=1)
+    fig_lat = plt.figure(figsize=(4.5, 4.5))
+    ax_lat = fig_lat.add_subplot(projection='3d')
+    ax_lat.add_collection3d(Line3DCollection(bonds, colors='k', linewidths=1))
+    ax_lat.scatter(*pos.T, s=30, c='b', depthshade=False)
+    ax_lat.set_aspect('equal')
+    ax_lat.set_axis_off()
+
+
+
+
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_fermi_surfaces_005.png
+   :alt: plot fermi surfaces
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_fermi_surfaces_005.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 147-148
+
+A closed and an open Fermi surface:
+
+.. GENERATED FROM PYTHON SOURCE LINES 148-156
+
+.. code-block:: Python
+
+
     closed = cubic.fermi_surface(-4., nk=30)[0]
     opened = cubic.fermi_surface(-1., nk=30)[0]
     print('E = -4: max |k_i| = {:.3f}; E = -1: max |k_i| = {:.3f} (pi = zone face)'.format(
@@ -196,9 +335,9 @@ is an open surface that runs through the faces into the next zone.
 
 
 
-.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_fermi_surfaces_003.png
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_fermi_surfaces_006.png
    :alt: $E = -1$
-   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_fermi_surfaces_003.png
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_fermi_surfaces_006.png
    :class: sphx-glr-single-img
 
 
@@ -214,7 +353,7 @@ is an open surface that runs through the faces into the next zone.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.684 seconds)
+   **Total running time of the script:** (0 minutes 0.284 seconds)
 
 
 .. _sphx_glr_download_api_gallery_tight_binding_plot_fermi_surfaces.py:

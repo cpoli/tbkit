@@ -47,7 +47,7 @@ atoms, and hoppings for the first three neighbour shells close to those of
 the maximally-localized-Wannier-function fit of J. Jung and A. H.
 MacDonald, Phys. Rev. B 87, 195450 (2013).
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-47
+.. GENERATED FROM PYTHON SOURCE LINES 31-49
 
 .. code-block:: Python
 
@@ -56,8 +56,10 @@ MacDonald, Phys. Rev. B 87, 195450 (2013).
     import numpy as np
     import matplotlib.pyplot as plt
 
+    from tbkit.bridges import finite_system
     from tbkit.io import read_wannier90, read_hr
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
 
     try:
         HERE = os.path.dirname(os.path.abspath(__file__))
@@ -74,7 +76,7 @@ MacDonald, Phys. Rev. B 87, 195450 (2013).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-53
+.. GENERATED FROM PYTHON SOURCE LINES 50-55
 
 The raw file
 ---------------
@@ -82,7 +84,7 @@ The raw file
 the matrices :math:`H(\mathbf{R})`. The weights obey Wannier90's sum rule
 :math:`\sum_{\mathbf{R}} 1/N_{\mathbf{R}} = N_k` (36 k-points).
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-59
+.. GENERATED FROM PYTHON SOURCE LINES 55-61
 
 .. code-block:: Python
 
@@ -105,7 +107,7 @@ the matrices :math:`H(\mathbf{R})`. The weights obey Wannier90's sum rule
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-65
+.. GENERATED FROM PYTHON SOURCE LINES 62-67
 
 Import as a KSpace model
 ------------------------------
@@ -113,7 +115,7 @@ Import as a KSpace model
 ``unit_cell_cart`` block of the ``.win`` file (in Angstrom), the orbital
 positions from the Wannier centres.
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-71
+.. GENERATED FROM PYTHON SOURCE LINES 67-73
 
 .. code-block:: Python
 
@@ -137,13 +139,40 @@ positions from the Wannier centres.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-75
+.. GENERATED FROM PYTHON SOURCE LINES 74-79
+
+The imported model on a patch of :math:`5\times4` cells
+(:func:`~tbkit.bridges.finite_system`): the honeycomb lattice of the two
+Wannier centres ('a' and 'b', in two colours), and every hopping in the
+file, drawn with a width proportional to its amplitude -- the
+nearest-neighbour one dominates, the longer-range ones are much weaker.
+
+.. GENERATED FROM PYTHON SOURCE LINES 79-82
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(gra, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/models/images/sphx_glr_plot_maximally_localized_wannier_functions_001.png
+   :alt: plot maximally localized wannier functions
+   :srcset: /api/gallery/models/images/sphx_glr_plot_maximally_localized_wannier_functions_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 83-86
 
 Localization: the hoppings of a maximally localized basis decay with the
 bond length :math:`|\mathbf{R} + \boldsymbol\tau_n - \boldsymbol\tau_m|`;
 in this file they stop after the third shell (2.84 Angstrom).
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-83
+.. GENERATED FROM PYTHON SOURCE LINES 86-94
 
 .. code-block:: Python
 
@@ -168,14 +197,14 @@ in this file they stop after the third shell (2.84 Angstrom).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-88
+.. GENERATED FROM PYTHON SOURCE LINES 95-99
 
 The same model by neighbour order
 ---------------------------------------
 The file is graphene with three hopping shells: built by neighbour order
 on the lattice read from the file, it gives the same :math:`H(\mathbf{k})`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-95
+.. GENERATED FROM PYTHON SOURCE LINES 99-106
 
 .. code-block:: Python
 
@@ -193,13 +222,13 @@ on the lattice read from the file, it gives the same :math:`H(\mathbf{k})`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 96-99
+.. GENERATED FROM PYTHON SOURCE LINES 107-110
 
 Closed-form energies: at :math:`\Gamma`,
 :math:`E_\pm = 6t_1 \pm 3|t_0 + t_2|`; at K the first- and third-neighbour
 sums vanish, so the Dirac point survives, shifted to :math:`-3t_1`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 99-107
+.. GENERATED FROM PYTHON SOURCE LINES 110-118
 
 .. code-block:: Python
 
@@ -224,12 +253,12 @@ sums vanish, so the Dirac point survives, shifted to :math:`-3t_1`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-110
+.. GENERATED FROM PYTHON SOURCE LINES 119-121
 
 Bands and hopping decay
 -----------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 110-129
+.. GENERATED FROM PYTHON SOURCE LINES 121-140
 
 .. code-block:: Python
 
@@ -255,9 +284,9 @@ Bands and hopping decay
 
 
 
-.. image-sg:: /api/gallery/models/images/sphx_glr_plot_maximally_localized_wannier_functions_001.png
+.. image-sg:: /api/gallery/models/images/sphx_glr_plot_maximally_localized_wannier_functions_002.png
    :alt: Graphene $\pi$ bands from graphene_hr.dat, Hoppings of the Wannier basis
-   :srcset: /api/gallery/models/images/sphx_glr_plot_maximally_localized_wannier_functions_001.png
+   :srcset: /api/gallery/models/images/sphx_glr_plot_maximally_localized_wannier_functions_002.png
    :class: sphx-glr-single-img
 
 
@@ -267,7 +296,7 @@ Bands and hopping decay
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.268 seconds)
+   **Total running time of the script:** (0 minutes 0.108 seconds)
 
 
 .. _sphx_glr_download_api_gallery_models_plot_maximally_localized_wannier_functions.py:

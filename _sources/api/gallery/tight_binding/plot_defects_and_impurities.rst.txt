@@ -40,7 +40,7 @@ consequences on a bipartite lattice:
 *plot_wavepacket_interference.py*, this script replaces the pre-0.2
 notebooks ``examples_system.ipynb`` and ``examples_graphene.ipynb``.)
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-37
+.. GENERATED FROM PYTHON SOURCE LINES 24-38
 
 .. code-block:: Python
 
@@ -48,6 +48,7 @@ notebooks ``examples_system.ipynb`` and ``examples_graphene.ipynb``.)
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.plot import Plot
     from tbkit.system import System
 
 
@@ -64,12 +65,41 @@ notebooks ``examples_system.ipynb`` and ``examples_graphene.ipynb``.)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-40
+.. GENERATED FROM PYTHON SOURCE LINES 39-44
+
+The lattice
+-----------
+Every example below starts from the same :math:`8\times8` honeycomb
+flake: sublattices 'a' and 'b' in two colours, as many sites on each,
+with nearest-neighbour hopping.
+
+.. GENERATED FROM PYTHON SOURCE LINES 44-49
+
+.. code-block:: Python
+
+
+    vis = System(flake())
+    vis.set_hopping([{'n': 1, 't': -1.}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=8, figsize=(6.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_defects_and_impurities_001.png
+   :alt: plot defects and impurities
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_defects_and_impurities_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 50-52
 
 A vacancy
 -----------
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-60
+.. GENERATED FROM PYTHON SOURCE LINES 52-72
 
 .. code-block:: Python
 
@@ -106,12 +136,12 @@ A vacancy
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-63
+.. GENERATED FROM PYTHON SOURCE LINES 73-75
 
 A deep onsite impurity, and a region of stronger bonds
 ---------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-108
+.. GENERATED FROM PYTHON SOURCE LINES 75-120
 
 .. code-block:: Python
 
@@ -163,9 +193,9 @@ A deep onsite impurity, and a region of stronger bonds
 
 
 
-.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_defects_and_impurities_001.png
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_defects_and_impurities_002.png
    :alt: vacancy: zero-mode weight, impurity bound state, $E = -8.37$
-   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_defects_and_impurities_001.png
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_defects_and_impurities_002.png
    :class: sphx-glr-single-img
 
 
@@ -181,7 +211,7 @@ A deep onsite impurity, and a region of stronger bonds
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.257 seconds)
+   **Total running time of the script:** (0 minutes 0.112 seconds)
 
 
 .. _sphx_glr_download_api_gallery_tight_binding_plot_defects_and_impurities.py:

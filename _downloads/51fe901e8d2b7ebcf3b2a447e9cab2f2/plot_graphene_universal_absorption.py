@@ -30,13 +30,25 @@ import matplotlib.pyplot as plt
 from scipy.constants import alpha
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
 from tbkit.optics import optical_conductivity, joint_dos, cell_area
+from tbkit.plot import Plot
 
 
 t = -1.
 gra = KSpace(lattices.honeycomb())  # bond length 1
 gra.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': t} for R in [(0, 0), (-1, 0), (0, -1)]])
+
+# %%
+# The lattice
+# -----------
+# Graphene's honeycomb lattice on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`): two sites per unit cell
+# (sublattices 'a' and 'b', in two colours), each bonded to its three
+# nearest neighbours.
+
+fig_lat = Plot(finite_system(gra, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # The universal conductivity
@@ -87,6 +99,7 @@ print('van Hove peak at hbar omega = {:.2f} |t|'.format(peak))
 assert abs(peak - 2 * abs(t)) < 0.05
 assert np.all(doped[w < 0.6] < 0.1) and np.allclose(doped[w > 1.6], neutral[w > 1.6], rtol=0.03)
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(6, 4))
 ax.plot(w, neutral, '-b', label='$E_F = 0$')
 ax.plot(w, doped, '--r', label='$E_F = 0.4|t|$')

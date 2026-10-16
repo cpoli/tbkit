@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 
@@ -25,21 +26,21 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
     <script src="../../_static/documentation_options.js?v=74e82e83"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
@@ -52,7 +53,6 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.6" />
   
@@ -102,7 +102,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -178,7 +178,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -219,7 +219,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -400,10 +400,10 @@
 <div class="viewcode-block" id="GrapheneLattice">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.graphene.GrapheneLattice">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GrapheneLattice</span><span class="p">(</span><span class="n">Lattice</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Honeycomb lattice of graphene, with flake shapes.</span>
 
-<span class="sd">    Two sublattices, 'a' at :math:`(0, 0)` and 'b' at</span>
+<span class="sd">    Two sublattices, &#39;a&#39; at :math:`(0, 0)` and &#39;b&#39; at</span>
 <span class="sd">    :math:`(\sqrt3/2, 1/2)`, and primitive vectors</span>
 <span class="sd">    :math:`\mathbf{a}_1 = (\sqrt3, 0)` and</span>
 <span class="sd">    :math:`\mathbf{a}_2 = (\sqrt3/2, 3/2)`, so the nearest-neighbour</span>
@@ -414,6 +414,8 @@
 <span class="sd">    *butterfly* and *betas* are empty here; *GrapheneSystem.get_butterfly*</span>
 <span class="sd">    fills the ones of the system.</span>
 
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
 <span class="sd">    Example usage::</span>
 
 <span class="sd">        from tbkit.graphene import GrapheneLattice, GrapheneSystem</span>
@@ -421,12 +423,12 @@
 <span class="sd">        lat = GrapheneLattice()</span>
 <span class="sd">        lat.hexagon_zigzag(n=4)</span>
 <span class="sd">        sys = GrapheneSystem(lat)</span>
-<span class="sd">        sys.set_hopping([{'n': 1, 't': 1.}])</span>
-<span class="sd">    '''</span>
+<span class="sd">        sys.set_hopping([{&#39;n&#39;: 1, &#39;t&#39;: 1.}])</span>
+<span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">unit_cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'a'</span><span class="p">,</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)},</span>
-                          <span class="p">{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="n">DY</span><span class="p">)}]</span>
+        <span class="n">unit_cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)},</span>
+                          <span class="p">{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="n">DY</span><span class="p">)}]</span>
         <span class="n">prim_vec</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">2</span><span class="o">*</span><span class="n">DX</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="n">DX</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)]</span>
         <span class="n">Lattice</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unit_cell</span><span class="o">=</span><span class="n">unit_cell</span><span class="p">,</span> <span class="n">prim_vec</span><span class="o">=</span><span class="n">prim_vec</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">butterfly</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
@@ -435,12 +437,15 @@
 <div class="viewcode-block" id="GrapheneLattice.triangle_zigzag">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.graphene.GrapheneLattice.triangle_zigzag">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">triangle_zigzag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">'''</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Triangular flake with zigzag terminations.</span>
 
-<span class="sd">        :param: n. Int. Number of plaquettes along the edges. </span>
-<span class="sd">        '''</span>
-        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">'n'</span><span class="p">)</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        n : Int</span>
+<span class="sd">            Number of plaquettes along the edges.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_lattice</span><span class="p">(</span><span class="n">n1</span><span class="o">=</span><span class="n">n</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span> <span class="n">n2</span><span class="o">=</span><span class="n">n</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">boundary_line</span><span class="p">(</span><span class="n">cx</span><span class="o">=-</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">cy</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">co</span><span class="o">=-</span><span class="mi">3</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span></div>
 
@@ -448,12 +453,15 @@
 <div class="viewcode-block" id="GrapheneLattice.hexagon_zigzag">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.graphene.GrapheneLattice.hexagon_zigzag">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">hexagon_zigzag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">'''</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Hexagonal flake with zigzag terminations.</span>
 
-<span class="sd">        :param: n. Int. Number of plaquettes along the edges. </span>
-<span class="sd">        '''</span>
-        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">'n'</span><span class="p">)</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        n : Int</span>
+<span class="sd">            Number of plaquettes along the edges.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_lattice</span><span class="p">(</span><span class="n">n1</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="n">n2</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">boundary_line</span><span class="p">(</span><span class="n">cx</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">cy</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">co</span><span class="o">=</span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">boundary_line</span><span class="p">(</span><span class="n">cx</span><span class="o">=-</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">cy</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">co</span><span class="o">=-</span><span class="mi">9</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mf">2.5</span><span class="p">)</span></div>
@@ -462,12 +470,15 @@
 <div class="viewcode-block" id="GrapheneLattice.triangle_armchair">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.graphene.GrapheneLattice.triangle_armchair">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">triangle_armchair</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">'''</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Triangular flake with armchair terminations.</span>
 
-<span class="sd">        :param: n. Int. Number of plaquettes along the edges. </span>
-<span class="sd">        '''</span>
-        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">'n'</span><span class="p">)</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        n : Int</span>
+<span class="sd">            Number of plaquettes along the edges.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_lattice</span><span class="p">(</span><span class="n">n1</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="n">n2</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">boundary_line</span><span class="p">(</span><span class="n">cx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">co</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="mf">0.1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">boundary_line</span><span class="p">(</span><span class="n">cx</span><span class="o">=-</span><span class="mi">1</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">cy</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">co</span><span class="o">=-</span><span class="n">n</span><span class="o">-</span><span class="mf">0.1</span><span class="p">)</span>
@@ -477,18 +488,21 @@
 <div class="viewcode-block" id="GrapheneLattice.hexagon_armchair">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.graphene.GrapheneLattice.hexagon_armchair">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">hexagon_armchair</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">'''</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Hexagonal flake with armchair terminations.</span>
 
-<span class="sd">        :param: n. Int. Number of plaquettes along each edge. </span>
-<span class="sd">        '''</span>
-        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">'n'</span><span class="p">)</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        n : Int</span>
+<span class="sd">            Number of plaquettes along each edge.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">)</span>
         <span class="n">nn</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">2</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_lattice</span><span class="p">(</span><span class="n">n1</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">nn</span><span class="p">,</span> <span class="n">n2</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">nn</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">boundary_line</span><span class="p">(</span><span class="n">cx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">co</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">nn</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="mf">.1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">boundary_line</span><span class="p">(</span><span class="n">cx</span><span class="o">=-</span><span class="mi">1</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">cy</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">co</span><span class="o">=-</span><span class="n">nn</span> <span class="o">-</span><span class="mf">.1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">boundary_line</span><span class="p">(</span><span class="n">cx</span><span class="o">=-</span><span class="mi">1</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">cy</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">co</span><span class="o">=-</span><span class="mi">4</span><span class="o">*</span><span class="n">nn</span> <span class="o">+</span><span class="mi">1</span><span class="o">-</span><span class="mf">.1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">boundary_line</span><span class="p">(</span><span class="n">cx</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">cy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">co</span><span class="o">=-</span><span class="n">DX</span> <span class="o">*</span> <span class="mi">2</span><span class="o">*</span><span class="n">nn</span><span class="o">-</span><span class="mf">0.1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">boundary_line</span><span class="p">(</span><span class="n">cx</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">cy</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">co</span><span class="o">=</span><span class="mi">3</span><span class="o">*</span><span class="n">n</span> <span class="o">-</span><span class="mf">3.</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">boundary_line</span><span class="p">(</span><span class="n">cx</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">cy</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">co</span><span class="o">=-</span><span class="mi">6</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">4</span><span class="p">)</span></div>
@@ -497,12 +511,15 @@
 <div class="viewcode-block" id="GrapheneLattice.square">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.graphene.GrapheneLattice.square">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">square</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">'''</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Squared flake.</span>
 
-<span class="sd">        :param: n. Int. Number of plaquettes along x. </span>
-<span class="sd">        '''</span>
-        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">'n'</span><span class="p">)</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        n : Int</span>
+<span class="sd">            Number of plaquettes along x.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">)</span>
         <span class="n">n2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1.5</span><span class="o">*</span><span class="n">DX</span><span class="o">*</span><span class="n">n</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_lattice</span><span class="p">(</span><span class="n">n1</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="n">n2</span><span class="o">=</span><span class="n">n2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">boundary_line</span><span class="p">(</span><span class="n">cx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">co</span><span class="o">=</span><span class="n">DX</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="mf">0.1</span><span class="p">)</span>
@@ -512,12 +529,15 @@
 <div class="viewcode-block" id="GrapheneLattice.circle">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.graphene.GrapheneLattice.circle">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">'''</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Circular flake.</span>
 
-<span class="sd">        :param: n. Int. Number of plaquettes along the diameter. </span>
-<span class="sd">        '''</span>
-        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">'n'</span><span class="p">)</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        n : Int</span>
+<span class="sd">            Number of plaquettes along the diameter.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_lattice</span><span class="p">(</span><span class="n">n1</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="n">n2</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sites</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coor</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">()</span>
@@ -531,7 +551,7 @@
 <div class="viewcode-block" id="GrapheneSystem">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.graphene.GrapheneSystem">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GrapheneSystem</span><span class="p">(</span><span class="n">System</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Graphene :class:`System`, with triaxial strain.</span>
 
 <span class="sd">    Adds to *System* the nearest-neighbour hoppings of a linear triaxial</span>
@@ -540,8 +560,12 @@
 <span class="sd">    positive (*get_beta_lims*), and the spectrum as a function of the strain</span>
 <span class="sd">    (*get_butterfly*).</span>
 
-<span class="sd">    :param lat: Lattice, usually a :class:`GrapheneLattice` flake.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lat : Lattice, usually a :class:`GrapheneLattice` flake</span>
 
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
 <span class="sd">    Example usage::</span>
 
 <span class="sd">        from tbkit.graphene import GrapheneLattice, GrapheneSystem</span>
@@ -552,7 +576,7 @@
 <span class="sd">        sys = GrapheneSystem(lat)</span>
 <span class="sd">        sys.set_hop_linear_strain(t=1., beta=0.1)</span>
 <span class="sd">        sys.get_ham()</span>
-<span class="sd">    '''</span>
+<span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="n">Lattice</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">System</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
@@ -560,7 +584,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_strain_projection</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Private method.</span>
 
 <span class="sd">        Get, for every nearest-neighbor bond, the projection</span>
@@ -570,30 +594,34 @@
 <span class="sd">            s_{ij} = \hat{\boldsymbol\delta}_{ij}\cdot\mathbf{r}_{ij}</span>
 
 <span class="sd">        of its midpoint :math:`\mathbf{r}_{ij}` on its direction</span>
-<span class="sd">        :math:`\hat{\boldsymbol\delta}_{ij}`, oriented from its 'b' site to</span>
-<span class="sd">        its 'a' site (the same orientation for all three bond families), so</span>
+<span class="sd">        :math:`\hat{\boldsymbol\delta}_{ij}`, oriented from its &#39;b&#39; site to</span>
+<span class="sd">        its &#39;a&#39; site (the same orientation for all three bond families), so</span>
 <span class="sd">        that the strained hopping is :math:`t_{ij} = t(1 + \tfrac14\beta s_{ij})`.</span>
 
-<span class="sd">        :returns:</span>
-<span class="sd">            * **i**, **j** -- Integer ndarrays. Bond end points, oriented as in</span>
-<span class="sd">              *System.get_bonds*.</span>
-<span class="sd">            * **ang** -- Real ndarray. Bond angles (from *i* to *j*), in degrees,</span>
-<span class="sd">              in [0, 180).</span>
-<span class="sd">            * **s** -- Real ndarray. The projections above.</span>
-<span class="sd">        '''</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        i, j : Integer ndarrays</span>
+<span class="sd">            Bond end points, oriented as in</span>
+<span class="sd">            *System.get_bonds*.</span>
+<span class="sd">        ang : Real ndarray</span>
+<span class="sd">            Bond angles (from *i* to *j*), in degrees,</span>
+<span class="sd">            in [0, 180).</span>
+<span class="sd">        s : Real ndarray</span>
+<span class="sd">            The projections above.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_distances</span><span class="p">()</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">ang</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bonds</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="c1"># direction from the 'b' end to the 'a' end of each bond</span>
-        <span class="n">ang_ba</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'a'</span><span class="p">,</span> <span class="n">ang</span> <span class="o">-</span> <span class="mf">180.</span><span class="p">,</span> <span class="n">ang</span><span class="p">)</span>
-        <span class="n">x_center</span> <span class="o">=</span> <span class="mf">.5</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">'x'</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">'x'</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
-        <span class="n">y_center</span> <span class="o">=</span> <span class="mf">.5</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">'y'</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">'y'</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
+        <span class="c1"># direction from the &#39;b&#39; end to the &#39;a&#39; end of each bond</span>
+        <span class="n">ang_ba</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;tag&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">ang</span> <span class="o">-</span> <span class="mf">180.</span><span class="p">,</span> <span class="n">ang</span><span class="p">)</span>
+        <span class="n">x_center</span> <span class="o">=</span> <span class="mf">.5</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
+        <span class="n">y_center</span> <span class="o">=</span> <span class="mf">.5</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
         <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">PI</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">ang_ba</span><span class="p">)</span> <span class="o">*</span> <span class="n">x_center</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">PI</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">ang_ba</span><span class="p">)</span> <span class="o">*</span> <span class="n">y_center</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">ang</span><span class="p">,</span> <span class="n">s</span>
 
 <div class="viewcode-block" id="GrapheneSystem.set_hop_linear_strain">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.graphene.GrapheneSystem.set_hop_linear_strain">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_hop_linear_strain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">complex</span><span class="p">,</span> <span class="n">beta</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Set nearest-neighbor hoppings according to a linear triaxial strain:</span>
 
 <span class="sd">        .. math::</span>
@@ -602,42 +630,50 @@
 <span class="sd">                     \hat{\boldsymbol\delta}_{ij}\cdot\mathbf{r}_{ij}\right)</span>
 
 <span class="sd">        with :math:`\hat{\boldsymbol\delta}_{ij}` the bond direction (from its</span>
-<span class="sd">        'b' site to its 'a' site) and</span>
+<span class="sd">        &#39;b&#39; site to its &#39;a&#39; site) and</span>
 <span class="sd">        :math:`\mathbf{r}_{ij}` its midpoint. The strain is measured from the</span>
 <span class="sd">        coordinate origin, so centre the flake on it (see *lattice.center*)</span>
 <span class="sd">        before calling this.</span>
 
-<span class="sd">        :param t: Hopping value without strain.</span>
-<span class="sd">        :param beta: Strength of the strain. See *get_beta_lims* for the</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        t</span>
+<span class="sd">            Hopping value without strain.</span>
+<span class="sd">        beta</span>
+<span class="sd">            Strength of the strain. See *get_beta_lims* for the</span>
 <span class="sd">            range that keeps every hopping positive.</span>
-<span class="sd">        '''</span>
-        <span class="n">error_handling</span><span class="o">.</span><span class="n">number</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">)</span>
-        <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="s1">'beta'</span><span class="p">)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">number</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">)</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">ang</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strain_projection</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear_hopping</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">HOP_DTYPE</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'i'</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'j'</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'ang'</span><span class="p">]</span> <span class="o">=</span> <span class="n">ang</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">]</span> <span class="o">=</span> <span class="n">npc</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'t'</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">+</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">s</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;i&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;j&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;ang&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ang</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;tag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">npc</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;tag&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">&#39;tag&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">+</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">s</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GrapheneSystem.get_butterfly">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.graphene.GrapheneSystem.get_butterfly">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_butterfly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">complex</span><span class="p">,</span> <span class="n">N</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">'''</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Get the spectrum as a function of the strain *beta* (see</span>
 <span class="sd">        *set_hop_linear_strain*), stored in *sys.butterfly*, shape</span>
 <span class="sd">        (N, sites), with the strain values in *sys.betas*.</span>
 
-<span class="sd">        :param t: Unstrained hopping value.</span>
-<span class="sd">        :param N: Positive integer. Number of strain values between the</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        t</span>
+<span class="sd">            Unstrained hopping value.</span>
+<span class="sd">        N : Positive integer</span>
+<span class="sd">            Number of strain values between the</span>
 <span class="sd">            minimal and maximal strains given by *get_beta_lims*.</span>
-<span class="sd">        '''</span>
-        <span class="n">error_handling</span><span class="o">.</span><span class="n">number</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">)</span>
-        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="s1">'N'</span><span class="p">)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">number</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">)</span>
         <span class="n">beta_lims</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_beta_lims</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">beta_lims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">beta_lims</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">N</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">butterfly</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">sites</span><span class="p">))</span>
@@ -650,18 +686,19 @@
 <div class="viewcode-block" id="GrapheneSystem.get_beta_lims">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.graphene.GrapheneSystem.get_beta_lims">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_beta_lims</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Get the extremal strain values keeping every hopping positive.</span>
 
-<span class="sd">        Under *set_hop_linear_strain* a bond's amplitude is</span>
+<span class="sd">        Under *set_hop_linear_strain* a bond&#39;s amplitude is</span>
 <span class="sd">        :math:`t(1+\tfrac14\beta s_{ij})`, so it stays positive for every bond</span>
 <span class="sd">        iff :math:`-4/\max_{ij} s_{ij} &lt; \beta &lt; -4/\min_{ij} s_{ij}`.</span>
 
-<span class="sd">        :returns:</span>
-<span class="sd">            * **beta_lims** -- Real ndarray of length 2, ``[beta_min, beta_max]``</span>
-<span class="sd">              (ascending). A bound is infinite if the corresponding</span>
-<span class="sd">              :math:`s_{ij}` never takes that sign.</span>
-<span class="sd">        '''</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        beta_lims : Real ndarray of length 2, ``[beta_min, beta_max]`` (ascending)</span>
+<span class="sd">            A bound is infinite if the corresponding</span>
+<span class="sd">            :math:`s_{ij}` never takes that sign.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strain_projection</span><span class="p">()</span>
         <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-6</span>
         <span class="n">s_min</span><span class="p">,</span> <span class="n">s_max</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">s</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
@@ -704,8 +741,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -726,6 +763,7 @@
 
   <p class="sphinx-version">
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
   </p>
 </div>
       
@@ -738,7 +776,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
 </p></div>
       
     </div>

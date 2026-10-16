@@ -45,7 +45,7 @@ is drawn in the primitive zone again.
 :mod:`tbkit.moire`: :func:`~tbkit.moire.supercell`,
 :func:`~tbkit.moire.unfold`, :func:`~tbkit.moire.spectral_function`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-42
+.. GENERATED FROM PYTHON SOURCE LINES 29-44
 
 .. code-block:: Python
 
@@ -54,8 +54,10 @@ is drawn in the primitive zone again.
     from scipy.integrate import trapezoid
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
     from tbkit.moire import spectral_function, supercell, unfold
+    from tbkit.plot import Plot
 
     t = -1.
     gra = KSpace(lattices.honeycomb())
@@ -69,12 +71,41 @@ is drawn in the primitive zone again.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-45
+.. GENERATED FROM PYTHON SOURCE LINES 45-52
+
+The lattice
+-----------
+Graphene's honeycomb lattice on a patch of :math:`6\times6` cells
+(:func:`~tbkit.bridges.finite_system`): two sites per unit cell
+(sublattices 'a' and 'b', in two colours), each bonded to its three
+nearest neighbours. A :math:`3\times3` supercell, as used below, holds
+nine of these cells.
+
+.. GENERATED FROM PYTHON SOURCE LINES 52-55
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(gra, (6, 6))).lattice(plt_hop=True, ms=9, figsize=(6.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/moire/images/sphx_glr_plot_band_unfolding_001.png
+   :alt: plot band unfolding
+   :srcset: /api/gallery/moire/images/sphx_glr_plot_band_unfolding_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 56-58
 
 A pristine supercell unfolds exactly
 ---------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-65
+.. GENERATED FROM PYTHON SOURCE LINES 58-78
 
 .. code-block:: Python
 
@@ -111,12 +142,12 @@ A pristine supercell unfolds exactly
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-68
+.. GENERATED FROM PYTHON SOURCE LINES 79-81
 
 Coherence factors of a staggered chain
 -----------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-80
+.. GENERATED FROM PYTHON SOURCE LINES 81-93
 
 .. code-block:: Python
 
@@ -139,7 +170,7 @@ Coherence factors of a staggered chain
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-86
+.. GENERATED FROM PYTHON SOURCE LINES 94-99
 
 Anderson disorder in a 6 x 6 graphene supercell
 --------------------------------------------------
@@ -147,7 +178,7 @@ Onsite energies uniform in :math:`[-W/2, W/2]`, averaged over eight
 configurations. The broadening of the peak at a given :math:`\mathbf{k}`
 grows with :math:`W`, and the integrated weight stays 2 (sum rule).
 
-.. GENERATED FROM PYTHON SOURCE LINES 86-117
+.. GENERATED FROM PYTHON SOURCE LINES 99-130
 
 .. code-block:: Python
 
@@ -185,9 +216,9 @@ grows with :math:`W`, and the integrated weight stays 2 (sum rule).
 
 
 
-.. image-sg:: /api/gallery/moire/images/sphx_glr_plot_band_unfolding_001.png
+.. image-sg:: /api/gallery/moire/images/sphx_glr_plot_band_unfolding_002.png
    :alt: Unfolded $A(\mathbf{k},\omega)$ of a $6\times6$ graphene supercell, $W = 0.0|t|$, $W = 0.8|t|$, $W = 2.0|t|$
-   :srcset: /api/gallery/moire/images/sphx_glr_plot_band_unfolding_001.png
+   :srcset: /api/gallery/moire/images/sphx_glr_plot_band_unfolding_002.png
    :class: sphx-glr-single-img
 
 
@@ -203,7 +234,7 @@ grows with :math:`W`, and the integrated weight stays 2 (sum rule).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.065 seconds)
+   **Total running time of the script:** (0 minutes 1.459 seconds)
 
 
 .. _sphx_glr_download_api_gallery_moire_plot_band_unfolding.py:

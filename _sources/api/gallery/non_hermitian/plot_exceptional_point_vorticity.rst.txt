@@ -51,7 +51,7 @@ Near K, :math:`f \approx v_F(q_x \pm iq_y)` up to a phase, with
 :math:`2\gamma/v_F = 4\gamma/3` and the ring has radius
 :math:`\gamma/v_F = 2\gamma/3`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-76
+.. GENERATED FROM PYTHON SOURCE LINES 35-78
 
 .. code-block:: Python
 
@@ -59,7 +59,9 @@ Near K, :math:`f \approx v_F(q_x \pm iq_y)` up to a phase, with
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
     import tbkit.exceptional as ex
 
     NN = [{'i': 0, 'j': 1, 'R': (0, 0), 't': 1.}, {'i': 0, 'j': 1, 'R': (-1, 0), 't': 1.},
@@ -103,7 +105,37 @@ Near K, :math:`f \approx v_F(q_x \pm iq_y)` up to a phase, with
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-82
+.. GENERATED FROM PYTHON SOURCE LINES 79-87
+
+The lattice
+-----------
+Graphene's honeycomb lattice on a patch of :math:`5\times4` cells
+(:func:`~tbkit.bridges.finite_system`): sublattices 'a' and 'b' in two
+colours, each bonded to its three nearest neighbours. The
+non-Hermitian terms below -- :math:`i\gamma` added to both directions of
+the intra-cell bond, or a gain and loss :math:`\pm i\gamma` on the two
+sublattices -- add no bond and are not drawn.
+
+.. GENERATED FROM PYTHON SOURCE LINES 87-90
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(graphene, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_point_vorticity_001.png
+   :alt: plot exceptional point vorticity
+   :srcset: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_point_vorticity_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 91-96
 
 The Dirac point: vorticity 0
 ----------------------------------
@@ -111,7 +143,7 @@ Around graphene's K point the two bands do not swap, the discriminant
 :math:`\Delta = 4|f|^2` is real and positive, and nothing is reported by
 the EP finder.
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-91
+.. GENERATED FROM PYTHON SOURCE LINES 96-105
 
 .. code-block:: Python
 
@@ -132,12 +164,12 @@ the EP finder.
 
  .. code-block:: none
 
-    graphene: vorticity 2.0e-33, discriminant winding 9.2e-32, EPs found: 0
+    graphene: vorticity 2.9e-32, discriminant winding 3.6e-32, EPs found: 0
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-99
+.. GENERATED FROM PYTHON SOURCE LINES 106-113
 
 i gamma sigma_x: the Dirac point splits into a pair of EPs
 ------------------------------------------------------------------
@@ -147,7 +179,7 @@ around both. The individual vorticities are :math:`\pm1/2`, the total is
 the Dirac point's 0, and the splitting follows :math:`4\gamma/3` for small
 :math:`\gamma` (the lattice corrections grow as :math:`\gamma^3`).
 
-.. GENERATED FROM PYTHON SOURCE LINES 99-118
+.. GENERATED FROM PYTHON SOURCE LINES 113-132
 
 .. code-block:: Python
 
@@ -178,15 +210,15 @@ the Dirac point's 0, and the splitting follows :math:`4\gamma/3` for small
 
  .. code-block:: none
 
-    gamma = 0.1: EP vorticities +0.500 -0.500, total around both -3.3e-18, splitting 0.1329 (4 gamma / 3 = 0.1333)
-    gamma = 0.2: EP vorticities +0.500 -0.500, total around both +8.3e-19, splitting 0.2632 (4 gamma / 3 = 0.2667)
-    gamma = 0.3: EP vorticities +0.500 -0.500, total around both -2.2e-18, splitting 0.3886 (4 gamma / 3 = 0.4000)
-    gamma = 0.4: EP vorticities +0.500 -0.500, total around both +3.9e-17, splitting 0.5073 (4 gamma / 3 = 0.5333)
+    gamma = 0.1: EP vorticities +0.500 -0.500, total around both +1.8e-18, splitting 0.1329 (4 gamma / 3 = 0.1333)
+    gamma = 0.2: EP vorticities +0.500 -0.500, total around both +5.5e-19, splitting 0.2632 (4 gamma / 3 = 0.2667)
+    gamma = 0.3: EP vorticities +0.500 -0.500, total around both +1.3e-17, splitting 0.3886 (4 gamma / 3 = 0.4000)
+    gamma = 0.4: EP vorticities +0.500 -0.500, total around both +3.3e-17, splitting 0.5073 (4 gamma / 3 = 0.5333)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-127
+.. GENERATED FROM PYTHON SOURCE LINES 133-141
 
 i gamma sigma_z: an exceptional ring
 ------------------------------------------
@@ -197,7 +229,7 @@ mesh: every point lies on :math:`|f| = \gamma`, a ring of radius close to
 :math:`\Delta`: outside, the two eigenvalues are real (:math:`\pm\sqrt{|f|^2-\gamma^2}`);
 inside, they are imaginary, with equal real parts on a whole disk.
 
-.. GENERATED FROM PYTHON SOURCE LINES 127-145
+.. GENERATED FROM PYTHON SOURCE LINES 141-159
 
 .. code-block:: Python
 
@@ -227,20 +259,20 @@ inside, they are imaginary, with equal real parts on a whole disk.
 
  .. code-block:: none
 
-    gamma = 0.1: 6 ring points, |f| - gamma = 9.3e-16, radius 0.0670 +- 0.0006 (2 gamma / 3 = 0.0667)
-    gamma = 0.2: 10 ring points, |f| - gamma = 8.9e-16, radius 0.1336 +- 0.0033 (2 gamma / 3 = 0.1333)
+    gamma = 0.1: 6 ring points, |f| - gamma = 8.7e-16, radius 0.0670 +- 0.0006 (2 gamma / 3 = 0.0667)
+    gamma = 0.2: 10 ring points, |f| - gamma = 1.2e-15, radius 0.1336 +- 0.0033 (2 gamma / 3 = 0.1333)
     gamma = 0.3: 18 ring points, |f| - gamma = 1.3e-15, radius 0.2013 +- 0.0070 (2 gamma / 3 = 0.2000)
-    gamma = 0.4: 24 ring points, |f| - gamma = 1.5e-15, radius 0.2717 +- 0.0130 (2 gamma / 3 = 0.2667)
+    gamma = 0.4: 24 ring points, |f| - gamma = 1.3e-15, radius 0.2717 +- 0.0130 (2 gamma / 3 = 0.2667)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 146-148
+.. GENERATED FROM PYTHON SOURCE LINES 160-162
 
 EP pairs and rings around K
 -------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 148-169
+.. GENERATED FROM PYTHON SOURCE LINES 162-183
 
 .. code-block:: Python
 
@@ -268,9 +300,9 @@ EP pairs and rings around K
 
 
 
-.. image-sg:: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_point_vorticity_001.png
+.. image-sg:: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_point_vorticity_002.png
    :alt: $i\gamma\sigma_x$: EP pairs, $\nu = \pm1/2$, $i\gamma\sigma_z$: exceptional rings, $|f| = \gamma$
-   :srcset: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_point_vorticity_001.png
+   :srcset: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_point_vorticity_002.png
    :class: sphx-glr-single-img
 
 
@@ -280,7 +312,7 @@ EP pairs and rings around K
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.316 seconds)
+   **Total running time of the script:** (0 minutes 0.996 seconds)
 
 
 .. _sphx_glr_download_api_gallery_non_hermitian_plot_exceptional_point_vorticity.py:

@@ -47,7 +47,7 @@ the Mott relation exactly,
 :meth:`~tbkit.kspace.KSpace.anomalous_nernst_conductivity` evaluates it for
 the Haldane model below.
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-51
+.. GENERATED FROM PYTHON SOURCE LINES 31-53
 
 .. code-block:: Python
 
@@ -56,7 +56,9 @@ the Haldane model below.
     from scipy.integrate import trapezoid
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
 
 
     def haldane(M, t2=0.2):
@@ -78,14 +80,45 @@ the Haldane model below.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-56
+.. GENERATED FROM PYTHON SOURCE LINES 54-62
+
+The lattice
+-----------
+The Haldane model on a patch of :math:`5\times4` cells
+(:func:`~tbkit.bridges.finite_system`), each bond drawn with a width
+proportional to its amplitude: the honeycomb lattice's two sublattices
+('a' and 'b', in two colours), the nearest-neighbour hopping :math:`t`
+(thick) and the complex second-neighbour hoppings :math:`\pm it_2`
+within each sublattice (thin), which break time-reversal symmetry.
+
+.. GENERATED FROM PYTHON SOURCE LINES 62-66
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(haldane(0.3), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+
+.. image-sg:: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_nernst_effect_001.png
+   :alt: plot anomalous nernst effect
+   :srcset: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_nernst_effect_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 67-71
 
 The Nernst conductivity across the spectrum
 -----------------------------------------------
 At three temperatures. It vanishes in the gap at low temperature (no
 entropy there), and in empty or full bands.
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-67
+.. GENERATED FROM PYTHON SOURCE LINES 71-82
 
 .. code-block:: Python
 
@@ -113,7 +146,7 @@ entropy there), and in empty or full bands.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-76
+.. GENERATED FROM PYTHON SOURCE LINES 83-91
 
 The Mott relation
 --------------------
@@ -124,7 +157,7 @@ temperature, the Sommerfeld expansion leaves
 :math:`\frac{\pi^2}{3}T\,d\sigma_{xy}/d\mu`: within 4% of the peak at
 :math:`k_BT = 0.02`, inside the lower band.
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-104
+.. GENERATED FROM PYTHON SOURCE LINES 91-119
 
 .. code-block:: Python
 
@@ -159,9 +192,9 @@ temperature, the Sommerfeld expansion leaves
 
 
 
-.. image-sg:: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_nernst_effect_001.png
+.. image-sg:: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_nernst_effect_002.png
    :alt: Haldane model: anomalous Nernst conductivity
-   :srcset: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_nernst_effect_001.png
+   :srcset: /api/gallery/hall_effects/images/sphx_glr_plot_anomalous_nernst_effect_002.png
    :class: sphx-glr-single-img
 
 
@@ -174,14 +207,14 @@ temperature, the Sommerfeld expansion leaves
     T = 0.1: max |alpha - Mott| = 4.0e-05
     T = 0.02: max |alpha - pi^2/3 T dsigma/dmu| in the band = 3.3e-03
 
-    <matplotlib.legend.Legend object at 0x7feac44dc690>
+    <matplotlib.legend.Legend object at 0x10f25a660>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.172 seconds)
+   **Total running time of the script:** (0 minutes 1.742 seconds)
 
 
 .. _sphx_glr_download_api_gallery_hall_effects_plot_anomalous_nernst_effect.py:

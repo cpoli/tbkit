@@ -29,6 +29,9 @@ The normal lead conserves the electron-hole charge :math:`\tau_z`, so
 import numpy as np
 import matplotlib.pyplot as plt
 
+from tbkit.lattice import Lattice
+from tbkit.plot import Plot
+from tbkit.system import System
 from tbkit.transport import Transport
 
 
@@ -73,6 +76,21 @@ def btk(e, z):
 
 
 # %%
+# The junction
+# ------------
+# A chain of :math:`n = 20` sites with nearest-neighbour hopping: the
+# normal half on the left (blue), the superconducting half on the right
+# (red). The barrier sits on the last normal site, and each half continues
+# into a semi-infinite lead of its own kind.
+
+lat_vis = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (n / 2, 0.)}],
+                      prim_vec=[(1., 0.)])
+lat_vis.get_lattice(n1=n // 2)
+vis = System(lat_vis)
+vis.set_hopping([{'n': 1, 't': 1.}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=10, figsize=(8, 1.2))
+
+# %%
 # Inside the gap, every electron comes back
 # -------------------------------------------
 # Below :math:`\Delta` no quasiparticle can leave through the
@@ -107,6 +125,7 @@ for barrier in (0., 1., 3.):
 assert curves[0.][0][0] > 1.99 and curves[1.5][0][0] < 0.3
 assert np.argmax(curves[1.5][0]) in np.flatnonzero(np.abs(energies - gap) < 0.05 * gap)
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(6, 4))
 for (z, (g, theory)), c in zip(curves.items(), ('b', 'g', 'r')):
     ax.plot(energies / gap, g, 'o', color=c, ms=3, label='S-matrix, $Z = {:.1f}$'.format(z))

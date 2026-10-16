@@ -49,7 +49,7 @@ the Hamiltonian. :func:`~tbkit.topology.entanglement_spectrum` handles finite
 samples, :meth:`~tbkit.kspace.KSpace.entanglement_spectrum` the k-resolved
 case.
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-60
+.. GENERATED FROM PYTHON SOURCE LINES 33-62
 
 .. code-block:: Python
 
@@ -57,9 +57,11 @@ case.
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
     from tbkit.lattice import Lattice
     from tbkit.moire import supercell
+    from tbkit.plot import Plot
     from tbkit.topology import entanglement_spectrum
 
 
@@ -87,14 +89,42 @@ case.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-65
+.. GENERATED FROM PYTHON SOURCE LINES 63-69
+
+The lattices
+------------
+Eight cells of the SSH chain (:func:`~tbkit.bridges.finite_system`),
+orbitals a and b in two colours, bond widths proportional to the
+hoppings: here the topological case, :math:`v = 0.4` inside each cell
+and :math:`w = 1` between cells.
+
+.. GENERATED FROM PYTHON SOURCE LINES 69-72
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(ssh(0.4, 1.), 8)).lattice(plt_hop=True, ms=7, c=4., figsize=(7, 1.2))
+
+
+
+
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_entanglement_spectrum_001.png
+   :alt: plot entanglement spectrum
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_entanglement_spectrum_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 73-77
 
 The SSH ring: a mode at 1/2 at each cut
 -------------------------------------------
 A ring of 40 cells (periodic, so no end states), cut into two halves of
 20 cells: two cuts.
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-78
+.. GENERATED FROM PYTHON SOURCE LINES 77-90
 
 .. code-block:: Python
 
@@ -119,13 +149,13 @@ A ring of 40 cells (periodic, so no end states), cut into two halves of
 
  .. code-block:: none
 
-    topological: |xi - 1/2| of the two closest modes 6.3e-15, next 0.500
+    topological: |xi - 1/2| of the two closest modes 4.0e-15, next 0.500
     trivial: closest mode to 1/2 at |xi - 1/2| = 0.489
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-87
+.. GENERATED FROM PYTHON SOURCE LINES 91-99
 
 The Haldane cylinder: spectral flow
 ---------------------------------------
@@ -136,7 +166,37 @@ entanglement modes of the two cuts (never more than two at a time
 between 0 and 1) flow across the interval, and together fill all of it.
 In the trivial phase (:math:`M = 2`) the spectrum stays away from 1/2.
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-121
+.. GENERATED FROM PYTHON SOURCE LINES 101-105
+
+The Haldane model on a patch of :math:`5\times4` cells, bond widths
+proportional to the amplitudes: the honeycomb lattice's two sublattices
+('a' and 'b', in two colours), the nearest-neighbour hopping (thick) and
+the complex second-neighbour hoppings :math:`\pm it_2` (thin).
+
+.. GENERATED FROM PYTHON SOURCE LINES 105-108
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(haldane(), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_entanglement_spectrum_002.png
+   :alt: plot entanglement spectrum
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_entanglement_spectrum_002.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 109-110
+
+The entanglement spectrum along :math:`k`:
+
+.. GENERATED FROM PYTHON SOURCE LINES 110-144
 
 .. code-block:: Python
 
@@ -177,9 +237,9 @@ In the trivial phase (:math:`M = 2`) the spectrum stays away from 1/2.
 
 
 
-.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_entanglement_spectrum_001.png
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_entanglement_spectrum_003.png
    :alt: SSH ring, half the chain, Haldane cylinder: Chern phase, Haldane cylinder: trivial phase
-   :srcset: /api/gallery/topology/images/sphx_glr_plot_entanglement_spectrum_001.png
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_entanglement_spectrum_003.png
    :class: sphx-glr-single-img
 
 
@@ -196,7 +256,7 @@ In the trivial phase (:math:`M = 2`) the spectrum stays away from 1/2.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.373 seconds)
+   **Total running time of the script:** (0 minutes 0.162 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_entanglement_spectrum.py:

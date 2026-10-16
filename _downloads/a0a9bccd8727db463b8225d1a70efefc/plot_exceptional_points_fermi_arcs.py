@@ -39,7 +39,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 import tbkit.exceptional as ex
 
 gamma = 0.3
@@ -60,6 +62,17 @@ def f(k):
     '''Structure factor, H_ba of plain graphene.'''
     return graphene.get_ham(k)[1, 0]
 
+
+# %%
+# The lattice
+# -----------
+# Graphene's honeycomb lattice on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`): sublattices 'a' and 'b' in two
+# colours, each bonded to its three nearest neighbours. The
+# non-Hermitian term, :math:`i\gamma` added to both directions of the
+# intra-cell bond, adds no bond and is not drawn.
+
+fig_lat = Plot(finite_system(graphene, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # The exceptional points and their charges
@@ -130,6 +143,7 @@ def near_k(points):
     return out[np.max(np.abs(out), axis=1) < 0.45]
 
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(11, 4.6))
 for ax, data, title in ((axes[0], upper.real, r'Re $E_+$'), (axes[1], upper.imag, r'Im $E_+$')):
     im = ax.pcolormesh(qx, qy, data, shading='auto', cmap='RdBu_r')

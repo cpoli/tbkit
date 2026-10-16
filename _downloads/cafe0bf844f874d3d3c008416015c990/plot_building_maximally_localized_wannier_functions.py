@@ -34,8 +34,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
 from tbkit.lattice import Lattice
+from tbkit.plot import Plot
 from tbkit.wannier import wannierize
 
 # %%
@@ -51,6 +53,16 @@ lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (0.5, 
                     prim_vec=[(1., 0.)])
 ssh = KSpace(lat)
 ssh.set_hopping([{'i': 0, 'j': 1, 'R': (0,), 't': 0.5}, {'i': 1, 'j': 0, 'R': (1,), 't': 1.}])
+
+# %%
+# Eight cells of the chain (:func:`~tbkit.bridges.finite_system`), orbitals
+# ``a`` and ``b`` in two colours, bond widths proportional to the
+# hoppings: weak (0.5) inside each cell, strong (1) between cells.
+
+fig_lat = Plot(finite_system(ssh, 8)).lattice(plt_hop=True, ms=7, c=4., figsize=(7, 1.2))
+
+# %%
+# Projection, then minimization:
 
 nk = 20
 projected = wannierize(ssh, 0, trial=[0], nk=nk, max_iter=0)  # projection only
@@ -92,6 +104,17 @@ bn = KSpace(lattices.honeycomb())
 bn.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': -1.} for R in [(0, 0), (-1, 0), (0, -1)]])
 bn.set_onsite({'a': M, 'b': -M})
 
+# %%
+# The honeycomb lattice on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`), sublattices ``a`` (onsite
+# :math:`+M`) and ``b`` (:math:`-M`) in two colours, with the
+# nearest-neighbour bonds.
+
+fig_lat = Plot(finite_system(bn, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+# %%
+# The Wannier function of the lower band, from a trial orbital on ``b``:
+
 nk = 12
 wf = wannierize(bn, 0, trial=[1], nk=nk)
 sites_b = wf.positions[1::2]
@@ -110,6 +133,7 @@ assert np.isclose(e_wf, e_mean, atol=1e-12)
 # the gapped-graphene one on the sites of its finite
 # :class:`~tbkit.system.System` (``wf.system``).
 
+# sphinx_gallery_thumbnail_number = 3
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4.2))
 order = np.argsort(x)
 ax1.semilogy(x[order], p0[order], 's', ms=4, color='C1',  # zero on every a site but its own

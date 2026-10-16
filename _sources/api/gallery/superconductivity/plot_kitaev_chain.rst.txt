@@ -52,7 +52,7 @@ symmetry (class D). With the extra chiral symmetry of this real chain
 :mod:`tbkit.bdg` builds the chain in real space (*bdg_ham*) and in
 reciprocal space (*bdg_kspace*).
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-53
+.. GENERATED FROM PYTHON SOURCE LINES 36-54
 
 .. code-block:: Python
 
@@ -62,6 +62,7 @@ reciprocal space (*bdg_kspace*).
     import tbkit.lattices as lattices
     from tbkit.bdg import bdg_ham, bdg_kspace, majorana_number, pairing_bonds, particle_hole
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
     from tbkit.system import System
 
     t, delta = 1., 0.6
@@ -80,12 +81,43 @@ reciprocal space (*bdg_kspace*).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-56
+.. GENERATED FROM PYTHON SOURCE LINES 55-60
+
+The lattice
+-----------
+A chain of spinless fermions, one site per cell. Each nearest-neighbour
+bond carries both the hopping :math:`t` and the p-wave pairing
+:math:`\Delta`, which binds fermions on neighbouring sites.
+
+.. GENERATED FROM PYTHON SOURCE LINES 60-67
+
+.. code-block:: Python
+
+
+    patch = lattices.chain()
+    patch.get_lattice(n1=10)
+    vis = System(patch)
+    vis.set_hopping([{'n': 1, 't': t}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
+
+
+
+
+.. image-sg:: /api/gallery/superconductivity/images/sphx_glr_plot_kitaev_chain_001.png
+   :alt: plot kitaev chain
+   :srcset: /api/gallery/superconductivity/images/sphx_glr_plot_kitaev_chain_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 68-70
 
 The bulk spectrum and the invariant
 ---------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-80
+.. GENERATED FROM PYTHON SOURCE LINES 70-94
 
 .. code-block:: Python
 
@@ -128,12 +160,12 @@ The bulk spectrum and the invariant
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-83
+.. GENERATED FROM PYTHON SOURCE LINES 95-97
 
 Majorana zero modes at the ends of an open chain
 ------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-118
+.. GENERATED FROM PYTHON SOURCE LINES 97-132
 
 .. code-block:: Python
 
@@ -175,9 +207,9 @@ Majorana zero modes at the ends of an open chain
 
 
 
-.. image-sg:: /api/gallery/superconductivity/images/sphx_glr_plot_kitaev_chain_001.png
+.. image-sg:: /api/gallery/superconductivity/images/sphx_glr_plot_kitaev_chain_002.png
    :alt: Majorana end modes, $\mu = 0.5t$
-   :srcset: /api/gallery/superconductivity/images/sphx_glr_plot_kitaev_chain_001.png
+   :srcset: /api/gallery/superconductivity/images/sphx_glr_plot_kitaev_chain_002.png
    :class: sphx-glr-single-img
 
 
@@ -194,7 +226,7 @@ Majorana zero modes at the ends of an open chain
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.299 seconds)
+   **Total running time of the script:** (0 minutes 0.099 seconds)
 
 
 .. _sphx_glr_download_api_gallery_superconductivity_plot_kitaev_chain.py:

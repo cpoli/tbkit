@@ -36,7 +36,7 @@ This example checks the stencils, the :math:`O(a^2)` convergence to the
 continuum bands, and that the lattice model carries the topology of the
 inverted BHZ band structure into a real-space flake.
 
-.. GENERATED FROM PYTHON SOURCE LINES 20-28
+.. GENERATED FROM PYTHON SOURCE LINES 20-29
 
 .. code-block:: Python
 
@@ -46,6 +46,7 @@ inverted BHZ band structure into a real-space flake.
 
     from tbkit.bridges import finite_system
     from tbkit.continuum import discretize, discretize_symbolic
+    from tbkit.plot import Plot
 
 
 
@@ -55,7 +56,7 @@ inverted BHZ band structure into a real-space flake.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-36
+.. GENERATED FROM PYTHON SOURCE LINES 30-37
 
 The effective mass: a nearest-neighbour chain
 -------------------------------------------------
@@ -65,7 +66,7 @@ whose band :math:`(1 - \cos ka)/m^*a^2` is :math:`k^2/2m^*` up to
 :math:`O(k^4a^2)`. :func:`~tbkit.continuum.discretize_symbolic` shows
 the hoppings before any number is put in.
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-44
+.. GENERATED FROM PYTHON SOURCE LINES 37-45
 
 .. code-block:: Python
 
@@ -92,7 +93,7 @@ the hoppings before any number is put in.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-59
+.. GENERATED FROM PYTHON SOURCE LINES 46-60
 
 The BHZ model, discretized
 ------------------------------
@@ -109,7 +110,7 @@ discretizing again. The lattice bands follow the continuum ones near
 :math:`\Gamma` the lattice band bends back to the zone boundary
 :math:`\pi/a`, where the continuum one keeps growing.
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-81
+.. GENERATED FROM PYTHON SOURCE LINES 60-82
 
 .. code-block:: Python
 
@@ -148,7 +149,7 @@ discretizing again. The lattice bands follow the continuum ones near
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-91
+.. GENERATED FROM PYTHON SOURCE LINES 83-92
 
 Band inversion and the Chern number
 ---------------------------------------
@@ -160,7 +161,7 @@ for :math:`M/B < 0`, as long as :math:`M/B` stays below :math:`4/a^2`,
 where the lattice closes the gap again at :math:`X = (\pi/a, 0)`. The
 sweep only changes the parameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-105
+.. GENERATED FROM PYTHON SOURCE LINES 92-106
 
 .. code-block:: Python
 
@@ -191,7 +192,7 @@ sweep only changes the parameter.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 106-113
+.. GENERATED FROM PYTHON SOURCE LINES 107-114
 
 Edge states of a real-space flake
 -------------------------------------
@@ -201,7 +202,7 @@ states fill the bulk gap :math:`|E| < \Delta/2` (their level spacing,
 about :math:`2\pi A` over the perimeter, sets how many). In the trivial
 one, nothing does.
 
-.. GENERATED FROM PYTHON SOURCE LINES 113-127
+.. GENERATED FROM PYTHON SOURCE LINES 114-128
 
 .. code-block:: Python
 
@@ -232,12 +233,38 @@ one, nothing does.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 128-130
+.. GENERATED FROM PYTHON SOURCE LINES 129-133
+
+The lattice of the flake, here :math:`8\times8` cells of it: a square
+grid, each site holding the two orbitals of the spin block (drawn on top
+of each other), joined by the nearest-neighbour hoppings of the
+discretized model.
+
+.. GENERATED FROM PYTHON SOURCE LINES 133-136
+
+.. code-block:: Python
+
+
+    fig_flake = Plot(finite_system(bhz, (8, 8))).lattice(plt_hop=True, ms=10, c=0.6, figsize=(4.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/models/images/sphx_glr_plot_kp_theory_on_a_lattice_001.png
+   :alt: plot kp theory on a lattice
+   :srcset: /api/gallery/models/images/sphx_glr_plot_kp_theory_on_a_lattice_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 137-139
 
 Bands, convergence and edge states
 ----------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 130-160
+.. GENERATED FROM PYTHON SOURCE LINES 139-169
 
 .. code-block:: Python
 
@@ -274,9 +301,9 @@ Bands, convergence and edge states
 
 
 
-.. image-sg:: /api/gallery/models/images/sphx_glr_plot_kp_theory_on_a_lattice_001.png
+.. image-sg:: /api/gallery/models/images/sphx_glr_plot_kp_theory_on_a_lattice_002.png
    :alt: BHZ bands ($M=B=A=1$), Error $\propto a^2$, $24\times 24$ flake, $a=0.5$
-   :srcset: /api/gallery/models/images/sphx_glr_plot_kp_theory_on_a_lattice_001.png
+   :srcset: /api/gallery/models/images/sphx_glr_plot_kp_theory_on_a_lattice_002.png
    :class: sphx-glr-single-img
 
 
@@ -286,7 +313,7 @@ Bands, convergence and edge states
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.671 seconds)
+   **Total running time of the script:** (0 minutes 0.545 seconds)
 
 
 .. _sphx_glr_download_api_gallery_models_plot_kp_theory_on_a_lattice.py:

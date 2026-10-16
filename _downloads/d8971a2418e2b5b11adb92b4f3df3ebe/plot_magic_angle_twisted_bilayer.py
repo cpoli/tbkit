@@ -57,6 +57,23 @@ def dirac_velocity(tbl, dq=1e-2):
 
 
 # %%
+# The moiré lattice
+# -------------------
+# Two graphene layers twisted by :math:`\theta = 6.01°` (:math:`m = 5`),
+# seen from above: layer 0 (sublattices 'a' and 'b', blue and red) and
+# layer 1 ('c' and 'd', green and yellow), over :math:`3\times3` moiré
+# cells of 364 sites each (positions in nm). Where the layers' sites
+# coincide the stacking is locally AA; between those regions it is AB or
+# BA. The pattern repeats with the moiré period, about 2.3 nm here.
+
+moire_lat = twisted_bilayer(5).lat
+assert len(moire_lat.unit_cell) == 364
+assert abs(np.linalg.norm(moire_lat.prim_vec[0]) - 2.35) < 0.01
+moire_lat.get_lattice(3, 3)
+fig_lat = moire_lat.plot(ms=2, figsize=(6, 6))
+
+
+# %%
 # Commensurate angles and the magic angle
 # -----------------------------------------
 # :math:`m = 31` gives :math:`\theta = 1.05°`. The Bistritzer-MacDonald
@@ -94,6 +111,7 @@ for m in (3, 5, 7):
 # model: the bandwidth of the four central bands drops by more than an
 # order of magnitude.
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(9, 4.5), sharey=False)
 widths = []
 for ax, s, lim in zip(axes, (1., 4.6), (900, 400)):

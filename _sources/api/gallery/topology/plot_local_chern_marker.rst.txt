@@ -39,7 +39,7 @@ disorder closes the mobility gap -- the topological Anderson transition.
 :meth:`~tbkit.system.System.get_local_chern_marker` computes it on a
 flake of the Haldane model (built in real space, bond by bond).
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-63
+.. GENERATED FROM PYTHON SOURCE LINES 23-64
 
 .. code-block:: Python
 
@@ -48,6 +48,7 @@ flake of the Haldane model (built in real space, bond by bond).
 
     import tbkit.lattices as lattices
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
     from tbkit.system import System
 
     t2 = 0.2
@@ -90,12 +91,40 @@ flake of the Haldane model (built in real space, bond by bond).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-66
+.. GENERATED FROM PYTHON SOURCE LINES 65-71
+
+The lattice
+-----------
+The Haldane model on a :math:`6\times6`-cell flake, bond widths
+proportional to the amplitudes: the honeycomb lattice's two sublattices
+('a' and 'b', in two colours), the nearest-neighbour hopping (thick) and
+the second-neighbour hoppings :math:`\pm it_2` (thin).
+
+.. GENERATED FROM PYTHON SOURCE LINES 71-74
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(haldane_flake(6)).lattice(plt_hop=True, ms=10, figsize=(6, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_local_chern_marker_001.png
+   :alt: plot local chern marker
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_local_chern_marker_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 75-77
 
 Clean flake: C in the bulk, -C on the edge
 ------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-81
+.. GENERATED FROM PYTHON SOURCE LINES 77-92
 
 .. code-block:: Python
 
@@ -117,9 +146,9 @@ Clean flake: C in the bulk, -C on the edge
 
 
 
-.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_local_chern_marker_001.png
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_local_chern_marker_002.png
    :alt: Haldane flake: the Chern number, site by site
-   :srcset: /api/gallery/topology/images/sphx_glr_plot_local_chern_marker_001.png
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_local_chern_marker_002.png
    :class: sphx-glr-single-img
 
 
@@ -127,18 +156,18 @@ Clean flake: C in the bulk, -C on the edge
 
  .. code-block:: none
 
-    Chern number 1.000; bulk marker 1.000; total 4.3e-14.
+    Chern number 1.000; bulk marker 1.000; total -4.3e-13.
 
     Text(0.5, 1.0, 'Haldane flake: the Chern number, site by site')
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-84
+.. GENERATED FROM PYTHON SOURCE LINES 94-96
 
 Disorder: robust, until it closes the gap
 ------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-93
+.. GENERATED FROM PYTHON SOURCE LINES 96-105
 
 .. code-block:: Python
 
@@ -167,7 +196,7 @@ Disorder: robust, until it closes the gap
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.776 seconds)
+   **Total running time of the script:** (0 minutes 0.336 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_local_chern_marker.py:

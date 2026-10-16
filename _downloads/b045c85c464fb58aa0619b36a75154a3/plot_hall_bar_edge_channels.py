@@ -32,6 +32,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.plot import Plot
 from tbkit.system import System
 from tbkit.transport import Transport
 
@@ -63,6 +64,16 @@ for edge in (width - 1, 0):
 # lead 5 (drain): the bar continued to +x
 v = ham[np.ix_(cols[2], cols[3])]
 bar.add_lead(ham[np.ix_(cols[3], cols[3])], v, v, cols[3])
+
+# %%
+# The Hall bar
+# ------------
+# A :math:`44\times16` strip of the square lattice with its
+# nearest-neighbour bonds (their Peierls phases are not drawn). The source
+# and drain leads continue it to the left and right; the four probes are
+# strips of six sites attached along the top and bottom edges.
+
+fig_lat = Plot(sys).lattice(plt_hop=True, ms=3, c=1., figsize=(9, 3.6))
 
 # %%
 # Quantized plateaus
@@ -100,6 +111,7 @@ top = y[middle] > width / 2
 print('fraction of the current in the top half: {:.4f}'.format(jx[top].sum() / jx.sum()))
 assert jx[top].sum() / jx.sum() > 0.99
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(2, 1, figsize=(6.5, 7))
 axes[0].plot(e_fermi, r_xy, 'o-b', ms=3, label='$R_{xy}$')
 axes[0].plot(e_fermi, r_xx, 's-r', ms=3, label='$R_{xx}$')

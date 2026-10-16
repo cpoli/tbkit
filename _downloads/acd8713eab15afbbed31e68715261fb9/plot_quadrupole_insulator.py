@@ -27,8 +27,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.linalg as LA
 
+from tbkit.bridges import finite_system
 from tbkit.higher_order import (bbh_model, corner_charges, flake_positions, quadrupole_moment,
                                                     wannier_bands, wannier_sector_polarization)
+from tbkit.plot import Plot
 
 
 def circ(a, b):
@@ -40,6 +42,19 @@ def circ(a, b):
 occ = [0, 1]  # half filling: the two lower bands
 
 # %%
+# The lattice
+# -----------
+# The BBH model (:func:`~tbkit.higher_order.bbh_model`) on a patch of
+# :math:`4\times4` cells (:func:`~tbkit.bridges.finite_system`): four
+# orbitals per square cell (one colour each), bond widths proportional to
+# the amplitudes -- the intra-cell hoppings :math:`\gamma` (thin, here
+# :math:`\gamma/\lambda = 1/2`) and the inter-cell ones :math:`\lambda`
+# (thick). Their signs, which thread a :math:`\pi` flux through every
+# plaquette, are not drawn.
+
+fig_lat = Plot(finite_system(bbh_model(0.5, 1.), (4, 4))).lattice(plt_hop=True, ms=10, figsize=(4.5, 4.5))
+
+# %%
 # Wannier bands: two gapped sectors
 # -----------------------------------
 # The hybrid Wannier centres :math:`\nu_x(k_y)` of the occupied bands come in
@@ -47,6 +62,7 @@ occ = [0, 1]  # half filling: the two lower bands
 # Wannier sectors are well defined.
 
 nk = 24
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(9, 3.5), sharey=True)
 for ax, gamma in zip(axes, (0.5, 1.5)):
     nu, _ = wannier_bands(bbh_model(gamma, 1.), occ, nk)

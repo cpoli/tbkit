@@ -29,6 +29,9 @@ resonant level between two chains. Units: :math:`k_B = 1`, :math:`G` in
 import numpy as np
 import matplotlib.pyplot as plt
 
+from tbkit.lattice import Lattice
+from tbkit.plot import Plot
+from tbkit.system import System
 from tbkit.transport import Transport
 
 
@@ -38,6 +41,22 @@ ham = np.array([[0., t_dot, 0.], [t_dot, e_dot, t_dot], [0., t_dot, 0.]])
 dot = Transport(ham)
 dot.add_lead([[0.]], [[1.]], [[1.]], [0])
 dot.add_lead([[0.]], [[1.]], [[1.]], [2])
+
+# %%
+# The lattice
+# -----------
+# A single level (red) between two semi-infinite chains (blue, four sites
+# of each drawn), bond widths proportional to the hoppings: :math:`1`
+# along the chains, :math:`t_{dot} = 0.1` to the level.
+
+lat_vis = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}], prim_vec=[(1., 0.)])
+lat_vis.get_lattice(n1=9)
+lat_vis.remove_sites([4])
+lat_vis.add_sites(np.array([(4., 0., 'b')], dtype=lat_vis.dtype))
+vis = System(lat_vis)
+vis.set_hopping([{'n': 1, 'tag': 'aa', 't': 1.}, {'n': 1, 'tag': 'ab', 't': t_dot},
+                      {'n': 1, 'tag': 'ba', 't': t_dot}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, c=4., figsize=(7, 1.2))
 
 # %%
 # A resonant level
@@ -92,6 +111,7 @@ assert np.all(np.diff(lorenz_ratio) < 1e-6)
 print('Lorenz ratio / (pi^2/3): {:.4f} at k_B T = Gamma/100, {:.4f} at 10 Gamma.'.format(
     lorenz_ratio[0], lorenz_ratio[-1]))
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 3, figsize=(12, 3.6))
 ax = axes[0]
 ax.plot(energies, trans, 'k')

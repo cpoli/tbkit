@@ -18,6 +18,7 @@ import matplotlib.pyplot as plt
 
 from tbkit import lattices
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 from tbkit.system import System
 
 PI = np.pi
@@ -39,6 +40,13 @@ sys = System(lat)
 sys.set_hopping([{'n': 1, 't': lambda si, sj, alpha:
                           -np.exp(1j * PI * alpha * (si['x'] * sj['y'] - sj['x'] * si['y']))}])
 sys.set_onsite({'a': lambda site, V: V * (site['x'] - (N - 1) / 2) / (N - 1)})
+
+# The flake: a square of :math:`12\times12` sites with its
+# nearest-neighbour bonds, which carry the Peierls phases (not drawn).
+fig_lat = Plot(sys).lattice(plt_hop=True, ms=8, figsize=(4.5, 4.5))
+
+# %%
+# The sweep:
 
 alphas = np.linspace(0., 0.5, 101)
 spectra = []
@@ -104,6 +112,7 @@ for v in (0.5, 1., 1.5):
 # Plots
 # -----
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 3, figsize=(13, 4))
 axes[0].plot(alphas, spectra, ',k')
 axes[0].set_xlabel(r'flux per plaquette $\alpha$')

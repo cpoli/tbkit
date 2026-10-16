@@ -30,6 +30,7 @@ import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
 from tbkit.kspace import ribbon
+from tbkit.plot import Plot
 from tbkit.system import System
 from tbkit.transport import Transport, lead_from_kspace
 
@@ -65,6 +66,18 @@ def device(potential):
 
 
 # %%
+# The device
+# ----------
+# A :math:`40\times24` strip of the square lattice with its
+# nearest-neighbour bonds, between two semi-infinite leads that continue
+# the strip to the left and right. The gate potential below acts on its
+# onsite energies.
+
+vis = System(lat)
+vis.set_hopping([{'n': 1, 't': t}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=3, c=1., figsize=(8, 5))
+
+# %%
 # A clean strip counts its open modes
 # ----------------------------------------
 # The transverse modes of the strip have energies
@@ -95,6 +108,7 @@ for n in range(1, 5):
     assert closest < 0.01
 assert conductance[0] < 0.05 and np.all(np.diff(conductance) > -0.05)
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(6, 4))
 ax.plot(gates, conductance, 'o-b', ms=3)
 ax.set_xlabel('gate potential $V_g$')

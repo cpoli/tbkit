@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 
@@ -25,21 +26,21 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
     <script src="../../_static/documentation_options.js?v=74e82e83"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
@@ -52,7 +53,6 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.6" />
   
@@ -102,7 +102,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -178,7 +178,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -219,7 +219,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -379,7 +379,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for tbkit.topology</h1><div class="highlight"><pre>
-<span></span><span class="sa">r</span><span class="sd">"""</span>
+<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Topological diagnostics beyond the Brillouin-zone integrals of</span>
 <span class="sd">:class:`tbkit.kspace.KSpace`:</span>
 
@@ -399,7 +399,7 @@
 <span class="sd">  one (Wan, Turner, Vishwanath and Savrasov, Phys. Rev. B 83, 205101</span>
 <span class="sd">  (2011)) -- the Hermitian counterpart of</span>
 <span class="sd">  :func:`tbkit.exceptional.find_exceptional_points`.</span>
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -416,14 +416,14 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_occupied</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">e_fermi</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">'''</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Private function. Validate a Hermitian Hamiltonian (dense or sparse)</span>
 <span class="sd">    and return its eigenvectors below *e_fermi* (columns).</span>
-<span class="sd">    '''</span>
-    <span class="n">h</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'c16'</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">square_matrix</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="s1">'ham'</span><span class="p">)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">square_matrix</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="s1">&#39;ham&#39;</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">hermitian</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">e_fermi</span><span class="p">,</span> <span class="s1">'e_fermi'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">e_fermi</span><span class="p">,</span> <span class="s1">&#39;e_fermi&#39;</span><span class="p">)</span>
     <span class="n">en</span><span class="p">,</span> <span class="n">vec</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">toarray</span><span class="p">())</span>
     <span class="k">return</span> <span class="n">vec</span><span class="p">[:,</span> <span class="n">en</span> <span class="o">&lt;</span> <span class="n">e_fermi</span><span class="p">]</span>
 
@@ -431,7 +431,7 @@
 <div class="viewcode-block" id="bott_index">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.topology.bott_index">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">bott_index</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">positions</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">cell</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">e_fermi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Get the Bott index of the states below *e_fermi* of a finite sample with</span>
 <span class="sd">    periodic boundary conditions (a torus spanned by :math:`\mathbf{L}_1,</span>
 <span class="sd">    \mathbf{L}_2`; Loring and Hastings, EPL 92, 67004 (2010)):</span>
@@ -452,16 +452,24 @@
 <span class="sd">    comes from *KSpace.finite_ham* with ``periodic=True`` and the positions</span>
 <span class="sd">    from *tbkit.higher_order.flake_positions*.</span>
 
-<span class="sd">    :param ham: Square Hermitian matrix (dense or sparse), shape (N, N).</span>
-<span class="sd">    :param positions: Real array, shape (N, d). Position of the orbital of each row.</span>
-<span class="sd">    :param cell: Real array, shape (2, d). The two vectors</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ham : Square Hermitian matrix (dense or sparse), shape (N, N)</span>
+<span class="sd">    positions : Real array, shape (N, d)</span>
+<span class="sd">        Position of the orbital of each row.</span>
+<span class="sd">    cell : Real array, shape (2, d)</span>
+<span class="sd">        The two vectors</span>
 <span class="sd">        :math:`\mathbf{L}_1, \mathbf{L}_2` spanning the torus (e.g.</span>
 <span class="sd">        :math:`N_1\mathbf{a}_1` and :math:`N_2\mathbf{a}_2`).</span>
-<span class="sd">    :param e_fermi: Real number. Default value 0. Fermi energy.</span>
+<span class="sd">    e_fermi : Real number, default 0</span>
+<span class="sd">        Fermi energy.</span>
 
-<span class="sd">    :returns:</span>
-<span class="sd">        * **bott** -- Real number, close to an integer.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bott : Real number, close to an integer</span>
 
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
 <span class="sd">    Example usage::</span>
 
 <span class="sd">        n = 12</span>
@@ -469,10 +477,10 @@
 <span class="sd">        pos = flake_positions(ks, (n, n))</span>
 <span class="sd">        cell = [n * np.array(a) for a in ks.lat.prim_vec]</span>
 <span class="sd">        bott = bott_index(ham, pos, cell)</span>
-<span class="sd">    '''</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">occ</span> <span class="o">=</span> <span class="n">_occupied</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">e_fermi</span><span class="p">)</span>
-    <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span>
-    <span class="n">cell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span>
+    <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+    <span class="n">cell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">site_positions</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">occ</span><span class="p">))</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">torus_cell</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">positions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">fracs</span> <span class="o">=</span> <span class="n">positions</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
@@ -486,7 +494,7 @@
 <div class="viewcode-block" id="entanglement_spectrum">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.topology.entanglement_spectrum">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">entanglement_spectrum</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">e_fermi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Get the entanglement spectrum of the states below *e_fermi* of a finite</span>
 <span class="sd">    sample: the eigenvalues :math:`\xi_n \in [0, 1]` of the correlation</span>
 <span class="sd">    matrix :math:`C_{ij} = \langle c_i^\dagger c_j\rangle` restricted to the</span>
@@ -502,13 +510,17 @@
 <span class="sd">    property of the ground state alone. See</span>
 <span class="sd">    *KSpace.entanglement_spectrum* for the k-resolved version.</span>
 
-<span class="sd">    :param ham: Square Hermitian matrix (dense or sparse), shape (N, N).</span>
-<span class="sd">    :param region: List of row indices (the region :math:`A`).</span>
-<span class="sd">    :param e_fermi: Real number. Default value 0. Fermi energy.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ham : Square Hermitian matrix (dense or sparse), shape (N, N)</span>
+<span class="sd">    region : List of row indices (the region :math:`A`)</span>
+<span class="sd">    e_fermi : Real number, default 0</span>
+<span class="sd">        Fermi energy.</span>
 
-<span class="sd">    :returns:</span>
-<span class="sd">        * **xi** -- Real ndarray, shape (len(region),), sorted ascending.</span>
-<span class="sd">    '''</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xi : Real ndarray, shape (len(region),), sorted ascending</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">occ</span> <span class="o">=</span> <span class="n">_occupied</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">e_fermi</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">region</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">occ</span><span class="p">))</span>
     <span class="n">occ</span> <span class="o">=</span> <span class="n">occ</span><span class="p">[</span><span class="n">region</span><span class="p">]</span>
@@ -519,18 +531,24 @@
 <div class="viewcode-block" id="WeylPoints">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.topology.WeylPoints">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">WeylPoints</span><span class="p">():</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Weyl points of a 3D model, see *find_weyl_points*.</span>
 
-<span class="sd">    :ivar k: Real ndarray, shape (n, 3). Positions, in the k coordinates of</span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    k : Real ndarray, shape (n, 3)</span>
+<span class="sd">        Positions, in the k coordinates of</span>
 <span class="sd">        *KSpace.get_ham*, folded to fractional coordinates in [-1/2, 1/2).</span>
-<span class="sd">    :ivar chirality: Integer ndarray, shape (n,). Berry flux of the bands</span>
+<span class="sd">    chirality : Integer ndarray, shape (n,)</span>
+<span class="sd">        Berry flux of the bands</span>
 <span class="sd">        below the touching out of a small sphere around each point, over</span>
 <span class="sd">        :math:`2\pi`: :math:`\pm1` for a simple Weyl point.</span>
-<span class="sd">    :ivar energy: Real ndarray, shape (n,). Energy of the touching.</span>
-<span class="sd">    :ivar gap: Real ndarray, shape (n,). Remaining gap at the refined point</span>
+<span class="sd">    energy : Real ndarray, shape (n,)</span>
+<span class="sd">        Energy of the touching.</span>
+<span class="sd">    gap : Real ndarray, shape (n,)</span>
+<span class="sd">        Remaining gap at the refined point</span>
 <span class="sd">        (zero up to the tolerance).</span>
-<span class="sd">    '''</span>
+<span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">chirality</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">gap</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
@@ -540,32 +558,32 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">total_chirality</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">'''</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Sum of the chiralities: zero over a whole Brillouin zone</span>
 <span class="sd">        (Nielsen-Ninomiya doubling theorem).</span>
-<span class="sd">        '''</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chirality</span><span class="p">))</span></div>
 
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_gap</span><span class="p">(</span><span class="n">ks</span><span class="p">:</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">kpts</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">'''</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Private function. Gap E_{n+1} - E_n at the k-points *kpts* (shape (m, 3)).</span>
-<span class="sd">    '''</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">en</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">_eigs</span><span class="p">(</span><span class="n">kpts</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">en</span><span class="p">[:,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">en</span><span class="p">[:,</span> <span class="n">n</span><span class="p">]</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_newton</span><span class="p">(</span><span class="n">ks</span><span class="p">:</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">k0</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">h</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
-<span class="sd">    Private function. Newton's method on the touching of bands n and n+1:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Private function. Newton&#39;s method on the touching of bands n and n+1:</span>
 <span class="sd">    at the current point, the two bands span a 2D subspace :math:`W`, and</span>
 <span class="sd">    :math:`W^\dagger H(\mathbf{k})W - \mathrm{tr}/2 = \mathbf{d}\cdot\boldsymbol\sigma`</span>
 <span class="sd">    near it; the step solves :math:`\mathbf{d} + J\delta\mathbf{k} = 0`</span>
 <span class="sd">    (central-difference Jacobian). It returns the point and its gap.</span>
-<span class="sd">    '''</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]],</span> <span class="p">[[</span><span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]],</span> <span class="p">[[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">]]])</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">k0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">k0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">vec</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">_eigs</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="n">eigenvec</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">w</span> <span class="o">=</span> <span class="n">vec</span><span class="p">[</span><span class="mi">0</span><span class="p">][:,</span> <span class="n">n</span><span class="p">:</span><span class="n">n</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
@@ -573,7 +591,7 @@
         <span class="k">def</span><span class="w"> </span><span class="nf">d</span><span class="p">(</span><span class="n">kk</span><span class="p">):</span>
             <span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">kk</span><span class="p">)</span>
             <span class="n">heff</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">ks</span><span class="o">.</span><span class="n">_hams</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span> <span class="o">@</span> <span class="n">w</span>
-            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'aij,kji-&gt;ka'</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">heff</span><span class="p">)</span><span class="o">.</span><span class="n">real</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;aij,kji-&gt;ka&#39;</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">heff</span><span class="p">)</span><span class="o">.</span><span class="n">real</span> <span class="o">/</span> <span class="mi">2</span>
         <span class="n">shifts</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
         <span class="n">dd</span> <span class="o">=</span> <span class="n">d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">k</span> <span class="o">+</span> <span class="n">shifts</span><span class="p">,</span> <span class="n">k</span> <span class="o">-</span> <span class="n">shifts</span><span class="p">]))</span>
         <span class="n">jac</span> <span class="o">=</span> <span class="p">((</span><span class="n">dd</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">dd</span><span class="p">[</span><span class="mi">3</span><span class="p">:])</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">h</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
@@ -586,16 +604,16 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_sphere_chirality</span><span class="p">(</span><span class="n">ks</span><span class="p">:</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">center</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
                                 <span class="n">bands</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">n_theta</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Private function. Berry flux of *bands* out of the sphere of *radius*</span>
 <span class="sd">    around *center*, over :math:`2\pi`: the Fukui-Hatsugai-Suzuki</span>
 <span class="sd">    plaquettes of a (theta, phi) mesh, poles included, oriented outward</span>
 <span class="sd">    (the sign convention of *KSpace.berry_curvature*).</span>
-<span class="sd">    '''</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">n_phi</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n_theta</span>
     <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">PI</span><span class="p">,</span> <span class="n">n_theta</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">phi</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">PI</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_phi</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_phi</span>
-    <span class="n">tt</span><span class="p">,</span> <span class="n">pp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">'ij'</span><span class="p">)</span>
+    <span class="n">tt</span><span class="p">,</span> <span class="n">pp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
     <span class="n">dirs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">tt</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">pp</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">tt</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">pp</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">tt</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">pts</span> <span class="o">=</span> <span class="n">center</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">dirs</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
     <span class="n">v1</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">_subspaces</span><span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="n">bands</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_theta</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_phi</span><span class="p">,</span> <span class="n">ks</span><span class="o">.</span><span class="n">norb</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">bands</span><span class="p">))</span>
@@ -619,14 +637,14 @@
     <span class="n">ks</span><span class="p">:</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">bands</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">nk</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-10</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WeylPoints</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Locate the Weyl points of a 3D model: the points where the highest band</span>
 <span class="sd">    of *bands* (band :math:`n`) touches the next one, and their chirality.</span>
 
 <span class="sd">    1. The gap :math:`E_{n+1} - E_n` is computed on an :math:`nk^3` mesh of</span>
 <span class="sd">       the Brillouin zone (shifted off the high-symmetry planes); its local</span>
 <span class="sd">       minima (over the 26 neighbours, periodically) are the candidates.</span>
-<span class="sd">    2. Each candidate is refined by Newton's method on the two-band</span>
+<span class="sd">    2. Each candidate is refined by Newton&#39;s method on the two-band</span>
 <span class="sd">       Hamiltonian :math:`\mathbf{d}(\mathbf{k})\cdot\boldsymbol\sigma` of bands</span>
 <span class="sd">       :math:`n, n+1`, whose zeros are the touchings; candidates whose gap</span>
 <span class="sd">       does not close (avoided crossings) are dropped, and points equal up</span>
@@ -647,22 +665,30 @@
 <span class="sd">    Nodal lines (degeneracies along curves) are not isolated points and are</span>
 <span class="sd">    outside the scope of this finder.</span>
 
-<span class="sd">    :param ks: **KSpace** instance with three primitive vectors (Hermitian).</span>
-<span class="sd">    :param bands: Band index, or list of band indices (e.g. the occupied</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ks : **KSpace** instance with three primitive vectors (Hermitian)</span>
+<span class="sd">    bands</span>
+<span class="sd">        Band index, or list of band indices (e.g. the occupied</span>
 <span class="sd">        bands): the touching is between ``max(bands)`` and ``max(bands) + 1``.</span>
-<span class="sd">    :param nk: Positive integer. Default value 20. Mesh points along each</span>
+<span class="sd">    nk : Positive integer, default 20</span>
+<span class="sd">        Mesh points along each</span>
 <span class="sd">        reciprocal vector.</span>
-<span class="sd">    :param radius: Positive real. Default value None: a fifth of the mesh</span>
+<span class="sd">    radius : Positive real</span>
+<span class="sd">        Default value None: a fifth of the mesh</span>
 <span class="sd">        step. Radius of the sphere for the chirality (in units of k); it</span>
 <span class="sd">        must enclose no other Weyl point.</span>
-<span class="sd">    :param tol: Positive real. Default value 1e-10. Newton's method stops</span>
+<span class="sd">    tol : Positive real, default 1e-10</span>
+<span class="sd">        Newton&#39;s method stops</span>
 <span class="sd">        when a step is shorter than *tol*; a point is kept if its gap is</span>
 <span class="sd">        below :math:`10^4` *tol* times the bandwidth.</span>
-<span class="sd">    :param max_iter: Positive integer. Default value 50. Newton iterations.</span>
+<span class="sd">    max_iter : Positive integer, default 50</span>
+<span class="sd">        Newton iterations.</span>
 
-<span class="sd">    :returns:</span>
-<span class="sd">        * **weyl** -- **WeylPoints** instance (*k*, *chirality*, *energy*, *gap*).</span>
-<span class="sd">    '''</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    weyl : **WeylPoints** instance (*k*, *chirality*, *energy*, *gap*)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">kspace</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">KSpace</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">dim_exact</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">hermitian_kspace</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">is_hermitian</span><span class="p">(),</span> <span class="n">ks</span><span class="o">.</span><span class="n">_overlap_hop</span><span class="p">)</span>
@@ -671,15 +697,15 @@
     <span class="n">error_handling</span><span class="o">.</span><span class="n">band_indices</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="n">ks</span><span class="o">.</span><span class="n">norb</span><span class="p">)</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">bands</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">band_below_top</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">ks</span><span class="o">.</span><span class="n">norb</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="s1">'nk'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="s1">&#39;nk&#39;</span><span class="p">)</span>
     <span class="n">step</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">ks</span><span class="o">.</span><span class="n">rec_vec_k</span><span class="p">)</span> <span class="o">/</span> <span class="n">nk</span>
     <span class="k">if</span> <span class="n">radius</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">radius</span> <span class="o">=</span> <span class="n">step</span> <span class="o">/</span> <span class="mi">5</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="s1">'radius'</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="s1">'tol'</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">max_iter</span><span class="p">,</span> <span class="s1">'max_iter'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="s1">&#39;radius&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="s1">&#39;tol&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">max_iter</span><span class="p">,</span> <span class="s1">&#39;max_iter&#39;</span><span class="p">)</span>
     <span class="n">fr</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nk</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">_MESH_SHIFT</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span> <span class="o">/</span> <span class="n">nk</span>
-    <span class="n">fracs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">fr</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">fr</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">fr</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">'ij'</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">fracs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">fr</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">fr</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">fr</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
     <span class="n">kmesh</span> <span class="o">=</span> <span class="n">fracs</span> <span class="o">@</span> <span class="n">ks</span><span class="o">.</span><span class="n">rec_vec_k</span>
     <span class="n">en</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">_eigs</span><span class="p">(</span><span class="n">kmesh</span><span class="p">)</span>
     <span class="n">scale</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">en</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">en</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="ow">or</span> <span class="mf">1.</span>
@@ -737,8 +763,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -759,6 +785,7 @@
 
   <p class="sphinx-version">
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
   </p>
 </div>
       
@@ -771,7 +798,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
 </p></div>
       
     </div>

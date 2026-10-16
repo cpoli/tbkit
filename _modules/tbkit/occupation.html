@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 
@@ -25,21 +26,21 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
     <script src="../../_static/documentation_options.js?v=74e82e83"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
@@ -52,7 +53,6 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.6" />
   
@@ -102,7 +102,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -178,7 +178,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -219,7 +219,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -379,7 +379,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for tbkit.occupation</h1><div class="highlight"><pre>
-<span></span><span class="sd">"""</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Occupation of single-particle states: the Fermi-Dirac distribution and the</span>
 <span class="sd">Fermi level that holds a given number of electrons, at zero or finite</span>
 <span class="sd">temperature. Used by :class:`tbkit.system.System` (a finite spectrum) and</span>
@@ -388,7 +388,7 @@
 <span class="sd">Energies and temperatures are in the same units (:math:`k_B = 1`). Each</span>
 <span class="sd">state holds one electron: for spin-degenerate levels of a spinless model,</span>
 <span class="sd">count two electrons per level.</span>
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -402,7 +402,7 @@
 <div class="viewcode-block" id="fermi_dirac">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.occupation.fermi_dirac">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">fermi_dirac</span><span class="p">(</span><span class="n">energies</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">mu</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Get the Fermi-Dirac occupations</span>
 
 <span class="sd">    .. math::</span>
@@ -412,15 +412,19 @@
 <span class="sd">    the step :math:`\Theta(\mu - E)` at :math:`T = 0` (with :math:`f = 1/2`</span>
 <span class="sd">    exactly at :math:`E = \mu`).</span>
 
-<span class="sd">    :param energies: Array of real energies (for complex ones, the real part is used).</span>
-<span class="sd">    :param mu: Real number. Chemical potential.</span>
-<span class="sd">    :param temperature: Positive real number or zero. Default value 0.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    energies : Array of real energies (for complex ones, the real part is used)</span>
+<span class="sd">    mu : Real number</span>
+<span class="sd">        Chemical potential.</span>
+<span class="sd">    temperature : Positive real number or zero, default 0</span>
 
-<span class="sd">    :returns:</span>
-<span class="sd">        * **f** -- Real ndarray, same shape as *energies*.</span>
-<span class="sd">    '''</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="s1">'mu'</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">'temperature'</span><span class="p">)</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    f : Real ndarray, same shape as *energies*</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="s1">&#39;mu&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">)</span>
     <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
     <span class="k">if</span> <span class="n">temperature</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">heaviside</span><span class="p">(</span><span class="n">mu</span> <span class="o">-</span> <span class="n">energies</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
@@ -434,35 +438,40 @@
     <span class="n">energies</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">n_electrons</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span>
     <span class="n">weights</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Get the Fermi level :math:`\mu` at which :math:`\sum_n w_n f(E_n) = N_e`.</span>
 
 <span class="sd">    At :math:`T = 0` with a gap above the last occupied level, :math:`\mu` is</span>
 <span class="sd">    placed midway in that gap (one unit above the top level if every level</span>
 <span class="sd">    is filled); if the last electrons only partly fill a (degenerate)</span>
-<span class="sd">    level, :math:`\mu` is that level's energy, where *fermi_dirac* gives</span>
+<span class="sd">    level, :math:`\mu` is that level&#39;s energy, where *fermi_dirac* gives</span>
 <span class="sd">    each state :math:`f = 1/2` -- the electron count is then exact only for</span>
 <span class="sd">    a half-filled shell. For partly filled degenerate shells, use a small</span>
 <span class="sd">    temperature.</span>
 
-<span class="sd">    :param energies: Array of real energies, any shape (e.g. *System.en*, or</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    energies</span>
+<span class="sd">        Array of real energies, any shape (e.g. *System.en*, or</span>
 <span class="sd">        the bands of *KSpace.mesh_bands*).</span>
-<span class="sd">    :param n_electrons: Positive real number or zero. Number of electrons</span>
+<span class="sd">    n_electrons : Positive real number or zero</span>
+<span class="sd">        Number of electrons</span>
 <span class="sd">        :math:`N_e` (per unit cell, with the weights of a k-mesh).</span>
-<span class="sd">    :param temperature: Positive real number or zero. Default value 0.</span>
-<span class="sd">    :param weights: Array of positive reals, same shape as *energies*.</span>
+<span class="sd">    temperature : Positive real number or zero, default 0</span>
+<span class="sd">    weights : Array of positive reals, same shape as *energies*</span>
 <span class="sd">        Default value None (all 1). Weight of each level (e.g. 1/nk on a k-mesh).</span>
 
-<span class="sd">    :returns:</span>
-<span class="sd">        * **mu** -- Real number.</span>
-<span class="sd">    '''</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mu : Real number</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray_empty</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="s1">'energies'</span><span class="p">)</span>
-    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span> <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray_empty</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="s1">&#39;energies&#39;</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span> <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">weights</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">))</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">'temperature'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">electrons</span><span class="p">(</span><span class="n">n_electrons</span><span class="p">,</span> <span class="n">weights</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
-    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">'stable'</span><span class="p">)</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;stable&#39;</span><span class="p">)</span>
     <span class="n">en</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">energies</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">weights</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">temperature</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">cum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
@@ -511,8 +520,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -533,6 +542,7 @@
 
   <p class="sphinx-version">
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
   </p>
 </div>
       
@@ -545,7 +555,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
 </p></div>
       
     </div>

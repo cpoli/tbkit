@@ -35,7 +35,7 @@ batched energies match the one-call-per-k-point loop, the Chern number
 does not depend on the number of threads, and the timings show the cost
 per k-point of each approach.
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-38
+.. GENERATED FROM PYTHON SOURCE LINES 19-40
 
 .. code-block:: Python
 
@@ -46,8 +46,10 @@ per k-point of each approach.
     import matplotlib.pyplot as plt
     import scipy.linalg as LA
 
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
     from tbkit.lattice import Lattice
+    from tbkit.plot import Plot
 
     DX, DY = 0.5 * np.sqrt(3), 0.5
     lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (DX, DY)}],
@@ -65,12 +67,41 @@ per k-point of each approach.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-41
+.. GENERATED FROM PYTHON SOURCE LINES 41-48
+
+The lattice
+-----------
+The Haldane model on a patch of :math:`5\times4` cells
+(:func:`~tbkit.bridges.finite_system`), bond widths proportional to the
+amplitudes: the honeycomb lattice's two sublattices ('a' and 'b', in two
+colours), the nearest-neighbour hopping (thick) and the complex
+second-neighbour hoppings :math:`\pm 0.2i` (thin).
+
+.. GENERATED FROM PYTHON SOURCE LINES 48-51
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(hal, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/large_scale/images/sphx_glr_plot_batched_k_space_001.png
+   :alt: plot batched k space
+   :srcset: /api/gallery/large_scale/images/sphx_glr_plot_batched_k_space_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 52-54
 
 The batched solver against one scipy call per k-point
 ------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-50
+.. GENERATED FROM PYTHON SOURCE LINES 54-63
 
 .. code-block:: Python
 
@@ -90,12 +121,12 @@ The batched solver against one scipy call per k-point
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-53
+.. GENERATED FROM PYTHON SOURCE LINES 64-66
 
 Berry curvature on 90,000 k-points, with one thread and with several
 ---------------------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-80
+.. GENERATED FROM PYTHON SOURCE LINES 66-93
 
 .. code-block:: Python
 
@@ -129,9 +160,9 @@ Berry curvature on 90,000 k-points, with one thread and with several
 
 
 
-.. image-sg:: /api/gallery/large_scale/images/sphx_glr_plot_batched_k_space_001.png
+.. image-sg:: /api/gallery/large_scale/images/sphx_glr_plot_batched_k_space_002.png
    :alt: Haldane model, lower band, C = 1, Cost per k-point
-   :srcset: /api/gallery/large_scale/images/sphx_glr_plot_batched_k_space_001.png
+   :srcset: /api/gallery/large_scale/images/sphx_glr_plot_batched_k_space_002.png
    :class: sphx-glr-single-img
 
 
@@ -147,7 +178,7 @@ Berry curvature on 90,000 k-points, with one thread and with several
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.980 seconds)
+   **Total running time of the script:** (0 minutes 0.331 seconds)
 
 
 .. _sphx_glr_download_api_gallery_large_scale_plot_batched_k_space.py:

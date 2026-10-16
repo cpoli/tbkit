@@ -23,8 +23,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.linalg as LA
 
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
 from tbkit.lattice import Lattice
+from tbkit.plot import Plot
 
 DX, DY = 0.5 * np.sqrt(3), 0.5
 lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (DX, DY)}],
@@ -34,6 +36,17 @@ hal.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0
 for R in [(1, 0), (0, 1), (1, -1)]:
     hal.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 0.2j}, {'i': 1, 'j': 1, 'R': R, 't': -0.2j}])
 hal.set_onsite({'a': 0.3, 'b': -0.3})
+
+# %%
+# The lattice
+# -----------
+# The Haldane model on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`), bond widths proportional to the
+# amplitudes: the honeycomb lattice's two sublattices ('a' and 'b', in two
+# colours), the nearest-neighbour hopping (thick) and the complex
+# second-neighbour hoppings :math:`\pm 0.2i` (thin).
+
+fig_lat = Plot(finite_system(hal, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # The batched solver against one scipy call per k-point
@@ -64,6 +77,7 @@ chern = curv.sum() / (2 * np.pi)
 assert abs(chern - round(chern)) < 1e-6 and abs(round(chern)) == 1
 print(f'C = {chern:.6f}')
 
+# sphinx_gallery_thumbnail_number = 2
 fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(10, 4))
 im = ax0.imshow(curv.T * nk ** 2 / (2 * np.pi), origin='lower', extent=(0, 1, 0, 1), cmap='RdBu_r')
 fig.colorbar(im, ax=ax0, label=r'$\Omega\, n_k^2 / 2\pi$')

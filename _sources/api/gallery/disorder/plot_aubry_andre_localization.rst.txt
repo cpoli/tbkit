@@ -44,7 +44,7 @@ The potential is a value function of the site index, passed to
 :meth:`~tbkit.system.System.get_ipr` tells extended from localized
 states.
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-66
+.. GENERATED FROM PYTHON SOURCE LINES 28-67
 
 .. code-block:: Python
 
@@ -52,6 +52,7 @@ states.
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.plot import Plot
     from tbkit.system import System
 
 
@@ -93,7 +94,34 @@ states.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-72
+.. GENERATED FROM PYTHON SOURCE LINES 68-73
+
+The chain
+---------
+Both models live on the same open chain with uniform nearest-neighbour
+hopping :math:`t`; only the onsite energies differ (quasiperiodic for
+Aubry-Andre, random for Anderson).
+
+.. GENERATED FROM PYTHON SOURCE LINES 73-76
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(aubry_andre(12, lam=1.)).lattice(plt_hop=True, ms=12, figsize=(8, 1.2))
+
+
+
+
+.. image-sg:: /api/gallery/disorder/images/sphx_glr_plot_aubry_andre_localization_001.png
+   :alt: plot aubry andre localization
+   :srcset: /api/gallery/disorder/images/sphx_glr_plot_aubry_andre_localization_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 77-82
 
 A sharp transition at :math:`\lambda = 2t`
 ----------------------------------------------
@@ -101,7 +129,7 @@ The mean IPR of a 377-site chain stays of order :math:`1/N` below
 :math:`\lambda = 2t` (rising only as the states, still extended, grow
 patchy near the transition) and jumps to :math:`O(1)` just above it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-80
+.. GENERATED FROM PYTHON SOURCE LINES 82-90
 
 .. code-block:: Python
 
@@ -126,7 +154,7 @@ patchy near the transition) and jumps to :math:`O(1)` just above it.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-86
+.. GENERATED FROM PYTHON SOURCE LINES 91-96
 
 Unlike Anderson's random potential
 --------------------------------------
@@ -134,7 +162,7 @@ At the same strength :math:`\lambda = W = t`, the Anderson chain is
 localized (its IPR does not shrink with length) while the Aubry-André
 chain is extended (its IPR falls as :math:`1/N`).
 
-.. GENERATED FROM PYTHON SOURCE LINES 86-94
+.. GENERATED FROM PYTHON SOURCE LINES 96-104
 
 .. code-block:: Python
 
@@ -159,7 +187,7 @@ chain is extended (its IPR falls as :math:`1/N`).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 95-101
+.. GENERATED FROM PYTHON SOURCE LINES 105-111
 
 Aubry's self-duality
 ------------------------
@@ -168,7 +196,7 @@ On a ring of :math:`F_n = 233` sites with :math:`\beta = F_{n-1}/F_n`
 ring), the duality is exact: the spectrum at :math:`\lambda` is
 :math:`\lambda/2t` times the spectrum at :math:`4t^2/\lambda`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 101-108
+.. GENERATED FROM PYTHON SOURCE LINES 111-118
 
 .. code-block:: Python
 
@@ -192,12 +220,12 @@ ring), the duality is exact: the spectrum at :math:`\lambda` is
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-111
+.. GENERATED FROM PYTHON SOURCE LINES 119-121
 
 Extended, critical and localized states
 -------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 111-127
+.. GENERATED FROM PYTHON SOURCE LINES 121-137
 
 .. code-block:: Python
 
@@ -220,9 +248,9 @@ Extended, critical and localized states
 
 
 
-.. image-sg:: /api/gallery/disorder/images/sphx_glr_plot_aubry_andre_localization_001.png
+.. image-sg:: /api/gallery/disorder/images/sphx_glr_plot_aubry_andre_localization_002.png
    :alt: Aubry-André chain, $N = 377$
-   :srcset: /api/gallery/disorder/images/sphx_glr_plot_aubry_andre_localization_001.png
+   :srcset: /api/gallery/disorder/images/sphx_glr_plot_aubry_andre_localization_002.png
    :class: sphx-glr-single-img
 
 
@@ -232,7 +260,7 @@ Extended, critical and localized states
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.270 seconds)
+   **Total running time of the script:** (0 minutes 1.434 seconds)
 
 
 .. _sphx_glr_download_api_gallery_disorder_plot_aubry_andre_localization.py:

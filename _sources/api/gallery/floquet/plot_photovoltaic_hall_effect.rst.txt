@@ -52,7 +52,7 @@ cone and
 :meth:`~tbkit.kspace.KSpace.berry_curvature` their curvature over the
 Brillouin zone.
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-53
+.. GENERATED FROM PYTHON SOURCE LINES 36-55
 
 .. code-block:: Python
 
@@ -60,8 +60,10 @@ Brillouin zone.
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.floquet import FloquetKSpace
     from tbkit.kspace import KSpace, reciprocal_vectors
+    from tbkit.plot import Plot
 
     graphene = KSpace(lattices.honeycomb())
     graphene.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
@@ -86,7 +88,35 @@ Brillouin zone.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-61
+.. GENERATED FROM PYTHON SOURCE LINES 56-62
+
+The lattice
+-----------
+Graphene's honeycomb lattice on a patch of :math:`5\times4` cells
+(:func:`~tbkit.bridges.finite_system`): two sites per unit cell
+(sublattices 'a' and 'b', in two colours), each bonded to its three
+nearest neighbours on the other sublattice.
+
+.. GENERATED FROM PYTHON SOURCE LINES 62-65
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(graphene, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/floquet/images/sphx_glr_plot_photovoltaic_hall_effect_001.png
+   :alt: plot photovoltaic hall effect
+   :srcset: /api/gallery/floquet/images/sphx_glr_plot_photovoltaic_hall_effect_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 66-73
 
 Berry curvature of the Floquet bands: both valleys alike
 -------------------------------------------------------------
@@ -96,7 +126,7 @@ the same mass gives the comparison. (The curvature is that of the
 periodic gauge, which can move some weight from one valley to the other
 but not change the total.)
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-93
+.. GENERATED FROM PYTHON SOURCE LINES 73-105
 
 .. code-block:: Python
 
@@ -145,14 +175,14 @@ but not change the total.)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-98
+.. GENERATED FROM PYTHON SOURCE LINES 106-110
 
 The Hall conductivity at any filling of the Floquet bands
 --------------------------------------------------------------
 The two curvatures of a two-band model add up to zero on every
 plaquette, so the upper band's is minus the lower one's.
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-135
+.. GENERATED FROM PYTHON SOURCE LINES 110-147
 
 .. code-block:: Python
 
@@ -196,9 +226,9 @@ plaquette, so the upper band's is minus the lower one's.
 
 
 
-.. image-sg:: /api/gallery/floquet/images/sphx_glr_plot_photovoltaic_hall_effect_001.png
+.. image-sg:: /api/gallery/floquet/images/sphx_glr_plot_photovoltaic_hall_effect_002.png
    :alt: lower Floquet band: Berry flux per plaquette, photovoltaic Hall conductivity
-   :srcset: /api/gallery/floquet/images/sphx_glr_plot_photovoltaic_hall_effect_001.png
+   :srcset: /api/gallery/floquet/images/sphx_glr_plot_photovoltaic_hall_effect_002.png
    :class: sphx-glr-single-img
 
 
@@ -214,7 +244,7 @@ plaquette, so the upper band's is minus the lower one's.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 28.263 seconds)
+   **Total running time of the script:** (0 minutes 6.358 seconds)
 
 
 .. _sphx_glr_download_api_gallery_floquet_plot_photovoltaic_hall_effect.py:

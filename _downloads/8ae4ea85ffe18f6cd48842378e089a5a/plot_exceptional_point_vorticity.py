@@ -36,7 +36,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 import tbkit.exceptional as ex
 
 NN = [{'i': 0, 'j': 1, 'R': (0, 0), 't': 1.}, {'i': 0, 'j': 1, 'R': (-1, 0), 't': 1.},
@@ -72,6 +74,18 @@ def near_k(points, radius=0.6):
     out = np.array([p + s - K for p in points for s in shifts]).reshape(-1, 2)
     return out[np.linalg.norm(out, axis=1) < radius]
 
+
+# %%
+# The lattice
+# -----------
+# Graphene's honeycomb lattice on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`): sublattices 'a' and 'b' in two
+# colours, each bonded to its three nearest neighbours. The
+# non-Hermitian terms below -- :math:`i\gamma` added to both directions of
+# the intra-cell bond, or a gain and loss :math:`\pm i\gamma` on the two
+# sublattices -- add no bond and are not drawn.
+
+fig_lat = Plot(finite_system(graphene, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # The Dirac point: vorticity 0
@@ -146,6 +160,7 @@ for gamma in gammas:
 # EP pairs and rings around K
 # -------------------------------
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(11, 5))
 colors = plt.cm.viridis(np.linspace(0., 0.85, len(gammas)))
 for gamma, color in zip(gammas, colors):

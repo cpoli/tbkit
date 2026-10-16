@@ -40,7 +40,7 @@ so that each band carries :math:`C_r = t_r - t_{r-1}`.
 :meth:`~tbkit.kspace.KSpace.chern_number` integrates each subband's
 Berry curvature: the numbers come out as TKNN's integers.
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-39
+.. GENERATED FROM PYTHON SOURCE LINES 24-41
 
 .. code-block:: Python
 
@@ -48,7 +48,9 @@ Berry curvature: the numbers come out as TKNN's integers.
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.kspace import magnetic_supercell
+    from tbkit.plot import Plot
 
 
     square = [{'i': 0, 'j': 0, 'R': (1, 0), 't': 1.}, {'i': 0, 'j': 0, 'R': (0, 1), 't': 1.}]
@@ -66,12 +68,42 @@ Berry curvature: the numbers come out as TKNN's integers.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-42
+.. GENERATED FROM PYTHON SOURCE LINES 42-50
+
+The lattice
+-----------
+The square lattice, one site per cell and a nearest-neighbour hopping,
+here as five of its magnetic cells at flux :math:`1/5`
+(:func:`~tbkit.kspace.magnetic_supercell`, then
+:func:`~tbkit.bridges.finite_system`): five sites along
+:math:`\mathbf{a}_1` per magnetic cell. The Peierls phases change the
+hoppings' phases, not their amplitudes, so every bond is drawn alike.
+
+.. GENERATED FROM PYTHON SOURCE LINES 50-53
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(magnetic_supercell(lattices.square(), square, 1, 5), (1, 5))).lattice(plt_hop=True, ms=12, figsize=(4, 4))
+
+
+
+
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_tknn_hofstadter_001.png
+   :alt: plot tknn hofstadter
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_tknn_hofstadter_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 54-56
 
 Chern numbers of the subbands, against the Diophantine equation
 -----------------------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-51
+.. GENERATED FROM PYTHON SOURCE LINES 56-65
 
 .. code-block:: Python
 
@@ -100,7 +132,7 @@ Chern numbers of the subbands, against the Diophantine equation
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-57
+.. GENERATED FROM PYTHON SOURCE LINES 66-71
 
 The Hall conductance in each gap
 ------------------------------------
@@ -108,7 +140,7 @@ The Hall conductance in each gap
 their Chern numbers, :math:`t_r`: for :math:`\alpha = 2/5`, the plateaus
 :math:`-2, 1, -1, 2`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-74
+.. GENERATED FROM PYTHON SOURCE LINES 71-88
 
 .. code-block:: Python
 
@@ -132,9 +164,9 @@ their Chern numbers, :math:`t_r`: for :math:`\alpha = 2/5`, the plateaus
 
 
 
-.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_tknn_hofstadter_001.png
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_tknn_hofstadter_002.png
    :alt: Hofstadter subbands at $\alpha = 2/5$ and their Hall plateaus
-   :srcset: /api/gallery/topology/images/sphx_glr_plot_tknn_hofstadter_001.png
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_tknn_hofstadter_002.png
    :class: sphx-glr-single-img
 
 
@@ -144,7 +176,7 @@ their Chern numbers, :math:`t_r`: for :math:`\alpha = 2/5`, the plateaus
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.179 seconds)
+   **Total running time of the script:** (0 minutes 0.076 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_tknn_hofstadter.py:

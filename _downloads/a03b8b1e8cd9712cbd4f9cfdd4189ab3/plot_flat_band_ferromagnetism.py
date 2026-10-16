@@ -35,6 +35,7 @@ import scipy.sparse.linalg as sla
 
 import tbkit.lattices as lattices
 from tbkit.meanfield import hubbard_mean_field
+from tbkit.plot import Plot
 from tbkit.system import System
 
 
@@ -87,6 +88,19 @@ def square_cluster(n1, n2):
     return sys.ham.toarray().real
 
 
+# %%
+# The largest cluster, a :math:`3\times3` square of nine sites with
+# nearest-neighbour hopping and open boundaries:
+
+lat_vis = lattices.square()
+lat_vis.get_lattice(n1=3, n2=3)
+vis = System(lat_vis)
+vis.set_hopping([{'n': 1, 't': -1.}])
+fig_sq = Plot(vis).lattice(plt_hop=True, ms=14, figsize=(3.5, 3.5))
+
+# %%
+# One hole in each cluster:
+
 nagaoka = {}
 for n1, n2 in ((2, 2), (3, 2), (3, 3)):
     h = square_cluster(n1, n2)
@@ -121,6 +135,17 @@ def kagome_torus(t2=0.):
         sys.set_hopping([{'n': 2, 't': t2}])
     sys.get_ham()
     return sys
+
+
+# %%
+# The kagome lattice: three sites per unit cell ('a', 'b' and 'c', one per
+# colour) on corner-sharing triangles. The bonds that close the torus are
+# not drawn.
+
+fig_kag = Plot(kagome_torus()).lattice(plt_hop=True, ms=10, figsize=(5.5, 4.5))
+
+# %%
+# Mean field from a saturated and from a paramagnetic start:
 
 
 def polarized_and_paramagnetic(sys, U, n_el):
@@ -179,6 +204,7 @@ ratio = thresholds[1:] / widths[1:]
 print('U_c / W = {:.2f}, constant to {:.1%}.'.format(ratio.mean(), np.ptp(ratio) / ratio.mean()))
 assert thresholds[0] < 1e-6 and np.allclose(ratio, ratio.mean(), rtol=0.01)
 
+# sphinx_gallery_thumbnail_number = 3
 fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 axes[0].plot([4, 6], [nagaoka[4], nagaoka[6]], 'o-r')
 axes[0].set_xlabel('sites N (one hole: N - 1 electrons)')

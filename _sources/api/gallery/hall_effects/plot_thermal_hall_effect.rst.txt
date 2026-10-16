@@ -49,7 +49,7 @@ edge states.
 :meth:`~tbkit.kspace.KSpace.thermal_hall_conductivity` evaluates it for the
 Haldane model below.
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-53
+.. GENERATED FROM PYTHON SOURCE LINES 33-55
 
 .. code-block:: Python
 
@@ -58,7 +58,9 @@ Haldane model below.
     from scipy.integrate import trapezoid
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
 
 
     def haldane(M, t2=0.2):
@@ -80,7 +82,38 @@ Haldane model below.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-59
+.. GENERATED FROM PYTHON SOURCE LINES 56-64
+
+The lattice
+-----------
+The Haldane model on a patch of :math:`5\times4` cells
+(:func:`~tbkit.bridges.finite_system`), each bond drawn with a width
+proportional to its amplitude: the honeycomb lattice's two sublattices
+('a' and 'b', in two colours), the nearest-neighbour hopping :math:`t`
+(thick) and the complex second-neighbour hoppings :math:`\pm it_2`
+within each sublattice (thin), which break time-reversal symmetry.
+
+.. GENERATED FROM PYTHON SOURCE LINES 64-68
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(haldane(0.3), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+
+.. image-sg:: /api/gallery/hall_effects/images/sphx_glr_plot_thermal_hall_effect_001.png
+   :alt: plot thermal hall effect
+   :srcset: /api/gallery/hall_effects/images/sphx_glr_plot_thermal_hall_effect_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 69-74
 
 The Wiedemann-Franz ratio across the spectrum
 -------------------------------------------------
@@ -88,7 +121,7 @@ The Wiedemann-Franz ratio across the spectrum
 :math:`\frac{\pi^2}{3}\sigma_{xy}` (:math:`\sigma_{xy}` in :math:`e^2/h`):
 on the plateau they are equal, :math:`\pi^2/3` for :math:`C = 1`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-72
+.. GENERATED FROM PYTHON SOURCE LINES 74-87
 
 .. code-block:: Python
 
@@ -118,7 +151,7 @@ on the plateau they are equal, :math:`\pi^2/3` for :math:`C = 1`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-79
+.. GENERATED FROM PYTHON SOURCE LINES 88-94
 
 The law needs :math:`\sigma_{xy}(E)` to vary slowly within
 :math:`k_BT` of :math:`\mu`. At :math:`k_BT = 0.2`, comparable to the
@@ -127,7 +160,7 @@ in the middle of the gap. The exact relation to :math:`\sigma_{xy}(E)`
 holds everywhere, as a fine energy grid of the :math:`T = 0` Hall
 conductivity confirms.
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-102
+.. GENERATED FROM PYTHON SOURCE LINES 94-117
 
 .. code-block:: Python
 
@@ -157,9 +190,9 @@ conductivity confirms.
 
 
 
-.. image-sg:: /api/gallery/hall_effects/images/sphx_glr_plot_thermal_hall_effect_001.png
+.. image-sg:: /api/gallery/hall_effects/images/sphx_glr_plot_thermal_hall_effect_002.png
    :alt: Haldane model: thermal Hall conductivity
-   :srcset: /api/gallery/hall_effects/images/sphx_glr_plot_thermal_hall_effect_001.png
+   :srcset: /api/gallery/hall_effects/images/sphx_glr_plot_thermal_hall_effect_002.png
    :class: sphx-glr-single-img
 
 
@@ -171,14 +204,14 @@ conductivity confirms.
     T = 0.2: max |kappa - integral of sigma_xy(E)| = 4.5e-06
     T = 0.2: kappa / (pi^2/3 T sigma) at mu = 0: 0.874
 
-    <matplotlib.legend.Legend object at 0x7fead6785310>
+    <matplotlib.legend.Legend object at 0x10f25acf0>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.981 seconds)
+   **Total running time of the script:** (0 minutes 1.651 seconds)
 
 
 .. _sphx_glr_download_api_gallery_hall_effects_plot_thermal_hall_effect.py:

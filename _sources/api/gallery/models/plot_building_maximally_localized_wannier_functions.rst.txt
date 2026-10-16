@@ -49,7 +49,7 @@ the k-mesh. The Wannier functions come out on the :math:`N_1\times N_2`
 cells of the mesh, as amplitudes on the sites of a finite
 :class:`~tbkit.system.System`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-41
+.. GENERATED FROM PYTHON SOURCE LINES 33-43
 
 .. code-block:: Python
 
@@ -57,8 +57,10 @@ cells of the mesh, as amplitudes on the sites of a finite
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
     from tbkit.lattice import Lattice
+    from tbkit.plot import Plot
     from tbkit.wannier import wannierize
 
 
@@ -68,7 +70,7 @@ cells of the mesh, as amplitudes on the sites of a finite
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-49
+.. GENERATED FROM PYTHON SOURCE LINES 44-51
 
 The SSH chain: down to the gauge-invariant bound
 ------------------------------------------------------
@@ -78,7 +80,7 @@ centre is the Wilson-loop centre of
 :meth:`~tbkit.kspace.KSpace.wannier_centers` -- the middle of the strong
 bond, at 0.75.
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-68
+.. GENERATED FROM PYTHON SOURCE LINES 51-57
 
 .. code-block:: Python
 
@@ -87,6 +89,47 @@ bond, at 0.75.
                         prim_vec=[(1., 0.)])
     ssh = KSpace(lat)
     ssh.set_hopping([{'i': 0, 'j': 1, 'R': (0,), 't': 0.5}, {'i': 1, 'j': 0, 'R': (1,), 't': 1.}])
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 58-61
+
+Eight cells of the chain (:func:`~tbkit.bridges.finite_system`), orbitals
+``a`` and ``b`` in two colours, bond widths proportional to the
+hoppings: weak (0.5) inside each cell, strong (1) between cells.
+
+.. GENERATED FROM PYTHON SOURCE LINES 61-64
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(ssh, 8)).lattice(plt_hop=True, ms=7, c=4., figsize=(7, 1.2))
+
+
+
+
+.. image-sg:: /api/gallery/models/images/sphx_glr_plot_building_maximally_localized_wannier_functions_001.png
+   :alt: plot building maximally localized wannier functions
+   :srcset: /api/gallery/models/images/sphx_glr_plot_building_maximally_localized_wannier_functions_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 65-66
+
+Projection, then minimization:
+
+.. GENERATED FROM PYTHON SOURCE LINES 66-80
+
+.. code-block:: Python
+
 
     nk = 20
     projected = wannierize(ssh, 0, trial=[0], nk=nk, max_iter=0)  # projection only
@@ -116,13 +159,13 @@ bond, at 0.75.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-72
+.. GENERATED FROM PYTHON SOURCE LINES 81-84
 
 The functions themselves: the projection onto orbital ``a`` starts there,
 with a tail along the chain; the minimization moves the weight onto the
 strong bond, symmetric about its middle.
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-80
+.. GENERATED FROM PYTHON SOURCE LINES 84-92
 
 .. code-block:: Python
 
@@ -141,7 +184,7 @@ strong bond, symmetric about its middle.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-89
+.. GENERATED FROM PYTHON SOURCE LINES 93-101
 
 Gapped graphene: a Wannier function on a honeycomb site
 -----------------------------------------------------------
@@ -152,7 +195,7 @@ function centred on a ``b`` site (by threefold symmetry), whose diagonal
 matrix element is the band's average energy
 :math:`\langle 0|H|0\rangle = \frac{1}{N}\sum_{\mathbf{k}}E(\mathbf{k})`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-108
+.. GENERATED FROM PYTHON SOURCE LINES 101-107
 
 .. code-block:: Python
 
@@ -161,6 +204,48 @@ matrix element is the band's average energy
     bn = KSpace(lattices.honeycomb())
     bn.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': -1.} for R in [(0, 0), (-1, 0), (0, -1)]])
     bn.set_onsite({'a': M, 'b': -M})
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 108-112
+
+The honeycomb lattice on a patch of :math:`5\times4` cells
+(:func:`~tbkit.bridges.finite_system`), sublattices ``a`` (onsite
+:math:`+M`) and ``b`` (:math:`-M`) in two colours, with the
+nearest-neighbour bonds.
+
+.. GENERATED FROM PYTHON SOURCE LINES 112-115
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(bn, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/models/images/sphx_glr_plot_building_maximally_localized_wannier_functions_002.png
+   :alt: plot building maximally localized wannier functions
+   :srcset: /api/gallery/models/images/sphx_glr_plot_building_maximally_localized_wannier_functions_002.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 116-117
+
+The Wannier function of the lower band, from a trial orbital on ``b``:
+
+.. GENERATED FROM PYTHON SOURCE LINES 117-131
+
+.. code-block:: Python
+
 
     nk = 12
     wf = wannierize(bn, 0, trial=[1], nk=nk)
@@ -190,13 +275,13 @@ matrix element is the band's average energy
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-112
+.. GENERATED FROM PYTHON SOURCE LINES 132-135
 
 Plots: the SSH Wannier function before and after the minimization, and
 the gapped-graphene one on the sites of its finite
 :class:`~tbkit.system.System` (``wf.system``).
 
-.. GENERATED FROM PYTHON SOURCE LINES 112-137
+.. GENERATED FROM PYTHON SOURCE LINES 135-160
 
 .. code-block:: Python
 
@@ -228,9 +313,9 @@ the gapped-graphene one on the sites of its finite
 
 
 
-.. image-sg:: /api/gallery/models/images/sphx_glr_plot_building_maximally_localized_wannier_functions_001.png
+.. image-sg:: /api/gallery/models/images/sphx_glr_plot_building_maximally_localized_wannier_functions_003.png
    :alt: SSH chain ($v = 0.5$, $w = 1$), Gapped graphene ($M = 1$), 12 x 12 cells
-   :srcset: /api/gallery/models/images/sphx_glr_plot_building_maximally_localized_wannier_functions_001.png
+   :srcset: /api/gallery/models/images/sphx_glr_plot_building_maximally_localized_wannier_functions_003.png
    :class: sphx-glr-single-img
 
 
@@ -240,7 +325,7 @@ the gapped-graphene one on the sites of its finite
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.528 seconds)
+   **Total running time of the script:** (0 minutes 0.168 seconds)
 
 
 .. _sphx_glr_download_api_gallery_models_plot_building_maximally_localized_wannier_functions.py:

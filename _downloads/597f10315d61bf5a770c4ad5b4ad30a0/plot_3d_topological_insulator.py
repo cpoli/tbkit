@@ -34,9 +34,11 @@ Brillouin zone, plus sharp lines for the states bound to the surface.
 """
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
 from tbkit.lattice import Lattice
 from tbkit.kspace import KSpace, PAULI
+from tbkit.system import System
 
 cubic = [(1., 0., 0.), (0., 1., 0.), (0., 0., 1.)]
 # orbitals: (s, up), (s, down), (p, up), (p, down) -> two "sites" with spin
@@ -64,6 +66,27 @@ k = np.array([0.3, -0.7, 1.1])
 m = 2. - 2 * (3 - np.cos(k).sum())
 h = m * np.kron(PAULI['z'], PAULI['0']) + sum(np.sin(k[d]) * np.kron(PAULI['x'], SIGMA[d]) for d in range(3))
 assert np.allclose(topological_insulator(2.).get_ham(k), h)
+
+# %%
+# The lattice
+# -----------
+# The simple cubic lattice, here :math:`4\times4\times4` sites, with its
+# nearest-neighbour bonds. Each site holds an s and a p orbital, each with
+# spin, and every bond carries a :math:`4\times4` hopping matrix that
+# couples them (not drawn).
+
+lat_vis = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0., 0.)}], prim_vec=[(1., 0., 0.), (0., 1., 0.), (0., 0., 1.)])
+lat_vis.get_lattice(4, 4, 4)
+vis = System(lat_vis)
+vis.set_hopping([{'n': 1, 't': 1.}])
+pos = np.column_stack([lat_vis.coor[f] for f in 'xyz'])
+bonds = np.stack([pos[vis.hop['i'].astype(int)], pos[vis.hop['j'].astype(int)]], axis=1)
+fig_lat = plt.figure(figsize=(4.5, 4.5))
+ax_lat = fig_lat.add_subplot(projection='3d')
+ax_lat.add_collection3d(Line3DCollection(bonds, colors='k', linewidths=1))
+ax_lat.scatter(*pos.T, s=30, c='b', depthshade=False)
+ax_lat.set_aspect('equal')
+ax_lat.set_axis_off()
 
 # %%
 # The four Z2 indices
@@ -141,6 +164,7 @@ surface_triv = topological_insulator(-2.).surface_spectral_function(path, energi
 assert surface_triv[:, gap].max() < 0.05
 print('M = 10: the cone sits at M-bar. M = -2: no surface state in the gap.')
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 3, figsize=(13, 4.2), sharey=True)
 titles = [r'$M = 2$: $\nu_0 = 1$', r'$M = 10$: $\nu_0 = 1$', r'$M = -2$: trivial']
 ticks = [dist[0], dist[gamma], dist[2 * nk], dist[-1]]

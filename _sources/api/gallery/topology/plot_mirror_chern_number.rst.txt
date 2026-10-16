@@ -48,15 +48,17 @@ a hopping :math:`\delta` between the copies that respects time reversal and
 the mirror :math:`M = i\tau_z\sigma_z`.
 :meth:`~tbkit.kspace.KSpace.mirror_chern_number` computes :math:`n_M`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-82
+.. GENERATED FROM PYTHON SOURCE LINES 32-84
 
 .. code-block:: Python
 
     import numpy as np
     import matplotlib.pyplot as plt
+    from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
     from tbkit.lattice import Lattice
     from tbkit.kspace import KSpace, PAULI
+    from tbkit.system import System
 
     cubic = [(1., 0., 0.), (0., 1., 0.), (0., 0., 1.)]
     SIGMA = [PAULI['x'], PAULI['y'], PAULI['z']]
@@ -109,7 +111,46 @@ the mirror :math:`M = i\tau_z\sigma_z`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-88
+.. GENERATED FROM PYTHON SOURCE LINES 85-91
+
+The lattice
+-----------
+The simple cubic lattice, here :math:`4\times4\times4` sites, with its
+nearest-neighbour bonds. Each site holds an s and a p orbital with spin
+(two such pairs in the doubled model), and every bond carries a hopping
+matrix that couples them (not drawn).
+
+.. GENERATED FROM PYTHON SOURCE LINES 91-105
+
+.. code-block:: Python
+
+
+    lat_vis = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0., 0.)}], prim_vec=[(1., 0., 0.), (0., 1., 0.), (0., 0., 1.)])
+    lat_vis.get_lattice(4, 4, 4)
+    vis = System(lat_vis)
+    vis.set_hopping([{'n': 1, 't': 1.}])
+    pos = np.column_stack([lat_vis.coor[f] for f in 'xyz'])
+    bonds = np.stack([pos[vis.hop['i'].astype(int)], pos[vis.hop['j'].astype(int)]], axis=1)
+    fig_lat = plt.figure(figsize=(4.5, 4.5))
+    ax_lat = fig_lat.add_subplot(projection='3d')
+    ax_lat.add_collection3d(Line3DCollection(bonds, colors='k', linewidths=1))
+    ax_lat.scatter(*pos.T, s=30, c='b', depthshade=False)
+    ax_lat.set_aspect('equal')
+    ax_lat.set_axis_off()
+
+
+
+
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_mirror_chern_number_001.png
+   :alt: plot mirror chern number
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_mirror_chern_number_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 106-111
 
 A single topological insulator: nu is the parity of n_M
 -------------------------------------------------------------
@@ -117,7 +158,7 @@ On each mirror plane, :math:`\nu = n_M` modulo 2. For :math:`0 < M < 4`
 the band inversion at :math:`\Gamma` gives :math:`n_M = 1` on
 :math:`k_z = 0`, and nothing on :math:`k_z = \pi`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-99
+.. GENERATED FROM PYTHON SOURCE LINES 111-122
 
 .. code-block:: Python
 
@@ -147,12 +188,12 @@ the band inversion at :math:`\Gamma` gives :math:`n_M = 1` on
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 100-102
+.. GENERATED FROM PYTHON SOURCE LINES 123-125
 
 Two copies: Z2 says trivial, the mirror Chern number does not
 ------------------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 102-113
+.. GENERATED FROM PYTHON SOURCE LINES 125-136
 
 .. code-block:: Python
 
@@ -175,12 +216,12 @@ Two copies: Z2 says trivial, the mirror Chern number does not
 
  .. code-block:: none
 
-    Two coupled copies: Z2 indices (0, 0, 0, 0), n_M = 2.000 on k_z = 0, -0.000 on k_z = pi.
+    Two coupled copies: Z2 indices (0, 0, 0, 0), n_M = 2.000 on k_z = 0, 0.000 on k_z = pi.
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 114-122
+.. GENERATED FROM PYTHON SOURCE LINES 137-145
 
 The surface states protected by the mirror
 ---------------------------------------------
@@ -191,7 +232,7 @@ bulk gap: two Dirac cones at :math:`\bar\Gamma`, at the energies
 at :math:`k_y = \pm\delta`. The bulk gap, :math:`|E| < 0.7`, is empty, and
 the doubled trivial insulator has no surface state.
 
-.. GENERATED FROM PYTHON SOURCE LINES 122-147
+.. GENERATED FROM PYTHON SOURCE LINES 145-170
 
 .. code-block:: Python
 
@@ -223,9 +264,9 @@ the doubled trivial insulator has no surface state.
 
 
 
-.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_mirror_chern_number_001.png
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_mirror_chern_number_002.png
    :alt: (100) surface spectral function of two coupled topological insulators, $M = 2$: $n_M = 2$, $\mathbb{Z}_2$ trivial, $M = -2$: $n_M = 0$
-   :srcset: /api/gallery/topology/images/sphx_glr_plot_mirror_chern_number_001.png
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_mirror_chern_number_002.png
    :class: sphx-glr-single-img
 
 
@@ -241,7 +282,7 @@ the doubled trivial insulator has no surface state.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 12.924 seconds)
+   **Total running time of the script:** (0 minutes 6.519 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_mirror_chern_number.py:

@@ -53,7 +53,7 @@ eigenvectors only) agrees with them while the line gap is open, and past it
 both refuse to return a number, since the band ordering by real part is no
 longer continuous.
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-61
+.. GENERATED FROM PYTHON SOURCE LINES 37-63
 
 .. code-block:: Python
 
@@ -61,7 +61,9 @@ longer continuous.
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
     import tbkit.exceptional as ex
 
     KINDS = ('LR', 'RL', 'RR', 'LL')
@@ -88,7 +90,37 @@ longer continuous.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-67
+.. GENERATED FROM PYTHON SOURCE LINES 64-72
+
+The lattice
+-----------
+The Haldane model on a patch of :math:`5\times4` cells
+(:func:`~tbkit.bridges.finite_system`), bond widths proportional to the
+amplitudes: the honeycomb lattice's two sublattices ('a' and 'b', in two
+colours), the nearest-neighbour hopping (thick) and the complex
+second-neighbour hoppings :math:`\pm it_2` (thin). The gain and loss
+:math:`\pm i\gamma` on the two sublattices are onsite terms, not drawn.
+
+.. GENERATED FROM PYTHON SOURCE LINES 72-75
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(haldane(0.), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_points_chern_number_001.png
+   :alt: plot exceptional points chern number
+   :srcset: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_points_chern_number_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 76-81
 
 Where the line gap closes
 ------------------------------
@@ -96,7 +128,7 @@ The real line gap is :math:`2\min_{\mathbf{k}}|\mathrm{Re}\,E|`. At an M
 point :math:`d_z = 0` and :math:`|f| = 1`, so :math:`E = \pm\sqrt{1 - \gamma^2}`
 there: the gap closes exactly at :math:`\gamma = 1`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-87
+.. GENERATED FROM PYTHON SOURCE LINES 81-101
 
 .. code-block:: Python
 
@@ -127,12 +159,12 @@ there: the gap closes exactly at :math:`\gamma = 1`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-90
+.. GENERATED FROM PYTHON SOURCE LINES 102-104
 
 Four Chern numbers, one integer
 ---------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 90-101
+.. GENERATED FROM PYTHON SOURCE LINES 104-115
 
 .. code-block:: Python
 
@@ -164,7 +196,7 @@ Four Chern numbers, one integer
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 102-107
+.. GENERATED FROM PYTHON SOURCE LINES 116-121
 
 Past gamma_c: exceptional points, and no Chern number
 --------------------------------------------------------------
@@ -172,7 +204,7 @@ At :math:`\gamma = 1.2` the finder reports three pairs of EPs of opposite
 charge around the three M points, and neither Chern number is defined any
 more: both methods raise a ValueError instead of returning a number.
 
-.. GENERATED FROM PYTHON SOURCE LINES 107-132
+.. GENERATED FROM PYTHON SOURCE LINES 121-146
 
 .. code-block:: Python
 
@@ -210,23 +242,23 @@ more: both methods raise a ValueError instead of returning a number.
  .. code-block:: none
 
     gamma = 1.2: 6 EPs, charges [-1, 1, 1, -1, 1, -1], orders [2, 2, 2, 2, 2, 2]
-      EP at (+1.5405, +0.8894): d_z = 6.5e-16, |f| = 1.2000000000, 0.3156 from M3
-      EP at (+1.5405, +3.2994): d_z = 8.3e-16, |f| = 1.2000000000, 0.3156 from M1
-      EP at (+2.0871, +1.2050): d_z = 3.3e-16, |f| = 1.2000000000, 0.3156 from M3
+      EP at (+1.5405, +0.8894): d_z = 5.7e-16, |f| = 1.2000000000, 0.3156 from M3
+      EP at (+1.5405, +3.2994): d_z = 5.6e-17, |f| = 1.2000000000, 0.3156 from M1
+      EP at (+2.0871, +1.2050): d_z = 9.8e-16, |f| = 1.2000000000, 0.3156 from M3
       EP at (+2.0871, +2.9838): d_z = 1.9e-16, |f| = 1.2000000000, 0.3156 from M1
-      EP at (+3.6276, -0.3156): d_z = 3.3e-16, |f| = 1.2000000000, 0.3156 from M2
-      EP at (+3.6276, +0.3156): d_z = 9.7e-16, |f| = 1.2000000000, 0.3156 from M2
+      EP at (+3.6276, -0.3156): d_z = 5.0e-16, |f| = 1.2000000000, 0.3156 from M2
+      EP at (+3.6276, +0.3156): d_z = 5.0e-16, |f| = 1.2000000000, 0.3156 from M2
     gamma = 1.2: chern_number and biorthogonal_chern_number raise ValueError (no line gap).
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 133-135
+.. GENERATED FROM PYTHON SOURCE LINES 147-149
 
 Line gap and exceptional points
 ------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 135-159
+.. GENERATED FROM PYTHON SOURCE LINES 149-173
 
 .. code-block:: Python
 
@@ -257,9 +289,9 @@ Line gap and exceptional points
 
 
 
-.. image-sg:: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_points_chern_number_001.png
+.. image-sg:: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_points_chern_number_002.png
    :alt: max Re $E$ at $\gamma = 1.2$
-   :srcset: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_points_chern_number_001.png
+   :srcset: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_points_chern_number_002.png
    :class: sphx-glr-single-img
 
 
@@ -269,7 +301,7 @@ Line gap and exceptional points
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 11.645 seconds)
+   **Total running time of the script:** (0 minutes 2.923 seconds)
 
 
 .. _sphx_glr_download_api_gallery_non_hermitian_plot_exceptional_points_chern_number.py:

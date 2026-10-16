@@ -40,12 +40,13 @@ The mean ratio of consecutive spacings
 and towards the second in the insulator: the curves for two sizes cross
 at the transition.
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-58
+.. GENERATED FROM PYTHON SOURCE LINES 24-59
 
 .. code-block:: Python
 
     import numpy as np
     import matplotlib.pyplot as plt
+    from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
     from tbkit.lattice import Lattice
     from tbkit.system import System
@@ -85,12 +86,50 @@ at the transition.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-61
+.. GENERATED FROM PYTHON SOURCE LINES 60-65
+
+The lattice
+-----------
+The simple cubic lattice, one site per cell and six nearest neighbours,
+here :math:`4\times4\times4` sites of it. Each site gets a random onsite
+energy in :math:`[-W/2, W/2]`.
+
+.. GENERATED FROM PYTHON SOURCE LINES 65-79
+
+.. code-block:: Python
+
+
+    lat_vis = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0., 0.)}], prim_vec=cubic)
+    lat_vis.get_lattice(4, 4, 4)
+    vis = System(lat_vis)
+    vis.set_hopping([{'n': 1, 't': 1.}])
+    pos = np.column_stack([lat_vis.coor[f] for f in 'xyz'])
+    bonds = np.stack([pos[vis.hop['i'].astype(int)], pos[vis.hop['j'].astype(int)]], axis=1)
+    fig_lat = plt.figure(figsize=(4.5, 4.5))
+    ax_lat = fig_lat.add_subplot(projection='3d')
+    ax_lat.add_collection3d(Line3DCollection(bonds, colors='k', linewidths=1))
+    ax_lat.scatter(*pos.T, s=30, c='b', depthshade=False)
+    ax_lat.set_aspect('equal')
+    ax_lat.set_axis_off()
+
+
+
+
+.. image-sg:: /api/gallery/three_dimensions/images/sphx_glr_plot_anderson_transition_001.png
+   :alt: plot anderson transition
+   :srcset: /api/gallery/three_dimensions/images/sphx_glr_plot_anderson_transition_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 80-82
 
 Level statistics across the transition
 -------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-99
+.. GENERATED FROM PYTHON SOURCE LINES 82-120
 
 .. code-block:: Python
 
@@ -135,9 +174,9 @@ Level statistics across the transition
 
 
 
-.. image-sg:: /api/gallery/three_dimensions/images/sphx_glr_plot_anderson_transition_001.png
+.. image-sg:: /api/gallery/three_dimensions/images/sphx_glr_plot_anderson_transition_002.png
    :alt: 3D Anderson transition ($W_c \approx 16.5\,t$)
-   :srcset: /api/gallery/three_dimensions/images/sphx_glr_plot_anderson_transition_001.png
+   :srcset: /api/gallery/three_dimensions/images/sphx_glr_plot_anderson_transition_002.png
    :class: sphx-glr-single-img
 
 
@@ -155,7 +194,7 @@ Level statistics across the transition
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 12.849 seconds)
+   **Total running time of the script:** (0 minutes 5.494 seconds)
 
 
 .. _sphx_glr_download_api_gallery_three_dimensions_plot_anderson_transition.py:

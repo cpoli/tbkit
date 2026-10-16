@@ -41,14 +41,16 @@ continuum one near :math:`\mathbf{k} = 0`, and may have additional
 low-energy states elsewhere. :func:`tbkit.topology.find_weyl_points`
 counts the Weyl points and their chiralities.
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-32
+.. GENERATED FROM PYTHON SOURCE LINES 25-34
 
 .. code-block:: Python
 
     import numpy as np
     import matplotlib.pyplot as plt
 
+    from tbkit.bridges import finite_system
     from tbkit.continuum import discretize
+    from tbkit.plot import Plot
     from tbkit.topology import find_weyl_points
 
 
@@ -59,7 +61,7 @@ counts the Weyl points and their chiralities.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-39
+.. GENERATED FROM PYTHON SOURCE LINES 35-41
 
 One chiral fermion in 1D
 ----------------------------
@@ -68,7 +70,7 @@ discretization is :math:`\sin(ka)/a`: the right mover at :math:`k = 0`
 and, at :math:`ka = \pi`, a left mover with velocity :math:`-1`. The
 lattice has as many right movers as left movers.
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-50
+.. GENERATED FROM PYTHON SOURCE LINES 41-52
 
 .. code-block:: Python
 
@@ -97,7 +99,33 @@ lattice has as many right movers as left movers.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-59
+.. GENERATED FROM PYTHON SOURCE LINES 53-57
+
+The lattice of that discretization, ten cells of it
+(:func:`~tbkit.bridges.finite_system`): a chain with one site per cell
+and purely imaginary nearest-neighbour hoppings, all of the same
+amplitude.
+
+.. GENERATED FROM PYTHON SOURCE LINES 57-60
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(chiral, 10)).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
+
+
+
+
+.. image-sg:: /api/gallery/models/images/sphx_glr_plot_fermion_doubling_001.png
+   :alt: plot fermion doubling
+   :srcset: /api/gallery/models/images/sphx_glr_plot_fermion_doubling_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 61-69
 
 Eight Weyl points from one
 ------------------------------
@@ -108,7 +136,7 @@ chirality :math:`+1`. Discretized, it becomes
 :math:`\pi` flips the sign of one velocity and so of the chirality,
 giving four of each sign, with total chirality 0.
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-69
+.. GENERATED FROM PYTHON SOURCE LINES 69-79
 
 .. code-block:: Python
 
@@ -142,7 +170,7 @@ giving four of each sign, with total chirality 0.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-83
+.. GENERATED FROM PYTHON SOURCE LINES 80-93
 
 Wilson's term removes doublers only in pairs
 ------------------------------------------------
@@ -158,7 +186,7 @@ chirality :math:`-1`. A larger :math:`B` moves it towards :math:`\Gamma`
 the pair, here 24 points per direction), but no value of :math:`B`
 leaves the Weyl point alone.
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-96
+.. GENERATED FROM PYTHON SOURCE LINES 93-106
 
 .. code-block:: Python
 
@@ -191,13 +219,13 @@ leaves the Weyl point alone.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-100
+.. GENERATED FROM PYTHON SOURCE LINES 107-110
 
 The bands along :math:`k_z` (:math:`k_x = k_y = 0`): the naive model
 crosses zero at :math:`\Gamma` and at the zone boundary; Wilson's term
 moves the second crossing, but cannot remove it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 100-120
+.. GENERATED FROM PYTHON SOURCE LINES 110-130
 
 .. code-block:: Python
 
@@ -224,9 +252,9 @@ moves the second crossing, but cannot remove it.
 
 
 
-.. image-sg:: /api/gallery/models/images/sphx_glr_plot_fermion_doubling_001.png
+.. image-sg:: /api/gallery/models/images/sphx_glr_plot_fermion_doubling_002.png
    :alt: A 1D chiral fermion and its doubler, Weyl point: the partner survives
-   :srcset: /api/gallery/models/images/sphx_glr_plot_fermion_doubling_001.png
+   :srcset: /api/gallery/models/images/sphx_glr_plot_fermion_doubling_002.png
    :class: sphx-glr-single-img
 
 
@@ -236,7 +264,7 @@ moves the second crossing, but cannot remove it.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.009 seconds)
+   **Total running time of the script:** (0 minutes 0.384 seconds)
 
 
 .. _sphx_glr_download_api_gallery_models_plot_fermion_doubling.py:

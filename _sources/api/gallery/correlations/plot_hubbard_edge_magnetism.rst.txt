@@ -43,7 +43,7 @@ end on opposite sublattices -- in opposite directions (Fujita et al.
 1996; Son, Cohen and Louie 2006). The flake as a whole stays a singlet,
 :math:`S_z = 0`, as Lieb's theorem requires for equal sublattices.
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-54
+.. GENERATED FROM PYTHON SOURCE LINES 27-55
 
 .. code-block:: Python
 
@@ -52,6 +52,7 @@ end on opposite sublattices -- in opposite directions (Fujita et al.
 
     from tbkit.graphene import GrapheneLattice
     from tbkit.meanfield import hubbard_mean_field
+    from tbkit.plot import Plot
     from tbkit.system import System
 
     t = -1.
@@ -81,17 +82,44 @@ end on opposite sublattices -- in opposite directions (Fujita et al.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-57
+.. GENERATED FROM PYTHON SOURCE LINES 56-61
 
-Edge moments, opposite on opposite sublattices
--------------------------------------------------
+The flake
+---------
+A hexagonal graphene flake with six zigzag edges. The two sublattices
+('a' and 'b') are drawn in different colours: each edge ends on one of
+them, alternating from edge to edge.
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-75
+.. GENERATED FROM PYTHON SOURCE LINES 61-65
 
 .. code-block:: Python
 
 
     lat, sys, edge = flake(6)
+    fig_lat = Plot(sys).lattice(plt_hop=True, ms=6, figsize=(5, 5))
+
+
+
+
+.. image-sg:: /api/gallery/correlations/images/sphx_glr_plot_hubbard_edge_magnetism_001.png
+   :alt: plot hubbard edge magnetism
+   :srcset: /api/gallery/correlations/images/sphx_glr_plot_hubbard_edge_magnetism_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 66-68
+
+Edge moments, opposite on opposite sublattices
+-------------------------------------------------
+
+.. GENERATED FROM PYTHON SOURCE LINES 68-85
+
+.. code-block:: Python
+
+
     A = lat.coor['tag'] == 'a'
     res = solve(sys, 2.)
     m = res.magnetization
@@ -111,9 +139,9 @@ Edge moments, opposite on opposite sublattices
 
 
 
-.. image-sg:: /api/gallery/correlations/images/sphx_glr_plot_hubbard_edge_magnetism_001.png
+.. image-sg:: /api/gallery/correlations/images/sphx_glr_plot_hubbard_edge_magnetism_002.png
    :alt: Hubbard mean field, $U = 2|t|$: magnetic zigzag edges
-   :srcset: /api/gallery/correlations/images/sphx_glr_plot_hubbard_edge_magnetism_001.png
+   :srcset: /api/gallery/correlations/images/sphx_glr_plot_hubbard_edge_magnetism_002.png
    :class: sphx-glr-single-img
 
 
@@ -121,13 +149,13 @@ Edge moments, opposite on opposite sublattices
 
  .. code-block:: none
 
-    216 sites; U = 2|t|: S_z = 5.8e-15; edge moments 0.150 (A) and -0.150 (B); bulk |m| 0.044.
+    216 sites; U = 2|t|: S_z = -4.2e-15; edge moments 0.150 (A) and -0.150 (B); bulk |m| 0.044.
 
     Text(0.5, 1.0, 'Hubbard mean field, $U = 2|t|$: magnetic zigzag edges')
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-82
+.. GENERATED FROM PYTHON SOURCE LINES 87-93
 
 A threshold that closes as the edges grow
 ----------------------------------------------
@@ -136,7 +164,7 @@ split by a small gap: they magnetize only once :math:`U` beats it. That
 threshold shrinks as the edges get longer (and vanishes for an infinite
 zigzag edge, whose band is exactly flat).
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-88
+.. GENERATED FROM PYTHON SOURCE LINES 93-99
 
 .. code-block:: Python
 
@@ -163,7 +191,7 @@ zigzag edge, whose band is exactly flat).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 10.309 seconds)
+   **Total running time of the script:** (0 minutes 6.100 seconds)
 
 
 .. _sphx_glr_download_api_gallery_correlations_plot_hubbard_edge_magnetism.py:

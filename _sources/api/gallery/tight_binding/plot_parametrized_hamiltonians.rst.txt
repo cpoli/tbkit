@@ -32,7 +32,7 @@ re-evaluates the values. *site_i* and *site_j* are structured arrays
 holding every bond at once (fields ``'x'``, ``'y'``, ``'tag'``,
 ``'index'``), so each function runs once per Hamiltonian, vectorized.
 
-.. GENERATED FROM PYTHON SOURCE LINES 16-25
+.. GENERATED FROM PYTHON SOURCE LINES 16-26
 
 .. code-block:: Python
 
@@ -41,6 +41,7 @@ holding every bond at once (fields ``'x'``, ``'y'``, ``'tag'``,
 
     from tbkit import lattices
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
     from tbkit.system import System
 
     PI = np.pi
@@ -52,7 +53,7 @@ holding every bond at once (fields ``'x'``, ``'y'``, ``'tag'``,
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-34
+.. GENERATED FROM PYTHON SOURCE LINES 27-35
 
 A flux sweep on a finite flake
 ------------------------------
@@ -63,7 +64,7 @@ onsite energy is a gate voltage :math:`V` that tilts the flake along
 ``get_ham`` call, and each function receives only the parameters its
 signature names.
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-51
+.. GENERATED FROM PYTHON SOURCE LINES 35-48
 
 .. code-block:: Python
 
@@ -75,6 +76,31 @@ signature names.
     sys.set_hopping([{'n': 1, 't': lambda si, sj, alpha:
                               -np.exp(1j * PI * alpha * (si['x'] * sj['y'] - sj['x'] * si['y']))}])
     sys.set_onsite({'a': lambda site, V: V * (site['x'] - (N - 1) / 2) / (N - 1)})
+
+    # The flake: a square of :math:`12\times12` sites with its
+    # nearest-neighbour bonds, which carry the Peierls phases (not drawn).
+    fig_lat = Plot(sys).lattice(plt_hop=True, ms=8, figsize=(4.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_parametrized_hamiltonians_001.png
+   :alt: plot parametrized hamiltonians
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_parametrized_hamiltonians_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 49-50
+
+The sweep:
+
+.. GENERATED FROM PYTHON SOURCE LINES 50-59
+
+.. code-block:: Python
+
 
     alphas = np.linspace(0., 0.5, 101)
     spectra = []
@@ -91,7 +117,7 @@ signature names.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-58
+.. GENERATED FROM PYTHON SOURCE LINES 60-66
 
 The swept model must be the one that a full rebuild gives. With no field,
 it is the open square of side N, whose energies are
@@ -100,7 +126,7 @@ is the model of :meth:`~tbkit.system.System.set_magnetic_field` (same
 gauge). The gate shifts the spectrum's centre of mass by the mean of the
 onsite energies, which is zero for this antisymmetric tilt.
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-75
+.. GENERATED FROM PYTHON SOURCE LINES 66-83
 
 .. code-block:: Python
 
@@ -128,7 +154,7 @@ onsite energies, which is zero for this antisymmetric tilt.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-84
+.. GENERATED FROM PYTHON SOURCE LINES 84-92
 
 A dimerization sweep in k-space
 -------------------------------
@@ -139,7 +165,7 @@ transition :math:`v = w`. Here :meth:`~tbkit.kspace.KSpace.set_params`
 fixes :math:`w` for every method of the model, and :math:`v` is passed per
 call.
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-103
+.. GENERATED FROM PYTHON SOURCE LINES 92-111
 
 .. code-block:: Python
 
@@ -169,12 +195,12 @@ call.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-106
+.. GENERATED FROM PYTHON SOURCE LINES 112-114
 
 Plots
 -----
 
-.. GENERATED FROM PYTHON SOURCE LINES 106-124
+.. GENERATED FROM PYTHON SOURCE LINES 114-132
 
 .. code-block:: Python
 
@@ -199,9 +225,9 @@ Plots
 
 
 
-.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_parametrized_hamiltonians_001.png
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_parametrized_hamiltonians_002.png
    :alt: Finite flake: one get_ham per flux, SSH gap $2|v-w|$, SSH bands from set_params
-   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_parametrized_hamiltonians_001.png
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_parametrized_hamiltonians_002.png
    :class: sphx-glr-single-img
 
 
@@ -211,7 +237,7 @@ Plots
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.680 seconds)
+   **Total running time of the script:** (0 minutes 0.301 seconds)
 
 
 .. _sphx_glr_download_api_gallery_tight_binding_plot_parametrized_hamiltonians.py:

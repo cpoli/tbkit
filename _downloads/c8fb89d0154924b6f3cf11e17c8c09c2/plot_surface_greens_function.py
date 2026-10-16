@@ -27,9 +27,25 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
+from tbkit.system import System
 from tbkit.transport import surface_green
 
+
+# %%
+# The lattice
+# -----------
+# The first crystal is a chain, one site per cell and a hopping :math:`t`
+# between neighbours, cut at its left end and continuing forever to the
+# right (ten sites drawn).
+
+lat_vis = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}], prim_vec=[(1., 0.)])
+lat_vis.get_lattice(n1=10)
+vis = System(lat_vis)
+vis.set_hopping([{'n': 1, 't': 1.}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
 
 # %%
 # The semi-infinite chain
@@ -115,6 +131,15 @@ def ssh(t1, t2):
 
 eta = 1e-4
 t1, t2 = 0.4, 1.
+
+# Its first eight cells (:func:`~tbkit.bridges.finite_system`), orbitals
+# a and b in two colours, bond widths proportional to the hoppings: the
+# chain ends on the weak bond :math:`t_1`.
+fig_ssh = Plot(finite_system(ssh(t1, t2), 8)).lattice(plt_hop=True, ms=7, c=4., figsize=(7, 1.2))
+
+# %%
+# The end state's weight, at both ends:
+
 for side in (1, -1):
     weight = ssh(t1, t2).surface_spectral_function([[0.]], [0.], direction=0, side=side, eta=eta)[0, 0] * np.pi * eta
     print('t1/t2 = {}: end-state weight on the outer cell {:.4f} (side {:+d}), expected {:.4f}'.format(
@@ -125,6 +150,7 @@ print('t1/t2 = {}: weight at E = 0 {:.1e}'.format(t2 / t1, trivial))
 assert trivial < 1e-6
 
 e_grid = np.linspace(-1.6, 1.6, 641)
+# sphinx_gallery_thumbnail_number = 3
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4.5))
 ax1.plot(energies, rho_surface, lw=2, label='surface (decimation)')
 ax1.plot(energies, 1 / (np.pi * np.sqrt(4 * t ** 2 - energies ** 2)), '--', lw=2, label='bulk')

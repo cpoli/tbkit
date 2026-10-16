@@ -29,6 +29,7 @@ import scipy.sparse as sp
 
 import tbkit.lattices as lattices
 from tbkit.kspace import ribbon
+from tbkit.plot import Plot
 from tbkit.system import System
 from tbkit.transport import Transport, RecursiveTransport, lead_from_kspace, slices_from_positions
 
@@ -49,6 +50,13 @@ sys.set_hopping([{'n': 1, 't': t}])
 sys.set_onsite({'a': 0.})
 sys.onsite[:] = 2. * (rng.random(lat.sites) - 0.5)
 sys.get_ham()
+# the strip, with its nearest-neighbour bonds (the random onsite energies
+# are not drawn); each column of six sites is one slice of the recursion
+fig_lat = Plot(sys).lattice(plt_hop=True, ms=6, c=1.5, figsize=(9, 2.4))
+
+# %%
+# The recursive and the dense transmissions:
+
 strip = ribbon(lattices.square(), [{'i': 0, 'j': 0, 'R': (1, 0), 't': t},
                                                {'i': 0, 'j': 0, 'R': (0, 1), 't': t}], width=width, direction=1)
 (h_l, v_l), (h_r, v_r) = lead_from_kspace(strip, -1), lead_from_kspace(strip, 1)
@@ -117,6 +125,7 @@ t_wire = long_wire.transmission(e_wire, eta=1e-12)[0]
 print('{} sites: T = {:.2f} for {} open channels'.format(length * width, t_wire, channels))
 assert 0.05 < t_wire < 0.5 * channels
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(6, 4))
 ax.errorbar(lengths, log_t.mean(axis=1), yerr=log_t.std(axis=1) / np.sqrt(log_t.shape[1]), fmt='ob',
                 label=r'$\langle\ln T\rangle$, recursive Green function')

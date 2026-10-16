@@ -19,11 +19,14 @@ Bloch Hamiltonian, and :meth:`~tbkit.kspace.KSpace.tenfold_class` names
 the class of the models of this gallery.
 """
 import numpy as np
+import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.lattice import Lattice
 from tbkit.kspace import KSpace, PAULI
 from tbkit.bdg import bdg_kspace, particle_hole
+from tbkit.plot import Plot
 
 
 def ssh(v, w):
@@ -55,6 +58,20 @@ def kitaev(delta):
 SZ = PAULI['z']
 T_SPINLESS = np.eye(2)
 T_SPINFUL = np.kron(np.eye(2), 1j * PAULI['y'])
+
+# %%
+# The lattices
+# ------------
+# The models below live on two lattices (:func:`~tbkit.bridges.finite_system`,
+# bond widths proportional to the hoppings): a chain, here the SSH chain
+# with :math:`v = 0.4` inside each cell and :math:`w = 1` between cells
+# (the Kitaev chain has one site per cell), and the honeycomb lattice,
+# here with the second-neighbour hoppings :math:`\pm 0.2i` of the Haldane
+# model (thin).
+
+fig_lat, axes_lat = plt.subplots(1, 2, figsize=(11, 4), width_ratios=(1.2, 1))
+Plot(finite_system(ssh(0.4, 1.), 8)).lattice(plt_hop=True, ms=7, c=4., ax=axes_lat[0])
+Plot(finite_system(honeycomb_model(t2=0.2), (5, 4))).lattice(plt_hop=True, ms=10, ax=axes_lat[1])
 
 # %%
 # Time reversal, particle-hole, chiral: which hold?

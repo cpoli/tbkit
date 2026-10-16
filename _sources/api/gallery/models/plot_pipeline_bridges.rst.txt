@@ -40,7 +40,7 @@ running example is F. D. M. Haldane's Chern insulator, set up with the
 real-space selectors (neighbour order, angle, sublattice pair) in both
 pipelines.
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-33
+.. GENERATED FROM PYTHON SOURCE LINES 24-34
 
 .. code-block:: Python
 
@@ -51,6 +51,7 @@ pipelines.
     from tbkit.system import System
     from tbkit.kspace import KSpace
     from tbkit.bridges import kspace_from_system, finite_system, finite_model
+    from tbkit.plot import Plot
 
 
 
@@ -60,7 +61,7 @@ pipelines.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-43
+.. GENERATED FROM PYTHON SOURCE LINES 35-44
 
 The Haldane model, by neighbour order
 -------------------------------------------
@@ -72,7 +73,7 @@ conjugate. The 'aa' and 'bb' bonds are addressed by ``'tag'`` and ``'ang'``,
 exactly as in :meth:`System.set_hopping <tbkit.system.System.set_hopping>`.
 A staggered potential :math:`\pm M` completes the model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-57
+.. GENERATED FROM PYTHON SOURCE LINES 44-58
 
 .. code-block:: Python
 
@@ -97,7 +98,34 @@ A staggered potential :math:`\pm M` completes the model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-63
+.. GENERATED FROM PYTHON SOURCE LINES 59-64
+
+The model on a patch of :math:`5\times4` cells
+(:func:`~tbkit.bridges.finite_system`), bond widths proportional to the
+amplitudes: sublattices a and b in two colours, the nearest-neighbour
+bonds :math:`t_1` (thick) and the second-neighbour ones :math:`t_2`
+(thin).
+
+.. GENERATED FROM PYTHON SOURCE LINES 64-67
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(hal, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/models/images/sphx_glr_plot_pipeline_bridges_001.png
+   :alt: plot pipeline bridges
+   :srcset: /api/gallery/models/images/sphx_glr_plot_pipeline_bridges_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 68-73
 
 Real space to k-space
 ---------------------------
@@ -105,7 +133,7 @@ The same list, given to a finite System (a flake, open boundaries):
 :func:`~tbkit.bridges.kspace_from_system` recovers the Bloch Hamiltonian
 from its matrix elements, cell by cell.
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-77
+.. GENERATED FROM PYTHON SOURCE LINES 73-87
 
 .. code-block:: Python
 
@@ -136,7 +164,7 @@ from its matrix elements, cell by cell.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-85
+.. GENERATED FROM PYTHON SOURCE LINES 88-95
 
 k-space to real space: a torus
 ------------------------------------
@@ -146,7 +174,7 @@ bands on the :math:`30\times 30` mesh, which contains the Dirac points K
 and K': there the gaps are :math:`2|M \mp 3\sqrt{3}t_2\sin\phi|`, and the
 smaller one is the band gap.
 
-.. GENERATED FROM PYTHON SOURCE LINES 85-101
+.. GENERATED FROM PYTHON SOURCE LINES 95-111
 
 .. code-block:: Python
 
@@ -174,18 +202,18 @@ smaller one is the band gap.
 
  .. code-block:: none
 
-    max |E_torus - E_mesh| = 1.91e-14
+    max |E_torus - E_mesh| = 4.09e-14
     torus gap = 0.639230, 2|M - 3 sqrt(3) t2| = 0.639230
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 102-104
+.. GENERATED FROM PYTHON SOURCE LINES 112-114
 
 The same sample with open boundaries is a Chern-insulator flake: chiral
 edge states fill the bulk gap, where the torus has no state at all.
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-119
+.. GENERATED FROM PYTHON SOURCE LINES 114-129
 
 .. code-block:: Python
 
@@ -217,12 +245,12 @@ edge states fill the bulk gap, where the torus has no state at all.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-122
+.. GENERATED FROM PYTHON SOURCE LINES 130-132
 
 Spectra
 -------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 122-140
+.. GENERATED FROM PYTHON SOURCE LINES 132-150
 
 .. code-block:: Python
 
@@ -247,9 +275,9 @@ Spectra
 
 
 
-.. image-sg:: /api/gallery/models/images/sphx_glr_plot_pipeline_bridges_001.png
+.. image-sg:: /api/gallery/models/images/sphx_glr_plot_pipeline_bridges_002.png
    :alt: Same spectrum, two pipelines, Edge states fill the gap of the open flake
-   :srcset: /api/gallery/models/images/sphx_glr_plot_pipeline_bridges_001.png
+   :srcset: /api/gallery/models/images/sphx_glr_plot_pipeline_bridges_002.png
    :class: sphx-glr-single-img
 
 
@@ -259,7 +287,7 @@ Spectra
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.321 seconds)
+   **Total running time of the script:** (0 minutes 1.175 seconds)
 
 
 .. _sphx_glr_download_api_gallery_models_plot_pipeline_bridges.py:

@@ -37,7 +37,7 @@ Wave Propagation: Interference on a Ring and a Trapped Domain-Wall State
 
 (This script replaces the pre-0.2 notebook ``examples_propagation.ipynb``.)
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-28
+.. GENERATED FROM PYTHON SOURCE LINES 21-29
 
 .. code-block:: Python
 
@@ -45,6 +45,7 @@ Wave Propagation: Interference on a Ring and a Trapped Domain-Wall State
     import matplotlib.pyplot as plt
 
     from tbkit.lattice import Lattice
+    from tbkit.plot import Plot
     from tbkit.propagation import Propagation
     from tbkit.system import System
 
@@ -55,18 +56,49 @@ Wave Propagation: Interference on a Ring and a Trapped Domain-Wall State
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-31
+.. GENERATED FROM PYTHON SOURCE LINES 30-32
 
 A hexagonal ring, with and without a pi flux
 -----------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-63
+.. GENERATED FROM PYTHON SOURCE LINES 32-44
 
 .. code-block:: Python
 
 
     angles = np.arange(6) * np.pi / 3
     ring_cell = [{'tag': 'a', 'r0': (float(np.cos(a)), float(np.sin(a)))} for a in angles]
+
+    # Six sites on a ring, each bond a hopping t = 1. A walker starting on the
+    # left-most site reaches the right-most one along two paths, one per arm.
+    ring = Lattice(unit_cell=ring_cell, prim_vec=[(10., 0.), (0., 10.)])
+    ring.get_lattice(n1=1, n2=1)
+    vis = System(ring)
+    vis.set_hopping([{'n': 1, 't': 1.}])
+    fig_ring = Plot(vis).lattice(plt_hop=True, ms=16, figsize=(3, 3))
+
+
+
+
+.. image-sg:: /api/gallery/dynamics/images/sphx_glr_plot_wavepacket_interference_001.png
+   :alt: plot wavepacket interference
+   :srcset: /api/gallery/dynamics/images/sphx_glr_plot_wavepacket_interference_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 45-47
+
+The weight on the opposite site, without and with a :math:`\pi` flux
+through the ring:
+
+.. GENERATED FROM PYTHON SOURCE LINES 47-77
+
+.. code-block:: Python
+
+
     fig, axes = plt.subplots(1, 3, figsize=(13, 3.8))
     far = {}
     for flux in (False, True):
@@ -99,9 +131,9 @@ A hexagonal ring, with and without a pi flux
 
 
 
-.. image-sg:: /api/gallery/dynamics/images/sphx_glr_plot_wavepacket_interference_001.png
+.. image-sg:: /api/gallery/dynamics/images/sphx_glr_plot_wavepacket_interference_002.png
    :alt: hexagonal ring
-   :srcset: /api/gallery/dynamics/images/sphx_glr_plot_wavepacket_interference_001.png
+   :srcset: /api/gallery/dynamics/images/sphx_glr_plot_wavepacket_interference_002.png
    :class: sphx-glr-single-img
 
 
@@ -109,18 +141,18 @@ A hexagonal ring, with and without a pi flux
 
  .. code-block:: none
 
-    largest weight on the opposite site: 0.756 (no flux), 2.1e-29 (pi flux)
+    largest weight on the opposite site: 0.756 (no flux), 7.4e-32 (pi flux)
 
-    <matplotlib.legend.Legend object at 0x7feab7fb9a90>
+    <matplotlib.legend.Legend object at 0x10f4dd7f0>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-66
+.. GENERATED FROM PYTHON SOURCE LINES 79-81
 
 A domain wall in a dimerized chain
 -------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-109
+.. GENERATED FROM PYTHON SOURCE LINES 81-100
 
 .. code-block:: Python
 
@@ -141,6 +173,47 @@ A domain wall in a dimerized chain
             sys.set_hopping([{'n': 1, 'tag': 'ab', 't': 1.5}, {'n': 1, 'tag': 'ba', 't': 1.5}])
         sys.get_ham()
         return lat, sys
+
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 101-104
+
+The chain with its domain wall, bond widths proportional to the hopping:
+strong bonds start each dimer left of site 20 ('a' to 'b') and right of
+it ('b' to 'a'), so site 20 sits between two weak bonds.
+
+.. GENERATED FROM PYTHON SOURCE LINES 104-107
+
+.. code-block:: Python
+
+
+    fig_wall = Plot(dimer_chain(True)[1]).lattice(plt_hop=True, ms=6, c=2.5, figsize=(12, 1.2))
+
+
+
+
+.. image-sg:: /api/gallery/dynamics/images/sphx_glr_plot_wavepacket_interference_003.png
+   :alt: plot wavepacket interference
+   :srcset: /api/gallery/dynamics/images/sphx_glr_plot_wavepacket_interference_003.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 108-109
+
+The return probability of a walker started on site 20:
+
+.. GENERATED FROM PYTHON SOURCE LINES 109-134
+
+.. code-block:: Python
 
 
     for ax, wall in zip(axes[1:], (True, False)):
@@ -176,7 +249,7 @@ A domain wall in a dimerized chain
  .. code-block:: none
 
     domain wall: long-time return probability 0.367 (eigenstate sum 0.366)
-    uniform chain: long-time return probability 0.038 (eigenstate sum 0.037)
+    uniform chain: long-time return probability 0.038 (eigenstate sum 0.038)
 
 
 
@@ -184,7 +257,7 @@ A domain wall in a dimerized chain
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.237 seconds)
+   **Total running time of the script:** (0 minutes 0.093 seconds)
 
 
 .. _sphx_glr_download_api_gallery_dynamics_plot_wavepacket_interference.py:

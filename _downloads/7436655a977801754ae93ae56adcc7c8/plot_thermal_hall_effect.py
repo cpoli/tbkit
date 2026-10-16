@@ -35,7 +35,9 @@ import matplotlib.pyplot as plt
 from scipy.integrate import trapezoid
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 
 
 def haldane(M, t2=0.2):
@@ -49,6 +51,19 @@ def haldane(M, t2=0.2):
 
 
 hal = haldane(0.3)
+
+# %%
+# The lattice
+# -----------
+# The Haldane model on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`), each bond drawn with a width
+# proportional to its amplitude: the honeycomb lattice's two sublattices
+# ('a' and 'b', in two colours), the nearest-neighbour hopping :math:`t`
+# (thick) and the complex second-neighbour hoppings :math:`\pm it_2`
+# within each sublattice (thin), which break time-reversal symmetry.
+
+fig_lat = Plot(finite_system(haldane(0.3), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
 
 # %%
 # The Wiedemann-Franz ratio across the spectrum
@@ -90,6 +105,7 @@ wf_gap = kappa[0.2][gap][len(gap[gap]) // 2] / 0.2 / (np.pi ** 2 / 3)
 print('T = 0.2: kappa / (pi^2/3 T sigma) at mu = 0: {:.3f}'.format(wf_gap))
 assert 0.85 < wf_gap < 0.9
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(7, 4.5))
 ax.plot(mu, np.pi ** 2 / 3 * sigma, 'k', lw=1, label=r'$\frac{\pi^2}{3}\sigma_{xy}$ ($T = 0$)')
 for T in temps:

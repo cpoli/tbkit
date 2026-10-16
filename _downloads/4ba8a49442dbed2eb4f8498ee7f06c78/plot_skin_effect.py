@@ -24,12 +24,25 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 
 t_right, t_left = 1., 0.5
 hn = KSpace(lattices.chain())
 hn.set_hopping([{'i': 0, 'j': 0, 'R': (1,), 't': t_right},
                         {'i': 0, 'j': 0, 'R': (-1,), 't': t_left}], hermitian=False)
+
+# %%
+# The lattice
+# -----------
+# Ten sites of the Hatano-Nelson chain
+# (:func:`~tbkit.bridges.finite_system`): one site per cell and
+# nearest-neighbour bonds, non-reciprocal -- each carries :math:`t_R` one
+# way and :math:`t_L` the other. The widths drawn are those of
+# :math:`t_R`.
+
+fig_lat = Plot(finite_system(hn, 10)).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
 
 # %%
 # Ring and open chain
@@ -54,6 +67,7 @@ left = weight[:n // 4].sum(axis=0)
 print('Weight on the leftmost quarter: at least {:.0%} for every eigenstate.'.format(left.min()))
 assert left.min() > 0.9
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 axes[0].plot(ring.real, ring.imag, 'ob', ms=3, label='ring')
 axes[0].plot(en.real, en.imag, 'or', ms=3, label='open chain')

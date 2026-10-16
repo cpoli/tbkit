@@ -39,6 +39,7 @@ import matplotlib.pyplot as plt
 import tbkit.lattices as lattices
 from tbkit.bdg import bdg_ham, bdg_kspace, majorana_number, pairing_bonds, particle_hole
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 from tbkit.system import System
 
 t, delta = 1., 0.6
@@ -49,6 +50,19 @@ def kitaev(mu):
     chain.set_hopping([{'i': 0, 'j': 0, 'R': (1,), 't': t}])
     return bdg_kspace(chain, [{'i': 0, 'j': 0, 'R': (1,), 'delta': delta}], mu=mu)
 
+
+# %%
+# The lattice
+# -----------
+# A chain of spinless fermions, one site per cell. Each nearest-neighbour
+# bond carries both the hopping :math:`t` and the p-wave pairing
+# :math:`\Delta`, which binds fermions on neighbouring sites.
+
+patch = lattices.chain()
+patch.get_lattice(n1=10)
+vis = System(patch)
+vis.set_hopping([{'n': 1, 't': t}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
 
 # %%
 # The bulk spectrum and the invariant
@@ -105,6 +119,7 @@ assert ends / 2 > 0.95
 # and the same chain from the Bloch model
 assert np.allclose(spectra[0.5], np.linalg.eigvalsh(kitaev(0.5).finite_ham(n)))
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 axes[0].plot(mus, zak / np.pi, 'o-b', label=r'Berry phase / $\pi$')
 axes[0].plot(mus[gapped], majorana, 's--r', ms=4, label=r'Majorana number $\mathcal{M}$')

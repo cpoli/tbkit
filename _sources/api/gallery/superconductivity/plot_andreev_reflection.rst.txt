@@ -45,13 +45,16 @@ The normal lead conserves the electron-hole charge :math:`\tau_z`, so
 (:meth:`~tbkit.transport.Transport.smatrix`) gives :math:`R_{he}` and
 :math:`R_{ee}` as blocks. The superconducting lead has no such law.
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-75
+.. GENERATED FROM PYTHON SOURCE LINES 29-78
 
 .. code-block:: Python
 
     import numpy as np
     import matplotlib.pyplot as plt
 
+    from tbkit.lattice import Lattice
+    from tbkit.plot import Plot
+    from tbkit.system import System
     from tbkit.transport import Transport
 
 
@@ -102,7 +105,40 @@ The normal lead conserves the electron-hole charge :math:`\tau_z`, so
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-81
+.. GENERATED FROM PYTHON SOURCE LINES 79-85
+
+The junction
+------------
+A chain of :math:`n = 20` sites with nearest-neighbour hopping: the
+normal half on the left (blue), the superconducting half on the right
+(red). The barrier sits on the last normal site, and each half continues
+into a semi-infinite lead of its own kind.
+
+.. GENERATED FROM PYTHON SOURCE LINES 85-93
+
+.. code-block:: Python
+
+
+    lat_vis = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (n / 2, 0.)}],
+                          prim_vec=[(1., 0.)])
+    lat_vis.get_lattice(n1=n // 2)
+    vis = System(lat_vis)
+    vis.set_hopping([{'n': 1, 't': 1.}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=10, figsize=(8, 1.2))
+
+
+
+
+.. image-sg:: /api/gallery/superconductivity/images/sphx_glr_plot_andreev_reflection_001.png
+   :alt: plot andreev reflection
+   :srcset: /api/gallery/superconductivity/images/sphx_glr_plot_andreev_reflection_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 94-99
 
 Inside the gap, every electron comes back
 -------------------------------------------
@@ -110,7 +146,7 @@ Below :math:`\Delta` no quasiparticle can leave through the
 superconductor, so :math:`R_{ee} + R_{he} = 1`. At a clean interface
 almost every electron returns as a hole, and the conductance doubles.
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-88
+.. GENERATED FROM PYTHON SOURCE LINES 99-106
 
 .. code-block:: Python
 
@@ -134,7 +170,7 @@ almost every electron returns as a hole, and the conductance doubles.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-95
+.. GENERATED FROM PYTHON SOURCE LINES 107-113
 
 The BTK conductance
 ---------------------
@@ -143,7 +179,7 @@ transmission :math:`1/(1 + Z^2)` with :math:`Z = U/v_F` (:math:`v_F = 2` at
 half filling). With that :math:`Z`, the S-matrix reproduces the BTK formula
 at every energy, up to corrections of order :math:`\Delta/t`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 95-120
+.. GENERATED FROM PYTHON SOURCE LINES 113-138
 
 .. code-block:: Python
 
@@ -175,9 +211,9 @@ at every energy, up to corrections of order :math:`\Delta/t`.
 
 
 
-.. image-sg:: /api/gallery/superconductivity/images/sphx_glr_plot_andreev_reflection_001.png
+.. image-sg:: /api/gallery/superconductivity/images/sphx_glr_plot_andreev_reflection_002.png
    :alt: Andreev reflection: BTK conductance (lines: BTK formula)
-   :srcset: /api/gallery/superconductivity/images/sphx_glr_plot_andreev_reflection_001.png
+   :srcset: /api/gallery/superconductivity/images/sphx_glr_plot_andreev_reflection_002.png
    :class: sphx-glr-single-img
 
 
@@ -195,7 +231,7 @@ at every energy, up to corrections of order :math:`\Delta/t`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.183 seconds)
+   **Total running time of the script:** (0 minutes 0.307 seconds)
 
 
 .. _sphx_glr_download_api_gallery_superconductivity_plot_andreev_reflection.py:

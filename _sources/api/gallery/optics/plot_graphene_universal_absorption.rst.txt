@@ -44,7 +44,7 @@ had predicted. A free-standing sheet then absorbs
 formula over the Brillouin zone of the tight-binding model;
 :func:`~tbkit.optics.joint_dos` counts the transitions.
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-41
+.. GENERATED FROM PYTHON SOURCE LINES 28-43
 
 .. code-block:: Python
 
@@ -53,8 +53,10 @@ formula over the Brillouin zone of the tight-binding model;
     from scipy.constants import alpha
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
     from tbkit.optics import optical_conductivity, joint_dos, cell_area
+    from tbkit.plot import Plot
 
 
     t = -1.
@@ -68,7 +70,35 @@ formula over the Brillouin zone of the tight-binding model;
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-49
+.. GENERATED FROM PYTHON SOURCE LINES 44-50
+
+The lattice
+-----------
+Graphene's honeycomb lattice on a patch of :math:`5\times4` cells
+(:func:`~tbkit.bridges.finite_system`): two sites per unit cell
+(sublattices 'a' and 'b', in two colours), each bonded to its three
+nearest neighbours.
+
+.. GENERATED FROM PYTHON SOURCE LINES 50-53
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(gra, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/optics/images/sphx_glr_plot_graphene_universal_absorption_001.png
+   :alt: plot graphene universal absorption
+   :srcset: /api/gallery/optics/images/sphx_glr_plot_graphene_universal_absorption_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 54-61
 
 The universal conductivity
 ------------------------------
@@ -78,7 +108,7 @@ At small :math:`\hbar\omega` the tight-binding band adds a correction
 quadratic in :math:`\hbar\omega/t`, so the universal value is the
 :math:`\omega\to0` limit.
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-61
+.. GENERATED FROM PYTHON SOURCE LINES 61-73
 
 .. code-block:: Python
 
@@ -108,7 +138,7 @@ quadratic in :math:`\hbar\omega/t`, so the universal value is the
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-70
+.. GENERATED FROM PYTHON SOURCE LINES 74-82
 
 Counting the transitions
 --------------------------
@@ -119,7 +149,7 @@ The joint density of states grows linearly,
 :math:`v_F^2` on a Dirac cone, falls as :math:`1/\omega`: the product is
 constant.
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-75
+.. GENERATED FROM PYTHON SOURCE LINES 82-87
 
 .. code-block:: Python
 
@@ -135,7 +165,7 @@ constant.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-81
+.. GENERATED FROM PYTHON SOURCE LINES 88-93
 
 The whole spectrum, and Pauli blocking
 ------------------------------------------
@@ -143,7 +173,7 @@ Beyond the Dirac regime, the absorption peaks at the van Hove
 singularity :math:`\hbar\omega = 2|t|` (transitions at the M points).
 Doping to :math:`E_F` blocks every transition below :math:`2|E_F|`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-99
+.. GENERATED FROM PYTHON SOURCE LINES 93-111
 
 .. code-block:: Python
 
@@ -168,9 +198,9 @@ Doping to :math:`E_F` blocks every transition below :math:`2|E_F|`.
 
 
 
-.. image-sg:: /api/gallery/optics/images/sphx_glr_plot_graphene_universal_absorption_001.png
+.. image-sg:: /api/gallery/optics/images/sphx_glr_plot_graphene_universal_absorption_002.png
    :alt: graphene: $\sigma_0 = e^2/4\hbar$, absorbance $\pi\alpha$
-   :srcset: /api/gallery/optics/images/sphx_glr_plot_graphene_universal_absorption_001.png
+   :srcset: /api/gallery/optics/images/sphx_glr_plot_graphene_universal_absorption_002.png
    :class: sphx-glr-single-img
 
 
@@ -186,7 +216,7 @@ Doping to :math:`E_F` blocks every transition below :math:`2|E_F|`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.466 seconds)
+   **Total running time of the script:** (0 minutes 0.615 seconds)
 
 
 .. _sphx_glr_download_api_gallery_optics_plot_graphene_universal_absorption.py:

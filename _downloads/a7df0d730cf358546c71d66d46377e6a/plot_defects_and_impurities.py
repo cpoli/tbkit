@@ -25,6 +25,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.plot import Plot
 from tbkit.system import System
 
 
@@ -33,6 +34,17 @@ def flake():
     lat.get_lattice(n1=8, n2=8)
     return lat
 
+
+# %%
+# The lattice
+# -----------
+# Every example below starts from the same :math:`8\times8` honeycomb
+# flake: sublattices 'a' and 'b' in two colours, as many sites on each,
+# with nearest-neighbour hopping.
+
+vis = System(flake())
+vis.set_hopping([{'n': 1, 't': -1.}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=8, figsize=(6.5, 4.5))
 
 # %%
 # A vacancy
@@ -88,6 +100,7 @@ sys0.get_ham()
 assert np.allclose(en3, -en3[::-1], atol=1e-10)
 assert en3.max() > np.linalg.eigvalsh(sys0.ham.toarray()).max()
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 3, figsize=(13, 4))
 sc = axes[0].scatter(lat.coor['x'], lat.coor['y'], c=zm, s=25, cmap='viridis')
 axes[0].plot(*center, 'rx', ms=10)

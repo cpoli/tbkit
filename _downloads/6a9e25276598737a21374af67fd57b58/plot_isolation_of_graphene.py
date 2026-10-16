@@ -25,6 +25,7 @@ import matplotlib.pyplot as plt
 import tbkit.lattices as lattices
 from tbkit.graphene import GrapheneLattice
 from tbkit.kspace import KSpace, reciprocal_vectors
+from tbkit.plot import Plot
 from tbkit.system import System
 
 t = -1.
@@ -99,6 +100,18 @@ print('Hexagons of {} (zigzag) and {} (armchair) sites: lowest |E| = {:.3f} and 
           .format(lat_zz.sites, lat_ac.sites, np.min(np.abs(sys_zz.en)), np.min(np.abs(sys_ac.en))))
 assert np.min(np.abs(sys_zz.en)) < 0.6 * np.min(np.abs(sys_ac.en))
 
+# %%
+# The two hexagons: the same honeycomb lattice (sublattices 'a' and 'b' in
+# two colours), cut along zigzag edges (left) and armchair edges (right).
+
+fig_lat, axes_lat = plt.subplots(1, 2, figsize=(10, 4.5))
+Plot(sys_zz).lattice(plt_hop=True, ms=5, ax=axes_lat[0])
+Plot(sys_ac).lattice(plt_hop=True, ms=5, ax=axes_lat[1])
+
+# %%
+# Their spectra:
+
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(10, 4), sharey=True)
 for ax, sys, name in ((axes[0], sys_zz, 'zigzag hexagon'), (axes[1], sys_ac, 'armchair hexagon')):
     ax.plot(sys.en, 'ob', ms=3)

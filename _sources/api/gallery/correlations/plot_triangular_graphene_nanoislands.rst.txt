@@ -38,7 +38,7 @@ synthesized and seen to be magnetic in 2017-2021.
 :meth:`~tbkit.graphene.GrapheneLattice.triangle_zigzag` cuts the flakes;
 :func:`~tbkit.meanfield.hubbard_mean_field` solves the Hubbard model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 22-49
+.. GENERATED FROM PYTHON SOURCE LINES 22-50
 
 .. code-block:: Python
 
@@ -47,6 +47,7 @@ synthesized and seen to be magnetic in 2017-2021.
 
     from tbkit.graphene import GrapheneLattice
     from tbkit.meanfield import hubbard_mean_field
+    from tbkit.plot import Plot
     from tbkit.system import System
 
 
@@ -76,12 +77,47 @@ synthesized and seen to be magnetic in 2017-2021.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-52
+.. GENERATED FROM PYTHON SOURCE LINES 51-56
+
+The two flakes
+--------------
+A zigzag triangle (left): all three edges end on sublattice A (tag 'a'),
+so A has more sites than B. A zigzag hexagon (right) alternates A and B
+edges and keeps the two sublattices balanced.
+
+.. GENERATED FROM PYTHON SOURCE LINES 56-61
+
+.. code-block:: Python
+
+
+    fig_lat, axes_lat = plt.subplots(1, 2, figsize=(10, 4.5))
+    Plot(flake('triangle_zigzag', 5)[1]).lattice(plt_hop=True, ms=8, ax=axes_lat[0])
+    Plot(flake('hexagon_zigzag', 3)[1]).lattice(plt_hop=True, ms=8, ax=axes_lat[1])
+
+
+
+
+.. image-sg:: /api/gallery/correlations/images/sphx_glr_plot_triangular_graphene_nanoislands_001.png
+   :alt: plot triangular graphene nanoislands
+   :srcset: /api/gallery/correlations/images/sphx_glr_plot_triangular_graphene_nanoislands_001.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    <Figure size 1000x450 with 2 Axes>
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 62-64
 
 Zero modes: one per extra A site
 ---------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-65
+.. GENERATED FROM PYTHON SOURCE LINES 64-77
 
 .. code-block:: Python
 
@@ -115,7 +151,7 @@ Zero modes: one per extra A site
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-72
+.. GENERATED FROM PYTHON SOURCE LINES 78-84
 
 A moment for any U: the zero modes, half filled
 ---------------------------------------------------
@@ -124,7 +160,7 @@ filled by one spin-up electron: :math:`m_i \to \frac12\sum_z|\psi_z(i)|^2`.
 A zigzag hexagon of similar size has no zero mode and stays
 nonmagnetic at the same :math:`U`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-100
+.. GENERATED FROM PYTHON SOURCE LINES 84-112
 
 .. code-block:: Python
 
@@ -159,9 +195,9 @@ nonmagnetic at the same :math:`U`.
 
 
 
-.. image-sg:: /api/gallery/correlations/images/sphx_glr_plot_triangular_graphene_nanoislands_001.png
+.. image-sg:: /api/gallery/correlations/images/sphx_glr_plot_triangular_graphene_nanoislands_002.png
    :alt: Triangular nanoisland, 81 sites: S = 4.5, zero-mode density / 2, $m_i$, $U = 0.05|t|$, $m_i$, $U = 2|t|$
-   :srcset: /api/gallery/correlations/images/sphx_glr_plot_triangular_graphene_nanoislands_001.png
+   :srcset: /api/gallery/correlations/images/sphx_glr_plot_triangular_graphene_nanoislands_002.png
    :class: sphx-glr-single-img
 
 
@@ -170,7 +206,7 @@ nonmagnetic at the same :math:`U`.
  .. code-block:: none
 
     Triangle, U = 0.05|t|: |m_i| = zero-mode density / 2 to 0.0022.
-    Hexagon (96 sites), U = 0.1|t|: largest |m_i| = 3.4e-10.
+    Hexagon (96 sites), U = 0.1|t|: largest |m_i| = 5.7e-10.
 
     Text(0.5, 0.98, 'Triangular nanoisland, 81 sites: S = 4.5')
 
@@ -179,7 +215,7 @@ nonmagnetic at the same :math:`U`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 11.219 seconds)
+   **Total running time of the script:** (0 minutes 7.515 seconds)
 
 
 .. _sphx_glr_download_api_gallery_correlations_plot_triangular_graphene_nanoislands.py:

@@ -33,7 +33,7 @@ Without spin-orbit coupling, the same zigzag ribbon has a flat band of
 edge states at E=0 instead (see
 :doc:`/api/gallery/tight_binding/plot_zigzag_edge_states`).
 
-.. GENERATED FROM PYTHON SOURCE LINES 17-35
+.. GENERATED FROM PYTHON SOURCE LINES 17-37
 
 .. code-block:: Python
 
@@ -42,6 +42,8 @@ edge states at E=0 instead (see
 
     from tbkit.lattice import Lattice
     from tbkit.kspace import ribbon, PAULI
+    from tbkit.plot import Plot
+    from tbkit.system import System
 
 
     DX, DY = 0.5 * 3 ** 0.5, 0.5
@@ -62,7 +64,39 @@ edge states at E=0 instead (see
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-46
+.. GENERATED FROM PYTHON SOURCE LINES 38-44
+
+The lattice
+-----------
+The honeycomb lattice of the ribbons below, sublattices 'a' and 'b' in
+two colours, with its nearest-neighbour bonds, on a :math:`10\times6`-cell
+patch (the ribbons are 30 cells wide). The spin-orbit terms are
+second-neighbour hoppings within each sublattice, not drawn.
+
+.. GENERATED FROM PYTHON SOURCE LINES 44-51
+
+.. code-block:: Python
+
+
+    patch = Lattice(unit_cell=unit_cell, prim_vec=prim_vec)
+    patch.get_lattice(n1=10, n2=6)
+    vis = System(patch)
+    vis.set_hopping([{'n': 1, 't': t1}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=8, figsize=(8, 4))
+
+
+
+
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_edge_states_001.png
+   :alt: plot edge states
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_edge_states_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 52-62
 
 Kane-Mele ribbon: helical edge states inside a spin-orbit gap
 --------------------------------------------------------------------
@@ -75,7 +109,7 @@ the hallmark of a Z2 topological insulator (contrast with the flat band
 of the zigzag ribbon without spin-orbit coupling, which *nothing*
 protects from a generic perturbation).
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-76
+.. GENERATED FROM PYTHON SOURCE LINES 62-92
 
 .. code-block:: Python
 
@@ -112,9 +146,9 @@ protects from a generic perturbation).
 
 
 
-.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_edge_states_001.png
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_edge_states_002.png
    :alt: Kane-Mele ribbon: helical edge states in the bulk gap
-   :srcset: /api/gallery/topology/images/sphx_glr_plot_edge_states_001.png
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_edge_states_002.png
    :class: sphx-glr-single-img
 
 
@@ -122,7 +156,7 @@ protects from a generic perturbation).
 
  .. code-block:: none
 
-    Kane-Mele ribbon: edge-state crossing near k=1.8188, E=-0.00484.
+    Kane-Mele ribbon: edge-state crossing near k=1.8188, E=0.00484.
     Bulk gap at k=0 (far from the edge-state crossing): 1.0096.
 
     (-3.141592653589793, 3.141592653589793)
@@ -132,7 +166,7 @@ protects from a generic perturbation).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.557 seconds)
+   **Total running time of the script:** (0 minutes 0.405 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_edge_states.py:

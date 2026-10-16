@@ -51,15 +51,17 @@ The photoemission picture is the *surface spectral function*
 Sancho-Rubio decimation): the bulk bands projected on the surface
 Brillouin zone, plus sharp lines for the states bound to the surface.
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-68
+.. GENERATED FROM PYTHON SOURCE LINES 35-70
 
 .. code-block:: Python
 
     import numpy as np
     import matplotlib.pyplot as plt
+    from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
     from tbkit.lattice import Lattice
     from tbkit.kspace import KSpace, PAULI
+    from tbkit.system import System
 
     cubic = [(1., 0., 0.), (0., 1., 0.), (0., 0., 1.)]
     # orbitals: (s, up), (s, down), (p, up), (p, down) -> two "sites" with spin
@@ -95,7 +97,46 @@ Brillouin zone, plus sharp lines for the states bound to the surface.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-83
+.. GENERATED FROM PYTHON SOURCE LINES 71-77
+
+The lattice
+-----------
+The simple cubic lattice, here :math:`4\times4\times4` sites, with its
+nearest-neighbour bonds. Each site holds an s and a p orbital, each with
+spin, and every bond carries a :math:`4\times4` hopping matrix that
+couples them (not drawn).
+
+.. GENERATED FROM PYTHON SOURCE LINES 77-91
+
+.. code-block:: Python
+
+
+    lat_vis = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0., 0.)}], prim_vec=[(1., 0., 0.), (0., 1., 0.), (0., 0., 1.)])
+    lat_vis.get_lattice(4, 4, 4)
+    vis = System(lat_vis)
+    vis.set_hopping([{'n': 1, 't': 1.}])
+    pos = np.column_stack([lat_vis.coor[f] for f in 'xyz'])
+    bonds = np.stack([pos[vis.hop['i'].astype(int)], pos[vis.hop['j'].astype(int)]], axis=1)
+    fig_lat = plt.figure(figsize=(4.5, 4.5))
+    ax_lat = fig_lat.add_subplot(projection='3d')
+    ax_lat.add_collection3d(Line3DCollection(bonds, colors='k', linewidths=1))
+    ax_lat.scatter(*pos.T, s=30, c='b', depthshade=False)
+    ax_lat.set_aspect('equal')
+    ax_lat.set_axis_off()
+
+
+
+
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_3d_topological_insulator_001.png
+   :alt: plot 3d topological insulator
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_3d_topological_insulator_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 92-106
 
 The four Z2 indices
 ----------------------
@@ -112,7 +153,7 @@ spin Hall layers stacked along (111), whose planes :math:`k_i = \pi`
 each hold one inverted momentum -- from the trivial insulator, which the
 strong index alone cannot.
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-91
+.. GENERATED FROM PYTHON SOURCE LINES 106-114
 
 .. code-block:: Python
 
@@ -140,7 +181,7 @@ strong index alone cannot.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-100
+.. GENERATED FROM PYTHON SOURCE LINES 115-123
 
 The surface Dirac cone
 ------------------------
@@ -151,7 +192,7 @@ topological insulator (:math:`M = 2`) a single Dirac cone crosses it,
 centred at :math:`\bar\Gamma`, the projection of the inverted momentum,
 with velocity 1.
 
-.. GENERATED FROM PYTHON SOURCE LINES 100-131
+.. GENERATED FROM PYTHON SOURCE LINES 123-154
 
 .. code-block:: Python
 
@@ -200,7 +241,7 @@ with velocity 1.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 132-137
+.. GENERATED FROM PYTHON SOURCE LINES 155-160
 
 Where the cone sits, and when there is none
 ----------------------------------------------
@@ -208,7 +249,7 @@ For :math:`8 < M < 12` the inversion has moved to :math:`R = (\pi,\pi,\pi)`,
 and the cone to its projection :math:`\bar{M}`. In the trivial insulator
 (:math:`M = -2`) the gap stays empty on the surface too.
 
-.. GENERATED FROM PYTHON SOURCE LINES 137-155
+.. GENERATED FROM PYTHON SOURCE LINES 160-178
 
 .. code-block:: Python
 
@@ -233,9 +274,9 @@ and the cone to its projection :math:`\bar{M}`. In the trivial insulator
 
 
 
-.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_3d_topological_insulator_001.png
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_3d_topological_insulator_002.png
    :alt: (001) surface spectral function $\log_{10} A_s(\mathbf{k}_\parallel, E)$, $M = 2$: $\nu_0 = 1$, $M = 10$: $\nu_0 = 1$, $M = -2$: trivial
-   :srcset: /api/gallery/topology/images/sphx_glr_plot_3d_topological_insulator_001.png
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_3d_topological_insulator_002.png
    :class: sphx-glr-single-img
 
 
@@ -251,7 +292,7 @@ and the cone to its projection :math:`\bar{M}`. In the trivial insulator
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.968 seconds)
+   **Total running time of the script:** (0 minutes 4.074 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_3d_topological_insulator.py:

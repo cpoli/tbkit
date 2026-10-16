@@ -34,6 +34,8 @@ import scipy.sparse as sparse
 import tbkit.lattices as lattices
 from tbkit.bdg import bdg_ham, pairing_s_wave, particle_hole
 from tbkit.orbital import OrbitalSystem
+from tbkit.plot import Plot
+from tbkit.system import System
 
 t, delta = -1., 0.1  # half filling: coherence length 2|t|/delta = 20 sites
 
@@ -56,6 +58,19 @@ def junction(n_s, length, phi):
     pairing = sparse.diags(np.repeat(gap, 2)) @ pairing_s_wave(n, 1.)
     return np.linalg.eigvalsh(bdg_ham(chain(n).ham, pairing).toarray())
 
+
+# %%
+# The lattice
+# -----------
+# Every model below lives on a chain with one site per cell and a
+# nearest-neighbour hopping :math:`t`, each site holding a spin-1/2
+# orbital; the s-wave pairing :math:`\Delta` binds the two spins of a site.
+
+patch = lattices.chain()
+patch.get_lattice(n1=10)
+vis = System(patch)
+vis.set_hopping([{'n': 1, 't': t}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
 
 # %%
 # A clean superconductor: the BCS spectrum
@@ -108,6 +123,7 @@ print('L =', lengths, '-> bound states below the gap:', counts)
 assert counts[0] == 0 and np.all(np.diff(counts) >= 0) and counts[-1] >= 10
 assert np.all(np.diff([lv[0] for lv in levels[1:]]) < 0)
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 fine = np.linspace(0, np.pi, 200)
 axes[0].plot(fine / np.pi, np.abs(np.cos(fine / 2)), '-k', label=r'$|\cos(\varphi/2)|$')

@@ -46,7 +46,7 @@ for a Hermitian model this is the usual Berry-phase transport.
 The EP is one of the pair into which :math:`i\gamma\sigma_x` splits
 graphene's Dirac point (see the other examples of this entry).
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-58
+.. GENERATED FROM PYTHON SOURCE LINES 30-60
 
 .. code-block:: Python
 
@@ -54,7 +54,9 @@ graphene's Dirac point (see the other examples of this entry).
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
     import tbkit.exceptional as ex
 
     NN = [{'i': 0, 'j': 1, 'R': (0, 0), 't': 1.}, {'i': 0, 'j': 1, 'R': (-1, 0), 't': 1.},
@@ -85,12 +87,41 @@ graphene's Dirac point (see the other examples of this entry).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-61
+.. GENERATED FROM PYTHON SOURCE LINES 61-68
+
+The lattice
+-----------
+Graphene's honeycomb lattice on a patch of :math:`5\times4` cells
+(:func:`~tbkit.bridges.finite_system`): sublattices 'a' and 'b' in two
+colours, each bonded to its three nearest neighbours. The
+non-Hermitian term, :math:`i\gamma` added to both directions of the
+intra-cell bond, adds no bond and is not drawn.
+
+.. GENERATED FROM PYTHON SOURCE LINES 68-71
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(graphene, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_point_encircling_001.png
+   :alt: plot exceptional point encircling
+   :srcset: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_point_encircling_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 72-74
 
 Around the Dirac point: one loop, Berry phase pi
 ------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-72
+.. GENERATED FROM PYTHON SOURCE LINES 74-85
 
 .. code-block:: Python
 
@@ -114,12 +145,12 @@ Around the Dirac point: one loop, Berry phase pi
  .. code-block:: none
 
     Dirac point, band 0: ends on band 0, phase +3.141593, |overlap| 1.0000
-    Dirac point, band 1: ends on band 1, phase -3.141593, |overlap| 1.0000
+    Dirac point, band 1: ends on band 1, phase +3.141593, |overlap| 1.0000
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-81
+.. GENERATED FROM PYTHON SOURCE LINES 86-94
 
 Around an exceptional point: swap, sign flip, return
 ------------------------------------------------------------
@@ -130,7 +161,7 @@ and 3 loops the factor, :math:`\pm i` here, depends on the arbitrary phase
 of the other band's eigenvector at the start; after an even number of
 loops it is a property of the EP.)
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-97
+.. GENERATED FROM PYTHON SOURCE LINES 94-110
 
 .. code-block:: Python
 
@@ -158,15 +189,15 @@ loops it is a property of the EP.)
 
  .. code-block:: none
 
-    EP, 1 loop(s): ends on band 1, factor -0.0000+1.0000i
+    EP, 1 loop(s): ends on band 1, factor +0.0000+1.0000i
     EP, 2 loop(s): ends on band 0, factor -1.0000-0.0000i
-    EP, 3 loop(s): ends on band 1, factor -0.0000-1.0000i
+    EP, 3 loop(s): ends on band 1, factor +0.0000-1.0000i
     EP, 4 loop(s): ends on band 0, factor +1.0000-0.0000i
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-103
+.. GENERATED FROM PYTHON SOURCE LINES 111-116
 
 The eigenvalue swap is the vorticity 1/2, the four-loop return its double
 -------------------------------------------------------------------------------
@@ -174,7 +205,7 @@ One loop around the EP turns :math:`E_0 - E_1` by :math:`\pi` (vorticity
 :math:`\pm1/2`); around the Dirac point, or around *both* EPs, it does not
 turn at all, and one loop is enough to bring both eigenvalues back.
 
-.. GENERATED FROM PYTHON SOURCE LINES 103-112
+.. GENERATED FROM PYTHON SOURCE LINES 116-125
 
 .. code-block:: Python
 
@@ -200,7 +231,7 @@ turn at all, and one loop is enough to bring both eigenvalues back.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 113-119
+.. GENERATED FROM PYTHON SOURCE LINES 126-132
 
 Eigenvalues along the loops
 --------------------------------
@@ -209,7 +240,7 @@ themselves. Right: around the EP, the complex eigenvalues trace one closed
 curve in two turns -- the followed eigenvalue (dark) needs two loops to
 come back.
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-148
+.. GENERATED FROM PYTHON SOURCE LINES 132-161
 
 .. code-block:: Python
 
@@ -245,9 +276,9 @@ come back.
 
 
 
-.. image-sg:: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_point_encircling_001.png
+.. image-sg:: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_point_encircling_002.png
    :alt: Dirac point: no swap, EP: eigenvalues swap each loop, EP: -1 after 2 loops, +1 after 4
-   :srcset: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_point_encircling_001.png
+   :srcset: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_point_encircling_002.png
    :class: sphx-glr-single-img
 
 
@@ -257,7 +288,7 @@ come back.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.554 seconds)
+   **Total running time of the script:** (0 minutes 0.394 seconds)
 
 
 .. _sphx_glr_download_api_gallery_non_hermitian_plot_exceptional_point_encircling.py:

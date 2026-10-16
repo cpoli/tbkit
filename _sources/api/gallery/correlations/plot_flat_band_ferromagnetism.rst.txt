@@ -45,7 +45,7 @@ lines of second quantization below), the other two with
 :func:`~tbkit.meanfield.hubbard_mean_field` on a :func:`~tbkit.lattices.kagome`
 torus.
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-41
+.. GENERATED FROM PYTHON SOURCE LINES 29-42
 
 .. code-block:: Python
 
@@ -58,6 +58,7 @@ torus.
 
     import tbkit.lattices as lattices
     from tbkit.meanfield import hubbard_mean_field
+    from tbkit.plot import Plot
     from tbkit.system import System
 
 
@@ -68,7 +69,7 @@ torus.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-51
+.. GENERATED FROM PYTHON SOURCE LINES 43-52
 
 Nagaoka: one hole in a square cluster
 ----------------------------------------
@@ -80,7 +81,7 @@ lowest single-particle levels, filled with one spin, which feel no
 :math:`U` -- exactly when the ground state has the maximal spin
 :math:`S = N_e/2`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-107
+.. GENERATED FROM PYTHON SOURCE LINES 52-91
 
 .. code-block:: Python
 
@@ -123,6 +124,50 @@ lowest single-particle levels, filled with one spin, which feel no
         return sys.ham.toarray().real
 
 
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 92-94
+
+The largest cluster, a :math:`3\times3` square of nine sites with
+nearest-neighbour hopping and open boundaries:
+
+.. GENERATED FROM PYTHON SOURCE LINES 94-101
+
+.. code-block:: Python
+
+
+    lat_vis = lattices.square()
+    lat_vis.get_lattice(n1=3, n2=3)
+    vis = System(lat_vis)
+    vis.set_hopping([{'n': 1, 't': -1.}])
+    fig_sq = Plot(vis).lattice(plt_hop=True, ms=14, figsize=(3.5, 3.5))
+
+
+
+
+.. image-sg:: /api/gallery/correlations/images/sphx_glr_plot_flat_band_ferromagnetism_001.png
+   :alt: plot flat band ferromagnetism
+   :srcset: /api/gallery/correlations/images/sphx_glr_plot_flat_band_ferromagnetism_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 102-103
+
+One hole in each cluster:
+
+.. GENERATED FROM PYTHON SOURCE LINES 103-121
+
+.. code-block:: Python
+
+
     nagaoka = {}
     for n1, n2 in ((2, 2), (3, 2), (3, 3)):
         h = square_cluster(n1, n2)
@@ -153,7 +198,7 @@ lowest single-particle levels, filled with one spin, which feel no
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-113
+.. GENERATED FROM PYTHON SOURCE LINES 122-127
 
 Mielke: the flat band of the kagome lattice
 -----------------------------------------------
@@ -161,7 +206,7 @@ On a :math:`4\times4` kagome torus (48 sites) with hopping :math:`t > 0`,
 the flat band at :math:`E = -2t` holds 17 states (16, plus the one where
 it touches the next band). Seventeen electrons of one spin fill it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 113-150
+.. GENERATED FROM PYTHON SOURCE LINES 127-140
 
 .. code-block:: Python
 
@@ -176,6 +221,48 @@ it touches the next band). Seventeen electrons of one spin fill it.
             sys.set_hopping([{'n': 2, 't': t2}])
         sys.get_ham()
         return sys
+
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 141-144
+
+The kagome lattice: three sites per unit cell ('a', 'b' and 'c', one per
+colour) on corner-sharing triangles. The bonds that close the torus are
+not drawn.
+
+.. GENERATED FROM PYTHON SOURCE LINES 144-147
+
+.. code-block:: Python
+
+
+    fig_kag = Plot(kagome_torus()).lattice(plt_hop=True, ms=10, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/correlations/images/sphx_glr_plot_flat_band_ferromagnetism_002.png
+   :alt: plot flat band ferromagnetism
+   :srcset: /api/gallery/correlations/images/sphx_glr_plot_flat_band_ferromagnetism_002.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 148-149
+
+Mean field from a saturated and from a paramagnetic start:
+
+.. GENERATED FROM PYTHON SOURCE LINES 149-175
+
+.. code-block:: Python
+
 
 
     def polarized_and_paramagnetic(sys, U, n_el):
@@ -215,7 +302,7 @@ it touches the next band). Seventeen electrons of one spin fill it.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 151-157
+.. GENERATED FROM PYTHON SOURCE LINES 176-182
 
 Tasaki: a nearly flat band needs a large enough U
 ------------------------------------------------------
@@ -224,7 +311,7 @@ A second-neighbour hopping :math:`t_2` bends the flat band, to a width
 beats the paramagnet, only above a threshold :math:`U_c`, here
 proportional to the width.
 
-.. GENERATED FROM PYTHON SOURCE LINES 157-193
+.. GENERATED FROM PYTHON SOURCE LINES 182-218
 
 .. code-block:: Python
 
@@ -267,9 +354,9 @@ proportional to the width.
 
 
 
-.. image-sg:: /api/gallery/correlations/images/sphx_glr_plot_flat_band_ferromagnetism_001.png
+.. image-sg:: /api/gallery/correlations/images/sphx_glr_plot_flat_band_ferromagnetism_003.png
    :alt: Nagaoka: saturated ferromagnet above $U_c$, Mielke ($W = 0$) and Tasaki: kagome, $4\times4$ torus
-   :srcset: /api/gallery/correlations/images/sphx_glr_plot_flat_band_ferromagnetism_001.png
+   :srcset: /api/gallery/correlations/images/sphx_glr_plot_flat_band_ferromagnetism_003.png
    :class: sphx-glr-single-img
 
 
@@ -290,7 +377,7 @@ proportional to the width.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.729 seconds)
+   **Total running time of the script:** (0 minutes 2.012 seconds)
 
 
 .. _sphx_glr_download_api_gallery_correlations_plot_flat_band_ferromagnetism.py:

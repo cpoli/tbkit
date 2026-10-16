@@ -30,7 +30,9 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import NullFormatter, ScalarFormatter
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 from tbkit.wannier import wannierize
 
 
@@ -47,6 +49,19 @@ trivial, chern = haldane(M=1.5), haldane(M=0.)
 c_triv, c_chern = trivial.chern_number(0, 30), chern.chern_number(0, 30)
 print('Chern numbers: trivial {:.3f}, Chern {:.3f}'.format(c_triv, c_chern))
 assert np.isclose(c_triv, 0., atol=1e-8) and np.isclose(c_chern, 1., atol=1e-8)
+
+# %%
+# The lattice
+# -----------
+# The Haldane model on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`), each bond drawn with a width
+# proportional to its amplitude: the honeycomb lattice's two sublattices
+# ('a' and 'b', in two colours), the nearest-neighbour hopping :math:`t`
+# (thick) and the complex second-neighbour hoppings :math:`\pm it_2`
+# within each sublattice (thin), which break time-reversal symmetry. The
+# trivial model adds the staggered mass :math:`\pm M`, an onsite term.
+
+fig_lat = Plot(finite_system(chern, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # Every projection fails somewhere
@@ -125,6 +140,7 @@ print('Chern tail: |W|^2 ~ r^{:.2f}; trivial at r = 16: {:.1e}'.format(slope, ta
 assert -5. < slope < -3.
 assert tails['trivial'][radii == 16][0] < 1e-8 < tails['Chern'][radii == 16][0]
 
+# sphinx_gallery_thumbnail_number = 2
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4.2))
 for name, color in (('trivial', 'C0'), ('Chern', 'C3')):
     ax1.semilogx(meshes, omega[name], 'o-', color=color, label=r'$\Omega$, ' + name)

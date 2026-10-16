@@ -36,7 +36,7 @@ vacancies, disorder and defects. On a torus,
 :meth:`~tbkit.system.System.get_bott_index` gives the Chern number of a
 disordered sample.
 
-.. GENERATED FROM PYTHON SOURCE LINES 20-49
+.. GENERATED FROM PYTHON SOURCE LINES 20-50
 
 .. code-block:: Python
 
@@ -45,6 +45,7 @@ disordered sample.
 
     import tbkit.lattices as lattices
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
     from tbkit.system import System
 
     t2 = 0.2
@@ -76,7 +77,36 @@ disordered sample.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-55
+.. GENERATED FROM PYTHON SOURCE LINES 51-58
+
+The lattice
+-----------
+The Haldane model on a :math:`6\times6`-cell flake, bond widths
+proportional to the amplitudes: the honeycomb lattice's two sublattices
+('a' and 'b', in two colours), the nearest-neighbour hopping (thick) and
+the second-neighbour hoppings :math:`\pm it_2` (thin). The torus and the
+cylinder below add the bonds across the boundaries, which are not drawn.
+
+.. GENERATED FROM PYTHON SOURCE LINES 58-61
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(haldane_system(6, 6, False)).lattice(plt_hop=True, ms=10, figsize=(6, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_periodic_boundaries_001.png
+   :alt: plot periodic boundaries
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_periodic_boundaries_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 62-67
 
 Torus, cylinder and flake
 ----------------------------
@@ -84,7 +114,7 @@ The torus has the spectrum of the k-mesh, and an empty gap. The cylinder
 and the flake fill the gap with the chiral edge states of the Haldane
 model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-70
+.. GENERATED FROM PYTHON SOURCE LINES 67-82
 
 .. code-block:: Python
 
@@ -116,14 +146,14 @@ model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-75
+.. GENERATED FROM PYTHON SOURCE LINES 83-87
 
 A disordered torus keeps its Chern number
 --------------------------------------------
 Random onsite energies and 5% vacancies: no Brillouin zone, yet the Bott
 index of the torus is still 1.
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-101
+.. GENERATED FROM PYTHON SOURCE LINES 87-113
 
 .. code-block:: Python
 
@@ -156,9 +186,9 @@ index of the torus is still 1.
 
 
 
-.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_periodic_boundaries_001.png
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_periodic_boundaries_002.png
    :alt: torus: 0 states in the gap, cylinder: 6 states in the gap, flake: 14 states in the gap
-   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_periodic_boundaries_001.png
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_periodic_boundaries_002.png
    :class: sphx-glr-single-img
 
 
@@ -174,7 +204,7 @@ index of the torus is still 1.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.417 seconds)
+   **Total running time of the script:** (0 minutes 0.195 seconds)
 
 
 .. _sphx_glr_download_api_gallery_tight_binding_plot_periodic_boundaries.py:

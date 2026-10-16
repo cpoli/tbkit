@@ -47,7 +47,7 @@ and :meth:`~tbkit.transport.Transport.four_terminal_resistance` solve
 the Landauer-Buttiker equations; :meth:`~tbkit.transport.Transport.local_currents`
 maps the current.
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-67
+.. GENERATED FROM PYTHON SOURCE LINES 31-68
 
 .. code-block:: Python
 
@@ -55,6 +55,7 @@ maps the current.
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.plot import Plot
     from tbkit.system import System
     from tbkit.transport import Transport
 
@@ -94,7 +95,35 @@ maps the current.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-73
+.. GENERATED FROM PYTHON SOURCE LINES 69-75
+
+The Hall bar
+------------
+A :math:`44\times16` strip of the square lattice with its
+nearest-neighbour bonds (their Peierls phases are not drawn). The source
+and drain leads continue it to the left and right; the four probes are
+strips of six sites attached along the top and bottom edges.
+
+.. GENERATED FROM PYTHON SOURCE LINES 75-78
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(sys).lattice(plt_hop=True, ms=3, c=1., figsize=(9, 3.6))
+
+
+
+
+.. image-sg:: /api/gallery/transport/images/sphx_glr_plot_hall_bar_edge_channels_001.png
+   :alt: plot hall bar edge channels
+   :srcset: /api/gallery/transport/images/sphx_glr_plot_hall_bar_edge_channels_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 79-84
 
 Quantized plateaus
 --------------------
@@ -102,7 +131,7 @@ The Landau levels sit near :math:`-4|t| + 4\pi\phi|t|(n + \frac12)`,
 :math:`\phi` the flux per plaquette; between them :math:`\nu` edge
 channels carry the current.
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-88
+.. GENERATED FROM PYTHON SOURCE LINES 84-99
 
 .. code-block:: Python
 
@@ -136,7 +165,7 @@ channels carry the current.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-94
+.. GENERATED FROM PYTHON SOURCE LINES 100-105
 
 The current flows along one edge
 ------------------------------------
@@ -144,7 +173,7 @@ On the first plateau, the current injected by the source runs along
 the top edge (for this sign of the field), a few magnetic lengths
 :math:`\ell_B = 1/\sqrt{2\pi\phi} \approx 1.8` sites wide.
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-119
+.. GENERATED FROM PYTHON SOURCE LINES 105-130
 
 .. code-block:: Python
 
@@ -176,9 +205,9 @@ the top edge (for this sign of the field), a few magnetic lengths
 
 
 
-.. image-sg:: /api/gallery/transport/images/sphx_glr_plot_hall_bar_edge_channels_001.png
+.. image-sg:: /api/gallery/transport/images/sphx_glr_plot_hall_bar_edge_channels_002.png
    :alt: Hall bar: edge channels and quantized resistances, current injected by the source, $\nu = 1$
-   :srcset: /api/gallery/transport/images/sphx_glr_plot_hall_bar_edge_channels_001.png
+   :srcset: /api/gallery/transport/images/sphx_glr_plot_hall_bar_edge_channels_002.png
    :class: sphx-glr-single-img
 
 
@@ -194,7 +223,7 @@ the top edge (for this sign of the field), a few magnetic lengths
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 10.981 seconds)
+   **Total running time of the script:** (0 minutes 2.998 seconds)
 
 
 .. _sphx_glr_download_api_gallery_transport_plot_hall_bar_edge_channels.py:

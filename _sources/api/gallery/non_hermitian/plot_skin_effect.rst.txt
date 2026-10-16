@@ -39,7 +39,7 @@ effect* (Yao and Wang; Kunst, Edvardsson, Budich and Bergholtz, 2018):
 bands live on a generalized Brillouin zone, see
 ``plot_generalized_brillouin_zone.py``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-34
+.. GENERATED FROM PYTHON SOURCE LINES 23-36
 
 .. code-block:: Python
 
@@ -47,7 +47,9 @@ bands live on a generalized Brillouin zone, see
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
 
     t_right, t_left = 1., 0.5
     hn = KSpace(lattices.chain())
@@ -61,12 +63,41 @@ bands live on a generalized Brillouin zone, see
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-37
+.. GENERATED FROM PYTHON SOURCE LINES 37-44
+
+The lattice
+-----------
+Ten sites of the Hatano-Nelson chain
+(:func:`~tbkit.bridges.finite_system`): one site per cell and
+nearest-neighbour bonds, non-reciprocal -- each carries :math:`t_R` one
+way and :math:`t_L` the other. The widths drawn are those of
+:math:`t_R`.
+
+.. GENERATED FROM PYTHON SOURCE LINES 44-47
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(hn, 10)).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
+
+
+
+
+.. image-sg:: /api/gallery/non_hermitian/images/sphx_glr_plot_skin_effect_001.png
+   :alt: plot skin effect
+   :srcset: /api/gallery/non_hermitian/images/sphx_glr_plot_skin_effect_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 48-50
 
 Ring and open chain
 -----------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-69
+.. GENERATED FROM PYTHON SOURCE LINES 50-82
 
 .. code-block:: Python
 
@@ -105,9 +136,9 @@ Ring and open chain
 
 
 
-.. image-sg:: /api/gallery/non_hermitian/images/sphx_glr_plot_skin_effect_001.png
+.. image-sg:: /api/gallery/non_hermitian/images/sphx_glr_plot_skin_effect_002.png
    :alt: open chain: every state on the left end
-   :srcset: /api/gallery/non_hermitian/images/sphx_glr_plot_skin_effect_001.png
+   :srcset: /api/gallery/non_hermitian/images/sphx_glr_plot_skin_effect_002.png
    :class: sphx-glr-single-img
 
 
@@ -124,7 +155,7 @@ Ring and open chain
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.286 seconds)
+   **Total running time of the script:** (0 minutes 0.088 seconds)
 
 
 .. _sphx_glr_download_api_gallery_non_hermitian_plot_skin_effect.py:

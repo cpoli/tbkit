@@ -38,7 +38,7 @@ half-filled triangular Hubbard model from random starts. At large
 :math:`-1.5\,t^2/U` per bond, below the :math:`-\frac43t^2/U` of the best
 collinear (up-up-down) state.
 
-.. GENERATED FROM PYTHON SOURCE LINES 22-34
+.. GENERATED FROM PYTHON SOURCE LINES 22-36
 
 .. code-block:: Python
 
@@ -49,6 +49,8 @@ collinear (up-up-down) state.
     from tbkit.kspace import KSpace
     from tbkit.meanfield import hubbard_mean_field_noncollinear
     from tbkit.higher_order import flake_positions
+    from tbkit.plot import Plot
+    from tbkit.system import System
 
     tri = KSpace(lattices.triangular())
     tri.set_hopping([{'i': 0, 'j': 0, 'R': (1, 0), 't': 1.}, {'i': 0, 'j': 0, 'R': (0, 1), 't': 1.},
@@ -61,12 +63,42 @@ collinear (up-up-down) state.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-37
+.. GENERATED FROM PYTHON SOURCE LINES 37-41
+
+The triangular lattice
+------------------------
+One site per unit cell, six nearest neighbours, and every elementary
+plaquette a triangle: no two-sublattice (Neel) pattern fits on it.
+
+.. GENERATED FROM PYTHON SOURCE LINES 41-48
+
+.. code-block:: Python
+
+
+    patch = lattices.triangular()
+    patch.get_lattice(n1=6, n2=6)
+    vis = System(patch)
+    vis.set_hopping([{'n': 1, 't': 1.}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/correlations/images/sphx_glr_plot_noncollinear_120_degree_order_001.png
+   :alt: plot noncollinear 120 degree order
+   :srcset: /api/gallery/correlations/images/sphx_glr_plot_noncollinear_120_degree_order_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 49-51
 
 The 120-degree state and its energy
 --------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-57
+.. GENERATED FROM PYTHON SOURCE LINES 51-71
 
 .. code-block:: Python
 
@@ -104,12 +136,12 @@ The 120-degree state and its energy
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-60
+.. GENERATED FROM PYTHON SOURCE LINES 72-74
 
 The moments on a 6 x 6 torus
 -------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-86
+.. GENERATED FROM PYTHON SOURCE LINES 74-100
 
 .. code-block:: Python
 
@@ -142,9 +174,9 @@ The moments on a 6 x 6 torus
 
 
 
-.. image-sg:: /api/gallery/correlations/images/sphx_glr_plot_noncollinear_120_degree_order_001.png
+.. image-sg:: /api/gallery/correlations/images/sphx_glr_plot_noncollinear_120_degree_order_002.png
    :alt: Triangular Hubbard model, $U = 12t$: 120° order, $|\mathbf{m}| = 0.47$
-   :srcset: /api/gallery/correlations/images/sphx_glr_plot_noncollinear_120_degree_order_001.png
+   :srcset: /api/gallery/correlations/images/sphx_glr_plot_noncollinear_120_degree_order_002.png
    :class: sphx-glr-single-img
 
 
@@ -154,7 +186,7 @@ The moments on a 6 x 6 torus
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 13.930 seconds)
+   **Total running time of the script:** (0 minutes 6.267 seconds)
 
 
 .. _sphx_glr_download_api_gallery_correlations_plot_noncollinear_120_degree_order.py:

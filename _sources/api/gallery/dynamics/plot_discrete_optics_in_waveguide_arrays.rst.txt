@@ -47,7 +47,7 @@ Christodoulides, Lederer and Silberberg (2003).
 :class:`~tbkit.propagation.Propagation` integrates this equation along
 :math:`z` (*get_propagation*), and *plt_prop_dimer* draws the coupler.
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-54
+.. GENERATED FROM PYTHON SOURCE LINES 31-55
 
 .. code-block:: Python
 
@@ -56,6 +56,7 @@ Christodoulides, Lederer and Silberberg (2003).
     from scipy.special import jv
 
     from tbkit.lattice import Lattice
+    from tbkit.plot import Plot
     from tbkit.system import System
     from tbkit.propagation import Propagation
 
@@ -81,14 +82,41 @@ Christodoulides, Lederer and Silberberg (2003).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-59
+.. GENERATED FROM PYTHON SOURCE LINES 56-61
+
+The lattice
+-----------
+Each waveguide is one site, and evanescent coupling between neighbouring
+guides is a nearest-neighbour hopping :math:`c`: an array of guides is a
+Tight-Binding chain, with the propagation distance :math:`z` as time.
+
+.. GENERATED FROM PYTHON SOURCE LINES 61-64
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(array(9)).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
+
+
+
+
+.. image-sg:: /api/gallery/dynamics/images/sphx_glr_plot_discrete_optics_in_waveguide_arrays_001.png
+   :alt: plot discrete optics in waveguide arrays
+   :srcset: /api/gallery/dynamics/images/sphx_glr_plot_discrete_optics_in_waveguide_arrays_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 65-69
 
 The directional coupler
 ---------------------------
 All the light returns to the first guide after the beat length
 :math:`\pi/c`, having crossed to the second at :math:`\pi/2c`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-69
+.. GENERATED FROM PYTHON SOURCE LINES 69-79
 
 .. code-block:: Python
 
@@ -105,9 +133,9 @@ All the light returns to the first guide after the beat length
 
 
 
-.. image-sg:: /api/gallery/dynamics/images/sphx_glr_plot_discrete_optics_in_waveguide_arrays_001.png
+.. image-sg:: /api/gallery/dynamics/images/sphx_glr_plot_discrete_optics_in_waveguide_arrays_002.png
    :alt: directional coupler: $|\psi_1|^2 = \cos^2(cz)$
-   :srcset: /api/gallery/dynamics/images/sphx_glr_plot_discrete_optics_in_waveguide_arrays_001.png
+   :srcset: /api/gallery/dynamics/images/sphx_glr_plot_discrete_optics_in_waveguide_arrays_002.png
    :class: sphx-glr-single-img
 
 
@@ -121,12 +149,12 @@ All the light returns to the first guide after the beat length
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-72
+.. GENERATED FROM PYTHON SOURCE LINES 81-83
 
 Discrete diffraction from a single guide
 ----------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-91
+.. GENERATED FROM PYTHON SOURCE LINES 83-102
 
 .. code-block:: Python
 
@@ -162,7 +190,7 @@ Discrete diffraction from a single guide
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-98
+.. GENERATED FROM PYTHON SOURCE LINES 103-109
 
 Diffraction management
 --------------------------
@@ -171,7 +199,7 @@ by the band curvature: fastest at :math:`k = 0`, not at all, to second
 order, at :math:`k = \pi/2`, where it drifts sideways at the largest
 group velocity, :math:`2c`, without broadening.
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-136
+.. GENERATED FROM PYTHON SOURCE LINES 109-147
 
 .. code-block:: Python
 
@@ -216,9 +244,9 @@ group velocity, :math:`2c`, without broadening.
 
 
 
-.. image-sg:: /api/gallery/dynamics/images/sphx_glr_plot_discrete_optics_in_waveguide_arrays_002.png
+.. image-sg:: /api/gallery/dynamics/images/sphx_glr_plot_discrete_optics_in_waveguide_arrays_003.png
    :alt: discrete diffraction from one guide, intensity at $z = 15$, diffraction management
-   :srcset: /api/gallery/dynamics/images/sphx_glr_plot_discrete_optics_in_waveguide_arrays_002.png
+   :srcset: /api/gallery/dynamics/images/sphx_glr_plot_discrete_optics_in_waveguide_arrays_003.png
    :class: sphx-glr-single-img
 
 
@@ -234,7 +262,7 @@ group velocity, :math:`2c`, without broadening.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.720 seconds)
+   **Total running time of the script:** (0 minutes 0.330 seconds)
 
 
 .. _sphx_glr_download_api_gallery_dynamics_plot_discrete_optics_in_waveguide_arrays.py:

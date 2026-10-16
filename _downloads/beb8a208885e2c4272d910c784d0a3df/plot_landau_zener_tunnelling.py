@@ -38,6 +38,7 @@ import matplotlib.pyplot as plt
 
 from tbkit.floquet import evolution_operator
 from tbkit.lattice import Lattice
+from tbkit.plot import Plot
 from tbkit.system import System
 from tbkit.propagation import Propagation
 
@@ -92,6 +93,21 @@ def binary_chain(force):
     return sys
 
 
+# %%
+# The binary chain: one hopping :math:`t` and onsite energies alternating
+# between :math:`+d` and :math:`-d` (two colours), so a two-site unit cell
+# and two bands separated by a gap :math:`2d` at the zone edge.
+
+lat_vis = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (1., 0.)}],
+                        prim_vec=[(2., 0.)])
+lat_vis.get_lattice(n1=6)
+vis = System(lat_vis)
+vis.set_hopping([{'n': 1, 't': t}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
+
+# %%
+# The packet, projected onto the lower band, under five forces:
+
 bands = binary_chain(0.)
 bands.get_eig(eigenvec=True)
 lower, upper = bands.rn[:, bands.en.real < 0], bands.rn[:, bands.en.real > 0]
@@ -124,6 +140,7 @@ prop.get_propagation(binary_chain(force).ham, psi0, steps=int(3 * np.pi / force 
 times = dz * np.arange(prop.steps)
 upper_weight = np.sum(abs(upper.conj().T @ prop.prop) ** 2, axis=0)
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(11, 4.2))
 # the two problems on one axis: P depends only on Delta^2 / alpha
 ratio = np.linspace(0.005, 0.5, 100)

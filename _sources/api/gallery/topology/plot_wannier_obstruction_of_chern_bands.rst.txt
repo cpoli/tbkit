@@ -44,7 +44,7 @@ lower band of the Haldane model on both sides of the transition: trivial
 (:math:`C = 0`, staggered potential :math:`M = 1.5`) and Chern
 (:math:`C = 1`, :math:`M = 0`).
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-51
+.. GENERATED FROM PYTHON SOURCE LINES 28-53
 
 .. code-block:: Python
 
@@ -53,7 +53,9 @@ lower band of the Haldane model on both sides of the transition: trivial
     from matplotlib.ticker import NullFormatter, ScalarFormatter
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
     from tbkit.wannier import wannierize
 
 
@@ -84,7 +86,38 @@ lower band of the Haldane model on both sides of the transition: trivial
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-60
+.. GENERATED FROM PYTHON SOURCE LINES 54-63
+
+The lattice
+-----------
+The Haldane model on a patch of :math:`5\times4` cells
+(:func:`~tbkit.bridges.finite_system`), each bond drawn with a width
+proportional to its amplitude: the honeycomb lattice's two sublattices
+('a' and 'b', in two colours), the nearest-neighbour hopping :math:`t`
+(thick) and the complex second-neighbour hoppings :math:`\pm it_2`
+within each sublattice (thin), which break time-reversal symmetry. The
+trivial model adds the staggered mass :math:`\pm M`, an onsite term.
+
+.. GENERATED FROM PYTHON SOURCE LINES 63-66
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(chern, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_wannier_obstruction_of_chern_bands_001.png
+   :alt: plot wannier obstruction of chern bands
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_wannier_obstruction_of_chern_bands_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 67-75
 
 Every projection fails somewhere
 ------------------------------------
@@ -95,7 +128,7 @@ everywhere. In the Chern phase the band sits on ``a`` at one corner and on
 ``b`` at the other, so both trial orbitals miss it at one of them: on a
 mesh through K and K' (12 x 12), each projection is exactly singular.
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-69
+.. GENERATED FROM PYTHON SOURCE LINES 75-84
 
 .. code-block:: Python
 
@@ -122,7 +155,7 @@ mesh through K and K' (12 x 12), each projection is exactly singular.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-76
+.. GENERATED FROM PYTHON SOURCE LINES 85-91
 
 The spread diverges with the sample
 ----------------------------------------
@@ -131,7 +164,7 @@ the Chern phase its smallest singular value falls as :math:`1/N`, and the
 minimized spread grows by about the same amount at each doubling of
 :math:`N`: like :math:`\log N`. In the trivial phase it converges.
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-93
+.. GENERATED FROM PYTHON SOURCE LINES 91-108
 
 .. code-block:: Python
 
@@ -166,7 +199,7 @@ minimized spread grows by about the same amount at each doubling of
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-100
+.. GENERATED FROM PYTHON SOURCE LINES 109-115
 
 A poor trial orbital is not the same thing. Projected onto the
 high-energy orbital ``a``, even the trivial band has zeros, at K and K':
@@ -175,7 +208,7 @@ descent stops in the local minimum around them, and the spread grows as
 well. The Chern band fails the same way from either orbital;
 the trivial band only from the wrong one.
 
-.. GENERATED FROM PYTHON SOURCE LINES 100-107
+.. GENERATED FROM PYTHON SOURCE LINES 115-122
 
 .. code-block:: Python
 
@@ -199,7 +232,7 @@ the trivial band only from the wrong one.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-113
+.. GENERATED FROM PYTHON SOURCE LINES 123-128
 
 Exponential versus power-law tails
 --------------------------------------
@@ -207,7 +240,7 @@ On the 64 x 64 sample, the trivial Wannier function decays exponentially;
 the Chern one only as :math:`|W|^2 \sim r^{-4}`, too slowly for
 :math:`\langle r^2\rangle` to converge.
 
-.. GENERATED FROM PYTHON SOURCE LINES 113-151
+.. GENERATED FROM PYTHON SOURCE LINES 128-166
 
 .. code-block:: Python
 
@@ -252,9 +285,9 @@ the Chern one only as :math:`|W|^2 \sim r^{-4}`, too slowly for
 
 
 
-.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_wannier_obstruction_of_chern_bands_001.png
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_wannier_obstruction_of_chern_bands_002.png
    :alt: Maximally localized spread of the lower band, Wannier function tails, 64 x 64 cells
-   :srcset: /api/gallery/topology/images/sphx_glr_plot_wannier_obstruction_of_chern_bands_001.png
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_wannier_obstruction_of_chern_bands_002.png
    :class: sphx-glr-single-img
 
 
@@ -270,7 +303,7 @@ the Chern one only as :math:`|W|^2 \sim r^{-4}`, too slowly for
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.803 seconds)
+   **Total running time of the script:** (0 minutes 2.413 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_wannier_obstruction_of_chern_bands.py:

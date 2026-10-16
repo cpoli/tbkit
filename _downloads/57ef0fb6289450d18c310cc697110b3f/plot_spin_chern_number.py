@@ -32,6 +32,8 @@ import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
 from tbkit.kspace import KSpace, PAULI
+from tbkit.plot import Plot
+from tbkit.system import System
 
 
 lat = lattices.honeycomb()
@@ -63,6 +65,21 @@ def spin_spectrum(km, ks):
     occ = vec[:, :, :2]
     return np.linalg.eigvalsh(occ.conj().transpose(0, 2, 1) @ S_Z @ occ)
 
+
+# %%
+# The lattice
+# -----------
+# The Kane-Mele model lives on the honeycomb lattice: sublattices 'a'
+# (onsite :math:`+M`) and 'b' (:math:`-M`) in two colours, each site
+# holding a spin-1/2 orbital, with the nearest-neighbour hopping (thick)
+# and the spin-orbit hoppings :math:`\pm i\lambda\sigma_z` between second
+# neighbours (thin, not to scale; their spin matrices are not drawn).
+
+patch = lattices.honeycomb()
+patch.get_lattice(n1=5, n2=4)
+vis = System(patch)
+vis.set_hopping([{'n': 1, 't': 1.}, {'n': 2, 't': 0.3}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # Without Rashba coupling: the Chern numbers of the two spins
@@ -128,6 +145,7 @@ b1, b2 = km.rec_vec_k
 corners = [np.zeros(2), (b1 - b2) / 3, b1 / 2, np.zeros(2)]  # Gamma, K, M, Gamma
 kpts = np.concatenate([np.linspace(corners[i], corners[i + 1], 60, endpoint=False) for i in range(3)])
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 for r, color in ((0., 'k'), (0.1, 'b'), (0.15, 'r')):
     w = spin_spectrum(kane_mele(rashba=r), kpts)

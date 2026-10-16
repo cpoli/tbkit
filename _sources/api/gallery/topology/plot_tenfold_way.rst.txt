@@ -37,16 +37,19 @@ carry a Chern number, AII a :math:`\mathbb{Z}_2`.
 Bloch Hamiltonian, and :meth:`~tbkit.kspace.KSpace.tenfold_class` names
 the class of the models of this gallery.
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-59
+.. GENERATED FROM PYTHON SOURCE LINES 21-62
 
 .. code-block:: Python
 
     import numpy as np
+    import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.lattice import Lattice
     from tbkit.kspace import KSpace, PAULI
     from tbkit.bdg import bdg_kspace, particle_hole
+    from tbkit.plot import Plot
 
 
     def ssh(v, w):
@@ -86,7 +89,45 @@ the class of the models of this gallery.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-65
+.. GENERATED FROM PYTHON SOURCE LINES 63-71
+
+The lattices
+------------
+The models below live on two lattices (:func:`~tbkit.bridges.finite_system`,
+bond widths proportional to the hoppings): a chain, here the SSH chain
+with :math:`v = 0.4` inside each cell and :math:`w = 1` between cells
+(the Kitaev chain has one site per cell), and the honeycomb lattice,
+here with the second-neighbour hoppings :math:`\pm 0.2i` of the Haldane
+model (thin).
+
+.. GENERATED FROM PYTHON SOURCE LINES 71-76
+
+.. code-block:: Python
+
+
+    fig_lat, axes_lat = plt.subplots(1, 2, figsize=(11, 4), width_ratios=(1.2, 1))
+    Plot(finite_system(ssh(0.4, 1.), 8)).lattice(plt_hop=True, ms=7, c=4., ax=axes_lat[0])
+    Plot(finite_system(honeycomb_model(t2=0.2), (5, 4))).lattice(plt_hop=True, ms=10, ax=axes_lat[1])
+
+
+
+
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_tenfold_way_001.png
+   :alt: plot tenfold way
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_tenfold_way_001.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    <Figure size 1100x400 with 2 Axes>
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 77-82
 
 Time reversal, particle-hole, chiral: which hold?
 --------------------------------------------------------
@@ -94,7 +135,7 @@ Complex hoppings break the (spinless) time reversal of the SSH chain,
 but not its sublattice (chiral) symmetry; a complex hopping phase breaks
 the Kitaev chain's time reversal, leaving particle-hole symmetry alone.
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-89
+.. GENERATED FROM PYTHON SOURCE LINES 82-106
 
 .. code-block:: Python
 
@@ -144,7 +185,7 @@ the Kitaev chain's time reversal, leaving particle-hole symmetry alone.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.026 seconds)
+   **Total running time of the script:** (0 minutes 0.044 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_tenfold_way.py:

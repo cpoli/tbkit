@@ -42,7 +42,7 @@ times across the magnetic Brillouin zone.
 :func:`~tbkit.kspace.magnetic_supercell` builds that magnetic unit cell
 for any 2D :class:`~tbkit.kspace.KSpace` model, here the square lattice.
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-44
+.. GENERATED FROM PYTHON SOURCE LINES 26-46
 
 .. code-block:: Python
 
@@ -50,7 +50,9 @@ for any 2D :class:`~tbkit.kspace.KSpace` model, here the square lattice.
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.kspace import magnetic_supercell
+    from tbkit.plot import Plot
 
 
     square = [{'i': 0, 'j': 0, 'R': (1, 0), 't': 1.}, {'i': 0, 'j': 0, 'R': (0, 1), 't': 1.}]
@@ -71,7 +73,38 @@ for any 2D :class:`~tbkit.kspace.KSpace` model, here the square lattice.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-52
+.. GENERATED FROM PYTHON SOURCE LINES 47-55
+
+The lattice
+-----------
+The square lattice, one site per cell and a nearest-neighbour hopping,
+here as six of its magnetic cells at flux :math:`1/3`
+(:func:`~tbkit.kspace.magnetic_supercell`, then
+:func:`~tbkit.bridges.finite_system`): three sites along
+:math:`\mathbf{a}_1` per magnetic cell. The Peierls phases change the
+hoppings' phases, not their amplitudes, so every bond is drawn alike.
+
+.. GENERATED FROM PYTHON SOURCE LINES 55-59
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(magnetic_supercell(lattices.square(), square, 1, 3), (2, 3))).lattice(plt_hop=True, ms=12, figsize=(4, 2.5))
+
+
+
+
+
+.. image-sg:: /api/gallery/magnetic_field/images/sphx_glr_plot_magnetic_translation_group_001.png
+   :alt: plot magnetic translation group
+   :srcset: /api/gallery/magnetic_field/images/sphx_glr_plot_magnetic_translation_group_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 60-67
 
 The magnetic unit cell is Harper's equation
 -----------------------------------------------
@@ -81,7 +114,7 @@ At flux :math:`p/q` the magnetic cell holds :math:`q` sites along
 :math:`\mathbf{a}_2` turned into an onsite
 :math:`2\cos(k_2 + 2\pi\alpha m)` by the Peierls phase of row *m*.
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-63
+.. GENERATED FROM PYTHON SOURCE LINES 67-78
 
 .. code-block:: Python
 
@@ -109,7 +142,7 @@ At flux :math:`p/q` the magnetic cell holds :math:`q` sites along
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-73
+.. GENERATED FROM PYTHON SOURCE LINES 79-88
 
 The q-fold degeneracy of the magnetic translations
 ------------------------------------------------------
@@ -121,7 +154,7 @@ field, the same :math:`q`-cell supercell (``p=0``) has no such symmetry:
 the degeneracy comes from the non-commuting translations, not from the
 larger cell.
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-100
+.. GENERATED FROM PYTHON SOURCE LINES 88-115
 
 .. code-block:: Python
 
@@ -155,9 +188,9 @@ larger cell.
 
 
 
-.. image-sg:: /api/gallery/magnetic_field/images/sphx_glr_plot_magnetic_translation_group_001.png
+.. image-sg:: /api/gallery/magnetic_field/images/sphx_glr_plot_magnetic_translation_group_002.png
    :alt: 3-cell supercell, no field, magnetic cell, $\alpha = 1/3$: period $2\pi/3$
-   :srcset: /api/gallery/magnetic_field/images/sphx_glr_plot_magnetic_translation_group_001.png
+   :srcset: /api/gallery/magnetic_field/images/sphx_glr_plot_magnetic_translation_group_002.png
    :class: sphx-glr-single-img
 
 
@@ -170,7 +203,7 @@ larger cell.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 101-110
+.. GENERATED FROM PYTHON SOURCE LINES 117-126
 
 q subbands at every rational flux
 -------------------------------------
@@ -182,7 +215,7 @@ breaks into exactly :math:`q` subbands, separated by gaps for odd
 alone, with none of the edge states that fill the gaps of a finite
 flake.
 
-.. GENERATED FROM PYTHON SOURCE LINES 110-125
+.. GENERATED FROM PYTHON SOURCE LINES 126-141
 
 .. code-block:: Python
 
@@ -204,9 +237,9 @@ flake.
 
 
 
-.. image-sg:: /api/gallery/magnetic_field/images/sphx_glr_plot_magnetic_translation_group_002.png
+.. image-sg:: /api/gallery/magnetic_field/images/sphx_glr_plot_magnetic_translation_group_003.png
    :alt: Hofstadter subbands from the magnetic supercell
-   :srcset: /api/gallery/magnetic_field/images/sphx_glr_plot_magnetic_translation_group_002.png
+   :srcset: /api/gallery/magnetic_field/images/sphx_glr_plot_magnetic_translation_group_003.png
    :class: sphx-glr-single-img
 
 
@@ -223,7 +256,7 @@ flake.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.471 seconds)
+   **Total running time of the script:** (0 minutes 0.154 seconds)
 
 
 .. _sphx_glr_download_api_gallery_magnetic_field_plot_magnetic_translation_group.py:

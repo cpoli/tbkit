@@ -41,7 +41,7 @@ returns lies on the zone boundary, that the path does not depend on the
 choice of primitive vectors, and that the s-band of the fcc and bcc
 lattices takes its closed-form values at the labelled points.
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-53
+.. GENERATED FROM PYTHON SOURCE LINES 25-55
 
 .. code-block:: Python
 
@@ -52,6 +52,8 @@ lattices takes its closed-form values at the labelled points.
 
     from tbkit.lattice import Lattice
     from tbkit.kspace import KSpace, cubic_path, high_symmetry_path, reciprocal_vectors
+    from tbkit.plot import Plot
+    from tbkit.system import System
 
 
     def lattice_2d(prim_vec):
@@ -80,7 +82,7 @@ lattices takes its closed-form values at the labelled points.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-62
+.. GENERATED FROM PYTHON SOURCE LINES 56-64
 
 The five 2D Bravais lattices
 --------------------------------
@@ -91,7 +93,7 @@ one other reciprocal lattice vector, and closer to :math:`\Gamma` than
 to any. The oblique lattice has no symmetry beyond inversion, so its
 path follows the edges of half the zone (:math:`X, H, C, H_1, Y`).
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-100
+.. GENERATED FROM PYTHON SOURCE LINES 64-83
 
 .. code-block:: Python
 
@@ -102,6 +104,38 @@ path follows the edges of half the zone (:math:`X, H, C, H_1, Y`).
                'hexagonal': [(1., 0.), (0.5, s3 / 2)],
                'centred rectangular': [(1., 0.), (0.5, 1.3)],
                'oblique': [(1., 0.), (0.3, 1.2)]}
+
+    # The five lattices in real space, with their primitive vectors
+    # :math:`\mathbf{a}_1` and :math:`\mathbf{a}_2` (arrows):
+    fig_lat, axes = plt.subplots(1, 5, figsize=(17, 3.6))
+    for ax, (name, prim_vec) in zip(axes, bravais.items()):
+        patch = lattice_2d(prim_vec)
+        patch.get_lattice(n1=5, n2=5)
+        Plot(System(patch)).lattice(ms=7, ax=ax)
+        for a in prim_vec:
+            ax.annotate('', xy=a, xytext=(0., 0.), arrowprops=dict(arrowstyle='->', color='C3', lw=2))
+        ax.set_title(name)
+
+
+
+
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_brillouin_zones_and_high_symmetry_paths_001.png
+   :alt: square, rectangular, hexagonal, centred rectangular, oblique
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_brillouin_zones_and_high_symmetry_paths_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 84-85
+
+Their Brillouin zones and high-symmetry paths:
+
+.. GENERATED FROM PYTHON SOURCE LINES 85-116
+
+.. code-block:: Python
+
 
     fig_bz, axes = plt.subplots(1, 5, figsize=(17, 3.9))
     for ax, (name, prim_vec) in zip(axes, bravais.items()):
@@ -136,9 +170,9 @@ path follows the edges of half the zone (:math:`X, H, C, H_1, Y`).
 
 
 
-.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_brillouin_zones_and_high_symmetry_paths_001.png
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_brillouin_zones_and_high_symmetry_paths_002.png
    :alt: First Brillouin zones (blue) and the standard paths (red), square, rectangular, hexagonal, centred rectangular, oblique
-   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_brillouin_zones_and_high_symmetry_paths_001.png
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_brillouin_zones_and_high_symmetry_paths_002.png
    :class: sphx-glr-single-img
 
 
@@ -155,7 +189,7 @@ path follows the edges of half the zone (:math:`X, H, C, H_1, Y`).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 101-109
+.. GENERATED FROM PYTHON SOURCE LINES 118-126
 
 The path does not depend on the primitive vectors
 --------------------------------------------------------
@@ -166,7 +200,7 @@ lattice is recognized from a reduced basis, so the three give the same
 :math:`M` and :math:`K`, at :math:`|M| = 2\pi/(\sqrt3 a)` and
 :math:`|K| = 4\pi/(3a)` from :math:`\Gamma`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-119
+.. GENERATED FROM PYTHON SOURCE LINES 126-136
 
 .. code-block:: Python
 
@@ -193,7 +227,7 @@ lattice is recognized from a reduced basis, so the three give the same
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-137
+.. GENERATED FROM PYTHON SOURCE LINES 137-154
 
 fcc and bcc: the s band at the labelled points
 ---------------------------------------------------
@@ -213,7 +247,7 @@ neighbours at :math:`\sqrt3a/2`),
 :math:`N` and :math:`P`. The primitive vectors given here are not the
 conventional cubic axes; the path is found anyway.
 
-.. GENERATED FROM PYTHON SOURCE LINES 137-167
+.. GENERATED FROM PYTHON SOURCE LINES 154-184
 
 .. code-block:: Python
 
@@ -250,9 +284,9 @@ conventional cubic axes; the path is found anyway.
 
 
 
-.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_brillouin_zones_and_high_symmetry_paths_002.png
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_brillouin_zones_and_high_symmetry_paths_003.png
    :alt: fcc: s band along the Setyawan-Curtarolo path, bcc: s band along the Setyawan-Curtarolo path
-   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_brillouin_zones_and_high_symmetry_paths_002.png
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_brillouin_zones_and_high_symmetry_paths_003.png
    :class: sphx-glr-single-img
 
 
@@ -266,7 +300,7 @@ conventional cubic axes; the path is found anyway.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 168-180
+.. GENERATED FROM PYTHON SOURCE LINES 185-197
 
 Other paths of cubic crystals
 ---------------------------------
@@ -281,7 +315,7 @@ back to :math:`-12t` at :math:`(1, 1, 1)\,2\pi/a`, a reciprocal lattice
 vector of fcc (:math:`L` is the midpoint of the hexagonal face it
 bisects), so an image of :math:`\Gamma`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 180-197
+.. GENERATED FROM PYTHON SOURCE LINES 197-214
 
 .. code-block:: Python
 
@@ -305,9 +339,9 @@ bisects), so an image of :math:`\Gamma`.
 
 
 
-.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_brillouin_zones_and_high_symmetry_paths_003.png
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_brillouin_zones_and_high_symmetry_paths_004.png
    :alt: plot brillouin zones and high symmetry paths
-   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_brillouin_zones_and_high_symmetry_paths_003.png
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_brillouin_zones_and_high_symmetry_paths_004.png
    :class: sphx-glr-single-img
 
 
@@ -323,7 +357,7 @@ bisects), so an image of :math:`\Gamma`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.262 seconds)
+   **Total running time of the script:** (0 minutes 0.531 seconds)
 
 
 .. _sphx_glr_download_api_gallery_tight_binding_plot_brillouin_zones_and_high_symmetry_paths.py:

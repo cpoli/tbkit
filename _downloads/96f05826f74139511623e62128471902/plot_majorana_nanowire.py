@@ -43,6 +43,8 @@ import tbkit.lattices as lattices
 from tbkit.bdg import bdg_ham, bdg_kspace, majorana_number, pairing_s_wave
 from tbkit.kspace import KSpace, PAULI
 from tbkit.orbital import OrbitalSystem
+from tbkit.plot import Plot
+from tbkit.system import System
 
 t, alpha, delta = -1., 0.5, 0.3  # band bottom at mu = 2t = -2
 
@@ -66,6 +68,20 @@ def wire_bloch(vz, mu):
     ks.set_onsite({'a': vz * PAULI['x']})
     return bdg_kspace(ks, [{'i': 0, 'j': 1, 'R': (0,), 'delta': delta}], mu=mu)
 
+
+# %%
+# The lattice
+# -----------
+# The wire is a chain with one site per cell, each holding a spin-1/2
+# orbital. Each nearest-neighbour bond carries the hopping :math:`t` and
+# the Rashba spin-orbit coupling :math:`\alpha`; on each site act the
+# Zeeman field :math:`V_z` and the s-wave pairing :math:`\Delta`.
+
+patch = lattices.chain()
+patch.get_lattice(n1=10)
+vis = System(patch)
+vis.set_hopping([{'n': 1, 't': t}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
 
 # %%
 # The real-space and Bloch models agree
@@ -117,6 +133,7 @@ ends = (weight[:20].sum() + weight[-20:].sum()) / 2
 print('V_Z = 0.6: two states at |E| < 1e-10; {:.1%} of their weight on the outer 20 sites.'.format(ends))
 assert ends > 0.99
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 3, figsize=(14, 4))
 axes[0].pcolormesh(vzs, mus, phase, cmap='coolwarm', shading='nearest')
 fine = np.linspace(delta, 1.2, 100)

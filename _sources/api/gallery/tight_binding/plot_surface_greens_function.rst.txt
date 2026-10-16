@@ -42,7 +42,7 @@ self-energies of the semi-infinite leads of quantum transport.
 :math:`(h_0, v)`, and :meth:`tbkit.kspace.KSpace.surface_spectral_function`
 applies it to the surface of a periodic model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-34
+.. GENERATED FROM PYTHON SOURCE LINES 26-37
 
 .. code-block:: Python
 
@@ -50,7 +50,10 @@ applies it to the surface of a periodic model.
     import matplotlib.pyplot as plt
 
     from tbkit.lattice import Lattice
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
+    from tbkit.system import System
     from tbkit.transport import surface_green
 
 
@@ -61,7 +64,38 @@ applies it to the surface of a periodic model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-43
+.. GENERATED FROM PYTHON SOURCE LINES 38-43
+
+The lattice
+-----------
+The first crystal is a chain, one site per cell and a hopping :math:`t`
+between neighbours, cut at its left end and continuing forever to the
+right (ten sites drawn).
+
+.. GENERATED FROM PYTHON SOURCE LINES 43-50
+
+.. code-block:: Python
+
+
+    lat_vis = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}], prim_vec=[(1., 0.)])
+    lat_vis.get_lattice(n1=10)
+    vis = System(lat_vis)
+    vis.set_hopping([{'n': 1, 't': 1.}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
+
+
+
+
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_surface_greens_function_001.png
+   :alt: plot surface greens function
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_surface_greens_function_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 51-59
 
 The semi-infinite chain
 ---------------------------
@@ -72,7 +106,7 @@ surface density of states :math:`\sqrt{4t^2 - E^2}/2\pi t^2` vanishes at
 the band edges like a square root, where the bulk one,
 :math:`1/\pi\sqrt{4t^2 - E^2}`, diverges.
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-53
+.. GENERATED FROM PYTHON SOURCE LINES 59-69
 
 .. code-block:: Python
 
@@ -99,7 +133,7 @@ the band edges like a square root, where the bulk one,
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-59
+.. GENERATED FROM PYTHON SOURCE LINES 70-75
 
 Twenty steps instead of :math:`1/\eta`
 ------------------------------------------
@@ -107,7 +141,7 @@ The number of decimation steps needed grows like
 :math:`\log_2(1/\eta)`; the layer-by-layer recursion needs about
 :math:`1/\eta` iterations to reach the same Green's function.
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-93
+.. GENERATED FROM PYTHON SOURCE LINES 75-109
 
 .. code-block:: Python
 
@@ -161,7 +195,7 @@ The number of decimation steps needed grows like
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-106
+.. GENERATED FROM PYTHON SOURCE LINES 110-122
 
 A surface state: the end of an SSH chain
 --------------------------------------------
@@ -176,7 +210,7 @@ bulk state at that energy. When the chain ends on a strong bond there is
 none. Here the crystal is the semi-infinite chain of cells
 :math:`0, 1, 2, \dots`; ``side=-1`` gives the opposite end.
 
-.. GENERATED FROM PYTHON SOURCE LINES 106-155
+.. GENERATED FROM PYTHON SOURCE LINES 122-140
 
 .. code-block:: Python
 
@@ -192,6 +226,33 @@ none. Here the crystal is the semi-infinite chain of cells
 
     eta = 1e-4
     t1, t2 = 0.4, 1.
+
+    # Its first eight cells (:func:`~tbkit.bridges.finite_system`), orbitals
+    # a and b in two colours, bond widths proportional to the hoppings: the
+    # chain ends on the weak bond :math:`t_1`.
+    fig_ssh = Plot(finite_system(ssh(t1, t2), 8)).lattice(plt_hop=True, ms=7, c=4., figsize=(7, 1.2))
+
+
+
+
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_surface_greens_function_002.png
+   :alt: plot surface greens function
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_surface_greens_function_002.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 141-142
+
+The end state's weight, at both ends:
+
+.. GENERATED FROM PYTHON SOURCE LINES 142-180
+
+.. code-block:: Python
+
+
     for side in (1, -1):
         weight = ssh(t1, t2).surface_spectral_function([[0.]], [0.], direction=0, side=side, eta=eta)[0, 0] * np.pi * eta
         print('t1/t2 = {}: end-state weight on the outer cell {:.4f} (side {:+d}), expected {:.4f}'.format(
@@ -237,16 +298,16 @@ none. Here the crystal is the semi-infinite chain of cells
 
     *
 
-      .. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_surface_greens_function_001.png
+      .. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_surface_greens_function_003.png
          :alt: Semi-infinite chain, End of the SSH chain ($t_1/t_2 = 0.4$)
-         :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_surface_greens_function_001.png
+         :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_surface_greens_function_003.png
          :class: sphx-glr-multi-img
 
     *
 
-      .. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_surface_greens_function_002.png
+      .. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_surface_greens_function_004.png
          :alt: Cost of $g_s(E + i\eta)$
-         :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_surface_greens_function_002.png
+         :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_surface_greens_function_004.png
          :class: sphx-glr-multi-img
 
 
@@ -264,7 +325,7 @@ none. Here the crystal is the semi-infinite chain of cells
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.967 seconds)
+   **Total running time of the script:** (0 minutes 0.298 seconds)
 
 
 .. _sphx_glr_download_api_gallery_tight_binding_plot_surface_greens_function.py:

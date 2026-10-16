@@ -33,7 +33,7 @@ blocks) and a disordered real-space flake (a System, whose random
 hoppings could not be regenerated), reloads both, and checks that every
 matrix and spectrum is identical.
 
-.. GENERATED FROM PYTHON SOURCE LINES 17-29
+.. GENERATED FROM PYTHON SOURCE LINES 17-30
 
 .. code-block:: Python
 
@@ -46,6 +46,7 @@ matrix and spectrum is identical.
     from tbkit import lattices
     from tbkit.io import save_model, load_model
     from tbkit.kspace import KSpace, PAULI
+    from tbkit.plot import Plot
     from tbkit.system import System
 
 
@@ -56,7 +57,7 @@ matrix and spectrum is identical.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-36
+.. GENERATED FROM PYTHON SOURCE LINES 31-37
 
 A spinful Bloch model
 ---------------------------
@@ -65,7 +66,7 @@ Graphene with the intrinsic spin-orbit coupling of Kane and Mele:
 for the sublattice-a bonds at 0, 120 and 240 degrees, conjugate for the
 stored 60-degree bond, the opposite on sublattice b).
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-46
+.. GENERATED FROM PYTHON SOURCE LINES 37-47
 
 .. code-block:: Python
 
@@ -86,12 +87,42 @@ stored 60-degree bond, the opposite on sublattice b).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-49
+.. GENERATED FROM PYTHON SOURCE LINES 48-52
+
+Its bonds on a patch of the honeycomb lattice (sublattices a and b in two
+colours): the nearest-neighbour hopping :math:`t` (thick) and the
+second-neighbour spin-orbit bonds (thin, not to scale; their
+spin matrices :math:`\pm i\lambda\sigma_z` are not drawn).
+
+.. GENERATED FROM PYTHON SOURCE LINES 52-59
+
+.. code-block:: Python
+
+
+    patch = lattices.honeycomb()
+    patch.get_lattice(n1=5, n2=4)
+    vis = System(patch)
+    vis.set_hopping([{'n': 1, 't': t}, {'n': 2, 't': 5 * lam}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/models/images/sphx_glr_plot_save_load_001.png
+   :alt: plot save load
+   :srcset: /api/gallery/models/images/sphx_glr_plot_save_load_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 60-62
 
 A disordered flake
 ------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-59
+.. GENERATED FROM PYTHON SOURCE LINES 62-72
 
 .. code-block:: Python
 
@@ -112,12 +143,12 @@ A disordered flake
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-62
+.. GENERATED FROM PYTHON SOURCE LINES 73-75
 
 Save, reload, compare
 ---------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-80
+.. GENERATED FROM PYTHON SOURCE LINES 75-93
 
 .. code-block:: Python
 
@@ -153,13 +184,13 @@ Save, reload, compare
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-84
+.. GENERATED FROM PYTHON SOURCE LINES 94-97
 
 The reloaded Kane-Mele model is still a quantum spin Hall insulator: a
 gap :math:`6\sqrt{3}\lambda` at K and a nontrivial :math:`\mathbb{Z}_2`
 invariant.
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-94
+.. GENERATED FROM PYTHON SOURCE LINES 97-107
 
 .. code-block:: Python
 
@@ -186,11 +217,11 @@ invariant.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 95-96
+.. GENERATED FROM PYTHON SOURCE LINES 108-109
 
 Bands of the reloaded model, and spectrum of the reloaded flake.
 
-.. GENERATED FROM PYTHON SOURCE LINES 96-112
+.. GENERATED FROM PYTHON SOURCE LINES 109-125
 
 .. code-block:: Python
 
@@ -213,9 +244,9 @@ Bands of the reloaded model, and spectrum of the reloaded flake.
 
 
 
-.. image-sg:: /api/gallery/models/images/sphx_glr_plot_save_load_001.png
+.. image-sg:: /api/gallery/models/images/sphx_glr_plot_save_load_002.png
    :alt: Kane-Mele bands, reloaded from disk, Disordered flake: identical spectra
-   :srcset: /api/gallery/models/images/sphx_glr_plot_save_load_001.png
+   :srcset: /api/gallery/models/images/sphx_glr_plot_save_load_002.png
    :class: sphx-glr-single-img
 
 
@@ -225,7 +256,7 @@ Bands of the reloaded model, and spectrum of the reloaded flake.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.237 seconds)
+   **Total running time of the script:** (0 minutes 0.112 seconds)
 
 
 .. _sphx_glr_download_api_gallery_models_plot_save_load.py:

@@ -47,7 +47,7 @@ trial orbitals (here all eight, with two :math:`p_z` trial orbitals).
 Hamiltonian in the Wannier basis as a two-orbital
 :class:`~tbkit.kspace.KSpace`: Wannier interpolation of the π bands.
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-59
+.. GENERATED FROM PYTHON SOURCE LINES 31-61
 
 .. code-block:: Python
 
@@ -57,7 +57,9 @@ Hamiltonian in the Wannier basis as a two-orbital
     import tbkit.lattices as lattices
     from tbkit.kspace import high_symmetry_path
     from tbkit.lattice import Lattice
+    from tbkit.plot import Plot
     from tbkit.slater_koster import sk_kspace
+    from tbkit.system import System
     from tbkit.wannier import wannierize
 
     # eV; energies relative to the 2p level (Saito, Dresselhaus and Dresselhaus)
@@ -86,7 +88,40 @@ Hamiltonian in the Wannier basis as a two-orbital
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-65
+.. GENERATED FROM PYTHON SOURCE LINES 62-69
+
+The lattice
+-----------
+Graphene's honeycomb lattice, sublattices ``a`` and ``b`` in two colours,
+each atom carrying the four orbitals :math:`s, p_x, p_y, p_z` and bonded
+to its three nearest neighbours by the Slater-Koster integrals above.
+Buckling raises sublattice ``b`` out of the plane, along the axis
+perpendicular to this view.
+
+.. GENERATED FROM PYTHON SOURCE LINES 69-76
+
+.. code-block:: Python
+
+
+    patch = lattices.honeycomb()
+    patch.get_lattice(n1=5, n2=4)
+    vis = System(patch)
+    vis.set_hopping([{'n': 1, 't': 1.}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/models/images/sphx_glr_plot_disentangling_entangled_bands_001.png
+   :alt: plot disentangling entangled bands
+   :srcset: /api/gallery/models/images/sphx_glr_plot_disentangling_entangled_bands_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 77-82
 
 Flat graphene: the π bands cross the σ bands
 ------------------------------------------------
@@ -94,7 +129,7 @@ The π band starts 9 eV below the Dirac point at Γ, under the top of the
 σ bands at -3 eV, and crosses them on its way up to K. Sorted by energy,
 band 3 is σ near Γ and π near K.
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-73
+.. GENERATED FROM PYTHON SOURCE LINES 82-90
 
 .. code-block:: Python
 
@@ -119,7 +154,7 @@ band 3 is σ near Γ and π near K.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-83
+.. GENERATED FROM PYTHON SOURCE LINES 91-100
 
 The isolated-group recipe fails: band 3 meets the σ band below it on the
 mesh, so :func:`~tbkit.wannier.wannierize` refuses it. Given all eight
@@ -131,7 +166,7 @@ exactly the :math:`p_z` one: :math:`\Omega_I = 0` (point orbitals), the
 Wannier functions are the :math:`p_z` orbitals, and their model is
 Wallace's, with the single hopping :math:`V_{pp\pi}`, exact everywhere.
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-100
+.. GENERATED FROM PYTHON SOURCE LINES 100-117
 
 .. code-block:: Python
 
@@ -161,13 +196,13 @@ Wallace's, with the single hopping :math:`V_{pp\pi}`, exact everywhere.
  .. code-block:: none
 
     isolated group: The bands [3, 4] touch band 2 on the k-mesh
-    Omega_I = 2.8e-14, weight on pz = [1. 1.]
+    Omega_I = 7.1e-15, weight on pz = [1. 1.]
     Wannier model: |t| = [3.03 3.03 3.03 3.03 3.03 3.03] (the three bonds and their conjugates)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 101-111
+.. GENERATED FROM PYTHON SOURCE LINES 118-128
 
 Buckled graphene: the π and σ states mix
 --------------------------------------------
@@ -180,7 +215,7 @@ between its points the interpolation converges as the mesh is refined
 (the error is largest at the top of the frozen window, where states
 leave it).
 
-.. GENERATED FROM PYTHON SOURCE LINES 111-137
+.. GENERATED FROM PYTHON SOURCE LINES 128-154
 
 .. code-block:: Python
 
@@ -218,18 +253,18 @@ leave it).
 
  .. code-block:: none
 
-    nk =  6: Omega_I 0.1279 -> 0.0250 in 362 steps; frozen bands on the mesh to 5e-15, on the path to 0.232 eV
-    nk = 12: Omega_I 0.3809 -> 0.0591 in 870 steps; frozen bands on the mesh to 5e-15, on the path to 0.036 eV
+    nk =  6: Omega_I 0.1279 -> 0.0250 in 362 steps; frozen bands on the mesh to 4e-15, on the path to 0.232 eV
+    nk = 12: Omega_I 0.3809 -> 0.0591 in 870 steps; frozen bands on the mesh to 4e-15, on the path to 0.036 eV
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 138-140
+.. GENERATED FROM PYTHON SOURCE LINES 155-157
 
 Plots: the buckled bands (grey) with the Wannier-interpolated π bands
 from the 12 x 12 mesh, and the descent of :math:`\Omega_I`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 140-165
+.. GENERATED FROM PYTHON SOURCE LINES 157-182
 
 .. code-block:: Python
 
@@ -261,9 +296,9 @@ from the 12 x 12 mesh, and the descent of :math:`\Omega_I`.
 
 
 
-.. image-sg:: /api/gallery/models/images/sphx_glr_plot_disentangling_entangled_bands_001.png
+.. image-sg:: /api/gallery/models/images/sphx_glr_plot_disentangling_entangled_bands_002.png
    :alt: Buckled graphene (0.25), Minimization of $\Omega_I$
-   :srcset: /api/gallery/models/images/sphx_glr_plot_disentangling_entangled_bands_001.png
+   :srcset: /api/gallery/models/images/sphx_glr_plot_disentangling_entangled_bands_002.png
    :class: sphx-glr-single-img
 
 
@@ -273,7 +308,7 @@ from the 12 x 12 mesh, and the descent of :math:`\Omega_I`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.831 seconds)
+   **Total running time of the script:** (0 minutes 1.225 seconds)
 
 
 .. _sphx_glr_download_api_gallery_models_plot_disentangling_entangled_bands.py:

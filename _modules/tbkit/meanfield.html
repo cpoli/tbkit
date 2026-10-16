@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 
@@ -25,21 +26,21 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
     <script src="../../_static/documentation_options.js?v=74e82e83"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
@@ -52,7 +53,6 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.6" />
   
@@ -102,7 +102,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -178,7 +178,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -219,7 +219,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -379,7 +379,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for tbkit.meanfield</h1><div class="highlight"><pre>
-<span></span><span class="sa">r</span><span class="sd">"""</span>
+<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">The Hubbard model in the (collinear, unrestricted Hartree-Fock) mean-field</span>
 <span class="sd">approximation:</span>
 
@@ -394,9 +394,9 @@
 
 <span class="sd">Each spin moves in the density of the other; the densities are iterated</span>
 <span class="sd">(with linear mixing) until self-consistent. With :math:`U &gt; 0` on a</span>
-<span class="sd">bipartite lattice at half filling it reproduces Lieb's theorem (the total</span>
+<span class="sd">bipartite lattice at half filling it reproduces Lieb&#39;s theorem (the total</span>
 <span class="sd">moment :math:`S = ||A| - |B||/2`) and the edge magnetism of zigzag graphene.</span>
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -410,19 +410,29 @@
 <div class="viewcode-block" id="MeanFieldResult">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.meanfield.MeanFieldResult">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MeanFieldResult</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">'''</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Self-consistent solution of *hubbard_mean_field*.</span>
 
-<span class="sd">    :ivar n_up: Real ndarray. Spin-up density on every site.</span>
-<span class="sd">    :ivar n_dn: Real ndarray. Spin-down density on every site.</span>
-<span class="sd">    :ivar magnetization: Real ndarray. :math:`m_i = (n_{i\\uparrow} - n_{i\\downarrow})/2`.</span>
-<span class="sd">    :ivar en_up: Real ndarray. Spin-up mean-field energies.</span>
-<span class="sd">    :ivar en_dn: Real ndarray. Spin-down mean-field energies.</span>
-<span class="sd">    :ivar e_fermi: Real number. Fermi level.</span>
-<span class="sd">    :ivar energy: Real number. Mean-field ground-state (free, at T &gt; 0) energy</span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_up : Real ndarray</span>
+<span class="sd">        Spin-up density on every site.</span>
+<span class="sd">    n_dn : Real ndarray</span>
+<span class="sd">        Spin-down density on every site.</span>
+<span class="sd">    magnetization : Real ndarray</span>
+<span class="sd">        :math:`m_i = (n_{i\\uparrow} - n_{i\\downarrow})/2`.</span>
+<span class="sd">    en_up : Real ndarray</span>
+<span class="sd">        Spin-up mean-field energies.</span>
+<span class="sd">    en_dn : Real ndarray</span>
+<span class="sd">        Spin-down mean-field energies.</span>
+<span class="sd">    e_fermi : Real number</span>
+<span class="sd">        Fermi level.</span>
+<span class="sd">    energy : Real number</span>
+<span class="sd">        Mean-field ground-state (free, at T &gt; 0) energy</span>
 <span class="sd">        :math:`\\sum f E - U\\sum_i n_{i\\uparrow}n_{i\\downarrow}`.</span>
-<span class="sd">    :ivar iterations: Integer. Number of iterations.</span>
-<span class="sd">    '''</span>
+<span class="sd">    iterations : Integer</span>
+<span class="sd">        Number of iterations.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_up</span><span class="p">,</span> <span class="n">n_dn</span><span class="p">,</span> <span class="n">en_up</span><span class="p">,</span> <span class="n">en_dn</span><span class="p">,</span> <span class="n">e_fermi</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">iterations</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_up</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_dn</span> <span class="o">=</span> <span class="n">n_up</span><span class="p">,</span> <span class="n">n_dn</span>
@@ -434,20 +444,20 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">total_spin</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Total :math:`S_z = \sum_i m_i`.</span>
-<span class="sd">        '''</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">magnetization</span><span class="p">))</span></div>
 
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_occupy</span><span class="p">(</span><span class="n">en_up</span><span class="p">,</span> <span class="n">en_dn</span><span class="p">,</span> <span class="n">n_electrons</span><span class="p">,</span> <span class="n">temperature</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">'''</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Private function. Occupations of both spins sharing one Fermi level: at</span>
 <span class="sd">    T = 0 the lowest levels, the electrons left for a degenerate level at</span>
 <span class="sd">    the Fermi energy shared equally among its states (a fixed, arbitrary</span>
 <span class="sd">    choice among them would make the iteration oscillate), else Fermi-Dirac.</span>
-<span class="sd">    '''</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">en_up</span><span class="p">,</span> <span class="n">en_dn</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">temperature</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">n_electrons</span><span class="p">))</span>
@@ -474,7 +484,7 @@
     <span class="n">n_up</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">n_dn</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">mixing</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
     <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MeanFieldResult</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Solve the Hubbard model in mean field, self-consistently.</span>
 
 <span class="sd">    The iteration converges to *a* self-consistent solution, not</span>
@@ -482,50 +492,61 @@
 <span class="sd">    solutions reached from several starts (random seeds, or a staggered</span>
 <span class="sd">    magnetization on the two sublattices of a bipartite lattice).</span>
 
-<span class="sd">    :param ham: Square Hermitian matrix (sparse or dense), the spin-independent</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ham</span>
+<span class="sd">        Square Hermitian matrix (sparse or dense), the spin-independent</span>
 <span class="sd">        single-particle Hamiltonian (e.g. *System.ham*).</span>
-<span class="sd">    :param U: Real number, or array of one per site. Onsite repulsion.</span>
-<span class="sd">    :param n_electrons: Positive real, at most 2N. Number of electrons (both</span>
+<span class="sd">    U : Real number, or array of one per site</span>
+<span class="sd">        Onsite repulsion.</span>
+<span class="sd">    n_electrons : Positive real, at most 2N</span>
+<span class="sd">        Number of electrons (both</span>
 <span class="sd">        spins; N for half filling). An integer at T = 0.</span>
-<span class="sd">    :param temperature: Positive real or zero. Default value 0.</span>
-<span class="sd">    :param n_up: Real array. Default value None. Initial spin-up density.</span>
-<span class="sd">    :param n_dn: Real array. Default value None. Initial spin-down density.</span>
+<span class="sd">    temperature : Positive real or zero, default 0</span>
+<span class="sd">    n_up : Real array, default None</span>
+<span class="sd">        Initial spin-up density.</span>
+<span class="sd">    n_dn : Real array, default None</span>
+<span class="sd">        Initial spin-down density.</span>
 <span class="sd">        By default, a small random magnetization on top of the uniform</span>
 <span class="sd">        density (to break the spin symmetry).</span>
-<span class="sd">    :param mixing: Real in (0, 1]. Default value 0.5. Fraction of the new</span>
+<span class="sd">    mixing : Real in (0, 1], default 0.5</span>
+<span class="sd">        Fraction of the new</span>
 <span class="sd">        density mixed in at each iteration. (Plain linear mixing converges</span>
 <span class="sd">        only to stable solutions, but slowly near a magnetic transition:</span>
 <span class="sd">        raise *max_iter* there.)</span>
-<span class="sd">    :param tol: Positive real. Default value 1e-8. Convergence threshold on</span>
+<span class="sd">    tol : Positive real, default 1e-8</span>
+<span class="sd">        Convergence threshold on</span>
 <span class="sd">        the largest density change.</span>
-<span class="sd">    :param max_iter: Positive integer. Default value 20000.</span>
-<span class="sd">    :param seed: Default value None. Seed of the random initial magnetization.</span>
+<span class="sd">    max_iter : Positive integer, default 20000</span>
+<span class="sd">    seed</span>
+<span class="sd">        Default value None. Seed of the random initial magnetization.</span>
 
-<span class="sd">    :returns:</span>
-<span class="sd">        * **result** -- :class:`MeanFieldResult`.</span>
-<span class="sd">    '''</span>
-    <span class="n">ham</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="s1">'toarray'</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">square_matrix</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="s1">'ham'</span><span class="p">)</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result : :class:`MeanFieldResult`</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">ham</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="s1">&#39;toarray&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">square_matrix</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="s1">&#39;ham&#39;</span><span class="p">)</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">hermitian_dense</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span>
-    <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">),</span> <span class="p">(</span><span class="n">n</span><span class="p">,))</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">U</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> \
-        <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="s1">'U'</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">n</span><span class="p">,))</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">U</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> \
+        <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">electrons</span><span class="p">(</span><span class="n">n_electrons</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">'temperature'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">temperature</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">integer_electrons</span><span class="p">(</span><span class="n">n_electrons</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">mixing</span><span class="p">(</span><span class="n">mixing</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="s1">'tol'</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">max_iter</span><span class="p">,</span> <span class="s1">'max_iter'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="s1">&#39;tol&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">max_iter</span><span class="p">,</span> <span class="s1">&#39;max_iter&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">n_up</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">n_dn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
         <span class="n">kick</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
         <span class="n">n_up</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n_electrons</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">))</span> <span class="o">+</span> <span class="n">kick</span>
         <span class="n">n_dn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n_electrons</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">))</span> <span class="o">-</span> <span class="n">kick</span>
-    <span class="n">up</span><span class="p">,</span> <span class="n">dn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">n_up</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">n_dn</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">up</span><span class="p">,</span> <span class="s1">'n_up'</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">dn</span><span class="p">,</span> <span class="s1">'n_dn'</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">up</span><span class="p">,</span> <span class="n">dn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">n_up</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">n_dn</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">up</span><span class="p">,</span> <span class="s1">&#39;n_up&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">dn</span><span class="p">,</span> <span class="s1">&#39;n_dn&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">en_up</span><span class="p">,</span> <span class="n">v_up</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">ham</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">U</span> <span class="o">*</span> <span class="n">dn</span><span class="p">))</span>
         <span class="n">en_dn</span><span class="p">,</span> <span class="n">v_dn</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">ham</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">U</span> <span class="o">*</span> <span class="n">up</span><span class="p">))</span>
@@ -538,41 +559,50 @@
         <span class="k">if</span> <span class="n">change</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
             <span class="k">break</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">error_handling</span><span class="o">.</span><span class="n">converged</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s1">'hubbard_mean_field'</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">converged</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;hubbard_mean_field&#39;</span><span class="p">)</span>
     <span class="n">energy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f_up</span> <span class="o">*</span> <span class="n">en_up</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f_dn</span> <span class="o">*</span> <span class="n">en_dn</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">U</span> <span class="o">*</span> <span class="n">new_up</span> <span class="o">*</span> <span class="n">new_dn</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">MeanFieldResult</span><span class="p">(</span><span class="n">new_up</span><span class="p">,</span> <span class="n">new_dn</span><span class="p">,</span> <span class="n">en_up</span><span class="p">,</span> <span class="n">en_dn</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">it</span><span class="p">)</span></div>
 
 
 
 <span class="c1">#: Pauli matrices sigma_x, sigma_y, sigma_z.</span>
-<span class="n">_SIGMA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]],</span> <span class="p">[[</span><span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]],</span> <span class="p">[[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">]]],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'c16'</span><span class="p">)</span>
+<span class="n">_SIGMA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]],</span> <span class="p">[[</span><span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]],</span> <span class="p">[[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">]]],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="NonCollinearResult">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.meanfield.NonCollinearResult">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">NonCollinearResult</span><span class="p">():</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Self-consistent solution of *hubbard_mean_field_noncollinear*.</span>
 
-<span class="sd">    :ivar rho: Complex ndarray, shape (N, 2, 2). Onsite spin density</span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rho : Complex ndarray, shape (N, 2, 2)</span>
+<span class="sd">        Onsite spin density</span>
 <span class="sd">        matrices :math:`\rho_{i,\alpha\beta} = \langle c^\dagger_{i\beta}c_{i\alpha}\rangle`.</span>
-<span class="sd">    :ivar density: Real ndarray. :math:`n_i = \mathrm{Tr}\,\rho_i`.</span>
-<span class="sd">    :ivar magnetization: Real ndarray, shape (N, 3).</span>
+<span class="sd">    density : Real ndarray</span>
+<span class="sd">        :math:`n_i = \mathrm{Tr}\,\rho_i`.</span>
+<span class="sd">    magnetization : Real ndarray, shape (N, 3)</span>
 <span class="sd">        :math:`\mathbf{m}_i = \mathrm{Tr}(\rho_i\boldsymbol\sigma)/2`.</span>
-<span class="sd">    :ivar energies: Real ndarray. Mean-field energies (2N).</span>
-<span class="sd">    :ivar states: Complex ndarray, shape (2N, 2N). Eigenvectors (columns),</span>
+<span class="sd">    energies : Real ndarray</span>
+<span class="sd">        Mean-field energies (2N).</span>
+<span class="sd">    states : Complex ndarray, shape (2N, 2N)</span>
+<span class="sd">        Eigenvectors (columns),</span>
 <span class="sd">        rows site-major (spin up, down).</span>
-<span class="sd">    :ivar e_fermi: Real number. Fermi level.</span>
-<span class="sd">    :ivar energy: Real number. Mean-field ground-state energy</span>
+<span class="sd">    e_fermi : Real number</span>
+<span class="sd">        Fermi level.</span>
+<span class="sd">    energy : Real number</span>
+<span class="sd">        Mean-field ground-state energy</span>
 <span class="sd">        :math:`\sum f E - U\sum_i(\rho_{i\uparrow\uparrow}\rho_{i\downarrow\downarrow}</span>
 <span class="sd">        - |\rho_{i\uparrow\downarrow}|^2)`.</span>
-<span class="sd">    :ivar iterations: Integer. Number of iterations.</span>
-<span class="sd">    '''</span>
+<span class="sd">    iterations : Integer</span>
+<span class="sd">        Number of iterations.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">e_fermi</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">iterations</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rho</span> <span class="o">=</span> <span class="n">rho</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">density</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">axis1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis2</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">magnetization</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'iab,sba-&gt;is'</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">_SIGMA</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">magnetization</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;iab,sba-&gt;is&#39;</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">_SIGMA</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">energies</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">states</span> <span class="o">=</span> <span class="n">energies</span><span class="p">,</span> <span class="n">states</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">e_fermi</span> <span class="o">=</span> <span class="n">e_fermi</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">energy</span>
@@ -580,9 +610,9 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">total_spin</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Total spin :math:`\sum_i\mathbf{m}_i`, shape (3,).</span>
-<span class="sd">        '''</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">magnetization</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
 
 
@@ -594,7 +624,7 @@
     <span class="n">magnetization</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">spinful</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">mixing</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
     <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NonCollinearResult</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Solve the Hubbard model in the non-collinear (spin-rotation invariant)</span>
 <span class="sd">    Hartree-Fock approximation: the onsite spin density matrix</span>
 <span class="sd">    :math:`\rho_i` is kept whole, so the moments may point in any</span>
@@ -613,52 +643,62 @@
 <span class="sd">    (collinear moments along :math:`z` stay collinear, and give the same</span>
 <span class="sd">    solution). As there, several starts should be compared by *energy*.</span>
 
-<span class="sd">    :param ham: Square Hermitian matrix: the single-particle Hamiltonian,</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ham</span>
+<span class="sd">        Square Hermitian matrix: the single-particle Hamiltonian,</span>
 <span class="sd">        (N, N) spin independent, or, with ``spinful=True``, (2N, 2N) with</span>
 <span class="sd">        rows site-major (spin up, down) -- e.g. with spin-orbit coupling.</span>
-<span class="sd">    :param U: Real number, or array of one per site. Onsite repulsion.</span>
-<span class="sd">    :param n_electrons: Positive real, at most 2N. An integer at T = 0.</span>
-<span class="sd">    :param temperature: Positive real or zero. Default value 0.</span>
-<span class="sd">    :param magnetization: Real array, shape (N, 3). Default value None</span>
+<span class="sd">    U : Real number, or array of one per site</span>
+<span class="sd">        Onsite repulsion.</span>
+<span class="sd">    n_electrons : Positive real, at most 2N</span>
+<span class="sd">        An integer at T = 0.</span>
+<span class="sd">    temperature : Positive real or zero, default 0</span>
+<span class="sd">    magnetization : Real array, shape (N, 3)</span>
+<span class="sd">        Default value None</span>
 <span class="sd">        (random directions of length 0.1). Initial moments, on top of a</span>
 <span class="sd">        uniform density.</span>
-<span class="sd">    :param spinful: Boolean. Default value False. See *ham*.</span>
-<span class="sd">    :param mixing: Real in (0, 1]. Default value 0.5.</span>
-<span class="sd">    :param tol: Positive real. Default value 1e-8. Convergence threshold on</span>
+<span class="sd">    spinful : Boolean, default False</span>
+<span class="sd">        See *ham*.</span>
+<span class="sd">    mixing : Real in (0, 1], default 0.5</span>
+<span class="sd">    tol : Positive real, default 1e-8</span>
+<span class="sd">        Convergence threshold on</span>
 <span class="sd">        the largest change of :math:`\rho`.</span>
-<span class="sd">    :param max_iter: Positive integer. Default value 20000.</span>
-<span class="sd">    :param seed: Default value None. Seed of the random initial moments.</span>
+<span class="sd">    max_iter : Positive integer, default 20000</span>
+<span class="sd">    seed</span>
+<span class="sd">        Default value None. Seed of the random initial moments.</span>
 
-<span class="sd">    :returns:</span>
-<span class="sd">        * **result** -- :class:`NonCollinearResult`.</span>
-<span class="sd">    '''</span>
-    <span class="n">ham</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="s1">'toarray'</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">square_matrix</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="s1">'ham'</span><span class="p">)</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result : :class:`NonCollinearResult`</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">ham</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="s1">&#39;toarray&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">square_matrix</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="s1">&#39;ham&#39;</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">hermitian_dense</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">spinful</span><span class="p">,</span> <span class="s1">'spinful'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">spinful</span><span class="p">,</span> <span class="s1">&#39;spinful&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">spinful</span><span class="p">:</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">even_dimension</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ham</span><span class="p">))</span>
-        <span class="n">h0</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'c16'</span><span class="p">)</span>
+        <span class="n">h0</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">h0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'c16'</span><span class="p">)</span>
+        <span class="n">h0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">h0</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
-    <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">U</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="s1">'U'</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">U</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">electrons</span><span class="p">(</span><span class="n">n_electrons</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">'temperature'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">temperature</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">integer_electrons</span><span class="p">(</span><span class="n">n_electrons</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">mixing</span><span class="p">(</span><span class="n">mixing</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="s1">'tol'</span><span class="p">)</span>
-    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">max_iter</span><span class="p">,</span> <span class="s1">'max_iter'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="s1">&#39;tol&#39;</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">max_iter</span><span class="p">,</span> <span class="s1">&#39;max_iter&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">magnetization</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
         <span class="n">magnetization</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">vec</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
-    <span class="n">magnetization</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">magnetization</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span>
+    <span class="n">magnetization</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">magnetization</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">magnetization</span><span class="p">(</span><span class="n">magnetization</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
     <span class="c1"># rho = n/2 + m.sigma (so that Tr(rho sigma)/2 = m)</span>
     <span class="n">rho</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_electrons</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)[</span><span class="kc">None</span><span class="p">]</span>
-              <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'is,sab-&gt;iab'</span><span class="p">,</span> <span class="n">magnetization</span><span class="p">,</span> <span class="n">_SIGMA</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'c16'</span><span class="p">)</span>
+              <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;is,sab-&gt;iab&#39;</span><span class="p">,</span> <span class="n">magnetization</span><span class="p">,</span> <span class="n">_SIGMA</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;c16&#39;</span><span class="p">)</span>
     <span class="n">blocks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">pot</span> <span class="o">=</span> <span class="n">U</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">axis1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis2</span><span class="o">=</span><span class="mi">2</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)[</span><span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">rho</span><span class="p">)</span>
@@ -675,7 +715,7 @@
         <span class="k">if</span> <span class="n">change</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
             <span class="k">break</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">error_handling</span><span class="o">.</span><span class="n">converged</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s1">'hubbard_mean_field_noncollinear'</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">converged</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;hubbard_mean_field_noncollinear&#39;</span><span class="p">)</span>
     <span class="n">double</span> <span class="o">=</span> <span class="n">U</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">new</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">new</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">new</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">energy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f</span> <span class="o">*</span> <span class="n">en</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">double</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">NonCollinearResult</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">en</span><span class="p">,</span> <span class="n">vec</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">it</span><span class="p">)</span></div>
@@ -709,8 +749,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -731,6 +771,7 @@
 
   <p class="sphinx-version">
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
   </p>
 </div>
       
@@ -743,7 +784,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
 </p></div>
       
     </div>

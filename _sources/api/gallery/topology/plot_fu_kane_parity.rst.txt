@@ -43,7 +43,7 @@ product is compared, across the phase diagram, with the invariant from
 the Wannier-centre flow (:meth:`~tbkit.kspace.KSpace.z2_invariant`),
 which knows nothing about inversion: they agree everywhere.
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-60
+.. GENERATED FROM PYTHON SOURCE LINES 27-62
 
 .. code-block:: Python
 
@@ -52,6 +52,8 @@ which knows nothing about inversion: they agree everywhere.
 
     from tbkit.lattice import Lattice
     from tbkit.kspace import KSpace, PAULI
+    from tbkit.plot import Plot
+    from tbkit.system import System
 
 
     # orbitals: (s, up), (s, down), (p, up), (p, down) -> two "sites" with spin
@@ -87,12 +89,43 @@ which knows nothing about inversion: they agree everywhere.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-63
+.. GENERATED FROM PYTHON SOURCE LINES 63-68
+
+The lattice
+-----------
+The square lattice with its nearest-neighbour bonds. Each site holds an
+s and a p orbital, each with spin, and every bond carries a
+:math:`4\times4` hopping matrix that couples them (not drawn).
+
+.. GENERATED FROM PYTHON SOURCE LINES 68-75
+
+.. code-block:: Python
+
+
+    patch = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}], prim_vec=lat.prim_vec)
+    patch.get_lattice(n1=6, n2=6)
+    vis = System(patch)
+    vis.set_hopping([{'n': 1, 't': 1.}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=10, figsize=(4, 4))
+
+
+
+
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_fu_kane_parity_001.png
+   :alt: plot fu kane parity
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_fu_kane_parity_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 76-78
 
 Both symmetries hold
 --------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-69
+.. GENERATED FROM PYTHON SOURCE LINES 78-84
 
 .. code-block:: Python
 
@@ -115,7 +148,7 @@ Both symmetries hold
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-76
+.. GENERATED FROM PYTHON SOURCE LINES 85-91
 
 Parities at the TRIMs, and the phase diagram
 -------------------------------------------------
@@ -124,7 +157,7 @@ by the sign of :math:`d_z` at each TRIM: :math:`m` at :math:`\Gamma`,
 :math:`m - 4` at X and Y, :math:`m - 8` at M. So :math:`\nu = 1` for
 :math:`0 < m < 4` and :math:`4 < m < 8`, and 0 otherwise.
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-93
+.. GENERATED FROM PYTHON SOURCE LINES 91-108
 
 .. code-block:: Python
 
@@ -148,9 +181,9 @@ by the sign of :math:`d_z` at each TRIM: :math:`m` at :math:`\Gamma`,
 
 
 
-.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_fu_kane_parity_001.png
+.. image-sg:: /api/gallery/topology/images/sphx_glr_plot_fu_kane_parity_002.png
    :alt: BHZ model: two routes to the same Z2 invariant
-   :srcset: /api/gallery/topology/images/sphx_glr_plot_fu_kane_parity_001.png
+   :srcset: /api/gallery/topology/images/sphx_glr_plot_fu_kane_parity_002.png
    :class: sphx-glr-single-img
 
 
@@ -168,7 +201,7 @@ by the sign of :math:`d_z` at each TRIM: :math:`m` at :math:`\Gamma`,
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.226 seconds)
+   **Total running time of the script:** (0 minutes 0.097 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_fu_kane_parity.py:

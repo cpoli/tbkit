@@ -37,8 +37,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.floquet import FloquetKSpace
 from tbkit.kspace import KSpace, reciprocal_vectors
+from tbkit.plot import Plot
 
 graphene = KSpace(lattices.honeycomb())
 graphene.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
@@ -49,6 +51,16 @@ b1, b2 = (np.array(v) for v in reciprocal_vectors(graphene.lat.prim_vec))
 K = (b1 - b2) / 3
 mass = np.diff(np.linalg.eigvalsh(driven.get_ham(K)))[0] / 2
 print('Light-induced mass at K: m = {:.4f}'.format(mass))
+
+# %%
+# The lattice
+# -----------
+# Graphene's honeycomb lattice on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`): two sites per unit cell
+# (sublattices 'a' and 'b', in two colours), each bonded to its three
+# nearest neighbours on the other sublattice.
+
+fig_lat = Plot(finite_system(graphene, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # Berry curvature of the Floquet bands: both valleys alike
@@ -113,6 +125,7 @@ assert np.isclose(abs(sigma_gap), 1., atol=1e-6)
 assert np.allclose(np.abs(sigma_band), 1 / ratios, rtol=0.05)
 assert np.all(np.sign(sigma_band) == np.sign(sigma_gap))
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(11, 4.4))
 cart = (np.indices((nk, nk)).reshape(2, -1).T / nk) @ np.array([b1, b2])
 lim = np.max(np.abs(curv))

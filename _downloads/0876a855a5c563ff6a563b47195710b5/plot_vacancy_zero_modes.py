@@ -25,6 +25,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.plot import Plot
 from tbkit.system import System
 
 
@@ -52,6 +53,22 @@ coor = lat0.coor
 centre = int(np.argmin(np.hypot(coor['x'] - coor['x'].mean(), coor['y'] - coor['y'].mean())))
 vac_tag = coor['tag'][centre]
 other = 'b' if vac_tag == 'a' else 'a'
+
+# %%
+# The lattice
+# -----------
+# The honeycomb lattice, sublattices 'a' and 'b' in two colours, here an
+# :math:`8\times8` patch with its central site removed: the vacancy
+# leaves three dangling bonds, all ending on the other sublattice.
+
+lat_vis = lattices.honeycomb()
+lat_vis.get_lattice(n1=8, n2=8)
+c_vis = lat_vis.coor
+lat_vis.remove_sites([int(np.argmin(np.hypot(c_vis['x'] - c_vis['x'].mean(),
+                                                         c_vis['y'] - c_vis['y'].mean())))])
+vis = System(lat_vis)
+vis.set_hopping([{'n': 1, 't': -1.}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=9, figsize=(6, 4.5))
 
 # %%
 # One vacancy, one zero mode on the other sublattice
@@ -123,6 +140,7 @@ n_opp = np.sum(np.abs(graphene_torus([centre, opposite]).en) < 1e-9)
 assert n_same == 2 and n_opp == 0
 print('two vacancies: {} zero modes on the same sublattice, {} on opposite ones: OK'.format(n_same, n_opp))
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(11, 4.6))
 sc = axes[0].scatter(lat.coor['x'], lat.coor['y'], c=np.log10(psi2 + 1e-12), s=6, cmap='magma', vmin=-6)
 axes[0].plot(coor['x'][centre], coor['y'][centre], 'cx', ms=10)

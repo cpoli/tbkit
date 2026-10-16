@@ -38,7 +38,7 @@ constant-energy contour is its *spin texture*
 :func:`~tbkit.kspace.high_symmetry_path`, which recognizes the Bravais
 lattice and returns the standard high-symmetry points with their labels.
 
-.. GENERATED FROM PYTHON SOURCE LINES 22-28
+.. GENERATED FROM PYTHON SOURCE LINES 22-31
 
 .. code-block:: Python
 
@@ -46,7 +46,10 @@ lattice and returns the standard high-symmetry points with their labels.
 
     import tbkit.lattices as lattices
     from tbkit.lattice import Lattice
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace, PAULI, high_symmetry_path
+    from tbkit.plot import Plot
+    from tbkit.system import System
 
 
 
@@ -55,7 +58,7 @@ lattice and returns the standard high-symmetry points with their labels.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-37
+.. GENERATED FROM PYTHON SOURCE LINES 32-40
 
 Gapped graphene: the valleys are sublattice polarized
 -----------------------------------------------------------
@@ -66,7 +69,7 @@ lives entirely on sublattice b (onsite :math:`-m`) and the upper one on
 a. Away from the valleys the bands mix both, half and half at
 :math:`m = 0`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-60
+.. GENERATED FROM PYTHON SOURCE LINES 40-49
 
 .. code-block:: Python
 
@@ -78,6 +81,49 @@ a. Away from the valleys the bands mix both, half and half at
     gra = KSpace(lat)
     gra.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': -1.} for R in [(0, 0), (-1, 0), (0, -1)]])
     gra.set_onsite({'a': mass, 'b': -mass})
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 50-54
+
+The model on a patch of :math:`5\times4` cells
+(:func:`~tbkit.bridges.finite_system`): the honeycomb lattice with its
+nearest-neighbour bonds, sublattice a (onsite :math:`+m`) and b
+(:math:`-m`) in two colours.
+
+.. GENERATED FROM PYTHON SOURCE LINES 54-57
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(gra, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_projected_bands_and_spin_textures_001.png
+   :alt: plot projected bands and spin textures
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_projected_bands_and_spin_textures_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 58-59
+
+The bands, coloured by their weight on sublattice a:
+
+.. GENERATED FROM PYTHON SOURCE LINES 59-75
+
+.. code-block:: Python
+
+
     points, labels = high_symmetry_path(lat)
     print('Path:', labels)
     nk = 60
@@ -96,9 +142,9 @@ a. Away from the valleys the bands mix both, half and half at
 
 
 
-.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_projected_bands_and_spin_textures_001.png
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_projected_bands_and_spin_textures_002.png
    :alt: Gapped graphene: weight on sublattice a
-   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_projected_bands_and_spin_textures_001.png
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_projected_bands_and_spin_textures_002.png
    :class: sphx-glr-single-img
 
 
@@ -107,13 +153,13 @@ a. Away from the valleys the bands mix both, half and half at
  .. code-block:: none
 
     Path: ['$\\Gamma$', 'M', 'K', '$\\Gamma$']
-    Weight on sublattice a at K: lower band 1.27e-30, upper band 1.000000
+    Weight on sublattice a at K: lower band 1.37e-30, upper band 1.000000
 
     Text(0.5, 1.0, 'Gapped graphene: weight on sublattice a')
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-71
+.. GENERATED FROM PYTHON SOURCE LINES 77-87
 
 Rashba spin-orbit coupling: spin-momentum locking
 -------------------------------------------------------
@@ -126,7 +172,7 @@ every band in two. Each branch has its spin locked perpendicular to
 :math:`\Gamma`-X line, the lower branch along :math:`+\sigma_y` -- and
 the two branches wind in opposite directions around the Fermi contour.
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-99
+.. GENERATED FROM PYTHON SOURCE LINES 87-93
 
 .. code-block:: Python
 
@@ -135,6 +181,51 @@ the two branches wind in opposite directions around the Fermi contour.
     ras = KSpace(lattices.square(), spin=True)
     ras.set_hopping([{'i': 0, 'j': 0, 'R': (1, 0), 't': -np.eye(2) + 1j * alpha * PAULI['y']},
                            {'i': 0, 'j': 0, 'R': (0, 1), 't': -np.eye(2) - 1j * alpha * PAULI['x']}])
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 94-96
+
+The square lattice, one spin-1/2 site per cell, with its nearest-neighbour
+bonds; each carries the hopping and the Rashba spin flip (not drawn).
+
+.. GENERATED FROM PYTHON SOURCE LINES 96-103
+
+.. code-block:: Python
+
+
+    patch = lattices.square()
+    patch.get_lattice(n1=6, n2=6)
+    vis = System(patch)
+    vis.set_hopping([{'n': 1, 't': -1.}])
+    fig_lat_sq = Plot(vis).lattice(plt_hop=True, ms=10, figsize=(4, 4))
+
+
+
+
+.. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_projected_bands_and_spin_textures_003.png
+   :alt: plot projected bands and spin textures
+   :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_projected_bands_and_spin_textures_003.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 104-105
+
+The bands, coloured by :math:`\langle\sigma_y\rangle`:
+
+.. GENERATED FROM PYTHON SOURCE LINES 105-129
+
+.. code-block:: Python
+
+
     points, labels = high_symmetry_path(ras.lat)
     ras.k_path(points, nk=nk)
     sigma_y = ras.band_weights(ras.spin_operator('y'))
@@ -166,16 +257,16 @@ the two branches wind in opposite directions around the Fermi contour.
 
     *
 
-      .. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_projected_bands_and_spin_textures_002.png
+      .. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_projected_bands_and_spin_textures_004.png
          :alt: Rashba bands colored by $\langle\sigma_y\rangle$
-         :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_projected_bands_and_spin_textures_002.png
+         :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_projected_bands_and_spin_textures_004.png
          :class: sphx-glr-multi-img
 
     *
 
-      .. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_projected_bands_and_spin_textures_003.png
+      .. image-sg:: /api/gallery/tight_binding/images/sphx_glr_plot_projected_bands_and_spin_textures_005.png
          :alt: Spin texture of band 0, $E = -3$
-         :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_projected_bands_and_spin_textures_003.png
+         :srcset: /api/gallery/tight_binding/images/sphx_glr_plot_projected_bands_and_spin_textures_005.png
          :class: sphx-glr-multi-img
 
 
@@ -191,7 +282,7 @@ the two branches wind in opposite directions around the Fermi contour.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.597 seconds)
+   **Total running time of the script:** (0 minutes 0.209 seconds)
 
 
 .. _sphx_glr_download_api_gallery_tight_binding_plot_projected_bands_and_spin_textures.py:

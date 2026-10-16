@@ -40,7 +40,7 @@ energy :math:`U \to \infty` on one site. The states near :math:`E = 0`
 come from the sparse shift-invert solver
 :meth:`~tbkit.system.System.get_eig_sparse`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-56
+.. GENERATED FROM PYTHON SOURCE LINES 24-57
 
 .. code-block:: Python
 
@@ -48,6 +48,7 @@ come from the sparse shift-invert solver
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.plot import Plot
     from tbkit.system import System
 
 
@@ -83,7 +84,41 @@ come from the sparse shift-invert solver
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-62
+.. GENERATED FROM PYTHON SOURCE LINES 58-63
+
+The lattice
+-----------
+The honeycomb lattice, sublattices 'a' and 'b' in two colours, here an
+:math:`8\times8` patch with its central site removed: the vacancy
+leaves three dangling bonds, all ending on the other sublattice.
+
+.. GENERATED FROM PYTHON SOURCE LINES 63-73
+
+.. code-block:: Python
+
+
+    lat_vis = lattices.honeycomb()
+    lat_vis.get_lattice(n1=8, n2=8)
+    c_vis = lat_vis.coor
+    lat_vis.remove_sites([int(np.argmin(np.hypot(c_vis['x'] - c_vis['x'].mean(),
+                                                             c_vis['y'] - c_vis['y'].mean())))])
+    vis = System(lat_vis)
+    vis.set_hopping([{'n': 1, 't': -1.}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=9, figsize=(6, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/disorder/images/sphx_glr_plot_vacancy_zero_modes_001.png
+   :alt: plot vacancy zero modes
+   :srcset: /api/gallery/disorder/images/sphx_glr_plot_vacancy_zero_modes_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 74-79
 
 One vacancy, one zero mode on the other sublattice
 ------------------------------------------------------
@@ -91,7 +126,7 @@ The clean :math:`32 \times 32` torus has no state near :math:`E = 0`
 (its gap is a finite-size one). Removing one site leaves exactly one
 zero mode, entirely on the sublattice it did not belong to.
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-72
+.. GENERATED FROM PYTHON SOURCE LINES 79-89
 
 .. code-block:: Python
 
@@ -118,14 +153,14 @@ zero mode, entirely on the sublattice it did not belong to.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-77
+.. GENERATED FROM PYTHON SOURCE LINES 90-94
 
 Quasi-localized: :math:`|\psi|^2 \sim 1/r^2`
 ------------------------------------------------
 The mean weight in rings around the vacancy (minimum-image distances on
 the torus) falls as a power law with exponent 2, not exponentially.
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-91
+.. GENERATED FROM PYTHON SOURCE LINES 94-108
 
 .. code-block:: Python
 
@@ -156,7 +191,7 @@ the torus) falls as a power law with exponent 2, not exponentially.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-97
+.. GENERATED FROM PYTHON SOURCE LINES 109-114
 
 The vacancy as an infinitely strong impurity
 ------------------------------------------------
@@ -164,7 +199,7 @@ An onsite energy :math:`U` on the same site pulls one state towards
 :math:`E = 0` as :math:`U` grows, and onto the opposite sublattice:
 the vacancy is its :math:`U \to \infty` limit.
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-110
+.. GENERATED FROM PYTHON SOURCE LINES 114-127
 
 .. code-block:: Python
 
@@ -194,7 +229,7 @@ the vacancy is its :math:`U \to \infty` limit.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 111-117
+.. GENERATED FROM PYTHON SOURCE LINES 128-134
 
 Counting by sublattice imbalance
 ------------------------------------
@@ -203,7 +238,7 @@ imbalance is 2 and so is the number of zero modes; on the other one
 the imbalance vanishes and the two quasi-localized modes hybridize away
 from :math:`E = 0`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 117-140
+.. GENERATED FROM PYTHON SOURCE LINES 134-157
 
 .. code-block:: Python
 
@@ -233,9 +268,9 @@ from :math:`E = 0`.
 
 
 
-.. image-sg:: /api/gallery/disorder/images/sphx_glr_plot_vacancy_zero_modes_001.png
+.. image-sg:: /api/gallery/disorder/images/sphx_glr_plot_vacancy_zero_modes_002.png
    :alt: zero mode: $\log_{10}|\psi|^2$
-   :srcset: /api/gallery/disorder/images/sphx_glr_plot_vacancy_zero_modes_001.png
+   :srcset: /api/gallery/disorder/images/sphx_glr_plot_vacancy_zero_modes_002.png
    :class: sphx-glr-single-img
 
 
@@ -251,7 +286,7 @@ from :math:`E = 0`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.247 seconds)
+   **Total running time of the script:** (0 minutes 2.615 seconds)
 
 
 .. _sphx_glr_download_api_gallery_disorder_plot_vacancy_zero_modes.py:

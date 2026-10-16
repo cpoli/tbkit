@@ -35,8 +35,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
 from tbkit.optics import shift_current, optical_conductivity
+from tbkit.plot import Plot
 
 
 def gapped_graphene(m):
@@ -49,6 +51,17 @@ def gapped_graphene(m):
 m = 0.5
 hbn = gapped_graphene(m)
 omega = np.linspace(0.5, 7., 131)
+
+# %%
+# The lattice
+# -----------
+# Gapped graphene on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`): the honeycomb lattice with its
+# nearest-neighbour bonds, and the onsite energies :math:`+m` on sublattice
+# 'a' and :math:`-m` on 'b' (two colours), which break inversion symmetry
+# as in hexagonal boron nitride.
+
+fig_lat = Plot(finite_system(hbn, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # One independent component, and an absorption edge at the gap
@@ -82,6 +95,7 @@ assert np.allclose(flipped, -sigma['yyy'], atol=1e-8)
 centrosymmetric = shift_current(gapped_graphene(0.), omega, eta=0.05, nk=60, component='yyy')
 assert np.abs(centrosymmetric).max() < 1e-10
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(2, 1, figsize=(6, 6), sharex=True)
 axes[0].plot(omega, absorption, '-k')
 axes[0].set_ylabel(r'Re $\sigma_{xx}$ ($e^2/h$)')

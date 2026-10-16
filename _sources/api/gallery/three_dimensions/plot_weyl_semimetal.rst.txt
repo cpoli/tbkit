@@ -41,15 +41,17 @@ The model: :math:`H(\mathbf{k}) = \sin k_x\,\sigma_x + \sin k_y\,\sigma_y
 + (2 + \cos k_0 - \cos k_x - \cos k_y - \cos k_z)\,\sigma_z`, Weyl points at
 :math:`(0, 0, \pm k_0)`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-44
+.. GENERATED FROM PYTHON SOURCE LINES 25-46
 
 .. code-block:: Python
 
     import numpy as np
     import matplotlib.pyplot as plt
+    from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
     from tbkit.lattice import Lattice
     from tbkit.kspace import KSpace, PAULI, ribbon
+    from tbkit.system import System
     from tbkit.topology import find_weyl_points
 
     k0 = np.pi / 2
@@ -71,7 +73,46 @@ The model: :math:`H(\mathbf{k}) = \sin k_x\,\sigma_x + \sin k_y\,\sigma_y
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-52
+.. GENERATED FROM PYTHON SOURCE LINES 47-53
+
+The lattice
+-----------
+The simple cubic lattice, here :math:`4\times4\times4` sites, with its
+nearest-neighbour bonds. Each site holds a two-component orbital, and
+the hoppings along :math:`x` and :math:`y` are :math:`2\times2` matrices
+that act on it (not drawn).
+
+.. GENERATED FROM PYTHON SOURCE LINES 53-67
+
+.. code-block:: Python
+
+
+    lat_vis = Lattice(unit_cell=lat.unit_cell, prim_vec=cubic)
+    lat_vis.get_lattice(4, 4, 4)
+    vis = System(lat_vis)
+    vis.set_hopping([{'n': 1, 't': 1.}])
+    pos = np.column_stack([lat_vis.coor[f] for f in 'xyz'])
+    bonds = np.stack([pos[vis.hop['i'].astype(int)], pos[vis.hop['j'].astype(int)]], axis=1)
+    fig_lat = plt.figure(figsize=(4.5, 4.5))
+    ax_lat = fig_lat.add_subplot(projection='3d')
+    ax_lat.add_collection3d(Line3DCollection(bonds, colors='k', linewidths=1))
+    ax_lat.scatter(*pos.T, s=30, c='b', depthshade=False)
+    ax_lat.set_aspect('equal')
+    ax_lat.set_axis_off()
+
+
+
+
+.. image-sg:: /api/gallery/three_dimensions/images/sphx_glr_plot_weyl_semimetal_001.png
+   :alt: plot weyl semimetal
+   :srcset: /api/gallery/three_dimensions/images/sphx_glr_plot_weyl_semimetal_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 68-75
 
 The Weyl points and their chirality
 ---------------------------------------
@@ -81,7 +122,7 @@ measures the chirality of each touching: the Berry flux of the lower band
 out of a small sphere around it, divided by :math:`2\pi`. The two
 chiralities cancel, as they must over a whole zone (Nielsen-Ninomiya).
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-67
+.. GENERATED FROM PYTHON SOURCE LINES 75-90
 
 .. code-block:: Python
 
@@ -114,7 +155,7 @@ chiralities cancel, as they must over a whole zone (Nielsen-Ninomiya).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-73
+.. GENERATED FROM PYTHON SOURCE LINES 91-96
 
 The Chern number of the k_z planes
 ----------------------------------------
@@ -122,7 +163,7 @@ By Gauss's law, the Chern number of the plane jumps by the chirality as
 the plane crosses a Weyl point upwards: :math:`-1` at :math:`-k_0`, back up
 by :math:`+1` at :math:`+k_0`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-80
+.. GENERATED FROM PYTHON SOURCE LINES 96-103
 
 .. code-block:: Python
 
@@ -146,7 +187,7 @@ by :math:`+1` at :math:`+k_0`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-86
+.. GENERATED FROM PYTHON SOURCE LINES 104-109
 
 The Fermi arc
 ----------------
@@ -154,7 +195,7 @@ A slab, finite along y (:func:`~tbkit.kspace.ribbon` of the 3D model):
 at :math:`k_x = 0`, zero-energy states exist only for :math:`|k_z| < k_0`,
 and live on the two surfaces.
 
-.. GENERATED FROM PYTHON SOURCE LINES 86-111
+.. GENERATED FROM PYTHON SOURCE LINES 109-134
 
 .. code-block:: Python
 
@@ -186,9 +227,9 @@ and live on the two surfaces.
 
 
 
-.. image-sg:: /api/gallery/three_dimensions/images/sphx_glr_plot_weyl_semimetal_001.png
+.. image-sg:: /api/gallery/three_dimensions/images/sphx_glr_plot_weyl_semimetal_002.png
    :alt: plot weyl semimetal
-   :srcset: /api/gallery/three_dimensions/images/sphx_glr_plot_weyl_semimetal_001.png
+   :srcset: /api/gallery/three_dimensions/images/sphx_glr_plot_weyl_semimetal_002.png
    :class: sphx-glr-single-img
 
 
@@ -201,7 +242,7 @@ and live on the two surfaces.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 112-120
+.. GENERATED FROM PYTHON SOURCE LINES 136-144
 
 The Fermi surface of the slab
 ---------------------------------
@@ -212,7 +253,7 @@ The Fermi surface of the slab
 pockets around the projections of the Weyl points -- one closed contour,
 half on each surface.
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-130
+.. GENERATED FROM PYTHON SOURCE LINES 144-154
 
 .. code-block:: Python
 
@@ -229,9 +270,9 @@ half on each surface.
 
 
 
-.. image-sg:: /api/gallery/three_dimensions/images/sphx_glr_plot_weyl_semimetal_002.png
+.. image-sg:: /api/gallery/three_dimensions/images/sphx_glr_plot_weyl_semimetal_003.png
    :alt: Slab Fermi surface: the Fermi arcs
-   :srcset: /api/gallery/three_dimensions/images/sphx_glr_plot_weyl_semimetal_002.png
+   :srcset: /api/gallery/three_dimensions/images/sphx_glr_plot_weyl_semimetal_003.png
    :class: sphx-glr-single-img
 
 
@@ -248,7 +289,7 @@ half on each surface.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.782 seconds)
+   **Total running time of the script:** (0 minutes 1.368 seconds)
 
 
 .. _sphx_glr_download_api_gallery_three_dimensions_plot_weyl_semimetal.py:

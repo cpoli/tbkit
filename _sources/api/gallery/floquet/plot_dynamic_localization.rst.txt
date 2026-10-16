@@ -49,7 +49,7 @@ time average :math:`2tJ_0(F/\omega)\cos k`, which
 :func:`~tbkit.floquet.effective_hamiltonian` and
 :func:`~tbkit.floquet.quasienergies` give the renormalized tunnelling.
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-44
+.. GENERATED FROM PYTHON SOURCE LINES 33-46
 
 .. code-block:: Python
 
@@ -58,7 +58,9 @@ time average :math:`2tJ_0(F/\omega)\cos k`, which
     from scipy.special import j0, jn_zeros
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
     from tbkit.floquet import DrivenKSpace, effective_hamiltonian, evolution_operator, quasienergies
 
     t = 1.
@@ -71,18 +73,45 @@ time average :math:`2tJ_0(F/\omega)\cos k`, which
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-47
+.. GENERATED FROM PYTHON SOURCE LINES 47-49
 
 Dynamic localization: the Floquet band of a chain in an AC field
 -----------------------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-70
+.. GENERATED FROM PYTHON SOURCE LINES 49-56
 
 .. code-block:: Python
 
 
     chain = KSpace(lattices.chain())
     chain.set_hopping([{'i': 0, 'j': 0, 'R': (1,), 't': t}])
+
+    # The chain: one site per unit cell and a nearest-neighbour hopping t.
+    fig_lat = Plot(finite_system(chain, 10)).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
+
+
+
+
+.. image-sg:: /api/gallery/floquet/images/sphx_glr_plot_dynamic_localization_001.png
+   :alt: plot dynamic localization
+   :srcset: /api/gallery/floquet/images/sphx_glr_plot_dynamic_localization_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 57-60
+
+An AC field :math:`F\cos\omega t` shakes the chain; its quasienergy band
+is that of the static chain, with :math:`t` renormalized by
+:math:`J_0(F/\omega)`.
+
+.. GENERATED FROM PYTHON SOURCE LINES 60-81
+
+.. code-block:: Python
+
+
     omega = 5.
     ks = np.linspace(-np.pi, np.pi, 61)
 
@@ -117,14 +146,14 @@ Dynamic localization: the Floquet band of a chain in an AC field
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-75
+.. GENERATED FROM PYTHON SOURCE LINES 82-86
 
 Coherent destruction of tunnelling in a driven double well
 -------------------------------------------------------------------
 At :math:`\omega = 20t` the high-frequency result holds to within
 :math:`0.01t`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-131
+.. GENERATED FROM PYTHON SOURCE LINES 86-142
 
 .. code-block:: Python
 
@@ -187,9 +216,9 @@ At :math:`\omega = 20t` the high-frequency result holds to within
 
 
 
-.. image-sg:: /api/gallery/floquet/images/sphx_glr_plot_dynamic_localization_001.png
+.. image-sg:: /api/gallery/floquet/images/sphx_glr_plot_dynamic_localization_002.png
    :alt: chain in an AC field, driven double well, coherent destruction of tunnelling
-   :srcset: /api/gallery/floquet/images/sphx_glr_plot_dynamic_localization_001.png
+   :srcset: /api/gallery/floquet/images/sphx_glr_plot_dynamic_localization_002.png
    :class: sphx-glr-single-img
 
 
@@ -207,7 +236,7 @@ At :math:`\omega = 20t` the high-frequency result holds to within
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.807 seconds)
+   **Total running time of the script:** (0 minutes 0.242 seconds)
 
 
 .. _sphx_glr_download_api_gallery_floquet_plot_dynamic_localization.py:

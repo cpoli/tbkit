@@ -49,6 +49,7 @@ import matplotlib.pyplot as plt
 
 from tbkit.system import System
 from tbkit.graphene import GrapheneLattice, GrapheneSystem
+from tbkit.plot import Plot
 
 
 t = 1.
@@ -101,6 +102,14 @@ print('Hoppings range over [{:.3f}t, {:.3f}t] -- all real, all positive.'
 assert np.allclose(gsys.hop['t'].imag, 0.)
 assert np.allclose(gsys.ham.toarray().imag, 0.)
 print('Hamiltonian is exactly real: time-reversal symmetry is unbroken.')
+
+# %%
+# The flake: the honeycomb lattice (sublattices 'a' and 'b' in two
+# colours) cut into a disc, with its nearest-neighbour bonds drawn with
+# widths proportional to their hoppings. Strain rescales them across the
+# flake, over the range printed above -- too little to see at this scale.
+
+fig_lat = Plot(gsys).lattice(plt_hop=True, ms=2.5, c=1.5, figsize=(6, 6))
 
 # %%
 # The spectrum nevertheless collapses onto a relativistic Landau ladder
@@ -185,6 +194,7 @@ print('Same Landau ladder, with and without breaking time-reversal symmetry.')
 # The pseudo-Landau fan
 # ---------------------------
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots()
 window = en_bulk[np.abs(en_bulk) < 0.8]
 ax.plot(window, 'o', ms=3, color='g')

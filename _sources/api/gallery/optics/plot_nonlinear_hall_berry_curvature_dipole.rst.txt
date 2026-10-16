@@ -50,7 +50,7 @@ Fermi surface, and to first order in :math:`t`, for :math:`\mu > |m|`,
 regularization of the cone (the doublers gapped by a Wilson mass), as a
 Fermi-surface integral over the thermal window :math:`-\partial f/\partial E`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-73
+.. GENERATED FROM PYTHON SOURCE LINES 34-75
 
 .. code-block:: Python
 
@@ -58,9 +58,11 @@ Fermi-surface integral over the thermal window :math:`-\partial f/\partial E`.
     import matplotlib.pyplot as plt
     from scipy.integrate import quad
 
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace, PAULI
     from tbkit.lattice import Lattice
     from tbkit.optics import berry_curvature_dipole
+    from tbkit.plot import Plot
 
 
     def tilted_dirac(m, tilt, B=0.12, v=1.):
@@ -100,7 +102,36 @@ Fermi-surface integral over the thermal window :math:`-\partial f/\partial E`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-82
+.. GENERATED FROM PYTHON SOURCE LINES 76-83
+
+The lattice
+-----------
+The model on :math:`6\times6` cells (:func:`~tbkit.bridges.finite_system`):
+a square lattice, each site holding two orbitals ('a' and 'b', drawn on
+top of each other), joined by the nearest-neighbour hoppings along
+:math:`x` and :math:`y`. The tilt, a small extra term on the bonds
+along :math:`x`, is too weak to show at this scale.
+
+.. GENERATED FROM PYTHON SOURCE LINES 83-86
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(dirac, (6, 6))).lattice(plt_hop=True, ms=10, figsize=(4.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/optics/images/sphx_glr_plot_nonlinear_hall_berry_curvature_dipole_001.png
+   :alt: plot nonlinear hall berry curvature dipole
+   :srcset: /api/gallery/optics/images/sphx_glr_plot_nonlinear_hall_berry_curvature_dipole_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 87-95
 
 The dipole across the conduction band
 -----------------------------------------
@@ -111,7 +142,7 @@ opens, and peaks near :math:`\mu = \sqrt2\,|m|` (exactly there at
 on the Fermi circle. The lattice model follows the continuum formula to
 about 1% while the Fermi wavevector stays small.
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-100
+.. GENERATED FROM PYTHON SOURCE LINES 95-113
 
 .. code-block:: Python
 
@@ -147,14 +178,14 @@ about 1% while the Fermi wavevector stays small.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 101-105
+.. GENERATED FROM PYTHON SOURCE LINES 114-118
 
 Only a tilted cone has a dipole
 -----------------------------------
 Without tilt the Fermi circle is centred on the curvature peak, and the
 dipole vanishes; reversing the tilt reverses it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 105-121
+.. GENERATED FROM PYTHON SOURCE LINES 118-134
 
 .. code-block:: Python
 
@@ -177,9 +208,9 @@ dipole vanishes; reversing the tilt reverses it.
 
 
 
-.. image-sg:: /api/gallery/optics/images/sphx_glr_plot_nonlinear_hall_berry_curvature_dipole_001.png
+.. image-sg:: /api/gallery/optics/images/sphx_glr_plot_nonlinear_hall_berry_curvature_dipole_002.png
    :alt: Berry curvature dipole of a tilted massive Dirac cone
-   :srcset: /api/gallery/optics/images/sphx_glr_plot_nonlinear_hall_berry_curvature_dipole_001.png
+   :srcset: /api/gallery/optics/images/sphx_glr_plot_nonlinear_hall_berry_curvature_dipole_002.png
    :class: sphx-glr-single-img
 
 
@@ -189,7 +220,7 @@ dipole vanishes; reversing the tilt reverses it.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.156 seconds)
+   **Total running time of the script:** (0 minutes 1.060 seconds)
 
 
 .. _sphx_glr_download_api_gallery_optics_plot_nonlinear_hall_berry_curvature_dipole.py:

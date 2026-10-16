@@ -49,7 +49,7 @@ Wallace's model, with :math:`t = V_{pp\pi}`. With the overlap
 
 no longer symmetric about :math:`\epsilon_p`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-62
+.. GENERATED FROM PYTHON SOURCE LINES 33-64
 
 .. code-block:: Python
 
@@ -60,6 +60,8 @@ no longer symmetric about :math:`\epsilon_p`.
     from tbkit.kspace import reciprocal_vectors
     from tbkit.orbital import OrbitalSystem
     from tbkit.slater_koster import sk_kspace
+    from tbkit.plot import Plot
+    from tbkit.system import System
 
     # eV; energies relative to the 2p level (Saito, Dresselhaus and Dresselhaus)
     orbitals = {'a': ['s', 'px', 'py', 'pz'], 'b': ['s', 'px', 'py', 'pz']}
@@ -89,12 +91,43 @@ no longer symmetric about :math:`\epsilon_p`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-65
+.. GENERATED FROM PYTHON SOURCE LINES 65-70
+
+The lattice
+-----------
+Graphene's honeycomb lattice, sublattices ``a`` and ``b`` in two colours,
+each atom carrying the four orbitals :math:`s, p_x, p_y, p_z` and bonded
+to its three nearest neighbours by the Slater-Koster integrals above.
+
+.. GENERATED FROM PYTHON SOURCE LINES 70-77
+
+.. code-block:: Python
+
+
+    patch = lattices.honeycomb()
+    patch.get_lattice(n1=5, n2=4)
+    vis = System(patch)
+    vis.set_hopping([{'n': 1, 't': 1.}])
+    fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/orbitals/images/sphx_glr_plot_slater_koster_001.png
+   :alt: plot slater koster
+   :srcset: /api/gallery/orbitals/images/sphx_glr_plot_slater_koster_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 78-80
 
 pz decouples: the pi bands are Wallace's
 ---------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-76
+.. GENERATED FROM PYTHON SOURCE LINES 80-91
 
 .. code-block:: Python
 
@@ -122,12 +155,12 @@ pz decouples: the pi bands are Wallace's
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-79
+.. GENERATED FROM PYTHON SOURCE LINES 92-94
 
 The overlap breaks the electron-hole symmetry of the pi bands
 -------------------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-88
+.. GENERATED FROM PYTHON SOURCE LINES 94-103
 
 .. code-block:: Python
 
@@ -153,7 +186,7 @@ The overlap breaks the electron-hole symmetry of the pi bands
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-94
+.. GENERATED FROM PYTHON SOURCE LINES 104-109
 
 The same model on a finite flake
 -----------------------------------
@@ -161,7 +194,7 @@ The same model on a finite flake
 bond by bond in real space: its spectrum equals that of the Bloch model
 cut to the same open parallelogram.
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-116
+.. GENERATED FROM PYTHON SOURCE LINES 109-131
 
 .. code-block:: Python
 
@@ -190,9 +223,9 @@ cut to the same open parallelogram.
 
 
 
-.. image-sg:: /api/gallery/orbitals/images/sphx_glr_plot_slater_koster_001.png
+.. image-sg:: /api/gallery/orbitals/images/sphx_glr_plot_slater_koster_002.png
    :alt: Graphene $sp^3$ Slater-Koster bands
-   :srcset: /api/gallery/orbitals/images/sphx_glr_plot_slater_koster_001.png
+   :srcset: /api/gallery/orbitals/images/sphx_glr_plot_slater_koster_002.png
    :class: sphx-glr-single-img
 
 
@@ -202,7 +235,7 @@ cut to the same open parallelogram.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.169 seconds)
+   **Total running time of the script:** (0 minutes 0.064 seconds)
 
 
 .. _sphx_glr_download_api_gallery_orbitals_plot_slater_koster.py:

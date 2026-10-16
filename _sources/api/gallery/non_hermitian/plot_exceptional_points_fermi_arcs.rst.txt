@@ -54,7 +54,7 @@ arc is where :math:`E^2` is real and negative: :math:`\mathrm{Re}f = 0`,
 :math:`|\mathrm{Im}f| < \gamma`. :func:`tbkit.exceptional.find_exceptional_points`
 and :func:`tbkit.exceptional.fermi_arcs` recover both numerically.
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-64
+.. GENERATED FROM PYTHON SOURCE LINES 38-66
 
 .. code-block:: Python
 
@@ -62,7 +62,9 @@ and :func:`tbkit.exceptional.fermi_arcs` recover both numerically.
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
     import tbkit.exceptional as ex
 
     gamma = 0.3
@@ -91,7 +93,36 @@ and :func:`tbkit.exceptional.fermi_arcs` recover both numerically.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-74
+.. GENERATED FROM PYTHON SOURCE LINES 67-74
+
+The lattice
+-----------
+Graphene's honeycomb lattice on a patch of :math:`5\times4` cells
+(:func:`~tbkit.bridges.finite_system`): sublattices 'a' and 'b' in two
+colours, each bonded to its three nearest neighbours. The
+non-Hermitian term, :math:`i\gamma` added to both directions of the
+intra-cell bond, adds no bond and is not drawn.
+
+.. GENERATED FROM PYTHON SOURCE LINES 74-77
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(graphene, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_points_fermi_arcs_001.png
+   :alt: plot exceptional points fermi arcs
+   :srcset: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_points_fermi_arcs_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 78-87
 
 The exceptional points and their charges
 ---------------------------------------------
@@ -103,7 +134,7 @@ theorem for EPs. Each point is second order (two eigenvalues coalesce,
 with a divergent Petermann factor) and sits exactly where
 :math:`\mathrm{Re}f = 0` and :math:`|\mathrm{Im}f| = \gamma`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-89
+.. GENERATED FROM PYTHON SOURCE LINES 87-102
 
 .. code-block:: Python
 
@@ -130,16 +161,16 @@ with a divergent Petermann factor) and sits exactly where
 
  .. code-block:: none
 
-    EP at k = (+1.055715, +1.971630): charge -1, order 2, Petermann 9.0e+14, Re f = 0.0e+00, |Im f| = 0.3000000000
-    EP at k = (+1.392260, +2.165934): charge +1, order 2, Petermann 2.7e+14, Re f = 5.6e-16, |Im f| = 0.3000000000
-    EP at k = (+2.235339, -0.071539): charge +1, order 2, Petermann 4.6e+14, Re f = 1.7e-16, |Im f| = 0.3000000000
+    EP at k = (+1.055715, +1.971630): charge -1, order 2, Petermann 1.2e+15, Re f = 1.1e-16, |Im f| = 0.3000000000
+    EP at k = (+1.392260, +2.165934): charge +1, order 2, Petermann 4.6e+14, Re f = -2.8e-16, |Im f| = 0.3000000000
+    EP at k = (+2.235339, -0.071539): charge +1, order 2, Petermann 1.9e+15, Re f = 5.6e-17, |Im f| = 0.3000000000
     EP at k = (+2.571884, +0.122766): charge -1, order 2, Petermann 3.4e+14, Re f = 2.2e-16, |Im f| = 0.3000000000
     Total charge over the zone: 0 (EPs come in pairs).
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 90-97
+.. GENERATED FROM PYTHON SOURCE LINES 103-110
 
 The bulk Fermi arc
 ----------------------
@@ -149,7 +180,7 @@ bisection. All of them lie on :math:`\mathrm{Re}f = 0` between the two
 EPs, where :math:`|\mathrm{Im}f| < \gamma` and the two bands have equal
 energy but different lifetimes, :math:`E_\pm = \pm i\sqrt{\gamma^2 - |f|^2}`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-109
+.. GENERATED FROM PYTHON SOURCE LINES 110-122
 
 .. code-block:: Python
 
@@ -173,12 +204,12 @@ energy but different lifetimes, :math:`E_\pm = \pm i\sqrt{\gamma^2 - |f|^2}`.
 
  .. code-block:: none
 
-    22 points on the Fermi arcs: max |Re f| = 7.2e-16, max |Im f| = 0.2711 < gamma
+    22 points on the Fermi arcs: max |Re f| = 8.9e-16, max |Im f| = 0.2711 < gamma
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 110-117
+.. GENERATED FROM PYTHON SOURCE LINES 123-130
 
 Re E and Im E around a Dirac point
 ---------------------------------------
@@ -188,7 +219,7 @@ is continuous; :math:`\mathrm{Im}\,E_+` jumps across the arc, where the two
 sheets exchange -- the arc is the branch cut of the square root, running
 from one EP to the other. Red and blue crosses mark the charges +1 and -1.
 
-.. GENERATED FROM PYTHON SOURCE LINES 117-148
+.. GENERATED FROM PYTHON SOURCE LINES 130-161
 
 .. code-block:: Python
 
@@ -226,9 +257,9 @@ from one EP to the other. Red and blue crosses mark the charges +1 and -1.
 
 
 
-.. image-sg:: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_points_fermi_arcs_001.png
+.. image-sg:: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_points_fermi_arcs_002.png
    :alt: Re $E_+$ near K, $\gamma = 0.3$, Im $E_+$ near K, $\gamma = 0.3$
-   :srcset: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_points_fermi_arcs_001.png
+   :srcset: /api/gallery/non_hermitian/images/sphx_glr_plot_exceptional_points_fermi_arcs_002.png
    :class: sphx-glr-single-img
 
 
@@ -238,7 +269,7 @@ from one EP to the other. Red and blue crosses mark the charges +1 and -1.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.720 seconds)
+   **Total running time of the script:** (0 minutes 1.104 seconds)
 
 
 .. _sphx_glr_download_api_gallery_non_hermitian_plot_exceptional_points_fermi_arcs.py:

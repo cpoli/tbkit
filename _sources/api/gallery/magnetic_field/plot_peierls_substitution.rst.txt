@@ -39,7 +39,7 @@ two gauges of the same field give unitarily equivalent Hamiltonians.
 gauge :math:`\mathbf{A} = \frac B2(-y, x)`;
 :meth:`~tbkit.system.System.set_peierls_phase` any other.
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-47
+.. GENERATED FROM PYTHON SOURCE LINES 23-48
 
 .. code-block:: Python
 
@@ -47,6 +47,7 @@ gauge :math:`\mathbf{A} = \frac B2(-y, x)`;
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.plot import Plot
     from tbkit.system import System
 
     alpha = 0.07  # flux quanta per unit area
@@ -74,12 +75,49 @@ gauge :math:`\mathbf{A} = \frac B2(-y, x)`;
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-50
+.. GENERATED FROM PYTHON SOURCE LINES 49-55
+
+The two flakes
+--------------
+A square flake of :math:`8\times8` sites and a honeycomb flake of
+:math:`5\times5` cells (sublattices 'a' and 'b' in two colours), each
+with its nearest-neighbour bonds. The field enters only through the
+phases of these hoppings.
+
+.. GENERATED FROM PYTHON SOURCE LINES 55-61
+
+.. code-block:: Python
+
+
+    fig_lat, axes_lat = plt.subplots(1, 2, figsize=(10, 4.5))
+    Plot(flake('square', 8)).lattice(plt_hop=True, ms=10, ax=axes_lat[0])
+    Plot(flake('honeycomb', 5)).lattice(plt_hop=True, ms=10, ax=axes_lat[1])
+
+
+
+
+
+.. image-sg:: /api/gallery/magnetic_field/images/sphx_glr_plot_peierls_substitution_001.png
+   :alt: plot peierls substitution
+   :srcset: /api/gallery/magnetic_field/images/sphx_glr_plot_peierls_substitution_001.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    <Figure size 1000x450 with 2 Axes>
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 62-64
 
 The flux through every square plaquette
 ---------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-67
+.. GENERATED FROM PYTHON SOURCE LINES 64-81
 
 .. code-block:: Python
 
@@ -113,7 +151,7 @@ The flux through every square plaquette
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-73
+.. GENERATED FROM PYTHON SOURCE LINES 82-87
 
 Another gauge, the same physics
 -----------------------------------
@@ -121,7 +159,7 @@ The Landau gauge :math:`\mathbf{A} = B(0, x)`, and any gauge
 transformation :math:`\phi_{ij}\to\phi_{ij} + \chi_j - \chi_i`, give the
 same spectrum.
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-88
+.. GENERATED FROM PYTHON SOURCE LINES 87-102
 
 .. code-block:: Python
 
@@ -153,12 +191,12 @@ same spectrum.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-91
+.. GENERATED FROM PYTHON SOURCE LINES 103-105
 
 On the honeycomb lattice: the flux through a hexagon
 --------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-119
+.. GENERATED FROM PYTHON SOURCE LINES 105-133
 
 .. code-block:: Python
 
@@ -193,9 +231,9 @@ On the honeycomb lattice: the flux through a hexagon
 
 
 
-.. image-sg:: /api/gallery/magnetic_field/images/sphx_glr_plot_peierls_substitution_001.png
+.. image-sg:: /api/gallery/magnetic_field/images/sphx_glr_plot_peierls_substitution_002.png
    :alt: Square flake, $\alpha = 0.07$: gauge-independent spectrum
-   :srcset: /api/gallery/magnetic_field/images/sphx_glr_plot_peierls_substitution_001.png
+   :srcset: /api/gallery/magnetic_field/images/sphx_glr_plot_peierls_substitution_002.png
    :class: sphx-glr-single-img
 
 
@@ -211,7 +249,7 @@ On the honeycomb lattice: the flux through a hexagon
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.144 seconds)
+   **Total running time of the script:** (0 minutes 0.086 seconds)
 
 
 .. _sphx_glr_download_api_gallery_magnetic_field_plot_peierls_substitution.py:

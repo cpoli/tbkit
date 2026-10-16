@@ -43,7 +43,7 @@ lowest-energy state obeys Lieb's count. (Other self-consistent solutions
 exist, of lower spin and higher energy: random starts often find those,
 so several starts are compared.)
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-54
+.. GENERATED FROM PYTHON SOURCE LINES 27-55
 
 .. code-block:: Python
 
@@ -52,6 +52,7 @@ so several starts are compared.)
 
     import tbkit.lattices as lattices
     from tbkit.meanfield import hubbard_mean_field
+    from tbkit.plot import Plot
     from tbkit.system import System
 
 
@@ -81,12 +82,39 @@ so several starts are compared.)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-57
+.. GENERATED FROM PYTHON SOURCE LINES 56-61
+
+The Lieb lattice
+----------------
+A square lattice with an extra site on every bond: per unit cell, one
+corner site (sublattice A, tag 'a') and two edge-centre sites (B, tags
+'b' and 'c'), so B has twice as many sites as A.
+
+.. GENERATED FROM PYTHON SOURCE LINES 61-64
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(lieb(4, periodic=False)[1]).lattice(plt_hop=True, ms=12, figsize=(4.5, 4.5))
+
+
+
+
+.. image-sg:: /api/gallery/correlations/images/sphx_glr_plot_lieb_theorem_001.png
+   :alt: plot lieb theorem
+   :srcset: /api/gallery/correlations/images/sphx_glr_plot_lieb_theorem_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 65-67
 
 The flat band lives on B
 ---------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-67
+.. GENERATED FROM PYTHON SOURCE LINES 67-77
 
 .. code-block:: Python
 
@@ -113,12 +141,12 @@ The flat band lives on B
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-70
+.. GENERATED FROM PYTHON SOURCE LINES 78-80
 
 Lieb's count holds for every size and U
 ---------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-86
+.. GENERATED FROM PYTHON SOURCE LINES 80-96
 
 .. code-block:: Python
 
@@ -159,12 +187,12 @@ Lieb's count holds for every size and U
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-89
+.. GENERATED FROM PYTHON SOURCE LINES 97-99
 
 The ferrimagnetic order
 ---------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-100
+.. GENERATED FROM PYTHON SOURCE LINES 99-110
 
 .. code-block:: Python
 
@@ -182,9 +210,9 @@ The ferrimagnetic order
 
 
 
-.. image-sg:: /api/gallery/correlations/images/sphx_glr_plot_lieb_theorem_001.png
+.. image-sg:: /api/gallery/correlations/images/sphx_glr_plot_lieb_theorem_002.png
    :alt: Lieb lattice, 75 sites, $U = 2|t|$: $S = 12.5$
-   :srcset: /api/gallery/correlations/images/sphx_glr_plot_lieb_theorem_001.png
+   :srcset: /api/gallery/correlations/images/sphx_glr_plot_lieb_theorem_002.png
    :class: sphx-glr-single-img
 
 
@@ -200,7 +228,7 @@ The ferrimagnetic order
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 11.977 seconds)
+   **Total running time of the script:** (0 minutes 8.187 seconds)
 
 
 .. _sphx_glr_download_api_gallery_correlations_plot_lieb_theorem.py:

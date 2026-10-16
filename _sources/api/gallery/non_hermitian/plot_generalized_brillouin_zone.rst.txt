@@ -44,7 +44,7 @@ correspondence: it is 1 exactly when the open chain has zero modes.
 :meth:`~tbkit.kspace.KSpace.gbz` and
 :meth:`~tbkit.kspace.KSpace.get_ham_beta` compute both.
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-35
+.. GENERATED FROM PYTHON SOURCE LINES 28-37
 
 .. code-block:: Python
 
@@ -52,8 +52,10 @@ correspondence: it is 1 exactly when the open chain has zero modes.
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
+    from tbkit.bridges import finite_system
     from tbkit.lattice import Lattice
     from tbkit.kspace import KSpace
+    from tbkit.plot import Plot
 
 
 
@@ -62,12 +64,12 @@ correspondence: it is 1 exactly when the open chain has zero modes.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-38
+.. GENERATED FROM PYTHON SOURCE LINES 38-40
 
 The Hatano-Nelson chain: a circle of radius sqrt(t_L / t_R)
 -----------------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-52
+.. GENERATED FROM PYTHON SOURCE LINES 40-46
 
 .. code-block:: Python
 
@@ -76,6 +78,50 @@ The Hatano-Nelson chain: a circle of radius sqrt(t_L / t_R)
     hn = KSpace(lattices.chain())
     hn.set_hopping([{'i': 0, 'j': 0, 'R': (1,), 't': t_right},
                             {'i': 0, 'j': 0, 'R': (-1,), 't': t_left}], hermitian=False)
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 47-52
+
+Ten sites of the Hatano-Nelson chain
+(:func:`~tbkit.bridges.finite_system`): one site per cell and
+nearest-neighbour bonds, non-reciprocal -- each carries :math:`t_R` one
+way and :math:`t_L` the other. The widths drawn are those of
+:math:`t_R`.
+
+.. GENERATED FROM PYTHON SOURCE LINES 52-55
+
+.. code-block:: Python
+
+
+    fig_lat = Plot(finite_system(hn, 10)).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
+
+
+
+
+.. image-sg:: /api/gallery/non_hermitian/images/sphx_glr_plot_generalized_brillouin_zone_001.png
+   :alt: plot generalized brillouin zone
+   :srcset: /api/gallery/non_hermitian/images/sphx_glr_plot_generalized_brillouin_zone_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 56-57
+
+The open chain's spectrum, and the GBZ it lies on:
+
+.. GENERATED FROM PYTHON SOURCE LINES 57-67
+
+.. code-block:: Python
+
+
     en_hn = np.linalg.eigvals(hn.finite_ham(60))
     beta_hn = hn.gbz(en_hn)
     print('Hatano-Nelson: |beta| on the GBZ = {:.6f}, sqrt(t_L/t_R) = {:.6f}'
@@ -98,12 +144,12 @@ The Hatano-Nelson chain: a circle of radius sqrt(t_L / t_R)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-55
+.. GENERATED FROM PYTHON SOURCE LINES 68-70
 
 The non-Hermitian SSH chain
 -------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-97
+.. GENERATED FROM PYTHON SOURCE LINES 70-88
 
 .. code-block:: Python
 
@@ -123,6 +169,50 @@ The non-Hermitian SSH chain
 
     def radius(t1):
         return np.sqrt(abs((t1 - gamma / 2) / (t1 + gamma / 2)))
+
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 89-94
+
+Eight cells of the chain (:func:`~tbkit.bridges.finite_system`),
+orbitals ``a`` and ``b`` in two colours, bond widths proportional to
+the amplitudes: :math:`t_1 + \gamma/2` inside each cell (the reverse
+intra-cell hopping is :math:`t_1 - \gamma/2`, not drawn) and :math:`t_2`
+between cells, here for :math:`t_1 = 1.1`.
+
+.. GENERATED FROM PYTHON SOURCE LINES 94-97
+
+.. code-block:: Python
+
+
+    fig_ssh = Plot(finite_system(nh_ssh(1.1), 8)).lattice(plt_hop=True, ms=7, c=2.5, figsize=(7, 1.2))
+
+
+
+
+.. image-sg:: /api/gallery/non_hermitian/images/sphx_glr_plot_generalized_brillouin_zone_002.png
+   :alt: plot generalized brillouin zone
+   :srcset: /api/gallery/non_hermitian/images/sphx_glr_plot_generalized_brillouin_zone_002.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 98-99
+
+The winding number on the GBZ and on the Brillouin zone:
+
+.. GENERATED FROM PYTHON SOURCE LINES 99-125
+
+.. code-block:: Python
+
 
 
     def winding(ks, r, n=200):
@@ -158,12 +248,12 @@ The non-Hermitian SSH chain
  .. code-block:: none
 
     t1 = 1.1: |beta| on the GBZ = 0.495261, r = 0.495261
-    Open-chain spectrum real (max |Im E| = 2.8e-10); the ring spectrum is not (max |Im E| = 0.66).
+    Open-chain spectrum real (max |Im E| = 8.9e-11); the ring spectrum is not (max |Im E| = 0.66).
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-103
+.. GENERATED FROM PYTHON SOURCE LINES 126-131
 
 The phase diagram: Bloch versus non-Bloch
 ---------------------------------------------
@@ -171,7 +261,7 @@ The open-chain zero modes disappear at :math:`t_1 = \sqrt{t_2^2 + \gamma^2/4}`,
 not where the Bloch spectrum closes its gap, and the non-Bloch winding
 number follows them.
 
-.. GENERATED FROM PYTHON SOURCE LINES 103-142
+.. GENERATED FROM PYTHON SOURCE LINES 131-170
 
 .. code-block:: Python
 
@@ -217,9 +307,9 @@ number follows them.
 
 
 
-.. image-sg:: /api/gallery/non_hermitian/images/sphx_glr_plot_generalized_brillouin_zone_001.png
+.. image-sg:: /api/gallery/non_hermitian/images/sphx_glr_plot_generalized_brillouin_zone_003.png
    :alt: $t_1 = 1.1$
-   :srcset: /api/gallery/non_hermitian/images/sphx_glr_plot_generalized_brillouin_zone_001.png
+   :srcset: /api/gallery/non_hermitian/images/sphx_glr_plot_generalized_brillouin_zone_003.png
    :class: sphx-glr-single-img
 
 
@@ -235,7 +325,7 @@ number follows them.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.609 seconds)
+   **Total running time of the script:** (0 minutes 0.629 seconds)
 
 
 .. _sphx_glr_download_api_gallery_non_hermitian_plot_generalized_brillouin_zone.py:
