@@ -41,6 +41,8 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx_gallery.gen_gallery',
     'matplotlib.sphinxext.plot_directive',
+    'sphinx_sitemap',
+    'sphinxext.opengraph',
 ]
 
 # ".. plot::" blocks render a figure from code executed at build time, so the
@@ -180,6 +182,27 @@ html_theme = 'pydata_sphinx_theme'
 # Where the docs are published (GitHub Pages): each page gets a
 # <link rel="canonical"> to its address there, for search engines.
 html_baseurl = 'https://cpoli.github.io/tbkit/'
+
+# Search-engine metadata: sphinx-sitemap writes sitemap.xml with absolute
+# URLs from html_baseurl, and sphinxext-opengraph adds a <meta
+# name="description"> plus og:* link-preview tags from each page's text.
+html_title = project
+sitemap_url_scheme = '{link}'
+sitemap_excludes = [
+    'search.html',
+    'genindex.html',
+    'py-modindex.html',
+    '*sg_execution_times.html',
+    '_modules/*',
+    # Include-only fragments (card grids, nav strips), not standalone pages.
+    '_generated/grid_*',
+    '_generated/vars.html',
+    '_generated/nav/*',
+]
+ogp_site_url = html_baseurl
+ogp_site_name = project
+ogp_image = html_baseurl + '_static/images/readme_hero.png'
+ogp_social_cards = {'enable': False}
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

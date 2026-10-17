@@ -3,10 +3,10 @@
 | | |
 |:--|:-:|
 | Package | [![PyPI version](https://badgen.net/pypi/v/tbkit)](https://pypi.org/project/tbkit/) [![conda-forge](https://img.shields.io/conda/vn/conda-forge/tbkit)](https://anaconda.org/conda-forge/tbkit) [![Python versions](https://badgen.net/pypi/python/tbkit)](https://pypi.org/project/tbkit/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23386289.svg)](https://doi.org/10.5281/zenodo.23386289) |
-| Quality | [![License](https://badgen.net/github/license/cpoli/tbkit)](https://github.com/cpoli/tbkit/blob/master/LICENSE) [![CI](https://github.com/cpoli/tbkit/actions/workflows/ci.yml/badge.svg)](https://github.com/cpoli/tbkit/actions/workflows/ci.yml) [![Coverage](https://codecov.io/gh/cpoli/tbkit/branch/master/graph/badge.svg)](https://codecov.io/gh/cpoli/tbkit) |
+| Quality | [![License](https://img.shields.io/github/license/cpoli/tbkit)](https://github.com/cpoli/tbkit/blob/master/LICENSE) [![CI](https://github.com/cpoli/tbkit/actions/workflows/ci.yml/badge.svg)](https://github.com/cpoli/tbkit/actions/workflows/ci.yml) [![Coverage](https://codecov.io/gh/cpoli/tbkit/branch/master/graph/badge.svg)](https://codecov.io/gh/cpoli/tbkit) |
 | Documentation | [![Docs](https://badgen.net/badge/docs/cpoli.github.io%2Ftbkit/blue)](https://cpoli.github.io/tbkit/) |
 | Downloads | [![Downloads](https://static.pepy.tech/badge/tbkit)](https://pepy.tech/project/tbkit) [![Downloads/Month](https://static.pepy.tech/badge/tbkit/month)](https://pepy.tech/project/tbkit) |
-| Community | [![GitHub Stars](https://badgen.net/github/stars/cpoli/tbkit)](https://github.com/cpoli/tbkit) [![GitHub Forks](https://badgen.net/github/forks/cpoli/tbkit)](https://github.com/cpoli/tbkit) [![Contributors](https://badgen.net/github/contributors/cpoli/tbkit)](https://github.com/cpoli/tbkit/graphs/contributors) [![Last Commit](https://badgen.net/github/last-commit/cpoli/tbkit/master)](https://github.com/cpoli/tbkit/commits/master) |
+| Community | [![GitHub Stars](https://img.shields.io/github/stars/cpoli/tbkit)](https://github.com/cpoli/tbkit) [![GitHub Forks](https://img.shields.io/github/forks/cpoli/tbkit)](https://github.com/cpoli/tbkit) [![Contributors](https://img.shields.io/github/contributors/cpoli/tbkit)](https://github.com/cpoli/tbkit/graphs/contributors) [![Last Commit](https://img.shields.io/github/last-commit/cpoli/tbkit/master)](https://github.com/cpoli/tbkit/commits/master) |
 
 ![tbkit logo](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/image/tbkit_logo.png)
 
