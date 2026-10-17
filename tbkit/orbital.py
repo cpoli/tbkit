@@ -34,17 +34,23 @@ class OrbitalSystem(System):
     Solve a real-space Tight-Binding model with several orbitals per site
     and, optionally, spin.
 
-    :param lat: **Lattice** class instance.
-    :param orbitals: Dictionary. Default value None (one 's' orbital per
+    Parameters
+    ----------
+    lat : **Lattice** class instance
+    orbitals : Dictionary
+        Default value None (one 's' orbital per
         site). key: sublattice tag, val: list of orbital names (see
         :data:`tbkit.slater_koster.ORBITALS`), e.g. ``{'a': ['s', 'px', 'py', 'pz']}``.
-    :param spin: Boolean. Default value False. Give every orbital a
+    spin : Boolean, default False
+        Give every orbital a
         spin-1/2 degree of freedom.
-    :param periodic: Boolean, or tuple of booleans. Default value False.
+    periodic : Boolean, or tuple of booleans, default False
         Periodic boundaries (see *System*); the bond vectors of the
         Slater-Koster, spin-orbit and Rashba blocks are then those of the
         shortest image.
 
+    Notes
+    -----
     Everything of **System** still applies: *set_hopping* (and the disorder,
     defect and Peierls methods) sets hoppings :math:`t` that connect equal
     orbitals and equal spins of the two sites (:math:`t\,\mathbb{1}`), and
@@ -54,6 +60,8 @@ class OrbitalSystem(System):
     *set_hopping_block*. Call *set_peierls_phase* / *set_magnetic_field*
     last: they multiply every hopping (and block) set so far.
 
+    Examples
+    --------
     Example usage::
 
         # graphene's sp3 bands: four orbitals per carbon
@@ -100,12 +108,17 @@ class OrbitalSystem(System):
         '''
         Get the row of an orbital.
 
-        :param site: Integer. Site index.
-        :param orbital: String. Orbital name (one of the site's).
-        :param spin: 0 (up) or 1 (down). Default value 0.
+        Parameters
+        ----------
+        site : Integer
+            Site index.
+        orbital : String
+            Orbital name (one of the site's).
+        spin : 0 (up) or 1 (down), default 0
 
-        :returns:
-            * **row** -- Integer.
+        Returns
+        -------
+        row : Integer
         '''
         self._index()
         error_handling.site_index(site, self.lat.sites)
@@ -140,10 +153,15 @@ class OrbitalSystem(System):
         '''
         Set onsite energies.
 
-        :param dict_onsite: Dictionary. key: sublattice tag, val: onsite
+        Parameters
+        ----------
+        dict_onsite : Dictionary
+            key: sublattice tag, val: onsite
             energy (a number, applied to every orbital of the sites), or a
             dictionary {orbital: energy} (orbitals not given get 0).
 
+        Examples
+        --------
         Example usage::
 
             sys.set_onsite({'a': 0.5, 'b': {'s': -8.87, 'pz': 0.}})
@@ -159,7 +177,9 @@ class OrbitalSystem(System):
         Set a Zeeman field :math:`\mathbf{b}\cdot\boldsymbol\sigma` on every
         orbital (``spin=True`` only).
 
-        :param b: Tuple of three real numbers :math:`(b_x, b_y, b_z)`.
+        Parameters
+        ----------
+        b : Tuple of three real numbers :math:`(b_x, b_y, b_z)`
         '''
         error_handling.spinful(self.spin)
         error_handling.vector3(b, 'b')
@@ -175,8 +195,12 @@ class OrbitalSystem(System):
         of px, py, pz). It splits them into :math:`j = 3/2` (at
         :math:`+\lambda/2`) and :math:`j = 1/2` (at :math:`-\lambda`) levels.
 
-        :param lam: Real number. :math:`\lambda`.
-        :param tags: List of tags. Default value None (every tag with p orbitals).
+        Parameters
+        ----------
+        lam : Real number
+            :math:`\lambda`.
+        tags : List of tags
+            Default value None (every tag with p orbitals).
         '''
         error_handling.spinful(self.spin)
         error_handling.real_number(lam, 'lam')
@@ -219,11 +243,16 @@ class OrbitalSystem(System):
         :func:`tbkit.slater_koster.sk_block`), replacing those set before for
         the same *n*. The blocks are spin independent.
 
-        :param n: Positive integer. Neighbour order (1 for nearest neighbours).
-        :param params: Dictionary of bond integrals (e.g. ``{'pp_sigma': 5.04,
+        Parameters
+        ----------
+        n : Positive integer
+            Neighbour order (1 for nearest neighbours).
+        params
+            Dictionary of bond integrals (e.g. ``{'pp_sigma': 5.04,
             'pp_pi': -3.03}``), or dictionary {tag pair: bond integrals} (e.g.
             ``{'ab': {...}, 'ba': {...}}``, for bonds from an 'a' to a 'b' site).
-        :param overlap: Dictionary. Default value None. Bond integrals of the
+        overlap : Dictionary, default None
+            Bond integrals of the
             overlap matrix :math:`S_{ij} = \langle i|j\rangle`, in the same
             format: the basis is then non-orthogonal, and *get_eig* solves
             :math:`H\psi = ES\psi`.
@@ -258,8 +287,12 @@ class OrbitalSystem(System):
         :math:`\nu_{ij} = \pm1` says whether the path turns left or right).
         It connects equal orbitals of the two sites.
 
-        :param lam: Real number. :math:`\lambda`.
-        :param n: Positive integer. Default value 2. Neighbour order.
+        Parameters
+        ----------
+        lam : Real number
+            :math:`\lambda`.
+        n : Positive integer, default 2
+            Neighbour order.
         '''
         error_handling.spinful(self.spin)
         error_handling.real_number(lam, 'lam')
@@ -290,8 +323,11 @@ class OrbitalSystem(System):
         :math:`\hat{\mathbf{d}}_{ij}` the bond direction. It connects equal
         orbitals of the two sites.
 
-        :param lam: Real number. :math:`\lambda`.
-        :param n: Positive integer. Default value 1.
+        Parameters
+        ----------
+        lam : Real number
+            :math:`\lambda`.
+        n : Positive integer, default 1
         '''
         error_handling.spinful(self.spin)
         error_handling.real_number(lam, 'lam')
@@ -311,7 +347,9 @@ class OrbitalSystem(System):
         orbitals, then spin, as *row* orders them. Their Hermitian conjugates
         are added.
 
-        :param dict_block: Dictionary.
+        Parameters
+        ----------
+        dict_block : Dictionary
         '''
         error_handling.set_hopping_def(None, {k: 0. for k in dict_block}, self.lat.sites, 'dict_block')
         self._index()
@@ -334,7 +372,9 @@ class OrbitalSystem(System):
         Apply the Peierls substitution (see *System.set_peierls_phase*) to
         the hoppings *hop* and to every hopping block set so far.
 
-        :param phase: Callable ``phase(xi, yi, xj, yj)``.
+        Parameters
+        ----------
+        phase : Callable ``phase(xi, yi, xj, yj)``
         '''
         error_handling.is_callable(phase, 'phase')
         if self.hop.size:
@@ -373,7 +413,10 @@ class OrbitalSystem(System):
         Get the Hamiltonian (and, for a non-orthogonal basis, the overlap
         matrix *overlap*).
 
-        :param params: Values of the parameters of the value functions of
+        Parameters
+        ----------
+        params
+            Values of the parameters of the value functions of
             *hop* (see *System.get_ham*).
         '''
         error_handling.orbital_terms(self.hop, self.blocks)
@@ -444,8 +487,11 @@ class OrbitalSystem(System):
         problem :math:`H\psi = ES\psi` (eigenvectors normalized as
         :math:`\psi^\dagger S\psi = 1` for a Hermitian :math:`H`).
 
-        :param eigenvec: Boolean. Default value False.
-        :param left: Boolean. Default value False (orthogonal basis only).
+        Parameters
+        ----------
+        eigenvec : Boolean, default False
+        left : Boolean
+            Default value False (orthogonal basis only).
         '''
         if self.overlap is None:
             return System.get_eig(self, eigenvec, left)
@@ -483,11 +529,14 @@ class OrbitalSystem(System):
         Get the local Chern marker (see *System.get_local_chern_marker*),
         summed over the orbitals and spin of each site (orthogonal basis only).
 
-        :param e_fermi: Real number. Default value 0.
-        :param area: Positive real number. Default value None.
+        Parameters
+        ----------
+        e_fermi : Real number, default 0
+        area : Positive real number, default None
 
-        :returns:
-            * **marker** -- Real ndarray, shape (sites,).
+        Returns
+        -------
+        marker : Real ndarray, shape (sites,)
         '''
         error_handling.orthogonal(self.overlap)
         return System.get_local_chern_marker(self, e_fermi, area)
@@ -497,10 +546,13 @@ class OrbitalSystem(System):
         Get the Bott index of a torus (see *System.get_bott_index*), the
         orbitals and spin of a site sharing its position (orthogonal basis only).
 
-        :param e_fermi: Real number. Default value 0.
+        Parameters
+        ----------
+        e_fermi : Real number, default 0
 
-        :returns:
-            * **bott** -- Real number, close to an integer.
+        Returns
+        -------
+        bott : Real number, close to an integer
         '''
         error_handling.orthogonal(self.overlap)
         return System.get_bott_index(self, e_fermi)

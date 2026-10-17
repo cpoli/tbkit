@@ -30,15 +30,25 @@ class MeanFieldResult():
     '''
     Self-consistent solution of *hubbard_mean_field*.
 
-    :ivar n_up: Real ndarray. Spin-up density on every site.
-    :ivar n_dn: Real ndarray. Spin-down density on every site.
-    :ivar magnetization: Real ndarray. :math:`m_i = (n_{i\\uparrow} - n_{i\\downarrow})/2`.
-    :ivar en_up: Real ndarray. Spin-up mean-field energies.
-    :ivar en_dn: Real ndarray. Spin-down mean-field energies.
-    :ivar e_fermi: Real number. Fermi level.
-    :ivar energy: Real number. Mean-field ground-state (free, at T > 0) energy
+    Attributes
+    ----------
+    n_up : Real ndarray
+        Spin-up density on every site.
+    n_dn : Real ndarray
+        Spin-down density on every site.
+    magnetization : Real ndarray
+        :math:`m_i = (n_{i\\uparrow} - n_{i\\downarrow})/2`.
+    en_up : Real ndarray
+        Spin-up mean-field energies.
+    en_dn : Real ndarray
+        Spin-down mean-field energies.
+    e_fermi : Real number
+        Fermi level.
+    energy : Real number
+        Mean-field ground-state (free, at T > 0) energy
         :math:`\\sum f E - U\\sum_i n_{i\\uparrow}n_{i\\downarrow}`.
-    :ivar iterations: Integer. Number of iterations.
+    iterations : Integer
+        Number of iterations.
     '''
 
     def __init__(self, n_up, n_dn, en_up, en_dn, e_fermi, energy, iterations) -> None:
@@ -96,27 +106,38 @@ def hubbard_mean_field(
     solutions reached from several starts (random seeds, or a staggered
     magnetization on the two sublattices of a bipartite lattice).
 
-    :param ham: Square Hermitian matrix (sparse or dense), the spin-independent
+    Parameters
+    ----------
+    ham
+        Square Hermitian matrix (sparse or dense), the spin-independent
         single-particle Hamiltonian (e.g. *System.ham*).
-    :param U: Real number, or array of one per site. Onsite repulsion.
-    :param n_electrons: Positive real, at most 2N. Number of electrons (both
+    U : Real number, or array of one per site
+        Onsite repulsion.
+    n_electrons : Positive real, at most 2N
+        Number of electrons (both
         spins; N for half filling). An integer at T = 0.
-    :param temperature: Positive real or zero. Default value 0.
-    :param n_up: Real array. Default value None. Initial spin-up density.
-    :param n_dn: Real array. Default value None. Initial spin-down density.
+    temperature : Positive real or zero, default 0
+    n_up : Real array, default None
+        Initial spin-up density.
+    n_dn : Real array, default None
+        Initial spin-down density.
         By default, a small random magnetization on top of the uniform
         density (to break the spin symmetry).
-    :param mixing: Real in (0, 1]. Default value 0.5. Fraction of the new
+    mixing : Real in (0, 1], default 0.5
+        Fraction of the new
         density mixed in at each iteration. (Plain linear mixing converges
         only to stable solutions, but slowly near a magnetic transition:
         raise *max_iter* there.)
-    :param tol: Positive real. Default value 1e-8. Convergence threshold on
+    tol : Positive real, default 1e-8
+        Convergence threshold on
         the largest density change.
-    :param max_iter: Positive integer. Default value 20000.
-    :param seed: Default value None. Seed of the random initial magnetization.
+    max_iter : Positive integer, default 20000
+    seed
+        Default value None. Seed of the random initial magnetization.
 
-    :returns:
-        * **result** -- :class:`MeanFieldResult`.
+    Returns
+    -------
+    result : :class:`MeanFieldResult`
     '''
     ham = ham.toarray() if hasattr(ham, 'toarray') else np.asarray(ham)
     error_handling.square_matrix(ham, 'ham')
@@ -165,19 +186,28 @@ class NonCollinearResult():
     r'''
     Self-consistent solution of *hubbard_mean_field_noncollinear*.
 
-    :ivar rho: Complex ndarray, shape (N, 2, 2). Onsite spin density
+    Attributes
+    ----------
+    rho : Complex ndarray, shape (N, 2, 2)
+        Onsite spin density
         matrices :math:`\rho_{i,\alpha\beta} = \langle c^\dagger_{i\beta}c_{i\alpha}\rangle`.
-    :ivar density: Real ndarray. :math:`n_i = \mathrm{Tr}\,\rho_i`.
-    :ivar magnetization: Real ndarray, shape (N, 3).
+    density : Real ndarray
+        :math:`n_i = \mathrm{Tr}\,\rho_i`.
+    magnetization : Real ndarray, shape (N, 3)
         :math:`\mathbf{m}_i = \mathrm{Tr}(\rho_i\boldsymbol\sigma)/2`.
-    :ivar energies: Real ndarray. Mean-field energies (2N).
-    :ivar states: Complex ndarray, shape (2N, 2N). Eigenvectors (columns),
+    energies : Real ndarray
+        Mean-field energies (2N).
+    states : Complex ndarray, shape (2N, 2N)
+        Eigenvectors (columns),
         rows site-major (spin up, down).
-    :ivar e_fermi: Real number. Fermi level.
-    :ivar energy: Real number. Mean-field ground-state energy
+    e_fermi : Real number
+        Fermi level.
+    energy : Real number
+        Mean-field ground-state energy
         :math:`\sum f E - U\sum_i(\rho_{i\uparrow\uparrow}\rho_{i\downarrow\downarrow}
         - |\rho_{i\uparrow\downarrow}|^2)`.
-    :ivar iterations: Integer. Number of iterations.
+    iterations : Integer
+        Number of iterations.
     '''
 
     def __init__(self, rho, energies, states, e_fermi, energy, iterations) -> None:
@@ -221,24 +251,34 @@ def hubbard_mean_field_noncollinear(
     (collinear moments along :math:`z` stay collinear, and give the same
     solution). As there, several starts should be compared by *energy*.
 
-    :param ham: Square Hermitian matrix: the single-particle Hamiltonian,
+    Parameters
+    ----------
+    ham
+        Square Hermitian matrix: the single-particle Hamiltonian,
         (N, N) spin independent, or, with ``spinful=True``, (2N, 2N) with
         rows site-major (spin up, down) -- e.g. with spin-orbit coupling.
-    :param U: Real number, or array of one per site. Onsite repulsion.
-    :param n_electrons: Positive real, at most 2N. An integer at T = 0.
-    :param temperature: Positive real or zero. Default value 0.
-    :param magnetization: Real array, shape (N, 3). Default value None
+    U : Real number, or array of one per site
+        Onsite repulsion.
+    n_electrons : Positive real, at most 2N
+        An integer at T = 0.
+    temperature : Positive real or zero, default 0
+    magnetization : Real array, shape (N, 3)
+        Default value None
         (random directions of length 0.1). Initial moments, on top of a
         uniform density.
-    :param spinful: Boolean. Default value False. See *ham*.
-    :param mixing: Real in (0, 1]. Default value 0.5.
-    :param tol: Positive real. Default value 1e-8. Convergence threshold on
+    spinful : Boolean, default False
+        See *ham*.
+    mixing : Real in (0, 1], default 0.5
+    tol : Positive real, default 1e-8
+        Convergence threshold on
         the largest change of :math:`\rho`.
-    :param max_iter: Positive integer. Default value 20000.
-    :param seed: Default value None. Seed of the random initial moments.
+    max_iter : Positive integer, default 20000
+    seed
+        Default value None. Seed of the random initial moments.
 
-    :returns:
-        * **result** -- :class:`NonCollinearResult`.
+    Returns
+    -------
+    result : :class:`NonCollinearResult`
     '''
     ham = ham.toarray() if hasattr(ham, 'toarray') else np.asarray(ham)
     error_handling.square_matrix(ham, 'ham')

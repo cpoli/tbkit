@@ -30,7 +30,9 @@ class Propagation():
 
     unitary for a Hermitian :math:`H`.
 
-    :param lat: **lattice** class instance.
+    Parameters
+    ----------
+    lat : **lattice** class instance
     '''
 
     def __init__(self, lat: Lattice) -> None:
@@ -44,11 +46,18 @@ class Propagation():
         r'''
         Get the time evolution.
 
-        :param ham: sparse.csr_matrix. Tight-Binding Hamiltonian.
-        :param psi_init: np.ndarray. Initial state.
-        :param steps: Positive Integer. Number of steps.
-        :param dz: Positive number. Step.
-        :param norm: Boolean. Default value False. Renormalize the state to
+        Parameters
+        ----------
+        ham : sparse.csr_matrix
+            Tight-Binding Hamiltonian.
+        psi_init : np.ndarray
+            Initial state.
+        steps : Positive Integer
+            Number of steps.
+        dz : Positive number
+            Step.
+        norm : Boolean, default False
+            Renormalize the state to
             :math:`\sum_i|\psi_i|^2 = 1` at each step. The Crank-Nicolson
             step is unitary, so this only matters for a non-Hermitian
             Hamiltonian (gain/loss), where the norm is not conserved.
@@ -77,13 +86,22 @@ class Propagation():
         r'''
         Get the time evolution with adiabatic pumpings.
 
-        :param hams: List of sparse.csr_matrices. Tight-Binding Hamiltonians.
-        :param psi_init: np.ndarray. Initial state.
-        :param steps: Positive integer. Number of steps.
-        :param dz: Positive number. Step.
-        :param norm: Boolean. Default value True. Renormalize the state to
+        Parameters
+        ----------
+        hams : List of sparse.csr_matrices
+            Tight-Binding Hamiltonians.
+        psi_init : np.ndarray
+            Initial state.
+        steps : Positive integer
+            Number of steps.
+        dz : Positive number
+            Step.
+        norm : Boolean, default True
+            Renormalize the state to
             :math:`\sum_i|\psi_i|^2 = 1` at each step.
 
+        Notes
+        -----
         The *steps* are split into ``len(hams) + 1`` equal stages: evolution
         under ``hams[0]``, then ``len(hams) - 1`` stages each interpolating
         linearly from ``hams[j]`` to ``hams[j+1]``, then evolution under
@@ -140,13 +158,19 @@ class Propagation():
         '''
         Plot time evolution for 1D systems.
 
-        :param prop_type: String. Default value 'real'. Plot the real part
+        Parameters
+        ----------
+        prop_type : String, default 'real'
+            Plot the real part
             ('real'), the imaginary part ('imag'), or the intensity ('norm').
-        :param fs: Positive number. Default value 20. Fontsize.
-        :param figsize: Tuple. Default value None. Figure size.
+        fs : Positive number, default 20
+            Fontsize.
+        figsize : Tuple, default None
+            Figure size.
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         error_handling.empty_ndarray(self.prop, 'get_propagation or get_pumping')
         error_handling.positive_real(fs, 'fs')
@@ -194,12 +218,19 @@ class Propagation():
         Smooth propagation for 1D systems.
         Perform Gaussian interpolation :math:`e^{-a(x-x_i)^2}`,
 
-        :param prop: Propagation.
-        :param a: Default value 10. Gaussian Parameter.
-        :param no: Default value 40. Number of points of each Gaussian.
+        Parameters
+        ----------
+        prop
+            Propagation.
+        a
+            Default value 10. Gaussian Parameter.
+        no
+            Default value 40. Number of points of each Gaussian.
 
-        :returns:
-           * **smooth** -- Smoothed propagation.
+        Returns
+        -------
+        smooth
+            Smoothed propagation.
         '''
         func = np.exp(- a * np.linspace(-0.5, 0.5, no) ** 2) 
         smooth = np.empty((self.lat.sites * no, self.steps))
@@ -215,14 +246,22 @@ class Propagation():
         '''
         Get time evolution animation.
 
-        :param s: Default value 300. Circle size.
-        :param fs: Default value 20. Fontsize.
-        :param prop_type: String. Default value 'real'. Plot the real part
+        Parameters
+        ----------
+        s
+            Default value 300. Circle size.
+        fs
+            Default value 20. Fontsize.
+        prop_type : String, default 'real'
+            Plot the real part
             ('real'), the imaginary part ('imag'), or the intensity ('norm').
-        :param figsize: Tuple. Default value None. Figsize.
+        figsize : Tuple, default None
+            Figsize.
 
-        :returns:
-          * **ani** -- Animation.
+        Returns
+        -------
+        ani
+            Animation.
         '''
         error_handling.empty_ndarray(self.prop, 'get_propagation or get_pumping')
         error_handling.positive_real(s, 's')
@@ -279,14 +318,22 @@ class Propagation():
         '''
         Get time evolution animation for iPython notebooks.
 
-        :param s: Default value 300. Circle size.
-        :param fs: Default value 20. Fontsize.
-        :param prop_type: String. Default value 'real'. Plot the real part
+        Parameters
+        ----------
+        s
+            Default value 300. Circle size.
+        fs
+            Default value 20. Fontsize.
+        prop_type : String, default 'real'
+            Plot the real part
             ('real'), the imaginary part ('imag'), or the intensity ('norm').
-        :param figsize: Tuple. Default value None. Figsize.
+        figsize : Tuple, default None
+            Figsize.
 
-        :returns:
-           * **ani** -- Animation.
+        Returns
+        -------
+        ani
+            Animation.
         '''
         error_handling.empty_ndarray(self.prop, 'get_propagation or get_pumping')
         error_handling.positive_real(s, 's')
@@ -334,11 +381,16 @@ class Propagation():
         '''
         Plot time evolution for dimers.
 
-        :param lw: Positive number. Default value 5. Linewidth.
-        :param fs: Positive number. Default value 20. Fontsize.
+        Parameters
+        ----------
+        lw : Positive number, default 5
+            Linewidth.
+        fs : Positive number, default 20
+            Fontsize.
 
-        :returns:
-           * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         error_handling.empty_ndarray(self.prop, 'get_propagation or get_pumping')
         error_handling.positive_real(lw, 'lw')

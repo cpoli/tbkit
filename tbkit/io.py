@@ -76,12 +76,19 @@ def save_model(model: Lattice | System | KSpace, path: str | os.PathLike) -> str
     base class (e.g. a *GrapheneSystem* as a *System*); an *OrbitalSystem*
     or a driven (Floquet) model cannot be saved.
 
-    :param model: **Lattice**, **System** or **KSpace** instance.
-    :param path: String or path. File name; ``.npz`` is appended if missing.
+    Parameters
+    ----------
+    model : **Lattice**, **System** or **KSpace** instance
+    path : String or path
+        File name; ``.npz`` is appended if missing.
 
-    :returns:
-        * **path** -- String. The file written.
+    Returns
+    -------
+    path : String
+        The file written.
 
+    Examples
+    --------
     Example usage::
 
         save_model(gra, 'graphene.npz')
@@ -124,11 +131,16 @@ def load_model(path: str | os.PathLike) -> Lattice | System | KSpace:
     '''
     Load a model saved by *save_model*.
 
-    :param path: String or path. File name.
+    Parameters
+    ----------
+    path : String or path
+        File name.
 
-    :returns:
-        * **model** -- **Lattice**, **System** or **KSpace** instance, whose
-          Hamiltonians (*get_ham*) are exactly those of the saved model.
+    Returns
+    -------
+    model
+        **Lattice**, **System** or **KSpace** instance, whose
+        Hamiltonians (*get_ham*) are exactly those of the saved model.
     '''
     error_handling.file_path(path, 'path')
     with np.load(path, allow_pickle=False) as data:
@@ -177,16 +189,23 @@ def read_hr(path: str | os.PathLike) -> tuple[int, NDArray[np.int64], NDArray[np
     :math:`H_{mn}(\mathbf{R}) = \langle m\mathbf{0}|H|n\mathbf{R}\rangle`
     (m, n counted from 1).
 
-    :param path: String or path. The ``_hr.dat`` file.
+    Parameters
+    ----------
+    path : String or path
+        The ``_hr.dat`` file.
 
-    :returns:
-        * **num_wann** -- Integer. Number of Wannier functions.
-        * **R** -- Integer ndarray, shape (nrpts, 3). Lattice vectors (in
-          units of the primitive vectors).
-        * **ndegen** -- Integer ndarray, shape (nrpts,). Degeneracy weights.
-        * **ham** -- Complex ndarray, shape (nrpts, num_wann, num_wann).
-          :math:`H_{mn}(\mathbf{R})` as written in the file (not divided by
-          the weights).
+    Returns
+    -------
+    num_wann : Integer
+        Number of Wannier functions.
+    R : Integer ndarray, shape (nrpts, 3)
+        Lattice vectors (in
+        units of the primitive vectors).
+    ndegen : Integer ndarray, shape (nrpts,)
+        Degeneracy weights.
+    ham : Complex ndarray, shape (nrpts, num_wann, num_wann)
+        :math:`H_{mn}(\mathbf{R})` as written in the file (not divided by
+        the weights).
     '''
     error_handling.file_path(path, 'path')
     with open(path) as f:
@@ -213,11 +232,16 @@ def read_win_cell(path: str | os.PathLike) -> NDArray[np.float64]:
     ``unit_cell_cart``, in Angstrom, or in bohr if its first line says
     ``bohr``). Comments (``!``, ``#``) are ignored.
 
-    :param path: String or path. The ``.win`` file.
+    Parameters
+    ----------
+    path : String or path
+        The ``.win`` file.
 
-    :returns:
-        * **cell** -- Real ndarray, shape (3, 3). The rows are
-          :math:`\mathbf{a}_1, \mathbf{a}_2, \mathbf{a}_3`, in Angstrom.
+    Returns
+    -------
+    cell : Real ndarray, shape (3, 3)
+        The rows are
+        :math:`\mathbf{a}_1, \mathbf{a}_2, \mathbf{a}_3`, in Angstrom.
     '''
     error_handling.file_path(path, 'path')
     with open(path) as f:
@@ -240,11 +264,16 @@ def read_centres(path: str | os.PathLike, num_wann: int) -> NDArray[np.float64]:
     Read the Wannier centres of a Wannier90 ``seedname_centres.xyz`` file
     (the first *num_wann* atoms labelled ``X``, in Angstrom).
 
-    :param path: String or path. The ``_centres.xyz`` file.
-    :param num_wann: Positive integer. Number of Wannier functions.
+    Parameters
+    ----------
+    path : String or path
+        The ``_centres.xyz`` file.
+    num_wann : Positive integer
+        Number of Wannier functions.
 
-    :returns:
-        * **centres** -- Real ndarray, shape (num_wann, 3).
+    Returns
+    -------
+    centres : Real ndarray, shape (num_wann, 3)
     '''
     error_handling.file_path(path, 'path')
     error_handling.positive_int(num_wann, 'num_wann')
@@ -285,34 +314,47 @@ def read_wannier90(
     and the model is Hermitian (with real onsite energies); otherwise every
     element is kept, with ``hermitian=False``.
 
-    :param hr: String or path. The ``seedname_hr.dat`` file.
-    :param prim_vec: List of *dim* tuples of *dim* real numbers. Default
+    Parameters
+    ----------
+    hr : String or path
+        The ``seedname_hr.dat`` file.
+    prim_vec : List of *dim* tuples of *dim* real numbers
+        Default
         value None. Primitive vectors, in the units of the positions
         (Angstrom for Wannier90). If None, read from *win*.
-    :param win: String or path. Default value None. The ``seedname.win``
+    win : String or path, default None
+        The ``seedname.win``
         file, for its ``unit_cell_cart`` block (if *prim_vec* is None).
-    :param centres: String or path. Default value None. The
+    centres : String or path, default None
+        The
         ``seedname_centres.xyz`` file: the Wannier centres become the
         orbital positions (used by the Wilson-loop tools, the Peierls
         phases, *bridges.finite_system*, ...).
-    :param positions: Array, shape (num_wann, dim) or (num_wann, 3).
-        Default value None. Orbital positions, instead of *centres*. With
+    positions : Array, shape (num_wann, dim) or (num_wann, 3), default None
+        Orbital positions, instead of *centres*. With
         neither, every orbital sits at the origin of the cell.
-    :param tags: List of num_wann one-character strings. Default value
+    tags : List of num_wann one-character strings
+        Default value
         None (every orbital tagged ``'a'``). Sublattice tags.
-    :param dim: 2 or 3. Default value 3. A 2D model (a layer) keeps only
+    dim : 2 or 3, default 3
+        A 2D model (a layer) keeps only
         :math:`(R_1, R_2)`: every element with :math:`R_3\neq 0` must vanish
         (within *tol*), and the lattice lies in the :math:`(x, y)` plane
         (the z components of the vectors read from *win* must vanish; those
         of the positions are dropped).
-    :param cutoff: Positive real number or zero. Default value 0. Drop the
+    cutoff : Positive real number or zero, default 0
+        Drop the
         hoppings with :math:`|t| \le` *cutoff* (the exact zeros by default).
-    :param tol: Positive real number. Default value 1e-6. Tolerance of the
+    tol : Positive real number, default 1e-6
+        Tolerance of the
         Hermiticity and 2D checks (the file has 6 decimals).
 
-    :returns:
-        * **ks** -- **KSpace** instance, with num_wann orbitals.
+    Returns
+    -------
+    ks : **KSpace** instance, with num_wann orbitals
 
+    Examples
+    --------
     Example usage::
 
         ks = read_wannier90('graphene_hr.dat', win='graphene.win',

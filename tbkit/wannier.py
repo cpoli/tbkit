@@ -47,36 +47,51 @@ class WannierFunctions():
     r'''
     Wannier functions of a group of bands, see *wannierize*.
 
-    :ivar functions: Complex ndarray, shape (n_wann, N*norb). Amplitudes
+    Attributes
+    ----------
+    functions : Complex ndarray, shape (n_wann, N*norb)
+        Amplitudes
         of each Wannier function on the orbitals of the
         :math:`N = N_1N_2\dots` cells of the k-mesh, indexed as the rows of
         *KSpace.finite_ham(nk)* (and the sites of *system*). Each one is a
         lattice translate chosen to sit in the middle of the sample.
-    :ivar positions: Real ndarray, shape (N*norb, space_dim). Position of each row.
-    :ivar centers: Real ndarray, shape (n_wann, space_dim). Centres
+    positions : Real ndarray, shape (N*norb, space_dim)
+        Position of each row.
+    centers : Real ndarray, shape (n_wann, space_dim)
+        Centres
         :math:`\bar{\mathbf{r}}_n` of *functions* (Cartesian).
-    :ivar spreads: Real ndarray, shape (n_wann,). Spreads
+    spreads : Real ndarray, shape (n_wann,)
+        Spreads
         :math:`\langle r^2\rangle_n - |\bar{\mathbf{r}}_n|^2` (squared
         length), along the primitive vectors only for a chain or a 2D
         lattice in 3D.
-    :ivar omega_i: Real number. Gauge-invariant part :math:`\Omega_I` of the total spread.
-    :ivar omega_d: Real number. Diagonal part :math:`\tilde\Omega_D`.
-    :ivar omega_od: Real number. Off-diagonal part :math:`\tilde\Omega_{OD}`.
-    :ivar gauge: Complex ndarray, shape (N, len(bands), n_wann).
+    omega_i : Real number
+        Gauge-invariant part :math:`\Omega_I` of the total spread.
+    omega_d : Real number
+        Diagonal part :math:`\tilde\Omega_D`.
+    omega_od : Real number
+        Off-diagonal part :math:`\tilde\Omega_{OD}`.
+    gauge : Complex ndarray, shape (N, len(bands), n_wann)
         :math:`U(\mathbf{k})` over the k-mesh (flattened as *KSpace.mesh_grid*),
         acting on the eigenvectors of *bands*: unitary for an isolated
         group, otherwise the disentangled subspace (orthonormal columns,
         zero on the states outside the window) times the unitary gauge.
-    :ivar history: Real ndarray. Total spread after the projection and after each step.
-    :ivar converged: Boolean. Whether the spread changed by less than *tol*.
-    :ivar min_singular_value: Real number. Smallest singular value of the
+    history : Real ndarray
+        Total spread after the projection and after each step.
+    converged : Boolean
+        Whether the spread changed by less than *tol*.
+    min_singular_value : Real number
+        Smallest singular value of the
         projection :math:`A(\mathbf{k})` over the mesh: close to zero when the
         trial orbitals miss the bands somewhere (as they must for a Chern band).
-    :ivar dis_history: Real ndarray. :math:`\Omega_I` after the projection
+    dis_history : Real ndarray
+        :math:`\Omega_I` after the projection
         and after each disentanglement step (empty for an isolated group).
-    :ivar dis_converged: Boolean. Whether :math:`\Omega_I` changed by
+    dis_converged : Boolean
+        Whether :math:`\Omega_I` changed by
         less than *dis_tol* (True for an isolated group).
-    :ivar ham_k: Complex ndarray, shape (N, n_wann, n_wann). Hamiltonian
+    ham_k : Complex ndarray, shape (N, n_wann, n_wann)
+        Hamiltonian
         :math:`U^\dagger(\mathbf{k})\,\mathrm{diag}(E)\,U(\mathbf{k})`
         in the gauge of the Wannier functions, over the k-mesh.
     '''
@@ -145,12 +160,17 @@ class WannierFunctions():
         model is the one *io.read_wannier90* would read from Wannier90's
         ``seedname_hr.dat``.
 
-        :param cutoff: Positive real number or zero. Default value 1e-10.
+        Parameters
+        ----------
+        cutoff : Positive real number or zero, default 1e-10
             Drop the hoppings with :math:`|t| \le` *cutoff*.
 
-        :returns:
-            * **ks** -- **KSpace** instance, Hermitian, with n_wann orbitals.
+        Returns
+        -------
+        ks : **KSpace** instance, Hermitian, with n_wann orbitals
 
+        Examples
+        --------
         Example usage::
 
             wf = wannierize(ks, list(range(ks.norb)), trial=[0, 1], frozen=(-3., 0.))
@@ -195,7 +215,11 @@ def _shells(rec: NDArray[np.float64], nk: tuple[int, ...]) -> tuple[NDArray, NDA
     skipping those that add no independent direction, until the condition
     is solvable (as Wannier90 does).
 
-    :returns: steps (integers, shape (nb, dim)), b (shape (nb, dim)), w (shape (nb,)).
+    Returns
+    -------
+    steps : integers, shape (nb, dim)
+    b : shape (nb, dim)
+    w : shape (nb,)
     '''
     dim = len(nk)
     steps = np.array(np.meshgrid(*[np.arange(-1, 2)] * dim, indexing='ij')).reshape(dim, -1).T
@@ -292,7 +316,12 @@ def _disentangle(m0, neighbour, w, inside, frozen, a, n_w, max_iter, tol, mixing
     The first subspace is the projection of the trial orbitals *a*
     (overlaps :math:`\langle u_m|g_n\rangle`, shape (nk, N, n_w)).
 
-    :returns: U (nk, N, n_w), the :math:`\Omega_I` history, converged.
+    Returns
+    -------
+    U : shape (nk, N, n_w)
+    history
+        The :math:`\Omega_I` history.
+    converged
     '''
     n_k, n = inside.shape
     free = inside & ~frozen
@@ -373,43 +402,59 @@ def wannierize(
     subspace. Pass every band (``list(range(ks.norb))``) and select the
     states with the windows.
 
-    :param ks: **KSpace** instance, Hermitian.
-    :param bands: Band index, or list of band indices. With one trial
+    Parameters
+    ----------
+    ks : **KSpace** instance, Hermitian
+    bands : Band index, or list of band indices
+        With one trial
         orbital per band and no window, the group, which must be separated
         in energy from the other bands over the whole mesh; otherwise the
         candidate bands of the disentanglement.
-    :param trial: Trial orbitals, one per Wannier function (at most one per
+    trial
+        Trial orbitals, one per Wannier function (at most one per
         band): a list of orbital indices (each a single orbital of the home
         cell), or a complex array of shape (norb, n_wann) whose columns are
         combinations of the orbitals of the home cell (e.g. a bond orbital).
-    :param nk: Positive integer, or tuple of *dim* integers. Default value
+    nk : Positive integer, or tuple of *dim* integers
+        Default value
         12. k-mesh, at least 3 along each direction; the Wannier functions
         live on the same number of cells.
-    :param max_iter: Positive integer or zero. Default value 500. Maximal
+    max_iter : Positive integer or zero, default 500
+        Maximal
         number of descent steps (0 keeps the projected gauge).
-    :param tol: Positive real number. Default value 1e-10. Convergence
+    tol : Positive real number, default 1e-10
+        Convergence
         threshold on the change of :math:`\Omega` between steps.
-    :param step: Positive real number. Default value 0.5. Trial step
+    step : Positive real number, default 0.5
+        Trial step
         :math:`\alpha` of the line search, :math:`dW = \alpha D/4\sum_b w_b`
         along the search direction :math:`D`; it is halved whenever the
         spread would grow.
-    :param window: Tuple of two real numbers. Default value None (every
+    window : Tuple of two real numbers
+        Default value None (every
         state of *bands*). Outer energy window :math:`(E_{min}, E_{max})`:
         the states of *bands* inside it are the candidates, at least
         n_wann at every k-point.
-    :param frozen: Tuple of two real numbers. Default value None (no
+    frozen : Tuple of two real numbers
+        Default value None (no
         frozen states). Inner energy window, inside *window*: its states,
         at most n_wann at every k-point, are kept in the subspace.
-    :param dis_iter: Positive integer or zero. Default value 2000. Maximal
+    dis_iter : Positive integer or zero, default 2000
+        Maximal
         number of disentanglement steps (0 keeps the projected subspace).
-    :param dis_tol: Positive real number. Default value 1e-10. Convergence
+    dis_tol : Positive real number, default 1e-10
+        Convergence
         threshold on the change of :math:`\Omega_I` between steps.
-    :param mixing: Real in (0, 1]. Default value 0.5. Fraction of the new
+    mixing : Real in (0, 1], default 0.5
+        Fraction of the new
         :math:`Z(\mathbf{k})` mixed in at each disentanglement step.
 
-    :returns:
-        * **wf** -- **WannierFunctions** instance.
+    Returns
+    -------
+    wf : **WannierFunctions** instance
 
+    Examples
+    --------
     Example usage::
 
         wf = wannierize(ssh, 0, trial=[0], nk=20)

@@ -69,16 +69,24 @@ def bott_index(ham, positions: ArrayLike, cell: ArrayLike, e_fermi: float = 0.) 
     comes from *KSpace.finite_ham* with ``periodic=True`` and the positions
     from *tbkit.higher_order.flake_positions*.
 
-    :param ham: Square Hermitian matrix (dense or sparse), shape (N, N).
-    :param positions: Real array, shape (N, d). Position of the orbital of each row.
-    :param cell: Real array, shape (2, d). The two vectors
+    Parameters
+    ----------
+    ham : Square Hermitian matrix (dense or sparse), shape (N, N)
+    positions : Real array, shape (N, d)
+        Position of the orbital of each row.
+    cell : Real array, shape (2, d)
+        The two vectors
         :math:`\mathbf{L}_1, \mathbf{L}_2` spanning the torus (e.g.
         :math:`N_1\mathbf{a}_1` and :math:`N_2\mathbf{a}_2`).
-    :param e_fermi: Real number. Default value 0. Fermi energy.
+    e_fermi : Real number, default 0
+        Fermi energy.
 
-    :returns:
-        * **bott** -- Real number, close to an integer.
+    Returns
+    -------
+    bott : Real number, close to an integer
 
+    Examples
+    --------
     Example usage::
 
         n = 12
@@ -116,12 +124,16 @@ def entanglement_spectrum(ham, region: list[int], e_fermi: float = 0.) -> NDArra
     property of the ground state alone. See
     *KSpace.entanglement_spectrum* for the k-resolved version.
 
-    :param ham: Square Hermitian matrix (dense or sparse), shape (N, N).
-    :param region: List of row indices (the region :math:`A`).
-    :param e_fermi: Real number. Default value 0. Fermi energy.
+    Parameters
+    ----------
+    ham : Square Hermitian matrix (dense or sparse), shape (N, N)
+    region : List of row indices (the region :math:`A`)
+    e_fermi : Real number, default 0
+        Fermi energy.
 
-    :returns:
-        * **xi** -- Real ndarray, shape (len(region),), sorted ascending.
+    Returns
+    -------
+    xi : Real ndarray, shape (len(region),), sorted ascending
     '''
     occ = _occupied(ham, e_fermi)
     error_handling.region(region, len(occ))
@@ -133,13 +145,19 @@ class WeylPoints():
     r'''
     Weyl points of a 3D model, see *find_weyl_points*.
 
-    :ivar k: Real ndarray, shape (n, 3). Positions, in the k coordinates of
+    Attributes
+    ----------
+    k : Real ndarray, shape (n, 3)
+        Positions, in the k coordinates of
         *KSpace.get_ham*, folded to fractional coordinates in [-1/2, 1/2).
-    :ivar chirality: Integer ndarray, shape (n,). Berry flux of the bands
+    chirality : Integer ndarray, shape (n,)
+        Berry flux of the bands
         below the touching out of a small sphere around each point, over
         :math:`2\pi`: :math:`\pm1` for a simple Weyl point.
-    :ivar energy: Real ndarray, shape (n,). Energy of the touching.
-    :ivar gap: Real ndarray, shape (n,). Remaining gap at the refined point
+    energy : Real ndarray, shape (n,)
+        Energy of the touching.
+    gap : Real ndarray, shape (n,)
+        Remaining gap at the refined point
         (zero up to the tolerance).
     '''
 
@@ -255,21 +273,29 @@ def find_weyl_points(
     Nodal lines (degeneracies along curves) are not isolated points and are
     outside the scope of this finder.
 
-    :param ks: **KSpace** instance with three primitive vectors (Hermitian).
-    :param bands: Band index, or list of band indices (e.g. the occupied
+    Parameters
+    ----------
+    ks : **KSpace** instance with three primitive vectors (Hermitian)
+    bands
+        Band index, or list of band indices (e.g. the occupied
         bands): the touching is between ``max(bands)`` and ``max(bands) + 1``.
-    :param nk: Positive integer. Default value 20. Mesh points along each
+    nk : Positive integer, default 20
+        Mesh points along each
         reciprocal vector.
-    :param radius: Positive real. Default value None: a fifth of the mesh
+    radius : Positive real
+        Default value None: a fifth of the mesh
         step. Radius of the sphere for the chirality (in units of k); it
         must enclose no other Weyl point.
-    :param tol: Positive real. Default value 1e-10. Newton's method stops
+    tol : Positive real, default 1e-10
+        Newton's method stops
         when a step is shorter than *tol*; a point is kept if its gap is
         below :math:`10^4` *tol* times the bandwidth.
-    :param max_iter: Positive integer. Default value 50. Newton iterations.
+    max_iter : Positive integer, default 50
+        Newton iterations.
 
-    :returns:
-        * **weyl** -- **WeylPoints** instance (*k*, *chirality*, *energy*, *gap*).
+    Returns
+    -------
+    weyl : **WeylPoints** instance (*k*, *chirality*, *energy*, *gap*)
     '''
     error_handling.kspace(ks, KSpace)
     error_handling.dim_exact(ks.dim, 3)

@@ -68,12 +68,18 @@ def bbh_model(gamma: float = 0.5, lam: float = 1., delta: float = 0.) -> KSpace:
     :math:`\delta` breaks the chiral symmetry and splits the corner states
     to :math:`\pm\delta`.
 
-    :param gamma: Real number. Default value 0.5. Intra-cell hopping.
-    :param lam: Real number. Default value 1. Inter-cell hopping.
-    :param delta: Real number. Default value 0. Onsite :math:`\pm\delta`.
+    Parameters
+    ----------
+    gamma : Real number, default 0.5
+        Intra-cell hopping.
+    lam : Real number, default 1
+        Inter-cell hopping.
+    delta : Real number, default 0
+        Onsite :math:`\pm\delta`.
 
-    :returns:
-        * **bbh** -- **KSpace** instance, 4 orbitals, lattice constant 1.
+    Returns
+    -------
+    bbh : **KSpace** instance, 4 orbitals, lattice constant 1
     '''
     error_handling.real_number(gamma, 'gamma')
     error_handling.real_number(lam, 'lam')
@@ -176,20 +182,28 @@ def wannier_bands(
     hybrid Wannier centres of *KSpace.wannier_centers*, in units of
     :math:`\mathbf{a}_d`, here in :math:`(-1/2, 1/2]` and sorted.
 
-    :param ks: **KSpace** instance, 2D, Hermitian, without overlap.
-    :param bands: Band index or list of band indices (e.g. the occupied bands).
-    :param nk: Positive integer, or tuple of two. Default value 40. Mesh
+    Parameters
+    ----------
+    ks : **KSpace** instance, 2D, Hermitian, without overlap
+    bands : Band index or list of band indices (e.g. the occupied bands)
+    nk : Positive integer, or tuple of two, default 40
+        Mesh
         along :math:`\mathbf{b}_1, \mathbf{b}_2`.
-    :param direction: 0 or 1. Default value 0. Direction :math:`d` of the Wilson loop.
-    :param positions: Boolean. Default value True. Include the orbital
+    direction : 0 or 1, default 0
+        Direction :math:`d` of the Wilson loop.
+    positions : Boolean, default True
+        Include the orbital
         positions in the links (see *KSpace.berry_phase*).
 
-    :returns:
-        * **nu** -- Real ndarray, shape (n1, n2, len(bands)). Wannier bands at
-          every base point, sorted, in :math:`(-1/2, 1/2]`.
-        * **w** -- Complex ndarray, shape (n1, n2, norb, len(bands)). The
-          Wannier-sector states :math:`|w^j_{d,\mathbf{k}}\rangle`, column *j*
-          for ``nu[..., j]``.
+    Returns
+    -------
+    nu : Real ndarray, shape (n1, n2, len(bands))
+        Wannier bands at
+        every base point, sorted, in :math:`(-1/2, 1/2]`.
+    w : Complex ndarray, shape (n1, n2, norb, len(bands))
+        The
+        Wannier-sector states :math:`|w^j_{d,\mathbf{k}}\rangle`, column *j*
+        for ``nu[..., j]``.
     '''
     bands = _check_model(ks, bands)
     error_handling.nk(nk, 2)
@@ -238,18 +252,25 @@ def wannier_sector_polarization(
     (a ValueError is raised otherwise). For the BBH model it is 1/2 in the
     quadrupole phase and 0 in the trivial one.
 
-    :param ks: **KSpace** instance, 2D, Hermitian, without overlap.
-    :param bands: Band index or list of band indices (the occupied bands).
-    :param sector: Integer or list of integers. Default value None (the
+    Parameters
+    ----------
+    ks : **KSpace** instance, 2D, Hermitian, without overlap
+    bands : Band index or list of band indices (the occupied bands)
+    sector : Integer or list of integers
+        Default value None (the
         lower half, :math:`\nu_d^-`). Indices of the Wannier bands (sorted
         in :math:`(-1/2, 1/2]`, see *wannier_bands*) forming the sector.
-    :param nk: Positive integer, or tuple of two. Default value 40. Mesh.
-    :param direction: 0 or 1. Default value 0. Direction :math:`d` of the
+    nk : Positive integer, or tuple of two, default 40
+        Mesh.
+    direction : 0 or 1, default 0
+        Direction :math:`d` of the
         first Wilson loop; the polarization is along the other one.
-    :param positions: Boolean. Default value True. See *wannier_bands*.
+    positions : Boolean, default True
+        See *wannier_bands*.
 
-    :returns:
-        * **p** -- Real number in :math:`[0, 1)`.
+    Returns
+    -------
+    p : Real number in :math:`[0, 1)`
     '''
     bands = _check_model(ks, bands)
     if sector is None:
@@ -303,13 +324,18 @@ def quadrupole_moment(
     directions (a ValueError is raised otherwise, see
     *wannier_sector_polarization*).
 
-    :param ks: **KSpace** instance, 2D, Hermitian, without overlap.
-    :param bands: List of band indices (the occupied bands, at least two).
-    :param nk: Positive integer, or tuple of two. Default value 40. Mesh.
-    :param positions: Boolean. Default value True. See *wannier_bands*.
+    Parameters
+    ----------
+    ks : **KSpace** instance, 2D, Hermitian, without overlap
+    bands : List of band indices (the occupied bands, at least two)
+    nk : Positive integer, or tuple of two, default 40
+        Mesh.
+    positions : Boolean, default True
+        See *wannier_bands*.
 
-    :returns:
-        * **q_xy** -- Real number in :math:`[0, 1)`.
+    Returns
+    -------
+    q_xy : Real number in :math:`[0, 1)`
     '''
     p_y = wannier_sector_polarization(ks, bands, None, nk, 0, positions)
     p_x = wannier_sector_polarization(ks, bands, None, nk, 1, positions)
@@ -324,11 +350,14 @@ def flake_positions(ks: KSpace, n_cells: int | tuple[int, ...]) -> NDArray[np.fl
     *KSpace.finite_ham*, in its order: orbital *o* of cell
     :math:`(n_1, n_2, \dots)` at :math:`\sum_i n_i\mathbf{a}_i + \boldsymbol\tau_o`.
 
-    :param ks: **KSpace** instance.
-    :param n_cells: Positive integer, or tuple of *dim* positive integers.
+    Parameters
+    ----------
+    ks : **KSpace** instance
+    n_cells : Positive integer, or tuple of *dim* positive integers
 
-    :returns:
-        * **positions** -- Real ndarray, shape (N*norb, space_dim).
+    Returns
+    -------
+    positions : Real ndarray, shape (N*norb, space_dim)
     '''
     error_handling.kspace(ks, KSpace)
     error_handling.nk(n_cells, ks.dim)
@@ -345,13 +374,21 @@ class CornerCharges():
     r'''
     Charges of the four corners of a finite 2D flake, see *corner_charges*.
 
-    :ivar energies: Real ndarray. Spectrum of the flake.
-    :ivar density: Real ndarray. Electron density :math:`\rho_i` on every orbital.
-    :ivar positions: Real ndarray, shape (N*norb, 2). Orbital positions.
-    :ivar background: Real number. Uniform background :math:`\bar\rho`
+    Attributes
+    ----------
+    energies : Real ndarray
+        Spectrum of the flake.
+    density : Real ndarray
+        Electron density :math:`\rho_i` on every orbital.
+    positions : Real ndarray, shape (N*norb, 2)
+        Orbital positions.
+    background : Real number
+        Uniform background :math:`\bar\rho`
         (electrons per orbital) that neutralizes the flake.
-    :ivar e_fermi: Real number. Fermi level.
-    :ivar charges: Real ndarray, shape (2, 2). Excess electron number
+    e_fermi : Real number
+        Fermi level.
+    charges : Real ndarray, shape (2, 2)
+        Excess electron number
         :math:`\sum_{i\in Q}(\rho_i - \bar\rho)` in each quadrant *Q*:
         ``charges[a, b]`` for the half :math:`a` (0: low, 1: high) along
         :math:`\mathbf{a}_1` and :math:`b` along :math:`\mathbf{a}_2`.
@@ -390,15 +427,20 @@ def corner_charges(
     zero modes of the BBH model at :math:`\delta = 0`, which then gives
     zero corner charges): split the degeneracy, or use a temperature.
 
-    :param ks: **KSpace** instance, 2D, Hermitian, without overlap.
-    :param n_cells: Positive integer, or tuple of two. Cells along
+    Parameters
+    ----------
+    ks : **KSpace** instance, 2D, Hermitian, without overlap
+    n_cells : Positive integer, or tuple of two
+        Cells along
         :math:`\mathbf{a}_1, \mathbf{a}_2`.
-    :param n_electrons: Positive real. Default value None (half filling).
+    n_electrons : Positive real
+        Default value None (half filling).
         Number of electrons in the flake. An integer at T = 0.
-    :param temperature: Positive real or zero. Default value 0.
+    temperature : Positive real or zero, default 0
 
-    :returns:
-        * **result** -- :class:`CornerCharges`.
+    Returns
+    -------
+    result : :class:`CornerCharges`
     '''
     _check_model(ks, 0)
     error_handling.nk(n_cells, 2)

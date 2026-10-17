@@ -48,11 +48,16 @@ def reciprocal_vectors(prim_vec: Sequence[tuple[float, ...]]) -> list[tuple[floa
     :math:`\mathbf{a}_i\cdot\mathbf{b}_j = 2\pi\delta_{ij}`, lying in the
     span of the :math:`\mathbf{a}_i`.
 
-    :param prim_vec: List of one/two/three tuples. Primitive vectors (see class **lattice**).
+    Parameters
+    ----------
+    prim_vec : List of one/two/three tuples
+        Primitive vectors (see class **lattice**).
 
-    :returns:
-        * **rec_vec** -- List of one/two/three tuples. Reciprocal vectors, with
-          as many components as the primitive vectors.
+    Returns
+    -------
+    rec_vec : List of one/two/three tuples
+        Reciprocal vectors, with
+        as many components as the primitive vectors.
     '''
     if len(prim_vec[0]) == 3:
         # b = 2 pi (A^+)^T: the dual basis within the span of the a_i
@@ -82,9 +87,13 @@ class KSpace():
         H_{ij}(\mathbf{k}) = \sum_{\mathbf{R}} t_{ij}(\mathbf{R})\,
         e^{i\mathbf{k}\cdot\mathbf{R}}
 
-    :param lat: **lattice** class instance. Only *unit_cell* and *prim_vec*
+    Parameters
+    ----------
+    lat : **lattice** class instance
+        Only *unit_cell* and *prim_vec*
         are used (the instance need not call *get_lattice*).
-    :param spin: Boolean. Default value False. If True, every site of
+    spin : Boolean, default False
+        If True, every site of
         *unit_cell* carries a spin-1/2 degree of freedom (*norb* doubles to
         ``2*len(unit_cell)``, ordered site-major: orbitals ``2*i, 2*i+1``
         are the up/down components of site *i*). *set_onsite* and
@@ -92,6 +101,8 @@ class KSpace():
         numbers, to build spin-orbit coupling or Zeeman terms -- see
         :data:`PAULI` for ready-made Pauli matrices.
 
+    Examples
+    --------
     Example usage::
 
         # graphene, nearest-neighbor hopping t
@@ -194,8 +205,13 @@ class KSpace():
         method (*get_bands*, *chern_number*, *finite_ham*, ...) then uses
         these values. *get_ham* also takes them per call.
 
-        :param params: Parameter values, added to (or replacing those of) *params*.
+        Parameters
+        ----------
+        params
+            Parameter values, added to (or replacing those of) *params*.
 
+        Examples
+        --------
         Example usage::
 
             ks.set_params(m=0.5)
@@ -207,7 +223,10 @@ class KSpace():
         '''
         Set the onsite energies, by sublattice tag.
 
-        :param dict_onsite: Dictionary. key: tag, val: onsite energy
+        Parameters
+        ----------
+        dict_onsite : Dictionary
+            key: tag, val: onsite energy
             (a plain number), or, if ``spin=True``, a plain number (applied
             equally to both spins), a pair ``(E_up, E_down)`` of numbers (a
             spin splitting along z), or a 2x2 complex matrix (a general spin
@@ -216,6 +235,8 @@ class KSpace():
             block, makes :math:`H(\\mathbf{k})` non-Hermitian: *get_bands*
             then returns complex energies, sorted by their real part.
 
+        Examples
+        --------
         Example usage::
 
             kag.set_onsite({'a': 1., 'b': -1.})
@@ -251,7 +272,10 @@ class KSpace():
         Hermitian conjugate (:math:`j\to i`, :math:`\mathbf{R}\to-\mathbf{R}`)
         is added automatically (unless ``hermitian=False``).
 
-        :param list_hop: List of dictionaries with keys ('i', 'j', 'R', 't'):
+        Parameters
+        ----------
+        list_hop
+            List of dictionaries with keys ('i', 'j', 'R', 't'):
 
             * 'i', 'j': Positive integers. Site indices within the unit cell
               (following the order of *unit_cell*).
@@ -283,12 +307,15 @@ class KSpace():
             by *tbkit.neighbours.neighbour_hoppings* (see there for the bond
             orientations; a negative angle addresses the reversed bonds).
             A list uses one form or the other, not both.
-        :param hermitian: Boolean. Default value True. If False, the Hermitian
+        hermitian : Boolean, default True
+            If False, the Hermitian
             conjugates are *not* added: each dictionary is one matrix element
             :math:`H_{ij}(\mathbf{R})` only, so that non-reciprocal
             (non-Hermitian) hoppings can be built -- give the reverse hopping
             explicitly, with its own amplitude.
 
+        Examples
+        --------
         Example usage::
 
             # graphene, by neighbour order: nearest (t) and next-nearest
@@ -353,7 +380,10 @@ class KSpace():
         no longer symmetric about :math:`\epsilon`.) The topological tools use
         the Lowdin-orthonormalized states :math:`S^{1/2}v`.
 
-        :param list_hop: List of dictionaries ('i', 'j', 'R', 't'), or by
+        Parameters
+        ----------
+        list_hop
+            List of dictionaries ('i', 'j', 'R', 't'), or by
             neighbour order ('n', 't', optionally 'ang', 'tag'), see
             *set_hopping* (numbers only, no value functions).
         '''
@@ -371,10 +401,13 @@ class KSpace():
         Get the overlap matrix :math:`S(\mathbf{k})` (the identity for an
         orthogonal basis), see *set_overlap*.
 
-        :param k: k point (see *get_ham*).
+        Parameters
+        ----------
+        k : k point (see *get_ham*)
 
-        :returns:
-            * **S** -- Complex ndarray, shape (norb, norb).
+        Returns
+        -------
+        S : Complex ndarray, shape (norb, norb)
         '''
         error_handling.k_vector(k, 'k', self.dim)
         k_cart = self.k_basis @ np.asarray(k, dtype='f8')
@@ -392,7 +425,10 @@ class KSpace():
         r'''
         Get the dense Bloch Hamiltonian :math:`H(\mathbf{k})`.
 
-        :param k: Tuple/list/ndarray of *dim* real numbers. When the lattice
+        Parameters
+        ----------
+        k : Tuple/list/ndarray of *dim* real numbers
+            When the lattice
             fills its space (2D in the plane, 3D in space), the
             :math:`\mathbf{k}` point in the same Cartesian frame as *prim_vec*.
             In 1D, the crystal momentum *along* the primitive vector (so the
@@ -402,14 +438,18 @@ class KSpace():
             orthonormal basis *k_basis* of its plane (the first along
             :math:`\mathbf{a}_1`). *rec_vec_k* holds the reciprocal vectors in
             these coordinates.
-        :param params: Values of the parameters of the value functions of
+        params
+            Values of the parameters of the value functions of
             *set_hopping*, for this call only: they override those of
             *set_params*. Each function gets the ones its signature names
             (all of them with ``**kwargs``); the others are ignored.
 
-        :returns:
-            * **ham** -- Complex ndarray, shape (norb, norb).
+        Returns
+        -------
+        ham : Complex ndarray, shape (norb, norb)
 
+        Examples
+        --------
         Example usage::
 
             hams = [ks.get_ham((0., 0.), m=m) for m in np.linspace(-1., 1., 21)]
@@ -428,11 +468,15 @@ class KSpace():
         is a uniform electric field :math:`-\partial_t\mathbf{A}`, e.g. light
         (see *tbkit.floquet*).
 
-        :param k: k point (see *get_ham*).
-        :param A: Tuple/ndarray of space_dim real numbers. Vector potential.
+        Parameters
+        ----------
+        k : k point (see *get_ham*)
+        A : Tuple/ndarray of space_dim real numbers
+            Vector potential.
 
-        :returns:
-            * **ham** -- Complex ndarray, shape (norb, norb).
+        Returns
+        -------
+        ham : Complex ndarray, shape (norb, norb)
         '''
         error_handling.k_vector(k, 'k', self.dim)
         A = np.asarray(A, dtype='f8')
@@ -459,16 +503,22 @@ class KSpace():
         the result for *plot_bands* (plotted against the cumulative distance
         between consecutive k-points).
 
-        :param ks: ndarray, shape (nk, dim). k-points.
-        :param eigenvec: Boolean. Default value False. If True, also return
+        Parameters
+        ----------
+        ks : ndarray, shape (nk, dim)
+            k-points.
+        eigenvec : Boolean, default False
+            If True, also return
             the eigenvectors.
 
-        :returns:
-            * **en** -- Real ndarray, shape (nk, norb). Band energies, sorted ascending.
-              Complex, and sorted by real part, if :math:`H(\mathbf{k})` is
-              non-Hermitian (complex onsite energies, see *set_onsite*).
-            * **vn** -- Complex ndarray, shape (nk, norb, norb), only if *eigenvec* is True.
-              vn[k, :, n] is the nth (right) eigenvector at ks[k].
+        Returns
+        -------
+        en : Real ndarray, shape (nk, norb)
+            Band energies, sorted ascending.
+            Complex, and sorted by real part, if :math:`H(\mathbf{k})` is
+            non-Hermitian (complex onsite energies, see *set_onsite*).
+        vn : Complex ndarray, shape (nk, norb, norb), only if *eigenvec* is True
+            vn[k, :, n] is the nth (right) eigenvector at ks[k].
         '''
         ks = np.atleast_2d(np.asarray(ks, dtype='f8'))
         error_handling.ks(ks, self.dim)
@@ -511,8 +561,13 @@ class KSpace():
         the chunks run in parallel. The results depend on *workers* only up
         to rounding (and the phases of the eigenvectors).
 
-        :param workers: Positive integer. Number of threads (default 1, no threads).
+        Parameters
+        ----------
+        workers : Positive integer
+            Number of threads (default 1, no threads).
 
+        Examples
+        --------
         Example usage::
 
             ks.set_workers(4)
@@ -615,8 +670,9 @@ class KSpace():
         ``hermitian=False`` (such a model is always treated as
         non-Hermitian, and diagonalized with the general solver).
 
-        :returns:
-            * **hermitian** -- Boolean.
+        Returns
+        -------
+        hermitian : Boolean
         '''
         return bool(not self._nonreciprocal and np.all(self.onsite.imag == 0.)
                         and np.array_equal(self._onsite_offdiag, self._onsite_offdiag.conj().T))
@@ -628,14 +684,21 @@ class KSpace():
         Build a k-path through a list of high-symmetry points, and get the
         associated bands.
 
-        :param points: List of at least two k-points (each a tuple/list of
+        Parameters
+        ----------
+        points
+            List of at least two k-points (each a tuple/list of
             *dim* real numbers), e.g. from *high_symmetry_path*.
-        :param nk: Positive integer. Number of k-points per path segment.
+        nk : Positive integer
+            Number of k-points per path segment.
 
-        :returns:
-            * **ks_dist** -- Real ndarray. Cumulative distance along the path,
-              to be used as the x-axis of a band-structure plot.
-            * **en** -- Real ndarray, shape (len(ks_dist), norb). Band energies.
+        Returns
+        -------
+        ks_dist : Real ndarray
+            Cumulative distance along the path,
+            to be used as the x-axis of a band-structure plot.
+        en : Real ndarray, shape (len(ks_dist), norb)
+            Band energies.
         '''
         error_handling.k_path_points(points, self.dim)
         error_handling.positive_int(nk, 'nk')
@@ -660,15 +723,20 @@ class KSpace():
         Fourier component :math:`e^{i\mathbf{k}\cdot\mathbf{R}}` with
         :math:`|R_i| < q`.
 
-        :param nk: Positive integer, or tuple of *dim* positive integers.
+        Parameters
+        ----------
+        nk : Positive integer, or tuple of *dim* positive integers
             Number of k-points along each reciprocal lattice vector.
-        :param monkhorst_pack: Boolean. Default value False. If True, the
+        monkhorst_pack : Boolean, default False
+            If True, the
             Monkhorst-Pack grid.
 
-        :returns:
-            * **fracs** -- List of *dim* real ndarrays, shape (nk1, nk2) each
-              (or (nk1,) in 1D): fractional coordinates of the grid.
-            * **ks** -- Real ndarray, shape (nk1*nk2, dim) (or (nk1, dim) in 1D).
+        Returns
+        -------
+        fracs
+            List of *dim* real ndarrays, shape (nk1, nk2) each
+            (or (nk1,) in 1D): fractional coordinates of the grid.
+        ks : Real ndarray, shape (nk1*nk2, dim) (or (nk1, dim) in 1D)
         '''
         error_handling.nk(nk, self.dim)
         error_handling.boolean(monkhorst_pack, 'monkhorst_pack')
@@ -690,14 +758,19 @@ class KSpace():
         Brillouin zone. Unlike *get_bands*, it leaves the band structure kept
         for *plot_bands* untouched.
 
-        :param nk: Positive integer, or tuple of *dim* positive integers.
+        Parameters
+        ----------
+        nk : Positive integer, or tuple of *dim* positive integers
             Number of k-points along each reciprocal lattice vector.
-        :param monkhorst_pack: Boolean. Default value False. If True, the
+        monkhorst_pack : Boolean, default False
+            If True, the
             Monkhorst-Pack grid (see *mesh_grid*).
 
-        :returns:
-            * **en** -- Real ndarray, shape (nk1*nk2, norb). Band energies
-              over the mesh (flattened).
+        Returns
+        -------
+        en : Real ndarray, shape (nk1*nk2, norb)
+            Band energies
+            over the mesh (flattened).
         '''
         _, ks = self.mesh_grid(nk, monkhorst_pack)
         return self._diagonalize(ks)
@@ -710,12 +783,17 @@ class KSpace():
         (one electron per band and k-point), from the bands over a uniform
         Brillouin-zone mesh (see *tbkit.occupation.fermi_level*).
 
-        :param n_electrons: Positive real or zero, at most norb. Electrons per unit cell.
-        :param nk: Positive integer, or tuple. Default value 30. k-mesh.
-        :param temperature: Positive real or zero. Default value 0.
+        Parameters
+        ----------
+        n_electrons : Positive real or zero, at most norb
+            Electrons per unit cell.
+        nk : Positive integer, or tuple, default 30
+            k-mesh.
+        temperature : Positive real or zero, default 0
 
-        :returns:
-            * **e_fermi** -- Real number.
+        Returns
+        -------
+        e_fermi : Real number
         '''
         en = self.mesh_bands(nk)
         return occupation.fermi_level(en, n_electrons, temperature,
@@ -755,27 +833,34 @@ class KSpace():
         or exceptional points), a ValueError is raised instead of a
         meaningless result -- see *biorthogonal_berry_curvature*.
 
-        :param bands: Positive integer, or list of positive integers. Band
+        Parameters
+        ----------
+        bands : Positive integer, or list of positive integers
+            Band
             index, or indices of a group of bands (e.g. all occupied bands
             below a gap).
-        :param nk: Positive integer, or tuple of 2 positive integers.
-            Default value 30. Number of k-points along each of the two
+        nk : Positive integer, or tuple of 2 positive integers, default 30
+            Number of k-points along each of the two
             reciprocal lattice vectors spanning the plane.
-        :param plane: Tuple of two distinct integers. Default value (0, 1).
+        plane : Tuple of two distinct integers
+            Default value (0, 1).
             3D lattices only: the reciprocal vectors
             :math:`\mathbf{b}_i, \mathbf{b}_j` spanning the plane of the
             Brillouin zone. The flux is oriented along the remaining
             primitive vector :math:`\mathbf{a}_l` (along +z in 2D).
-        :param k_fixed: Real number. Default value 0. 3D lattices only: the
+        k_fixed : Real number, default 0
+            3D lattices only: the
             fractional coordinate of the plane along the remaining reciprocal
             vector :math:`\mathbf{b}_l` (e.g. :math:`k_z` in units of
             :math:`|\mathbf{b}_3|` for ``plane=(0, 1)``).
 
-        :returns:
-            * **curv** -- Real ndarray, shape (nk1, nk2). Berry curvature
-              (flux through each plaquette, in radians). Summing *curv* and
-              dividing by :math:`2\pi` gives the Chern number, see
-              *chern_number*.
+        Returns
+        -------
+        curv : Real ndarray, shape (nk1, nk2)
+            Berry curvature
+            (flux through each plaquette, in radians). Summing *curv* and
+            dividing by :math:`2\pi` gives the Chern number, see
+            *chern_number*.
         '''
         error_handling.dim_min(self.dim, 2)
         if isinstance(bands, int):
@@ -906,21 +991,29 @@ class KSpace():
         *tbkit.exceptional.find_exceptional_points*), where the Chern number
         can change.
 
-        :param bands: Positive integer, or list of positive integers. Band
+        Parameters
+        ----------
+        bands : Positive integer, or list of positive integers
+            Band
             indices in the order set by *gap*.
-        :param nk: Positive integer, or tuple of 2 positive integers.
-            Default value 30. See *berry_curvature*.
-        :param kind: 'LR', 'RL', 'RR' or 'LL'. Default value 'LR'.
+        nk : Positive integer, or tuple of 2 positive integers, default 30
+            See *berry_curvature*.
+        kind : 'LR', 'RL', 'RR' or 'LL', default 'LR'
             :math:`\alpha\beta` above.
-        :param gap: 'real' or 'imaginary'. Default value 'real'. Kind of line
+        gap : 'real' or 'imaginary', default 'real'
+            Kind of line
             gap, and the order of the bands.
-        :param plane: Tuple of two integers. Default value (0, 1). 3D only, see
+        plane : Tuple of two integers
+            Default value (0, 1). 3D only, see
             *berry_curvature*.
-        :param k_fixed: Real number. Default value 0. 3D only, see *berry_curvature*.
+        k_fixed : Real number, default 0
+            3D only, see *berry_curvature*.
 
-        :returns:
-            * **curv** -- Real ndarray, shape (nk1, nk2). Flux through each
-              plaquette, in radians (sign convention of *berry_curvature*).
+        Returns
+        -------
+        curv : Real ndarray, shape (nk1, nk2)
+            Flux through each
+            plaquette, in radians (sign convention of *berry_curvature*).
         '''
         error_handling.dim_min(self.dim, 2)
         if isinstance(bands, int):
@@ -978,15 +1071,22 @@ class KSpace():
         Hermitian Chern number of *chern_number* as long as the line gap stays
         open.
 
-        :param bands: See *biorthogonal_berry_curvature*.
-        :param nk: See *biorthogonal_berry_curvature*.
-        :param kind: 'LR', 'RL', 'RR' or 'LL'. Default value 'LR'.
-        :param gap: 'real' or 'imaginary'. Default value 'real'.
-        :param plane: See *berry_curvature*.
-        :param k_fixed: See *berry_curvature*.
+        Parameters
+        ----------
+        bands
+            See *biorthogonal_berry_curvature*.
+        nk
+            See *biorthogonal_berry_curvature*.
+        kind : 'LR', 'RL', 'RR' or 'LL', default 'LR'
+        gap : 'real' or 'imaginary', default 'real'
+        plane
+            See *berry_curvature*.
+        k_fixed
+            See *berry_curvature*.
 
-        :returns:
-            * **chern** -- Real number, close to an integer.
+        Returns
+        -------
+        chern : Real number, close to an integer
         '''
         return self.biorthogonal_berry_curvature(bands, nk, kind, gap, plane, k_fixed).sum() / (2*PI)
 
@@ -1008,20 +1108,26 @@ class KSpace():
         real line gap, or a ValueError is raised; *biorthogonal_chern_number*
         also handles imaginary line gaps and the left eigenvectors.
 
-        :param bands: Positive integer, or list of positive integers. Band
+        Parameters
+        ----------
+        bands : Positive integer, or list of positive integers
+            Band
             index, or indices of a group of bands (e.g. all occupied bands
             below a gap).
-        :param nk: Positive integer, or tuple of 2 positive integers.
-            Default value 30. Number of k-points along each reciprocal
+        nk : Positive integer, or tuple of 2 positive integers, default 30
+            Number of k-points along each reciprocal
             lattice vector.
-        :param plane: Tuple of two integers. Default value (0, 1). 3D lattices
+        plane : Tuple of two integers
+            Default value (0, 1). 3D lattices
             only, see *berry_curvature*.
-        :param k_fixed: Real number. Default value 0. 3D lattices only, see
+        k_fixed : Real number, default 0
+            3D lattices only, see
             *berry_curvature*: the Chern number of the plane at this
             fractional coordinate (it jumps across a Weyl point).
 
-        :returns:
-            * **chern** -- Real number, close to an integer.
+        Returns
+        -------
+        chern : Real number, close to an integer
         '''
         return self.berry_curvature(bands, nk, plane, k_fixed).sum() / (2*PI)
 
@@ -1042,18 +1148,25 @@ class KSpace():
         125327 (2009)); otherwise a ValueError is raised. See
         *spin_chern_number* and *mirror_chern_number*.
 
-        :param op: Complex ndarray, shape (norb, norb), or callable of k
+        Parameters
+        ----------
+        op
+            Complex ndarray, shape (norb, norb), or callable of k
             returning one: the Hermitian operator :math:`O`.
-        :param bands: Band index, or list of band indices.
-        :param nk: Positive integer, or tuple of 2 positive integers. Default value 30.
-        :param plane: Tuple of two integers. Default value (0, 1). 3D only, see *berry_curvature*.
-        :param k_fixed: Real number. Default value 0. 3D only, see *berry_curvature*.
+        bands : Band index, or list of band indices
+        nk : Positive integer, or tuple of 2 positive integers, default 30
+        plane : Tuple of two integers
+            Default value (0, 1). 3D only, see *berry_curvature*.
+        k_fixed : Real number, default 0
+            3D only, see *berry_curvature*.
 
-        :returns:
-            * **c_plus** -- Real number, close to an integer: Chern number
-              of the sector with :math:`POP > 0`.
-            * **c_minus** -- Real number: that of the sector with :math:`POP < 0`.
-              :math:`C_+ + C_-` is the Chern number of *bands*.
+        Returns
+        -------
+        c_plus
+            Real number, close to an integer: Chern number
+            of the sector with :math:`POP > 0`.
+        c_minus : Real number: that of the sector with :math:`POP < 0`
+            :math:`C_+ + C_-` is the Chern number of *bands*.
         '''
         bands, nk, ks = self._check_sectors(bands, nk, plane, k_fixed)
         if callable(op):
@@ -1121,16 +1234,21 @@ class KSpace():
         keeps a gap around zero. With time reversal, :math:`C_s` modulo 2 is
         the :math:`\mathbb{Z}_2` invariant of *z2_invariant*.
 
-        :param bands: List of band indices (e.g. the occupied bands).
-        :param nk: Positive integer, or tuple of 2 positive integers. Default value 30.
-        :param s_z: Complex ndarray, shape (norb, norb), or callable of k.
+        Parameters
+        ----------
+        bands : List of band indices (e.g. the occupied bands)
+        nk : Positive integer, or tuple of 2 positive integers, default 30
+        s_z : Complex ndarray, shape (norb, norb), or callable of k
             Default value None: :math:`\sigma_z` on every site of a model
             built with ``spin=True``. The spin operator.
-        :param plane: Tuple of two integers. Default value (0, 1). 3D only, see *berry_curvature*.
-        :param k_fixed: Real number. Default value 0. 3D only, see *berry_curvature*.
+        plane : Tuple of two integers
+            Default value (0, 1). 3D only, see *berry_curvature*.
+        k_fixed : Real number, default 0
+            3D only, see *berry_curvature*.
 
-        :returns:
-            * **c_s** -- Real number, close to an integer.
+        Returns
+        -------
+        c_s : Real number, close to an integer
         '''
         if s_z is None:
             error_handling.spinful(self.spin)
@@ -1161,18 +1279,25 @@ class KSpace():
         insulator such as SnTe has :math:`n_M = 2` and every
         :math:`\mathbb{Z}_2` index zero (:math:`\nu = n_M` modulo 2 on the plane).
 
-        :param mirror: Complex ndarray, shape (norb, norb), or callable of k:
+        Parameters
+        ----------
+        mirror
+            Complex ndarray, shape (norb, norb), or callable of k:
             the unitary mirror operator :math:`M`, with :math:`M^2 = \pm1`.
-        :param bands: List of band indices (e.g. the occupied bands).
-        :param nk: Positive integer, or tuple of 2 positive integers. Default value 30.
-        :param plane: Tuple of two integers. Default value (0, 1). 3D only, see *berry_curvature*.
-        :param k_fixed: Real number. Default value 0. 3D only: the
+        bands : List of band indices (e.g. the occupied bands)
+        nk : Positive integer, or tuple of 2 positive integers, default 30
+        plane : Tuple of two integers
+            Default value (0, 1). 3D only, see *berry_curvature*.
+        k_fixed : Real number, default 0
+            3D only: the
             mirror-invariant plane (0 or 0.5 for a reflection of the remaining axis).
-        :param tol: Positive real. Default value 1e-8. Tolerance of the
+        tol : Positive real, default 1e-8
+            Tolerance of the
             checks :math:`M^2 = \pm1` and :math:`[M, H(\mathbf{k})] = 0`.
 
-        :returns:
-            * **n_m** -- Real number, close to an integer.
+        Returns
+        -------
+        n_m : Real number, close to an integer
         '''
         bands, nk, ks = self._check_sectors(bands, nk, plane, k_fixed)
         error_handling.positive_real(tol, 'tol')
@@ -1511,29 +1636,43 @@ class KSpace():
         Lowdin-orthogonalized, :math:`S^{-1/2}HS^{-1/2}`, as by the topology
         tools (exact derivatives of :math:`S^{-1/2}` included).
 
-        :param e_fermi: Real number, or array of real numbers. Fermi energies
+        Parameters
+        ----------
+        e_fermi : Real number, or array of real numbers
+            Fermi energies
             (all of them are computed from one diagonalization of the mesh).
-        :param temperature: Positive real or zero. Default value 0. In
+        temperature : Positive real or zero, default 0
+            In
             energy units (:math:`k_B = 1`).
-        :param nk: Positive integer, or tuple (two integers for a plane,
+        nk
+            Positive integer, or tuple (two integers for a plane,
             three for the full 3D conductivity). Default value 60. k-mesh.
-        :param plane: Tuple of two integers. Default value (0, 1). 3D only:
+        plane : Tuple of two integers
+            Default value (0, 1). 3D only:
             the reciprocal vectors spanning the plane (see *berry_curvature*).
-        :param k_fixed: Real number or None. Default value None. 3D only:
+        k_fixed : Real number or None, default None
+            3D only:
             the fractional coordinate of the plane along the remaining
             reciprocal vector; None for the full 3D conductivity. Ignored in 2D.
-        :param positions: Boolean. Default value True. Include the orbital
+        positions : Boolean, default True
+            Include the orbital
             positions in the bond vectors (see above).
-        :param refine: Positive integer. Default value 1 (no refinement).
+        refine : Positive integer
+            Default value 1 (no refinement).
             Submesh points per direction in the refined cells.
-        :param refine_fraction: Real in (0, 1]. Default value 0.05. Fraction
+        refine_fraction : Real in (0, 1], default 0.05
+            Fraction
             of the mesh cells that are refined.
 
-        :returns:
-            * **sigma** -- Real number (or ndarray shaped like *e_fermi*); in
-              3D with ``k_fixed=None``, ndarray of shape (3,) (or
-              ``e_fermi.shape + (3,)``).
+        Returns
+        -------
+        sigma
+            Real number (or ndarray shaped like *e_fermi*); in
+            3D with ``k_fixed=None``, ndarray of shape (3,) (or
+            ``e_fermi.shape + (3,)``).
 
+        Examples
+        --------
         Example usage::
 
             e_f = np.linspace(-3., 3., 301)
@@ -1573,21 +1712,33 @@ class KSpace():
         then no longer quantized (the :math:`\mathbb{Z}_2` invariant, see
         *z2_invariant*, still is).
 
-        :param e_fermi: See *hall_conductivity*.
-        :param temperature: See *hall_conductivity*.
-        :param nk: Positive integer, or tuple of 2 integers. Default value 60.
-        :param plane: See *hall_conductivity*.
-        :param k_fixed: Real number or None. Default value None. 3D only: the
+        Parameters
+        ----------
+        e_fermi
+            See *hall_conductivity*.
+        temperature
+            See *hall_conductivity*.
+        nk : Positive integer, or tuple of 2 integers, default 60
+        plane
+            See *hall_conductivity*.
+        k_fixed : Real number or None, default None
+            3D only: the
             plane (required in 3D, where only planes are computed).
-        :param positions: Boolean. Default value True. See *hall_conductivity*.
-        :param spin_axis: 'x', 'y' or 'z'. Default value 'z'. Spin component
+        positions : Boolean, default True
+            See *hall_conductivity*.
+        spin_axis : 'x', 'y' or 'z', default 'z'
+            Spin component
             :math:`a` carried by the current.
-        :param refine: See *hall_conductivity*.
-        :param refine_fraction: See *hall_conductivity*.
+        refine
+            See *hall_conductivity*.
+        refine_fraction
+            See *hall_conductivity*.
 
-        :returns:
-            * **sigma_s** -- Real number (or ndarray shaped like *e_fermi*), in
-              units of :math:`e/2\pi`.
+        Returns
+        -------
+        sigma_s
+            Real number (or ndarray shaped like *e_fermi*), in
+            units of :math:`e/2\pi`.
         '''
         return self._hall(e_fermi, temperature, nk, plane, k_fixed, positions, refine,
                                 refine_fraction, spin_axis)
@@ -1633,19 +1784,33 @@ class KSpace():
         :math:`(M_x, M_y, M_z)` per length. *positions* matters as for
         *hall_conductivity*, and the physical choice is the default.
 
-        :param e_fermi: See *hall_conductivity*.
-        :param temperature: See *hall_conductivity*.
-        :param nk: See *hall_conductivity*.
-        :param plane: See *hall_conductivity*.
-        :param k_fixed: See *hall_conductivity*.
-        :param positions: See *hall_conductivity*.
-        :param refine: See *hall_conductivity*.
-        :param refine_fraction: See *hall_conductivity*.
+        Parameters
+        ----------
+        e_fermi
+            See *hall_conductivity*.
+        temperature
+            See *hall_conductivity*.
+        nk
+            See *hall_conductivity*.
+        plane
+            See *hall_conductivity*.
+        k_fixed
+            See *hall_conductivity*.
+        positions
+            See *hall_conductivity*.
+        refine
+            See *hall_conductivity*.
+        refine_fraction
+            See *hall_conductivity*.
 
-        :returns:
-            * **M** -- Real number (or ndarray shaped like *e_fermi*); in 3D
-              with ``k_fixed=None``, ndarray of shape (3,) (or ``e_fermi.shape + (3,)``).
+        Returns
+        -------
+        M
+            Real number (or ndarray shaped like *e_fermi*); in 3D
+            with ``k_fixed=None``, ndarray of shape (3,) (or ``e_fermi.shape + (3,)``).
 
+        Examples
+        --------
         Example usage::
 
             mu = np.linspace(-0.5, 0.5, 11)  # in the gap of a Chern insulator
@@ -1681,18 +1846,31 @@ class KSpace():
         **Units.** :math:`ek_B/h` in 2D (:math:`k_B = 1`, temperatures in
         energy units), per length for the 3D vector (``k_fixed=None``).
 
-        :param e_fermi: See *hall_conductivity*.
-        :param temperature: Positive real number. In energy units (:math:`k_B = 1`).
-        :param nk: See *hall_conductivity*.
-        :param plane: See *hall_conductivity*.
-        :param k_fixed: See *hall_conductivity*.
-        :param positions: See *hall_conductivity*.
-        :param refine: See *hall_conductivity*.
-        :param refine_fraction: See *hall_conductivity*.
+        Parameters
+        ----------
+        e_fermi
+            See *hall_conductivity*.
+        temperature : Positive real number
+            In energy units (:math:`k_B = 1`).
+        nk
+            See *hall_conductivity*.
+        plane
+            See *hall_conductivity*.
+        k_fixed
+            See *hall_conductivity*.
+        positions
+            See *hall_conductivity*.
+        refine
+            See *hall_conductivity*.
+        refine_fraction
+            See *hall_conductivity*.
 
-        :returns:
-            * **alpha** -- Real number (or ndarray, as *hall_conductivity*).
+        Returns
+        -------
+        alpha : Real number (or ndarray, as *hall_conductivity*)
 
+        Examples
+        --------
         Example usage::
 
             alpha = hal.anomalous_nernst_conductivity(np.linspace(-3, 3, 301), 0.05)
@@ -1729,18 +1907,31 @@ class KSpace():
         Chern plateau; per length for the 3D vector (``k_fixed=None``).
         The sign is that of *hall_conductivity*.
 
-        :param e_fermi: See *hall_conductivity*.
-        :param temperature: Positive real number. In energy units (:math:`k_B = 1`).
-        :param nk: See *hall_conductivity*.
-        :param plane: See *hall_conductivity*.
-        :param k_fixed: See *hall_conductivity*.
-        :param positions: See *hall_conductivity*.
-        :param refine: See *hall_conductivity*.
-        :param refine_fraction: See *hall_conductivity*.
+        Parameters
+        ----------
+        e_fermi
+            See *hall_conductivity*.
+        temperature : Positive real number
+            In energy units (:math:`k_B = 1`).
+        nk
+            See *hall_conductivity*.
+        plane
+            See *hall_conductivity*.
+        k_fixed
+            See *hall_conductivity*.
+        positions
+            See *hall_conductivity*.
+        refine
+            See *hall_conductivity*.
+        refine_fraction
+            See *hall_conductivity*.
 
-        :returns:
-            * **kappa** -- Real number (or ndarray, as *hall_conductivity*).
+        Returns
+        -------
+        kappa : Real number (or ndarray, as *hall_conductivity*)
 
+        Examples
+        --------
         Example usage::
 
             kappa = hal.thermal_hall_conductivity(0., 0.01)  # = pi^2/3 C T in the gap
@@ -1827,22 +2018,32 @@ class KSpace():
         :math:`\partial H/\partial\mathbf{k}` is exact (see
         *hall_conductivity*, whose *positions* convention applies).
 
-        :param bands: List of integers. The occupied bands (e.g. the lower
+        Parameters
+        ----------
+        bands : List of integers
+            The occupied bands (e.g. the lower
             half of the spectrum).
-        :param param: String. Name of the parameter of the value functions
+        param : String
+            Name of the parameter of the value functions
             that the path varies (see *set_params*; the other parameters keep
             their values in *params*).
-        :param values: 1D array of at least two real numbers, increasing
-            or decreasing. The parameter values along the path.
-        :param nk: Positive integer, or tuple of 3 positive integers.
-            Default value 16. k-mesh.
-        :param theta0: Real number. Default value 0. :math:`\theta` at ``values[0]``.
-        :param positions: Boolean. Default value True. See *hall_conductivity*.
+        values : 1D array of at least two real numbers, increasing or decreasing
+            The parameter values along the path.
+        nk : Positive integer, or tuple of 3 positive integers, default 16
+            k-mesh.
+        theta0 : Real number, default 0
+            :math:`\theta` at ``values[0]``.
+        positions : Boolean, default True
+            See *hall_conductivity*.
 
-        :returns:
-            * **theta** -- ndarray, shape ``(len(values),)``: :math:`\theta`
-              at each value, not reduced modulo :math:`2\pi`.
+        Returns
+        -------
+        theta
+            ndarray, shape ``(len(values),)``: :math:`\theta`
+            at each value, not reduced modulo :math:`2\pi`.
 
+        Examples
+        --------
         Example usage::
 
             phi = np.linspace(0., 2 * np.pi, 41)
@@ -1921,16 +2122,22 @@ class KSpace():
         Orbital *o* of cell :math:`(n_1, n_2, n_3)` is row
         :math:`((n_3 N_2 + n_2) N_1 + n_1)\,\mathrm{norb} + o`.
 
-        :param n_cells: Positive integer, or tuple of *dim* positive integers.
-        :param periodic: Boolean. Default value False. Periodic boundary
+        Parameters
+        ----------
+        n_cells : Positive integer, or tuple of *dim* positive integers
+        periodic : Boolean, default False
+            Periodic boundary
             conditions (the spectrum is then that of *get_bands* on the
             :math:`N_1\times N_2\times\dots` k-mesh), else open ones.
-        :param sparse: Boolean. Default value False. Return a sparse CSR
+        sparse : Boolean, default False
+            Return a sparse CSR
             matrix (for large samples, e.g. with *tbkit.kpm*) instead of a
             dense array.
 
-        :returns:
-            * **ham** -- Complex ndarray (or CSR matrix), shape (N*norb, N*norb), N the number of cells.
+        Returns
+        -------
+        ham
+            Complex ndarray (or CSR matrix), shape (N*norb, N*norb), N the number of cells.
         '''
         error_handling.nk(n_cells, self.dim)
         error_handling.boolean(periodic, 'periodic')
@@ -1976,13 +2183,20 @@ class KSpace():
         :math:`\partial H/\partial\mathbf{k}` with ``positions=True``
         (*hall_conductivity*), and the input of *tbkit.kpm.hall_conductivity*.
 
-        :param n_cells: See *finite_ham*.
-        :param periodic: Boolean. Default value False. See *finite_ham*.
-        :param sparse: Boolean. Default value False. See *finite_ham*.
+        Parameters
+        ----------
+        n_cells
+            See *finite_ham*.
+        periodic : Boolean, default False
+            See *finite_ham*.
+        sparse : Boolean, default False
+            See *finite_ham*.
 
-        :returns:
-            * **vel** -- List of *space_dim* complex ndarrays (or CSR
-              matrices), shape (N*norb, N*norb): :math:`v_x, v_y, (v_z)`.
+        Returns
+        -------
+        vel
+            List of *space_dim* complex ndarrays (or CSR
+            matrices), shape (N*norb, N*norb): :math:`v_x, v_y, (v_z)`.
         '''
         error_handling.nk(n_cells, self.dim)
         error_handling.boolean(periodic, 'periodic')
@@ -2011,10 +2225,13 @@ class KSpace():
         :math:`k`. On the generalized Brillouin zone (see *gbz*), its
         spectrum is the open-chain spectrum of a non-Hermitian chain.
 
-        :param beta: Complex number, nonzero.
+        Parameters
+        ----------
+        beta : Complex number, nonzero
 
-        :returns:
-            * **ham** -- Complex ndarray, shape (norb, norb).
+        Returns
+        -------
+        ham : Complex ndarray, shape (norb, norb)
         '''
         error_handling.dim_exact(self.dim, 1)
         error_handling.nonzero_number(beta, 'beta')
@@ -2039,12 +2256,18 @@ class KSpace():
         open-chain eigenstates then pile up at one end (Okuma, Kawabata,
         Shiozaki and Sato, Phys. Rev. Lett. 124, 086801 (2020)).
 
-        :param e_ref: Complex number. Default value 0. Reference energy.
-        :param nk: Positive integer. Default value 400. k-points.
+        Parameters
+        ----------
+        e_ref : Complex number, default 0
+            Reference energy.
+        nk : Positive integer, default 400
+            k-points.
 
-        :returns:
-            * **W** -- Real number, close to an integer (it is ill defined if
-              :math:`E_r` lies on the periodic spectrum).
+        Returns
+        -------
+        W
+            Real number, close to an integer (it is ill defined if
+            :math:`E_r` lies on the periodic spectrum).
         '''
         error_handling.dim_exact(self.dim, 1)
         error_handling.number(e_ref, 'e_ref')
@@ -2068,11 +2291,15 @@ class KSpace():
         non-Bloch bands :math:`H(\beta)` (see *get_ham_beta*) replace the
         Bloch ones. For a Hermitian model it is the unit circle.
 
-        :param energies: Complex array of energies (e.g. open-chain eigenvalues
+        Parameters
+        ----------
+        energies
+            Complex array of energies (e.g. open-chain eigenvalues
             from *finite_ham*).
 
-        :returns:
-            * **beta** -- Complex ndarray, shape (len(energies), 2): :math:`\beta_p, \beta_{p+1}`.
+        Returns
+        -------
+        beta : Complex ndarray, shape (len(energies), 2): :math:`\beta_p, \beta_{p+1}`
         '''
         error_handling.dim_exact(self.dim, 1)
         energies = np.atleast_1d(np.asarray(energies, dtype='c16'))
@@ -2107,8 +2334,9 @@ class KSpace():
         unit cell (each site twice, for its two spin components, if
         ``spin=True``).
 
-        :returns:
-            * **tau** -- Real ndarray, shape (norb, space_dim).
+        Returns
+        -------
+        tau : Real ndarray, shape (norb, space_dim)
         '''
         tau = np.array([dic['r0'] for dic in self.lat.unit_cell], dtype='f8')
         return np.repeat(tau, 2, axis=0) if self.spin else tau
@@ -2175,13 +2403,19 @@ class KSpace():
         Wannier functions in units of :math:`\mathbf{a}_{direction}` (the
         polarization).
 
-        :param bands: Band index, or list of band indices.
-        :param nk: Positive integer. Default value 100. Number of k-points on the loop.
-        :param direction: Integer. Default value 0. Reciprocal vector the loop follows.
-        :param k_perp: Real number (2D) or pair of real numbers (3D). Default
+        Parameters
+        ----------
+        bands : Band index, or list of band indices
+        nk : Positive integer, default 100
+            Number of k-points on the loop.
+        direction : Integer, default 0
+            Reciprocal vector the loop follows.
+        k_perp : Real number (2D) or pair of real numbers (3D)
+            Default
             value None (zero). Fractional coordinates of the loop along the
             other reciprocal vectors.
-        :param positions: Boolean. Default value True. Include the orbital
+        positions : Boolean, default True
+            Include the orbital
             positions in the Bloch functions (the physical choice: the phase
             then locates the Wannier centres in the crystal). If False, all
             orbitals are placed on the cell origin (the periodic gauge of
@@ -2189,8 +2423,9 @@ class KSpace():
             weighted by the orbital content, and agree on quantized
             differences between phases.
 
-        :returns:
-            * **gamma** -- Real number in :math:`(-\pi, \pi]`.
+        Returns
+        -------
+        gamma : Real number in :math:`(-\pi, \pi]`
         '''
         bands = self._check_loop(bands, nk, direction, positions)
         wilson = self._loop(bands, nk, direction, self._perp(direction, k_perp), positions)
@@ -2209,14 +2444,20 @@ class KSpace():
         Bloch waves along the others, at *k_perp*). Their sum is
         :math:`\gamma/2\pi`, modulo 1.
 
-        :param bands: Band index, or list of band indices.
-        :param nk: Positive integer. Default value 100. Number of k-points on the loop.
-        :param direction: Integer. Default value 0.
-        :param k_perp: See *berry_phase*.
-        :param positions: Boolean. Default value True. See *berry_phase*.
+        Parameters
+        ----------
+        bands : Band index, or list of band indices
+        nk : Positive integer, default 100
+            Number of k-points on the loop.
+        direction : Integer, default 0
+        k_perp
+            See *berry_phase*.
+        positions : Boolean, default True
+            See *berry_phase*.
 
-        :returns:
-            * **centers** -- Real ndarray, sorted, in :math:`[0, 1)`.
+        Returns
+        -------
+        centers : Real ndarray, sorted, in :math:`[0, 1)`
         '''
         bands = self._check_loop(bands, nk, direction, positions)
         wilson = self._loop(bands, nk, direction, self._perp(direction, k_perp), positions)
@@ -2235,21 +2476,33 @@ class KSpace():
         :math:`\mathbb{Z}_2` topological insulator, the Kramers pairs swap
         partners over half a period (see *z2_invariant*).
 
-        :param bands: Band index, or list of band indices.
-        :param nk: Positive integer. Default value 100. k-points on each loop.
-        :param nk_perp: Positive integer. Default value 51. Number of loops.
-        :param direction: Integer. Default value 0. Direction of the loops.
-        :param flow: Integer. Default value None (the first other direction).
+        Parameters
+        ----------
+        bands : Band index, or list of band indices
+        nk : Positive integer, default 100
+            k-points on each loop.
+        nk_perp : Positive integer, default 51
+            Number of loops.
+        direction : Integer, default 0
+            Direction of the loops.
+        flow : Integer
+            Default value None (the first other direction).
             Reciprocal vector along which the loops are moved.
-        :param k_fixed: Real number. Default value 0. 3D only: fractional
+        k_fixed : Real number, default 0
+            3D only: fractional
             coordinate along the remaining reciprocal vector.
-        :param positions: Boolean. Default value True. See *berry_phase*.
-        :param k_range: Pair of real numbers. Default value (0, 1). Range of
+        positions : Boolean, default True
+            See *berry_phase*.
+        k_range : Pair of real numbers
+            Default value (0, 1). Range of
             the fractional coordinate along *flow* (both ends included).
 
-        :returns:
-            * **fracs** -- Real ndarray, shape (nk_perp,). Fractional coordinates along *flow*.
-            * **centers** -- Real ndarray, shape (nk_perp, len(bands)). Sorted centres, in [0, 1).
+        Returns
+        -------
+        fracs : Real ndarray, shape (nk_perp,)
+            Fractional coordinates along *flow*.
+        centers : Real ndarray, shape (nk_perp, len(bands))
+            Sorted centres, in [0, 1).
         '''
         bands = self._check_loop(bands, nk, direction, positions)
         error_handling.dim_min(self.dim, 2)
@@ -2286,19 +2539,27 @@ class KSpace():
         Unlike the parity criterion (*parity_z2*), it needs no inversion
         symmetry, so it also works with Rashba coupling.
 
-        :param bands: List of band indices (an even number of bands).
-        :param nk: Positive integer. Default value 100. k-points on each loop.
-        :param nk_perp: Positive integer. Default value 51. Number of loops
+        Parameters
+        ----------
+        bands : List of band indices (an even number of bands)
+        nk : Positive integer, default 100
+            k-points on each loop.
+        nk_perp : Positive integer, default 51
+            Number of loops
             over the half zone (the flow must be resolved finely enough that
             no two centres cross between neighbouring loops unnoticed).
-        :param direction: Integer. Default value 0. See *wannier_flow*.
-        :param flow: Integer. Default value None. See *wannier_flow*.
-        :param k_fixed: Real number. Default value 0. 3D only: a time-reversal
+        direction : Integer, default 0
+            See *wannier_flow*.
+        flow : Integer, default None
+            See *wannier_flow*.
+        k_fixed : Real number, default 0
+            3D only: a time-reversal
             invariant plane has *k_fixed* 0 or 0.5 (the weak and strong
             indices follow from the six such planes).
 
-        :returns:
-            * **nu** -- 0 (trivial) or 1 (topological).
+        Returns
+        -------
+        nu : 0 (trivial) or 1 (topological)
         '''
         error_handling.even_bands(bands)
         _, centers = self.wannier_flow(bands, nk, nk_perp, direction, flow, k_fixed,
@@ -2333,12 +2594,17 @@ class KSpace():
         :math:`\nu_1\mathbf{b}_1 + \nu_2\mathbf{b}_2 + \nu_3\mathbf{b}_3`.
         No inversion symmetry is needed (compare *parity_z2*).
 
-        :param bands: List of band indices (an even number of bands).
-        :param nk: Positive integer. Default value 100. See *z2_invariant*.
-        :param nk_perp: Positive integer. Default value 51. See *z2_invariant*.
+        Parameters
+        ----------
+        bands : List of band indices (an even number of bands)
+        nk : Positive integer, default 100
+            See *z2_invariant*.
+        nk_perp : Positive integer, default 51
+            See *z2_invariant*.
 
-        :returns:
-            * **indices** -- Tuple of four integers, 0 or 1: :math:`(\nu_0, \nu_1, \nu_2, \nu_3)`.
+        Returns
+        -------
+        indices : Tuple of four integers, 0 or 1: :math:`(\nu_0, \nu_1, \nu_2, \nu_3)`
         '''
         error_handling.dim_exact(self.dim, 3)
         nu = np.zeros((3, 2), int)
@@ -2376,12 +2642,16 @@ class KSpace():
         the zone in a Chern insulator. The single-particle entanglement
         energies are :math:`\epsilon = \ln[(1-\xi)/\xi]`.
 
-        :param ks: ndarray, shape (nk, dim). k-points (see *get_bands*).
-        :param region: List of orbital indices (the region :math:`A`).
-        :param bands: Band index, or list of band indices (the filled bands).
+        Parameters
+        ----------
+        ks : ndarray, shape (nk, dim)
+            k-points (see *get_bands*).
+        region : List of orbital indices (the region :math:`A`)
+        bands : Band index, or list of band indices (the filled bands)
 
-        :returns:
-            * **xi** -- Real ndarray, shape (nk, len(region)), sorted ascending at every k.
+        Returns
+        -------
+        xi : Real ndarray, shape (nk, len(region)), sorted ascending at every k
         '''
         ks = np.atleast_2d(np.asarray(ks, dtype='f8'))
         error_handling.ks(ks, self.dim)
@@ -2454,14 +2724,18 @@ class KSpace():
         one parity :math:`\xi = \pm1` per Kramers pair. In 3D, :math:`\nu`
         is the strong index.
 
-        :param inversion: Complex ndarray, shape (norb, norb), or callable of
+        Parameters
+        ----------
+        inversion
+            Complex ndarray, shape (norb, norb), or callable of
             k returning one: the inversion operator :math:`P`, with
             :math:`P H(\mathbf{k}) P^{-1} = H(-\mathbf{k})` (e.g. swapping the
             two sublattices of graphene, and the identity on spin).
-        :param bands: List of band indices (the occupied Kramers pairs).
+        bands : List of band indices (the occupied Kramers pairs)
 
-        :returns:
-            * **nu** -- 0 (trivial) or 1 (topological).
+        Returns
+        -------
+        nu : 0 (trivial) or 1 (topological)
         '''
         error_handling.even_bands(bands)
         error_handling.band_indices(bands, self.norb)
@@ -2494,16 +2768,22 @@ class KSpace():
         inversion unitary with :math:`\mathbf{k}\to-\mathbf{k}` and the plus
         sign.
 
-        :param op: Complex ndarray, shape (norb, norb), or callable of k: :math:`U`.
-        :param k_map: 'minus' or 'identity'. Default value 'minus'.
-        :param antiunitary: Boolean. Default value False.
-        :param anti: Boolean. Default value False.
-        :param nk: Positive integer. Default value 5. Points per direction of
+        Parameters
+        ----------
+        op : Complex ndarray, shape (norb, norb), or callable of k: :math:`U`
+        k_map : 'minus' or 'identity', default 'minus'
+        antiunitary : Boolean, default False
+        anti : Boolean, default False
+        nk : Positive integer, default 5
+            Points per direction of
             the (randomly shifted) test mesh.
-        :param seed: Integer. Default value 0. Seed of the random shift.
+        seed : Integer, default 0
+            Seed of the random shift.
 
-        :returns:
-            * **error** -- Real number. Largest deviation over the mesh (0 for a symmetry).
+        Returns
+        -------
+        error : Real number
+            Largest deviation over the mesh (0 for a symmetry).
         '''
         error_handling.k_map(k_map)
         error_handling.boolean(antiunitary, 'antiunitary')
@@ -2535,14 +2815,19 @@ class KSpace():
         :math:`C^2 = \pm1`, and the presence of :math:`S`. Any two of the
         three imply the third (:math:`S = TC`), which need not be given.
 
-        :param time_reversal: Matrix :math:`U_T`, or None (absent).
-        :param particle_hole: Matrix :math:`U_C`, or None (absent).
-        :param chiral: Matrix :math:`U_S`, or None (absent).
-        :param nk: Positive integer. Default value 5. See *symmetry_error*.
-        :param tol: Positive real. Default value 1e-8. Tolerance of the checks.
+        Parameters
+        ----------
+        time_reversal : Matrix :math:`U_T`, or None (absent)
+        particle_hole : Matrix :math:`U_C`, or None (absent)
+        chiral : Matrix :math:`U_S`, or None (absent)
+        nk : Positive integer, default 5
+            See *symmetry_error*.
+        tol : Positive real, default 1e-8
+            Tolerance of the checks.
 
-        :returns:
-            * **name** -- String: 'A', 'AIII', 'AI', 'BDI', 'D', 'DIII', 'AII', 'CII', 'C' or 'CI'.
+        Returns
+        -------
+        name : String: 'A', 'AIII', 'AI', 'BDI', 'D', 'DIII', 'AII', 'CII', 'C' or 'CI'
         '''
         error_handling.positive_real(tol, 'tol')
         k0 = np.zeros(self.dim)
@@ -2594,17 +2879,22 @@ class KSpace():
         *berry_curvature*, per unit k-area here). They obey
         :math:`\sqrt{\det g} \ge |\Omega_{xy}|/2` in 2D.
 
-        :param bands: Band index, or list of band indices.
-        :param k: k point (see *get_ham*).
-        :param dk: Positive real. Default value 1e-4. Finite-difference step.
-        :param positions: Boolean. Default value True. Include the orbital
+        Parameters
+        ----------
+        bands : Band index, or list of band indices
+        k : k point (see *get_ham*)
+        dk : Positive real, default 1e-4
+            Finite-difference step.
+        positions : Boolean, default True
+            Include the orbital
             positions in the Bloch functions. The local metric and curvature
             depend on this choice (the Berry curvature of *berry_curvature* is
             that of ``positions=False``); integrals such as the Chern number
             do not.
 
-        :returns:
-            * **Q** -- Complex ndarray, shape (dim, dim), in the k coordinates of *get_ham*.
+        Returns
+        -------
+        Q : Complex ndarray, shape (dim, dim), in the k coordinates of *get_ham*
         '''
         if isinstance(bands, int):
             bands = [bands]
@@ -2656,29 +2946,41 @@ class KSpace():
         bulk gaps. With *bulk*, the same quantity for a unit cell deep inside
         the crystal: the bulk bands projected on the surface Brillouin zone.
 
-        :param ks: Real array, shape (nk, dim). k-points, in the coordinates
+        Parameters
+        ----------
+        ks : Real array, shape (nk, dim)
+            k-points, in the coordinates
             of *get_ham* (e.g. from a *k_path* of the surface Brillouin zone).
             Only :math:`\mathbf{k}_\parallel` matters: the result does not
             depend on the component along the reciprocal vector
             :math:`\mathbf{b}_d`.
-        :param energies: Real number or real array. Energies :math:`E`.
-        :param direction: Integer, between 0 and dim-1. The primitive vector
+        energies : Real number or real array
+            Energies :math:`E`.
+        direction : Integer, between 0 and dim-1
+            The primitive vector
             normal to the surface (the one along which the crystal is
             semi-infinite).
-        :param side: +1 or -1. Default value 1. The crystal extends along
+        side : +1 or -1, default 1
+            The crystal extends along
             :math:`+\mathbf{a}_d` (the surface faces :math:`-\mathbf{a}_d`) or
             along :math:`-\mathbf{a}_d` (the opposite surface).
-        :param eta: Positive real. Default value 1e-2. Broadening: the
+        eta : Positive real, default 1e-2
+            Broadening: the
             width of the lines, and the decay length (about :math:`v/\eta`
             cells) over which the bulk is resolved.
-        :param bulk: Boolean. Default value False. If True, the spectral
+        bulk : Boolean, default False
+            If True, the spectral
             function of a bulk unit cell instead of the surface one.
-        :param max_iter: Positive integer. Default value 10000. Maximum
+        max_iter : Positive integer, default 10000
+            Maximum
             number of decimation steps.
 
-        :returns:
-            * **A** -- Real ndarray, shape (nk, len(energies)).
+        Returns
+        -------
+        A : Real ndarray, shape (nk, len(energies))
 
+        Examples
+        --------
         Example usage::
 
             # the (001) surface of a 3D model, along a path of the surface zone
@@ -2735,10 +3037,13 @@ class KSpace():
         every site, :math:`\mathbb{1}_{sites}\otimes\sigma_{axis}`, for a model
         built with ``spin=True`` (for *band_weights* and *spin_texture*).
 
-        :param axis: 'x', 'y' or 'z'.
+        Parameters
+        ----------
+        axis : 'x', 'y' or 'z'
 
-        :returns:
-            * **op** -- Complex ndarray, shape (norb, norb).
+        Returns
+        -------
+        op : Complex ndarray, shape (norb, norb)
         '''
         error_handling.spinful(self.spin)
         error_handling.spin_axis(axis)
@@ -2801,15 +3106,22 @@ class KSpace():
         For a non-Hermitian model, the right eigenvectors are used; with an
         overlap (*set_overlap*), :math:`v^\dagger Pv/v^\dagger v`.
 
-        :param projector: Orbital index, list of orbital indices, sublattice
+        Parameters
+        ----------
+        projector
+            Orbital index, list of orbital indices, sublattice
             tag (all the orbitals, both spins, of the sites with that tag),
             or a (norb, norb) Hermitian matrix.
-        :param ks: Real array, shape (nk, dim). Default value None: the
+        ks : Real array, shape (nk, dim)
+            Default value None: the
             k-points of the last *get_bands* or *k_path*.
 
-        :returns:
-            * **weights** -- Real ndarray, shape (nk, norb), ordered as the bands.
+        Returns
+        -------
+        weights : Real ndarray, shape (nk, norb), ordered as the bands
 
+        Examples
+        --------
         Example usage::
 
             ks.k_path(points, nk=100)
@@ -2834,12 +3146,18 @@ class KSpace():
         of the group (see *band_weights*): zero for a Kramers pair, with both
         inversion and time reversal.
 
-        :param ks: Real array, shape (nk, dim). k-points.
-        :param band: Integer. Band index.
+        Parameters
+        ----------
+        ks : Real array, shape (nk, dim)
+            k-points.
+        band : Integer
+            Band index.
 
-        :returns:
-            * **spin** -- Real ndarray, shape (nk, 3):
-              :math:`(\langle\sigma_x\rangle, \langle\sigma_y\rangle, \langle\sigma_z\rangle)`.
+        Returns
+        -------
+        spin
+            Real ndarray, shape (nk, 3):
+            :math:`(\langle\sigma_x\rangle, \langle\sigma_y\rangle, \langle\sigma_z\rangle)`.
         '''
         error_handling.spinful(self.spin)
         error_handling.band_index(band, self.norb)
@@ -2877,20 +3195,28 @@ class KSpace():
         cell around :math:`\Gamma`. For a non-Hermitian model, the real part
         of the energies is used.
 
-        :param energy: Real number. Default value 0. The energy :math:`E`.
-        :param nk: Positive integer, or tuple of *dim* positive integers.
-            Default value None: 100 in 2D, 40 in 3D. Number of k-points along
+        Parameters
+        ----------
+        energy : Real number, default 0
+            The energy :math:`E`.
+        nk : Positive integer, or tuple of *dim* positive integers, default None: 100 in 2D, 40 in 3D
+            Number of k-points along
             each reciprocal lattice vector.
-        :param bands: Band index, or list of band indices. Default value
+        bands : Band index, or list of band indices
+            Default value
             None: all bands.
 
-        :returns:
-            * **surfaces** -- List, one entry per band of *bands*: a real
-              ndarray of shape (n, 2, 2) in 2D (n segments, each two k-points)
-              or (n, 3, 3) in 3D (n triangles, each three k-points), in the
-              k coordinates of *get_ham*. Empty (n = 0) if the band does not
-              cross *energy*.
+        Returns
+        -------
+        surfaces
+            List, one entry per band of *bands*: a real
+            ndarray of shape (n, 2, 2) in 2D (n segments, each two k-points)
+            or (n, 3, 3) in 3D (n triangles, each three k-points), in the
+            k coordinates of *get_ham*. Empty (n = 0) if the band does not
+            cross *energy*.
 
+        Examples
+        --------
         Example usage::
 
             # the Fermi surface of the half-filled square lattice
@@ -2948,17 +3274,27 @@ class KSpace():
         band, with a legend if several bands cross the energy): lines inside
         the first Brillouin zone (drawn in black) in 2D, surfaces in 3D.
 
-        :param energy: Real number. Default value 0. The energy.
-        :param nk: See *fermi_surface*.
-        :param bands: See *fermi_surface*.
-        :param lw: Positive number. Default value 2. Linewidth (2D).
-        :param alpha: Real number in (0, 1]. Default value 0.6. Opacity of
+        Parameters
+        ----------
+        energy : Real number, default 0
+            The energy.
+        nk
+            See *fermi_surface*.
+        bands
+            See *fermi_surface*.
+        lw : Positive number, default 2
+            Linewidth (2D).
+        alpha : Real number in (0, 1], default 0.6
+            Opacity of
             the surfaces (3D).
-        :param fs: Positive number. Default value 20. Fontsize.
-        :param figsize: Tuple. Default value None. Figure size.
+        fs : Positive number, default 20
+            Fontsize.
+        figsize : Tuple, default None
+            Figure size.
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         error_handling.positive_real(lw, 'lw')
         error_handling.positive_real(alpha, 'alpha')
@@ -3008,19 +3344,30 @@ class KSpace():
         Rashba coupling, for instance, locks the spin perpendicular to
         :math:`\mathbf{k}`, winding once around the contour.
 
-        :param band: Integer. Band index.
-        :param energy: Real number. Default value 0. Energy of the contour.
-        :param nk: Positive integer. Default value 100. Mesh of the contour.
-        :param n_arrows: Positive integer. Default value 40. Approximate
+        Parameters
+        ----------
+        band : Integer
+            Band index.
+        energy : Real number, default 0
+            Energy of the contour.
+        nk : Positive integer, default 100
+            Mesh of the contour.
+        n_arrows : Positive integer, default 40
+            Approximate
             number of arrows, evenly spaced along the contour. A fully
             polarized in-plane spin is drawn 80% as long as their spacing.
-        :param cmap: Default value 'RdBu_r'. Colormap of :math:`\langle\sigma_z\rangle`.
-        :param lw: Positive number. Default value 1. Linewidth of the contour.
-        :param fs: Positive number. Default value 20. Fontsize.
-        :param figsize: Tuple. Default value None. Figure size.
+        cmap
+            Default value 'RdBu_r'. Colormap of :math:`\langle\sigma_z\rangle`.
+        lw : Positive number, default 1
+            Linewidth of the contour.
+        fs : Positive number, default 20
+            Fontsize.
+        figsize : Tuple, default None
+            Figure size.
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         error_handling.dim_2(self.dim)
         error_handling.spinful(self.spin)
@@ -3071,16 +3418,26 @@ class KSpace():
         :math:`\mathbf{b}_i`). The title gives the Chern number, the total
         flux over :math:`2\pi`.
 
-        :param bands: See *berry_curvature*.
-        :param nk: Default value 60. See *berry_curvature*.
-        :param plane: See *berry_curvature*.
-        :param k_fixed: See *berry_curvature*.
-        :param cmap: Default value 'RdBu_r'. Colormap, centred on zero.
-        :param fs: Positive number. Default value 20. Fontsize.
-        :param figsize: Tuple. Default value None. Figure size.
+        Parameters
+        ----------
+        bands
+            See *berry_curvature*.
+        nk
+            Default value 60. See *berry_curvature*.
+        plane
+            See *berry_curvature*.
+        k_fixed
+            See *berry_curvature*.
+        cmap
+            Default value 'RdBu_r'. Colormap, centred on zero.
+        fs : Positive number, default 20
+            Fontsize.
+        figsize : Tuple, default None
+            Figure size.
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         error_handling.positive_real(fs, 'fs')
         error_handling.tuple_2elem(figsize, 'figsize')
@@ -3133,21 +3490,36 @@ class KSpace():
         insulator, and the Kramers pairs swap partners in a
         :math:`\mathbb{Z}_2` topological insulator.
 
-        :param bands: See *wannier_flow*.
-        :param nk: See *wannier_flow*.
-        :param nk_perp: See *wannier_flow*.
-        :param direction: See *wannier_flow*.
-        :param flow: See *wannier_flow*.
-        :param k_fixed: See *wannier_flow*.
-        :param positions: See *wannier_flow*.
-        :param k_range: See *wannier_flow*.
-        :param ms: Positive number. Default value 4. Marker size.
-        :param c: Default value 'b'. Marker color.
-        :param fs: Positive number. Default value 20. Fontsize.
-        :param figsize: Tuple. Default value None. Figure size.
+        Parameters
+        ----------
+        bands
+            See *wannier_flow*.
+        nk
+            See *wannier_flow*.
+        nk_perp
+            See *wannier_flow*.
+        direction
+            See *wannier_flow*.
+        flow
+            See *wannier_flow*.
+        k_fixed
+            See *wannier_flow*.
+        positions
+            See *wannier_flow*.
+        k_range
+            See *wannier_flow*.
+        ms : Positive number, default 4
+            Marker size.
+        c
+            Default value 'b'. Marker color.
+        fs : Positive number, default 20
+            Fontsize.
+        figsize : Tuple, default None
+            Figure size.
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         error_handling.positive_real(ms, 'ms')
         error_handling.positive_real(fs, 'fs')
@@ -3179,24 +3551,37 @@ class KSpace():
         :math:`\mathbf{k}_\parallel`. Surface states are the sharp lines in
         the bulk gaps.
 
-        :param points: List of at least two k-points, the nodes of the path
-            (see *k_path*).
-        :param energies: Real array. Energies :math:`E`.
-        :param direction: See *surface_spectral_function*.
-        :param nk: Positive integer. Default value 60. Number of k-points per path segment.
-        :param side: See *surface_spectral_function*.
-        :param eta: See *surface_spectral_function*.
-        :param bulk: See *surface_spectral_function*.
-        :param node_labels: List of strings. Default value None. Labels of *points*.
-        :param log: Boolean. Default value True. Logarithmic color scale, over
+        Parameters
+        ----------
+        points : List of at least two k-points, the nodes of the path (see *k_path*)
+        energies : Real array
+            Energies :math:`E`.
+        direction
+            See *surface_spectral_function*.
+        nk : Positive integer, default 60
+            Number of k-points per path segment.
+        side
+            See *surface_spectral_function*.
+        eta
+            See *surface_spectral_function*.
+        bulk
+            See *surface_spectral_function*.
+        node_labels : List of strings, default None
+            Labels of *points*.
+        log : Boolean, default True
+            Logarithmic color scale, over
             four decades below the maximum (the surface states are much
             sharper than the bulk continuum).
-        :param cmap: Default value 'magma'. Colormap.
-        :param fs: Positive number. Default value 20. Fontsize.
-        :param figsize: Tuple. Default value None. Figure size.
+        cmap
+            Default value 'magma'. Colormap.
+        fs : Positive number, default 20
+            Fontsize.
+        figsize : Tuple, default None
+            Figure size.
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         error_handling.k_path_points(points, self.dim)
         error_handling.positive_int(nk, 'nk')
@@ -3243,21 +3628,30 @@ class KSpace():
         which needs no broadening and keeps band edges and van Hove
         singularities sharp.
 
-        :param nk: Positive integer, or tuple of *dim* positive integers.
-            Default value 30. Number of k-points along each reciprocal
+        Parameters
+        ----------
+        nk : Positive integer, or tuple of *dim* positive integers, default 30
+            Number of k-points along each reciprocal
             lattice vector.
-        :param broadening: Positive real number. Default value 0.05. Kernel
+        broadening : Positive real number, default 0.05
+            Kernel
             width (unused by the tetrahedron method).
-        :param kernel: String. Default value 'gaussian'. 'gaussian',
+        kernel : String, default 'gaussian'
+            'gaussian',
             'lorentzian' or 'tetrahedron'.
-        :param e_grid: Real ndarray. Default value None. Energies at which to
+        e_grid : Real ndarray, default None
+            Energies at which to
             evaluate the density of states.
-        :param fs: Positive number. Default value 20. Fontsize.
-        :param lw: Positive number. Default value 2. Linewidth.
-        :param figsize: Tuple. Default value None. Figure size.
+        fs : Positive number, default 20
+            Fontsize.
+        lw : Positive number, default 2
+            Linewidth.
+        figsize : Tuple, default None
+            Figure size.
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         error_handling.positive_real(fs, 'fs')
         error_handling.positive_real(lw, 'lw')
@@ -3292,25 +3686,37 @@ class KSpace():
         bands are colored by the weights (with a colorbar), or drawn with
         dots sized by their absolute value.
 
-        :param node_labels: List of strings. Default value None. Labels of the
+        Parameters
+        ----------
+        node_labels : List of strings, default None
+            Labels of the
             high-symmetry points passed to *k_path*.
-        :param fs: Positive number. Default value 20. Fontsize.
-        :param lw: Positive number. Default value 2. Linewidth.
-        :param ms: Positive number. Default value 0. Marker size.
-        :param c: Default value 'b'. Line color.
-        :param lims: List. Default value None. Energy plot limits.
-        :param figsize: Tuple. Default value None. Figure size.
-        :param weights: Real array, shape (nk, norb). Default value None.
+        fs : Positive number, default 20
+            Fontsize.
+        lw : Positive number, default 2
+            Linewidth.
+        ms : Positive number, default 0
+            Marker size.
+        c
+            Default value 'b'. Line color.
+        lims : List, default None
+            Energy plot limits.
+        figsize : Tuple, default None
+            Figure size.
+        weights : Real array, shape (nk, norb), default None
             One weight per k-point and band, e.g. from *band_weights*.
-        :param style: String. Default value 'color'. 'color': the bands
+        style : String, default 'color'
+            'color': the bands
             colored by *weights*; 'size': dots of size proportional to
             :math:`|w|` (*ms*, or 8 if *ms* is 0, for the largest) on thin
             lines of color *c*.
-        :param cmap: Default value None ('viridis', or 'RdBu_r', centred on
+        cmap
+            Default value None ('viridis', or 'RdBu_r', centred on
             zero, if some weights are negative). Colormap of *style* 'color'.
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         error_handling.empty_ndarray(self.en, 'get_bands or k_path')
         error_handling.positive_real(fs, 'fs')
@@ -3390,26 +3796,38 @@ def ribbon(
     slab: periodic along the two other primitive vectors, the way to see
     surface states (e.g. the Fermi arcs of a Weyl semimetal).
 
-    :param lat: **Lattice** class instance (2D or 3D, i.e. two or three primitive
+    Parameters
+    ----------
+    lat
+        **Lattice** class instance (2D or 3D, i.e. two or three primitive
         vectors). Only *unit_cell* and *prim_vec* are used.
-    :param list_hop: List of dictionaries, in the same format passed to
+    list_hop
+        List of dictionaries, in the same format passed to
         *KSpace.set_hopping* -- the hoppings of the periodic (2D) model
         that the ribbon is cut from.
-    :param width: Positive integer. Number of unit cells across the ribbon.
-    :param direction: 0 or 1 (or 2, in 3D). Default value 1. Which primitive
+    width : Positive integer
+        Number of unit cells across the ribbon.
+    direction : 0 or 1 (or 2, in 3D), default 1
+        Which primitive
         vector (``lat.prim_vec[direction]``) becomes finite; the others stay
         periodic.
-    :param onsite: Dictionary. Default value None. Onsite energies, in the
+    onsite : Dictionary, default None
+        Onsite energies, in the
         same format passed to *KSpace.set_onsite* -- applied identically
         on every row of the ribbon.
-    :param spin: Boolean. Default value False. See *KSpace*.
+    spin : Boolean, default False
+        See *KSpace*.
 
-    :returns:
-        * **rib** -- **KSpace** instance, 1D-periodic (2D-periodic for a slab), with
-          ``width * len(lat.unit_cell)`` sites (each site of *lat*,
-          repeated once per row across the ribbon; row *w*'s copy of site
-          *i* is orbital ``w*len(lat.unit_cell) + i``).
+    Returns
+    -------
+    rib
+        **KSpace** instance, 1D-periodic (2D-periodic for a slab), with
+        ``width * len(lat.unit_cell)`` sites (each site of *lat*,
+        repeated once per row across the ribbon; row *w*'s copy of site
+        *i* is orbital ``w*len(lat.unit_cell) + i``).
 
+    Examples
+    --------
     Example usage::
 
         # zigzag graphene ribbon, 20 unit cells wide
@@ -3477,21 +3895,32 @@ def magnetic_supercell(
     crossing the magnetic cell boundary carry. The bands of the result are
     the Hofstadter subbands, and their *chern_number* the TKNN integers.
 
-    :param lat: **Lattice** class instance, 2D (two primitive vectors in the plane).
-    :param list_hop: List of dictionaries, the hoppings of the field-free
+    Parameters
+    ----------
+    lat : **Lattice** class instance, 2D (two primitive vectors in the plane)
+    list_hop
+        List of dictionaries, the hoppings of the field-free
         model, in the format of *KSpace.set_hopping*.
-    :param p: Integer. Numerator of the flux per unit cell.
-    :param q: Positive integer. Denominator of the flux per unit cell: the
+    p : Integer
+        Numerator of the flux per unit cell.
+    q : Positive integer
+        Denominator of the flux per unit cell: the
         magnetic cell has *q* unit cells.
-    :param onsite: Dictionary. Default value None. Onsite energies, in the
+    onsite : Dictionary, default None
+        Onsite energies, in the
         format of *KSpace.set_onsite*, applied to every copy.
-    :param spin: Boolean. Default value False. See *KSpace*.
+    spin : Boolean, default False
+        See *KSpace*.
 
-    :returns:
-        * **mag** -- **KSpace** instance, with ``q * len(lat.unit_cell)``
-          sites: copy *m* of site *i* is site ``m*len(lat.unit_cell) + i``,
-          displaced by :math:`m\mathbf{a}_1`.
+    Returns
+    -------
+    mag
+        **KSpace** instance, with ``q * len(lat.unit_cell)``
+        sites: copy *m* of site *i* is site ``m*len(lat.unit_cell) + i``,
+        displaced by :math:`m\mathbf{a}_1`.
 
+    Examples
+    --------
     Example usage::
 
         # square lattice, flux 1/3 per plaquette: three Hofstadter bands
@@ -3720,19 +4149,28 @@ def cubic_path(
     builds the standard simple cubic, fcc and bcc paths with it; use it
     for another path, or other points, of the same lattices.
 
-    :param points: Dictionary. key: label, val: tuple of 3 real numbers,
+    Parameters
+    ----------
+    points : Dictionary
+        key: label, val: tuple of 3 real numbers,
         the point in units of :math:`2\pi/a`.
-    :param names: List of at least two labels (keys of *points*), the
+    names
+        List of at least two labels (keys of *points*), the
         nodes of the path in order.
-    :param a: Positive real. Default value 1. Side of the conventional cube.
-    :param axes: Real array, shape (3, 3). Default value None: the
+    a : Positive real, default 1
+        Side of the conventional cube.
+    axes : Real array, shape (3, 3)
+        Default value None: the
         Cartesian axes. Rows: the three orthonormal cubic axes, in the
         coordinates of *KSpace.get_ham* (for a crystal whose cube is rotated).
 
-    :returns:
-        * **points** -- List of real ndarrays, the k-points, for *KSpace.k_path*.
-        * **labels** -- List of strings, *names*, for *node_labels*.
+    Returns
+    -------
+    points : List of real ndarrays, the k-points, for *KSpace.k_path*
+    labels : List of strings, *names*, for *node_labels*
 
+    Examples
+    --------
     Example usage::
 
         # fcc, along Gamma - X - U and K - Gamma - L
@@ -3829,13 +4267,19 @@ def high_symmetry_path(lat: Lattice) -> tuple[list[NDArray[np.float64]], list[st
     tetragonal, rhombohedral, ...) raise a ValueError: give their points
     to *k_path* directly.
 
-    :param lat: **lattice** class instance (only *prim_vec* is used).
+    Parameters
+    ----------
+    lat : **lattice** class instance (only *prim_vec* is used)
 
-    :returns:
-        * **points** -- List of real ndarrays, the k-points, in the
-          coordinates of *KSpace.get_ham*.
-        * **labels** -- List of strings (LaTeX), for *node_labels*.
+    Returns
+    -------
+    points
+        List of real ndarrays, the k-points, in the
+        coordinates of *KSpace.get_ham*.
+    labels : List of strings (LaTeX), for *node_labels*
 
+    Examples
+    --------
     Example usage::
 
         points, labels = high_symmetry_path(lat)

@@ -149,21 +149,29 @@ def discretize_symbolic(hamiltonian, dim: int | None = None) -> dict:
     the grid spacing *a* and the parameters of the Hamiltonian (see the
     module docstring for the scheme).
 
-    :param hamiltonian: sympy expression or Matrix, or a string, in the
+    Parameters
+    ----------
+    hamiltonian
+        sympy expression or Matrix, or a string, in the
         momenta ``k_x``, ``k_y``, ``k_z``: a polynomial in them with
         constant coefficients. Any other symbol is a parameter, taken real
         (the symbols ``x``, ``y``, ``z`` and ``a`` are not allowed). A
         string may use the Pauli matrices ``sigma_0``, ``sigma_x``,
         ``sigma_y``, ``sigma_z`` and ``kron`` (Kronecker product); ``I``
         is the imaginary unit.
-    :param dim: 1, 2 or 3. Default value None: the last axis whose momentum
+    dim : 1, 2 or 3
+        Default value None: the last axis whose momentum
         appears (1 if none).
 
-    :returns:
-        * **hoppings** -- Dictionary. key: tuple of *dim* integers
-          :math:`\mathbf{R}`, val: sympy Matrix :math:`T(\mathbf{R})`, in
-          the symbol ``a`` and those of *hamiltonian*.
+    Returns
+    -------
+    hoppings : Dictionary
+        key: tuple of *dim* integers
+        :math:`\mathbf{R}`, val: sympy Matrix :math:`T(\mathbf{R})`, in
+        the symbol ``a`` and those of *hamiltonian*.
 
+    Examples
+    --------
     Example usage::
 
         discretize_symbolic('k_x**2')
@@ -211,21 +219,29 @@ def discretize(hamiltonian, a: float = 1., dim: int | None = None,
     otherwise every matrix element is stored, with ``hermitian=False``.
     Constant onsite terms are in *ks.onsite*.
 
-    :param hamiltonian: sympy expression or Matrix, or a string (see
-        *discretize_symbolic*).
-    :param a: Real number, at least :math:`\sqrt{0.1}\approx 0.316` (the
+    Parameters
+    ----------
+    hamiltonian : sympy expression or Matrix, or a string (see *discretize_symbolic*)
+    a
+        Real number, at least :math:`\sqrt{0.1}\approx 0.316` (the
         shortest primitive vector of a **Lattice**). Default value 1. Grid
         spacing: to refine the grid, measure lengths in a smaller unit.
-    :param dim: 1, 2 or 3. Default value None: the last axis whose momentum
+    dim : 1, 2 or 3
+        Default value None: the last axis whose momentum
         appears (1 if none).
-    :param tags: String or list of one-character strings. Default value
+    tags : String or list of one-character strings
+        Default value
         None: 'a', 'b', 'c', ... Tag of each orbital.
 
-    :returns:
-        * **ks** -- **KSpace** instance (spinless, *norb* orbitals). Its
-          lattice has *prim_vec* :math:`a\hat{\mathbf{x}}, a\hat{\mathbf{y}},
-          (a\hat{\mathbf{z}})`.
+    Returns
+    -------
+    ks : **KSpace** instance (spinless, *norb* orbitals)
+        Its
+        lattice has *prim_vec* :math:`a\hat{\mathbf{x}}, a\hat{\mathbf{y}},
+        (a\hat{\mathbf{z}})`.
 
+    Examples
+    --------
     Example usage::
 
         # the BHZ model of HgTe quantum wells, one spin block

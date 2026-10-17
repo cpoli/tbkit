@@ -30,13 +30,18 @@ def bdg_ham(ham, pairing, mu: float = 0.) -> sparse.csr_matrix:
     r'''
     Get the real-space BdG Hamiltonian (see the module docstring).
 
-    :param ham: Square Hermitian matrix, shape (N, N) (e.g. *System.ham*).
-    :param pairing: Square antisymmetric matrix, shape (N, N): :math:`\Delta`
+    Parameters
+    ----------
+    ham : Square Hermitian matrix, shape (N, N) (e.g. *System.ham*)
+    pairing
+        Square antisymmetric matrix, shape (N, N): :math:`\Delta`
         (see *pairing_bonds*, *pairing_s_wave*).
-    :param mu: Real number. Default value 0. Chemical potential.
+    mu : Real number, default 0
+        Chemical potential.
 
-    :returns:
-        * **ham_bdg** -- Sparse CSR matrix, shape (2N, 2N).
+    Returns
+    -------
+    ham_bdg : Sparse CSR matrix, shape (2N, 2N)
     '''
     h = sparse.csr_matrix(ham, dtype='c16')
     delta = sparse.csr_matrix(pairing, dtype='c16')
@@ -56,11 +61,15 @@ def pairing_bonds(sys, delta: complex) -> sparse.csr_matrix:
     them: angle in :math:`[0, 180)`). On a chain it is Kitaev's
     :math:`\Delta\,c^\dagger_jc^\dagger_{j+1}`.
 
-    :param sys: **System** instance, with hoppings.
-    :param delta: Complex number. :math:`\Delta`.
+    Parameters
+    ----------
+    sys : **System** instance, with hoppings
+    delta : Complex number
+        :math:`\Delta`.
 
-    :returns:
-        * **pairing** -- Sparse CSR matrix, shape (sites, sites).
+    Returns
+    -------
+    pairing : Sparse CSR matrix, shape (sites, sites)
     '''
     error_handling.empty_hop(sys.hop)
     error_handling.number(delta, 'delta')
@@ -78,11 +87,16 @@ def pairing_s_wave(n_sites: int, delta: complex) -> sparse.csr_matrix:
     for a spinful model with rows ordered site by site, spin up then down
     (as *KSpace* with ``spin=True`` and *OrbitalSystem* with one orbital).
 
-    :param n_sites: Positive integer. Number of sites.
-    :param delta: Complex number. :math:`\Delta`.
+    Parameters
+    ----------
+    n_sites : Positive integer
+        Number of sites.
+    delta : Complex number
+        :math:`\Delta`.
 
-    :returns:
-        * **pairing** -- Sparse CSR matrix, shape (2 n_sites, 2 n_sites).
+    Returns
+    -------
+    pairing : Sparse CSR matrix, shape (2 n_sites, 2 n_sites)
     '''
     error_handling.positive_int(n_sites, 'n_sites')
     error_handling.number(delta, 'delta')
@@ -105,15 +119,22 @@ def bdg_kspace(ks, pairing: list[dict], mu: float = 0.):
     same positions). Each pairing :math:`\Delta\,c^\dagger_{i,\mathbf{0}}c^\dagger_{j,\mathbf{R}} + h.c.`
     enters antisymmetrized, :math:`\Delta_{ij}(\mathbf{R}) = -\Delta_{ji}(-\mathbf{R})`.
 
-    :param ks: **KSpace** instance (Hermitian, orthogonal basis).
-    :param pairing: List of dictionaries with keys ('i', 'j', 'R', 'delta'):
+    Parameters
+    ----------
+    ks : **KSpace** instance (Hermitian, orthogonal basis)
+    pairing
+        List of dictionaries with keys ('i', 'j', 'R', 'delta'):
         orbital indices of *ks* (``0 ... norb-1``; with ``spin=True``,
         ``2*site + spin``), lattice vector, amplitude.
-    :param mu: Real number. Default value 0. Chemical potential.
+    mu : Real number, default 0
+        Chemical potential.
 
-    :returns:
-        * **ks_bdg** -- **KSpace** instance, 2 norb orbitals.
+    Returns
+    -------
+    ks_bdg : **KSpace** instance, 2 norb orbitals
 
+    Examples
+    --------
     Example usage::
 
         # Kitaev chain: E(k) = +-sqrt((2t cos k - mu)^2 + 4 Delta^2 sin^2 k)
@@ -154,10 +175,14 @@ def particle_hole(n: int) -> NDArray[np.float64]:
     orbitals: pass it to *KSpace.symmetry_error* (``antiunitary=True``,
     ``anti=True``) or *KSpace.tenfold_class* (``particle_hole=``).
 
-    :param n: Positive integer. Number of particle orbitals.
+    Parameters
+    ----------
+    n : Positive integer
+        Number of particle orbitals.
 
-    :returns:
-        * **tau_x** -- Real ndarray, shape (2n, 2n).
+    Returns
+    -------
+    tau_x : Real ndarray, shape (2n, 2n)
     '''
     error_handling.positive_int(n, 'n')
     return np.kron(np.array([[0., 1.], [1., 0.]]), np.eye(n))
@@ -171,10 +196,13 @@ def pfaffian(a) -> complex:
     (2012)). For a 2x2 block :math:`\begin{pmatrix}0 & a\\ -a & 0\end{pmatrix}`
     it is :math:`a`; it is 0 for an odd dimension.
 
-    :param a: Square antisymmetric matrix, shape (n, n).
+    Parameters
+    ----------
+    a : Square antisymmetric matrix, shape (n, n)
 
-    :returns:
-        * **pf** -- Complex number (a float for a real matrix).
+    Returns
+    -------
+    pf : Complex number (a float for a real matrix)
     '''
     real = not np.iscomplexobj(a)
     a = np.array(a, dtype='c16')
@@ -224,11 +252,15 @@ def majorana_number(ks) -> int:
     B 82, 184525 (2010)). The invariant changes only where the gap closes
     at one of the :math:`\Gamma_i`.
 
-    :param ks: **KSpace** instance of a BdG model, 2n orbitals: n particles
+    Parameters
+    ----------
+    ks
+        **KSpace** instance of a BdG model, 2n orbitals: n particles
         then their n holes (see *bdg_kspace*).
 
-    :returns:
-        * **m** -- Integer, -1 (topological) or +1 (trivial).
+    Returns
+    -------
+    m : Integer, -1 (topological) or +1 (trivial)
     '''
     from tbkit.kspace import KSpace
     error_handling.kspace(ks, KSpace)
@@ -249,12 +281,18 @@ class GapResult():
     r'''
     Self-consistent s-wave pairing of *s_wave_gap*.
 
-    :ivar delta: Complex ndarray. Gap :math:`\Delta_i` on every site.
-    :ivar energies: Real ndarray, shape (2N,). Spectrum of the reduced BdG
+    Attributes
+    ----------
+    delta : Complex ndarray
+        Gap :math:`\Delta_i` on every site.
+    energies : Real ndarray, shape (2N,)
+        Spectrum of the reduced BdG
         Hamiltonian (symmetric, :math:`\pm E_n`).
-    :ivar states: Complex ndarray, shape (2N, 2N). Its eigenvectors
+    states : Complex ndarray, shape (2N, 2N)
+        Its eigenvectors
         :math:`(u_n, v_n)` (columns).
-    :ivar iterations: Integer. Number of iterations.
+    iterations : Integer
+        Number of iterations.
     '''
 
     def __init__(self, delta, energies, states, iterations) -> None:
@@ -305,19 +343,26 @@ def s_wave_gap(
     :math:`T_c` the iteration slows down (the linearized map has an
     eigenvalue close to 1): raise *max_iter* there.
 
-    :param ham: Square Hermitian matrix, (N, N), spin independent (e.g. *System.ham*).
-    :param V: Positive real, or array of N non-negative reals. Attraction.
-    :param mu: Real number. Default value 0. Chemical potential.
-    :param temperature: Positive real or zero. Default value 0.
-    :param delta0: Number, or array of N numbers. Default value 0.1.
+    Parameters
+    ----------
+    ham : Square Hermitian matrix, (N, N), spin independent (e.g. *System.ham*)
+    V : Positive real, or array of N non-negative reals
+        Attraction.
+    mu : Real number, default 0
+        Chemical potential.
+    temperature : Positive real or zero, default 0
+    delta0 : Number, or array of N numbers, default 0.1
         Initial gap.
-    :param mixing: Real in (0, 1]. Default value 1 (plain iteration).
-    :param tol: Positive real. Default value 1e-8. Convergence threshold
+    mixing : Real in (0, 1]
+        Default value 1 (plain iteration).
+    tol : Positive real, default 1e-8
+        Convergence threshold
         on the largest change of :math:`\Delta_i`.
-    :param max_iter: Positive integer. Default value 10000.
+    max_iter : Positive integer, default 10000
 
-    :returns:
-        * **result** -- :class:`GapResult`.
+    Returns
+    -------
+    result : :class:`GapResult`
     '''
     h = ham.toarray() if hasattr(ham, 'toarray') else np.asarray(ham)
     error_handling.square_matrix(h, 'ham')

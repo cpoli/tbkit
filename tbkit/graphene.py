@@ -31,6 +31,8 @@ class GrapheneLattice(Lattice):
     *butterfly* and *betas* are empty here; *GrapheneSystem.get_butterfly*
     fills the ones of the system.
 
+    Examples
+    --------
     Example usage::
 
         from tbkit.graphene import GrapheneLattice, GrapheneSystem
@@ -53,7 +55,10 @@ class GrapheneLattice(Lattice):
         '''
         Triangular flake with zigzag terminations.
 
-        :param: n. Int. Number of plaquettes along the edges. 
+        Parameters
+        ----------
+        n : Int
+            Number of plaquettes along the edges.
         '''
         error_handling.positive_int(n, 'n')
         self.get_lattice(n1=n+2, n2=n+2)
@@ -63,7 +68,10 @@ class GrapheneLattice(Lattice):
         '''
         Hexagonal flake with zigzag terminations.
 
-        :param: n. Int. Number of plaquettes along the edges. 
+        Parameters
+        ----------
+        n : Int
+            Number of plaquettes along the edges.
         '''
         error_handling.positive_int(n, 'n')
         self.get_lattice(n1=2*n, n2=2*n)
@@ -74,7 +82,10 @@ class GrapheneLattice(Lattice):
         '''
         Triangular flake with armchair terminations.
 
-        :param: n. Int. Number of plaquettes along the edges. 
+        Parameters
+        ----------
+        n : Int
+            Number of plaquettes along the edges.
         '''
         error_handling.positive_int(n, 'n')
         self.get_lattice(n1=2*n, n2=2*n)
@@ -86,7 +97,10 @@ class GrapheneLattice(Lattice):
         '''
         Hexagonal flake with armchair terminations.
 
-        :param: n. Int. Number of plaquettes along each edge. 
+        Parameters
+        ----------
+        n : Int
+            Number of plaquettes along each edge.
         '''
         error_handling.positive_int(n, 'n')
         nn = 3 * n - 2
@@ -103,7 +117,10 @@ class GrapheneLattice(Lattice):
         '''
         Squared flake.
 
-        :param: n. Int. Number of plaquettes along x. 
+        Parameters
+        ----------
+        n : Int
+            Number of plaquettes along x.
         '''
         error_handling.positive_int(n, 'n')
         n2 = int(1.5*DX*n)
@@ -115,7 +132,10 @@ class GrapheneLattice(Lattice):
         '''
         Circular flake.
 
-        :param: n. Int. Number of plaquettes along the diameter. 
+        Parameters
+        ----------
+        n : Int
+            Number of plaquettes along the diameter.
         '''
         error_handling.positive_int(n, 'n')
         self.get_lattice(n1=2*n, n2=2*n)
@@ -136,8 +156,12 @@ class GrapheneSystem(System):
     positive (*get_beta_lims*), and the spectrum as a function of the strain
     (*get_butterfly*).
 
-    :param lat: Lattice, usually a :class:`GrapheneLattice` flake.
+    Parameters
+    ----------
+    lat : Lattice, usually a :class:`GrapheneLattice` flake
 
+    Examples
+    --------
     Example usage::
 
         from tbkit.graphene import GrapheneLattice, GrapheneSystem
@@ -170,12 +194,16 @@ class GrapheneSystem(System):
         its 'a' site (the same orientation for all three bond families), so
         that the strained hopping is :math:`t_{ij} = t(1 + \tfrac14\beta s_{ij})`.
 
-        :returns:
-            * **i**, **j** -- Integer ndarrays. Bond end points, oriented as in
-              *System.get_bonds*.
-            * **ang** -- Real ndarray. Bond angles (from *i* to *j*), in degrees,
-              in [0, 180).
-            * **s** -- Real ndarray. The projections above.
+        Returns
+        -------
+        i, j : Integer ndarrays
+            Bond end points, oriented as in
+            *System.get_bonds*.
+        ang : Real ndarray
+            Bond angles (from *i* to *j*), in degrees,
+            in [0, 180).
+        s : Real ndarray
+            The projections above.
         '''
         self.get_distances()
         i, j, ang = self.get_bonds(1)
@@ -201,8 +229,12 @@ class GrapheneSystem(System):
         coordinate origin, so centre the flake on it (see *lattice.center*)
         before calling this.
 
-        :param t: Hopping value without strain.
-        :param beta: Strength of the strain. See *get_beta_lims* for the
+        Parameters
+        ----------
+        t
+            Hopping value without strain.
+        beta
+            Strength of the strain. See *get_beta_lims* for the
             range that keeps every hopping positive.
         '''
         error_handling.number(t, 't')
@@ -223,8 +255,12 @@ class GrapheneSystem(System):
         *set_hop_linear_strain*), stored in *sys.butterfly*, shape
         (N, sites), with the strain values in *sys.betas*.
 
-        :param t: Unstrained hopping value.
-        :param N: Positive integer. Number of strain values between the
+        Parameters
+        ----------
+        t
+            Unstrained hopping value.
+        N : Positive integer
+            Number of strain values between the
             minimal and maximal strains given by *get_beta_lims*.
         '''
         error_handling.number(t, 't')
@@ -245,10 +281,11 @@ class GrapheneSystem(System):
         :math:`t(1+\tfrac14\beta s_{ij})`, so it stays positive for every bond
         iff :math:`-4/\max_{ij} s_{ij} < \beta < -4/\min_{ij} s_{ij}`.
 
-        :returns:
-            * **beta_lims** -- Real ndarray of length 2, ``[beta_min, beta_max]``
-              (ascending). A bound is infinite if the corresponding
-              :math:`s_{ij}` never takes that sign.
+        Returns
+        -------
+        beta_lims : Real ndarray of length 2, ``[beta_min, beta_max]`` (ascending)
+            A bound is infinite if the corresponding
+            :math:`s_{ij}` never takes that sign.
         '''
         _, _, _, s = self._strain_projection()
         eps = 1e-6

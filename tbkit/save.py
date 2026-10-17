@@ -16,11 +16,17 @@ class Save():
     Create folder and save figures / animations obtained via
     **plot** or **propagation**.
 
-    :param dir_name: String. Name of the sub-directory the figures are stored in.
-    :param dir_main: String. Default value None. Path of the main directory.
-      If None, figures are stored under ``'figs/'``.
-    :param params: Dictionary. Default value None. Parameters appended to file names.
-    :param file_format: Default value 'png'. Figure format.
+    Parameters
+    ----------
+    dir_name : String
+        Name of the sub-directory the figures are stored in.
+    dir_main : String, default None
+        Path of the main directory.
+        If None, figures are stored under ``'figs/'``.
+    params : Dictionary, default None
+        Parameters appended to file names.
+    file_format
+        Default value 'png'. Figure format.
     '''
     def __init__(
         self,
@@ -54,8 +60,10 @@ class Save():
         '''
         Create the file name.
 
-        :returns:
-            * **file_name** -- File name.
+        Returns
+        -------
+        file_name
+            File name.
         '''
         file_name = ''
         for key, val in self.params.items():
@@ -66,8 +74,11 @@ class Save():
         '''
         Save the figure in the directory *dir_name*.
 
-        :param fig: Matplotlib fig.
-        :param name:  String. First part of the file name.
+        Parameters
+        ----------
+        fig : Matplotlib fig
+        name : String
+            First part of the file name.
         '''
         error_handling.fig(fig)
         error_handling.string(name, 'name')
@@ -79,8 +90,11 @@ class Save():
         '''
         Save the figure in the directory *dir_name*.
 
-        :param fig: Matplotlib fig.
-        :param name:  String. First part of the file name.
+        Parameters
+        ----------
+        fig : Matplotlib fig
+        name : String
+            First part of the file name.
         '''
         error_handling.fig(fig)
         error_handling.string(name, 'name')
@@ -91,9 +105,13 @@ class Save():
         '''
         Save the animation, as MP4, in the directory *dir_name*.
 
-        :param ani: Matplotlib FuncAnimation.
-        :param name: String. First part of the file name.
-        :param fps: Positive integer. Default value 10. Frames per second.
+        Parameters
+        ----------
+        ani : Matplotlib FuncAnimation
+        name : String
+            First part of the file name.
+        fps : Positive integer, default 10
+            Frames per second.
         '''
         error_handling.ani(ani)
         error_handling.string(name, 'name')

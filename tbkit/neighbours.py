@@ -78,12 +78,18 @@ def neighbour_shells(lat: Lattice, n_max: int) -> NDArray[np.float64]:
     Get the distances of the first *n_max* neighbour shells of the infinite
     periodic lattice (the ``dist_uni[1:]`` of *System*, without its edges).
 
-    :param lat: **Lattice** instance. Only *unit_cell* and *prim_vec* are used.
-    :param n_max: Positive integer. Number of shells.
+    Parameters
+    ----------
+    lat : **Lattice** instance
+        Only *unit_cell* and *prim_vec* are used.
+    n_max : Positive integer
+        Number of shells.
 
-    :returns:
-        * **shells** -- Real ndarray, shape (n_max,). Distances, ascending
-          (rounded to 4 decimals, as in *System*).
+    Returns
+    -------
+    shells : Real ndarray, shape (n_max,)
+        Distances, ascending
+        (rounded to 4 decimals, as in *System*).
     '''
     error_handling.lat(lat)
     error_handling.positive_int(n_max, 'n_max')
@@ -136,15 +142,23 @@ def neighbour_bonds(lat: Lattice, n_max: int) -> NDArray:
     periodic lattice, once each, oriented so that its angle lies in
     :math:`[0, 180)` (see the module docstring).
 
-    :param lat: **Lattice** instance. Only *unit_cell* and *prim_vec* are used.
-    :param n_max: Positive integer. Number of shells.
+    Parameters
+    ----------
+    lat : **Lattice** instance
+        Only *unit_cell* and *prim_vec* are used.
+    n_max : Positive integer
+        Number of shells.
 
-    :returns:
-        * **bonds** -- Structured ndarray with fields 'n' (shell), 'i', 'j'
-          (orbitals), 'R' (lattice vector, *dim* integers), 'ang' (degrees,
-          in [0, 180)), 'tag' (``tag_i + tag_j``) and 'dis' (length),
-          sorted by (n, i, j, R).
+    Returns
+    -------
+    bonds
+        Structured ndarray with fields 'n' (shell), 'i', 'j'
+        (orbitals), 'R' (lattice vector, *dim* integers), 'ang' (degrees,
+        in [0, 180)), 'tag' (``tag_i + tag_j``) and 'dis' (length),
+        sorted by (n, i, j, R).
 
+    Examples
+    --------
     Example usage::
 
         bonds = neighbour_bonds(lattices.honeycomb(), 1)
@@ -186,8 +200,12 @@ def neighbour_hoppings(
     Turn hoppings given by neighbour order, as in *System.set_hopping*,
     into the explicit ``{'i', 'j', 'R', 't'}`` list of *KSpace.set_hopping*.
 
-    :param lat: **Lattice** instance. Only *unit_cell* and *prim_vec* are used.
-    :param list_hop: List of dictionaries with keys ('n', 't') and
+    Parameters
+    ----------
+    lat : **Lattice** instance
+        Only *unit_cell* and *prim_vec* are used.
+    list_hop
+        List of dictionaries with keys ('n', 't') and
         optionally 'ang' and/or 'tag' (see *System.set_hopping*):
 
         * 'n': Positive integer. Neighbour order (1 for nearest neighbours).
@@ -204,15 +222,20 @@ def neighbour_hoppings(
 
         When several dictionaries select the same bond, the last one wins,
         as in *System.set_hopping*.
-    :param spin: Boolean. Default value False. See *KSpace*.
-    :param hermitian: Boolean. Default value True. If True, each bond is
+    spin : Boolean, default False
+        See *KSpace*.
+    hermitian : Boolean, default True
+        If True, each bond is
         returned once, in its stored orientation (a hopping given along a
         negative angle becomes its conjugate transpose); if False, the two
         orientations are independent hoppings (non-reciprocal models).
 
-    :returns:
-        * **list_hop** -- List of dictionaries ('i', 'j', 'R', 't').
+    Returns
+    -------
+    list_hop : List of dictionaries ('i', 'j', 'R', 't')
 
+    Examples
+    --------
     Example usage::
 
         # graphene: nearest (t) and next-nearest (t2) neighbours

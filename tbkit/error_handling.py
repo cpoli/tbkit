@@ -14,7 +14,10 @@ def boolean(var, var_name):
     '''
     Check if *var* is a boolean.
 
-    :raises TypeError: Parameter *var* must be a bool.
+    Raises
+    ------
+    TypeError
+        Parameter *var* must be a bool.
     '''
     if not isinstance(var, bool):
         raise TypeError('\n\nParameter {} must be a bool.\n'.format(var_name))
@@ -24,8 +27,12 @@ def positive_int(var, var_name):
     '''
     Check if *var* is a positive integer.
 
-    :raises TypeError: Parameter *var* must be an integer.
-    :raises ValueError: Parameter *var* must be a positive integer.
+    Raises
+    ------
+    TypeError
+        Parameter *var* must be an integer.
+    ValueError
+        Parameter *var* must be a positive integer.
     '''
     if not isinstance(var, int):
         raise TypeError('\n\nParameter {} must be an integer.\n'.format(var_name))
@@ -37,10 +44,15 @@ def positive_int_lim(var, var_name, nmax):
     '''
     Check if *var* is a positive integer smaller than nmax.
 
-    :raises TypeError: Parameter *var* must be an integer.
-    :raises ValueError: Parameter *var* must be a positive integer.
-    :raises ValueError: Parameter *var* must be a positive integer
-      smaller than nmax.
+    Raises
+    ------
+    TypeError
+        Parameter *var* must be an integer.
+    ValueError
+        Parameter *var* must be a positive integer.
+    ValueError
+        Parameter *var* must be a positive integer
+        smaller than nmax.
     '''
     if not isinstance(var, int):
         raise TypeError('\n\nParameter {} must be an integer.\n'.format(var_name))
@@ -55,7 +67,10 @@ def real_number(var, var_name):
     '''
     Check if parameter *var* is a real number.
 
-    :raises TypeError: Parameter *var* must be a real number.
+    Raises
+    ------
+    TypeError
+        Parameter *var* must be a real number.
     '''         
     if not isinstance(var, (int, float)):
         raise TypeError('\n\nParameter {} must be a real number.\n'.format(var_name))
@@ -65,8 +80,12 @@ def positive_real(var, var_name):
     '''
     Check if parameter *var* is a positive number.
 
-    :raises TypeError: Parameter *var* must be a real number.
-    :raises ValueError: Parameter *var* must be a positive number.
+    Raises
+    ------
+    TypeError
+        Parameter *var* must be a real number.
+    ValueError
+        Parameter *var* must be a positive number.
     '''         
     if not isinstance(var, (int, float)):
         raise TypeError('\n\nParameter {} must be a real number.\n'.format(var_name))
@@ -78,8 +97,12 @@ def positive_real_zero(var, var_name):
     '''
     Check if parameter *var* is a positive number or zero.
 
-    :raises TypeError: Parameter *var* must be a real number.
-    :raises ValueError: Parameter *var* must be a positive number or zero.
+    Raises
+    ------
+    TypeError
+        Parameter *var* must be a real number.
+    ValueError
+        Parameter *var* must be a positive number or zero.
     '''         
     if not isinstance(var, (int, float)):
         raise TypeError('\n\nParameter {} must be a real number.\n'.format(var_name))
@@ -91,9 +114,12 @@ def negative_real(var, var_name):
     '''
     Check if parameter *var* is a negative number.
 
-    :raises TypeError: Parameter *var* must be a real number.
-    :raises ValueError: Parameter *var* must be a negative number.
-
+    Raises
+    ------
+    TypeError
+        Parameter *var* must be a real number.
+    ValueError
+        Parameter *var* must be a negative number.
     '''         
     if not isinstance(var, (int, float)):
         raise TypeError('\n\nParameter {} must be a real number.\n'.format(var_name))
@@ -105,7 +131,10 @@ def number(var, var_name):
     '''
     Check if parameter *var* is a number.
 
-    :raises TypeError: Parameter *var* must be a real or complex number.
+    Raises
+    ------
+    TypeError
+        Parameter *var* must be a real or complex number.
     '''
     if not isinstance(var, (int, float, complex)):
         raise TypeError('\n\nParameter {} must be a real or complex number.\n'.format(var_name))
@@ -116,7 +145,10 @@ def value_params(required, params, func):
     Check that *params* holds every parameter that the value function *func*
     needs (see *tbkit.values*).
 
-    :raises TypeError: The value function needs parameters missing from get_ham.
+    Raises
+    ------
+    TypeError
+        The value function needs parameters missing from get_ham.
     '''
     missing = [name for name in required if name not in params]
     if missing:
@@ -131,7 +163,10 @@ def value_shape(val, size, spin, func):
     bonds or sites: a number or one per entry (or, if *spin*, also a 2x2
     matrix or one per entry).
 
-    :raises ValueError: The value function must return a number or an array of one value per bond/site.
+    Raises
+    ------
+    ValueError
+        The value function must return a number or an array of one value per bond/site.
     '''
     shapes = [(), (size,)] + ([(2, 2), (size, 2, 2)] if spin else [])
     if val.shape not in shapes:
@@ -147,7 +182,10 @@ def no_value_functions(model, method):
     Check that *model* has no value functions (callable hoppings or onsite
     energies), which *method* cannot represent.
 
-    :raises ValueError: method does not support value functions.
+    Raises
+    ------
+    ValueError
+        method does not support value functions.
     '''
     if getattr(model, '_hop_values', None) or getattr(model, '_onsite_values', None):
         raise ValueError('\n\n{} does not support value functions (callable hoppings or '
@@ -158,7 +196,10 @@ def is_callable(var, var_name):
     '''
     Check if parameter *var* is callable.
 
-    :raises TypeError: Parameter *var* must be callable.
+    Raises
+    ------
+    TypeError
+        Parameter *var* must be callable.
     '''
     if not callable(var):
         raise TypeError('\n\nParameter {} must be callable.\n'.format(var_name))
@@ -168,7 +209,10 @@ def larger(var1, var_name1, var2, var_name2):
     '''
     Check if *var1* larger than *val*.
 
-    :raises ValueError: Parameter *var1* larger than *var2*.
+    Raises
+    ------
+    ValueError
+        Parameter *var1* larger than *var2*.
     '''         
     if var1 >= var2:
         raise ValueError('\n\n{} must be larger than {}.\n'
@@ -179,7 +223,10 @@ def smaller(var1, var_name1, var2, var_name2):
     '''
     Check if *var1* smaller than *var2*.
 
-    :raises ValueError: Parameter *var1* must be smaller than *var2*.
+    Raises
+    ------
+    ValueError
+        Parameter *var1* must be smaller than *var2*.
     '''         
     if var1 >= var2:
         raise ValueError('\n\n{} must be smaller than {}.\n'
@@ -190,7 +237,10 @@ def string(var, var_name):
     '''
     Check if parameter *var* is a string.
 
-    :raises TypeError: Parameter *var* must be a string.
+    Raises
+    ------
+    TypeError
+        Parameter *var* must be a string.
     '''
     if var is None:
         return
@@ -202,8 +252,12 @@ def ndarray(var, var_name, length):
     '''
     Check if parameter *var* is a numpy array.
 
-    :raises TypeError: Parameter *var* must be a numpy ndarray.
-    :raises ValueError: length array must be equal to length.
+    Raises
+    ------
+    TypeError
+        Parameter *var* must be a numpy ndarray.
+    ValueError
+        length array must be equal to length.
     '''
     if not isinstance(var, np.ndarray):
         raise TypeError('\n\nParameter {} must be a numpy ndarray.\n'.format(var_name))
@@ -216,7 +270,10 @@ def ndarray_null(var, var_name):
     '''
     Check if parameter *var* is not a null numpy array.
 
-    :raises ValueError: Parameter *var* must not be a null numpy ndarray.
+    Raises
+    ------
+    ValueError
+        Parameter *var* must not be a null numpy ndarray.
     '''
     array_null = np.zeros(len(var))
     if np.allclose(var, array_null):
@@ -227,7 +284,10 @@ def ndarray_empty(var, var_name):
     '''
     Check if parameter *var* is not an empty numpy array.
 
-    :raises ValueError: Parameter *var* must not be an emptynumpy ndarray.
+    Raises
+    ------
+    ValueError
+        Parameter *var* must not be an emptynumpy ndarray.
     '''
     if var.size == 0:
         raise ValueError('\n\nParameter {} must not be an empty numpy ndarray.\n'.format(var_name))
@@ -237,8 +297,12 @@ def list_tuple_2elem(var, var_name):
     '''
     Check if parameter *var* is a list/tuple with 2 elements.
 
-    :raises TypeError: Parameter *var* must be a list/tuple.
-    :raises ValueError: Parameter *var* must contain 2 elements.
+    Raises
+    ------
+    TypeError
+        Parameter *var* must be a list/tuple.
+    ValueError
+        Parameter *var* must contain 2 elements.
     '''
     if var is None:
         return
@@ -252,8 +316,12 @@ def tuple_2elem(var, var_name):
     '''
     Check if parameter *var* is a tuple with 2 elements.
 
-    :raises TypeError: Parameter *var* must be a tuple.
-    :raises ValueError: Parameter *var* must contain 2 elements.
+    Raises
+    ------
+    TypeError
+        Parameter *var* must be a tuple.
+    ValueError
+        Parameter *var* must contain 2 elements.
     '''
     if var is None:
         return
@@ -271,7 +339,11 @@ def tuple_2elem(var, var_name):
 def lat(lat):
     '''
     Check if parameter is an instance of the *lattice*.
-    :raises TypeError: Parameter must be an instance of the class lattice.
+
+    Raises
+    ------
+    TypeError
+        Parameter must be an instance of the class lattice.
     '''
     names = inspect.getmro(lat.__class__)
     if str(names).find('lattice') == -1:
@@ -282,15 +354,26 @@ def unit_cell(unit_cell):
     '''
     Check parameter *unit_cell*.
 
-    :raises TypeError: Parameter unit_cell must be a list.
-    :raises KeyError: Dictionaries must contain the key "tag".
-    :raises KeyError: Dictionaries must contain the key "r0".
-    :raises TypeError: Key "tags" must contain a one-character string.
-    :raises ValueError: Key "tags" must contain a one-character string.
-    :raises ValueError: Key "r0" must contain be a list.
-    :raises TypeError: Key "r0" must contain be a tuple.
-    :raises ValueError: Key "r0" must contain a tuple of length two.
-    :raises ValueError: Key "r0" must contain a tuple of two real numbers.
+    Raises
+    ------
+    TypeError
+        Parameter unit_cell must be a list.
+    KeyError
+        Dictionaries must contain the key "tag".
+    KeyError
+        Dictionaries must contain the key "r0".
+    TypeError
+        Key "tags" must contain a one-character string.
+    ValueError
+        Key "tags" must contain a one-character string.
+    ValueError
+        Key "r0" must contain be a list.
+    TypeError
+        Key "r0" must contain be a tuple.
+    ValueError
+        Key "r0" must contain a tuple of length two.
+    ValueError
+        Key "r0" must contain a tuple of two real numbers.
     '''
     if not isinstance(unit_cell, list):
         raise TypeError('\n\nParameter unit_cell must be a list.\n')
@@ -318,14 +401,23 @@ def prim_vec(prim_vec):
     '''
     Check parameter *prim_vec*.
 
-    :raises TypeError: Parameter prim_vec must be a list.
-    :raises ValueError: Parameter prim_vec must be a list
-      of length 1 for 1D lattices or length 2 fro 2D lattices.
-    :raises TypeError: List elements must be tuples.
-    :raises ValueError: List elements must be 1 or 2 tuples.
-    :raises ValueError: Tuples must be of length 2.
-    :raises ValueError: Tuples must containt real numbers.
-    :raises ValueError: Norm of coor should be larger than 0.1.
+    Raises
+    ------
+    TypeError
+        Parameter prim_vec must be a list.
+    ValueError
+        Parameter prim_vec must be a list
+        of length 1 for 1D lattices or length 2 fro 2D lattices.
+    TypeError
+        List elements must be tuples.
+    ValueError
+        List elements must be 1 or 2 tuples.
+    ValueError
+        Tuples must be of length 2.
+    ValueError
+        Tuples must containt real numbers.
+    ValueError
+        Norm of coor should be larger than 0.1.
     '''
     if not isinstance(prim_vec, list):
         raise TypeError('\n\nParameter prim_vec must be a list.\n')
@@ -356,7 +448,10 @@ def independent(prim_vec):
     Check that the primitive vectors are linearly independent (needed for
     the reciprocal lattice).
 
-    :raises ValueError: The primitive vectors must be linearly independent.
+    Raises
+    ------
+    ValueError
+        The primitive vectors must be linearly independent.
     '''
     if np.linalg.matrix_rank(np.array(prim_vec, dtype='f8'), tol=1e-8) != len(prim_vec):
         raise ValueError('\n\nThe primitive vectors must be linearly independent.\n')
@@ -367,7 +462,10 @@ def space_dim(unit_cell, prim_vec):
     Check that the unit cell positions and the primitive vectors live in the
     same space (2D or 3D).
 
-    :raises ValueError: "r0" and prim_vec tuples must have the same length.
+    Raises
+    ------
+    ValueError
+        "r0" and prim_vec tuples must have the same length.
     '''
     if unit_cell and len(unit_cell[0]['r0']) != len(prim_vec[0]):
         raise ValueError('\n\nThe "r0" positions and the primitive vectors must have '
@@ -378,9 +476,14 @@ def get_lattice(prim_vec, n1, n2, n3=1):
     '''
     Check method *get_lattice*.
 
-    :raises TypeError: Parameters n1, n2, n3 must be integers.
-    :raises ValueError: Parameters n1, n2, n3 must be positive integers.
-    :raises ValueError: n2 (n3) must be 1 with fewer than 2 (3) primitive vectors.
+    Raises
+    ------
+    TypeError
+        Parameters n1, n2, n3 must be integers.
+    ValueError
+        Parameters n1, n2, n3 must be positive integers.
+    ValueError
+        n2 (n3) must be 1 with fewer than 2 (3) primitive vectors.
     '''
     positive_int(n1, 'n1')
     positive_int(n2, 'n2')
@@ -413,7 +516,11 @@ def coor(coor, dtype=None):
 def coor_1d(coor):
     '''
     Check if *coor* is 1d (coor['y'] = cst).
-    :raises ValueError: *coor* must be 1d( coor['y'] = cst)..
+
+    Raises
+    ------
+    ValueError
+        *coor* must be 1d( coor['y'] = cst)..
     '''
     if not np.allclose(coor['y'][0], coor['y']):
         raise ValueError('\n\ncoor["y"] must be constant.\n')
@@ -423,10 +530,15 @@ def remove_sites(index, sites):
     '''
     Check method *remove_sites*.
 
-    :raises TypeError: Parameter index must be a list.
-    :raises ValueError: Parameter index must be a list of integers.
-    :raises ValueError: Indices must be between 0 and sites -1.
-      of integers between 0 and sites
+    Raises
+    ------
+    TypeError
+        Parameter index must be a list.
+    ValueError
+        Parameter index must be a list of integers.
+    ValueError
+        Indices must be between 0 and sites -1.
+        of integers between 0 and sites
     '''
     if not isinstance(index, list):
         raise TypeError('\n\nParameter index must be a list.\n')
@@ -439,7 +551,11 @@ def remove_sites(index, sites):
 def shift(shift):
     '''
     Check *shift_x* and *shift_y*.
-    :raises TypeError: Parameter delta must be a real number.
+
+    Raises
+    ------
+    TypeError
+        Parameter delta must be a real number.
     '''
     if not isinstance(shift, (int, float)):
         raise TypeError('\n\nParameter shift must be a real number.\n')
@@ -448,9 +564,15 @@ def shift(shift):
 def boundary_line(cx, cy, co):
     '''
     Check *boundary_line*.
-    :raises TypeError: Parameter cx must be a real number.
-    :raises TypeError: Parameter cy must be a real number.
-    :raises TypeError: Parameter co must be a real number.
+
+    Raises
+    ------
+    TypeError
+        Parameter cx must be a real number.
+    TypeError
+        Parameter cy must be a real number.
+    TypeError
+        Parameter co must be a real number.
     '''
     if not isinstance(cx, (int, float)):
         raise TypeError('\n\nParameter cx must be a real number.\n')
@@ -464,7 +586,10 @@ def space_3d(space_dim):
     '''
     Check that the lattice lives in 3D space.
 
-    :raises ValueError: This method requires a lattice in 3D space.
+    Raises
+    ------
+    ValueError
+        This method requires a lattice in 3D space.
     '''
     if space_dim != 3:
         raise ValueError('\n\nThis method requires a lattice in 3D space '
@@ -474,7 +599,11 @@ def space_3d(space_dim):
 def sites(sites):
     '''
     Check if *get_lattice* has been called (*coor* not empty).
-    :raises RuntimeError: Run method lat.get_lattice first.
+
+    Raises
+    ------
+    RuntimeError
+        Run method lat.get_lattice first.
     '''
     if sites == 0:
         raise RuntimeError('\n\nRun method lat.get_lattice first.\n')
@@ -488,7 +617,11 @@ def sites(sites):
 def sys(sys):
     '''
     Check if parameter is an instance of the *system*.
-    :raises TypeError: Parameter must be an instance of the class system.
+
+    Raises
+    ------
+    TypeError
+        Parameter must be an instance of the class system.
     '''
     names = inspect.getmro(sys.__class__)
     if str(names).find('system') == -1:
@@ -499,9 +632,13 @@ def print_hopping(n, nmax):
     '''
     Check method *print_vec_hopping*.
 
-    :raises TypeError: Parameter *nmax* must be an integer.
-    :raises ValueError: Parameter *nmax* must be a positive integer.
-      between 1 and n_max-1.
+    Raises
+    ------
+    TypeError
+        Parameter *nmax* must be an integer.
+    ValueError
+        Parameter *nmax* must be a positive integer.
+        between 1 and n_max-1.
     '''
     if not isinstance(n, int):
         raise TypeError('\n\nParameter n_max must be an integer.\n')
@@ -514,10 +651,15 @@ def set_onsite(onsite, tags):
     '''
     Check method *set_onsite*.
 
-    :raises TypeError: Parameter onsite must be a dictionary.
-    :raises ValueError: Parameter onsite keys must be a tag.
-    :raises ValueError: Parameter onsite values must be
-      real and/or complex numbers, or value functions.
+    Raises
+    ------
+    TypeError
+        Parameter onsite must be a dictionary.
+    ValueError
+        Parameter onsite keys must be a tag.
+    ValueError
+        Parameter onsite values must be
+        real and/or complex numbers, or value functions.
     '''
     if not isinstance(onsite, dict):
         raise TypeError('\n\nParameter onsite must be a dictionary.\n')
@@ -533,14 +675,22 @@ def set_hopping(list_hop, n_max):
     '''
     Check method *set_hopping*.
 
-    :raises TypeError: Parameter *list_hop* must be a list.
-    :raises TypeError: Parameter *list_hop* must be a list of dictionary.
-    :raises KeyError: "n" and "t" must be dictionary keys.
-    :raises KeyError: "tag" or "ang" must be a key.
-    :raises KeyError: "tag" and "ang" must be keys.
-    :raises ValueError: Dictionaries must be of length 2, 3, or 4.
-    :raises ValueError: "n" must be between 1 and nmax"
-
+    Raises
+    ------
+    TypeError
+        Parameter *list_hop* must be a list.
+    TypeError
+        Parameter *list_hop* must be a list of dictionary.
+    KeyError
+        "n" and "t" must be dictionary keys.
+    KeyError
+        "tag" or "ang" must be a key.
+    KeyError
+        "tag" and "ang" must be keys.
+    ValueError
+        Dictionaries must be of length 2, 3, or 4.
+    ValueError
+        "n" must be between 1 and nmax"
     '''
     if not isinstance(list_hop, list):
         raise TypeError('\n\nParameter *list_hop* must be a list.\n')
@@ -589,13 +739,22 @@ def set_hopping_def(hop, hopping_def, sites, var_name='hopping_def', same_site=F
     Python or NumPy integers, values Python or NumPy numbers. If *same_site*
     is True, keys :math:`(i, i)` are accepted.
 
-    :raises TypeError: Parameter *hopping_def* must be a dictionary
-    :raises TypeError: *hopping_def* keys must be tuples.
-    :raises TypeError: *hopping_def* keys must be tuples of length 2.
-    :raises ValueError: *hopping_def* keys must be tuples of integers.
-    :raises ValueError: *hopping_def* keys must be integers between 0 and sites-1.
-    :raises ValueError: *hopping_def* keys must be different integers between 0 and sites-1.
-    :raises TypeError: *hopping_def* values must be numbers.
+    Raises
+    ------
+    TypeError
+        Parameter *hopping_def* must be a dictionary
+    TypeError
+        *hopping_def* keys must be tuples.
+    TypeError
+        *hopping_def* keys must be tuples of length 2.
+    ValueError
+        *hopping_def* keys must be tuples of integers.
+    ValueError
+        *hopping_def* keys must be integers between 0 and sites-1.
+    ValueError
+        *hopping_def* keys must be different integers between 0 and sites-1.
+    TypeError
+        *hopping_def* values must be numbers.
     '''
     if not isinstance(hopping_def, dict):
         raise TypeError('\n\nParameter {} must be a dictionary.\n'.format(var_name))
@@ -618,10 +777,16 @@ def set_onsite_def(onsite_def, sites):
     '''
     Check method *set_ons_def*.
 
-    :raises TypeError: Parameter *onsite_def* must be a dictionary.
-    :raises TypeError: *onsite_def* keys must be integers.
-    :raises TypeError: *onsite_def* values must be numbers.
-    :raises ValueError: *onsite_def* keys must be integers between :math:`[0, sites)`.
+    Raises
+    ------
+    TypeError
+        Parameter *onsite_def* must be a dictionary.
+    TypeError
+        *onsite_def* keys must be integers.
+    TypeError
+        *onsite_def* values must be numbers.
+    ValueError
+        *onsite_def* keys must be integers between :math:`[0, sites)`.
     '''
     if not isinstance(onsite_def, dict):
         raise TypeError('\n\nParameter onsite_def must be a dictionary.\n')
@@ -638,7 +803,10 @@ def hop_n1(hop):
     '''
     Check method if self.hop contains nearest neighbours hoppings.
 
-    :raises ValueError: self.hop must contain nearest neighbours hoppings.
+    Raises
+    ------
+    ValueError
+        self.hop must contain nearest neighbours hoppings.
     '''
     if not np.any(hop['n'] == 1):
         raise ValueError('\n\nParameter hop must contain nearest neighbours hoppings.\n')
@@ -648,7 +816,10 @@ def empty_onsite(onsite):
     '''
     Check if *onsite* not empty.
 
-    :raises RuntimeError: Run method set_onsite first.
+    Raises
+    ------
+    RuntimeError
+        Run method set_onsite first.
     '''
     if onsite.size == 0:
         raise RuntimeError('\n\nRun method set_onsite first\n')
@@ -658,7 +829,10 @@ def empty_hop(hop):
     '''
     Check if *hop* not empty.
 
-    :raises RuntimeError: Run method set_hopping first.
+    Raises
+    ------
+    RuntimeError
+        Run method set_hopping first.
     '''
     if hop.size == 0:
         raise RuntimeError('\n\nRun method set_hopping first\n')
@@ -668,7 +842,10 @@ def hop_sites(hop, sites):
     '''
     Check if *hop* indices are smaller than *sites*.
 
-    :raises ValueError: Run method sys.clear_hopping and redefine the hoppings.
+    Raises
+    ------
+    ValueError
+        Run method sys.clear_hopping and redefine the hoppings.
     '''
     ind_max = max(np.max(hop[f]) for f in ('i', 'j') if f in hop.dtype.names)
     if ind_max >= sites:
@@ -681,7 +858,10 @@ def empty_coor(coor):
     '''
     Check if *coor* not empty.
 
-    :raises RuntimeError: Run method lattice.get_lattice first.
+    Raises
+    ------
+    RuntimeError
+        Run method lattice.get_lattice first.
     '''
     if coor.size == 0:
         raise RuntimeError('\n\nRun method lattice.get_lattice first.\n')
@@ -691,7 +871,10 @@ def empty_coor_hop(coor_hop):
     '''
     Check if *coor_hop* not empty.
 
-    :raises RuntimeError: Run method system.get_coor_hop first.
+    Raises
+    ------
+    RuntimeError
+        Run method system.get_coor_hop first.
     '''
     if coor_hop.size == 0:
         raise RuntimeError('\n\nRun method system.get_coor_hop first.\n')
@@ -701,7 +884,10 @@ def empty_ham(ham):
     '''
     Check if Hamiltonian not empty.
 
-    :raises RuntimeError: Run method system.get_ham first.
+    Raises
+    ------
+    RuntimeError
+        Run method system.get_ham first.
     '''
     if not ham.nnz:
         raise RuntimeError('\n\nRun method system.get_ham first.\n')
@@ -711,7 +897,10 @@ def empty_en(en):
     '''
     Check if *en* not empty.
 
-    :raises RuntimeError: Run method get_ham first.
+    Raises
+    ------
+    RuntimeError
+        Run method get_ham first.
     '''
     if en.size == 0:
         raise RuntimeError('\n\nRun method get_eig first\n')
@@ -721,7 +910,10 @@ def empty_pola(pola):
     '''
     Check if *pola* not empty.
 
-    :raises RuntimeError: Run method get_eig(eigenvec=True) first.
+    Raises
+    ------
+    RuntimeError
+        Run method get_eig(eigenvec=True) first.
     '''
     if pola.size == 0:
         raise RuntimeError('\n\nRun method get_eig(eigenvec=True) first\n')
@@ -731,7 +923,10 @@ def empty_vn(vn):
     '''
     Check if *vn* not empty.
 
-    :raises RuntimeError: Run method get_eig(eigenvec=True) first.
+    Raises
+    ------
+    RuntimeError
+        Run method get_eig(eigenvec=True) first.
     '''
     if vn.size == 0:
         raise RuntimeError('\n\nRun method get_eig(eigenvec=True) first\n')
@@ -757,8 +952,12 @@ def tag(tag, tags):
     '''
     Check tag.
 
-    :raises TypeError: Parameter *tag* must be a string.
-    :raises ValueError: Parameter *tag* is not in tags.
+    Raises
+    ------
+    TypeError
+        Parameter *tag* must be a string.
+    ValueError
+        Parameter *tag* is not in tags.
     '''
     if not isinstance(tag, str):
         raise TypeError('\n\nParameter tag must be a one-character string.\n')
@@ -770,11 +969,15 @@ def angle(angle, angles, upper_part):
     '''
     Check angle.
 
-    :raises TypeError: Parameter *angle* must be
+    Raises
+    ------
+    TypeError
+        Parameter *angle* must be
 
         * a positive number if *upper_part* is True
         * a negative real if *upper_part* is False.
-    :raises ValueError: Parameter *angle* is not in hop['ang'].
+    ValueError
+        Parameter *angle* is not in hop['ang'].
     '''
     if upper_part:
         positive_real_zero(angle, 'angle, if upper_part=True,')
@@ -789,11 +992,18 @@ def lims(lims):
     '''
     Check parameter *lims*.
 
-    :raises TypeError: Parameter lims must be a list.
-    :raises TypeError: Parameter *lims[0]* must be a real number.
-    :raises TypeError: Parameter *lims[1]* must be a real number.
-    :raises ValueError: *lims* must be a list of length 2.
-    :raises ValueError: *lims[0]* must be smaller than *lims[1]*.
+    Raises
+    ------
+    TypeError
+        Parameter lims must be a list.
+    TypeError
+        Parameter *lims[0]* must be a real number.
+    TypeError
+        Parameter *lims[1]* must be a real number.
+    ValueError
+        *lims* must be a list of length 2.
+    ValueError
+        *lims[0]* must be smaller than *lims[1]*.
     '''
     if lims is not None:
         list_tuple_2elem(lims, 'lims')
@@ -806,11 +1016,18 @@ def lims_positive(lims):
     '''
     Check parameter *lims*.
 
-    :raises TypeError: Parameter lims must be a list.
-    :raises TypeError: Parameter *lims[0]* must be a positive real number.
-    :raises TypeError: Parameter *lims[1]* must be a positive real number.
-    :raises ValueError: *lims* must be a list of length 2.
-    :raises ValueError: *lims[0]* must be smaller than *lims[1]*.
+    Raises
+    ------
+    TypeError
+        Parameter lims must be a list.
+    TypeError
+        Parameter *lims[0]* must be a positive real number.
+    TypeError
+        Parameter *lims[1]* must be a positive real number.
+    ValueError
+        *lims* must be a list of length 2.
+    ValueError
+        *lims[0]* must be smaller than *lims[1]*.
     '''
     if lims is not None:
         list_tuple_2elem(lims, 'lims')
@@ -828,7 +1045,10 @@ def fig(fig):
     '''
     Check if fig is an instance of *Figure*.
 
-    :raises TypeError: fig must be an instance of *Figure*.
+    Raises
+    ------
+    TypeError
+        fig must be an instance of *Figure*.
     '''
     if not fig.__class__.__name__ == 'Figure':
         raise TypeError('\n\nfig must be an instance of *Figure*.\n')
@@ -838,7 +1058,10 @@ def ani(ani):
     '''
     Check if ani is an instance of *FuncAnimation*.
 
-    :raises TypeError: ani must be an instance of *FuncAnimation*.
+    Raises
+    ------
+    TypeError
+        ani must be an instance of *FuncAnimation*.
     '''
     if not ani.__class__.__name__ == 'FuncAnimation':
         raise TypeError('\n\nani must be an instance of *FuncAnimation*.\n')
@@ -848,9 +1071,12 @@ def file_format(file_format):
     '''
     Check if file_format is a string 'png', 'pdf', 'ps', 'eps', or 'svg'.
 
-    :raises TypeError: file_format must be a string.
-    :raises ValueError: file_format must be a string given by 'png', 'pdf', 'ps', 'eps', or 'svg'.
-
+    Raises
+    ------
+    TypeError
+        file_format must be a string.
+    ValueError
+        file_format must be a string given by 'png', 'pdf', 'ps', 'eps', or 'svg'.
     '''
     if not isinstance(file_format, str):
         raise TypeError('\n\nfile_format must be a string.\n')
@@ -868,8 +1094,12 @@ def get_pump(hams):
     '''
     Check method *propagation.get_pumping*.
 
-    :raises TypeError: hams must be a non-empty list.
-    :raises RuntimeError: Run method system.get_ham first.
+    Raises
+    ------
+    TypeError
+        hams must be a non-empty list.
+    RuntimeError
+        Run method system.get_ham first.
     '''
     if not isinstance(hams, list) or not hams:
         raise TypeError('\n\nhams must be a non-empty list.\n')
@@ -892,9 +1122,14 @@ def k_vector(vec, var_name, ndim):
     '''
     Check that *vec* is a tuple/list of *ndim* real numbers.
 
-    :raises TypeError: Parameter *var_name* must be a tuple/list.
-    :raises ValueError: Parameter *var_name* must be of length *ndim*.
-    :raises TypeError: Parameter *var_name* must contain real numbers.
+    Raises
+    ------
+    TypeError
+        Parameter *var_name* must be a tuple/list.
+    ValueError
+        Parameter *var_name* must be of length *ndim*.
+    TypeError
+        Parameter *var_name* must contain real numbers.
     '''
     if not isinstance(vec, (tuple, list, np.ndarray)):
         raise TypeError('\n\nParameter {} must be a tuple, list, or ndarray.\n'.format(var_name))
@@ -910,7 +1145,10 @@ def ks(ks, ndim):
     Check the k-points passed to *kspace.get_bands*: a 2D array of shape
     (nk, *ndim*).
 
-    :raises ValueError: Parameter ks must be of shape (nk, ndim).
+    Raises
+    ------
+    ValueError
+        Parameter ks must be of shape (nk, ndim).
     '''
     if ks.ndim != 2 or ks.shape[1] != ndim:
         raise ValueError('\n\nParameter ks must be an array of shape (nk, {}).\n'.format(ndim))
@@ -921,7 +1159,10 @@ def spin_matrix(t, var_name):
     Check a spinful "t" or onsite value: either a plain number, or a 2x2
     complex matrix.
 
-    :raises TypeError: Parameter *var_name* must be a number or a 2x2 matrix.
+    Raises
+    ------
+    TypeError
+        Parameter *var_name* must be a number or a 2x2 matrix.
     '''
     if isinstance(t, (int, float, complex)):
         return
@@ -935,12 +1176,19 @@ def set_hopping_kspace(list_hop, n_sites, ndim, spin=False, values=False):
     Check method *kspace.set_hopping*. With *values*, "t" may also be a
     value function (a callable).
 
-    :raises TypeError: Parameter *list_hop* must be a list of dictionaries.
-    :raises KeyError: "i", "j", "R", and "t" must be dictionary keys.
-    :raises ValueError: "i" and "j" must be site indices between 0 and n_sites-1.
-    :raises ValueError: "R" must be a tuple of *ndim* integers.
-    :raises TypeError: "t" must be a real or complex number (or, if *spin*,
-      a 2x2 matrix).
+    Raises
+    ------
+    TypeError
+        Parameter *list_hop* must be a list of dictionaries.
+    KeyError
+        "i", "j", "R", and "t" must be dictionary keys.
+    ValueError
+        "i" and "j" must be site indices between 0 and n_sites-1.
+    ValueError
+        "R" must be a tuple of *ndim* integers.
+    TypeError
+        "t" must be a real or complex number (or, if *spin*,
+        a 2x2 matrix).
     '''
     if not isinstance(list_hop, list):
         raise TypeError('\n\nParameter list_hop must be a list.\n')
@@ -972,10 +1220,15 @@ def set_onsite_kspace(dict_onsite, tags, spin=False):
     '''
     Check method *kspace.set_onsite*.
 
-    :raises TypeError: Parameter *dict_onsite* must be a dictionary.
-    :raises ValueError: keys must be tags.
-    :raises TypeError: values must be real or complex numbers (or, if
-      *spin*, a pair of real/complex numbers, or a 2x2 matrix).
+    Raises
+    ------
+    TypeError
+        Parameter *dict_onsite* must be a dictionary.
+    ValueError
+        keys must be tags.
+    TypeError
+        values must be real or complex numbers (or, if
+        *spin*, a pair of real/complex numbers, or a 2x2 matrix).
     '''
     if not isinstance(dict_onsite, dict):
         raise TypeError('\n\nParameter dict_onsite must be a dictionary.\n')
@@ -998,8 +1251,12 @@ def k_path_points(points, ndim):
     '''
     Check parameter *points* used by *kspace.k_path*.
 
-    :raises TypeError: Parameter points must be a list.
-    :raises ValueError: Parameter points must contain at least two k-points.
+    Raises
+    ------
+    TypeError
+        Parameter points must be a list.
+    ValueError
+        Parameter points must contain at least two k-points.
     '''
     if not isinstance(points, list):
         raise TypeError('\n\nParameter points must be a list of k-points.\n')
@@ -1018,8 +1275,12 @@ def dos_kernel(kernel):
     '''
     Check parameter *kernel* used by *dos.density_of_states*.
 
-    :raises TypeError: Parameter kernel must be a string.
-    :raises ValueError: Parameter kernel must be "gaussian" or "lorentzian".
+    Raises
+    ------
+    TypeError
+        Parameter kernel must be a string.
+    ValueError
+        Parameter kernel must be "gaussian" or "lorentzian".
     '''
     string(kernel, 'kernel')
     if kernel not in ['gaussian', 'lorentzian']:
@@ -1031,8 +1292,12 @@ def kspace_dos_kernel(kernel):
     '''
     Check parameter *kernel* used by *kspace.plot_dos*.
 
-    :raises TypeError: Parameter kernel must be a string.
-    :raises ValueError: Parameter kernel must be "gaussian", "lorentzian" or "tetrahedron".
+    Raises
+    ------
+    TypeError
+        Parameter kernel must be a string.
+    ValueError
+        Parameter kernel must be "gaussian", "lorentzian" or "tetrahedron".
     '''
     string(kernel, 'kernel')
     if kernel not in ['gaussian', 'lorentzian', 'tetrahedron']:
@@ -1045,7 +1310,10 @@ def mesh_energies(energies):
     Check parameter *energies* used by *dos.tetrahedron_dos*: a non-empty
     array of bands on a mesh of 1, 2 or 3 dimensions.
 
-    :raises ValueError: Parameter energies must be of shape (n1, ..., nbands), on a mesh of 1 to 3 dimensions.
+    Raises
+    ------
+    ValueError
+        Parameter energies must be of shape (n1, ..., nbands), on a mesh of 1 to 3 dimensions.
     '''
     energies = np.asarray(energies)
     if energies.ndim not in (2, 3, 4) or energies.size == 0:
@@ -1057,7 +1325,10 @@ def increasing_grid(grid, var_name):
     '''
     Check that *grid* is a 1D real array of at least two increasing values.
 
-    :raises ValueError: Parameter *var_name* must be a 1D array of at least two increasing real values.
+    Raises
+    ------
+    ValueError
+        Parameter *var_name* must be a 1D array of at least two increasing real values.
     '''
     grid = np.asarray(grid)
     if grid.ndim != 1 or len(grid) < 2 or np.iscomplexobj(grid) or np.any(np.diff(grid) <= 0):
@@ -1069,10 +1340,15 @@ def nk(nk, ndim):
     '''
     Check parameter *nk* used by *kspace.mesh_bands* / *kspace.berry_curvature*.
 
-    :raises TypeError: Parameter nk must be an integer or a tuple of integers.
-    :raises ValueError: Parameter nk (or each of its elements) must be a
+    Raises
+    ------
+    TypeError
+        Parameter nk must be an integer or a tuple of integers.
+    ValueError
+        Parameter nk (or each of its elements) must be a
         positive integer.
-    :raises ValueError: Parameter nk must be a tuple of length *ndim*.
+    ValueError
+        Parameter nk must be a tuple of length *ndim*.
     '''
     if isinstance(nk, int):
         positive_int(nk, 'nk')
@@ -1095,7 +1371,10 @@ def dim_2(dim):
     Check that the model is 2D. Berry curvature / Chern number are only
     defined for a 2D Brillouin zone.
 
-    :raises ValueError: This calculation requires a 2D lattice.
+    Raises
+    ------
+    ValueError
+        This calculation requires a 2D lattice.
     '''
     if dim != 2:
         raise ValueError('\n\nThis calculation requires a 2D lattice '
@@ -1106,7 +1385,10 @@ def dim_min(dim, dmin):
     '''
     Check that the model has at least *dmin* periodic dimensions.
 
-    :raises ValueError: This calculation requires a lattice with at least dmin primitive vectors.
+    Raises
+    ------
+    ValueError
+        This calculation requires a lattice with at least dmin primitive vectors.
     '''
     if dim < dmin:
         raise ValueError('\n\nThis calculation requires a lattice with at least {} '
@@ -1118,8 +1400,12 @@ def plane(plane, dim):
     Check parameter *plane* of *kspace.berry_curvature*: two distinct
     reciprocal-vector indices below *dim*.
 
-    :raises TypeError: Parameter plane must be a tuple of two integers.
-    :raises ValueError: Parameter plane must contain two distinct indices below dim.
+    Raises
+    ------
+    TypeError
+        Parameter plane must be a tuple of two integers.
+    ValueError
+        Parameter plane must contain two distinct indices below dim.
     '''
     if not isinstance(plane, tuple) or len(plane) != 2 or \
             not all(isinstance(p, int) for p in plane):
@@ -1134,8 +1420,12 @@ def direction(direction, dim=2):
     Check parameter *direction* used by *kspace.ribbon* (and the Wilson-loop
     methods): a primitive-vector index below *dim*.
 
-    :raises TypeError: Parameter direction must be an integer.
-    :raises ValueError: Parameter direction must be between 0 and dim-1.
+    Raises
+    ------
+    TypeError
+        Parameter direction must be an integer.
+    ValueError
+        Parameter direction must be between 0 and dim-1.
     '''
     if not isinstance(direction, int):
         raise TypeError('\n\nParameter direction must be an integer.\n')
@@ -1147,8 +1437,12 @@ def band_indices(bands, norb):
     '''
     Check parameter *bands* used by *kspace.berry_curvature*.
 
-    :raises TypeError: Parameter bands must be a non-empty list of integers.
-    :raises ValueError: Parameter bands must be a list of distinct band
+    Raises
+    ------
+    TypeError
+        Parameter bands must be a non-empty list of integers.
+    ValueError
+        Parameter bands must be a list of distinct band
         indices between 0 and norb-1.
     '''
     if not isinstance(bands, list) or not bands:
@@ -1171,7 +1465,10 @@ def k_perp(k_perp, n):
     Check parameter *k_perp* of the Wilson-loop methods: a tuple of *n* real
     numbers (fractional coordinates along the other reciprocal vectors).
 
-    :raises ValueError: Parameter k_perp must contain n real numbers.
+    Raises
+    ------
+    ValueError
+        Parameter k_perp must contain n real numbers.
     '''
     if len(k_perp) != n or not all(isinstance(f, (int, float)) for f in k_perp):
         raise ValueError('\n\nParameter k_perp must contain {} real number(s).\n'.format(n))
@@ -1181,8 +1478,12 @@ def flow(flow, direction, dim):
     '''
     Check parameter *flow* of *kspace.wannier_flow*.
 
-    :raises TypeError: Parameter flow must be an integer.
-    :raises ValueError: Parameter flow must be a direction other than *direction*.
+    Raises
+    ------
+    TypeError
+        Parameter flow must be an integer.
+    ValueError
+        Parameter flow must be a direction other than *direction*.
     '''
     if not isinstance(flow, int):
         raise TypeError('\n\nParameter flow must be an integer.\n')
@@ -1195,8 +1496,12 @@ def even_bands(bands):
     '''
     Check that *bands* is a list of an even number of band indices (Kramers pairs).
 
-    :raises TypeError: Parameter bands must be a list.
-    :raises ValueError: Parameter bands must contain an even number of bands.
+    Raises
+    ------
+    TypeError
+        Parameter bands must be a list.
+    ValueError
+        Parameter bands must contain an even number of bands.
     '''
     if not isinstance(bands, list):
         raise TypeError('\n\nParameter bands must be a list of band indices.\n')
@@ -1209,7 +1514,10 @@ def operator(mat, norb):
     '''
     Check a symmetry operator: a (norb, norb) matrix.
 
-    :raises ValueError: The operator must be a (norb, norb) matrix.
+    Raises
+    ------
+    ValueError
+        The operator must be a (norb, norb) matrix.
     '''
     if mat.shape != (norb, norb):
         raise ValueError('\n\nThe operator must be a ({0}, {0}) matrix.\n'.format(norb))
@@ -1219,7 +1527,10 @@ def parities(xi, tol=1e-6):
     '''
     Check that inversion eigenvalues are +-1.
 
-    :raises ValueError: The bands are not an inversion-invariant subspace.
+    Raises
+    ------
+    ValueError
+        The bands are not an inversion-invariant subspace.
     '''
     if not np.allclose(np.abs(xi.real), 1., atol=tol) or not np.allclose(xi.imag, 0., atol=tol):
         raise ValueError('\n\nThe parity eigenvalues are not +-1: the operator is not '
@@ -1234,7 +1545,10 @@ def k_map(k_map):
     '''
     Check parameter *k_map* of *kspace.symmetry_error*.
 
-    :raises ValueError: Parameter k_map must be 'minus' or 'identity'.
+    Raises
+    ------
+    ValueError
+        Parameter k_map must be 'minus' or 'identity'.
     '''
     if k_map not in ('minus', 'identity'):
         raise ValueError('\n\nParameter k_map must be "minus" or "identity".\n')
@@ -1244,7 +1558,10 @@ def is_symmetry(err, tol):
     '''
     Check that a symmetry error is below *tol*.
 
-    :raises ValueError: The operator is not a symmetry of the model.
+    Raises
+    ------
+    ValueError
+        The operator is not a symmetry of the model.
     '''
     if err > tol:
         raise ValueError('\n\nThe operator is not a symmetry of the model '
@@ -1255,7 +1572,10 @@ def square(sq, tol):
     '''
     Check that the square of an antiunitary operator is +-1.
 
-    :raises ValueError: The square of the operator must be +1 or -1.
+    Raises
+    ------
+    ValueError
+        The square of the operator must be +1 or -1.
     '''
     if not np.allclose(sq, sq[0, 0] * np.eye(len(sq)), atol=tol) or \
             not np.isclose(abs(sq[0, 0]), 1., atol=tol):
@@ -1266,7 +1586,10 @@ def hermitian(ham):
     '''
     Check that a (sparse) Hamiltonian is Hermitian.
 
-    :raises ValueError: This calculation requires a Hermitian Hamiltonian.
+    Raises
+    ------
+    ValueError
+        This calculation requires a Hermitian Hamiltonian.
     '''
     if (abs(ham - ham.conj().T) > 1e-12).nnz:
         raise ValueError('\n\nThis calculation requires a Hermitian Hamiltonian.\n')
@@ -1276,7 +1599,10 @@ def planar_cell(prim_vec):
     '''
     Check that the lattice has two in-plane primitive vectors (a unit-cell area).
 
-    :raises ValueError: Give the area per site explicitly.
+    Raises
+    ------
+    ValueError
+        Give the area per site explicitly.
     '''
     if len(prim_vec) != 2 or len(prim_vec[0]) != 2:
         raise ValueError('\n\nThe unit-cell area needs two in-plane primitive vectors: '
@@ -1287,7 +1613,10 @@ def integer(var, var_name):
     '''
     Check if *var* is an integer.
 
-    :raises TypeError: Parameter *var* must be an integer.
+    Raises
+    ------
+    TypeError
+        Parameter *var* must be an integer.
     '''
     if not isinstance(var, int):
         raise TypeError('\n\nParameter {} must be an integer.\n'.format(var_name))
@@ -1297,7 +1626,10 @@ def dim_exact(dim, d):
     '''
     Check that the model has exactly *d* periodic dimensions.
 
-    :raises ValueError: This calculation requires a lattice with d primitive vectors.
+    Raises
+    ------
+    ValueError
+        This calculation requires a lattice with d primitive vectors.
     '''
     if dim != d:
         raise ValueError('\n\nThis calculation requires a lattice with {} primitive '
@@ -1308,8 +1640,12 @@ def nonzero_number(var, var_name):
     '''
     Check if *var* is a nonzero number.
 
-    :raises TypeError: Parameter *var* must be a number.
-    :raises ValueError: Parameter *var* must be nonzero.
+    Raises
+    ------
+    TypeError
+        Parameter *var* must be a number.
+    ValueError
+        Parameter *var* must be nonzero.
     '''
     number(var, var_name)
     if var == 0:
@@ -1320,7 +1656,10 @@ def gbz_roots(n_roots, p):
     '''
     Check that det[H(beta) - E] has roots on both sides of the GBZ.
 
-    :raises ValueError: The model has no hoppings in both directions.
+    Raises
+    ------
+    ValueError
+        The model has no hoppings in both directions.
     '''
     if p < 1 or n_roots <= p:
         raise ValueError('\n\nThe generalized Brillouin zone needs hoppings in both '
@@ -1337,8 +1676,12 @@ def ham_model(model, cls):
     Check the model of *tbkit.exceptional*: a 2D **KSpace** instance, or a
     callable of a point of a 2D parameter plane.
 
-    :raises TypeError: Parameter model must be a KSpace instance or a callable.
-    :raises ValueError: A KSpace model must have two primitive vectors.
+    Raises
+    ------
+    TypeError
+        Parameter model must be a KSpace instance or a callable.
+    ValueError
+        A KSpace model must have two primitive vectors.
     '''
     if isinstance(model, cls):
         if model.dim != 2:
@@ -1354,7 +1697,10 @@ def ham_matrix(ham):
     Check the matrix returned by the callable model of *tbkit.exceptional*:
     square and finite.
 
-    :raises ValueError: The model must return a finite square matrix.
+    Raises
+    ------
+    ValueError
+        The model must return a finite square matrix.
     '''
     if ham.ndim != 2 or ham.shape[0] != ham.shape[1] or not np.all(np.isfinite(ham)):
         raise ValueError('\n\nThe model must return a finite square matrix.\n')
@@ -1365,8 +1711,12 @@ def loop(loop):
     Check a closed loop of *tbkit.exceptional*: a callable of s in [0, 1]
     returning a point of the plane, or the vertices of a polygon.
 
-    :raises TypeError: Parameter loop must be a callable or an array of vertices.
-    :raises ValueError: A polygon needs at least 3 vertices with 2 real coordinates.
+    Raises
+    ------
+    TypeError
+        Parameter loop must be a callable or an array of vertices.
+    ValueError
+        A polygon needs at least 3 vertices with 2 real coordinates.
     '''
     if callable(loop):
         return
@@ -1386,7 +1736,10 @@ def loop_point(point):
     '''
     Check a point returned by a loop callable: 2 finite real numbers.
 
-    :raises ValueError: The loop must return points of 2 real coordinates.
+    Raises
+    ------
+    ValueError
+        The loop must return points of 2 real coordinates.
     '''
     if point.shape != (2,) or not np.all(np.isfinite(point)):
         raise ValueError('\n\nParameter loop must return points of 2 finite real '
@@ -1397,7 +1750,10 @@ def closed_loop(ham_start, ham_end):
     '''
     Check that a loop is closed: the Hamiltonian at its end is the one at its start.
 
-    :raises ValueError: The loop is not closed.
+    Raises
+    ------
+    ValueError
+        The loop is not closed.
     '''
     scale = max(1., float(np.max(np.abs(ham_start))))
     if np.max(np.abs(ham_end - ham_start)) > 1e-9 * scale:
@@ -1409,8 +1765,12 @@ def band_pair(bands, norb):
     '''
     Check a pair of band labels: two distinct integers between 0 and norb-1.
 
-    :raises TypeError: Parameter bands must be a pair of integers.
-    :raises ValueError: Parameter bands must be two distinct band indices.
+    Raises
+    ------
+    TypeError
+        Parameter bands must be a pair of integers.
+    ValueError
+        Parameter bands must be two distinct band indices.
     '''
     if not isinstance(bands, (tuple, list)) or len(bands) != 2 or \
             not all(isinstance(b, int) for b in bands):
@@ -1424,8 +1784,12 @@ def band_index(band, norb):
     '''
     Check a band label: an integer between 0 and norb-1.
 
-    :raises TypeError: Parameter band must be an integer.
-    :raises ValueError: Parameter band must be between 0 and norb-1.
+    Raises
+    ------
+    TypeError
+        Parameter band must be an integer.
+    ValueError
+        Parameter band must be between 0 and norb-1.
     '''
     integer(band, 'band')
     if not 0 <= band < norb:
@@ -1436,7 +1800,10 @@ def tracking(k):
     '''
     Eigenvalue continuation failed: the path meets a degeneracy.
 
-    :raises ValueError: Cannot follow the eigenvalues continuously near k.
+    Raises
+    ------
+    ValueError
+        Cannot follow the eigenvalues continuously near k.
     '''
     raise ValueError('\n\nCannot follow the eigenvalues continuously near k = {}: the path '
                                 'passes through (or too close to) a degeneracy. Move or '
@@ -1447,7 +1814,10 @@ def winding_path(k):
     '''
     The discriminant vanishes on the path of a winding number.
 
-    :raises ValueError: The loop passes through a zero of the discriminant.
+    Raises
+    ------
+    ValueError
+        The loop passes through a zero of the discriminant.
     '''
     raise ValueError('\n\nThe discriminant vanishes (to numerical precision) on the path, '
                                 'near k = {}: the loop passes through a degeneracy. Move the '
@@ -1458,7 +1828,10 @@ def discriminant_nonzero(scale):
     '''
     Check that the discriminant does not vanish identically.
 
-    :raises ValueError: The bands are degenerate everywhere.
+    Raises
+    ------
+    ValueError
+        The bands are degenerate everywhere.
     '''
     if scale == 0.:
         raise ValueError('\n\nThe discriminant vanishes everywhere: some bands are '
@@ -1469,7 +1842,10 @@ def gap_kind(gap):
     '''
     Check the kind of line gap: 'real' (Re E) or 'imaginary' (Im E).
 
-    :raises ValueError: Parameter gap must be "real" or "imaginary".
+    Raises
+    ------
+    ValueError
+        Parameter gap must be "real" or "imaginary".
     '''
     if gap not in ('real', 'imaginary'):
         raise ValueError('\n\nParameter gap must be "real" or "imaginary".\n')
@@ -1479,7 +1855,10 @@ def biorthogonal_kind(kind):
     '''
     Check the kind of Berry connection: 'LR', 'RL', 'RR' or 'LL'.
 
-    :raises ValueError: Parameter kind must be "LR", "RL", "RR" or "LL".
+    Raises
+    ------
+    ValueError
+        Parameter kind must be "LR", "RL", "RR" or "LL".
     '''
     if kind not in ('LR', 'RL', 'RR', 'LL'):
         raise ValueError('\n\nParameter kind must be "LR", "RL", "RR" or "LL".\n')
@@ -1492,7 +1871,10 @@ def line_gap(keys, bands, gap):
     every k-point, a band inside the group and its neighbour outside it
     never overlap over the whole mesh.
 
-    :raises ValueError: The bands have no line gap.
+    Raises
+    ------
+    ValueError
+        The bands have no line gap.
     '''
     inside = np.zeros(keys.shape[1], bool)
     inside[bands] = True
@@ -1517,7 +1899,10 @@ def band_continuity(en, bands):
     itself. A line gap measured on the mesh alone can miss a narrow
     crossing between mesh points; this catches the jump of the labels.
 
-    :raises ValueError: The band labels jump between neighbouring k-points.
+    Raises
+    ------
+    ValueError
+        The band labels jump between neighbouring k-points.
     '''
     from scipy.optimize import linear_sum_assignment
     inside = np.zeros(en.shape[2], bool)
@@ -1542,7 +1927,10 @@ def no_overlap(overlap):
     Check that no overlap matrix is set (non-orthogonal bases are not
     supported by the biorthogonal tools).
 
-    :raises ValueError: Not available with an overlap matrix.
+    Raises
+    ------
+    ValueError
+        Not available with an overlap matrix.
     '''
     if overlap:
         raise ValueError('\n\nThis method does not support an overlap matrix (set_overlap).\n')
@@ -1552,7 +1940,10 @@ def weights(weights, n):
     '''
     Check the weights of *occupation.fermi_level*: *n* positive numbers.
 
-    :raises ValueError: Parameter weights must contain n positive numbers.
+    Raises
+    ------
+    ValueError
+        Parameter weights must contain n positive numbers.
     '''
     if len(weights) != n or np.any(weights <= 0):
         raise ValueError('\n\nParameter weights must contain {} positive numbers.\n'.format(n))
@@ -1562,8 +1953,12 @@ def electrons(n_electrons, capacity):
     '''
     Check a number of electrons: between 0 and the total weight of the levels.
 
-    :raises TypeError: Parameter n_electrons must be a real number.
-    :raises ValueError: Parameter n_electrons must be between 0 and capacity.
+    Raises
+    ------
+    TypeError
+        Parameter n_electrons must be a real number.
+    ValueError
+        Parameter n_electrons must be between 0 and capacity.
     '''
     positive_real_zero(n_electrons, 'n_electrons')
     if n_electrons > capacity * (1 + 1e-12):
@@ -1575,8 +1970,12 @@ def n_eig(n_eig, sites):
     '''
     Check the number of eigenpairs of *system.get_eig_sparse*.
 
-    :raises TypeError: Parameter n_eig must be an integer.
-    :raises ValueError: Parameter n_eig must be between 1 and sites-2.
+    Raises
+    ------
+    TypeError
+        Parameter n_eig must be an integer.
+    ValueError
+        Parameter n_eig must be between 1 and sites-2.
     '''
     positive_int(n_eig, 'n_eig')
     if n_eig > sites - 2:
@@ -1593,7 +1992,10 @@ def square_matrix(mat, var_name):
     '''
     Check that *mat* is a square 2D array.
 
-    :raises ValueError: Parameter must be a square matrix.
+    Raises
+    ------
+    ValueError
+        Parameter must be a square matrix.
     '''
     if mat.ndim != 2 or mat.shape[0] != mat.shape[1]:
         raise ValueError('\n\nParameter {} must be a square matrix.\n'.format(var_name))
@@ -1603,7 +2005,10 @@ def lead(h0, v):
     '''
     Check a lead: square cell Hamiltonian *h0* and coupling *v* of the same shape.
 
-    :raises ValueError: h0 and v must be square matrices of the same shape.
+    Raises
+    ------
+    ValueError
+        h0 and v must be square matrices of the same shape.
     '''
     square_matrix(h0, 'h0')
     if v.shape != h0.shape:
@@ -1614,7 +2019,10 @@ def converged(flag, name):
     '''
     Check that an iteration converged.
 
-    :raises RuntimeError: The iteration did not converge.
+    Raises
+    ------
+    RuntimeError
+        The iteration did not converge.
     '''
     if not flag:
         raise RuntimeError('\n\n{} did not converge: increase max_iter.\n'.format(name))
@@ -1624,7 +2032,10 @@ def lead_direction(direction):
     '''
     Check the direction of a lead: +1 or -1.
 
-    :raises ValueError: Parameter direction must be +1 or -1.
+    Raises
+    ------
+    ValueError
+        Parameter direction must be +1 or -1.
     '''
     if direction not in (1, -1):
         raise ValueError('\n\nParameter direction must be +1 or -1.\n')
@@ -1634,7 +2045,10 @@ def surface_side(side):
     '''
     Check parameter *side* of *KSpace.surface_spectral_function*: +1 or -1.
 
-    :raises ValueError: Parameter side must be +1 or -1.
+    Raises
+    ------
+    ValueError
+        Parameter side must be +1 or -1.
     '''
     if isinstance(side, bool) or side not in (1, -1):
         raise ValueError('\n\nParameter side must be +1 or -1.\n')
@@ -1644,7 +2058,10 @@ def nearest_cells(n):
     '''
     Check that a lead hopping reaches at most the neighbouring cells.
 
-    :raises ValueError: Lead hoppings must connect neighbouring cells only.
+    Raises
+    ------
+    ValueError
+        Lead hoppings must connect neighbouring cells only.
     '''
     if abs(n) > 1:
         raise ValueError('\n\nA lead from a KSpace model needs hoppings between '
@@ -1655,8 +2072,12 @@ def lead_coupling(coupling, sites, m, n_device):
     '''
     Check the coupling of a lead to the device.
 
-    :raises TypeError: Parameter sites must be a list of integers.
-    :raises ValueError: sites must be distinct device indices, coupling of shape (len(sites), m).
+    Raises
+    ------
+    TypeError
+        Parameter sites must be a list of integers.
+    ValueError
+        sites must be distinct device indices, coupling of shape (len(sites), m).
     '''
     if not isinstance(sites, list) or not all(isinstance(s, (int, np.integer)) for s in sites):
         raise TypeError('\n\nParameter sites must be a list of integers.\n')
@@ -1672,7 +2093,10 @@ def lead_device_size(sites, n_device):
     '''
     Check that a System has one site per row of the device Hamiltonian.
 
-    :raises ValueError: The System must have as many sites as the device Hamiltonian has rows.
+    Raises
+    ------
+    ValueError
+        The System must have as many sites as the device Hamiltonian has rows.
     '''
     if sites != n_device:
         raise ValueError('\n\nThe System has {} sites but the device Hamiltonian has {} '
@@ -1683,7 +2107,10 @@ def lead_space_dim(lead_dim, device_dim):
     '''
     Check that a lead and the device have positions of the same dimension.
 
-    :raises ValueError: The lead and the device must have the same space dimension.
+    Raises
+    ------
+    ValueError
+        The lead and the device must have the same space dimension.
     '''
     if lead_dim != device_dim:
         raise ValueError('\n\nThe lead has {}D positions but the device {}D '
@@ -1694,7 +2121,10 @@ def lead_overlap(found):
     '''
     Check that some device site lies on the lattice of a lead.
 
-    :raises ValueError: No device site matches a lead orbital.
+    Raises
+    ------
+    ValueError
+        No device site matches a lead orbital.
     '''
     if not found:
         raise ValueError('\n\nNo device site sits at the position (and tag) of a lead '
@@ -1706,7 +2136,10 @@ def lead_interface(missing):
     Check that the interface cell of a lead is complete (*missing*: the lead
     orbitals coupled to the next cell but absent from the device).
 
-    :raises ValueError: The interface between the device and the lead is incomplete.
+    Raises
+    ------
+    ValueError
+        The interface between the device and the lead is incomplete.
     '''
     if missing:
         raise ValueError('\n\nThe device lacks lead orbitals {} in its outermost lead cell: '
@@ -1720,7 +2153,10 @@ def lead_extension(inside):
     device's extent along the lead (*inside* False when they would pass the
     innermost lead cell holding a device site).
 
-    :raises ValueError: The lead cannot be closed against the device.
+    Raises
+    ------
+    ValueError
+        The lead cannot be closed against the device.
     '''
     if not inside:
         raise ValueError('\n\nThe lead sites missing from the device reach past its far end: '
@@ -1732,8 +2168,12 @@ def lead_index(lead, n_leads):
     '''
     Check a lead index.
 
-    :raises TypeError: The lead index must be an integer.
-    :raises ValueError: No such lead.
+    Raises
+    ------
+    TypeError
+        The lead index must be an integer.
+    ValueError
+        No such lead.
     '''
     if not isinstance(lead, int):
         raise TypeError('\n\nThe lead index must be an integer.\n')
@@ -1746,7 +2186,10 @@ def lead_band_edge(flag, energy):
     Check that the modes of a lead are well defined: the energy is not at a
     band edge, where a propagating mode has zero velocity.
 
-    :raises ValueError: Energy at a band edge of a lead.
+    Raises
+    ------
+    ValueError
+        Energy at a band edge of a lead.
     '''
     if not flag:
         raise ValueError('\n\nEnergy {} is at a band edge of a lead (a mode with zero velocity): '
@@ -1758,7 +2201,10 @@ def conservation_law(law, h0, v, tol=1e-10):
     Check the conservation law of a lead: a Hermitian matrix of the shape
     of *h0* that commutes with *h0* and *v*.
 
-    :raises ValueError: Wrong shape, not Hermitian, or not conserved by the lead.
+    Raises
+    ------
+    ValueError
+        Wrong shape, not Hermitian, or not conserved by the lead.
     '''
     if law.shape != h0.shape:
         raise ValueError('\n\nParameter conservation_law must have the shape of h0, {}.\n'.format(h0.shape))
@@ -1773,8 +2219,12 @@ def lead_block(lead, n_blocks):
     Check a lead of a scattering matrix: a lead index, or a tuple
     (lead, block) with a block of that lead's conservation law.
 
-    :raises TypeError: Not an integer or a tuple of two integers.
-    :raises ValueError: No such lead or block.
+    Raises
+    ------
+    TypeError
+        Not an integer or a tuple of two integers.
+    ValueError
+        No such lead or block.
     '''
     if isinstance(lead, tuple):
         if len(lead) != 2 or not all(isinstance(x, (int, np.integer)) for x in lead):
@@ -1797,7 +2247,10 @@ def kpm_kernel(kernel):
     '''
     Check the KPM kernel name.
 
-    :raises ValueError: Parameter kernel must be "jackson" or "lorentz".
+    Raises
+    ------
+    ValueError
+        Parameter kernel must be "jackson" or "lorentz".
     '''
     if kernel not in ('jackson', 'lorentz'):
         raise ValueError('\n\nParameter kernel must be "jackson" or "lorentz".\n')
@@ -1807,7 +2260,10 @@ def kpm_grid(eps):
     '''
     Check that the KPM energies lie inside the (scaled) spectral bounds.
 
-    :raises ValueError: e_grid must lie inside the spectral bounds.
+    Raises
+    ------
+    ValueError
+        e_grid must lie inside the spectral bounds.
     '''
     if np.any(np.abs(eps) >= 1.):
         raise ValueError('\n\nParameter e_grid must lie strictly inside the spectral '
@@ -1818,8 +2274,12 @@ def site_index(site, n):
     '''
     Check a site (row) index.
 
-    :raises TypeError: Parameter site must be an integer.
-    :raises ValueError: Parameter site must be between 0 and n-1.
+    Raises
+    ------
+    TypeError
+        Parameter site must be an integer.
+    ValueError
+        Parameter site must be between 0 and n-1.
     '''
     if not isinstance(site, (int, np.integer)):
         raise TypeError('\n\nParameter site must be an integer.\n')
@@ -1848,8 +2308,12 @@ def orbitals(orbs):
     '''
     Check a list of orbital names.
 
-    :raises TypeError: The orbitals must be a list of names.
-    :raises ValueError: Unknown or repeated orbital.
+    Raises
+    ------
+    TypeError
+        The orbitals must be a list of names.
+    ValueError
+        Unknown or repeated orbital.
     '''
     from tbkit.slater_koster import ORBITALS
     if not isinstance(orbs, list) or not orbs:
@@ -1865,8 +2329,12 @@ def orbital_dict(orbital_dict, tags):
     '''
     Check the orbitals of *OrbitalSystem*: a list of orbitals for every tag.
 
-    :raises TypeError: Parameter orbitals must be a dictionary.
-    :raises ValueError: Every tag needs its orbitals.
+    Raises
+    ------
+    TypeError
+        Parameter orbitals must be a dictionary.
+    ValueError
+        Every tag needs its orbitals.
     '''
     if not isinstance(orbital_dict, dict):
         raise TypeError('\n\nParameter orbitals must be a dictionary {tag: list of orbitals}.\n')
@@ -1881,8 +2349,12 @@ def sk_params(params):
     '''
     Check a dictionary of Slater-Koster bond integrals.
 
-    :raises TypeError: Parameter params must be a dictionary of numbers.
-    :raises ValueError: Unknown bond integral.
+    Raises
+    ------
+    TypeError
+        Parameter params must be a dictionary of numbers.
+    ValueError
+        Unknown bond integral.
     '''
     from tbkit.slater_koster import PARAMS
     if not isinstance(params, dict):
@@ -1899,8 +2371,15 @@ def sk_pair_params(params, tags_i, tags_j):
     Check the bond integrals of *set_slater_koster*: one dictionary, or one
     per tag pair of the bonds.
 
-    :returns: True if keyed by tag pair.
-    :raises ValueError: A tag pair of the bonds has no bond integrals.
+    Returns
+    -------
+    bool
+        True if keyed by tag pair.
+
+    Raises
+    ------
+    ValueError
+        A tag pair of the bonds has no bond integrals.
     '''
     from tbkit.slater_koster import PARAMS
     if not isinstance(params, dict):
@@ -1920,7 +2399,10 @@ def bond_vector(d):
     '''
     Check a bond vector: 2 or 3 reals, nonzero.
 
-    :raises ValueError: The bond vector must have 2 or 3 components and be nonzero.
+    Raises
+    ------
+    ValueError
+        The bond vector must have 2 or 3 components and be nonzero.
     '''
     if d.ndim != 1 or len(d) not in (2, 3) or not np.any(d):
         raise ValueError('\n\nThe bond vector must have 2 or 3 components, not all zero.\n')
@@ -1930,7 +2412,10 @@ def orbital_of_site(orbital, orbs):
     '''
     Check that a site carries an orbital.
 
-    :raises ValueError: The site has no such orbital.
+    Raises
+    ------
+    ValueError
+        The site has no such orbital.
     '''
     if orbital not in orbs:
         raise ValueError('\n\nThe site has no orbital {!r} (it has {}).\n'.format(orbital, orbs))
@@ -1940,7 +2425,10 @@ def spin_index(spin, ns):
     '''
     Check a spin index: 0, or 0/1 with spin.
 
-    :raises ValueError: Parameter spin must be 0 (or 1 with spin).
+    Raises
+    ------
+    ValueError
+        Parameter spin must be 0 (or 1 with spin).
     '''
     if spin not in range(ns):
         raise ValueError('\n\nParameter spin must be {}.\n'.format('0 or 1' if ns == 2 else '0'))
@@ -1950,8 +2438,12 @@ def set_onsite_orb(dict_onsite, tags, orbital_dict):
     '''
     Check *OrbitalSystem.set_onsite*: numbers, or {orbital: number} dictionaries.
 
-    :raises TypeError: Onsite energies must be numbers or dictionaries.
-    :raises ValueError: Unknown tag or orbital.
+    Raises
+    ------
+    TypeError
+        Onsite energies must be numbers or dictionaries.
+    ValueError
+        Unknown tag or orbital.
     '''
     if not isinstance(dict_onsite, dict):
         raise TypeError('\n\nParameter onsite must be a dictionary.\n')
@@ -1971,7 +2463,10 @@ def spinful(spin):
     '''
     Check that the model has spin.
 
-    :raises ValueError: This term needs spin=True.
+    Raises
+    ------
+    ValueError
+        This term needs spin=True.
     '''
     if not spin:
         raise ValueError('\n\nThis term needs a spinful model (spin=True).\n')
@@ -1981,7 +2476,10 @@ def vector3(vec, var_name):
     '''
     Check a tuple of three real numbers.
 
-    :raises ValueError: Parameter must be a tuple of three real numbers.
+    Raises
+    ------
+    ValueError
+        Parameter must be a tuple of three real numbers.
     '''
     if not isinstance(vec, (tuple, list)) or len(vec) != 3 or \
             not all(isinstance(c, (int, float)) for c in vec):
@@ -1992,7 +2490,10 @@ def p_shell(tags, orbital_dict):
     '''
     Check that the tags carry the three p orbitals.
 
-    :raises ValueError: The tags must carry px, py and pz.
+    Raises
+    ------
+    ValueError
+        The tags must carry px, py and pz.
     '''
     if not isinstance(tags, list) or not tags:
         raise ValueError('\n\nParameter tags must be a non-empty list of tags with p orbitals.\n')
@@ -2005,7 +2506,10 @@ def block_shape(mat, shape):
     '''
     Check the shape of a hopping block.
 
-    :raises ValueError: The block must have the given shape.
+    Raises
+    ------
+    ValueError
+        The block must have the given shape.
     '''
     if mat.shape != shape:
         raise ValueError('\n\nThe hopping block must have shape {}.\n'.format(shape))
@@ -2015,7 +2519,10 @@ def orbital_terms(hop, blocks):
     '''
     Check that an *OrbitalSystem* has hoppings.
 
-    :raises RuntimeError: Run set_hopping or set_slater_koster first.
+    Raises
+    ------
+    RuntimeError
+        Run set_hopping or set_slater_koster first.
     '''
     if not hop.size and not any(blocks.values()):
         raise RuntimeError('\n\nRun method set_hopping or set_slater_koster first.\n')
@@ -2025,7 +2532,10 @@ def no_left(left):
     '''
     Check that left eigenvectors are not asked for with an overlap matrix.
 
-    :raises ValueError: left=True needs an orthogonal basis.
+    Raises
+    ------
+    ValueError
+        left=True needs an orthogonal basis.
     '''
     if left:
         raise ValueError('\n\nleft=True needs an orthogonal basis (no overlap).\n')
@@ -2035,7 +2545,10 @@ def orthogonal(overlap):
     '''
     Check that the basis is orthogonal.
 
-    :raises ValueError: This calculation needs an orthogonal basis.
+    Raises
+    ------
+    ValueError
+        This calculation needs an orthogonal basis.
     '''
     if overlap is not None:
         raise ValueError('\n\nThis calculation needs an orthogonal basis (no overlap matrix).\n')
@@ -2050,7 +2563,10 @@ def hermitian_dense(ham):
     '''
     Check that a dense matrix is Hermitian.
 
-    :raises ValueError: This calculation requires a Hermitian Hamiltonian.
+    Raises
+    ------
+    ValueError
+        This calculation requires a Hermitian Hamiltonian.
     '''
     if not np.allclose(ham, ham.conj().T, atol=1e-12):
         raise ValueError('\n\nThis calculation requires a Hermitian Hamiltonian.\n')
@@ -2060,7 +2576,10 @@ def integer_electrons(n_electrons):
     '''
     Check that the number of electrons is an integer (zero temperature).
 
-    :raises ValueError: At zero temperature, n_electrons must be an integer.
+    Raises
+    ------
+    ValueError
+        At zero temperature, n_electrons must be an integer.
     '''
     if abs(n_electrons - round(n_electrons)) > 1e-12:
         raise ValueError('\n\nAt zero temperature, n_electrons must be an integer '
@@ -2071,7 +2590,10 @@ def mixing(mixing):
     '''
     Check the density mixing: a real in (0, 1].
 
-    :raises ValueError: Parameter mixing must be in (0, 1].
+    Raises
+    ------
+    ValueError
+        Parameter mixing must be in (0, 1].
     '''
     positive_real(mixing, 'mixing')
     if mixing > 1:
@@ -2082,7 +2604,10 @@ def pairing(delta, n):
     '''
     Check a BdG pairing matrix: (n, n), antisymmetric.
 
-    :raises ValueError: The pairing matrix must be (n, n) and antisymmetric.
+    Raises
+    ------
+    ValueError
+        The pairing matrix must be (n, n) and antisymmetric.
     '''
     if delta.shape != (n, n):
         raise ValueError('\n\nThe pairing matrix must have the shape ({0}, {0}) of ham.\n'.format(n))
@@ -2094,7 +2619,10 @@ def hermitian_kspace(hermitian, overlap):
     '''
     Check that a KSpace model is Hermitian, with an orthogonal basis.
 
-    :raises ValueError: The model must be Hermitian, without overlap.
+    Raises
+    ------
+    ValueError
+        The model must be Hermitian, without overlap.
     '''
     if not hermitian or overlap:
         raise ValueError('\n\nThe model must be Hermitian, with an orthogonal basis.\n')
@@ -2104,9 +2632,14 @@ def pairing_kspace(pairing, norb, ndim):
     '''
     Check the pairings of *bdg.bdg_kspace*.
 
-    :raises TypeError: Parameter pairing must be a list of dictionaries.
-    :raises KeyError: "i", "j", "R" and "delta" must be keys.
-    :raises ValueError: Orbital indices below norb; R a tuple of ndim integers.
+    Raises
+    ------
+    TypeError
+        Parameter pairing must be a list of dictionaries.
+    KeyError
+        "i", "j", "R" and "delta" must be keys.
+    ValueError
+        Orbital indices below norb; R a tuple of ndim integers.
     '''
     if not isinstance(pairing, list):
         raise TypeError('\n\nParameter pairing must be a list of dictionaries.\n')
@@ -2132,8 +2665,12 @@ def positive_int_zero(var, var_name):
     '''
     Check if *var* is a positive integer or zero.
 
-    :raises TypeError: Parameter *var* must be an integer.
-    :raises ValueError: Parameter *var* must be a positive integer or zero.
+    Raises
+    ------
+    TypeError
+        Parameter *var* must be an integer.
+    ValueError
+        Parameter *var* must be a positive integer or zero.
     '''
     if not isinstance(var, int):
         raise TypeError('\n\nParameter {} must be an integer.\n'.format(var_name))
@@ -2145,8 +2682,12 @@ def harmonics(harm):
     '''
     Check the harmonics of *floquet.sambe_hamiltonian*: a dictionary with (at least) m = 0.
 
-    :raises TypeError: The harmonics must be a dictionary {m: matrix}.
-    :raises ValueError: The harmonics must contain m = 0 and square matrices of one shape.
+    Raises
+    ------
+    TypeError
+        The harmonics must be a dictionary {m: matrix}.
+    ValueError
+        The harmonics must contain m = 0 and square matrices of one shape.
     '''
     if not isinstance(harm, dict):
         raise TypeError('\n\nThe harmonics must be a dictionary {m: matrix}.\n')
@@ -2161,7 +2702,10 @@ def kspace(ks, cls):
     '''
     Check that *ks* is a KSpace instance.
 
-    :raises TypeError: Parameter ks must be a KSpace instance.
+    Raises
+    ------
+    TypeError
+        Parameter ks must be a KSpace instance.
     '''
     if not isinstance(ks, cls):
         raise TypeError('\n\nParameter ks must be a KSpace instance.\n')
@@ -2169,7 +2713,11 @@ def kspace(ks, cls):
 
 def not_floquet():
     '''
-    :raises ValueError: Not available for a Floquet (driven) model.
+
+    Raises
+    ------
+    ValueError
+        Not available for a Floquet (driven) model.
     '''
     raise ValueError('\n\nThis method needs the static hoppings: it is not available '
                                 'for a Floquet (driven) model.\n')
@@ -2179,7 +2727,10 @@ def sk_bonds(bonds):
     '''
     Check the bonds of *slater_koster.sk_kspace*: {n: bond integrals}.
 
-    :raises TypeError: Parameter bonds must be a dictionary {n: bond integrals}.
+    Raises
+    ------
+    TypeError
+        Parameter bonds must be a dictionary {n: bond integrals}.
     '''
     if not isinstance(bonds, dict) or not all(isinstance(n, int) and n > 0 for n in bonds):
         raise TypeError('\n\nParameter bonds must be a dictionary {n: bond integrals}, '
@@ -2198,8 +2749,12 @@ def fermi_energies(e_fermi):
     Check the Fermi energies of the Hall conductivities: a real number, or a
     non-empty array of finite real numbers.
 
-    :raises TypeError: Parameter e_fermi must be a real number or an array of real numbers.
-    :raises ValueError: Parameter e_fermi must be non-empty and finite.
+    Raises
+    ------
+    TypeError
+        Parameter e_fermi must be a real number or an array of real numbers.
+    ValueError
+        Parameter e_fermi must be non-empty and finite.
     '''
     arr = np.asarray(e_fermi)
     if arr.dtype.kind not in 'iuf':
@@ -2214,7 +2769,10 @@ def hermitian_model(hermitian):
     Check that a KSpace model is Hermitian (a Kubo conductivity needs real
     bands and orthonormal eigenstates).
 
-    :raises ValueError: This calculation requires a Hermitian model.
+    Raises
+    ------
+    ValueError
+        This calculation requires a Hermitian model.
     '''
     if not hermitian:
         raise ValueError('\n\nThis calculation requires a Hermitian model (no gain/loss, '
@@ -2226,8 +2784,12 @@ def k_fixed_hall(k_fixed, dim, full_allowed=True):
     Check parameter *k_fixed* of the Hall conductivities: None (the whole
     Brillouin zone) or a real number (a plane of a 3D model).
 
-    :raises TypeError: Parameter k_fixed must be None or a real number.
-    :raises ValueError: A 3D spin Hall conductivity needs a plane (k_fixed).
+    Raises
+    ------
+    TypeError
+        Parameter k_fixed must be None or a real number.
+    ValueError
+        A 3D spin Hall conductivity needs a plane (k_fixed).
     '''
     if k_fixed is not None:
         real_number(k_fixed, 'k_fixed')
@@ -2240,7 +2802,10 @@ def spin_axis(axis):
     '''
     Check the spin quantization axis: 'x', 'y' or 'z'.
 
-    :raises ValueError: Parameter spin_axis must be "x", "y" or "z".
+    Raises
+    ------
+    ValueError
+        Parameter spin_axis must be "x", "y" or "z".
     '''
     if axis not in ('x', 'y', 'z'):
         raise ValueError('\n\nParameter spin_axis must be "x", "y" or "z".\n')
@@ -2250,8 +2815,12 @@ def refine_fraction(fraction):
     '''
     Check the fraction of mesh points refined by the adaptive mesh: a real in (0, 1].
 
-    :raises TypeError: Parameter refine_fraction must be a real number.
-    :raises ValueError: Parameter refine_fraction must be in (0, 1].
+    Raises
+    ------
+    TypeError
+        Parameter refine_fraction must be a real number.
+    ValueError
+        Parameter refine_fraction must be in (0, 1].
     '''
     positive_real(fraction, 'refine_fraction')
     if fraction > 1:
@@ -2262,7 +2831,10 @@ def path_parameter(param):
     '''
     Check the parameter that a path varies (*KSpace.axion_angle*): a string.
 
-    :raises TypeError: Parameter param must be a string (the name of a value-function parameter).
+    Raises
+    ------
+    TypeError
+        Parameter param must be a string (the name of a value-function parameter).
     '''
     if not isinstance(param, str):
         raise TypeError('\n\nParameter param must be a string (the name of a '
@@ -2274,8 +2846,12 @@ def path_values(values):
     Check the parameter values of a path: a 1D array of at least two finite
     real numbers, strictly increasing or strictly decreasing.
 
-    :raises TypeError: Parameter values must be a 1D array of real numbers.
-    :raises ValueError: Parameter values must hold at least two finite, strictly monotonic values.
+    Raises
+    ------
+    TypeError
+        Parameter values must be a 1D array of real numbers.
+    ValueError
+        Parameter values must hold at least two finite, strictly monotonic values.
     '''
     arr = np.asarray(values)
     if arr.ndim != 1 or arr.dtype.kind not in 'iuf':
@@ -2290,7 +2866,10 @@ def path_gap(gap, param, value, tol=1e-6):
     '''
     Check that the bands stay separated from the others along a path.
 
-    :raises ValueError: The bands touch the others at param = value.
+    Raises
+    ------
+    ValueError
+        The bands touch the others at param = value.
     '''
     if gap < tol:
         raise ValueError('\n\nThe bands touch the other bands at {} = {} (gap {:.1e}): '
@@ -2302,7 +2881,10 @@ def velocity(vel, n, var_name):
     Check a velocity operator: a square (sparse or dense) matrix of the
     Hamiltonian's shape.
 
-    :raises ValueError: The velocity must be a (n, n) matrix.
+    Raises
+    ------
+    ValueError
+        The velocity must be a (n, n) matrix.
     '''
     if getattr(vel, 'shape', None) != (n, n):
         raise ValueError('\n\nParameter {} must be a ({}, {}) matrix, like ham.\n'.format(var_name, n, n))
@@ -2312,7 +2894,10 @@ def positive_overlap(s_min):
     '''
     Check that the overlap matrix S(k) is positive definite.
 
-    :raises ValueError: The overlap matrix must be positive definite.
+    Raises
+    ------
+    ValueError
+        The overlap matrix must be positive definite.
     '''
     if s_min <= 0:
         raise ValueError('\n\nThe overlap matrix S(k) must be positive definite '
@@ -2328,7 +2913,10 @@ def branch_cut(epsilon):
     '''
     Check the branch cut of a Floquet Hamiltonian: None or a real number.
 
-    :raises TypeError: Parameter epsilon must be None or a real number.
+    Raises
+    ------
+    TypeError
+        Parameter epsilon must be None or a real number.
     '''
     if epsilon is not None and (isinstance(epsilon, bool)
                                         or not isinstance(epsilon, (int, float, np.integer, np.floating))):
@@ -2339,8 +2927,12 @@ def durations(durations, n):
     '''
     Check the step durations of a step drive: n positive reals.
 
-    :raises TypeError: Parameter durations must be a list of real numbers.
-    :raises ValueError: Parameter durations must hold one positive number per step.
+    Raises
+    ------
+    TypeError
+        Parameter durations must be a list of real numbers.
+    ValueError
+        Parameter durations must hold one positive number per step.
     '''
     if not isinstance(durations, (list, tuple, np.ndarray)):
         raise TypeError('\n\nParameter durations must be a list of real numbers.\n')
@@ -2359,8 +2951,12 @@ def step_models(models, kspace_cls, system_cls):
     instances (Hermitian, orthogonal basis, one lattice size) or of System
     instances and square matrices. Returns 'kspace' or 'matrix'.
 
-    :raises TypeError: Parameter models must be a non-empty list of KSpace, System or matrices.
-    :raises ValueError: The KSpace models must be Hermitian, with no overlap, of one size.
+    Raises
+    ------
+    TypeError
+        Parameter models must be a non-empty list of KSpace, System or matrices.
+    ValueError
+        The KSpace models must be Hermitian, with no overlap, of one size.
     '''
     if not isinstance(models, (list, tuple)) or len(models) == 0:
         raise TypeError('\n\nParameter models must be a non-empty list of KSpace instances, '
@@ -2386,8 +2982,12 @@ def step_matrices(hams):
     Check the Hamiltonians of a real-space step drive: Hermitian square
     matrices of one shape.
 
-    :raises TypeError: Parameter hams must be a non-empty list of matrices.
-    :raises ValueError: The matrices must be square, Hermitian and of one shape.
+    Raises
+    ------
+    TypeError
+        Parameter hams must be a non-empty list of matrices.
+    ValueError
+        The matrices must be square, Hermitian and of one shape.
     '''
     if not isinstance(hams, (list, tuple)) or len(hams) == 0:
         raise TypeError('\n\nParameter hams must be a non-empty list of matrices.\n')
@@ -2403,7 +3003,10 @@ def drive_matrix(ham, norb):
     '''
     Check the output of a Bloch drive ham_kt(k, t): a Hermitian (norb, norb) matrix.
 
-    :raises ValueError: ham_kt(k, t) must return a Hermitian (norb, norb) matrix.
+    Raises
+    ------
+    ValueError
+        ham_kt(k, t) must return a Hermitian (norb, norb) matrix.
     '''
     if np.shape(ham) != (norb, norb):
         raise ValueError('\n\nham_kt(k, t) must return a ({}, {}) matrix.\n'.format(norb, norb))
@@ -2414,8 +3017,12 @@ def time_in_period(t, period):
     '''
     Check a time within the period: None or a real in [0, period].
 
-    :raises TypeError: Parameter t must be None or a real number.
-    :raises ValueError: Parameter t must be in [0, period].
+    Raises
+    ------
+    TypeError
+        Parameter t must be None or a real number.
+    ValueError
+        Parameter t must be in [0, period].
     '''
     if t is None:
         return
@@ -2428,7 +3035,10 @@ def nk_min(nk, n_min):
     '''
     Check that every k-mesh size is at least n_min.
 
-    :raises ValueError: Parameter nk must be at least n_min.
+    Raises
+    ------
+    ValueError
+        Parameter nk must be at least n_min.
     '''
     if min(nk) < n_min:
         raise ValueError('\n\nParameter nk must be at least {}.\n'.format(n_min))
@@ -2446,11 +3056,17 @@ def hopping_form(list_hop):
     (keys 'i', 'j', 'R', 't') and the neighbour-order one of
     *System.set_hopping* (keys 'n', 't', and optionally 'ang', 'tag').
 
-    :raises TypeError: Parameter list_hop must be a list of dictionaries.
-    :raises ValueError: list_hop mixes the two forms.
+    Returns
+    -------
+    neighbour : Boolean
+        True for the neighbour-order form.
 
-    :returns:
-        * **neighbour** -- Boolean. True for the neighbour-order form.
+    Raises
+    ------
+    TypeError
+        Parameter list_hop must be a list of dictionaries.
+    ValueError
+        list_hop mixes the two forms.
     '''
     if not isinstance(list_hop, list):
         raise TypeError('\n\nParameter list_hop must be a list.\n')
@@ -2468,10 +3084,15 @@ def set_hopping_neighbours(list_hop, spin=False):
     '''
     Check the neighbour-order form of *KSpace.set_hopping*.
 
-    :raises KeyError: "n" and "t" must be keys, and only "ang" and "tag" may be added.
-    :raises TypeError: "n" must be an integer, "t" a number (or, if *spin*,
-      a 2x2 matrix) or a value function, "ang" a real number and "tag" a string.
-    :raises ValueError: "n" must be positive, "ang" in [-180, 180), "tag" of length 2.
+    Raises
+    ------
+    KeyError
+        "n" and "t" must be keys, and only "ang" and "tag" may be added.
+    TypeError
+        "n" must be an integer, "t" a number (or, if *spin*,
+        a 2x2 matrix) or a value function, "ang" a real number and "tag" a string.
+    ValueError
+        "n" must be positive, "ang" in [-180, 180), "tag" of length 2.
     '''
     hopping_form(list_hop)
     for dic in list_hop:
@@ -2506,7 +3127,10 @@ def shell_angle(ang, angles):
     Check that a neighbour shell has bonds along the angle *ang* (in
     degrees, either orientation: *angles* are those in [0, 180)).
 
-    :raises ValueError: No bond of the shell points along *ang*.
+    Raises
+    ------
+    ValueError
+        No bond of the shell points along *ang*.
     '''
     if not np.any(np.isclose(ang, angles, atol=ATOL)) and \
             not np.any(np.isclose(ang, angles - 180., atol=ATOL)):
@@ -2518,7 +3142,10 @@ def not_orbital_system(sys, orbital_cls):
     '''
     Check that a System is not an *OrbitalSystem* (several rows per site).
 
-    :raises TypeError: An OrbitalSystem is not supported.
+    Raises
+    ------
+    TypeError
+        An OrbitalSystem is not supported.
     '''
     if isinstance(sys, orbital_cls):
         raise TypeError('\n\nAn OrbitalSystem (several orbitals per site) is not supported: '
@@ -2531,7 +3158,10 @@ def lattice_sites(matches):
     orbital of *unit_cell*, translated by a lattice vector (*matches*: the
     number of such orbitals, per site).
 
-    :raises ValueError: A site is not on the periodic lattice.
+    Raises
+    ------
+    ValueError
+        A site is not on the periodic lattice.
     '''
     bad = np.flatnonzero(np.asarray(matches) != 1)
     if len(bad):
@@ -2545,7 +3175,10 @@ def translation_invariant(dev, tol):
     Check that equivalent matrix elements (same orbitals, same lattice
     vector) are equal in every cell, within *tol*.
 
-    :raises ValueError: The model is not translation invariant.
+    Raises
+    ------
+    ValueError
+        The model is not translation invariant.
     '''
     if dev > tol:
         raise ValueError('\n\nThe Hamiltonian is not translation invariant: equivalent hoppings '
@@ -2559,7 +3192,10 @@ def torus_range(R, sizes):
     [-N/2, N/2)) are unambiguous: at least 3 cells along every direction,
     and no bond reaching half-way around.
 
-    :raises ValueError: The torus is too small for the range of the model.
+    Raises
+    ------
+    ValueError
+        The torus is too small for the range of the model.
     '''
     if np.any(sizes < 3) or np.any(2 * R == -sizes[None, :]):
         raise ValueError('\n\nThe torus ({} cells) is too small for the range of the model: '
@@ -2570,8 +3206,11 @@ def saveable_model(model, lattice_cls, system_cls, kspace_cls, orbital_cls):
     '''
     Check that *tbkit.io.save_model* can store *model*.
 
-    :raises TypeError: model must be a Lattice, System or KSpace instance
-      (not an OrbitalSystem).
+    Raises
+    ------
+    TypeError
+        model must be a Lattice, System or KSpace instance
+        (not an OrbitalSystem).
     '''
     if isinstance(model, orbital_cls) or not isinstance(model, (lattice_cls, system_cls, kspace_cls)):
         raise TypeError('\n\nParameter model must be a Lattice, System or KSpace instance '
@@ -2582,7 +3221,10 @@ def file_path(path, var_name):
     '''
     Check a file name.
 
-    :raises TypeError: Parameter var_name must be a string or a path.
+    Raises
+    ------
+    TypeError
+        Parameter var_name must be a string or a path.
     '''
     if not (isinstance(path, str) or hasattr(path, "__fspath__")):
         raise TypeError('\n\nParameter {} must be a string or a path.\n'.format(var_name))
@@ -2592,7 +3234,10 @@ def model_archive(data, fmt, version):
     '''
     Check an archive read by *tbkit.io.load_model*.
 
-    :raises ValueError: Not a tbkit model archive, or a newer version.
+    Raises
+    ------
+    ValueError
+        Not a tbkit model archive, or a newer version.
     '''
     if 'format' not in data.files or str(data['format']) != fmt:
         raise ValueError('\n\nThis file is not a tbkit model archive (format {}).\n'.format(fmt))
@@ -2606,7 +3251,10 @@ def hr_header(tokens):
     Check the header of a Wannier90 ``_hr.dat`` file: num_wann, nrpts and
     the nrpts degeneracy weights, as positive integers.
 
-    :raises ValueError: Not a Wannier90 _hr.dat file.
+    Raises
+    ------
+    ValueError
+        Not a Wannier90 _hr.dat file.
     '''
     try:
         num_wann, nrpts = int(tokens[0]), int(tokens[1])
@@ -2623,7 +3271,10 @@ def hr_body(n_tokens, nrpts, num_wann):
     '''
     Check the number of entries of a Wannier90 ``_hr.dat`` file.
 
-    :raises ValueError: The file must have nrpts * num_wann**2 lines of 7 numbers.
+    Raises
+    ------
+    ValueError
+        The file must have nrpts * num_wann**2 lines of 7 numbers.
     '''
     if n_tokens != 7 * nrpts * num_wann ** 2:
         raise ValueError('\n\nThe _hr.dat file must have nrpts * num_wann**2 = {} lines '
@@ -2635,7 +3286,10 @@ def hr_blocks(ok):
     Check that the lines of a ``_hr.dat`` file come in blocks of num_wann**2
     with the same lattice vector.
 
-    :raises ValueError: Lines of a lattice vector must be consecutive.
+    Raises
+    ------
+    ValueError
+        Lines of a lattice vector must be consecutive.
     '''
     if not ok:
         raise ValueError('\n\nThe _hr.dat lines of each lattice vector R must be consecutive '
@@ -2646,7 +3300,10 @@ def win_block(found):
     '''
     Check that a ``.win`` file has a ``unit_cell_cart`` block.
 
-    :raises ValueError: No unit_cell_cart block.
+    Raises
+    ------
+    ValueError
+        No unit_cell_cart block.
     '''
     if not found:
         raise ValueError('\n\nThe .win file has no "begin unit_cell_cart ... end unit_cell_cart" block.\n')
@@ -2657,7 +3314,10 @@ def win_cell(cell):
     Check the ``unit_cell_cart`` block of a ``.win`` file: three lines of
     three real numbers.
 
-    :raises ValueError: unit_cell_cart must hold three vectors of three numbers.
+    Raises
+    ------
+    ValueError
+        unit_cell_cart must hold three vectors of three numbers.
     '''
     try:
         ok = len(cell) == 3 and all(len(v) == 3 for v in cell) and \
@@ -2672,7 +3332,10 @@ def centres_count(n, num_wann):
     '''
     Check that a ``_centres.xyz`` file lists num_wann Wannier centres (X).
 
-    :raises ValueError: Too few Wannier centres.
+    Raises
+    ------
+    ValueError
+        Too few Wannier centres.
     '''
     if n < num_wann:
         raise ValueError('\n\nThe _centres.xyz file lists {} Wannier centres ("X"), '
@@ -2683,7 +3346,10 @@ def wannier_dim(dim):
     '''
     Check the dimension of a Wannier90 model.
 
-    :raises ValueError: dim must be 2 or 3.
+    Raises
+    ------
+    ValueError
+        dim must be 2 or 3.
     '''
     if isinstance(dim, bool) or dim not in (2, 3):
         raise ValueError('\n\nParameter dim must be 2 or 3.\n')
@@ -2693,7 +3359,10 @@ def win_given(win):
     '''
     Check that the lattice vectors can be found.
 
-    :raises ValueError: Give prim_vec or win.
+    Raises
+    ------
+    ValueError
+        Give prim_vec or win.
     '''
     if win is None:
         raise ValueError('\n\nGive the primitive vectors: prim_vec, or the .win file (win).\n')
@@ -2703,7 +3372,10 @@ def layer_cell(cell, dim):
     '''
     Check that, for a 2D model, a1 and a2 lie in the (x, y) plane.
 
-    :raises ValueError: a1 and a2 must have no z component.
+    Raises
+    ------
+    ValueError
+        a1 and a2 must have no z component.
     '''
     if dim == 2 and np.any(np.abs(cell[:2, 2]) > 1e-8):
         raise ValueError('\n\nFor dim=2, the first two lattice vectors must lie in the (x, y) plane.\n')
@@ -2713,7 +3385,10 @@ def wannier_prim_vec(prim_vec, dim):
     '''
     Check that the primitive vectors are *dim* vectors of *dim* components.
 
-    :raises ValueError: prim_vec must hold dim vectors of dim components.
+    Raises
+    ------
+    ValueError
+        prim_vec must hold dim vectors of dim components.
     '''
     if len(prim_vec) != dim or len(prim_vec[0]) != dim:
         raise ValueError('\n\nParameter prim_vec must hold {0} vectors of {0} components.\n'.format(dim))
@@ -2724,7 +3399,10 @@ def wannier_positions(shape, num_wann, dim):
     '''
     Check the orbital positions of a Wannier90 model.
 
-    :raises ValueError: positions must have shape (num_wann, dim) or (num_wann, 3).
+    Raises
+    ------
+    ValueError
+        positions must have shape (num_wann, dim) or (num_wann, 3).
     '''
     if len(shape) != 2 or shape[0] != num_wann or shape[1] not in (dim, 3):
         raise ValueError('\n\nParameter positions must have shape ({0}, {1}) or ({0}, 3).\n'
@@ -2735,8 +3413,12 @@ def wannier_tags(tags, num_wann):
     '''
     Check the sublattice tags of a Wannier90 model.
 
-    :raises TypeError: tags must be a list of one-character strings.
-    :raises ValueError: tags must have num_wann elements.
+    Raises
+    ------
+    TypeError
+        tags must be a list of one-character strings.
+    ValueError
+        tags must have num_wann elements.
     '''
     if not isinstance(tags, list) or not all(isinstance(t, str) and len(t) == 1 for t in tags):
         raise TypeError('\n\nParameter tags must be a list of one-character strings.\n')
@@ -2748,7 +3430,10 @@ def layer_hoppings(h_max, tol):
     '''
     Check that a 2D model has no hopping between layers (R3 != 0).
 
-    :raises ValueError: Hoppings with R3 != 0 must vanish for dim=2.
+    Raises
+    ------
+    ValueError
+        Hoppings with R3 != 0 must vanish for dim=2.
     '''
     if h_max > tol:
         raise ValueError('\n\nFor dim=2, the matrix elements with R3 != 0 must vanish '
@@ -2759,7 +3444,10 @@ def spinless(spin):
     '''
     Check that a KSpace model has no spin.
 
-    :raises ValueError: This needs a spinless model.
+    Raises
+    ------
+    ValueError
+        This needs a spinless model.
     '''
     if spin:
         raise ValueError('\n\nThis needs a spinless model (spin=False): a System has one '
@@ -2778,7 +3466,10 @@ def wannier_gap(nu, sector, tol=1e-4):
     less than the smallest gap (otherwise two Wannier bands crossed between
     them, or the sector wrapped around the circle).
 
-    :raises ValueError: The Wannier sector is not separated by a Wannier gap.
+    Raises
+    ------
+    ValueError
+        The Wannier sector is not separated by a Wannier gap.
     '''
     nu = np.asarray(nu)
     rest = [n for n in range(nu.shape[-1]) if n not in sector]
@@ -2801,8 +3492,12 @@ def supercell_matrix(mat, dim):
     '''
     Check a supercell matrix: integers, shape (dim, dim), nonzero determinant.
 
-    :raises TypeError: The supercell matrix must contain integers.
-    :raises ValueError: The supercell matrix must be (dim, dim), with a nonzero determinant.
+    Raises
+    ------
+    TypeError
+        The supercell matrix must contain integers.
+    ValueError
+        The supercell matrix must be (dim, dim), with a nonzero determinant.
     '''
     if mat.shape != (dim, dim):
         raise ValueError('\n\nThe supercell matrix must have the shape ({0}, {0}).\n'.format(dim))
@@ -2816,7 +3511,10 @@ def supercell_model(sc, cls):
     '''
     Check that *sc* is a supercell (made by *moire.supercell*).
 
-    :raises TypeError: Parameter sc must be a SupercellKSpace instance.
+    Raises
+    ------
+    TypeError
+        Parameter sc must be a SupercellKSpace instance.
     '''
     if not isinstance(sc, cls):
         raise TypeError('\n\nParameter sc must be a SupercellKSpace instance '
@@ -2827,7 +3525,10 @@ def bond_vectors(d):
     '''
     Check bond vectors: shape (n, 3), none of zero length.
 
-    :raises ValueError: Bond vectors must have the shape (n, 3) and a nonzero length.
+    Raises
+    ------
+    ValueError
+        Bond vectors must have the shape (n, 3) and a nonzero length.
     '''
     if d.ndim != 2 or d.shape[1] != 3:
         raise ValueError('\n\nThe bond vectors must have the shape (n, 3).\n')
@@ -2839,7 +3540,10 @@ def twist_lattice(lattice):
     '''
     Check the layer lattice of a twisted bilayer.
 
-    :raises ValueError: Parameter lattice must be "honeycomb" or "square".
+    Raises
+    ------
+    ValueError
+        Parameter lattice must be "honeycomb" or "square".
     '''
     if lattice not in ('honeycomb', 'square'):
         raise ValueError('\n\nParameter lattice must be "honeycomb" or "square".\n')
@@ -2849,7 +3553,10 @@ def commensurate(moire_1, moire_2):
     '''
     Check that the moire vectors of the two layers coincide.
 
-    :raises ValueError: The two layers do not share the moire cell.
+    Raises
+    ------
+    ValueError
+        The two layers do not share the moire cell.
     '''
     if not np.allclose(moire_1, moire_2, atol=1e-9 * max(1., np.abs(moire_1).max())):
         raise ValueError('\n\nThe two layers do not share the moire cell.\n')
@@ -2859,7 +3566,10 @@ def hopping_values(t, n):
     '''
     Check the output of a hopping function: n values.
 
-    :raises ValueError: The hopping function must return one value per bond vector.
+    Raises
+    ------
+    ValueError
+        The hopping function must return one value per bond vector.
     '''
     if np.shape(t) != (n,):
         raise ValueError('\n\nThe hopping function must return one value per bond vector, '
@@ -2870,7 +3580,10 @@ def even_dimension(n):
     '''
     Check that a spinful matrix has an even dimension (two spins per site).
 
-    :raises ValueError: A spinful Hamiltonian must have an even dimension.
+    Raises
+    ------
+    ValueError
+        A spinful Hamiltonian must have an even dimension.
     '''
     if n % 2:
         raise ValueError('\n\nA spinful Hamiltonian must have an even dimension '
@@ -2881,7 +3594,10 @@ def magnetization(mag, n):
     '''
     Check initial moments: a real array of shape (n, 3).
 
-    :raises ValueError: Parameter magnetization must have the shape (n, 3).
+    Raises
+    ------
+    ValueError
+        Parameter magnetization must have the shape (n, 3).
     '''
     if mag.shape != (n, 3):
         raise ValueError('\n\nParameter magnetization must have the shape ({}, 3).\n'.format(n))
@@ -2891,7 +3607,10 @@ def interaction(V, n):
     '''
     Check an attractive interaction: a positive number, or n non-negative numbers.
 
-    :raises ValueError: The interaction must be positive (or n non-negative values).
+    Raises
+    ------
+    ValueError
+        The interaction must be positive (or n non-negative values).
     '''
     V = np.asarray(V, dtype='f8')
     if V.ndim == 0:
@@ -2906,7 +3625,10 @@ def pairing_amplitudes(delta, n):
     '''
     Check initial pairing amplitudes: a number, or n numbers.
 
-    :raises ValueError: Parameter delta0 must be a number or n numbers.
+    Raises
+    ------
+    ValueError
+        Parameter delta0 must be a number or n numbers.
     '''
     if np.ndim(delta) == 0:
         number(delta, 'delta0')
@@ -2923,8 +3645,12 @@ def frequencies(omega, var_name):
     Check photon energies (or energies): a real number, or a non-empty
     array of finite real numbers.
 
-    :raises TypeError: Parameter must be a real number or an array of real numbers.
-    :raises ValueError: Parameter must contain at least one finite number.
+    Raises
+    ------
+    TypeError
+        Parameter must be a real number or an array of real numbers.
+    ValueError
+        Parameter must contain at least one finite number.
     '''
     arr = np.asarray(omega)
     if arr.dtype.kind not in 'iuf':
@@ -2940,8 +3666,12 @@ def tensor_component(component, order):
     Check a Cartesian tensor component of a 2D response: a string of
     *order* letters among 'x' and 'y'. Returns the axis indices.
 
-    :raises TypeError: Parameter component must be a string.
-    :raises ValueError: Parameter component must have order letters among x, y.
+    Raises
+    ------
+    TypeError
+        Parameter component must be a string.
+    ValueError
+        Parameter component must have order letters among x, y.
     '''
     if not isinstance(component, str):
         raise TypeError('\n\nParameter component must be a string.\n')
@@ -2956,7 +3686,10 @@ def band_derivatives(en, vel, w):
     Check the band energies (nk, n), velocities (2, nk, n, n) and second
     derivatives (2, 2, nk, n, n) of *optics.generalized_derivative*.
 
-    :raises ValueError: Inconsistent shapes.
+    Raises
+    ------
+    ValueError
+        Inconsistent shapes.
     '''
     if en.ndim != 2 or vel.shape != (2,) + en.shape + en.shape[-1:] or \
             w.shape != (2,) + vel.shape:
@@ -2968,8 +3701,12 @@ def lead_pair(pair, n_leads, var_name, distinct):
     '''
     Check a pair of lead indices (and, with *distinct*, that they differ).
 
-    :raises TypeError: Parameter must be a tuple/list of two lead indices.
-    :raises ValueError: No such lead, or the two leads must differ.
+    Raises
+    ------
+    TypeError
+        Parameter must be a tuple/list of two lead indices.
+    ValueError
+        No such lead, or the two leads must differ.
     '''
     if not isinstance(pair, (tuple, list)) or len(pair) != 2:
         raise TypeError('\n\nParameter {} must be a tuple of two lead indices.\n'.format(var_name))
@@ -2983,7 +3720,10 @@ def site_positions(positions, n_sites):
     '''
     Check site positions: a real array of shape (n_sites, d).
 
-    :raises ValueError: Parameter positions must have shape (n_sites, d).
+    Raises
+    ------
+    ValueError
+        Parameter positions must have shape (n_sites, d).
     '''
     if positions.ndim != 2 or len(positions) != n_sites:
         raise ValueError('\n\nParameter positions must have shape ({}, d).\n'.format(n_sites))
@@ -2993,8 +3733,12 @@ def slices(slices, n_sites):
     '''
     Check a partition of the device sites into non-empty slices.
 
-    :raises TypeError: Parameter slices must be a list of lists of integers.
-    :raises ValueError: The slices must contain every site exactly once.
+    Raises
+    ------
+    TypeError
+        Parameter slices must be a list of lists of integers.
+    ValueError
+        The slices must contain every site exactly once.
     '''
     if not isinstance(slices, list) or not all(
             isinstance(s, (list, tuple)) and len(s) > 0
@@ -3010,7 +3754,10 @@ def block_tridiagonal(max_distance):
     '''
     Check that hoppings only couple a slice to itself or to its neighbours.
 
-    :raises ValueError: Hoppings must connect neighbouring slices only.
+    Raises
+    ------
+    ValueError
+        Hoppings must connect neighbouring slices only.
     '''
     if max_distance > 1:
         raise ValueError('\n\nThe Hamiltonian couples slices that are not neighbours: '
@@ -3021,7 +3768,10 @@ def lead_tuple(lead):
     '''
     Check a lead given as a tuple (h0, v, coupling).
 
-    :raises TypeError: A lead must be a tuple (h0, v, coupling).
+    Raises
+    ------
+    TypeError
+        A lead must be a tuple (h0, v, coupling).
     '''
     if not isinstance(lead, (tuple, list)) or len(lead) != 3:
         raise TypeError('\n\nA lead must be a tuple (h0, v, coupling).\n')
@@ -3036,7 +3786,10 @@ def hermitian_operator(ops, tol=1e-10):
     '''
     Check that an operator (shape (..., norb, norb)) is Hermitian.
 
-    :raises ValueError: The operator must be Hermitian.
+    Raises
+    ------
+    ValueError
+        The operator must be Hermitian.
     '''
     if np.max(np.abs(ops - ops.conj().swapaxes(-1, -2))) > tol:
         raise ValueError('\n\nThe operator must be Hermitian.\n')
@@ -3048,7 +3801,10 @@ def projected_gap(w, tol=1e-6):
     sorted) has no eigenvalue near zero, and the same number of negative
     eigenvalues at every k-point; return that number.
 
-    :raises ValueError: The spectrum of POP must have a gap around zero.
+    Raises
+    ------
+    ValueError
+        The spectrum of POP must have a gap around zero.
     '''
     n_minus = np.sum(w < 0., axis=1)
     if np.min(np.abs(w)) < tol or np.any(n_minus != n_minus[0]):
@@ -3063,7 +3819,10 @@ def mirror_square(squares, tol):
     Check that a mirror operator squares to +1 or -1 (*squares*, shape
     (..., norb, norb)); return the sign.
 
-    :raises ValueError: The mirror operator must square to +1 or -1.
+    Raises
+    ------
+    ValueError
+        The mirror operator must square to +1 or -1.
     '''
     sign = np.sign(squares[0, 0, 0].real)
     eye = np.eye(squares.shape[-1])
@@ -3077,7 +3836,10 @@ def commutes(err, tol):
     Check that an operator commutes with H(k) on the plane (*err*: largest
     entry of the commutator).
 
-    :raises ValueError: The operator does not commute with H(k) on this plane.
+    Raises
+    ------
+    ValueError
+        The operator does not commute with H(k) on this plane.
     '''
     if err > tol:
         raise ValueError('\n\nThe mirror operator does not commute with H(k) on this plane '
@@ -3090,7 +3852,10 @@ def strong_index(strong):
     Check that the strong Z2 index comes out the same from the three pairs
     of time-reversal-invariant planes.
 
-    :raises ValueError: The six Z2 invariants are inconsistent.
+    Raises
+    ------
+    ValueError
+        The six Z2 invariants are inconsistent.
     '''
     if len(set(int(s) for s in strong)) != 1:
         raise ValueError('\n\nThe six planar Z2 invariants give different strong indices: '
@@ -3101,8 +3866,12 @@ def region(region, n):
     '''
     Check a region: a non-empty list of distinct indices between 0 and n-1.
 
-    :raises TypeError: Parameter region must be a non-empty list of integers.
-    :raises ValueError: Parameter region must hold distinct indices between 0 and n-1.
+    Raises
+    ------
+    TypeError
+        Parameter region must be a non-empty list of integers.
+    ValueError
+        Parameter region must hold distinct indices between 0 and n-1.
     '''
     if not isinstance(region, list) or not region or \
             not all(isinstance(i, (int, np.integer)) for i in region):
@@ -3116,7 +3885,10 @@ def torus_cell(cell, d):
     '''
     Check the two vectors spanning a torus: shape (2, d), linearly independent.
 
-    :raises ValueError: Parameter cell must hold two independent vectors of d components.
+    Raises
+    ------
+    ValueError
+        Parameter cell must hold two independent vectors of d components.
     '''
     if cell.shape != (2, d) or np.linalg.matrix_rank(cell) < 2:
         raise ValueError('\n\nParameter cell must hold two linearly independent vectors '
@@ -3127,7 +3899,10 @@ def band_below_top(n, norb):
     '''
     Check that a band has a band above it.
 
-    :raises ValueError: The highest band of bands must not be the top band.
+    Raises
+    ------
+    ValueError
+        The highest band of bands must not be the top band.
     '''
     if n >= norb - 1:
         raise ValueError('\n\nThe highest band of bands must have a band above it.\n')
@@ -3137,7 +3912,10 @@ def antisymmetric(a, tol=1e-10):
     '''
     Check that a matrix is antisymmetric.
 
-    :raises ValueError: The matrix must be antisymmetric.
+    Raises
+    ------
+    ValueError
+        The matrix must be antisymmetric.
     '''
     if np.max(np.abs(a + a.T), initial=0.) > tol:
         raise ValueError('\n\nThe matrix must be antisymmetric.\n')
@@ -3147,7 +3925,10 @@ def bdg_orbitals(norb):
     '''
     Check that a BdG model has an even number of orbitals (particles, then holes).
 
-    :raises ValueError: A BdG model must have an even number of orbitals.
+    Raises
+    ------
+    ValueError
+        A BdG model must have an even number of orbitals.
     '''
     if norb % 2:
         raise ValueError('\n\nA BdG model must have an even number of orbitals '
@@ -3159,7 +3940,10 @@ def majorana_form(a, tol=1e-8):
     Check that the Majorana form -i U H U^dagger of a BdG Hamiltonian at a
     time-reversal-invariant momentum is real (particle-hole symmetry).
 
-    :raises ValueError: The model is not particle-hole symmetric.
+    Raises
+    ------
+    ValueError
+        The model is not particle-hole symmetric.
     '''
     if np.max(np.abs(a.imag)) > tol:
         raise ValueError('\n\nThe model is not particle-hole symmetric in the BdG basis '
@@ -3170,7 +3954,10 @@ def gapped_trim(pf, tol=1e-12):
     '''
     Check that a Pfaffian is nonzero (the BdG gap is open at the momentum).
 
-    :raises ValueError: The gap closes at a time-reversal-invariant momentum.
+    Raises
+    ------
+    ValueError
+        The gap closes at a time-reversal-invariant momentum.
     '''
     if abs(pf) < tol:
         raise ValueError('\n\nThe gap closes at a time-reversal-invariant momentum: the '
@@ -3187,8 +3974,12 @@ def periodic(periodic, dim):
     Check parameter *periodic* of *System*: a boolean, or a tuple of *dim*
     booleans (one per primitive vector); return the tuple.
 
-    :raises TypeError: Parameter periodic must be a bool or a tuple of bools.
-    :raises ValueError: Parameter periodic must have one entry per primitive vector.
+    Raises
+    ------
+    TypeError
+        Parameter periodic must be a bool or a tuple of bools.
+    ValueError
+        Parameter periodic must have one entry per primitive vector.
     '''
     if isinstance(periodic, bool):
         return (periodic,) * dim
@@ -3204,7 +3995,10 @@ def torus_lattice(n1):
     '''
     Check that the lattice of a periodic System comes from *get_lattice*.
 
-    :raises ValueError: Periodic boundaries need lat.get_lattice first.
+    Raises
+    ------
+    ValueError
+        Periodic boundaries need lat.get_lattice first.
     '''
     if n1 == 0:
         raise ValueError('\n\nPeriodic boundaries wrap the n1 x n2 (x n3) cells of '
@@ -3217,7 +4011,10 @@ def torus_size(dist, period, n):
     around the torus (shortest period *period*), so that each one has a
     single shortest image.
 
-    :raises ValueError: The torus is too small for this neighbour order.
+    Raises
+    ------
+    ValueError
+        The torus is too small for this neighbour order.
     '''
     if 2 * dist >= period - ATOL:
         raise ValueError('\n\nThe torus is too small for the neighbours of order {}: their '
@@ -3229,7 +4026,10 @@ def not_periodic(periodic, method):
     '''
     Check that a System has open boundaries.
 
-    :raises ValueError: The method needs open boundaries.
+    Raises
+    ------
+    ValueError
+        The method needs open boundaries.
     '''
     if any(periodic):
         raise ValueError('\n\n{} needs open boundaries (periodic=False); on a torus, see '
@@ -3240,7 +4040,10 @@ def torus_2d(periodic):
     '''
     Check that a System is a 2D torus (periodic along two primitive vectors).
 
-    :raises ValueError: This calculation needs a 2D lattice periodic along both vectors.
+    Raises
+    ------
+    ValueError
+        This calculation needs a 2D lattice periodic along both vectors.
     '''
     if len(periodic) != 2 or not all(periodic):
         raise ValueError('\n\nThis calculation needs a 2D lattice with periodic boundaries '
@@ -3258,10 +4061,16 @@ def projector(proj, norb, tags):
     a non-empty list of distinct orbital indices, a sublattice tag, or a
     (norb, norb) Hermitian matrix.
 
-    :raises TypeError: Parameter projector must be an orbital index, a list of them, a tag or a matrix.
-    :raises ValueError: Orbital indices must be distinct and between 0 and norb-1.
-    :raises ValueError: Parameter projector must be a tag of the unit cell.
-    :raises ValueError: The operator must be a (norb, norb) Hermitian matrix.
+    Raises
+    ------
+    TypeError
+        Parameter projector must be an orbital index, a list of them, a tag or a matrix.
+    ValueError
+        Orbital indices must be distinct and between 0 and norb-1.
+    ValueError
+        Parameter projector must be a tag of the unit cell.
+    ValueError
+        The operator must be a (norb, norb) Hermitian matrix.
     '''
     if isinstance(proj, str):
         if proj not in tags:
@@ -3287,7 +4096,10 @@ def band_weights(weights, shape):
     Check parameter *weights* of *kspace.plot_bands*: real values, one per
     band and k-point of the stored band structure.
 
-    :raises ValueError: Parameter weights must be a real array of the shape of the bands.
+    Raises
+    ------
+    ValueError
+        Parameter weights must be a real array of the shape of the bands.
     '''
     weights = np.asarray(weights)
     if weights.shape != shape or np.iscomplexobj(weights) or not np.all(np.isfinite(weights)):
@@ -3299,7 +4111,10 @@ def weight_style(style):
     '''
     Check parameter *style* of *kspace.plot_bands*.
 
-    :raises ValueError: Parameter style must be "color" or "size".
+    Raises
+    ------
+    ValueError
+        Parameter style must be "color" or "size".
     '''
     if style not in ('color', 'size'):
         raise ValueError('\n\nParameter style must be "color" or "size".\n')
@@ -3309,7 +4124,10 @@ def contour_found(n_elements, energy):
     '''
     Check that a band crosses the energy of a constant-energy contour.
 
-    :raises ValueError: The band does not cross the energy.
+    Raises
+    ------
+    ValueError
+        The band does not cross the energy.
     '''
     if n_elements == 0:
         raise ValueError('\n\nThe band does not cross the energy {}: there is no '
@@ -3320,10 +4138,16 @@ def cubic_path(points, names, axes):
     '''
     Check the parameters of *kspace.cubic_path*.
 
-    :raises TypeError: Parameter points must be a dictionary.
-    :raises ValueError: Each point must have 3 real coordinates.
-    :raises ValueError: Parameter names must list at least two keys of points.
-    :raises ValueError: Parameter axes must be 3 orthonormal rows.
+    Raises
+    ------
+    TypeError
+        Parameter points must be a dictionary.
+    ValueError
+        Each point must have 3 real coordinates.
+    ValueError
+        Parameter names must list at least two keys of points.
+    ValueError
+        Parameter axes must be 3 orthonormal rows.
     '''
     if not isinstance(points, dict):
         raise TypeError('\n\nParameter points must be a dictionary (label: point).\n')
@@ -3344,7 +4168,10 @@ def bravais_lattice(kind, dim):
     '''
     Check that *kspace.high_symmetry_path* recognized the Bravais lattice.
 
-    :raises ValueError: No standard path for this lattice.
+    Raises
+    ------
+    ValueError
+        No standard path for this lattice.
     '''
     if kind is None:
         raise ValueError('\n\nNo standard high-symmetry path for this {}D lattice: '
@@ -3363,7 +4190,10 @@ def sympy_module(module):
     '''
     Check that sympy, the optional dependency of *tbkit.continuum*, is installed.
 
-    :raises ImportError: sympy is not installed.
+    Raises
+    ------
+    ImportError
+        sympy is not installed.
     '''
     if module is None:
         raise ImportError('\n\ntbkit.continuum needs sympy: pip install tbkit[continuum].\n')
@@ -3373,8 +4203,11 @@ def continuum_type(ham, types):
     '''
     Check the type of the Hamiltonian of *continuum.discretize*.
 
-    :raises TypeError: The Hamiltonian must be a string, a sympy expression
-      or a sympy Matrix.
+    Raises
+    ------
+    TypeError
+        The Hamiltonian must be a string, a sympy expression
+        or a sympy Matrix.
     '''
     if not isinstance(ham, types):
         raise TypeError('\n\nParameter hamiltonian must be a string, a sympy expression '
@@ -3385,7 +4218,10 @@ def continuum_parsed(error, string):
     '''
     Check that the string Hamiltonian of *continuum.discretize* was parsed.
 
-    :raises ValueError: The string is not a valid expression.
+    Raises
+    ------
+    ValueError
+        The string is not a valid expression.
     '''
     if error is not None:
         raise ValueError('\n\nParameter hamiltonian {!r} is not a valid sympy expression '
@@ -3396,7 +4232,10 @@ def continuum_square(shape):
     '''
     Check that the Hamiltonian of *continuum.discretize* is a square matrix.
 
-    :raises ValueError: The Hamiltonian must be a square matrix.
+    Raises
+    ------
+    ValueError
+        The Hamiltonian must be a square matrix.
     '''
     if len(shape) != 2 or shape[0] != shape[1] or shape[0] == 0:
         raise ValueError('\n\nParameter hamiltonian must be a scalar or a square matrix '
@@ -3410,9 +4249,14 @@ def continuum_symbols(names):
     like the grid spacing *a*, and parameter names that can be passed as
     keyword arguments.
 
-    :raises ValueError: x, y, z are not supported.
-    :raises ValueError: a is reserved for the grid spacing.
-    :raises ValueError: Parameter names must be Python identifiers.
+    Raises
+    ------
+    ValueError
+        x, y, z are not supported.
+    ValueError
+        a is reserved for the grid spacing.
+    ValueError
+        Parameter names must be Python identifiers.
     '''
     position = sorted(names & {'x', 'y', 'z'})
     if position:
@@ -3433,9 +4277,14 @@ def continuum_dim(dim, used):
     Check the dimension of *continuum.discretize*, given the momenta
     k_x, k_y, k_z (axes 0, 1, 2) used by the Hamiltonian.
 
-    :raises TypeError: Parameter dim must be an integer.
-    :raises ValueError: Parameter dim must be 1, 2 or 3.
-    :raises ValueError: The Hamiltonian uses a momentum beyond dim.
+    Raises
+    ------
+    TypeError
+        Parameter dim must be an integer.
+    ValueError
+        Parameter dim must be 1, 2 or 3.
+    ValueError
+        The Hamiltonian uses a momentum beyond dim.
     '''
     if not isinstance(dim, int):
         raise TypeError('\n\nParameter dim must be an integer.\n')
@@ -3451,7 +4300,10 @@ def continuum_polynomial(entry, is_polynomial):
     Check that a matrix element of *continuum.discretize* is a polynomial
     in the momenta.
 
-    :raises ValueError: The Hamiltonian must be a polynomial in k_x, k_y, k_z.
+    Raises
+    ------
+    ValueError
+        The Hamiltonian must be a polynomial in k_x, k_y, k_z.
     '''
     if not is_polynomial:
         raise ValueError('\n\nThe Hamiltonian must be a polynomial in k_x, k_y, k_z '
@@ -3462,9 +4314,14 @@ def continuum_tags(tags, norb):
     '''
     Check the orbital tags of *continuum.discretize*.
 
-    :raises ValueError: More than 52 orbitals need explicit tags.
-    :raises TypeError: Parameter tags must be a string or a list of strings.
-    :raises ValueError: Parameter tags must hold one one-character tag per orbital.
+    Raises
+    ------
+    ValueError
+        More than 52 orbitals need explicit tags.
+    TypeError
+        Parameter tags must be a string or a list of strings.
+    ValueError
+        Parameter tags must hold one one-character tag per orbital.
     '''
     if tags is None:
         if norb > 52:
@@ -3483,7 +4340,10 @@ def continuum_spacing(a):
     Check the grid spacing of *continuum.discretize*: a **Lattice**
     refuses primitive vectors whose squared norm is below 0.1.
 
-    :raises ValueError: Parameter a must be at least sqrt(0.1).
+    Raises
+    ------
+    ValueError
+        Parameter a must be at least sqrt(0.1).
     '''
     if a * a < 0.1:
         raise ValueError('\n\nParameter a must be at least sqrt(0.1) = 0.316 (the shortest '
@@ -3504,8 +4364,12 @@ def trial_orbitals(trial, norb, n_bands):
     trial orbitals (one per Wannier function; fewer than the bands
     disentangles them).
 
-    :raises TypeError: Parameter trial must be a list of orbital indices or an array.
-    :raises ValueError: Parameter trial must hold between 1 and n_bands trial orbitals.
+    Raises
+    ------
+    TypeError
+        Parameter trial must be a list of orbital indices or an array.
+    ValueError
+        Parameter trial must hold between 1 and n_bands trial orbitals.
     '''
     if isinstance(trial, list) and trial and all(isinstance(o, int) for o in trial):
         if len(trial) > n_bands or not all(0 <= o < norb for o in trial):
@@ -3529,8 +4393,12 @@ def energy_window(window, var_name):
     Check an energy window of *wannier.wannierize*: a tuple of two
     increasing real numbers.
 
-    :raises TypeError: Parameter var_name must be a tuple of two real numbers.
-    :raises ValueError: Parameter var_name must be increasing.
+    Raises
+    ------
+    TypeError
+        Parameter var_name must be a tuple of two real numbers.
+    ValueError
+        Parameter var_name must be increasing.
     '''
     if not isinstance(window, tuple) or len(window) != 2 or \
             not all(isinstance(e, (int, float)) and not isinstance(e, bool) for e in window):
@@ -3545,7 +4413,10 @@ def frozen_window(frozen, window):
     Check that the frozen (inner) window of *wannier.wannierize* lies
     inside the outer window.
 
-    :raises ValueError: The frozen window must lie inside the outer window.
+    Raises
+    ------
+    ValueError
+        The frozen window must lie inside the outer window.
     '''
     if frozen[0] < window[0] or frozen[1] > window[1]:
         raise ValueError('\n\nParameter frozen {} must lie inside the outer window {}.\n'
@@ -3558,8 +4429,12 @@ def window_states(n_inside, n_frozen, n_wann):
     k-point: at least *n_wann* in the outer window, at most *n_wann* in the
     frozen window.
 
-    :raises ValueError: The outer window holds fewer than n_wann states at some k-point.
-    :raises ValueError: The frozen window holds more than n_wann states at some k-point.
+    Raises
+    ------
+    ValueError
+        The outer window holds fewer than n_wann states at some k-point.
+    ValueError
+        The frozen window holds more than n_wann states at some k-point.
     '''
     if n_inside < n_wann:
         raise ValueError('\n\nThe outer window holds only {} of the bands at some k-point, '
@@ -3575,7 +4450,10 @@ def isolated_bands(en, bands, tol=1e-8):
     Check that a group of bands is separated in energy from the other bands
     at every point of the mesh (*en*, shape (nk, norb), sorted).
 
-    :raises ValueError: The bands are not isolated.
+    Raises
+    ------
+    ValueError
+        The bands are not isolated.
     '''
     inside = np.zeros(en.shape[1], bool)
     inside[bands] = True
@@ -3592,7 +4470,10 @@ def projection(s_min, tol=1e-10):
     Check that the projection of the bands onto the trial orbitals has full
     rank at every k-point.
 
-    :raises ValueError: The trial orbitals miss the bands at some k-point.
+    Raises
+    ------
+    ValueError
+        The trial orbitals miss the bands at some k-point.
     '''
     if s_min < tol:
         raise ValueError('\n\nThe trial orbitals have no overlap with the bands at some '

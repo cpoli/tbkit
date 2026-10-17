@@ -29,12 +29,16 @@ def fermi_dirac(energies: ArrayLike, mu: float, temperature: float = 0.) -> NDAr
     the step :math:`\Theta(\mu - E)` at :math:`T = 0` (with :math:`f = 1/2`
     exactly at :math:`E = \mu`).
 
-    :param energies: Array of real energies (for complex ones, the real part is used).
-    :param mu: Real number. Chemical potential.
-    :param temperature: Positive real number or zero. Default value 0.
+    Parameters
+    ----------
+    energies : Array of real energies (for complex ones, the real part is used)
+    mu : Real number
+        Chemical potential.
+    temperature : Positive real number or zero, default 0
 
-    :returns:
-        * **f** -- Real ndarray, same shape as *energies*.
+    Returns
+    -------
+    f : Real ndarray, same shape as *energies*
     '''
     error_handling.real_number(mu, 'mu')
     error_handling.positive_real_zero(temperature, 'temperature')
@@ -59,16 +63,21 @@ def fermi_level(
     a half-filled shell. For partly filled degenerate shells, use a small
     temperature.
 
-    :param energies: Array of real energies, any shape (e.g. *System.en*, or
+    Parameters
+    ----------
+    energies
+        Array of real energies, any shape (e.g. *System.en*, or
         the bands of *KSpace.mesh_bands*).
-    :param n_electrons: Positive real number or zero. Number of electrons
+    n_electrons : Positive real number or zero
+        Number of electrons
         :math:`N_e` (per unit cell, with the weights of a k-mesh).
-    :param temperature: Positive real number or zero. Default value 0.
-    :param weights: Array of positive reals, same shape as *energies*.
+    temperature : Positive real number or zero, default 0
+    weights : Array of positive reals, same shape as *energies*
         Default value None (all 1). Weight of each level (e.g. 1/nk on a k-mesh).
 
-    :returns:
-        * **mu** -- Real number.
+    Returns
+    -------
+    mu : Real number
     '''
     energies = np.asarray(energies).real.ravel()
     error_handling.ndarray_empty(energies, 'energies')

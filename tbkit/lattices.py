@@ -8,6 +8,8 @@ Each function returns a fresh ``Lattice`` instance with *unit_cell* and
 flake, or hand it straight to ``KSpace`` for a periodic/band-structure
 calculation). Nearest-neighbor sites are a distance *a* apart.
 
+Examples
+--------
 Example usage::
 
     import tbkit.lattices as lattices
@@ -31,7 +33,10 @@ def chain(a: float = 1.) -> Lattice:
     '''
     1D chain: one site per unit cell.
 
-    :param a: Positive real number. Default value 1. Lattice constant.
+    Parameters
+    ----------
+    a : Positive real number, default 1
+        Lattice constant.
     '''
     error_handling.positive_real(a, 'a')
     return _lat([{'tag': 'a', 'r0': (0., 0.)}], [(a, 0.)])
@@ -41,7 +46,10 @@ def square(a: float = 1.) -> Lattice:
     '''
     Square lattice: one site per unit cell.
 
-    :param a: Positive real number. Default value 1. Lattice constant.
+    Parameters
+    ----------
+    a : Positive real number, default 1
+        Lattice constant.
     '''
     error_handling.positive_real(a, 'a')
     return _lat([{'tag': 'a', 'r0': (0., 0.)}], [(a, 0.), (0., a)])
@@ -51,7 +59,10 @@ def triangular(a: float = 1.) -> Lattice:
     '''
     Triangular lattice: one site per unit cell.
 
-    :param a: Positive real number. Default value 1. Lattice constant.
+    Parameters
+    ----------
+    a : Positive real number, default 1
+        Lattice constant.
     '''
     error_handling.positive_real(a, 'a')
     return _lat([{'tag': 'a', 'r0': (0., 0.)}],
@@ -64,7 +75,10 @@ def honeycomb(a: float = 1.) -> Lattice:
     neighbors a distance *a* apart. See also :class:`tbkit.graphene.GrapheneLattice`
     for ready-made finite flakes of various shapes.
 
-    :param a: Positive real number. Default value 1. Nearest-neighbor distance.
+    Parameters
+    ----------
+    a : Positive real number, default 1
+        Nearest-neighbor distance.
     '''
     error_handling.positive_real(a, 'a')
     dx, dy = 0.5*sqrt(3)*a, 0.5*a
@@ -80,8 +94,13 @@ def kagome(a: float = 1.) -> Lattice:
     uniform nearest-neighbor hopping, this lattice famously has an exactly
     flat band (at E = -2t for hopping amplitude t).
 
-    :param a: Positive real number. Default value 1. Nearest-neighbor distance.
+    Parameters
+    ----------
+    a : Positive real number, default 1
+        Nearest-neighbor distance.
 
+    Examples
+    --------
     Example usage (nearest-neighbor hopping, for :class:`tbkit.kspace.KSpace`)::
 
         lat = lattices.kagome()
@@ -109,8 +128,13 @@ def lieb(a: float = 1.) -> Lattice:
     nearest-neighbor hopping, this lattice famously has an exactly flat
     band (at E = 0), squeezed between two dispersive bands.
 
-    :param a: Positive real number. Default value 1. Nearest-neighbor distance.
+    Parameters
+    ----------
+    a : Positive real number, default 1
+        Nearest-neighbor distance.
 
+    Examples
+    --------
     Example usage (nearest-neighbor hopping, for :class:`tbkit.kspace.KSpace`)::
 
         lat = lattices.lieb()

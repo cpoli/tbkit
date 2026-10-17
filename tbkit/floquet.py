@@ -65,12 +65,18 @@ def evolution_operator(ham_t: Callable, period: float, n_steps: int = 100) -> ND
     :math:`U(T) = \prod_m e^{-iH(t_m)\,\delta t}` (later times on the left,
     midpoints :math:`t_m = (m + 1/2)\delta t`, error :math:`O(\delta t^2)`).
 
-    :param ham_t: Callable. ``ham_t(t)`` returns the Hamiltonian at time t (a square matrix).
-    :param period: Positive real. :math:`T`.
-    :param n_steps: Positive integer. Default value 100. Time steps per period.
+    Parameters
+    ----------
+    ham_t : Callable
+        ``ham_t(t)`` returns the Hamiltonian at time t (a square matrix).
+    period : Positive real
+        :math:`T`.
+    n_steps : Positive integer, default 100
+        Time steps per period.
 
-    :returns:
-        * **U** -- Complex ndarray, the shape of the Hamiltonian.
+    Returns
+    -------
+    U : Complex ndarray, the shape of the Hamiltonian
     '''
     error_handling.is_callable(ham_t, 'ham_t')
     error_handling.positive_real(period, 'period')
@@ -126,14 +132,19 @@ def quasienergies(
     Hamiltonian, in the first Floquet zone :math:`[-\omega/2, \omega/2)`,
     or in :math:`[\epsilon_{cut} - \omega, \epsilon_{cut})`.
 
-    :param ham_t: Callable. See *evolution_operator*.
-    :param period: Positive real.
-    :param n_steps: Positive integer. Default value 100.
-    :param epsilon: Real number. Default value None (the zone
+    Parameters
+    ----------
+    ham_t : Callable
+        See *evolution_operator*.
+    period : Positive real
+    n_steps : Positive integer, default 100
+    epsilon : Real number
+        Default value None (the zone
         :math:`[-\omega/2, \omega/2)`). Branch cut, see *effective_hamiltonian*.
 
-    :returns:
-        * **eps** -- Real ndarray, sorted.
+    Returns
+    -------
+    eps : Real ndarray, sorted
     '''
     error_handling.is_callable(ham_t, 'ham_t')
     error_handling.positive_real(period, 'period')
@@ -159,15 +170,20 @@ def effective_hamiltonian(
     instead: :math:`H_F` shifted by :math:`\omega` (the same projectors,
     so the same Chern numbers and winding numbers).
 
-    :param ham_t: Callable. See *evolution_operator*.
-    :param period: Positive real.
-    :param n_steps: Positive integer. Default value 100.
-    :param epsilon: Real number. Default value None (:math:`\epsilon_{cut} = \omega/2`,
+    Parameters
+    ----------
+    ham_t : Callable
+        See *evolution_operator*.
+    period : Positive real
+    n_steps : Positive integer, default 100
+    epsilon : Real number
+        Default value None (:math:`\epsilon_{cut} = \omega/2`,
         computed exactly as before this option existed). Branch cut,
         best placed in a quasienergy gap.
 
-    :returns:
-        * **H_F** -- Complex ndarray.
+    Returns
+    -------
+    H_F : Complex ndarray
     '''
     error_handling.is_callable(ham_t, 'ham_t')
     error_handling.positive_real(period, 'period')
@@ -182,14 +198,19 @@ def harmonics(ham_t: Callable, period: float, n_harmonics: int, n_samples: int |
     of the drive, :math:`H(t) = \sum_m H_m e^{-im\omega t}`, for
     :math:`|m| \le` *n_harmonics* (exact for a drive with no higher harmonics).
 
-    :param ham_t: Callable. See *evolution_operator*.
-    :param period: Positive real.
-    :param n_harmonics: Positive integer or zero.
-    :param n_samples: Positive integer. Default value None (4 n_harmonics + 16).
+    Parameters
+    ----------
+    ham_t : Callable
+        See *evolution_operator*.
+    period : Positive real
+    n_harmonics : Positive integer or zero
+    n_samples : Positive integer
+        Default value None (4 n_harmonics + 16).
         Time samples per period.
 
-    :returns:
-        * **H_m** -- Dictionary {m: complex ndarray}.
+    Returns
+    -------
+    H_m : Dictionary {m: complex ndarray}
     '''
     error_handling.is_callable(ham_t, 'ham_t')
     error_handling.positive_real(period, 'period')
@@ -217,12 +238,16 @@ def sambe_hamiltonian(harm: dict, omega: float, n_max: int) -> NDArray[np.comple
     (shifted by multiples of :math:`\omega`); those of the central zone
     converge fastest as *n_max* grows.
 
-    :param harm: Dictionary {m: square complex array}, see *harmonics*.
-    :param omega: Positive real. Driving frequency.
-    :param n_max: Positive integer or zero.
+    Parameters
+    ----------
+    harm : Dictionary {m: square complex array}, see *harmonics*
+    omega : Positive real
+        Driving frequency.
+    n_max : Positive integer or zero
 
-    :returns:
-        * **H** -- Complex ndarray, shape ((2 n_max + 1) d, (2 n_max + 1) d).
+    Returns
+    -------
+    H : Complex ndarray, shape ((2 n_max + 1) d, (2 n_max + 1) d)
     '''
     error_handling.harmonics(harm)
     error_handling.positive_real(omega, 'omega')
@@ -276,9 +301,13 @@ class StepDrive:
     with no time grid. Built by *step_drive* from **System** instances or
     matrices (see *DrivenKSpace* for Bloch models and ribbons).
 
-    :param hams: List of square complex ndarrays, one Hermitian matrix per step (all of one shape).
-    :param durations: List of positive reals, the step durations :math:`\delta t_n`.
-    :param epsilon: Real number. Default value None. Default branch cut of
+    Parameters
+    ----------
+    hams
+        List of square complex ndarrays, one Hermitian matrix per step (all of one shape).
+    durations : List of positive reals, the step durations :math:`\delta t_n`
+    epsilon : Real number, default None
+        Default branch cut of
         *quasienergies* and *effective_hamiltonian*.
     '''
 
@@ -296,10 +325,14 @@ class StepDrive:
         r'''
         Get the Hamiltonian :math:`H(t)` (periodic in :math:`T`).
 
-        :param t: Real number. Time.
+        Parameters
+        ----------
+        t : Real number
+            Time.
 
-        :returns:
-            * **H** -- Complex ndarray.
+        Returns
+        -------
+        H : Complex ndarray
         '''
         error_handling.real_number(t, 't')
         n = int(np.searchsorted(np.cumsum(self.durations), t % self.period, side='right'))
@@ -309,10 +342,14 @@ class StepDrive:
         r'''
         Get the exact evolution operator :math:`U(t)` from time 0.
 
-        :param t: Real number in :math:`[0, T]`. Default value None (one period, :math:`U(T)`).
+        Parameters
+        ----------
+        t : Real number in :math:`[0, T]`
+            Default value None (one period, :math:`U(T)`).
 
-        :returns:
-            * **U** -- Complex ndarray.
+        Returns
+        -------
+        U : Complex ndarray
         '''
         error_handling.time_in_period(t, self.period)
         return _step_evolution(list(zip(self.hams, self.durations)), t)
@@ -322,10 +359,14 @@ class StepDrive:
         Get the quasienergies, sorted, in :math:`[-\omega/2, \omega/2)` or
         :math:`[\epsilon_{cut} - \omega, \epsilon_{cut})` (see *effective_hamiltonian*).
 
-        :param epsilon: Real number. Default value None (the *epsilon* of the drive).
+        Parameters
+        ----------
+        epsilon : Real number
+            Default value None (the *epsilon* of the drive).
 
-        :returns:
-            * **eps** -- Real ndarray.
+        Returns
+        -------
+        eps : Real ndarray
         '''
         error_handling.branch_cut(epsilon)
         epsilon = self.epsilon if epsilon is None else epsilon
@@ -336,10 +377,14 @@ class StepDrive:
         Get the Floquet Hamiltonian :math:`H_F = \frac{i}{T}\ln U(T)`, branch
         cut at *epsilon* (see *tbkit.floquet.effective_hamiltonian*).
 
-        :param epsilon: Real number. Default value None (the *epsilon* of the drive).
+        Parameters
+        ----------
+        epsilon : Real number
+            Default value None (the *epsilon* of the drive).
 
-        :returns:
-            * **H_F** -- Complex ndarray.
+        Returns
+        -------
+        H_F : Complex ndarray
         '''
         error_handling.branch_cut(epsilon)
         epsilon = self.epsilon if epsilon is None else epsilon
@@ -349,12 +394,16 @@ class StepDrive:
         r'''
         Evolve a state stroboscopically, :math:`\psi(nT) = U(T)^n\psi(0)`.
 
-        :param psi: Complex ndarray, the initial state (one amplitude per site).
-        :param n_periods: Positive integer or zero.
+        Parameters
+        ----------
+        psi : Complex ndarray, the initial state (one amplitude per site)
+        n_periods : Positive integer or zero
 
-        :returns:
-            * **psi_n** -- Complex ndarray, shape (n_periods + 1, n_sites):
-              the state after 0, 1, ..., n_periods periods.
+        Returns
+        -------
+        psi_n
+            Complex ndarray, shape (n_periods + 1, n_sites):
+            the state after 0, 1, ..., n_periods periods.
         '''
         error_handling.ndarray(psi, 'psi', self.n_sites)
         error_handling.positive_int_zero(n_periods, 'n_periods')
@@ -373,7 +422,10 @@ def step_drive(models: list, durations: ArrayLike, epsilon: float | None = None)
     :math:`T = \sum_n \delta t_n`. The evolution is exact (a product of step
     exponentials, no time grid, see *StepDrive*).
 
-    :param models: List of models of one size, all of one kind:
+    Parameters
+    ----------
+    models
+        List of models of one size, all of one kind:
 
         * **KSpace** instances (including ribbons made by *kspace.ribbon*)
           -- returns a *DrivenKSpace*, whose *get_ham* is the Floquet
@@ -382,13 +434,19 @@ def step_drive(models: list, durations: ArrayLike, epsilon: float | None = None)
           matrices (dense or scipy.sparse) -- returns a *StepDrive*.
 
         Each must be Hermitian; KSpace models need an orthogonal basis.
-    :param durations: List of positive reals. :math:`\delta t_n`, one per model.
-    :param epsilon: Real number. Default value None. Branch cut of the
+    durations : List of positive reals
+        :math:`\delta t_n`, one per model.
+    epsilon : Real number, default None
+        Branch cut of the
         Floquet Hamiltonian (see *effective_hamiltonian*).
 
-    :returns:
-        * **drive** -- *DrivenKSpace* or *StepDrive*.
+    Returns
+    -------
+    drive
+        *DrivenKSpace* or *StepDrive*.
 
+    Examples
+    --------
     Example usage::
 
         # Rudner et al. (2013): hopping along one bond direction per step
@@ -473,16 +531,25 @@ class DrivenKSpace:
     *step_drive* are evolved exactly. Real-space methods that need static
     hoppings (*finite_ham*, *get_ham_beta*, *gbz*) are not available.
 
-    :param ks: **KSpace** instance. The model driven: its lattice, orbitals
+    Parameters
+    ----------
+    ks : **KSpace** instance
+        The model driven: its lattice, orbitals
         and k-space conventions (periodic gauge) are those of the driven model.
-    :param ham_kt: Callable. ``ham_kt(k, t)`` returns the Hermitian Bloch
+    ham_kt : Callable
+        ``ham_kt(k, t)`` returns the Hermitian Bloch
         Hamiltonian :math:`H(\mathbf{k}, t)`, shape (norb, norb), in the
         periodic gauge of *ks* (:math:`H(\mathbf{k} + \mathbf{G}, t) = H(\mathbf{k}, t)`).
-    :param period: Positive real. :math:`T`.
-    :param n_steps: Positive integer. Default value 100. Time steps per period.
-    :param epsilon: Real number. Default value None (quasienergies in
+    period : Positive real
+        :math:`T`.
+    n_steps : Positive integer, default 100
+        Time steps per period.
+    epsilon : Real number
+        Default value None (quasienergies in
         :math:`[-\omega/2, \omega/2)`). Branch cut of *get_ham*.
 
+    Examples
+    --------
     Example usage::
 
         # a sublattice mass switched on and off
@@ -581,12 +648,16 @@ class DrivenKSpace:
         r'''
         Get the evolution operator :math:`U(\mathbf{k}, t) = \mathcal{T}e^{-i\int_0^tH(\mathbf{k},t')dt'}`.
 
-        :param k: k point (see *KSpace.get_ham*).
-        :param t: Real number in :math:`[0, T]`. Default value None (one
+        Parameters
+        ----------
+        k : k point (see *KSpace.get_ham*)
+        t : Real number in :math:`[0, T]`
+            Default value None (one
             period: the Floquet operator :math:`U(\mathbf{k}, T)`).
 
-        :returns:
-            * **U** -- Complex ndarray, shape (norb, norb).
+        Returns
+        -------
+        U : Complex ndarray, shape (norb, norb)
         '''
         error_handling.k_vector(k, 'k', self.dim)
         error_handling.time_in_period(t, self.period)
@@ -601,10 +672,13 @@ class DrivenKSpace:
         :math:`[\epsilon_{cut} - \omega, \epsilon_{cut})` (default
         :math:`[-\omega/2, \omega/2)`).
 
-        :param k: k point (see *KSpace.get_ham*).
+        Parameters
+        ----------
+        k : k point (see *KSpace.get_ham*)
 
-        :returns:
-            * **H_F** -- Complex ndarray, shape (norb, norb).
+        Returns
+        -------
+        H_F : Complex ndarray, shape (norb, norb)
         '''
         error_handling.k_vector(k, 'k', self.dim)
         return _heff(self.get_evolution(k), self.period, self.epsilon)
@@ -684,15 +758,21 @@ class DrivenKSpace:
         value far from an integer means the gap is too small for the grid
         (or closed).
 
-        :param epsilon: Real number. Quasienergy of the gap (branch cut).
-        :param nk: Positive integer (at least 4), or tuple of 2. Default
+        Parameters
+        ----------
+        epsilon : Real number
+            Quasienergy of the gap (branch cut).
+        nk : Positive integer (at least 4), or tuple of 2
+            Default
             value 48. k-points along each reciprocal vector.
-        :param n_t: Positive integer. Default value 40. Gauss-Legendre
+        n_t : Positive integer, default 40
+            Gauss-Legendre
             nodes per period (at least 2 per step; 2 n_t, and at least 24,
             for the return map).
 
-        :returns:
-            * **W** -- Real number, close to an integer.
+        Returns
+        -------
+        W : Real number, close to an integer
         '''
         error_handling.dim_exact(self.dim, 2)
         error_handling.real_number(epsilon, 'epsilon')
@@ -756,14 +836,22 @@ class DrivenKSpace:
         With the conventions of *winding_number*,
         ``n_upper = -n_lower = W`` (checked in the tests and examples).
 
-        :param epsilon: Real number. Quasienergy of the gap.
-        :param nk: Positive integer (at least 4). Default value 200. k-points,
+        Parameters
+        ----------
+        epsilon : Real number
+            Quasienergy of the gap.
+        nk : Positive integer (at least 4), default 200
+            k-points,
             fine enough that a state moves by less than *window* between two.
-        :param window: Positive real. Default value None (:math:`\omega/8`).
+        window : Positive real
+            Default value None (:math:`\omega/8`).
 
-        :returns:
-            * **n_lower** -- Real number. Signed count on the lower edge.
-            * **n_upper** -- Real number. Signed count on the upper edge.
+        Returns
+        -------
+        n_lower : Real number
+            Signed count on the lower edge.
+        n_upper : Real number
+            Signed count on the upper edge.
         '''
         error_handling.dim_exact(self.dim, 1)
         error_handling.real_number(epsilon, 'epsilon')
@@ -818,12 +906,18 @@ class FloquetKSpace(DrivenKSpace):
     so *winding_number* applies. Real-space methods that need
     static hoppings (*finite_ham*, *get_ham_beta*, *gbz*) are not available.
 
-    :param ks: **KSpace** instance (the static model).
-    :param vector_potential: Callable. ``vector_potential(t)`` returns
+    Parameters
+    ----------
+    ks : **KSpace** instance (the static model)
+    vector_potential : Callable
+        ``vector_potential(t)`` returns
         :math:`\mathbf{A}(t)` (space_dim components).
-    :param period: Positive real. :math:`T`.
-    :param n_steps: Positive integer. Default value 100. Time steps per period.
-    :param epsilon: Real number. Default value None (quasienergies in
+    period : Positive real
+        :math:`T`.
+    n_steps : Positive integer, default 100
+        Time steps per period.
+    epsilon : Real number
+        Default value None (quasienergies in
         :math:`[-\omega/2, \omega/2)`, as before this option existed).
         Branch cut of *get_ham*, see *effective_hamiltonian*.
     '''

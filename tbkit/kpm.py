@@ -43,10 +43,13 @@ def spectral_bounds(ham) -> tuple[float, float]:
     circle theorem: every eigenvalue lies within
     :math:`H_{ii} \pm \sum_{j\neq i}|H_{ij}|` for some :math:`i`.
 
-    :param ham: Square sparse (or dense) Hermitian matrix.
+    Parameters
+    ----------
+    ham : Square sparse (or dense) Hermitian matrix
 
-    :returns:
-        * **e_min**, **e_max** -- Real numbers.
+    Returns
+    -------
+    e_min, e_max : Real numbers
     '''
     ham = sparse.csr_matrix(ham)
     diag = ham.diagonal().real
@@ -66,10 +69,13 @@ def jackson_kernel(n_moments: int) -> NDArray[np.float64]:
     the optimal choice for spectral densities (positive, and resolution
     about :math:`\pi/M` in the scaled energy).
 
-    :param n_moments: Positive integer :math:`M`.
+    Parameters
+    ----------
+    n_moments : Positive integer :math:`M`
 
-    :returns:
-        * **g** -- Real ndarray, shape (n_moments,).
+    Returns
+    -------
+    g : Real ndarray, shape (n_moments,)
     '''
     error_handling.positive_int(n_moments, 'n_moments')
     m = np.arange(n_moments)
@@ -83,11 +89,14 @@ def lorentz_kernel(n_moments: int, lam: float = 4.) -> NDArray[np.float64]:
     which gives Lorentzian broadening (the better choice for Green's
     functions).
 
-    :param n_moments: Positive integer :math:`M`.
-    :param lam: Positive real. Default value 4.
+    Parameters
+    ----------
+    n_moments : Positive integer :math:`M`
+    lam : Positive real, default 4
 
-    :returns:
-        * **g** -- Real ndarray, shape (n_moments,).
+    Returns
+    -------
+    g : Real ndarray, shape (n_moments,)
     '''
     error_handling.positive_int(n_moments, 'n_moments')
     error_handling.positive_real(lam, 'lam')
@@ -158,23 +167,32 @@ def dos(
     (normalized, like *tbkit.dos.density_of_states*, to integrate to the
     number of states).
 
-    :param ham: Square sparse Hermitian matrix (e.g. *System.ham*).
-    :param n_moments: Positive integer. Default value 256. Number of
+    Parameters
+    ----------
+    ham : Square sparse Hermitian matrix (e.g. *System.ham*)
+    n_moments : Positive integer, default 256
+        Number of
         Chebyshev moments (the energy resolution is about
         :math:`\pi a/M`, :math:`2a` the spectral width).
-    :param n_random: Positive integer, or None. Default value 10. Number of
+    n_random : Positive integer, or None, default 10
+        Number of
         random vectors for the trace; None for the exact trace (N vectors:
         small systems only).
-    :param e_grid: Real array. Default value None: 1001 Chebyshev nodes over
+    e_grid : Real array
+        Default value None: 1001 Chebyshev nodes over
         the spectrum. Energies, inside the spectral bounds.
-    :param kernel: String. Default value 'jackson'. 'jackson' or 'lorentz'.
-    :param seed: Default value None. Seed of the random vectors.
-    :param bounds: Pair of reals. Default value None (Gershgorin bounds, see
+    kernel : String, default 'jackson'
+        'jackson' or 'lorentz'.
+    seed
+        Default value None. Seed of the random vectors.
+    bounds : Pair of reals
+        Default value None (Gershgorin bounds, see
         *spectral_bounds*). Bounds enclosing the whole spectrum.
 
-    :returns:
-        * **e_grid** -- Real ndarray.
-        * **rho** -- Real ndarray, same shape.
+    Returns
+    -------
+    e_grid : Real ndarray
+    rho : Real ndarray, same shape
     '''
     ham_s, e_grid, coef, _, _ = _setup(ham, n_moments, kernel, bounds, e_grid)
     vec = _vectors(ham_s.shape[0], n_random, seed)
@@ -194,15 +212,23 @@ def dos_from_levels(
     *dos* uses. It is the reference *dos* converges to (up to the random
     trace), e.g. for the bands of a periodic model on a k-mesh.
 
-    :param levels: Real array. Energy levels.
-    :param n_moments: Positive integer. Number of Chebyshev moments.
-    :param bounds: Pair of reals. Spectral bounds (those of *dos*, e.g.
+    Parameters
+    ----------
+    levels : Real array
+        Energy levels.
+    n_moments : Positive integer
+        Number of Chebyshev moments.
+    bounds : Pair of reals
+        Spectral bounds (those of *dos*, e.g.
         *spectral_bounds* of the Hamiltonian it is compared with).
-    :param e_grid: Real array. Energies.
-    :param kernel: String. Default value 'jackson'.
+    e_grid : Real array
+        Energies.
+    kernel : String, default 'jackson'
 
-    :returns:
-        * **rho** -- Real ndarray, same shape as *e_grid* (integrating to the number of levels).
+    Returns
+    -------
+    rho
+        Real ndarray, same shape as *e_grid* (integrating to the number of levels).
     '''
     levels = np.asarray(levels, dtype='f8').ravel()
     error_handling.ndarray_empty(levels, 'levels')
@@ -220,16 +246,23 @@ def ldos(
     Get the local density of states on one site (or orbital),
     :math:`\rho_i(E) = \langle i|\delta(E-H)|i\rangle`, exactly (no random vectors).
 
-    :param ham: Square sparse Hermitian matrix.
-    :param site: Integer. Site (row) index.
-    :param n_moments: Positive integer. Default value 256.
-    :param e_grid: See *dos*.
-    :param kernel: See *dos*.
-    :param bounds: See *dos*.
+    Parameters
+    ----------
+    ham : Square sparse Hermitian matrix
+    site : Integer
+        Site (row) index.
+    n_moments : Positive integer, default 256
+    e_grid
+        See *dos*.
+    kernel
+        See *dos*.
+    bounds
+        See *dos*.
 
-    :returns:
-        * **e_grid** -- Real ndarray.
-        * **rho** -- Real ndarray, same shape.
+    Returns
+    -------
+    e_grid : Real ndarray
+    rho : Real ndarray, same shape
     '''
     ham_s, e_grid, coef, _, _ = _setup(ham, n_moments, kernel, bounds, e_grid)
     error_handling.site_index(site, ham_s.shape[0])
@@ -259,20 +292,29 @@ def conductivity(
     :math:`\mu_{mn} = \mathrm{Tr}[v_x T_m(\tilde H) v_x T_n(\tilde H)]`,
     :math:`O(M N)` memory, the DOS needing only :math:`O(N)`).
 
-    :param ham: Square sparse Hermitian matrix.
-    :param x: Real array, one coordinate per site (e.g. *lat.coor['x']*).
-    :param n_moments: Positive integer. Default value 128.
-    :param n_random: Positive integer, or None. Default value 10. See *dos*.
-    :param e_grid: See *dos*.
-    :param kernel: See *dos*.
-    :param seed: See *dos*.
-    :param bounds: See *dos*.
-    :param area: Positive real. Default value None (the number of sites):
+    Parameters
+    ----------
+    ham : Square sparse Hermitian matrix
+    x : Real array, one coordinate per site (e.g. *lat.coor['x']*)
+    n_moments : Positive integer, default 128
+    n_random : Positive integer, or None, default 10
+        See *dos*.
+    e_grid
+        See *dos*.
+    kernel
+        See *dos*.
+    seed
+        See *dos*.
+    bounds
+        See *dos*.
+    area : Positive real
+        Default value None (the number of sites):
         the area (volume) :math:`\Omega` of the sample.
 
-    :returns:
-        * **e_grid** -- Real ndarray.
-        * **sigma** -- Real ndarray, same shape.
+    Returns
+    -------
+    e_grid : Real ndarray
+    sigma : Real ndarray, same shape
     '''
     ham_s, e_grid, coef, a, b = _setup(ham, n_moments, kernel, bounds, e_grid)
     n = ham_s.shape[0]
@@ -368,28 +410,41 @@ def hall_conductivity(
     ``periodic=True``): over a whole open flake, the edge currents cancel
     the bulk and the trace vanishes in a gap.
 
-    :param ham: Square sparse Hermitian matrix.
-    :param vx: Square sparse (or dense) Hermitian matrix, like *ham*. Velocity
+    Parameters
+    ----------
+    ham : Square sparse Hermitian matrix
+    vx : Square sparse (or dense) Hermitian matrix, like *ham*
+        Velocity
         :math:`v_x = i[H, x]` (see *KSpace.finite_velocity*). For a spin
         Hall conductivity, pass the spin current :math:`\{s, v_x\}/2`
         instead (units :math:`e/2\pi`, see *KSpace.spin_hall_conductivity*).
-    :param vy: Square sparse (or dense) Hermitian matrix. Velocity :math:`v_y`.
-    :param n_moments: Positive integer. Default value 256. Number of
+    vy : Square sparse (or dense) Hermitian matrix
+        Velocity :math:`v_y`.
+    n_moments : Positive integer, default 256
+        Number of
         Chebyshev moments :math:`M` (energy resolution about :math:`\pi a/M`).
-    :param n_random: Positive integer, or None. Default value 10. See *dos*.
-    :param e_grid: Real array. Default value None: 1001 Chebyshev nodes over
+    n_random : Positive integer, or None, default 10
+        See *dos*.
+    e_grid : Real array
+        Default value None: 1001 Chebyshev nodes over
         the spectrum. Fermi energies :math:`\mu`.
-    :param kernel: String. Default value 'jackson'. See *dos*.
-    :param seed: See *dos*.
-    :param bounds: See *dos*.
-    :param area: Positive real. Default value None (the number of orbitals).
+    kernel : String, default 'jackson'
+        See *dos*.
+    seed
+        See *dos*.
+    bounds
+        See *dos*.
+    area : Positive real
+        Default value None (the number of orbitals).
         Area :math:`\Omega` of the sample (e.g. number of cells times the
         cell area).
-    :param temperature: Positive real or zero. Default value 0. In energy units.
+    temperature : Positive real or zero, default 0
+        In energy units.
 
-    :returns:
-        * **e_grid** -- Real ndarray.
-        * **sigma** -- Real ndarray, same shape, in units of :math:`e^2/h`.
+    Returns
+    -------
+    e_grid : Real ndarray
+    sigma : Real ndarray, same shape, in units of :math:`e^2/h`
     '''
     ham_s, e_grid, _, a, b = _setup(ham, n_moments, kernel, bounds, e_grid)
     n = ham_s.shape[0]

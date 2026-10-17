@@ -131,14 +131,18 @@ def sk_block(orbs1: list[str], orbs2: list[str], d: ArrayLike, params: dict) -> 
     Get the Slater-Koster hopping matrix between the orbitals *orbs1* of an
     atom and the orbitals *orbs2* of a neighbour at displacement :math:`\mathbf{d}`.
 
-    :param orbs1: List of orbital names (see :data:`ORBITALS`).
-    :param orbs2: List of orbital names.
-    :param d: Tuple of 2 or 3 reals. Displacement from the first atom to the
+    Parameters
+    ----------
+    orbs1 : List of orbital names (see :data:`ORBITALS`)
+    orbs2 : List of orbital names
+    d : Tuple of 2 or 3 reals
+        Displacement from the first atom to the
         second (a 2D vector lies in the (x, y) plane).
-    :param params: Dictionary of bond integrals (see the module docstring).
+    params : Dictionary of bond integrals (see the module docstring)
 
-    :returns:
-        * **block** -- Real ndarray, shape (len(orbs1), len(orbs2)).
+    Returns
+    -------
+    block : Real ndarray, shape (len(orbs1), len(orbs2))
     '''
     error_handling.orbitals(orbs1)
     error_handling.orbitals(orbs2)
@@ -165,8 +169,9 @@ def orbital_angular_momentum() -> list[NDArray[np.complex128]]:
     Get the orbital angular momentum :math:`(L_x, L_y, L_z)` (:math:`\hbar = 1`)
     on the real p orbitals ``(px, py, pz)``: :math:`(L_k)_{ij} = -i\epsilon_{kij}`.
 
-    :returns:
-        * **L** -- List of three complex ndarrays, shape (3, 3).
+    Returns
+    -------
+    L : List of three complex ndarrays, shape (3, 3)
     '''
     eps = np.zeros((3, 3, 3))
     eps[0, 1, 2] = eps[1, 2, 0] = eps[2, 0, 1] = 1.
@@ -183,19 +188,26 @@ def sk_kspace(lat, orbitals: dict[str, list[str]], bonds: dict[int, dict],
     *bonds* -- the reciprocal-space twin of
     :meth:`tbkit.orbital.OrbitalSystem.set_slater_koster`.
 
-    :param lat: **Lattice** instance (unit cell and primitive vectors).
-    :param orbitals: Dictionary {tag: list of orbital names}.
-    :param bonds: Dictionary {n: bond integrals}: the neighbour orders to
+    Parameters
+    ----------
+    lat : **Lattice** instance (unit cell and primitive vectors)
+    orbitals : Dictionary {tag: list of orbital names}
+    bonds
+        Dictionary {n: bond integrals}: the neighbour orders to
         connect (1 for nearest neighbours), each with its Slater-Koster
         parameters (see the module docstring).
-    :param onsite: Dictionary. Default value None. {tag: energy} (every
+    onsite : Dictionary, default None
+        {tag: energy} (every
         orbital of the site) or {tag: {orbital: energy}}.
-    :param overlap: Dictionary. Default value None. {n: bond integrals} of
+    overlap : Dictionary, default None
+        {n: bond integrals} of
         the overlap matrix (see *KSpace.set_overlap*).
 
-    :returns:
-        * **ks** -- **KSpace** instance; *ks.sk_orbitals* lists the (site,
-          orbital) of each of its orbitals.
+    Returns
+    -------
+    ks
+        **KSpace** instance; *ks.sk_orbitals* lists the (site,
+        orbital) of each of its orbitals.
     '''
     from tbkit.kspace import KSpace
     from tbkit.lattice import Lattice

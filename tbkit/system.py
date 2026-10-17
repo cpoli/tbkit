@@ -41,9 +41,11 @@ class System():
     Solve the Tight-Binding eigenvalue problem of a lattice defined 
     by the class **lattice**.
 
-    :param lat: **lattice** class instance.
-    :param periodic: Boolean, or tuple of booleans (one per primitive
-        vector). Default value False. Periodic boundary conditions along the
+    Parameters
+    ----------
+    lat : **lattice** class instance
+    periodic : Boolean, or tuple of booleans (one per primitive vector), default False
+        Periodic boundary conditions along the
         primitive vectors :math:`\mathbf{a}_i`: the sample is then the
         :math:`n_1\mathbf{a}_1\times n_2\mathbf{a}_2\,(\times n_3\mathbf{a}_3)`
         box of *lat.get_lattice* wrapped into a torus (True), or a cylinder
@@ -57,6 +59,8 @@ class System():
         (*set_magnetic_field*) and the local Chern marker need open
         boundaries; *get_bott_index* is the Chern number of a torus.
 
+    Notes
+    -----
     Up to *dense_max* sites (default 5000), the distances between all pairs
     of sites are computed (and kept in *vec_hop*). Larger lattices only look
     for the neighbours they need, with a k-d tree, up to the largest
@@ -109,7 +113,10 @@ class System():
         bond's projection on the (x, y) plane; in 3D space, a vertical bond
         gets angle 0 pointing up (+z) and -180 pointing down.
 
-        :param n_orders: Positive integer. Default value 1. Beyond *dense_max*
+        Parameters
+        ----------
+        n_orders : Positive integer, default 1
+            Beyond *dense_max*
             sites, the number of neighbour orders (distinct distances) needed.
         '''
         error_handling.sites(self.lat.sites)
@@ -276,7 +283,10 @@ class System():
         of the nth shortest edges. Negative angles are given by:
         :math:`\phi_-= \phi_+-180` and :math:`\phi_-\in[-180, 0)`.
 
-        :param n: Positive integer. Number of shortest edges.
+        Parameters
+        ----------
+        n : Positive integer
+            Number of shortest edges.
         '''
         error_handling.sites(self.lat.sites)
         error_handling.positive_int(n, 'n')
@@ -302,13 +312,18 @@ class System():
         '''
         Set onsite energies.
 
-        :param dict_onsite: Dictionary. key: sublattice tag, val: onsite
+        Parameters
+        ----------
+        dict_onsite : Dictionary
+            key: sublattice tag, val: onsite
             energy, or a value function ``onsite(site, **params)``, evaluated
             by ``get_ham(**params)``. *site* is a structured array of the
             sites of that tag (fields 'x', 'y', ('z'), 'tag', 'index'); the
             function returns one energy, or one per site. *set_onsite_dis*
             adds to it.
 
+        Examples
+        --------
         Example usage::
 
             # Line-Centered Square lattice
@@ -339,9 +354,12 @@ class System():
         :math:`i < j`, but *rotation*, *clean_coor*, *+=*, ... reorder the
         sites, so the orientation is taken from the angle itself.
 
-        :returns:
-            * **i**, **j** -- Integer ndarrays. Bond end points.
-            * **ang** -- Real ndarray. Bond angles, in degrees, in :math:`[0, 180)`.
+        Returns
+        -------
+        i, j : Integer ndarrays
+            Bond end points.
+        ang : Real ndarray
+            Bond angles, in degrees, in :math:`[0, 180)`.
         '''
         error_handling.torus_size(self.dist_uni[n], self._shortest_period(), n)
         if self._pairs is not None:
@@ -377,7 +395,9 @@ class System():
         r'''
         Set lattice hoppings.
 
-        :param list_hop: List of Dictionaries.
+        Parameters
+        ----------
+        list_hop : List of Dictionaries
             Dictionary with keys ('n', 'ang', 'tag', 't') where:
 
                 * 'n' Positive integer, type of hoppings:
@@ -407,14 +427,14 @@ class System():
                     one per bond (see the example below). Modifiers applied
                     afterwards (*set_peierls_phase*, *set_hopping_dis*, ...)
                     multiply it.
-
-        :param upper_part: Boolean. Default value True.
-
+        upper_part : Boolean, default True
             * True, get the hoppings with angles in :math:`[0, 180)`, *i.e.* fill
               the Hamiltonian upper part.
             * False, get the reversed hoppings, with angles in :math:`[-180, 0)`,
               *i.e.* fill the Hamiltonian lower part.
 
+        Examples
+        --------
         Example usage::
 
             # fill upper part:
@@ -552,11 +572,18 @@ class System():
         Private method.
         Fill self.hop. 
 
-        :param n: Integer. Hopping type.
-        :param size: Integer. Number of hoppings.
-        :param dic: Dictionary. Hopping dictionary.
-        :param mask: np.ndarray. Mask.
-        :param upper_part: Boolean. If True, keep the orientation of *store_hop*
+        Parameters
+        ----------
+        n : Integer
+            Hopping type.
+        size : Integer
+            Number of hoppings.
+        dic : Dictionary
+            Hopping dictionary.
+        mask : np.ndarray
+            Mask.
+        upper_part : Boolean
+            If True, keep the orientation of *store_hop*
             (angles in [0, 180)), else reverse it.
         '''
         hop = np.empty(size, dtype=HOP_DTYPE)
@@ -579,14 +606,16 @@ class System():
         '''
         Set hoppings manually.
 
-        :param dict_hop: Dictionary of hoppings.
+        Parameters
+        ----------
+        dict_hop : Dictionary of hoppings
             key: hopping indices, val: hopping values.
-
-        :parameter upper_part: Boolean. Default value True.
-
+        upper_part : Boolean, default True
             * True, fill the Hamiltonian upper part.
             * False, fill the Hamiltonian lower part.
 
+        Examples
+        --------
         Example usage::
 
             sys.set_hopping_manual({(0, 1): 1., (1, 2): 2.})
@@ -667,12 +696,16 @@ class System():
         '''
         Set uniform hopping disorder. 
 
-        :param alpha: Complex or Real number. Disorder strength.
+        Parameters
+        ----------
+        alpha : Complex or Real number
+            Disorder strength.
 
+        Examples
+        --------
         Example usage::
 
             sys.set_hopping_dis(alpha=0.1)
-
         '''
         error_handling.empty_hop(self.hop)
         error_handling.number(alpha, 'alpha')
@@ -697,7 +730,10 @@ class System():
         For a uniform perpendicular field, use the convenience method
         *set_magnetic_field* instead.
 
-        :param phase: Callable. ``phase(xi, yi, xj, yj)`` returns
+        Parameters
+        ----------
+        phase : Callable
+            ``phase(xi, yi, xj, yj)`` returns
             :math:`\phi_{ij}`, the (real-valued) Peierls phase for the bond
             from :math:`(x_i, y_i)` to :math:`(x_j, y_j)`. Called with
             Numpy arrays (one value per hopping in *sys.hop*). With periodic
@@ -708,6 +744,8 @@ class System():
             field of zero net flux), or uniform (a flux threading the holes
             of the torus, i.e. twisted boundary conditions).
 
+        Notes
+        -----
         .. note::
 
             *get_ham* automatically assigns the reversed bond its complex
@@ -716,6 +754,8 @@ class System():
             :math:`j` -- true for the line integral of any vector
             potential, since reversing the integration path negates it.
 
+        Examples
+        --------
         Example usage::
 
             # Peierls phase from a uniform field via the Landau gauge
@@ -743,11 +783,16 @@ class System():
 
             \phi_{ij} = \pi\alpha\,(x_iy_j - x_jy_i)
 
-        :param alpha: Real number. Flux density :math:`B/\Phi_0`, in flux
+        Parameters
+        ----------
+        alpha : Real number
+            Flux density :math:`B/\Phi_0`, in flux
             quanta per unit area (in the lattice's length units) -- *i.e.*
             the flux through a region of area :math:`S` is
             :math:`\alpha S` flux quanta.
 
+        Examples
+        --------
         Example usage::
 
             # one flux quantum per 100 unit cells of a lattice with
@@ -766,12 +811,16 @@ class System():
         '''
         Set uniform onsite disorder. 
 
-        :param alpha: Complex or Real number. Disorder strength.
+        Parameters
+        ----------
+        alpha : Complex or Real number
+            Disorder strength.
 
+        Examples
+        --------
         Example usage::
 
             sys.set_onsite_dis(alpha=0.1)
-
         '''
         error_handling.empty_onsite(self.onsite)
         error_handling.number(alpha, 'alpha')
@@ -781,9 +830,13 @@ class System():
         '''
         Set specific onsite energies.
 
-        :param onsite_def:  Dictionary. 
+        Parameters
+        ----------
+        onsite_def : Dictionary
             key: site indices, val: onsite values.
 
+        Examples
+        --------
         Example usage::
 
             sys.set_onsite_def({0: 1., 1: -1j})
@@ -798,13 +851,17 @@ class System():
         '''
         Set specific hoppings. 
 
-        :param hopping_def:  Dictionary of hoppings.
+        Parameters
+        ----------
+        hopping_def : Dictionary of hoppings
             key: hopping indices :math:`(i, j)`, val: hopping value :math:`t_{ij}`.
             If *sys.hop* stores the bond the other way round, as :math:`(j, i)`
             (only one direction is stored for a Hermitian Hamiltonian), that
             entry is set to :math:`t_{ij}^*`, so that :math:`H_{ij} = t_{ij}`.
             A pair that is not a hopping of *sys.hop* is ignored.
 
+        Examples
+        --------
         Example usage::
 
             sys.set_hopping_def({(0, 1): 1., (1, 2): -1j})
@@ -824,8 +881,11 @@ class System():
         Private method.
         Set new hoppings.
 
-        :param list_hop: List of Dictionary (see set_hopping definition).
-        :param ind: List. List of indices.
+        Parameters
+        ----------
+        list_hop : List of Dictionary (see set_hopping definition)
+        ind : List
+            List of indices.
         '''
         for dic in list_hop:
             if len(dic) == 2:
@@ -843,8 +903,12 @@ class System():
         Private method.
         Find hoppings within the square.
 
-        :param xlims: List or Tuple. :math:`x` interval.
-        :param ylims: List or Tuple. :math:`y` interval.
+        Parameters
+        ----------
+        xlims : List or Tuple
+            :math:`x` interval.
+        ylims : List or Tuple
+            :math:`y` interval.
         '''
         error_handling.lims(xlims)
         error_handling.lims(ylims)
@@ -863,10 +927,16 @@ class System():
         Private method.
         Find hoppings within the ellipse.
 
-        :param rx: Positive Float. Radius along :math:`x`.
-        :param ry: Positive Float. Radius along :math:`y`.
-        :param x0: Float. Default value 0. :math:`x` center.
-        :param y0: Float. Default value 0. :math:`y` center.
+        Parameters
+        ----------
+        rx : Positive Float
+            Radius along :math:`x`.
+        ry : Positive Float
+            Radius along :math:`y`.
+        x0 : Float, default 0
+            :math:`x` center.
+        y0 : Float, default 0
+            :math:`y` center.
         '''
         in1 = (self.lat.coor['x'][self.hop['i']] - x0) ** 2 / rx ** 2 + \
                  (self.lat.coor['y'][self.hop['i']] - y0) ** 2 / ry ** 2 <= 1.
@@ -881,9 +951,13 @@ class System():
         Change the values of the hoppings whose two sites both lie in
         the rectangle *xlims* x *ylims*.
 
-        :param list_hop: List of Dictionary (see set_hopping definition).
-        :param xlims: List or Tuple. :math:`x` interval.
-        :param ylims: List or Tuple. Default value [-1, 1]. :math:`y` interval.
+        Parameters
+        ----------
+        list_hop : List of Dictionary (see set_hopping definition)
+        xlims : List or Tuple
+            :math:`x` interval.
+        ylims : List or Tuple, default [-1, 1]
+            :math:`y` interval.
         '''
         error_handling.empty_hop(self.hop)
         error_handling.set_hopping(list_hop, self.nmax)
@@ -897,11 +971,17 @@ class System():
         Change the values of the hoppings whose two sites both lie in
         the ellipse of radii *rx*, *ry* centered at (*x0*, *y0*).
 
-        :param list_hop: List of Dictionary (see set_hopping definition).
-        :param rx: Positive Float. Radius along :math:`x`. 
-        :param ry: Positive Float. Radius along :math:`y`.
-        :param x0: Float. Default value 0. :math:`x` center. 
-        :param y0: Float. Default value 0. :math:`y` center.
+        Parameters
+        ----------
+        list_hop : List of Dictionary (see set_hopping definition)
+        rx : Positive Float
+            Radius along :math:`x`.
+        ry : Positive Float
+            Radius along :math:`y`.
+        x0 : Float, default 0
+            :math:`x` center.
+        y0 : Float, default 0
+            :math:`y` center.
         '''
         error_handling.empty_hop(self.hop)
         error_handling.set_hopping(list_hop, self.nmax)
@@ -948,12 +1028,17 @@ class System():
         '''
         Get the Tight-Binding Hamiltonian using sys.hop.
 
-        :param params: Values of the parameters of the value functions given
+        Parameters
+        ----------
+        params
+            Values of the parameters of the value functions given
             to *set_hopping* / *set_onsite*: each function gets the ones its
             signature names (all of them with ``**kwargs``); the others are
             ignored. Only the values are recomputed: sweeping a parameter
             costs one call per point, not a new model.
 
+        Examples
+        --------
         Example usage::
 
             for B in np.linspace(0., 0.1, 50):
@@ -978,9 +1063,11 @@ class System():
         '''
         Get the eigenergies, eigenvectors and polarisation.
 
-        :param eigenvec: Boolean. Default value False. 
+        Parameters
+        ----------
+        eigenvec : Boolean, default False
             If True, get the eigenvectors.
-        :param left: Boolean. Default value False. 
+        left : Boolean, default False
             If True, get the left eigenvectors too. 
             Relevant for non-Hermitian matrices.
         '''
@@ -1041,14 +1128,18 @@ class System():
         real part) and, with *eigenvec*, *rn*, *intensity* and *pola*, as for
         *get_eig*.
 
-        :param n_eig: Positive integer. Default value 10. Number of eigenpairs
+        Parameters
+        ----------
+        n_eig : Positive integer, default 10
+            Number of eigenpairs
             (at most sites - 2).
-        :param sigma: Real or complex number. Default value 0. Target energy.
+        sigma : Real or complex number, default 0
+            Target energy.
             The factorization uses *sigma* shifted by about 1e-9 (relative to
             the largest matrix element), so that it may be exactly an
             eigenvalue, e.g. zero modes at the default *sigma* = 0; the
             eigenvalues themselves are not shifted.
-        :param eigenvec: Boolean. Default value False.
+        eigenvec : Boolean, default False
         '''
         error_handling.empty_ham(self.ham)
         error_handling.n_eig(n_eig, self.lat.sites)
@@ -1081,11 +1172,16 @@ class System():
 
             G(E) = \left[(E + i\eta) - H\right]^{-1}\, .
 
-        :param energy: Real (or complex) number. Energy :math:`E`.
-        :param eta: Positive real or zero. Default value 1e-6. Broadening :math:`\eta`.
+        Parameters
+        ----------
+        energy : Real (or complex) number
+            Energy :math:`E`.
+        eta : Positive real or zero, default 1e-6
+            Broadening :math:`\eta`.
 
-        :returns:
-            * **G** -- Complex ndarray, shape (sites, sites).
+        Returns
+        -------
+        G : Complex ndarray, shape (sites, sites)
         '''
         error_handling.empty_ham(self.ham)
         error_handling.number(energy, 'energy')
@@ -1106,11 +1202,16 @@ class System():
         Hamiltonian). Summed over sites it is the Lorentzian-broadened
         density of states.
 
-        :param energies: Real array. Energies.
-        :param eta: Positive real. Default value 0.05. Broadening.
+        Parameters
+        ----------
+        energies : Real array
+            Energies.
+        eta : Positive real, default 0.05
+            Broadening.
 
-        :returns:
-            * **ldos** -- Real ndarray, shape (len(energies), sites).
+        Returns
+        -------
+        ldos : Real ndarray, shape (len(energies), sites)
         '''
         error_handling.empty_ham(self.ham)
         error_handling.positive_real(eta, 'eta')
@@ -1130,11 +1231,15 @@ class System():
         Get the Fermi level holding *n_electrons* electrons in the spectrum
         *en* (one electron per state; see *tbkit.occupation.fermi_level*).
 
-        :param n_electrons: Positive real or zero. Number of electrons.
-        :param temperature: Positive real or zero. Default value 0.
+        Parameters
+        ----------
+        n_electrons : Positive real or zero
+            Number of electrons.
+        temperature : Positive real or zero, default 0
 
-        :returns:
-            * **e_fermi** -- Real number.
+        Returns
+        -------
+        e_fermi : Real number
         '''
         error_handling.empty_ndarray(self.en, 'sys.get_eig')
         return occupation.fermi_level(self.en, n_electrons, temperature)
@@ -1143,11 +1248,15 @@ class System():
         '''
         Get the Fermi-Dirac occupation of every eigenstate of *en*.
 
-        :param e_fermi: Real number. Fermi level (see *get_fermi_level*).
-        :param temperature: Positive real or zero. Default value 0.
+        Parameters
+        ----------
+        e_fermi : Real number
+            Fermi level (see *get_fermi_level*).
+        temperature : Positive real or zero, default 0
 
-        :returns:
-            * **f** -- Real ndarray, same length as *en*.
+        Returns
+        -------
+        f : Real ndarray, same length as *en*
         '''
         error_handling.empty_ndarray(self.en, 'sys.get_eig')
         return occupation.fermi_dirac(self.en, e_fermi, temperature)
@@ -1157,11 +1266,15 @@ class System():
         Get the electron density on every site,
         :math:`n_i = \sum_n f(E_n)\,|\psi_n(i)|^2`.
 
-        :param e_fermi: Real number. Fermi level.
-        :param temperature: Positive real or zero. Default value 0.
+        Parameters
+        ----------
+        e_fermi : Real number
+            Fermi level.
+        temperature : Positive real or zero, default 0
 
-        :returns:
-            * **density** -- Real ndarray, shape (sites,).
+        Returns
+        -------
+        density : Real ndarray, shape (sites,)
         '''
         error_handling.empty_ndarray(self.rn, 'sys.get_eig(eigenvec=True)')
         return self.intensity @ self.get_occupations(e_fermi, temperature)
@@ -1170,11 +1283,15 @@ class System():
         r'''
         Get the band energy :math:`E = \sum_n f(E_n)\,E_n`.
 
-        :param e_fermi: Real number. Fermi level.
-        :param temperature: Positive real or zero. Default value 0.
+        Parameters
+        ----------
+        e_fermi : Real number
+            Fermi level.
+        temperature : Positive real or zero, default 0
 
-        :returns:
-            * **energy** -- Real number.
+        Returns
+        -------
+        energy : Real number
         '''
         return float(np.sum(self.get_occupations(e_fermi, temperature) * self.en.real))
 
@@ -1215,10 +1332,15 @@ class System():
         '''
         Get the state with largest polarization on one sublattice.
 
-        :param tag_pola: One-character string. Sublattice tag.
+        Parameters
+        ----------
+        tag_pola : One-character string
+            Sublattice tag.
 
-        :returns:
-            * **intensity** -- Intensity of max polarized state on *tag*.
+        Returns
+        -------
+        intensity
+            Intensity of max polarized state on *tag*.
         '''
         error_handling.empty_ndarray(self.rn, 'sys.get_eig(eigenvec=True)')
         error_handling.tag(tag_pola, self.lat.tags)
@@ -1231,10 +1353,15 @@ class System():
         '''
         Get the state with smallest polarization on one sublattice.
 
-        :param tag_pola: One-character string. Sublattice tag.
+        Parameters
+        ----------
+        tag_pola : One-character string
+            Sublattice tag.
 
-        :returns:
-            * **intensity** -- Intensity of min polarized state on *tag*.
+        Returns
+        -------
+        intensity
+            Intensity of min polarized state on *tag*.
         '''
         error_handling.empty_ndarray(self.rn, 'sys.get_eig(eigenvec=True)')
         error_handling.tag(tag_pola, self.lat.tags)
@@ -1248,10 +1375,15 @@ class System():
         Get, if any, the intensity of the sum of the states whose
         energies (real part) lie between *lims[0]* and *lims[1]*.
 
-        :param lims: List. lims[0] energy min, lims[1] energy max.
+        Parameters
+        ----------
+        lims : List
+            lims[0] energy min, lims[1] energy max.
 
-        :returns:
-            * **intensity** -- Sum of the intensities between (lims[0], lims[1]).
+        Returns
+        -------
+        intensity
+            Sum of the intensities between (lims[0], lims[1]).
         '''
         error_handling.empty_ndarray(self.rn, 'sys.get_eig(eigenvec=True)')
         error_handling.lims(lims)
@@ -1277,13 +1409,18 @@ class System():
         *KSpace.chern_number*; it sums to zero over the whole flake, the
         edges carrying the opposite value.
 
-        :param e_fermi: Real number. Default value 0. Fermi energy: the states
+        Parameters
+        ----------
+        e_fermi : Real number, default 0
+            Fermi energy: the states
             with energies below it are occupied.
-        :param area: Positive real number. Default value None: the area of
+        area : Positive real number
+            Default value None: the area of
             the unit cell of *lat* divided by its number of sites.
 
-        :returns:
-            * **marker** -- Real ndarray, shape (sites,).
+        Returns
+        -------
+        marker : Real ndarray, shape (sites,)
         '''
         error_handling.not_periodic(self.periodic, 'get_local_chern_marker')
         error_handling.empty_ham(self.ham)
@@ -1317,11 +1454,17 @@ class System():
         *KSpace.chern_number*, and an integer for any disordered sample
         whose occupied states are gapped or localized.
 
-        :param e_fermi: Real number. Default value 0. Fermi energy.
+        Parameters
+        ----------
+        e_fermi : Real number, default 0
+            Fermi energy.
 
-        :returns:
-            * **bott** -- Real number, close to an integer.
+        Returns
+        -------
+        bott : Real number, close to an integer
 
+        Examples
+        --------
         Example usage::
 
             lat = lattices.honeycomb()

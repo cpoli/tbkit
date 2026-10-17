@@ -21,9 +21,14 @@ def sites(pos: NDArray[np.float64], tags: NDArray, index: NDArray) -> NDArray:
     Private function. The sites passed to a value function: a structured
     array with fields 'x', 'y' (and 'z' in 3D space), 'tag' and 'index'.
 
-    :param pos: Real ndarray, shape (n, space_dim). Positions.
-    :param tags: String ndarray, shape (n,). Sublattice tags.
-    :param index: Integer ndarray, shape (n,). Site indices.
+    Parameters
+    ----------
+    pos : Real ndarray, shape (n, space_dim)
+        Positions.
+    tags : String ndarray, shape (n,)
+        Sublattice tags.
+    index : Integer ndarray, shape (n,)
+        Site indices.
     '''
     names = ('x', 'y', 'z')[:pos.shape[1]]
     rec = np.zeros(len(pos), dtype=[(name, 'f8') for name in names] + [('tag', 'U1'), ('index', 'i8')])
@@ -52,9 +57,11 @@ def evaluate(func: Callable, args: tuple, params: dict, size: int, spin: bool = 
     Private function. Call the value function *func* on the site arrays
     *args*, with the entries of *params* it takes.
 
-    :returns:
-        * **values** -- Complex ndarray, shape (size,), or (size, 2, 2) if
-          *spin* (a number per bond then multiplies the identity).
+    Returns
+    -------
+    values
+        Complex ndarray, shape (size,), or (size, 2, 2) if
+        *spin* (a number per bond then multiplies the identity).
     '''
     val = np.asarray(func(*args, **_kwargs(func, len(args), params)), dtype='c16')
     error_handling.value_shape(val, size, spin, func)

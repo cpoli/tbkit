@@ -58,11 +58,17 @@ class SupercellKSpace(KSpace):
     *supercell*). Orbital *o* of primitive cell *m* is orbital
     ``m*prim.norb + o``.
 
-    :ivar prim: **KSpace** instance. The primitive model.
-    :ivar matrix: Integer ndarray, shape (dim, dim). Supercell matrix *M*.
-    :ivar cells: Real ndarray, shape (N, space_dim). Origins
+    Attributes
+    ----------
+    prim : **KSpace** instance
+        The primitive model.
+    matrix : Integer ndarray, shape (dim, dim)
+        Supercell matrix *M*.
+    cells : Real ndarray, shape (N, space_dim)
+        Origins
         :math:`\mathbf{r}_m` of the primitive cells in the supercell.
-    :ivar n_cells: Integer. :math:`N = |\det M|`.
+    n_cells : Integer
+        :math:`N = |\det M|`.
     '''
 
     def __init__(self, lat: Lattice, spin: bool, prim: KSpace, matrix: NDArray, cells: NDArray) -> None:
@@ -80,10 +86,16 @@ class MoireKSpace(KSpace):
     layer 1 (tags 'c', 'd', rotated by :math:`+\theta/2`, a height *d*
     above).
 
-    :ivar theta: Real number. Twist angle, in radians.
-    :ivar layer: Integer ndarray. Layer (0 or 1) of every orbital.
-    :ivar z: Real ndarray. Height of every orbital.
-    :ivar n_layer_cells: Integer. Primitive cells per layer in the supercell.
+    Attributes
+    ----------
+    theta : Real number
+        Twist angle, in radians.
+    layer : Integer ndarray
+        Layer (0 or 1) of every orbital.
+    z : Real ndarray
+        Height of every orbital.
+    n_layer_cells : Integer
+        Primitive cells per layer in the supercell.
     '''
 
     def __init__(self, lat: Lattice, theta: float, layer: NDArray, z: NDArray, n_layer_cells: int) -> None:
@@ -119,14 +131,21 @@ def supercell(ks: KSpace, matrix: ArrayLike) -> SupercellKSpace:
     translation symmetry afterwards by changing the supercell's
     ``onsite`` array (one entry per orbital), e.g. with random energies.
 
-    :param ks: **KSpace** instance (any dimension; spinful or not).
-    :param matrix: Integer array, shape (dim, dim), nonzero determinant
+    Parameters
+    ----------
+    ks : **KSpace** instance (any dimension; spinful or not)
+    matrix
+        Integer array, shape (dim, dim), nonzero determinant
         (an integer *n* in 1D is also accepted).
 
-    :returns:
-        * **sc** -- :class:`SupercellKSpace` instance, ``N*ks.norb`` orbitals:
-          orbital *o* of cell *m* (origin ``sc.cells[m]``) is ``m*ks.norb + o``.
+    Returns
+    -------
+    sc
+        :class:`SupercellKSpace` instance, ``N*ks.norb`` orbitals:
+        orbital *o* of cell *m* (origin ``sc.cells[m]``) is ``m*ks.norb + o``.
 
+    Examples
+    --------
     Example usage::
 
         # a 3 x 3 supercell of graphene, 18 orbitals
@@ -184,13 +203,19 @@ def unfold(sc: SupercellKSpace, ks: ArrayLike) -> tuple[NDArray[np.float64], NDA
     number of primitive orbitals; for a pristine supercell they are 1 on
     the primitive bands :math:`E_n(\mathbf{k})` and 0 on the others.
 
-    :param sc: :class:`SupercellKSpace` instance (Hermitian, without overlap).
-    :param ks: Real array, shape (nk, dim). Primitive k-points, in the
+    Parameters
+    ----------
+    sc : :class:`SupercellKSpace` instance (Hermitian, without overlap)
+    ks : Real array, shape (nk, dim)
+        Primitive k-points, in the
         coordinates of ``sc.prim.get_ham``.
 
-    :returns:
-        * **en** -- Real ndarray, shape (nk, sc.norb). Supercell energies at each k.
-        * **weights** -- Real ndarray, shape (nk, sc.norb). Spectral weights :math:`W_J(\mathbf{k})`.
+    Returns
+    -------
+    en : Real ndarray, shape (nk, sc.norb)
+        Supercell energies at each k.
+    weights : Real ndarray, shape (nk, sc.norb)
+        Spectral weights :math:`W_J(\mathbf{k})`.
     '''
     error_handling.supercell_model(sc, SupercellKSpace)
     error_handling.hermitian_kspace(sc.is_hermitian(), sc._overlap_hop)
@@ -222,14 +247,20 @@ def spectral_function(
     the number of primitive orbitals. For a disordered supercell, average
     it over disorder configurations.
 
-    :param sc: :class:`SupercellKSpace` instance.
-    :param ks: Real array, shape (nk, dim). Primitive k-points.
-    :param energies: Real array. Energies :math:`\omega`.
-    :param broadening: Positive real. Default value 0.05. Kernel width.
-    :param kernel: 'lorentzian' or 'gaussian'. Default value 'lorentzian'.
+    Parameters
+    ----------
+    sc : :class:`SupercellKSpace` instance
+    ks : Real array, shape (nk, dim)
+        Primitive k-points.
+    energies : Real array
+        Energies :math:`\omega`.
+    broadening : Positive real, default 0.05
+        Kernel width.
+    kernel : 'lorentzian' or 'gaussian', default 'lorentzian'
 
-    :returns:
-        * **A** -- Real ndarray, shape (nk, len(energies)).
+    Returns
+    -------
+    A : Real ndarray, shape (nk, len(energies))
     '''
     energies = np.atleast_1d(np.asarray(energies, dtype='f8'))
     error_handling.ndarray_empty(energies, 'energies')
@@ -265,15 +296,22 @@ def pz_hopping(
     :math:`t_\sigma`. Defaults: graphene, in eV and nm (:math:`\delta =
     0.184\,a`, :math:`a = 0.246` nm).
 
-    :param d: Real array, shape (n, 3). Bond vectors.
-    :param t_pi: Real number. Default value -2.7.
-    :param t_sigma: Real number. Default value 0.48.
-    :param a0: Positive real. Default value 0.142. In-plane nearest-neighbour distance.
-    :param d0: Positive real. Default value 0.335. Interlayer distance.
-    :param delta: Positive real. Default value 0.0453. Decay length.
+    Parameters
+    ----------
+    d : Real array, shape (n, 3)
+        Bond vectors.
+    t_pi : Real number, default -2.7
+    t_sigma : Real number, default 0.48
+    a0 : Positive real, default 0.142
+        In-plane nearest-neighbour distance.
+    d0 : Positive real, default 0.335
+        Interlayer distance.
+    delta : Positive real, default 0.0453
+        Decay length.
 
-    :returns:
-        * **t** -- Real ndarray, shape (n,).
+    Returns
+    -------
+    t : Real ndarray, shape (n,)
     '''
     d = np.atleast_2d(np.asarray(d, dtype='f8'))
     error_handling.bond_vectors(d)
@@ -324,11 +362,14 @@ def commensurate_angle(m: int, lattice: str = 'honeycomb') -> float:
     :math:`2m^2+2m+1` (square) primitive cells per layer; :math:`m = 31`
     gives graphene's first magic angle, :math:`\theta \approx 1.05°`.
 
-    :param m: Positive integer.
-    :param lattice: 'honeycomb' or 'square'. Default value 'honeycomb'.
+    Parameters
+    ----------
+    m : Positive integer
+    lattice : 'honeycomb' or 'square', default 'honeycomb'
 
-    :returns:
-        * **theta** -- Real number, in radians.
+    Returns
+    -------
+    theta : Real number, in radians
     '''
     error_handling.positive_int(m, 'm')
     error_handling.twist_lattice(lattice)
@@ -360,20 +401,29 @@ def twisted_bilayer(
     so *interlayer_scale* (which multiplies every interlayer hopping)
     moves the magic angle to larger angles and smaller cells.
 
-    :param m: Positive integer. See *commensurate_angle*.
-    :param lattice: 'honeycomb' or 'square'. Default value 'honeycomb'.
-    :param a: Positive real. Default value 0.142 (graphene, nm). Nearest-neighbour distance.
-    :param d: Positive real. Default value 0.335 (nm). Interlayer distance.
-    :param hopping: Callable. Default value None (*pz_hopping*). Maps bond
+    Parameters
+    ----------
+    m : Positive integer
+        See *commensurate_angle*.
+    lattice : 'honeycomb' or 'square', default 'honeycomb'
+    a : Positive real
+        Default value 0.142 (graphene, nm). Nearest-neighbour distance.
+    d : Positive real
+        Default value 0.335 (nm). Interlayer distance.
+    hopping : Callable
+        Default value None (*pz_hopping*). Maps bond
         vectors, shape (n, 3), to hoppings, shape (n,).
-    :param cutoff: Positive real. Default value None (3.8 *a*, between the
+    cutoff : Positive real
+        Default value None (3.8 *a*, between the
         honeycomb neighbour shells at :math:`\sqrt{13}a` and :math:`4a`, so
         that no shell is cut by rounding). Longest bond.
-    :param interlayer_scale: Positive real. Default value 1. Factor on the
+    interlayer_scale : Positive real, default 1
+        Factor on the
         interlayer hoppings.
 
-    :returns:
-        * **tbl** -- :class:`MoireKSpace` instance.
+    Returns
+    -------
+    tbl : :class:`MoireKSpace` instance
     '''
     error_handling.positive_int(m, 'm')
     error_handling.twist_lattice(lattice)
@@ -462,17 +512,28 @@ def magic_angle_parameter(
 
     which vanishes at the first magic angle, :math:`\alpha = 1/\sqrt3`.
 
-    :param theta: Positive real. Twist angle, in radians.
-    :param a: Positive real. Default value 0.142. Nearest-neighbour distance.
-    :param d: Positive real. Default value 0.335. Interlayer distance.
-    :param t: Real number. Default value -2.7. Nearest-neighbour hopping.
-    :param interlayer: Callable. Default value None (*pz_hopping*). Interlayer hopping.
-    :param interlayer_scale: Positive real. Default value 1. See *twisted_bilayer*.
+    Parameters
+    ----------
+    theta : Positive real
+        Twist angle, in radians.
+    a : Positive real, default 0.142
+        Nearest-neighbour distance.
+    d : Positive real, default 0.335
+        Interlayer distance.
+    t : Real number, default -2.7
+        Nearest-neighbour hopping.
+    interlayer : Callable
+        Default value None (*pz_hopping*). Interlayer hopping.
+    interlayer_scale : Positive real, default 1
+        See *twisted_bilayer*.
 
-    :returns:
-        * **w** -- Real number. Interlayer tunnelling.
-        * **alpha** -- Real number.
-        * **v_ratio** -- Real number. :math:`v^*/v`.
+    Returns
+    -------
+    w : Real number
+        Interlayer tunnelling.
+    alpha : Real number
+    v_ratio : Real number
+        :math:`v^*/v`.
     '''
     error_handling.positive_real(theta, 'theta')
     error_handling.positive_real(a, 'a')

@@ -20,6 +20,8 @@ A lead is a semi-infinite repetition of a unit cell with Hamiltonian
 algorithm of Lopez Sancho, Lopez Sancho and Rubio (J. Phys. F 15, 851
 (1985)), and :math:`\Sigma = \tau\, g_s\,\tau^\dagger`.
 
+Examples
+--------
 Example usage::
 
     # a perfect chain of 10 sites between two chain leads: T = 1 in the band
@@ -74,16 +76,25 @@ def surface_green(
     cells accounted for, so it converges in a few tens of steps inside the
     bands, as :math:`\eta\to0^+`).
 
-    :param h0: Square complex array. Cell Hamiltonian.
-    :param v: Square complex array, same shape. Coupling of a cell to the next one.
-    :param energy: Real number. Energy.
-    :param eta: Positive real. Default value 1e-9. Broadening.
-    :param tol: Positive real. Default value 1e-12. Convergence threshold on
+    Parameters
+    ----------
+    h0 : Square complex array
+        Cell Hamiltonian.
+    v : Square complex array, same shape
+        Coupling of a cell to the next one.
+    energy : Real number
+        Energy.
+    eta : Positive real, default 1e-9
+        Broadening.
+    tol : Positive real, default 1e-12
+        Convergence threshold on
         the norm of the renormalized couplings.
-    :param max_iter: Positive integer. Default value 10000.
+    max_iter : Positive integer, default 10000
 
-    :returns:
-        * **gs** -- Complex ndarray, same shape as *h0*: :math:`g_s = [E+i\eta - h_0 - \Sigma_{bulk}]^{-1}`.
+    Returns
+    -------
+    gs
+        Complex ndarray, same shape as *h0*: :math:`g_s = [E+i\eta - h_0 - \Sigma_{bulk}]^{-1}`.
     '''
     h0 = np.atleast_2d(np.asarray(h0, dtype='c16'))
     v = np.atleast_2d(np.asarray(v, dtype='c16'))
@@ -158,10 +169,13 @@ def _decimation(
     stops when the renormalized couplings are below *tol* at every energy
     (a RuntimeError naming *name* after *max_iter* iterations).
 
-    :returns:
-        * **gs** -- Complex ndarray, shape (nz, m, m). Surface Green's function (cell 0).
-        * **gb** -- Complex ndarray, shape (nz, m, m). Bulk Green's function
-          (one cell of the infinite chain).
+    Returns
+    -------
+    gs : Complex ndarray, shape (nz, m, m)
+        Surface Green's function (cell 0).
+    gb : Complex ndarray, shape (nz, m, m)
+        Bulk Green's function
+        (one cell of the infinite chain).
     '''
     m = h0.shape[-1]
     zi = np.asarray(z, dtype='c16')[:, None, None] * np.eye(m)[None]
@@ -188,15 +202,19 @@ def lead_from_kspace(ks, direction: int = 1) -> tuple[NDArray[np.complex128], ND
     from a 1D periodic model (e.g. a ribbon, see *kspace.ribbon*), whose
     hoppings reach at most the neighbouring cells.
 
-    :param ks: **KSpace** instance, 1D.
-    :param direction: +1 or -1. Default value 1. Direction, along the
+    Parameters
+    ----------
+    ks : **KSpace** instance, 1D
+    direction : +1 or -1, default 1
+        Direction, along the
         model's primitive vector, in which the lead extends away from the
         device: :math:`v` gathers the hoppings to the cell at
         :math:`\mathbf{R} = \pm\mathbf{a}_1`.
 
-    :returns:
-        * **h0** -- Complex ndarray, shape (norb, norb).
-        * **v** -- Complex ndarray, shape (norb, norb).
+    Returns
+    -------
+    h0 : Complex ndarray, shape (norb, norb)
+    v : Complex ndarray, shape (norb, norb)
     '''
     error_handling.dim_exact(ks.dim, 1)
     error_handling.lead_direction(direction)
@@ -265,15 +283,20 @@ def lead_modes(
     separately, so that every mode carries one of its eigenvalues, even
     when modes of different blocks are degenerate.
 
-    :param h0: Square complex array, Hermitian. Cell Hamiltonian.
-    :param v: Square complex array, same shape. Coupling of a cell to the
+    Parameters
+    ----------
+    h0 : Square complex array, Hermitian
+        Cell Hamiltonian.
+    v : Square complex array, same shape
+        Coupling of a cell to the
         next one, away from the device.
-    :param energy: Real number. Energy, not at a band edge of the lead.
-    :param conservation_law: Hermitian complex array, shape of *h0*, or None.
-        Default value None.
+    energy : Real number
+        Energy, not at a band edge of the lead.
+    conservation_law : Hermitian complex array, shape of *h0*, or None, default None
 
-    :returns:
-        * **modes** -- **LeadModes**: the wave functions, momenta, velocities and blocks.
+    Returns
+    -------
+    modes : **LeadModes**: the wave functions, momenta, velocities and blocks
     '''
     h0 = np.atleast_2d(np.asarray(h0, dtype='c16'))
     v = np.atleast_2d(np.asarray(v, dtype='c16'))
@@ -407,8 +430,10 @@ class SMatrix():
     for example ``(0, 1)`` for the electrons and ``(0, 0)`` for the holes of
     a normal lead with :math:`Q = \tau_z`.
 
-    :ivar data: Complex ndarray, shape (n_out, n_in).
-    :ivar lead_info: List of **LeadModes**, one per lead.
+    Attributes
+    ----------
+    data : Complex ndarray, shape (n_out, n_in)
+    lead_info : List of **LeadModes**, one per lead
     '''
 
     def __init__(
@@ -439,10 +464,13 @@ class SMatrix():
         Get the number of propagating modes (incoming, as many as outgoing)
         of a lead, or of one block of it.
 
-        :param lead: Integer or tuple (lead, block).
+        Parameters
+        ----------
+        lead : Integer or tuple (lead, block)
 
-        :returns:
-            * **n** -- Integer.
+        Returns
+        -------
+        n : Integer
         '''
         return len(self._modes(lead, False))
 
@@ -454,11 +482,15 @@ class SMatrix():
         *lead_out*: the transmission amplitudes :math:`t`, or the reflection
         amplitudes :math:`r` if the two are equal.
 
-        :param lead_out: Integer or tuple (lead, block).
-        :param lead_in: Integer or tuple (lead, block).
+        Parameters
+        ----------
+        lead_out : Integer or tuple (lead, block)
+        lead_in : Integer or tuple (lead, block)
 
-        :returns:
-            * **s** -- Complex ndarray, shape (num_propagating(lead_out), num_propagating(lead_in)).
+        Returns
+        -------
+        s
+            Complex ndarray, shape (num_propagating(lead_out), num_propagating(lead_in)).
         '''
         return self.data[np.ix_(self._modes(lead_out, True), self._modes(lead_in, False))]
 
@@ -469,11 +501,14 @@ class SMatrix():
         ``transmission((0, 0), (0, 1))`` is, for example, the Andreev
         reflection of electrons into holes.
 
-        :param lead_out: Integer or tuple (lead, block).
-        :param lead_in: Integer or tuple (lead, block).
+        Parameters
+        ----------
+        lead_out : Integer or tuple (lead, block)
+        lead_in : Integer or tuple (lead, block)
 
-        :returns:
-            * **T** -- Real number.
+        Returns
+        -------
+        T : Real number
         '''
         return float(np.sum(np.abs(self.submatrix(lead_out, lead_in)) ** 2))
 
@@ -489,7 +524,10 @@ class Transport():
     methods with a broadening *eta* use the dense Green's function, and the
     dense matrix *ham* is built once, the first time it is needed.
 
-    :param ham: Square matrix (sparse or dense). Device Hamiltonian.
+    Parameters
+    ----------
+    ham : Square matrix (sparse or dense)
+        Device Hamiltonian.
     '''
 
     def __init__(self, ham) -> None:
@@ -525,14 +563,19 @@ class Transport():
         :math:`\tau_z` of a normal lead for Andreev reflection. The device
         itself need not conserve :math:`Q`.
 
-        :param h0: Square complex array, shape (m, m). Lead cell Hamiltonian.
-        :param v: Square complex array, shape (m, m). Coupling of a lead cell
+        Parameters
+        ----------
+        h0 : Square complex array, shape (m, m)
+            Lead cell Hamiltonian.
+        v : Square complex array, shape (m, m)
+            Coupling of a lead cell
             to the next one, away from the device.
-        :param coupling: Complex array, shape (len(sites), m). Hoppings
+        coupling : Complex array, shape (len(sites), m)
+            Hoppings
             :math:`\tau` between the device *sites* and the lead's surface cell.
-        :param sites: List of device site (row) indices the lead touches.
-        :param conservation_law: Hermitian complex array, shape (m, m), or None.
-            Default value None. Its blocks are numbered in increasing eigenvalue.
+        sites : List of device site (row) indices the lead touches
+        conservation_law : Hermitian complex array, shape (m, m), or None, default None
+            Its blocks are numbered in increasing eigenvalue.
         '''
         h0 = np.atleast_2d(np.asarray(h0, dtype='c16'))
         v = np.atleast_2d(np.asarray(v, dtype='c16'))
@@ -550,7 +593,8 @@ class Transport():
         r'''
         Attach a semi-infinite lead given as a 1D *KSpace* model (e.g. a
         ribbon, see *kspace.ribbon*) to the device built from *sys*, without
-        writing the coupling by hand.
+        writing the coupling by hand. Returns, with *extend*, the enlarged
+        device (None otherwise).
 
         The lead's sites sit at :math:`\boldsymbol\tau_o + n\mathbf{a}_1`
         (its *unit_cell* positions, in the coordinates of *sys*, and its
@@ -574,26 +618,35 @@ class Transport():
         sites, so the sites of the leads already attached keep their
         indices, and a later *attach_lead* with the same *sys* knows of them.
 
-        :param sys: **System** instance (one orbital per site) whose
+        Parameters
+        ----------
+        sys
+            **System** instance (one orbital per site) whose
             Hamiltonian, in the same site order, is the device of this
             *Transport* (followed by the sites added by earlier *extend* calls).
-        :param ks: **KSpace** instance, 1D and spinless, with hoppings
+        ks
+            **KSpace** instance, 1D and spinless, with hoppings
             between neighbouring cells only.
-        :param direction: +1 or -1. Default value 1. Direction, along the
+        direction : +1 or -1, default 1
+            Direction, along the
             lead's primitive vector, in which the lead extends away from the device.
-        :param conservation_law: Hermitian complex array, shape (norb, norb),
-            or None. Default value None. See *add_lead*.
-        :param extend: Boolean. Default value False. Add the missing lead
+        conservation_law : Hermitian complex array, shape (norb, norb), or None, default None
+            See *add_lead*.
+        extend : Boolean, default False
+            Add the missing lead
             sites to the device instead of refusing an incomplete interface.
 
-        :returns:
-            With *extend*, the enlarged device (None otherwise):
+        Returns
+        -------
+        ham : Sparse CSR complex matrix
+            The device Hamiltonian,
+            the added sites last.
+        positions : Real ndarray, shape (n_sites, space_dim)
+            The
+            positions of its sites, those of *sys* first.
 
-            * **ham** -- Sparse CSR complex matrix. The device Hamiltonian,
-              the added sites last.
-            * **positions** -- Real ndarray, shape (n_sites, space_dim). The
-              positions of its sites, those of *sys* first.
-
+        Examples
+        --------
         Example usage::
 
             strip = ribbon(lattices.square(), hoppings, width=5, direction=1)
@@ -712,12 +765,16 @@ class Transport():
         Get the self-energy :math:`\Sigma = \tau g_s \tau^\dagger` of a lead,
         embedded in the device space.
 
-        :param lead: Integer. Lead index (in the order of *add_lead*).
-        :param energy: Real number.
-        :param eta: Positive real. Default value 1e-9.
+        Parameters
+        ----------
+        lead : Integer
+            Lead index (in the order of *add_lead*).
+        energy : Real number
+        eta : Positive real, default 1e-9
 
-        :returns:
-            * **sigma** -- Complex ndarray, shape of *ham*.
+        Returns
+        -------
+        sigma : Complex ndarray, shape of *ham*
         '''
         error_handling.lead_index(lead, len(self.leads))
         h0, v, tau, sites = self.leads[lead]
@@ -730,11 +787,14 @@ class Transport():
         Get the retarded Green's function of the device with all its leads,
         :math:`G^r = [E + i\eta - H - \sum_l \Sigma_l]^{-1}`.
 
-        :param energy: Real number.
-        :param eta: Positive real. Default value 1e-9.
+        Parameters
+        ----------
+        energy : Real number
+        eta : Positive real, default 1e-9
 
-        :returns:
-            * **G** -- Complex ndarray, shape of *ham*.
+        Returns
+        -------
+        G : Complex ndarray, shape of *ham*
         '''
         error_handling.real_number(energy, 'energy')
         error_handling.positive_real(eta, 'eta')
@@ -757,13 +817,17 @@ class Transport():
         formula :math:`T(E) = \mathrm{Tr}[\Gamma_{out} G^r \Gamma_{in} G^a]`.
         The two agree to :math:`O(\eta)`.
 
-        :param energies: Real array. Energies.
-        :param lead_in: Integer. Default value 0.
-        :param lead_out: Integer. Default value 1.
-        :param eta: Positive real or None. Default value None.
+        Parameters
+        ----------
+        energies : Real array
+            Energies.
+        lead_in : Integer, default 0
+        lead_out : Integer, default 1
+        eta : Positive real or None, default None
 
-        :returns:
-            * **T** -- Real ndarray, same length as *energies*.
+        Returns
+        -------
+        T : Real ndarray, same length as *energies*
         '''
         error_handling.lead_index(lead_in, len(self.leads))
         error_handling.lead_index(lead_out, len(self.leads))
@@ -813,10 +877,12 @@ class Transport():
         *keep* of the solution are stored (e.g. the lead amplitudes for the
         scattering matrix).
 
-        :returns:
-            * **modes** -- List of **LeadModes**, one per lead.
-            * **sol** -- Complex ndarray, shape (n_sites + sum_l m_l, n_in) before
-              *keep*: one column per incoming mode of the leads *inject*, in order.
+        Returns
+        -------
+        modes : List of **LeadModes**, one per lead
+        sol
+            Complex ndarray, shape (n_sites + sum_l m_l, n_in) before
+            *keep*: one column per incoming mode of the leads *inject*, in order.
         '''
         error_handling.real_number(energy, 'energy')
         n = self._ham.shape[0]
@@ -867,11 +933,17 @@ class Transport():
         leads' conservation laws (*add_lead*) are addressed as
         ``(lead, block)`` in *SMatrix.submatrix* and *SMatrix.transmission*.
 
-        :param energy: Real number. Energy, not at a band edge of a lead.
+        Parameters
+        ----------
+        energy : Real number
+            Energy, not at a band edge of a lead.
 
-        :returns:
-            * **S** -- **SMatrix**: *data*, *lead_info*, *submatrix*, *transmission*.
+        Returns
+        -------
+        S : **SMatrix**: *data*, *lead_info*, *submatrix*, *transmission*
 
+        Examples
+        --------
         Example usage::
 
             s = tr.smatrix(0.3)
@@ -892,12 +964,18 @@ class Transport():
         the device of each incoming mode of unit current (*lead_modes*),
         with the scattered part leaving through every lead.
 
-        :param energy: Real number. Energy, not at a band edge of a lead.
-        :param lead: Integer. Injecting lead.
+        Parameters
+        ----------
+        energy : Real number
+            Energy, not at a band edge of a lead.
+        lead : Integer
+            Injecting lead.
 
-        :returns:
-            * **psi** -- Complex ndarray, shape (n_modes, n_sites): one row
-              per incoming mode of the lead.
+        Returns
+        -------
+        psi
+            Complex ndarray, shape (n_modes, n_sites): one row
+            per incoming mode of the lead.
         '''
         error_handling.lead_index(lead, len(self.leads))
         _, sol = self._scattering(energy, [lead])
@@ -911,10 +989,14 @@ class Transport():
         normalization). The bound states of the device, which no lead
         feeds, are left out.
 
-        :param energy: Real number. Energy, not at a band edge of a lead.
+        Parameters
+        ----------
+        energy : Real number
+            Energy, not at a band edge of a lead.
 
-        :returns:
-            * **rho** -- Real ndarray, shape (n_sites,).
+        Returns
+        -------
+        rho : Real ndarray, shape (n_sites,)
         '''
         _, sol = self._scattering(energy, list(range(len(self.leads))))
         return np.sum(np.abs(sol[:self._ham.shape[0]]) ** 2, axis=1) / (2 * np.pi)
@@ -954,15 +1036,21 @@ class Transport():
         a smooth :math:`T(E)`). Resolving features of :math:`T(E)` narrower than
         :math:`k_BT` needs more points. At zero temperature it is :math:`T(\mu)`.
 
-        :param mu: Real number. Chemical potential.
-        :param temperature: Positive real or zero. Default value 0 (:math:`k_B = 1`).
-        :param lead_in: Integer. Default value 0.
-        :param lead_out: Integer. Default value 1.
-        :param eta: Positive real or None. Default value None (see *transmission*).
-        :param n_points: Positive integer. Default value 101.
+        Parameters
+        ----------
+        mu : Real number
+            Chemical potential.
+        temperature : Positive real or zero
+            Default value 0 (:math:`k_B = 1`).
+        lead_in : Integer, default 0
+        lead_out : Integer, default 1
+        eta : Positive real or None
+            Default value None (see *transmission*).
+        n_points : Positive integer, default 101
 
-        :returns:
-            * **G** -- Real number.
+        Returns
+        -------
+        G : Real number
         '''
         error_handling.real_number(mu, 'mu')
         error_handling.positive_real_zero(temperature, 'temperature')
@@ -993,17 +1081,22 @@ class Transport():
         Wiedemann-Franz law :math:`\kappa = \frac{\pi^2}{3}TG`. The integrals
         are those of *conductance*.
 
-        :param mu: Real number. Chemical potential.
-        :param temperature: Positive real (:math:`k_B = 1`).
-        :param lead_in: Integer. Default value 0.
-        :param lead_out: Integer. Default value 1.
-        :param eta: Positive real or None. Default value None (see *transmission*).
-        :param n_points: Positive integer. Default value 101.
+        Parameters
+        ----------
+        mu : Real number
+            Chemical potential.
+        temperature : Positive real (:math:`k_B = 1`)
+        lead_in : Integer, default 0
+        lead_out : Integer, default 1
+        eta : Positive real or None
+            Default value None (see *transmission*).
+        n_points : Positive integer, default 101
 
-        :returns:
-            * **G** -- Real number.
-            * **S** -- Real number (NaN when nothing is transmitted).
-            * **kappa** -- Real number.
+        Returns
+        -------
+        G : Real number
+        S : Real number (NaN when nothing is transmitted)
+        kappa : Real number
         '''
         error_handling.real_number(mu, 'mu')
         error_handling.positive_real(temperature, 'temperature')
@@ -1034,11 +1127,14 @@ class Transport():
         :math:`T_{pq} = \mathrm{Tr}[\Gamma_pG^r\Gamma_qG^a]` from lead
         :math:`q` to lead :math:`p` (the diagonal, a reflection, is set to 0).
 
-        :param energy: Real number.
-        :param eta: Positive real. Default value 1e-9.
+        Parameters
+        ----------
+        energy : Real number
+        eta : Positive real, default 1e-9
 
-        :returns:
-            * **T** -- Real ndarray, shape (n_leads, n_leads).
+        Returns
+        -------
+        T : Real ndarray, shape (n_leads, n_leads)
         '''
         g = self.get_green(energy, eta)
         gam = self._broadenings(energy, eta)
@@ -1068,14 +1164,20 @@ class Transport():
         over the Fermi window, :math:`\int dE\,(-\partial f/\partial E)\,G(E)`
         (see *conductance*).
 
-        :param energy: Real number. Fermi energy (chemical potential).
-        :param eta: Positive real. Default value 1e-9.
-        :param temperature: Positive real or zero. Default value 0 (:math:`k_B = 1`).
-        :param n_points: Positive integer. Default value 101. Energies in the
+        Parameters
+        ----------
+        energy : Real number
+            Fermi energy (chemical potential).
+        eta : Positive real, default 1e-9
+        temperature : Positive real or zero
+            Default value 0 (:math:`k_B = 1`).
+        n_points : Positive integer, default 101
+            Energies in the
             Fermi window, at a finite temperature.
 
-        :returns:
-            * **G** -- Real ndarray, shape (n_leads, n_leads).
+        Returns
+        -------
+        G : Real ndarray, shape (n_leads, n_leads)
         '''
         error_handling.positive_real_zero(temperature, 'temperature')
         error_handling.positive_int(n_points, 'n_points')
@@ -1100,15 +1202,20 @@ class Transport():
         Hall regime with :math:`\nu` edge channels, :math:`|R_{xy}| = 1/\nu`
         and :math:`R_{xx} = 0` (Buttiker 1988).
 
-        :param energy: Real number. Fermi energy.
-        :param current: Tuple of two distinct lead indices (source, drain).
-        :param voltage: Tuple of two lead indices (a, b).
-        :param eta: Positive real. Default value 1e-9.
-        :param temperature: Positive real or zero. Default value 0 (see *conductance_matrix*).
-        :param n_points: Positive integer. Default value 101.
+        Parameters
+        ----------
+        energy : Real number
+            Fermi energy.
+        current : Tuple of two distinct lead indices (source, drain)
+        voltage : Tuple of two lead indices (a, b)
+        eta : Positive real, default 1e-9
+        temperature : Positive real or zero
+            Default value 0 (see *conductance_matrix*).
+        n_points : Positive integer, default 101
 
-        :returns:
-            * **R** -- Real number.
+        Returns
+        -------
+        R : Real number
         '''
         error_handling.lead_pair(current, len(self.leads), 'current', True)
         error_handling.lead_pair(voltage, len(self.leads), 'voltage', False)
@@ -1137,13 +1244,18 @@ class Transport():
         matrix is antisymmetric, and the currents are conserved at every
         site not touched by a lead.
 
-        :param energy: Real number.
-        :param lead: Integer. Injecting lead.
-        :param eta: Positive real. Default value 1e-9.
+        Parameters
+        ----------
+        energy : Real number
+        lead : Integer
+            Injecting lead.
+        eta : Positive real, default 1e-9
 
-        :returns:
-            * **J** -- Real ndarray, shape of *ham*: J[i, j] is the current
-              from site i to site j.
+        Returns
+        -------
+        J
+            Real ndarray, shape of *ham*: J[i, j] is the current
+            from site i to site j.
         '''
         error_handling.lead_index(lead, len(self.leads))
         g = self.get_green(energy, eta)
@@ -1161,14 +1273,19 @@ class Transport():
         site, along their bond vectors,
         :math:`\mathbf{j}_i = \frac12\sum_jJ_{i\to j}(\mathbf{r}_j - \mathbf{r}_i)`.
 
-        :param energy: Real number.
-        :param lead: Integer. Injecting lead.
-        :param positions: Real array, shape (n_sites, d). Site positions
+        Parameters
+        ----------
+        energy : Real number
+        lead : Integer
+            Injecting lead.
+        positions : Real array, shape (n_sites, d)
+            Site positions
             (e.g. ``np.column_stack([lat.coor['x'], lat.coor['y']])``).
-        :param eta: Positive real. Default value 1e-9.
+        eta : Positive real, default 1e-9
 
-        :returns:
-            * **j** -- Real ndarray, shape (n_sites, d).
+        Returns
+        -------
+        j : Real ndarray, shape (n_sites, d)
         '''
         positions = np.asarray(positions, dtype='f8')
         error_handling.site_positions(positions, len(self.ham))
@@ -1183,14 +1300,18 @@ class Transport():
         :math:`t^\dagger t` with :math:`t = \Gamma_{out}^{1/2}G^r\Gamma_{in}^{1/2}`:
         their sum is the transmission.
 
-        :param energy: Real number.
-        :param lead_in: Integer. Default value 0.
-        :param lead_out: Integer. Default value 1.
-        :param eta: Positive real. Default value 1e-9.
+        Parameters
+        ----------
+        energy : Real number
+        lead_in : Integer, default 0
+        lead_out : Integer, default 1
+        eta : Positive real, default 1e-9
 
-        :returns:
-            * **T_n** -- Real ndarray, in decreasing order, of length
-              min(len(sites_in), len(sites_out)).
+        Returns
+        -------
+        T_n
+            Real ndarray, in decreasing order, of length
+            min(len(sites_in), len(sites_out)).
         '''
         error_handling.lead_index(lead_in, len(self.leads))
         error_handling.lead_index(lead_out, len(self.leads))
@@ -1207,13 +1328,17 @@ class Transport():
         (Lesovik 1989; Buttiker 1990): the noise power at bias :math:`V` is
         :math:`S = 2\frac{e^3|V|}{h}\sum_nT_n(1-T_n)` (per spin).
 
-        :param energies: Real array. Energies.
-        :param lead_in: Integer. Default value 0.
-        :param lead_out: Integer. Default value 1.
-        :param eta: Positive real. Default value 1e-9.
+        Parameters
+        ----------
+        energies : Real array
+            Energies.
+        lead_in : Integer, default 0
+        lead_out : Integer, default 1
+        eta : Positive real, default 1e-9
 
-        :returns:
-            * **noise** -- Real ndarray, same length as *energies*.
+        Returns
+        -------
+        noise : Real ndarray, same length as *energies*
         '''
         error_handling.frequencies(energies, 'energies')
         energies = np.atleast_1d(np.asarray(energies, dtype='f8'))
@@ -1234,14 +1359,19 @@ class Transport():
         ballistic conductor (every :math:`T_n` is 0 or 1), close to 1 for a
         tunnel barrier, 1/3 for a diffusive wire (Beenakker and Buttiker 1992).
 
-        :param energies: Real array. Energies.
-        :param lead_in: Integer. Default value 0.
-        :param lead_out: Integer. Default value 1.
-        :param eta: Positive real. Default value 1e-9.
+        Parameters
+        ----------
+        energies : Real array
+            Energies.
+        lead_in : Integer, default 0
+        lead_out : Integer, default 1
+        eta : Positive real, default 1e-9
 
-        :returns:
-            * **F** -- Real ndarray, same length as *energies* (NaN where
-              nothing is transmitted).
+        Returns
+        -------
+        F
+            Real ndarray, same length as *energies* (NaN where
+            nothing is transmitted).
         '''
         error_handling.frequencies(energies, 'energies')
         energies = np.atleast_1d(np.asarray(energies, dtype='f8'))
@@ -1304,12 +1434,17 @@ def slices_from_positions(x: ArrayLike, tol: float = 1e-6) -> list[list[int]]:
     the columns of a strip along :math:`x`), ordered by increasing *x*, for
     *RecursiveTransport*.
 
-    :param x: Real array. One coordinate per site (e.g. ``lat.coor['x']``).
-    :param tol: Positive real. Default value 1e-6. Coordinates closer than
+    Parameters
+    ----------
+    x : Real array
+        One coordinate per site (e.g. ``lat.coor['x']``).
+    tol : Positive real, default 1e-6
+        Coordinates closer than
         *tol* belong to the same slice.
 
-    :returns:
-        * **slices** -- List of lists of site indices.
+    Returns
+    -------
+    slices : List of lists of site indices
     '''
     x = np.asarray(x, dtype='f8').ravel()
     error_handling.ndarray_empty(x, 'x')
@@ -1339,16 +1474,22 @@ class RecursiveTransport():
     inverted, never the whole device (compare *Transport*, which inverts
     the dense device matrix).
 
-    :param ham: Square matrix, sparse (preferred for long devices) or dense.
+    Parameters
+    ----------
+    ham : Square matrix, sparse (preferred for long devices) or dense
         Device Hamiltonian.
-    :param slices: List of lists of site indices: a partition of the device
+    slices
+        List of lists of site indices: a partition of the device
         into slices, ordered from the left lead to the right one, with
         hoppings between neighbouring slices only (see *slices_from_positions*).
-    :param left: Tuple (h0, v, coupling): the left lead (see *Transport.add_lead*),
+    left
+        Tuple (h0, v, coupling): the left lead (see *Transport.add_lead*),
         with a coupling of shape (len(slices[0]), len(h0)), its rows in the
         order of ``slices[0]``.
-    :param right: Tuple (h0, v, coupling): the right lead, coupled to ``slices[-1]``.
+    right : Tuple (h0, v, coupling): the right lead, coupled to ``slices[-1]``
 
+    Examples
+    --------
     Example usage::
 
         slices = slices_from_positions(lat.coor['x'])
@@ -1420,11 +1561,15 @@ class RecursiveTransport():
         Get the transmission from the left lead to the right one: the same
         as *Transport.transmission* for the same device and leads.
 
-        :param energies: Real array. Energies.
-        :param eta: Positive real. Default value 1e-9.
+        Parameters
+        ----------
+        energies : Real array
+            Energies.
+        eta : Positive real, default 1e-9
 
-        :returns:
-            * **T** -- Real ndarray, same length as *energies*.
+        Returns
+        -------
+        T : Real ndarray, same length as *energies*
         '''
         error_handling.frequencies(energies, 'energies')
         energies = np.atleast_1d(np.asarray(energies, dtype='f8'))
@@ -1439,11 +1584,14 @@ class RecursiveTransport():
         r'''
         Get the transmission eigenvalues (see *Transport.transmission_eigenvalues*).
 
-        :param energy: Real number.
-        :param eta: Positive real. Default value 1e-9.
+        Parameters
+        ----------
+        energy : Real number
+        eta : Positive real, default 1e-9
 
-        :returns:
-            * **T_n** -- Real ndarray, in decreasing order.
+        Returns
+        -------
+        T_n : Real ndarray, in decreasing order
         '''
         error_handling.real_number(energy, 'energy')
         error_handling.positive_real(eta, 'eta')
@@ -1454,11 +1602,15 @@ class RecursiveTransport():
         r'''
         Get the Fano factor of the shot noise (see *Transport.fano_factor*).
 
-        :param energies: Real array. Energies.
-        :param eta: Positive real. Default value 1e-9.
+        Parameters
+        ----------
+        energies : Real array
+            Energies.
+        eta : Positive real, default 1e-9
 
-        :returns:
-            * **F** -- Real ndarray, same length as *energies*.
+        Returns
+        -------
+        F : Real ndarray, same length as *energies*
         '''
         error_handling.frequencies(energies, 'energies')
         energies = np.atleast_1d(np.asarray(energies, dtype='f8'))

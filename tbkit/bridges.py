@@ -45,12 +45,18 @@ def cell_orbitals(lat: Lattice) -> tuple[NDArray[np.int64], NDArray[np.int64]]:
     :math:`\boldsymbol\tau_{o_s} + \sum_k n_{s,k}\mathbf{a}_k`, with the tag
     of orbital :math:`o_s` (within ``ATOL``).
 
-    :param lat: **Lattice** instance, after *get_lattice* (sites may have
+    Parameters
+    ----------
+    lat
+        **Lattice** instance, after *get_lattice* (sites may have
         been removed, but not moved).
 
-    :returns:
-        * **cells** -- Integer ndarray, shape (sites, dim). :math:`n_{s,k}`.
-        * **orbitals** -- Integer ndarray, shape (sites,). :math:`o_s`.
+    Returns
+    -------
+    cells : Integer ndarray, shape (sites, dim)
+        :math:`n_{s,k}`.
+    orbitals : Integer ndarray, shape (sites,)
+        :math:`o_s`.
     '''
     error_handling.lat(lat)
     error_handling.empty_coor(lat.coor)
@@ -90,19 +96,27 @@ def kspace_from_system(sys: System, periodic: bool | None = None, tol: float = 1
     element is kept, with ``hermitian=False``. Onsite energies are taken
     orbital by orbital.
 
-    :param sys: **System** instance with its hoppings set (one orbital per site).
-    :param periodic: Boolean. Default value None: True if *sys* has
+    Parameters
+    ----------
+    sys : **System** instance with its hoppings set (one orbital per site)
+    periodic : Boolean
+        Default value None: True if *sys* has
         periodic boundaries along some primitive vector (``System(lat,
         periodic=...)``, or *finite_system* with ``periodic=True``). The
         System is a torus of the *lat.n1* x *lat.n2* (x *lat.n3*) cells of
         *get_lattice*.
-    :param tol: Positive real number. Default value 1e-9. Largest allowed
+    tol : Positive real number, default 1e-9
+        Largest allowed
         difference between equivalent matrix elements.
 
-    :returns:
-        * **ks** -- **KSpace** instance (spinless), on a new **Lattice**
-          with the *unit_cell* and *prim_vec* of *sys.lat*.
+    Returns
+    -------
+    ks
+        **KSpace** instance (spinless), on a new **Lattice**
+        with the *unit_cell* and *prim_vec* of *sys.lat*.
 
+    Examples
+    --------
     Example usage::
 
         lat = lattices.honeycomb()
@@ -170,17 +184,23 @@ def finite_model(
     and tag of every row. Spinful models are supported (the two spin
     components of a site share its position).
 
-    :param ks: **KSpace** instance.
-    :param n_cells: Positive integer, or tuple of *dim* positive integers.
+    Parameters
+    ----------
+    ks : **KSpace** instance
+    n_cells : Positive integer, or tuple of *dim* positive integers
         Number of unit cells along each primitive vector.
-    :param periodic: Boolean. Default value False. Periodic boundaries (a torus).
+    periodic : Boolean, default False
+        Periodic boundaries (a torus).
 
-    :returns:
-        * **ham** -- Complex CSR matrix, shape (N*norb, N*norb).
-        * **positions** -- Real ndarray, shape (N*norb, space_dim). Row
-          :math:`c\,\mathrm{norb}+o` sits at :math:`\boldsymbol\tau_o + \sum_k n_k\mathbf{a}_k`
-          (cell *c* has :math:`c = n_1 + N_1 n_2 + N_1N_2 n_3`).
-        * **tags** -- String ndarray, shape (N*norb,). Sublattice tags.
+    Returns
+    -------
+    ham : Complex CSR matrix, shape (N*norb, N*norb)
+    positions : Real ndarray, shape (N*norb, space_dim)
+        Row
+        :math:`c\,\mathrm{norb}+o` sits at :math:`\boldsymbol\tau_o + \sum_k n_k\mathbf{a}_k`
+        (cell *c* has :math:`c = n_1 + N_1 n_2 + N_1N_2 n_3`).
+    tags : String ndarray, shape (N*norb,)
+        Sublattice tags.
     '''
     error_handling.kspace(ks, KSpace)
     error_handling.nk(n_cells, ks.dim)
@@ -210,13 +230,19 @@ def finite_system(ks: KSpace, n_cells: int | tuple[int, ...], periodic: bool = F
     (``sys.periodic``), so that further *set_hopping* calls, *Plot* and
     *get_bott_index* treat it as a torus.
 
-    :param ks: **KSpace** instance, with ``spin=False``.
-    :param n_cells: Positive integer, or tuple of *dim* positive integers.
-    :param periodic: Boolean. Default value False. Periodic boundaries (a torus).
+    Parameters
+    ----------
+    ks : **KSpace** instance, with ``spin=False``
+    n_cells : Positive integer, or tuple of *dim* positive integers
+    periodic : Boolean, default False
+        Periodic boundaries (a torus).
 
-    :returns:
-        * **sys** -- **System** instance, with its hoppings set.
+    Returns
+    -------
+    sys : **System** instance, with its hoppings set
 
+    Examples
+    --------
     Example usage::
 
         sys = finite_system(gra, (30, 30), periodic=True)

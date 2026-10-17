@@ -96,11 +96,16 @@ def circle(center: ArrayLike, radius: float) -> Callable[[float], NDArray[np.flo
     :math:`\mathbf{k}(s) = \mathbf{k}_0 + r(\cos 2\pi s, \sin 2\pi s)`,
     :math:`s\in[0, 1]`.
 
-    :param center: Tuple/list/ndarray of 2 real numbers. :math:`\mathbf{k}_0`.
-    :param radius: Positive real. :math:`r`.
+    Parameters
+    ----------
+    center : Tuple/list/ndarray of 2 real numbers
+        :math:`\mathbf{k}_0`.
+    radius : Positive real
+        :math:`r`.
 
-    :returns:
-        * **loop** -- Callable of s, returning a real ndarray of shape (2,).
+    Returns
+    -------
+    loop : Callable of s, returning a real ndarray of shape (2,)
     '''
     error_handling.k_vector(center, 'center', 2)
     error_handling.positive_real(radius, 'radius')
@@ -253,21 +258,31 @@ def track_eigenvalues(
     After one loop around a second-order exceptional point the labels come
     back swapped: ``en[-1]`` is then a permutation of ``en[0]``.
 
-    :param model: 2D **KSpace**, or callable of a point of a plane returning
+    Parameters
+    ----------
+    model
+        2D **KSpace**, or callable of a point of a plane returning
         a square matrix.
-    :param loop: Closed loop: a callable of :math:`s\in[0, 1]` returning a
+    loop
+        Closed loop: a callable of :math:`s\in[0, 1]` returning a
         point (e.g. *circle*), or an array of polygon vertices, shape (m, 2).
         For a **KSpace**, points are k in the coordinates of *get_ham*, and a
         loop may close up to a reciprocal lattice vector.
-    :param n_loops: Positive integer. Default value 1. Number of turns.
-    :param nk: Positive integer. Default value 100. Steps per turn before
+    n_loops : Positive integer, default 1
+        Number of turns.
+    nk : Positive integer, default 100
+        Steps per turn before
         refinement.
 
-    :returns:
-        * **s** -- Real ndarray, shape (n,). Loop parameter, from 0 to *n_loops*.
-        * **k** -- Real ndarray, shape (n, 2). Points of the loop.
-        * **en** -- Complex ndarray, shape (n, norb). Eigenvalues, en[:, m]
-          continuous in s.
+    Returns
+    -------
+    s : Real ndarray, shape (n,)
+        Loop parameter, from 0 to *n_loops*.
+    k : Real ndarray, shape (n, 2)
+        Points of the loop.
+    en : Complex ndarray, shape (n, norb)
+        Eigenvalues, en[:, m]
+        continuous in s.
     '''
     ham = _model(model)
     path = _loop(loop)
@@ -296,14 +311,21 @@ def vorticity(model, loop, bands: tuple[int, int] = (0, 1), nk: int = 100) -> fl
     0 around a diabolical point, or a loop enclosing no degeneracy.
     :math:`\nu_{mn} = \nu_{nm}`.
 
-    :param model: See *track_eigenvalues*.
-    :param loop: See *track_eigenvalues*. Counterclockwise for the sign above.
-    :param bands: Pair of distinct integers. Default value (0, 1). Band labels
+    Parameters
+    ----------
+    model
+        See *track_eigenvalues*.
+    loop
+        See *track_eigenvalues*. Counterclockwise for the sign above.
+    bands : Pair of distinct integers
+        Default value (0, 1). Band labels
         :math:`(m, n)` at the start of the loop, sorted by real part.
-    :param nk: Positive integer. Default value 100. See *track_eigenvalues*.
+    nk : Positive integer, default 100
+        See *track_eigenvalues*.
 
-    :returns:
-        * **nu** -- Real number, a multiple of 1/2 around second-order EPs.
+    Returns
+    -------
+    nu : Real number, a multiple of 1/2 around second-order EPs
     '''
     ham = _model(model)
     path = _loop(loop)
@@ -377,11 +399,16 @@ def discriminant(model, k: ArrayLike) -> complex:
     :math:`H = d_0 + \mathbf{d}\cdot\boldsymbol\sigma`,
     :math:`\Delta = 4\,\mathbf{d}\cdot\mathbf{d}`.
 
-    :param model: See *track_eigenvalues*.
-    :param k: Tuple/list/ndarray of 2 real numbers. Point of the plane.
+    Parameters
+    ----------
+    model
+        See *track_eigenvalues*.
+    k : Tuple/list/ndarray of 2 real numbers
+        Point of the plane.
 
-    :returns:
-        * **delta** -- Complex number, in units of energy^(N(N-1)) (1 if N = 1).
+    Returns
+    -------
+    delta : Complex number, in units of energy^(N(N-1)) (1 if N = 1)
     '''
     ham = _model(model)
     error_handling.k_vector(k, 'k', 2)
@@ -434,14 +461,20 @@ def discriminant_winding(model, loop, nk: int = 100) -> float:
     the vorticities *vorticity* holds with the signs as written, the minus
     sign coming from Shen, Zhen and Fu's definition of :math:`\nu`.
 
-    :param model: See *track_eigenvalues*.
-    :param loop: See *track_eigenvalues*. Counterclockwise for the sign above.
-    :param nk: Positive integer. Default value 100. Points on the loop; a
+    Parameters
+    ----------
+    model
+        See *track_eigenvalues*.
+    loop
+        See *track_eigenvalues*. Counterclockwise for the sign above.
+    nk : Positive integer, default 100
+        Points on the loop; a
         step along which :math:`\arg\Delta` turns by more than :math:`\pi/4`
         is bisected.
 
-    :returns:
-        * **W** -- Real number, close to an integer.
+    Returns
+    -------
+    W : Real number, close to an integer
     '''
     ham = _model(model)
     path = _loop(loop)
@@ -481,12 +514,18 @@ def petermann_factors(model, k: ArrayLike) -> tuple[NDArray[np.complex128], NDAr
     exceptional point, where :math:`\langle L_n|R_n\rangle \to 0`
     (as :math:`|\mathbf{k}-\mathbf{k}_{EP}|^{-1}` near a second-order one).
 
-    :param model: See *track_eigenvalues*.
-    :param k: Tuple/list/ndarray of 2 real numbers.
+    Parameters
+    ----------
+    model
+        See *track_eigenvalues*.
+    k : Tuple/list/ndarray of 2 real numbers
 
-    :returns:
-        * **en** -- Complex ndarray, shape (norb,). Eigenvalues, sorted by real part.
-        * **K** -- Real ndarray, shape (norb,). Petermann factors.
+    Returns
+    -------
+    en : Complex ndarray, shape (norb,)
+        Eigenvalues, sorted by real part.
+    K : Real ndarray, shape (norb,)
+        Petermann factors.
     '''
     ham = _model(model)
     error_handling.k_vector(k, 'k', 2)
@@ -512,15 +551,23 @@ class ExceptionalPoints():
     r'''
     Exceptional points of a 2D model, see *find_exceptional_points*.
 
-    :ivar k: Real ndarray, shape (n, 2). Isolated exceptional points.
-    :ivar charge: Integer ndarray, shape (n,). Discriminant winding around each
+    Attributes
+    ----------
+    k : Real ndarray, shape (n, 2)
+        Isolated exceptional points.
+    charge : Integer ndarray, shape (n,)
+        Discriminant winding around each
         one (see *discriminant_winding*): :math:`\pm1` for a second-order EP.
-    :ivar order: Integer ndarray, shape (n,). Number of coalescing eigenvalues
+    order : Integer ndarray, shape (n,)
+        Number of coalescing eigenvalues
         (the size of the Jordan block): 2, 3, ...
-    :ivar petermann: Real ndarray, shape (n,). Largest Petermann factor at
+    petermann : Real ndarray, shape (n,)
+        Largest Petermann factor at
         each point (divergent at an EP: about :math:`10^{8}` or more once refined).
-    :ivar energy: Complex ndarray, shape (n,). The coalescing eigenvalue.
-    :ivar lines: Real ndarray, shape (m, 2). Points on exceptional lines
+    energy : Complex ndarray, shape (n,)
+        The coalescing eigenvalue.
+    lines : Real ndarray, shape (m, 2)
+        Points on exceptional lines
         (rings), when a symmetry makes the discriminant real; empty otherwise.
     '''
 
@@ -628,16 +675,23 @@ def find_exceptional_points(
     (*total_charge*): EPs come in pairs of opposite charge. The mesh must be
     fine enough that no plaquette holds two EPs of opposite charge.
 
-    :param ks: **KSpace** instance with two primitive vectors.
-    :param nk: Positive integer. Default value 40. Mesh points along each
+    Parameters
+    ----------
+    ks : **KSpace** instance with two primitive vectors
+    nk : Positive integer, default 40
+        Mesh points along each
         reciprocal vector.
-    :param tol: Positive real. Default value 1e-12. Newton's method stops
+    tol : Positive real, default 1e-12
+        Newton's method stops
         when a step is shorter than *tol* (units of k).
-    :param max_iter: Positive integer. Default value 50. Newton iterations.
+    max_iter : Positive integer, default 50
+        Newton iterations.
 
-    :returns:
-        * **eps** -- **ExceptionalPoints** instance (positions *k*, *charge*,
-          *order*, *petermann*, *energy*, and the exceptional *lines*).
+    Returns
+    -------
+    eps
+        **ExceptionalPoints** instance (positions *k*, *charge*,
+        *order*, *petermann*, *energy*, and the exceptional *lines*).
     '''
     error_handling.kspace(ks, KSpace)
     error_handling.dim_exact(ks.dim, 2)
@@ -713,12 +767,17 @@ def fermi_arcs(ks: KSpace, nk: int = 60) -> NDArray[np.float64]:
     are edges that cross an exceptional point or line, along which the
     eigenvalues cannot be followed.
 
-    :param ks: **KSpace** instance with two primitive vectors.
-    :param nk: Positive integer. Default value 60. Mesh points along each
+    Parameters
+    ----------
+    ks : **KSpace** instance with two primitive vectors
+    nk : Positive integer, default 60
+        Mesh points along each
         reciprocal vector.
 
-    :returns:
-        * **points** -- Real ndarray, shape (m, 2). Points on the arcs.
+    Returns
+    -------
+    points : Real ndarray, shape (m, 2)
+        Points on the arcs.
     '''
     error_handling.kspace(ks, KSpace)
     error_handling.dim_exact(ks.dim, 2)
@@ -779,17 +838,26 @@ class Encircling():
     r'''
     An eigenstate carried around a loop by parallel transport, see *encircle*.
 
-    :ivar s: Real ndarray, shape (n,). Loop parameter, from 0 to *n_loops*.
-    :ivar k: Real ndarray, shape (n, 2). Points of the loop.
-    :ivar en: Complex ndarray, shape (n, norb). All eigenvalues, followed by
+    Attributes
+    ----------
+    s : Real ndarray, shape (n,)
+        Loop parameter, from 0 to *n_loops*.
+    k : Real ndarray, shape (n, 2)
+        Points of the loop.
+    en : Complex ndarray, shape (n, norb)
+        All eigenvalues, followed by
         continuation (see *track_eigenvalues*).
-    :ivar vector: Complex ndarray, shape (n, norb). The transported right
+    vector : Complex ndarray, shape (n, norb)
+        The transported right
         eigenvector :math:`|R(s)\rangle` of the followed state.
-    :ivar band: Integer. Label of the state at the start.
-    :ivar final_band: Integer. Label, at the start, of the eigenvalue the state
+    band : Integer
+        Label of the state at the start.
+    final_band : Integer
+        Label, at the start, of the eigenvalue the state
         ends on (different from *band* after an odd number of loops around a
         second-order EP: the states swap).
-    :ivar overlap: Complex number. :math:`c = \langle L_{f}(0)|R(\mathrm{end})\rangle`,
+    overlap : Complex number
+        :math:`c = \langle L_{f}(0)|R(\mathrm{end})\rangle`,
         with :math:`f` = *final_band* and :math:`\langle L_f(0)|R_f(0)\rangle = 1`:
         the transported state is :math:`c\,|R_f(0)\rangle`. If *final_band* is
         *band*, :math:`c = e^{i\gamma}` (times a modulus that is 1 for a
@@ -836,17 +904,26 @@ def encircle(model, loop, band: int = 0, n_loops: int = 1, nk: int = 100) -> Enc
     * two loops bring the state back with a sign flip, :math:`\gamma = \pi`;
     * four loops restore it.
 
-    :param model: See *track_eigenvalues*.
-    :param loop: See *track_eigenvalues*.
-    :param band: Integer. Default value 0. Label of the state at the start of
+    Parameters
+    ----------
+    model
+        See *track_eigenvalues*.
+    loop
+        See *track_eigenvalues*.
+    band : Integer, default 0
+        Label of the state at the start of
         the loop (by real part of the eigenvalue).
-    :param n_loops: Positive integer. Default value 1. Number of turns.
-    :param nk: Positive integer. Default value 100. Steps per turn before
+    n_loops : Positive integer, default 1
+        Number of turns.
+    nk : Positive integer, default 100
+        Steps per turn before
         refinement.
 
-    :returns:
-        * **result** -- **Encircling** instance (*en*, the transported
-          *vector*, *final_band*, *overlap* and *phase*).
+    Returns
+    -------
+    result
+        **Encircling** instance (*en*, the transported
+        *vector*, *final_band*, *overlap* and *phase*).
     '''
     ham = _model(model)
     path = _loop(loop)

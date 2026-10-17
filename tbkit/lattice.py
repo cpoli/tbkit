@@ -34,23 +34,29 @@ class Lattice():
     primitive vectors and :math:`n_1`, :math:`n_2`, :math:`n_3` are the number of
     unit cells along them.
 
-    :param unit_cell: List of dictionaries.
-     One dictionary per site within the unit cell. Each dictionary has two keys:
+    Parameters
+    ----------
+    unit_cell : List of dictionaries
+        One dictionary per site within the unit cell. Each dictionary has two keys:
 
-        * 'tag', one-character string. Label of the associated sublattice.
-        * 'r0', Tuple. Position: :math:`(x, y)`, or :math:`(x, y, z)` for a
-          lattice in 3D space.
-    :param prim_vec: List of tuples.
-     Define the primitive vectors. List of one/two/three tuples for 1D/2D/3D
-     lattices, each the cartesian coordinates of a primitive vector: 2-tuples
-     in the plane, or 3-tuples in 3D space (then *r0* must be 3-tuples too,
-     and *coor* gains a 'z' field, see :data:`COOR_DTYPE_3D`).
+           * 'tag', one-character string. Label of the associated sublattice.
+           * 'r0', Tuple. Position: :math:`(x, y)`, or :math:`(x, y, z)` for a
+             lattice in 3D space.
+    prim_vec : List of tuples
+        Define the primitive vectors. List of one/two/three tuples for 1D/2D/3D
+        lattices, each the cartesian coordinates of a primitive vector: 2-tuples
+        in the plane, or 3-tuples in 3D space (then *r0* must be 3-tuples too,
+        and *coor* gains a 'z' field, see :data:`COOR_DTYPE_3D`).
 
+    Notes
+    -----
     In 3D space, the geometry methods acting in the plane (*rotation*,
     *ellipse_in*, *boundary_line*, ...) act on :math:`(x, y)` only (rotation
     about the z axis, cylinders, vertical planes), and *plot* draws the
     projection on the :math:`(x, y)` plane.
 
+    Examples
+    --------
     Example usage::
 
         # Line-Centered Square lattice
@@ -76,13 +82,17 @@ class Lattice():
         r'''
         Get the lattice positions, sorted by (y, x) -- by (z, y, x) in 3D space.
 
-        :param n1: Positive Integer.
+        Parameters
+        ----------
+        n1 : Positive Integer
             Number of unit cells along :math:`\mathbf{a}_1`.
-        :param n2: Positive Integer. Default value 1.
+        n2 : Positive Integer, default 1
             Number of unit cells along :math:`\mathbf{a}_2`.
-        :param n3: Positive Integer. Default value 1.
+        n3 : Positive Integer, default 1
             Number of unit cells along :math:`\mathbf{a}_3` (3D lattices only).
 
+        Examples
+        --------
         Example usage::
 
             # Line-Centered Square lattice
@@ -130,9 +140,14 @@ class Lattice():
         '''
         Add sites.
 
-        :param coor: Structured array with keys: {'x', 'y', 'tag'}
+        Parameters
+        ----------
+        coor
+            Structured array with keys: {'x', 'y', 'tag'}
             ({'x', 'y', 'z', 'tag'} for a lattice in 3D space).
 
+        Examples
+        --------
         Example usage::
 
             # Square lattice
@@ -156,8 +171,13 @@ class Lattice():
         (use method lattice.plot(plt_index=True)
         to get access to the site indices).
 
-        :param index: List. Site indices to be removed.
+        Parameters
+        ----------
+        index : List
+            Site indices to be removed.
 
+        Examples
+        --------
         Example usage::
 
             # Square lattice
@@ -199,7 +219,10 @@ class Lattice():
         '''
         Shift the x coordinates.
 
-        :param shift: Real number. Shift value.
+        Parameters
+        ----------
+        shift : Real number
+            Shift value.
         '''
         error_handling.empty_coor(self.coor)
         error_handling.real_number(shift, 'shift')
@@ -209,7 +232,10 @@ class Lattice():
         '''
         Shift the y coordinates.
 
-        :param shift: Real number. Shift value.
+        Parameters
+        ----------
+        shift : Real number
+            Shift value.
         '''
         error_handling.empty_coor(self.coor)
         error_handling.real_number(shift, 'shift')
@@ -233,7 +259,10 @@ class Lattice():
         '''
         Shift the z coordinates (3D lattices only).
 
-        :param shift: Real number. Shift value.
+        Parameters
+        ----------
+        shift : Real number
+            Shift value.
         '''
         error_handling.empty_coor(self.coor)
         error_handling.space_3d(self.space_dim)
@@ -252,8 +281,10 @@ class Lattice():
         r'''
         Keep only the sites with :math:`z_{min} < z < z_{max}` (3D lattices only).
 
-        :param z_min: Real number.
-        :param z_max: Real number, larger than *z_min*.
+        Parameters
+        ----------
+        z_min : Real number
+        z_max : Real number, larger than *z_min*
         '''
         error_handling.empty_coor(self.coor)
         error_handling.space_3d(self.space_dim)
@@ -267,9 +298,14 @@ class Lattice():
         r'''
         Keep only the sites with :math:`c_yy+c_xx > c_0`.
 
-        :param cx: Real number. :math:`c_x` value.
-        :param cy: Real number. :math:`c_y` value.
-        :param co: Real number. :math:`c_0` value.
+        Parameters
+        ----------
+        cx : Real number
+            :math:`c_x` value.
+        cy : Real number
+            :math:`c_y` value.
+        co : Real number
+            :math:`c_0` value.
         '''
         error_handling.empty_coor(self.coor)
         error_handling.real_number(cx, 'cx')
@@ -286,10 +322,16 @@ class Lattice():
 
             (x-x_0)^2/r_x^2+(y-y_0)^2/r_y^2 < 1\,  .
 
-        :param rx: Positive Real number. Radius along :math:`x`.
-        :param ry: Positive Real number. Radius along :math:`y`.
-        :param x0: Real number. :math:`x` center.
-        :param y0: Real number. :math:`y` center.
+        Parameters
+        ----------
+        rx : Positive Real number
+            Radius along :math:`x`.
+        ry : Positive Real number
+            Radius along :math:`y`.
+        x0 : Real number
+            :math:`x` center.
+        y0 : Real number
+            :math:`y` center.
         '''
         error_handling.empty_coor(self.coor)
         error_handling.positive_real(rx, 'rx')
@@ -308,11 +350,16 @@ class Lattice():
 
             (x-x_0)^2/r_x^2+(y-y_0)^2/r_y^2 > 1\,  .
 
-
-        :param rx: Positive Real number. Radius along :math:`x`.
-        :param ry: Positive Real number. Radius along :math:`y`.
-        :param x0: Real number. :math:`x` center.
-        :param y0: Real number. :math:`y` center.
+        Parameters
+        ----------
+        rx : Positive Real number
+            Radius along :math:`x`.
+        ry : Positive Real number
+            Radius along :math:`y`.
+        x0 : Real number
+            :math:`x` center.
+        y0 : Real number
+            :math:`y` center.
         '''
         error_handling.empty_coor(self.coor)
         error_handling.positive_real(rx, 'rx')
@@ -336,7 +383,10 @@ class Lattice():
         Rotate the lattice structure about the origin (about the z axis, in
         3D space) by the angle :math:`\theta`.
 
-        :param theta: Rotation angle in degrees.
+        Parameters
+        ----------
+        theta
+            Rotation angle in degrees.
         '''
         error_handling.empty_coor(self.coor)
         error_handling.real_number(theta, 'theta')
@@ -448,14 +498,22 @@ class Lattice():
         Plot the lattice in real space (its projection on the (x, y) plane,
         in 3D space).
 
-        :param ms: Positive number. Default value 20. Markersize.
-        :param fs: Positive number. Default value 20. Fontsize.
-        :param plt_index: Boolean. Default value False. Plot site labels.
-        :param axis: Boolean. Default value False. Plot axis.
-        :param figsize: Tuple. Default value None. Figsize.
+        Parameters
+        ----------
+        ms : Positive number, default 20
+            Markersize.
+        fs : Positive number, default 20
+            Fontsize.
+        plt_index : Boolean, default False
+            Plot site labels.
+        axis : Boolean, default False
+            Plot axis.
+        figsize : Tuple, default None
+            Figsize.
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         error_handling.empty_coor(self.coor)
         error_handling.positive_real(ms, 'ms')

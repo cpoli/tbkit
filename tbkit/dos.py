@@ -36,20 +36,29 @@ def density_of_states(
     :math:`\int\rho(E)dE` equals the number of levels in *energies*,
     for an *e_grid* wide enough to contain the tails.
 
-    :param energies: Array of (real) eigenenergies. Any shape (e.g. the
+    Parameters
+    ----------
+    energies : Array of (real) eigenenergies
+        Any shape (e.g. the
         *en* attribute of **System**, or of **KSpace** after *get_bands*
         over a k-mesh -- flattened automatically).
-    :param e_grid: Real ndarray. Default value None. Energies at which to
+    e_grid : Real ndarray, default None
+        Energies at which to
         evaluate the density of states. If None, a grid of 401 points
         spanning ``[min(energies)-3*broadening, max(energies)+3*broadening]``
         is used.
-    :param broadening: Positive real number. Default value 0.05. Kernel width
+    broadening : Positive real number, default 0.05
+        Kernel width
         :math:`\sigma`.
-    :param kernel: String. Default value 'gaussian'. 'gaussian' or 'lorentzian'.
+    kernel : String, default 'gaussian'
+        'gaussian' or 'lorentzian'.
 
-    :returns:
-        * **e_grid** -- Real ndarray. The energy grid used.
-        * **dos** -- Real ndarray, same shape as *e_grid*. Density of states.
+    Returns
+    -------
+    e_grid : Real ndarray
+        The energy grid used.
+    dos : Real ndarray, same shape as *e_grid*
+        Density of states.
     '''
     error_handling.ndarray_empty(np.asarray(energies), 'energies')
     error_handling.positive_real(broadening, 'broadening')
@@ -153,18 +162,27 @@ def tetrahedron_dos(
     correction. Complex energies (non-Hermitian bands) are replaced by
     their real part.
 
-    :param energies: Real array, shape (n1, n2, ..., nbands): the bands on
+    Parameters
+    ----------
+    energies
+        Real array, shape (n1, n2, ..., nbands): the bands on
         a periodic mesh of 1, 2 or 3 dimensions, ``energies[i1, i2, ..., n]``
         at the k-point :math:`\sum_d (i_d/n_d)\mathbf{b}_d` (as given by
         ``KSpace.mesh_bands(nk).reshape(*nk, norb)``).
-    :param e_grid: Real ndarray, increasing. Default value None. Energies at
+    e_grid : Real ndarray, increasing, default None
+        Energies at
         which to evaluate the density of states. If None, 401 points
         spanning the bands, with a 2% margin on each side.
 
-    :returns:
-        * **e_grid** -- Real ndarray. The energy grid used.
-        * **dos** -- Real ndarray, same shape as *e_grid*. Density of states.
+    Returns
+    -------
+    e_grid : Real ndarray
+        The energy grid used.
+    dos : Real ndarray, same shape as *e_grid*
+        Density of states.
 
+    Examples
+    --------
     Example usage::
 
         en = ks.mesh_bands((40, 40)).reshape(40, 40, ks.norb)

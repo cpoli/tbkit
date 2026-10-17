@@ -24,6 +24,8 @@ positions, :math:`\mathbf{d} = \mathbf{R} + \boldsymbol\tau_j -
 \boldsymbol\tau_i`, so that the velocity is the physical :math:`i[H,
 \mathbf{r}]` (see *KSpace.hall_conductivity*).
 
+Examples
+--------
 Example usage::
 
     from tbkit.optics import optical_conductivity
@@ -67,10 +69,13 @@ def cell_area(ks: KSpace) -> float:
     Brillouin-zone average into an integral:
     :math:`\int\frac{d^2k}{(2\pi)^2}g = \frac{1}{N_kA_c}\sum_{\mathbf{k}}g`.
 
-    :param ks: **KSpace** instance, 2D.
+    Parameters
+    ----------
+    ks : **KSpace** instance, 2D
 
-    :returns:
-        * **area** -- Positive real.
+    Returns
+    -------
+    area : Positive real
     '''
     error_handling.kspace(ks, KSpace)
     error_handling.dim_exact(ks.dim, 2)
@@ -163,21 +168,31 @@ def optical_conductivity(
     valleys are counted, :math:`\pi/4` in units of :math:`e^2/h` for a
     spinless model.
 
-    :param ks: **KSpace** instance, 2D, Hermitian.
-    :param omega: Real number or array of real numbers. Photon energies
+    Parameters
+    ----------
+    ks : **KSpace** instance, 2D, Hermitian
+    omega : Real number or array of real numbers
+        Photon energies
         :math:`\hbar\omega`.
-    :param e_fermi: Real number. Default value 0. Fermi energy.
-    :param temperature: Positive real or zero. Default value 0 (:math:`k_B = 1`).
-    :param eta: Positive real. Default value 0.05. Broadening, larger than
+    e_fermi : Real number, default 0
+        Fermi energy.
+    temperature : Positive real or zero
+        Default value 0 (:math:`k_B = 1`).
+    eta : Positive real, default 0.05
+        Broadening, larger than
         the spacing of the transition energies on the mesh.
-    :param nk: Positive integer, or tuple of 2. Default value 100. k-mesh.
-    :param component: 'xx', 'xy', 'yx' or 'yy'. Default value 'xx'.
-    :param positions: Boolean. Default value True. Orbital positions in the
+    nk : Positive integer, or tuple of 2, default 100
+        k-mesh.
+    component : 'xx', 'xy', 'yx' or 'yy', default 'xx'
+    positions : Boolean, default True
+        Orbital positions in the
         bond vectors (see *KSpace.hall_conductivity*).
 
-    :returns:
-        * **sigma** -- Complex number (or ndarray shaped like *omega*), in
-          units of :math:`e^2/h`.
+    Returns
+    -------
+    sigma
+        Complex number (or ndarray shaped like *omega*), in
+        units of :math:`e^2/h`.
     '''
     kpts = _mesh(ks, nk, positions)
     error_handling.frequencies(omega, 'omega')
@@ -224,16 +239,22 @@ def joint_dos(
     :math:`J = A_c\,\hbar\omega/(4\pi\hbar^2 v_F^2)` near the Dirac points
     (both valleys, per spin).
 
-    :param ks: **KSpace** instance, 2D, Hermitian.
-    :param omega: Real number or array of real numbers. Photon energies.
-    :param e_fermi: Real number. Default value 0.
-    :param temperature: Positive real or zero. Default value 0.
-    :param eta: Positive real. Default value 0.05. Gaussian width.
-    :param nk: Positive integer, or tuple of 2. Default value 100.
+    Parameters
+    ----------
+    ks : **KSpace** instance, 2D, Hermitian
+    omega : Real number or array of real numbers
+        Photon energies.
+    e_fermi : Real number, default 0
+    temperature : Positive real or zero, default 0
+    eta : Positive real, default 0.05
+        Gaussian width.
+    nk : Positive integer, or tuple of 2, default 100
 
-    :returns:
-        * **jdos** -- Real number (or ndarray shaped like *omega*), in states
-          per unit cell and per unit energy.
+    Returns
+    -------
+    jdos
+        Real number (or ndarray shaped like *omega*), in states
+        per unit cell and per unit energy.
     '''
     kpts = _mesh(ks, nk, True)
     error_handling.frequencies(omega, 'omega')
@@ -303,15 +324,22 @@ def berry_curvature_dipole(
     :math:`D_y = 0`, from :math:`\Omega_c = -mv^2/2\varepsilon^3`
     (Sodemann and Fu's model, in these conventions).
 
-    :param ks: **KSpace** instance, 2D, Hermitian.
-    :param e_fermi: Real number, or array of real numbers. Fermi energies.
-    :param temperature: Positive real. Temperature (:math:`k_B = 1`).
-    :param nk: Positive integer, or tuple of 2. Default value 100.
-    :param positions: Boolean. Default value True. See *KSpace.hall_conductivity*.
+    Parameters
+    ----------
+    ks : **KSpace** instance, 2D, Hermitian
+    e_fermi : Real number, or array of real numbers
+        Fermi energies.
+    temperature : Positive real
+        Temperature (:math:`k_B = 1`).
+    nk : Positive integer, or tuple of 2, default 100
+    positions : Boolean, default True
+        See *KSpace.hall_conductivity*.
 
-    :returns:
-        * **dipole** -- Real ndarray of shape (2,): :math:`(D_x, D_y)` (or
-          ``e_fermi.shape + (2,)``), in units of length (of *prim_vec*).
+    Returns
+    -------
+    dipole
+        Real ndarray of shape (2,): :math:`(D_x, D_y)` (or
+        ``e_fermi.shape + (2,)``), in units of length (of *prim_vec*).
     '''
     kpts = _mesh(ks, nk, positions)
     error_handling.fermi_energies(e_fermi)
@@ -354,15 +382,22 @@ def generalized_derivative(
     gauge covariant. Degenerate pairs (:math:`|\omega_{nm}| < 10^{-9}`) are
     set to zero, and dropped from the sum over :math:`p`.
 
-    :param en: Real ndarray, shape (nk, n). Band energies.
-    :param vel: Complex ndarray, shape (2, nk, n, n). :math:`v^a_{nm}`.
-    :param w: Complex ndarray, shape (2, 2, nk, n, n). :math:`w^{ab}_{nm} =
+    Parameters
+    ----------
+    en : Real ndarray, shape (nk, n)
+        Band energies.
+    vel : Complex ndarray, shape (2, nk, n, n)
+        :math:`v^a_{nm}`.
+    w : Complex ndarray, shape (2, 2, nk, n, n)
+        :math:`w^{ab}_{nm} =
         \langle n|\partial_a\partial_bH|m\rangle`.
 
-    :returns:
-        * **r** -- Complex ndarray, shape (2, nk, n, n): r[b] is :math:`r^b_{nm}`.
-        * **r_der** -- Complex ndarray, shape (2, 2, nk, n, n): r_der[b, a]
-          is :math:`r^b_{nm;a}`.
+    Returns
+    -------
+    r : Complex ndarray, shape (2, nk, n, n): r[b] is :math:`r^b_{nm}`
+    r_der
+        Complex ndarray, shape (2, 2, nk, n, n): r_der[b, a]
+        is :math:`r^b_{nm;a}`.
     '''
     en, vel, w = np.asarray(en), np.asarray(vel), np.asarray(w)
     error_handling.band_derivatives(en, vel, w)
@@ -413,20 +448,28 @@ def shift_current(
     B 97, 245143 (2018)): ``positions=False``, which puts them all at the
     cell origin, describes a different crystal.
 
-    :param ks: **KSpace** instance, 2D, Hermitian, without overlap.
-    :param omega: Real number or array of real numbers. Photon energies :math:`\hbar\omega`.
-    :param e_fermi: Real number. Default value 0.
-    :param temperature: Positive real or zero. Default value 0.
-    :param eta: Positive real. Default value 0.05. Gaussian width.
-    :param nk: Positive integer, or tuple of 2. Default value 100.
-    :param component: Three letters among 'x', 'y' (current direction, then
+    Parameters
+    ----------
+    ks : **KSpace** instance, 2D, Hermitian, without overlap
+    omega : Real number or array of real numbers
+        Photon energies :math:`\hbar\omega`.
+    e_fermi : Real number, default 0
+    temperature : Positive real or zero, default 0
+    eta : Positive real, default 0.05
+        Gaussian width.
+    nk : Positive integer, or tuple of 2, default 100
+    component
+        Three letters among 'x', 'y' (current direction, then
         the two field directions). Default value 'xxx'.
-    :param positions: Boolean. Default value True. See *KSpace.hall_conductivity*.
+    positions : Boolean, default True
+        See *KSpace.hall_conductivity*.
 
-    :returns:
-        * **sigma** -- Real number (or ndarray shaped like *omega*), in units
-          of :math:`e^3/\hbar\times` length / energy (:math:`\hbar = e = 1`),
-          counting each orbital once.
+    Returns
+    -------
+    sigma
+        Real number (or ndarray shaped like *omega*), in units
+        of :math:`e^3/\hbar\times` length / energy (:math:`\hbar = e = 1`),
+        counting each orbital once.
     '''
     kpts = _mesh(ks, nk, positions)
     error_handling.no_overlap(bool(ks._overlap_hop))

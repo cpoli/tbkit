@@ -34,6 +34,7 @@ numpydoc_show_class_members = False
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
     'sphinx.ext.mathjax',
@@ -131,6 +132,11 @@ language = 'en'
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 autodoc_member_order = 'bysource'
+# The NumPy-style types are prose ("Real ndarray, shape (len(energies),)"):
+# render them as text, not as :type:/:rtype: fields whose words Sphinx would
+# cross-reference (e.g. *energies* to the attributes of several result classes).
+napoleon_use_param = False
+napoleon_use_rtype = False
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The reST default role (used for this markup: `text`) to use for all

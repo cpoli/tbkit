@@ -19,8 +19,11 @@ class Plot:
     '''
     Plot the results of the classes **lattice** or **system**.
 
-    :param sys: class instance **system**.
-    :param colors: Default value None. Color plot.
+    Parameters
+    ----------
+    sys : class instance **system**
+    colors
+        Default value None. Color plot.
     '''
 
     def __init__(self, sys: System, colors: list[str] | None = None) -> None:
@@ -120,22 +123,32 @@ class Plot:
         '''
         Plot lattice.
 
-        :param ms: Positive number. Default value 20. Markersize.
-        :param c: Positive number. Default value 3.
+        Parameters
+        ----------
+        ms : Positive number, default 20
+            Markersize.
+        c : Positive number, default 3
             Coefficient. Hopping linewidths given by c*|hop['t']|.
-        :param fs: Positive number. Default value 20. Fontsize.
-        :param plt_hop: Boolean. Default value False. Plot hoppings.
-        :param plt_hop_low: Boolean. Default value False. 
+        fs : Positive number, default 20
+            Fontsize.
+        plt_hop : Boolean, default False
+            Plot hoppings.
+        plt_hop_low : Boolean, default False
             Plot hoppings diagonal low.
-        :param plt_index: Boolean. Default value False. Plot site labels.
-        :param axis: Boolean. Default value False. Plot axis.
-        :param figsize: Tuple. Default value None. Figure size.
-        :param ax: Axes. Default value None. Draw on this axis instead of
+        plt_index : Boolean, default False
+            Plot site labels.
+        axis : Boolean, default False
+            Plot axis.
+        figsize : Tuple, default None
+            Figure size.
+        ax : Axes, default None
+            Draw on this axis instead of
             creating a figure of its own -- to place several lattices side
             by side in one figure. *figsize* is then ignored.
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         error_handling.empty_ndarray(self.sys.lat.coor, 'lat.get_lattice')
         return self.lattice_generic(self.sys.lat.coor, ms, lw, c, fs, axis, plt_hop,
@@ -157,20 +170,31 @@ class Plot:
         '''
         Plot lattice in hopping space.
 
-        :param ms: Positive Float. Default value 20. Markersize.
-        :param c: Positive Float. Default value 3. Coefficient.
+        Parameters
+        ----------
+        ms : Positive Float, default 20
+            Markersize.
+        c : Positive Float, default 3
+            Coefficient.
             Hopping linewidths given by c*|hop['t']|.
-        :param fs: Positive Float. Default value 20. Fontsize.
-        :param axis: Boolean. Default value False. Plot axis.
-        :param plt_hop: Boolean. Default value False. Plot hoppings.
-        :param plt_index: Boolean. Default value False. Plot site labels.
-        :param figsize: Tuple. Default value None. Figure size.
-        :param ax: Axes. Default value None. Draw on this axis instead of
+        fs : Positive Float, default 20
+            Fontsize.
+        axis : Boolean, default False
+            Plot axis.
+        plt_hop : Boolean, default False
+            Plot hoppings.
+        plt_index : Boolean, default False
+            Plot site labels.
+        figsize : Tuple, default None
+            Figure size.
+        ax : Axes, default None
+            Draw on this axis instead of
             creating a figure of its own -- to place several lattices side
             by side in one figure. *figsize* is then ignored.
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         error_handling.empty_ndarray(self.sys.coor_hop, 'sys.get_coor_hop')
         return self.lattice_generic(self.sys.coor_hop, ms, lw, c, fs, axis, plt_hop,
@@ -181,12 +205,17 @@ class Plot:
         """
         Plot the spectrum (real part of the eigenenergies) as a histogram.
 
-        :param nbr_bins: Positive integer. Default value 61. Number of bins of the histogram.
-        :param fs: Positive number. Default value 20. Fontsize.
-        :param lims: List, lims[0] energy min, lims[1] energy max.
+        Parameters
+        ----------
+        nbr_bins : Positive integer, default 61
+            Number of bins of the histogram.
+        fs : Positive number, default 20
+            Fontsize.
+        lims : List, lims[0] energy min, lims[1] energy max
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         """
         error_handling.empty_ndarray(self.sys.en, 'sys.get_eig')
         error_handling.positive_int(nbr_bins, 'nbr_bins')
@@ -223,16 +252,25 @@ class Plot:
         '''
         Plot the (broadened) density of states, see *tbkit.dos.density_of_states*.
 
-        :param broadening: Positive real number. Default value 0.05. Kernel width.
-        :param kernel: String. Default value 'gaussian'. 'gaussian' or 'lorentzian'.
-        :param e_grid: Real ndarray. Default value None. Energies at which to
+        Parameters
+        ----------
+        broadening : Positive real number, default 0.05
+            Kernel width.
+        kernel : String, default 'gaussian'
+            'gaussian' or 'lorentzian'.
+        e_grid : Real ndarray, default None
+            Energies at which to
             evaluate the density of states.
-        :param fs: Positive number. Default value 20. Fontsize.
-        :param lw: Positive number. Default value 2. Linewidth.
-        :param figsize: Tuple. Default value None. Figure size.
+        fs : Positive number, default 20
+            Fontsize.
+        lw : Positive number, default 2
+            Linewidth.
+        figsize : Tuple, default None
+            Figure size.
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         error_handling.empty_ndarray(self.sys.en, 'sys.get_eig')
         error_handling.positive_real(fs, 'fs')
@@ -253,15 +291,23 @@ class Plot:
         Plot spectrum (eigenenergies real part (blue circles),
         and sublattice polarization if *pola* not empty (red circles).
 
-        :param ms: Default value 10. Markersize.
-        :param fs: Default value 20. Fontsize.
-        :param lims: List, lims[0] energy min, lims[1] energy max.
-        :param tag_pola: Default value None. One-character string. Tag of the sublattice.
-        :param ipr: Default value None. If True plot the Inverse Participation Ratio.
-        :param petermann: Default value None. If True plot the Petermann factor.
+        Parameters
+        ----------
+        ms
+            Default value 10. Markersize.
+        fs
+            Default value 20. Fontsize.
+        lims : List, lims[0] energy min, lims[1] energy max
+        tag_pola
+            Default value None. One-character string. Tag of the sublattice.
+        ipr
+            Default value None. If True plot the Inverse Participation Ratio.
+        petermann
+            Default value None. If True plot the Petermann factor.
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         error_handling.empty_ndarray(self.sys.en, 'sys.get_eig')
         error_handling.positive_real(ms, 'ms')
@@ -313,16 +359,25 @@ class Plot:
         '''
         Plot sublattice polarization.
 
-        :param fig: Figure. Default value None. (used by the method spectrum).
-        :param ax1: Axis. Default value None. (used by the method spectrum).
-        :param ms: Positive Float. Default value 10. Markersize.
-        :param fs: Positive Float. Default value 20. Fontsize.
-        :param lims: List, lims[0] energy min, lims[1] energy max.
-        :param tag_pola: One-character string. Default value None. Tag of the sublattice.
-        :param ind: List. Default value None. List of indices. (used in the method spectrum).
+        Parameters
+        ----------
+        fig : Figure, default None
+            (used by the method spectrum).
+        ax1 : Axis, default None
+            (used by the method spectrum).
+        ms : Positive Float, default 10
+            Markersize.
+        fs : Positive Float, default 20
+            Fontsize.
+        lims : List, lims[0] energy min, lims[1] energy max
+        tag_pola : One-character string, default None
+            Tag of the sublattice.
+        ind : List, default None
+            List of indices. (used in the method spectrum).
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         if fig is None:
             error_handling.sys(self.sys)
@@ -366,15 +421,24 @@ class Plot:
         '''
         Plot the Inverse Participation Ratio.
 
-        :param fig: Figure. Default value None. (used by the method spectrum).
-        :param ax1: Axis. Default value None. (used by the method spectrum).
-        :param ms: Positive Float. Default value 10. Markersize.
-        :param fs: Positive Float. Default value 20. Fontsize.
-        :param lims: List. lims[0] energy min, lims[1] energy max.
-        :param ind: List. Default value None. List of indices. (used in the method spectrum).
+        Parameters
+        ----------
+        fig : Figure, default None
+            (used by the method spectrum).
+        ax1 : Axis, default None
+            (used by the method spectrum).
+        ms : Positive Float, default 10
+            Markersize.
+        fs : Positive Float, default 20
+            Fontsize.
+        lims : List
+            lims[0] energy min, lims[1] energy max.
+        ind : List, default None
+            List of indices. (used in the method spectrum).
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         if fig is None:
             error_handling.sys(self.sys)
@@ -412,15 +476,24 @@ class Plot:
         '''
         Plot the Petermann factor.
 
-        :param fig: Figure. Default value None. (used by the method spectrum).
-        :param ax1: Axis. Default value None. (used by the method spectrum).
-        :param ms: Positive Float. Default value 10. Markersize.
-        :param fs: Positive Float. Default value 20. Fontsize.
-        :param lims: List. lims[0] energy min, lims[1] energy max.
-        :param ind: List. Default value None. List of indices. (used in the method spectrum).
+        Parameters
+        ----------
+        fig : Figure, default None
+            (used by the method spectrum).
+        ax1 : Axis, default None
+            (used by the method spectrum).
+        ms : Positive Float, default 10
+            Markersize.
+        fs : Positive Float, default 20
+            Fontsize.
+        lims : List
+            lims[0] energy min, lims[1] energy max.
+        ind : List, default None
+            List of indices. (used in the method spectrum).
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         if fig is None:
             error_handling.sys(self.sys)
@@ -451,12 +524,18 @@ class Plot:
         Plot complex value eigenenergies, real part (blue circles),
         and imaginary part (red circles).
 
-        :param ms: Positive Float. Default value 10. Markersize.
-        :param fs: Positive Float. Default value 20. Font size.
-        :param lims: List. lims[0] energy min, lims[1] energy max.
+        Parameters
+        ----------
+        ms : Positive Float, default 10
+            Markersize.
+        fs : Positive Float, default 20
+            Font size.
+        lims : List
+            lims[0] energy min, lims[1] energy max.
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         error_handling.empty_ndarray(self.sys.en, 'sys.get_eig')
         error_handling.positive_real(ms, 'ms')
@@ -495,14 +574,22 @@ class Plot:
         r'''
         Plot intensity for 1D lattices.
 
-        :param intensity: np.array. Field intensity.
-        :param ms: Positive Float. Default value 20. Markersize.
-        :param lw: Positive Float. Default value 2. Linewith, connect sublattice sites.
-        :param fs: Positive Float. Default value 20. Font size.
-        :param title: String. Default value '$|\psi^{(j)}|^2$'. Figure title.
+        Parameters
+        ----------
+        intensity : np.array
+            Field intensity.
+        ms : Positive Float, default 20
+            Markersize.
+        lw : Positive Float, default 2
+            Linewith, connect sublattice sites.
+        fs : Positive Float, default 20
+            Font size.
+        title : String
+            Default value '$|\psi^{(j)}|^2$'. Figure title.
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         error_handling.ndarray(intensity, 'intensity', self.sys.lat.sites)
         error_handling.empty_ndarray(self.sys.lat.coor, 'sys.get_lattice')
@@ -536,15 +623,24 @@ class Plot:
         r'''
         Plot the intensity. Colormap with identical disk shape.
 
-        :param intensity: np.array.Field intensity.
-        :param s: Default value 200. Disk size.
-        :param fs: Default value 20. Font size.
-        :param lims: List. Default value None. Colormap limits.
-        :param figsize: Tuple. Default value None. Figure size.
-        :param title: String. Default value '$|\psi|^2$'. Title.
+        Parameters
+        ----------
+        intensity : np.array
+            Field intensity.
+        s
+            Default value 200. Disk size.
+        fs
+            Default value 20. Font size.
+        lims : List, default None
+            Colormap limits.
+        figsize : Tuple, default None
+            Figure size.
+        title : String, default '$|\psi|^2$'
+            Title.
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         error_handling.empty_ndarray(self.sys.lat.coor, 'sys.get_lattice')
         error_handling.ndarray(intensity, 'intensity', self.sys.lat.sites)
@@ -587,17 +683,26 @@ class Plot:
         r'''
         Plot the intensity. Intensity propotional to disk shape.
 
-        :param intensity: np.array. Intensity.
-        :param s: Positive Float. Default value 1000.
+        Parameters
+        ----------
+        intensity : np.array
+            Intensity.
+        s : Positive Float, default 1000
             Circle size given by 100 * s * intensity.
-        :param lw: Positive Float. Default value 1. Hopping linewidths.
-        :param fs: Positive Float. Default value 20. Fontsize.
-        :param plt_hop: Boolean. Default value False. Plot hoppings.
-        :param figsize: Tuple. Default value None. Figure size.
-        :param title: String. Default value '$|\psi|^2$'. Figure title.
+        lw : Positive Float, default 1
+            Hopping linewidths.
+        fs : Positive Float, default 20
+            Fontsize.
+        plt_hop : Boolean, default False
+            Plot hoppings.
+        figsize : Tuple, default None
+            Figure size.
+        title : String, default '$|\psi|^2$'
+            Figure title.
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         error_handling.empty_ndarray(self.sys.lat.coor, 'sys.get_lattice')
         error_handling.ndarray(intensity, 'intensity', self.sys.lat.sites)
@@ -647,16 +752,24 @@ class Plot:
         *GrapheneSystem.get_butterfly*). The energy levels plotted are the
         ones lying in *lims* at the smallest strain.
 
-        :param betas: np.array. Strain values, shape (N,).
-        :param butterfly: np.array. Eigenvalues, shape (N, sites).
-        :param lw: Positive Float. Default value 1. Linewidths.
-        :param fs: Positive Float. Default value 20. Fontsize.
-        :param lims: List, lims[0] energy min, lims[1] energy max.
-        :param title: Default value ''. Figure title. If empty,
+        Parameters
+        ----------
+        betas : np.array
+            Strain values, shape (N,).
+        butterfly : np.array
+            Eigenvalues, shape (N, sites).
+        lw : Positive Float, default 1
+            Linewidths.
+        fs : Positive Float, default 20
+            Fontsize.
+        lims : List, lims[0] energy min, lims[1] energy max
+        title
+            Default value ''. Figure title. If empty,
             'Energies depending on strain'.
 
-        :returns:
-            * **fig** -- Figure.
+        Returns
+        -------
+        fig : Figure
         '''
         error_handling.ndarray_empty(betas, 'betas')
         error_handling.ndarray_empty(butterfly, 'butterfly')
