@@ -27,7 +27,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import magnetic_supercell
+from tbkit.plot import Plot
 
 
 square = [{'i': 0, 'j': 0, 'R': (1, 0), 't': 1.}, {'i': 0, 'j': 0, 'R': (0, 1), 't': 1.}]
@@ -39,6 +41,19 @@ def harper(p, q, k):
     hop = np.eye(q, k=1, dtype=complex)
     hop[q - 1, 0] = np.exp(1j * k[0] * q)  # into the next magnetic cell (q >= 3)
     return onsite + hop + hop.conj().T
+
+
+# %%
+# The lattice
+# -----------
+# The square lattice, one site per cell and a nearest-neighbour hopping,
+# here as six of its magnetic cells at flux :math:`1/3`
+# (:func:`~tbkit.kspace.magnetic_supercell`, then
+# :func:`~tbkit.bridges.finite_system`): three sites along
+# :math:`\mathbf{a}_1` per magnetic cell. The Peierls phases change the
+# hoppings' phases, not their amplitudes, so every bond is drawn alike.
+
+fig_lat = Plot(finite_system(magnetic_supercell(lattices.square(), square, 1, 3), (2, 3))).lattice(plt_hop=True, ms=12, figsize=(4, 2.5))
 
 
 # %%
@@ -84,6 +99,7 @@ k2 = np.linspace(-np.pi, np.pi, 301)
 bands = np.array([np.linalg.eigvalsh(mag.get_ham([0., k])) for k in k2])
 bands0 = np.array([np.linalg.eigvalsh(plain.get_ham([0., k])) for k in k2])
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(9, 4), sharey=True)
 axes[0].plot(k2, bands0, 'C7')
 axes[0].set_title('3-cell supercell, no field')

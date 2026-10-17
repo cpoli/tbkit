@@ -29,6 +29,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.plot import Plot
 from tbkit.system import System
 
 
@@ -62,6 +63,15 @@ def anderson(n, w, seed=0):
     sys.get_ipr()
     return sys
 
+
+# %%
+# The chain
+# ---------
+# Both models live on the same open chain with uniform nearest-neighbour
+# hopping :math:`t`; only the onsite energies differ (quasiperiodic for
+# Aubry-Andre, random for Anderson).
+
+fig_lat = Plot(aubry_andre(12, lam=1.)).lattice(plt_hop=True, ms=12, figsize=(8, 1.2))
 
 # %%
 # A sharp transition at :math:`\lambda = 2t`
@@ -109,6 +119,7 @@ print('spectrum(lambda) = lambda/2 * spectrum(4/lambda) on the Fibonacci ring: O
 # Extended, critical and localized states
 # -------------------------------------------
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(11, 4))
 axes[0].semilogy(lams, ipr, 'o-', ms=4)
 axes[0].axvline(2., c='k', ls=':')

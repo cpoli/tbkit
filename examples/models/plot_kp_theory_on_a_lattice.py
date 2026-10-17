@@ -23,6 +23,7 @@ import sympy
 
 from tbkit.bridges import finite_system
 from tbkit.continuum import discretize, discretize_symbolic
+from tbkit.plot import Plot
 
 
 # %%
@@ -125,9 +126,18 @@ print('bulk gaps: {}, flake states with |E| < gap/2: {}'.format(
 assert in_gap[1.] >= 8 and in_gap[-1.] == 0
 
 # %%
+# The lattice of the flake, here :math:`8\times8` cells of it: a square
+# grid, each site holding the two orbitals of the spin block (drawn on top
+# of each other), joined by the nearest-neighbour hoppings of the
+# discretized model.
+
+fig_flake = Plot(finite_system(bhz, (8, 8))).lattice(plt_hop=True, ms=10, c=0.6, figsize=(4.5, 4.5))
+
+# %%
 # Bands, convergence and edge states
 # ----------------------------------------
 
+# sphinx_gallery_thumbnail_number = 2
 fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(12, 3.8))
 ax1.plot(kx, exact, 'k-', lw=2, label=['continuum', None])
 for a, c in zip(bands, ('C3', 'C0')):

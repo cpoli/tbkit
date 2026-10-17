@@ -32,8 +32,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.higher_order import flake_positions
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 from tbkit.topology import bott_index
 
 
@@ -49,6 +51,19 @@ def haldane(t2=0.2, M=0.):
 n = 14  # a 14 x 14-cell torus, 392 sites
 positions = flake_positions(haldane(), (n, n))
 cell = [n * np.array(a) for a in haldane().lat.prim_vec]
+
+# %%
+# The lattice
+# -----------
+# The Haldane model on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`), each bond drawn with a width
+# proportional to its amplitude: the honeycomb lattice's two sublattices
+# ('a' and 'b', in two colours), the nearest-neighbour hopping :math:`t`
+# (thick) and the complex second-neighbour hoppings :math:`\pm it_2`
+# within each sublattice (thin), which break time-reversal symmetry. The
+# torus below is :math:`14\times14` cells.
+
+fig_lat = Plot(finite_system(haldane(), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # Clean tori: the Bott index is the Chern number
@@ -88,6 +103,7 @@ for w, b in zip(disorder, botts):
     print('W = {:4.1f}: Bott indices {}'.format(w, b.tolist()))
 assert np.all(botts[disorder <= 5.] == 1) and np.all(botts[disorder >= 8.] == 0)
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(6, 4))
 ax.plot(disorder, botts.mean(axis=1), 'o-b', label='mean over {} samples'.format(n_samples))
 for w, b in zip(disorder, botts):

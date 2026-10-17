@@ -32,6 +32,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.plot import Plot
 from tbkit.system import System
 
 
@@ -62,6 +63,16 @@ def chain(n, model):
 def moment(sys, q):
     r'''Typical (geometric-mean) P_q over all the eigenstates.'''
     return np.exp(np.mean(np.log(np.sum(sys.intensity**q, axis=0))))
+
+
+# %%
+# The chain
+# ---------
+# All three models share one open chain with uniform nearest-neighbour
+# hopping; clean, critical (Aubry-Andre at :math:`\lambda = 2t`) and
+# Anderson differ only in their onsite energies.
+
+fig_lat = Plot(chain(12, 'clean')).lattice(plt_hop=True, ms=12, figsize=(8, 1.2))
 
 
 # %%
@@ -96,6 +107,7 @@ print('D_q = 1 (clean), 0 (Anderson), and decreasing between 0.3 and 0.7 at the 
 # The three scalings, and a critical wave function
 # ----------------------------------------------------
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(11, 4.2))
 for m, c in zip(models, ('C0', 'C2', 'C3')):
     axes[0].loglog(SIZES, moments[m][0], 'o-', c=c, label=r'{}: $D_2 = {:.2f}$'.format(m, dq[m][0]))

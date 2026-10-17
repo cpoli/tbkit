@@ -28,7 +28,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
+from tbkit.system import System
 
 
 def grid(ks, q, monkhorst_pack):
@@ -39,6 +42,22 @@ def grid(ks, q, monkhorst_pack):
 t = 1.
 square = KSpace(lattices.square())
 square.set_hopping([{'n': 1, 't': -t}])
+
+# %%
+# The lattices
+# ------------
+# The square lattice (left, :func:`~tbkit.bridges.finite_system` of the
+# model above), and the honeycomb lattice of gapped graphene (right,
+# sublattices 'a' and 'b' in two colours), each with its nearest-neighbour
+# bonds.
+
+fig_lat, axes_lat = plt.subplots(1, 2, figsize=(10, 4.5))
+Plot(finite_system(square, (6, 6))).lattice(plt_hop=True, ms=10, ax=axes_lat[0])
+patch = lattices.honeycomb()
+patch.get_lattice(n1=5, n2=4)
+vis = System(patch)
+vis.set_hopping([{'n': 1, 't': 1.}])
+Plot(vis).lattice(plt_hop=True, ms=10, ax=axes_lat[1])
 
 # %%
 # Exact moments of the band
@@ -100,6 +119,7 @@ slope = np.polyfit(np.log(qs[3:]), np.log(err_met[3:]), 1)[0]
 print('metal: error ~ q^{:.2f}'.format(slope))
 assert -2.3 < slope < -1.7
 
+# sphinx_gallery_thumbnail_number = 2
 fig_conv, ax = plt.subplots(figsize=(6.5, 4.5))
 ax.semilogy(qs, np.maximum(err_ins, 1e-16), 'o-', label='insulator (gapped graphene)')
 ax.semilogy(qs, err_met, 's-', label='metal (half-filled square lattice)')

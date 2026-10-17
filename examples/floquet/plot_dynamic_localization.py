@@ -35,7 +35,9 @@ import matplotlib.pyplot as plt
 from scipy.special import j0, jn_zeros
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 from tbkit.floquet import DrivenKSpace, effective_hamiltonian, evolution_operator, quasienergies
 
 t = 1.
@@ -47,6 +49,15 @@ first_zero = jn_zeros(0, 1)[0]
 
 chain = KSpace(lattices.chain())
 chain.set_hopping([{'i': 0, 'j': 0, 'R': (1,), 't': t}])
+
+# The chain: one site per unit cell and a nearest-neighbour hopping t.
+fig_lat = Plot(finite_system(chain, 10)).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
+
+# %%
+# An AC field :math:`F\cos\omega t` shakes the chain; its quasienergy band
+# is that of the static chain, with :math:`t` renormalized by
+# :math:`J_0(F/\omega)`.
+
 omega = 5.
 ks = np.linspace(-np.pi, np.pi, 61)
 
@@ -108,6 +119,7 @@ print('Lowest left-well population over {} periods: {:.4f} (undriven), {:.4f} (A
           .format(n_periods, population[0.].min(), population[first_zero].min(), first_zero))
 assert population[0.].min() < 0.01 and population[first_zero].min() > 0.99
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 3, figsize=(14, 4))
 for r, band in zip(ratios, bands):
     axes[0].plot(ks, band, label=r'$F/\omega = {:.3g}$'.format(r))

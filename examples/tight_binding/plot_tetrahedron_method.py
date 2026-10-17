@@ -25,11 +25,15 @@ and 3 dimensions (segments, triangles, tetrahedra), and
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.special import ellipk
+from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
 import tbkit.dos as dos
 import tbkit.lattices as lattices
 from tbkit.lattice import Lattice
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
+from tbkit.system import System
 
 # %%
 # The square lattice: a logarithmic van Hove singularity
@@ -43,6 +47,16 @@ from tbkit.kspace import KSpace
 
 sq = KSpace(lattices.square())
 sq.set_hopping([{'i': 0, 'j': 0, 'R': (1, 0), 't': -1.}, {'i': 0, 'j': 0, 'R': (0, 1), 't': -1.}])
+
+# %%
+# The square lattice, one site per cell with nearest-neighbour hopping, on
+# :math:`6\times6` cells (:func:`~tbkit.bridges.finite_system`):
+
+fig_lat = Plot(finite_system(sq, (6, 6))).lattice(plt_hop=True, ms=10, figsize=(4, 4))
+
+# %%
+# Its density of states, exact and on a mesh:
+
 e_grid = np.linspace(-3.9, 3.9, 157)
 exact = ellipk(1 - e_grid ** 2 / 16) / (2 * np.pi ** 2)
 away = np.abs(e_grid) > 0.3
@@ -66,6 +80,7 @@ for n in (20, 40, 80):
 print('rho(0) on 20, 40, 80 meshes:', np.round(peaks, 3))
 assert peaks[0] < peaks[1] < peaks[2]
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(7, 4.5))
 ax.plot(e_grid, exact, 'k', lw=3, label='exact')
 ax.plot(e_grid, rho_gauss, 'r--', label=r'Gaussian, $\sigma = 0.1$')
@@ -89,6 +104,27 @@ fig.set_layout_engine('tight')
 cubic = KSpace(Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0., 0.)}],
                               prim_vec=[(1., 0., 0.), (0., 1., 0.), (0., 0., 1.)]))
 cubic.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': -1.} for R in [(1, 0, 0), (0, 1, 0), (0, 0, 1)]])
+
+# %%
+# The simple cubic lattice, one site per cell and six nearest neighbours,
+# here :math:`4\times4\times4` sites of it:
+
+lat_vis = Lattice(unit_cell=cubic.lat.unit_cell, prim_vec=cubic.lat.prim_vec)
+lat_vis.get_lattice(4, 4, 4)
+vis = System(lat_vis)
+vis.set_hopping([{'n': 1, 't': 1.}])
+pos = np.column_stack([lat_vis.coor[f] for f in 'xyz'])
+bonds = np.stack([pos[vis.hop['i'].astype(int)], pos[vis.hop['j'].astype(int)]], axis=1)
+fig_lat = plt.figure(figsize=(4.5, 4.5))
+ax_lat = fig_lat.add_subplot(projection='3d')
+ax_lat.add_collection3d(Line3DCollection(bonds, colors='k', linewidths=1))
+ax_lat.scatter(*pos.T, s=30, c='b', depthshade=False)
+ax_lat.set_aspect('equal')
+ax_lat.set_axis_off()
+
+# %%
+# Its density of states near the band bottom:
+
 e_grid = np.linspace(-6.5, 6.5, 131)
 ref = dos.tetrahedron_dos(cubic.mesh_bands(64).reshape(64, 64, 64, 1), e_grid)[1] / 64 ** 3
 

@@ -30,7 +30,9 @@ from scipy.optimize import brentq
 
 import tbkit.lattices as lattices
 from tbkit.bdg import s_wave_gap
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 
 sq = KSpace(lattices.square())
 sq.set_hopping([{'i': 0, 'j': 0, 'R': (1, 0), 't': -1.}, {'i': 0, 'j': 0, 'R': (0, 1), 't': -1.}])
@@ -46,6 +48,16 @@ def bcs(T):
         return V / len(xi) * np.sum((np.tanh(e / (2 * T)) if T > 0 else 1.) / (2 * e)) - 1
     return brentq(eq, 1e-9, 5.) if eq(1e-9) > 0 else 0.
 
+
+# %%
+# The lattice
+# -----------
+# The square lattice, one site per cell with a nearest-neighbour hopping,
+# as the :math:`12\times12` torus solved below
+# (:func:`~tbkit.bridges.finite_system`; the bonds that close the torus
+# are not drawn). The attraction :math:`V` acts on each site.
+
+fig_lat = Plot(finite_system(sq, (L, L))).lattice(plt_hop=True, ms=10, figsize=(5, 5))
 
 # %%
 # Delta(T) in real space
@@ -85,6 +97,7 @@ pos = en > 0
 pair = np.einsum('in,in->i', vec[:n, pos], vec[n:, pos].conj())
 assert np.allclose(prox.delta[n // 2:], 0.) and abs(pair[n // 2 + 2]) > 1e-3
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 t_line = np.linspace(0., 1., 60) * tc
 axes[0].plot(t_line / tc, [bcs(T) / d0 for T in t_line], 'k-', lw=1, label='k-space gap equation')

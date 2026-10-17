@@ -26,7 +26,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace, PAULI
+from tbkit.plot import Plot
 
 NN = [(0, 0), (-1, 0), (0, -1)]
 NNN = [(0, 1), (-1, 0), (1, -1)]  # a2, -a1, a1 - a2: 120 degrees apart
@@ -61,6 +63,20 @@ def haldane_sector(lam_so, spin):
 
 
 lam_so = 0.06
+
+# %%
+# The lattice
+# -----------
+# The Kane-Mele model without Rashba coupling is two copies of the
+# Haldane model, one per spin. The spin-up copy on a patch of
+# :math:`5\times4` cells (:func:`~tbkit.bridges.finite_system`), bond
+# widths proportional to the amplitudes: the honeycomb lattice's two
+# sublattices ('a' and 'b', in two colours), the nearest-neighbour hopping
+# :math:`t` (thick) and the spin-orbit hoppings :math:`\pm i\lambda_{SO}`
+# between second neighbours (thin). Spin down has the opposite signs.
+
+fig_lat = Plot(finite_system(haldane_sector(lam_so, +1), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
 
 # %%
 # The quantized plateau, and the decoupled spin sectors
@@ -114,6 +130,7 @@ for lam_r in rashba:
 deviation = np.abs(np.array(plateau) - plateau[0])
 assert deviation[0] == 0. and np.all(np.diff(deviation) > 0) and deviation[-1] > 0.05
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(7, 4.5))
 for lam_r, s in curves.items():
     ax.plot(e_f, s, label=r'$\lambda_R = {:.2f}$'.format(lam_r))

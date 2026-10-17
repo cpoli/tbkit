@@ -25,7 +25,9 @@ counts the Weyl points and their chiralities.
 import numpy as np
 import matplotlib.pyplot as plt
 
+from tbkit.bridges import finite_system
 from tbkit.continuum import discretize
+from tbkit.plot import Plot
 from tbkit.topology import find_weyl_points
 
 
@@ -46,6 +48,14 @@ for k0, v_expected in ((0., 1.), (np.pi, -1.)):
     v = (chiral.get_bands([[k0 + dk]])[0, 0] - chiral.get_bands([[k0 - dk]])[0, 0]) / (2 * dk)
     print('E = 0 at ka = {:.4f}, velocity {:+.4f}'.format(k0, v))
     assert np.isclose(v, v_expected)
+
+# %%
+# The lattice of that discretization, ten cells of it
+# (:func:`~tbkit.bridges.finite_system`): a chain with one site per cell
+# and purely imaginary nearest-neighbour hoppings, all of the same
+# amplitude.
+
+fig_lat = Plot(finite_system(chiral, 10)).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
 
 # %%
 # Eight Weyl points from one
@@ -99,6 +109,7 @@ wilson.set_params(B=0.5)
 # moves the second crossing, but cannot remove it.
 
 kz = np.column_stack([np.zeros_like(k), np.zeros_like(k), k])
+# sphinx_gallery_thumbnail_number = 2
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4.5))
 ax1.plot(k / np.pi, k, 'k--', lw=1.5, label='continuum $E = k$')
 ax1.plot(k / np.pi, e_chiral, lw=2, label=r'lattice $E = \sin ka$')

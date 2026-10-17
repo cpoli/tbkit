@@ -22,6 +22,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice
+from tbkit.plot import Plot
 from tbkit.propagation import Propagation
 from tbkit.system import System
 
@@ -31,6 +32,20 @@ from tbkit.system import System
 
 angles = np.arange(6) * np.pi / 3
 ring_cell = [{'tag': 'a', 'r0': (float(np.cos(a)), float(np.sin(a)))} for a in angles]
+
+# Six sites on a ring, each bond a hopping t = 1. A walker starting on the
+# left-most site reaches the right-most one along two paths, one per arm.
+ring = Lattice(unit_cell=ring_cell, prim_vec=[(10., 0.), (0., 10.)])
+ring.get_lattice(n1=1, n2=1)
+vis = System(ring)
+vis.set_hopping([{'n': 1, 't': 1.}])
+fig_ring = Plot(vis).lattice(plt_hop=True, ms=16, figsize=(3, 3))
+
+# %%
+# The weight on the opposite site, without and with a :math:`\pi` flux
+# through the ring:
+
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 3, figsize=(13, 3.8))
 far = {}
 for flux in (False, True):
@@ -81,6 +96,16 @@ def dimer_chain(wall):
     sys.get_ham()
     return lat, sys
 
+
+# %%
+# The chain with its domain wall, bond widths proportional to the hopping:
+# strong bonds start each dimer left of site 20 ('a' to 'b') and right of
+# it ('b' to 'a'), so site 20 sits between two weak bonds.
+
+fig_wall = Plot(dimer_chain(True)[1]).lattice(plt_hop=True, ms=6, c=2.5, figsize=(12, 1.2))
+
+# %%
+# The return probability of a walker started on site 20:
 
 for ax, wall in zip(axes[1:], (True, False)):
     lat, sys = dimer_chain(wall)

@@ -29,6 +29,7 @@ import matplotlib.pyplot as plt
 
 from tbkit.graphene import GrapheneLattice
 from tbkit.meanfield import hubbard_mean_field
+from tbkit.plot import Plot
 from tbkit.system import System
 
 t = -1.
@@ -52,10 +53,19 @@ def solve(sys, U):
 
 
 # %%
+# The flake
+# ---------
+# A hexagonal graphene flake with six zigzag edges. The two sublattices
+# ('a' and 'b') are drawn in different colours: each edge ends on one of
+# them, alternating from edge to edge.
+
+lat, sys, edge = flake(6)
+fig_lat = Plot(sys).lattice(plt_hop=True, ms=6, figsize=(5, 5))
+
+# %%
 # Edge moments, opposite on opposite sublattices
 # -------------------------------------------------
 
-lat, sys, edge = flake(6)
 A = lat.coor['tag'] == 'a'
 res = solve(sys, 2.)
 m = res.magnetization
@@ -65,6 +75,7 @@ assert abs(res.total_spin) < 1e-8
 assert np.all(m[edge & A] > 0) and np.all(m[edge & ~A] < 0)
 assert np.abs(m[edge]).mean() > 2 * np.abs(m[~edge]).mean()
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(5.5, 5))
 sc = ax.scatter(lat.coor['x'], lat.coor['y'], c=m, cmap='RdBu', vmin=-0.2, vmax=0.2, s=40)
 fig.colorbar(sc, ax=ax, label=r'$m_i = (n_{i\uparrow} - n_{i\downarrow})/2$')

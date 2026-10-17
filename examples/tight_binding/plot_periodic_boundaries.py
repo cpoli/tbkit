@@ -22,6 +22,7 @@ import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 from tbkit.system import System
 
 t2 = 0.2
@@ -45,6 +46,17 @@ hal = KSpace(lattices.honeycomb())
 hal.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
 for R in [(0, 1), (-1, 0), (1, -1)]:
     hal.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j*t2}, {'i': 1, 'j': 1, 'R': R, 't': -1j*t2}])
+
+# %%
+# The lattice
+# -----------
+# The Haldane model on a :math:`6\times6`-cell flake, bond widths
+# proportional to the amplitudes: the honeycomb lattice's two sublattices
+# ('a' and 'b', in two colours), the nearest-neighbour hopping (thick) and
+# the second-neighbour hoppings :math:`\pm it_2` (thin). The torus and the
+# cylinder below add the bonds across the boundaries, which are not drawn.
+
+fig_lat = Plot(haldane_system(6, 6, False)).lattice(plt_hop=True, ms=10, figsize=(6, 4.5))
 
 # %%
 # Torus, cylinder and flake
@@ -90,6 +102,7 @@ bott = dirty.get_bott_index()
 print('Disordered torus with {} vacancies: Bott index {:.3f}'.format(2 * n * n - lat.sites, bott))
 assert np.isclose(bott, 1.)
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 3, figsize=(12, 3.8), sharey=True)
 for ax, name in zip(axes, ('torus', 'cylinder', 'flake')):
     ax.plot(spectra[name], '.', ms=3)

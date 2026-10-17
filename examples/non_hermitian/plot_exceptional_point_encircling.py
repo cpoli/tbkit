@@ -31,7 +31,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 import tbkit.exceptional as ex
 
 NN = [{'i': 0, 'j': 1, 'R': (0, 0), 't': 1.}, {'i': 0, 'j': 1, 'R': (-1, 0), 't': 1.},
@@ -54,6 +56,17 @@ assert len(near) == 2
 k_ep = near[0][0]
 radius = 0.1  # the partner EP is 0.39 away: only one EP inside
 assert np.linalg.norm(near[0][0] - near[1][0]) > 3 * radius
+
+# %%
+# The lattice
+# -----------
+# Graphene's honeycomb lattice on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`): sublattices 'a' and 'b' in two
+# colours, each bonded to its three nearest neighbours. The
+# non-Hermitian term, :math:`i\gamma` added to both directions of the
+# intra-cell bond, adds no bond and is not drawn.
+
+fig_lat = Plot(finite_system(graphene, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # Around the Dirac point: one loop, Berry phase pi
@@ -117,6 +130,7 @@ assert both.final_band == 0
 # curve in two turns -- the followed eigenvalue (dark) needs two loops to
 # come back.
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 3, figsize=(13, 4.2))
 axes[0].plot(dp_one.s, dp_one.en.real[:, 0], 'b', label='band 0')
 axes[0].plot(dp_one.s, dp_one.en.real[:, 1], 'r', label='band 1')

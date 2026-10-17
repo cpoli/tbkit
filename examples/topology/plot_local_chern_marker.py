@@ -25,6 +25,7 @@ import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 from tbkit.system import System
 
 t2 = 0.2
@@ -61,6 +62,16 @@ for R in [(0, 1), (-1, 0), (1, -1)]:
 chern = hal.chern_number(0, 30)
 
 # %%
+# The lattice
+# -----------
+# The Haldane model on a :math:`6\times6`-cell flake, bond widths
+# proportional to the amplitudes: the honeycomb lattice's two sublattices
+# ('a' and 'b', in two colours), the nearest-neighbour hopping (thick) and
+# the second-neighbour hoppings :math:`\pm it_2` (thin).
+
+fig_lat = Plot(haldane_flake(6)).lattice(plt_hop=True, ms=10, figsize=(6, 4.5))
+
+# %%
 # Clean flake: C in the bulk, -C on the edge
 # ------------------------------------------------
 
@@ -71,6 +82,7 @@ print('Chern number {:.3f}; bulk marker {:.3f}; total {:.1e}.'
 assert abs(marker[bulk(clean.lat)].mean() - chern) < 0.02
 assert abs(marker.sum()) < 1e-8
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(6, 5))
 sc = ax.scatter(clean.lat.coor['x'], clean.lat.coor['y'], c=marker, cmap='RdBu', vmin=-2, vmax=2, s=20)
 fig.colorbar(sc, ax=ax, label='local Chern marker')

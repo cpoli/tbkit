@@ -30,7 +30,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 
 
 def ssh(v, w):
@@ -41,6 +43,18 @@ def ssh(v, w):
                                 {'i': 1, 'j': 0, 'R': (1,), 't': w}])
     return chain
 
+
+# %%
+# The lattice
+# -----------
+# Eight cells of the SSH chain (:func:`~tbkit.bridges.finite_system`),
+# orbitals a and b in two colours, bond widths proportional to the
+# hoppings: :math:`v` inside each cell, :math:`w` between cells, for
+# :math:`v > w` (top) and :math:`v < w` (bottom).
+
+fig_lat, axes_lat = plt.subplots(2, 1, figsize=(7, 2.2))
+Plot(finite_system(ssh(1., 0.4), 8)).lattice(plt_hop=True, ms=7, c=4., ax=axes_lat[0])
+Plot(finite_system(ssh(0.4, 1.), 8)).lattice(plt_hop=True, ms=7, c=4., ax=axes_lat[1])
 
 # %%
 # The Wannier centre sits on the strong bond
@@ -65,6 +79,7 @@ assert np.allclose(centres[topo], 0.75, atol=1e-8)
 assert np.allclose(centres[~topo & ~np.isclose(ratios, 1.)], 0.25, atol=1e-8)
 print('Wannier centre 3/4 for v < w, 1/4 for v > w: a jump of half a cell (Zak phase pi).')
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(6, 3.6))
 ax.plot(ratios, centres, 'o-b')
 ax.axvline(1., color='k', ls='--', lw=1)

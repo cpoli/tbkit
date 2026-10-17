@@ -29,6 +29,8 @@ import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice
 from tbkit.kspace import KSpace, PAULI
+from tbkit.plot import Plot
+from tbkit.system import System
 
 
 # orbitals: (s, up), (s, down), (p, up), (p, down) -> two "sites" with spin
@@ -58,6 +60,19 @@ def bhz(m, a=1.):
 
 
 # %%
+# The lattice
+# -----------
+# The square lattice with its nearest-neighbour bonds. Each site holds an
+# s and a p orbital, each with spin, and every bond carries a
+# :math:`4\times4` hopping matrix that couples them (not drawn).
+
+patch = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}], prim_vec=lat.prim_vec)
+patch.get_lattice(n1=6, n2=6)
+vis = System(patch)
+vis.set_hopping([{'n': 1, 't': 1.}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=10, figsize=(4, 4))
+
+# %%
 # Both symmetries hold
 # --------------------------
 
@@ -81,6 +96,7 @@ expected = [int(0 < m < 4 or 4 < m < 8) for m in masses]
 print('m:', masses, '\n  Fu-Kane parity:', nu_parity, '\n  Wannier flow:  ', nu_flow)
 assert nu_parity == expected and nu_flow == expected
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(6, 3.4))
 ax.plot(masses, nu_parity, 'ob', ms=9, label='Fu-Kane parity')
 ax.plot(masses, nu_flow, 'xr', ms=9, mew=2, label='Wannier-centre flow')

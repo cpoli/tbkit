@@ -35,9 +35,11 @@ whose :math:`\Gamma_4` term breaks time reversal and inversion except at
 """
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
 from tbkit.kspace import KSpace, PAULI
 from tbkit.lattice import Lattice
+from tbkit.system import System
 
 
 def axion_model(m):
@@ -58,6 +60,27 @@ def axion_model(m):
     ks.set_params(phi=0.)
     return ks
 
+
+# %%
+# The lattice
+# -----------
+# The simple cubic lattice, here :math:`4\times4\times4` sites, with its
+# nearest-neighbour bonds. Each site holds the four orbitals of the Dirac
+# model, and every bond carries a :math:`4\times4` hopping matrix that
+# couples them (not drawn).
+
+lat_vis = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0., 0.)}], prim_vec=[(1., 0., 0.), (0., 1., 0.), (0., 0., 1.)])
+lat_vis.get_lattice(4, 4, 4)
+vis = System(lat_vis)
+vis.set_hopping([{'n': 1, 't': 1.}])
+pos = np.column_stack([lat_vis.coor[f] for f in 'xyz'])
+bonds = np.stack([pos[vis.hop['i'].astype(int)], pos[vis.hop['j'].astype(int)]], axis=1)
+fig_lat = plt.figure(figsize=(4.5, 4.5))
+ax_lat = fig_lat.add_subplot(projection='3d')
+ax_lat.add_collection3d(Line3DCollection(bonds, colors='k', linewidths=1))
+ax_lat.scatter(*pos.T, s=30, c='b', depthshade=False)
+ax_lat.set_aspect('equal')
+ax_lat.set_axis_off()
 
 # %%
 # Theta along the pumping cycle
@@ -90,6 +113,7 @@ for m in (3., 6.):
         print('m = {}, phi = {:.2f}: nu_0 = {}, theta = {:.4f} pi'.format(m, p, nu0, theta[m][k] / np.pi))
         assert abs(theta[m][k] / np.pi - nu0) < 1e-3
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(7, 4.5))
 for m, color in ((3., 'C0'), (6., 'C3')):
     ax.plot(phi / np.pi, theta[m] / np.pi, 'o-', ms=3, color=color, label='$m = {:g}$'.format(m))

@@ -29,6 +29,7 @@ import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
 from tbkit.meanfield import hubbard_mean_field
+from tbkit.plot import Plot
 from tbkit.system import System
 
 
@@ -50,6 +51,15 @@ def ground_state(lat, sys, U, starts=2):
     results += [hubbard_mean_field(sys.ham, U, lat.sites, seed=seed) for seed in range(starts)]
     return min(results, key=lambda r: r.energy)
 
+
+# %%
+# The Lieb lattice
+# ----------------
+# A square lattice with an extra site on every bond: per unit cell, one
+# corner site (sublattice A, tag 'a') and two edge-centre sites (B, tags
+# 'b' and 'c'), so B has twice as many sites as A.
+
+fig_lat = Plot(lieb(4, periodic=False)[1]).lattice(plt_hop=True, ms=12, figsize=(4.5, 4.5))
 
 # %%
 # The flat band lives on B
@@ -89,6 +99,7 @@ for row in rows:
 
 lat, sys = lieb(5, periodic=False)
 m = ground_state(lat, sys, 2.).magnetization
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(5.5, 5))
 vmax = np.abs(m).max()
 sc = ax.scatter(lat.coor['x'], lat.coor['y'], c=m * np.sign(m.sum()), cmap='RdBu_r',

@@ -29,8 +29,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.lattice import Lattice
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 
 # %%
 # The Hatano-Nelson chain: a circle of radius sqrt(t_L / t_R)
@@ -40,6 +42,19 @@ t_right, t_left = 1., 0.5
 hn = KSpace(lattices.chain())
 hn.set_hopping([{'i': 0, 'j': 0, 'R': (1,), 't': t_right},
                         {'i': 0, 'j': 0, 'R': (-1,), 't': t_left}], hermitian=False)
+
+# %%
+# Ten sites of the Hatano-Nelson chain
+# (:func:`~tbkit.bridges.finite_system`): one site per cell and
+# nearest-neighbour bonds, non-reciprocal -- each carries :math:`t_R` one
+# way and :math:`t_L` the other. The widths drawn are those of
+# :math:`t_R`.
+
+fig_lat = Plot(finite_system(hn, 10)).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
+
+# %%
+# The open chain's spectrum, and the GBZ it lies on:
+
 en_hn = np.linalg.eigvals(hn.finite_ham(60))
 beta_hn = hn.gbz(en_hn)
 print('Hatano-Nelson: |beta| on the GBZ = {:.6f}, sqrt(t_L/t_R) = {:.6f}'
@@ -68,6 +83,19 @@ def nh_ssh(t1):
 
 def radius(t1):
     return np.sqrt(abs((t1 - gamma / 2) / (t1 + gamma / 2)))
+
+
+# %%
+# Eight cells of the chain (:func:`~tbkit.bridges.finite_system`),
+# orbitals ``a`` and ``b`` in two colours, bond widths proportional to
+# the amplitudes: :math:`t_1 + \gamma/2` inside each cell (the reverse
+# intra-cell hopping is :math:`t_1 - \gamma/2`, not drawn) and :math:`t_2`
+# between cells, here for :math:`t_1 = 1.1`.
+
+fig_ssh = Plot(finite_system(nh_ssh(1.1), 8)).lattice(plt_hop=True, ms=7, c=2.5, figsize=(7, 1.2))
+
+# %%
+# The winding number on the GBZ and on the Brillouin zone:
 
 
 def winding(ks, r, n=200):
@@ -117,6 +145,7 @@ assert np.allclose(w_bloch[t1s < t2 + gamma / 2 - 0.05], 0.5)
 print('Open-chain zero modes and non-Bloch winding 1 for t1 < {:.4f}, none and 0 above; '
           'Bloch winding 1/2 up to t1 = t2 + gamma/2 = {:.4f}.'.format(t_c, t2 + gamma / 2))
 
+# sphinx_gallery_thumbnail_number = 3
 fig, axes = plt.subplots(1, 3, figsize=(14, 4.2))
 theta = np.linspace(0, 2 * np.pi, 200)
 axes[0].plot(np.cos(theta), np.sin(theta), 'k--', lw=1, label='Brillouin zone')

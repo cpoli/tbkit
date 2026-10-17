@@ -37,6 +37,7 @@ from scipy.linalg import eigvalsh_tridiagonal
 
 import tbkit.kpm as kpm
 import tbkit.lattices as lattices
+from tbkit.plot import Plot
 from tbkit.system import System
 
 
@@ -85,6 +86,21 @@ def square(n, p=1., w=0.):
         np.random.set_state(state)
     sys.get_ham()
     return sys
+
+
+# %%
+# The diluted lattices, drawn: 30 sites of the chain with 40% removed
+# (top), and a :math:`16\times16` square with 5% removed (bottom). A
+# missing site cuts every bond it carried.
+
+lat_vis = lattices.chain()
+lat_vis.get_lattice(n1=30)
+lat_vis.remove_sites(np.flatnonzero(np.random.default_rng(0).random(30) > p).tolist())
+vis = System(lat_vis)
+vis.set_hopping([{'n': 1, 't': -1.}])
+fig_lat, axes_lat = plt.subplots(2, 1, figsize=(7, 7.5), height_ratios=(1, 6))
+Plot(vis).lattice(plt_hop=True, ms=8, ax=axes_lat[0])
+Plot(square(16, p=0.95)).lattice(plt_hop=True, ms=8, ax=axes_lat[1])
 
 
 def kpm_dos(sys, e, bounds):
@@ -156,6 +172,7 @@ print('W = {:g}: lowest eigenvalue {:.3f}, {:.2f}t above E_0; KPM count below it
 # The three tails
 # -------------------
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 3, figsize=(15, 4.2))
 e_fine = np.linspace(-1.97, -1.6, 400)
 axes[0].semilogy(1 / np.sqrt(e_fine + 2.), [np.mean(en < e) for e in e_fine], 'C0', label='diluted chain')

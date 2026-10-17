@@ -23,6 +23,7 @@ import matplotlib.pyplot as plt
 from tbkit import lattices
 from tbkit.io import save_model, load_model
 from tbkit.kspace import KSpace, PAULI
+from tbkit.plot import Plot
 from tbkit.system import System
 
 
@@ -42,6 +43,18 @@ km.set_hopping([{'n': 1, 't': t},
                         {'n': 2, 'tag': 'aa', 'ang': 120., 't': so},
                         {'n': 2, 'tag': 'bb', 'ang': 0., 't': so_c}, {'n': 2, 'tag': 'bb', 'ang': 60., 't': so},
                         {'n': 2, 'tag': 'bb', 'ang': 120., 't': so_c}])
+
+# %%
+# Its bonds on a patch of the honeycomb lattice (sublattices a and b in two
+# colours): the nearest-neighbour hopping :math:`t` (thick) and the
+# second-neighbour spin-orbit bonds (thin, not to scale; their
+# spin matrices :math:`\pm i\lambda\sigma_z` are not drawn).
+
+patch = lattices.honeycomb()
+patch.get_lattice(n1=5, n2=4)
+vis = System(patch)
+vis.set_hopping([{'n': 1, 't': t}, {'n': 2, 't': 5 * lam}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # A disordered flake
@@ -96,6 +109,7 @@ assert z2 == 1
 
 Gamma, M = np.zeros(2), b1 / 2
 dist, en = km2.k_path([Gamma, K, M, Gamma], nk=80)
+# sphinx_gallery_thumbnail_number = 2
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 4))
 ax1.plot(dist, en, color='C0')
 ax1.set_xticks(km2.nodes)

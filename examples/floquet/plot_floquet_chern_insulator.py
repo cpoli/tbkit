@@ -27,8 +27,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.floquet import FloquetKSpace, harmonics, quasienergies, sambe_hamiltonian
 from tbkit.kspace import KSpace, reciprocal_vectors
+from tbkit.plot import Plot
 
 graphene = KSpace(lattices.honeycomb())
 graphene.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
@@ -43,6 +45,16 @@ def light(helicity):
 driven = FloquetKSpace(graphene, light(+1), period, n_steps=60)
 b1, b2 = (np.array(v) for v in reciprocal_vectors(graphene.lat.prim_vec))
 K = (b1 - b2) / 3
+
+# %%
+# The lattice
+# -----------
+# Graphene's honeycomb lattice on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`): two sites per unit cell
+# (sublattices 'a' and 'b', in two colours), each bonded to its three
+# nearest neighbours on the other sublattice.
+
+fig_lat = Plot(finite_system(graphene, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # Two routes to the quasienergies
@@ -93,5 +105,6 @@ print('gap(omega = 12) / gap(omega = 24) = {:.3f}'.format(ratio))
 assert abs(ratio - 2.) < 0.2
 
 driven.k_path([np.zeros(2), K, b1 / 2, np.zeros(2)], nk=60)
+# sphinx_gallery_thumbnail_number = 2
 fig = driven.plot_bands(node_labels=[r'$\Gamma$', 'K', 'M', r'$\Gamma$'])
 fig.axes[0].set_title('Graphene in circularly polarized light: Floquet bands')

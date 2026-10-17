@@ -38,7 +38,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 import tbkit.exceptional as ex
 
 KINDS = ('LR', 'RL', 'RR', 'LL')
@@ -57,6 +59,18 @@ def haldane(gamma, t2=0.2):
 
 b1, b2 = (np.array(b) for b in haldane(0.).rec_vec_k)
 M_points = [b1 / 2, b2 / 2, (b1 + b2) / 2]
+
+# %%
+# The lattice
+# -----------
+# The Haldane model on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`), bond widths proportional to the
+# amplitudes: the honeycomb lattice's two sublattices ('a' and 'b', in two
+# colours), the nearest-neighbour hopping (thick) and the complex
+# second-neighbour hoppings :math:`\pm it_2` (thin). The gain and loss
+# :math:`\pm i\gamma` on the two sublattices are onsite terms, not drawn.
+
+fig_lat = Plot(finite_system(haldane(0.), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # Where the line gap closes
@@ -133,6 +147,7 @@ print('gamma = 1.2: chern_number and biorthogonal_chern_number raise ValueError 
 # Line gap and exceptional points
 # ------------------------------------
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(11, 4.4))
 axes[0].plot(gammas, gaps, 'k.-', label='line gap (numerical)')
 axes[0].plot(gammas[gammas <= 1], 2 * np.sqrt(1 - gammas[gammas <= 1] ** 2), 'r-', lw=0.8,

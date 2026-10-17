@@ -37,6 +37,8 @@ import tbkit.lattices as lattices
 from tbkit.kspace import reciprocal_vectors
 from tbkit.orbital import OrbitalSystem
 from tbkit.slater_koster import sk_kspace
+from tbkit.plot import Plot
+from tbkit.system import System
 
 # eV; energies relative to the 2p level (Saito, Dresselhaus and Dresselhaus)
 orbitals = {'a': ['s', 'px', 'py', 'pz'], 'b': ['s', 'px', 'py', 'pz']}
@@ -58,6 +60,19 @@ def f_abs(k):
     a = np.array(lat.prim_vec)
     return abs(sum(np.exp(1j * k @ (n1 * a[0] + n2 * a[1])) for n1, n2 in [(0, 0), (-1, 0), (0, -1)]))
 
+
+# %%
+# The lattice
+# -----------
+# Graphene's honeycomb lattice, sublattices ``a`` and ``b`` in two colours,
+# each atom carrying the four orbitals :math:`s, p_x, p_y, p_z` and bonded
+# to its three nearest neighbours by the Slater-Koster integrals above.
+
+patch = lattices.honeycomb()
+patch.get_lattice(n1=5, n2=4)
+vis = System(patch)
+vis.set_hopping([{'n': 1, 't': 1.}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # pz decouples: the pi bands are Wallace's
@@ -101,6 +116,7 @@ sys.get_ham()
 sys.get_eig()
 assert np.allclose(sys.en, np.linalg.eigvalsh(graphene.finite_ham((5, 4))))
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(6, 5))
 for model, style, label in ((graphene, 'b', 'orthogonal'), (graphene_s, 'r--', 'with overlap')):
     dist, en = model.k_path([Gamma, K, M, Gamma], nk=60)

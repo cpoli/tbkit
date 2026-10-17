@@ -36,6 +36,7 @@ import matplotlib.pyplot as plt
 import tbkit.lattices as lattices
 from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 
 
 def haldane(M, t2=0.2):
@@ -47,6 +48,18 @@ def haldane(M, t2=0.2):
     hal.set_onsite({'a': M, 'b': -M})
     return hal
 
+
+# %%
+# The lattice
+# -----------
+# The Haldane model on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`), each bond drawn with a width
+# proportional to its amplitude: the honeycomb lattice's two sublattices
+# ('a' and 'b', in two colours), the nearest-neighbour hopping :math:`t`
+# (thick) and the complex second-neighbour hoppings :math:`\pm it_2`
+# within each sublattice (thin), which break time-reversal symmetry.
+
+fig_lat = Plot(finite_system(haldane(0.3), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # Magnetization across the spectrum
@@ -69,6 +82,7 @@ for name, hal in phases.items():
     assert np.allclose(slope, chern, atol=1e-6)
     assert mag[name][0] == 0. and abs(mag[name][-1]) < 1e-10
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(7, 4.5))
 for (name, m), color in zip(mag.items(), ('C0', 'C3')):
     ax.plot(mu, m, color=color, label=name)

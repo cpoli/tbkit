@@ -33,8 +33,10 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
+from tbkit.bridges import finite_system
 from tbkit.io import read_wannier90, read_hr
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 
 try:
     HERE = os.path.dirname(os.path.abspath(__file__))
@@ -67,6 +69,15 @@ gra = read_wannier90(HR, win=WIN, centres=CENTRES, tags=['a', 'b'], dim=2)
 print('prim_vec:', gra.lat.prim_vec)
 print('Wannier centres:', gra.orbital_positions().round(4).tolist())
 assert gra.is_hermitian() and gra.dim == 2
+
+# %%
+# The imported model on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`): the honeycomb lattice of the two
+# Wannier centres ('a' and 'b', in two colours), and every hopping in the
+# file, drawn with a width proportional to its amplitude -- the
+# nearest-neighbour one dominates, the longer-range ones are much weaker.
+
+fig_lat = Plot(finite_system(gra, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # Localization: the hoppings of a maximally localized basis decay with the
@@ -109,6 +120,7 @@ assert np.allclose(en_K, -3*t1, atol=1e-12)
 # -----------------------------
 
 dist, en = gra.k_path([Gamma, K, M, Gamma], nk=100)
+# sphinx_gallery_thumbnail_number = 2
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 4))
 ax1.plot(dist, en, color='C0')
 for x in gra.nodes:

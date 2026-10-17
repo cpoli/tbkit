@@ -36,7 +36,9 @@ import scipy.sparse as sparse
 
 import tbkit.kpm as kpm
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 
 
 def haldane(M, t2=0.2):
@@ -57,6 +59,18 @@ area = n * n * abs(np.linalg.det(np.array(hal.lat.prim_vec)))
 n_orb = ham_clean.shape[0]
 e_f = np.linspace(-2., 2., 81)
 n_moments, n_random = 256, 6
+
+# %%
+# The lattice
+# -----------
+# The Haldane model on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`), each bond drawn with a width
+# proportional to its amplitude: the honeycomb lattice's two sublattices
+# ('a' and 'b', in two colours), the nearest-neighbour hopping :math:`t`
+# (thick) and the complex second-neighbour hoppings :math:`\pm it_2`
+# within each sublattice (thin), which break time-reversal symmetry.
+
+fig_lat = Plot(finite_system(haldane(0.3), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # The clean torus
@@ -105,6 +119,7 @@ assert abs(sigma[4.][centre] - chern) < 0.05  # and W = 4...
 assert dos0[4.] > 0.01 and dos0[4.] > 100 * dos0[0.]  # ...although states now fill the gap
 assert sigma[8.][centre] < 0.5  # strong disorder destroys it
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(7, 4.5))
 for W in strengths:
     ax.plot(e_f, sigma[W], label='$W = {:.0f}$'.format(W))

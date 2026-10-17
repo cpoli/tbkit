@@ -29,13 +29,26 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 
 
 hal = KSpace(lattices.honeycomb())
 hal.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
 for R in [(0, 1), (-1, 0), (1, -1)]:
     hal.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 0.2j}, {'i': 1, 'j': 1, 'R': R, 't': -0.2j}])
+
+# %%
+# The lattice
+# -----------
+# The Haldane model on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`), bond widths proportional to the
+# amplitudes: the honeycomb lattice's two sublattices ('a' and 'b', in two
+# colours), the nearest-neighbour hopping (thick) and the complex
+# second-neighbour hoppings :math:`\pm 0.2i` (thin).
+
+fig_lat = Plot(finite_system(hal, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # Curvature and metric over the Brillouin zone
@@ -60,6 +73,7 @@ assert np.isclose(chern, hal.chern_number(0, 30), atol=1e-3)
 print('Integrated Tr g = {:.3f} >= 2 pi |C| = {:.3f}'.format(trace_g.sum() * dA, 2*np.pi*abs(chern)))
 assert trace_g.sum() * dA >= 2*np.pi*abs(chern) - 1e-6
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(9.5, 4))
 for ax, data, title in [(axes[0], omega, r'Berry curvature $\Omega_{xy}$'),
                               (axes[1], trace_g, r'quantum metric $\mathrm{Tr}\,g$')]:

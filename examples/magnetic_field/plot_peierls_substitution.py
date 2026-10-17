@@ -24,6 +24,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.plot import Plot
 from tbkit.system import System
 
 alpha = 0.07  # flux quanta per unit area
@@ -42,6 +43,19 @@ def loop_phase(ham, loop):
     '''Phase of the product of the hoppings around a closed loop of sites.'''
     prod = np.prod([ham[a, b] for a, b in zip(loop, loop[1:] + loop[:1])])
     return np.angle(prod)
+
+
+# %%
+# The two flakes
+# --------------
+# A square flake of :math:`8\times8` sites and a honeycomb flake of
+# :math:`5\times5` cells (sublattices 'a' and 'b' in two colours), each
+# with its nearest-neighbour bonds. The field enters only through the
+# phases of these hoppings.
+
+fig_lat, axes_lat = plt.subplots(1, 2, figsize=(10, 4.5))
+Plot(flake('square', 8)).lattice(plt_hop=True, ms=10, ax=axes_lat[0])
+Plot(flake('honeycomb', 5)).lattice(plt_hop=True, ms=10, ax=axes_lat[1])
 
 
 # %%
@@ -108,6 +122,7 @@ print('{} hexagons: loop phase {:.6f} (2 pi alpha x hexagon area = {:.6f}).'
           .format(len(found), np.mean(phase), 2*np.pi*alpha*hex_area))
 assert len(found) > 0 and np.allclose(phase, 2*np.pi*alpha*hex_area)
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(6, 4))
 ax.plot(spectra[0], 'ob', ms=4, label='symmetric gauge')
 ax.plot(spectra[1], 'xr', ms=5, label='Landau gauge')

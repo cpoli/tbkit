@@ -33,6 +33,7 @@ import matplotlib.pyplot as plt
 from scipy.special import jv
 
 from tbkit.lattice import Lattice
+from tbkit.plot import Plot
 from tbkit.system import System
 from tbkit.propagation import Propagation
 
@@ -52,6 +53,15 @@ def array(n):
 
 
 # %%
+# The lattice
+# -----------
+# Each waveguide is one site, and evanescent coupling between neighbouring
+# guides is a nearest-neighbour hopping :math:`c`: an array of guides is a
+# Tight-Binding chain, with the propagation distance :math:`z` as time.
+
+fig_lat = Plot(array(9)).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
+
+# %%
 # The directional coupler
 # ---------------------------
 # All the light returns to the first guide after the beat length
@@ -63,6 +73,7 @@ prop_coupler.get_propagation(coupler.ham, np.array([1., 0.], dtype='c16'), steps
 z = dz * np.arange(700)
 assert np.allclose(np.abs(prop_coupler.prop[0]) ** 2, np.cos(c * z) ** 2, atol=1e-4)
 print('Coupler: |psi_1|^2 = cos^2(cz) to 1e-4; full transfer at z = pi/2c = {:.4f}.'.format(np.pi / (2 * c)))
+# sphinx_gallery_thumbnail_number = 2
 fig_coupler = prop_coupler.plt_prop_dimer(lw=3, fs=14)
 fig_coupler.axes[0].set_title(r'directional coupler: $|\psi_1|^2 = \cos^2(cz)$', fontsize=14)
 

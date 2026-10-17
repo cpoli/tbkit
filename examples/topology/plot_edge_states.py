@@ -19,6 +19,8 @@ import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice
 from tbkit.kspace import ribbon, PAULI
+from tbkit.plot import Plot
+from tbkit.system import System
 
 
 DX, DY = 0.5 * 3 ** 0.5, 0.5
@@ -31,6 +33,20 @@ graphene_hop = [{'i': 0, 'j': 1, 'R': (0, 0), 't': t1},
                         {'i': 0, 'j': 1, 'R': (0, -1), 't': t1}]
 width = 30
 
+
+# %%
+# The lattice
+# -----------
+# The honeycomb lattice of the ribbons below, sublattices 'a' and 'b' in
+# two colours, with its nearest-neighbour bonds, on a :math:`10\times6`-cell
+# patch (the ribbons are 30 cells wide). The spin-orbit terms are
+# second-neighbour hoppings within each sublattice, not drawn.
+
+patch = Lattice(unit_cell=unit_cell, prim_vec=prim_vec)
+patch.get_lattice(n1=10, n2=6)
+vis = System(patch)
+vis.set_hopping([{'n': 1, 't': t1}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=8, figsize=(8, 4))
 
 # %%
 # Kane-Mele ribbon: helical edge states inside a spin-orbit gap
@@ -66,6 +82,7 @@ bulk_gap = min_abs_e_per_k[np.argmin(np.abs(ks))]  # at k=0
 print('Bulk gap at k=0 (far from the edge-state crossing): {:.4f}.'.format(bulk_gap))
 assert bulk_gap > 0.5
 
+# sphinx_gallery_thumbnail_number = 2
 fig2, ax2 = plt.subplots()
 ax2.plot(ks, en_km, 'b', lw=0.7)
 ax2.set_xlabel('$k$')

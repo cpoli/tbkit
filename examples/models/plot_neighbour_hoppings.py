@@ -24,6 +24,8 @@ import matplotlib.pyplot as plt
 from tbkit import lattices
 from tbkit.kspace import KSpace
 from tbkit.neighbours import neighbour_bonds, neighbour_hoppings
+from tbkit.plot import Plot
+from tbkit.system import System
 
 
 # %%
@@ -45,6 +47,18 @@ print('shell distances:', np.round(lengths, 4))
 assert per_cell == [3, 6, 3]
 assert np.allclose(lengths, [1., np.sqrt(3.), 2.])
 assert set(bonds['tag'][bonds['n'] == 2]) == {'aa', 'bb'}
+
+# %%
+# The three shells on a patch of the lattice (sublattices 'a' and 'b' in
+# two colours), drawn with decreasing widths: nearest neighbours
+# (thickest), second neighbours within each sublattice, and third
+# neighbours across the hexagons (thinnest).
+
+patch = lattices.honeycomb()
+patch.get_lattice(n1=5, n2=4)
+vis = System(patch)
+vis.set_hopping([{'n': 1, 't': 1.}, {'n': 2, 't': 0.4}, {'n': 3, 't': 0.15}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # Nearest neighbours: the same as the explicit list
@@ -114,6 +128,7 @@ assert np.allclose(en_nn[0], [3*g0, -3*g0])
 # at Gamma: pi* above +3|g0|, pi above -3|g0| (a narrower valence band)
 assert en_3nn[0, 1] > -3*g0 and en_3nn[0, 0] > 3*g0
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(6, 4.5))
 ax.plot(dist, en_nn, color='0.6', lw=1.5)
 ax.plot(dist, en_3nn, color='C3', lw=2)

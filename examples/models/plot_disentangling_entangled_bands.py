@@ -34,7 +34,9 @@ import matplotlib.pyplot as plt
 import tbkit.lattices as lattices
 from tbkit.kspace import high_symmetry_path
 from tbkit.lattice import Lattice
+from tbkit.plot import Plot
 from tbkit.slater_koster import sk_kspace
+from tbkit.system import System
 from tbkit.wannier import wannierize
 
 # eV; energies relative to the 2p level (Saito, Dresselhaus and Dresselhaus)
@@ -55,6 +57,21 @@ def graphene(buckling):
 flat = graphene(0.)
 pz = [n for n, (_, o) in enumerate(flat.sk_orbitals) if o == 'pz']
 points, labels = high_symmetry_path(flat.lat)
+
+# %%
+# The lattice
+# -----------
+# Graphene's honeycomb lattice, sublattices ``a`` and ``b`` in two colours,
+# each atom carrying the four orbitals :math:`s, p_x, p_y, p_z` and bonded
+# to its three nearest neighbours by the Slater-Koster integrals above.
+# Buckling raises sublattice ``b`` out of the plane, along the axis
+# perpendicular to this view.
+
+patch = lattices.honeycomb()
+patch.get_lattice(n1=5, n2=4)
+vis = System(patch)
+vis.set_hopping([{'n': 1, 't': 1.}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # Flat graphene: the π bands cross the σ bands
@@ -139,6 +156,7 @@ assert results[12][2] < 0.05 and results[12][2] < results[6][2] / 4
 # from the 12 x 12 mesh, and the descent of :math:`\Omega_I`.
 
 wf_b, e_path, _ = results[12]
+# sphinx_gallery_thumbnail_number = 2
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4.2))
 ax1.plot(dist, en_b, color='0.6', lw=1)
 ax1.plot(dist, e_path, '--', color='C0', lw=1.5)

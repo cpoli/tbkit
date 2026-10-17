@@ -42,6 +42,7 @@ import matplotlib.pyplot as plt
 from tbkit.floquet import step_drive
 from tbkit.kspace import KSpace, ribbon
 from tbkit.lattice import Lattice
+from tbkit.plot import Plot
 from tbkit.system import System
 
 T = 1.
@@ -51,6 +52,23 @@ lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (1., 0
                   prim_vec=[(2., 0.), (1., 1.)])
 # the bonds b_1..b_4 = right, up, left, down, from A to B, as the cell offset R of B
 BONDS = [(0, 0), (-1, 1), (-1, 0), (0, -1)]
+
+# %%
+# The lattice
+# -----------
+# A square lattice split into its two sublattices A and B (two colours):
+# every nearest-neighbour bond joins an A site to a B site. The drive
+# switches the four bonds of each A site on one at a time -- right, up,
+# left, down -- and leaves them all off in the fifth step.
+
+patch = Lattice(unit_cell=lat.unit_cell, prim_vec=lat.prim_vec)
+patch.get_lattice(n1=4, n2=6)
+vis = System(patch)
+vis.set_hopping([{'n': 1, 't': 1.}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+# %%
+# The five-step drive:
 
 
 def hoppings(step, J):
@@ -143,6 +161,7 @@ assert np.all(x_bulk == 4.) and np.all(y_bulk == 4.)
 assert np.array_equal(x_edge[:5], [2., 4., 6., 8., 9.]) and np.array_equal(y_edge[:5], [0., 0., 0., 0., 1.])
 assert np.array_equal(x_edge[5:], [9., 9.]) and np.array_equal(y_edge[5:], [3., 5.])
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(10, 4.6), layout='constrained')
 en_strip = []
 k_strip = np.linspace(-np.pi / 2, np.pi / 2, 101)  # |a1| = 2

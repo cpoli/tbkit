@@ -33,7 +33,9 @@ import matplotlib.pyplot as plt
 from scipy.integrate import trapezoid
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
+from tbkit.plot import Plot
 
 
 def haldane(M, t2=0.2):
@@ -47,6 +49,19 @@ def haldane(M, t2=0.2):
 
 
 hal = haldane(0.3)
+
+# %%
+# The lattice
+# -----------
+# The Haldane model on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`), each bond drawn with a width
+# proportional to its amplitude: the honeycomb lattice's two sublattices
+# ('a' and 'b', in two colours), the nearest-neighbour hopping :math:`t`
+# (thick) and the complex second-neighbour hoppings :math:`\pm it_2`
+# within each sublattice (thin), which break time-reversal symmetry.
+
+fig_lat = Plot(finite_system(haldane(0.3), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
 
 # %%
 # The Nernst conductivity across the spectrum
@@ -91,6 +106,7 @@ low_t = np.max(np.abs(alpha[T][band] - np.pi ** 2 / 3 * T * deriv[band]))
 print('T = 0.02: max |alpha - pi^2/3 T dsigma/dmu| in the band = {:.1e}'.format(low_t))
 assert low_t < 0.04 * np.max(np.abs(alpha[T][band]))
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(7, 4.5))
 for T in temps:
     ax.plot(mu, alpha[T], label='$k_BT = {}$'.format(T))

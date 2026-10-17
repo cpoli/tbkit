@@ -25,7 +25,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import magnetic_supercell
+from tbkit.plot import Plot
 
 
 square = [{'i': 0, 'j': 0, 'R': (1, 0), 't': 1.}, {'i': 0, 'j': 0, 'R': (0, 1), 't': 1.}]
@@ -35,6 +37,18 @@ def tknn(p, q, r):
     '''t_r from the Diophantine equation r = q s + p t, |t| <= q/2.'''
     return next(t for t in range(-q, q + 1) if (r - p*t) % q == 0 and abs(t) <= q/2)
 
+
+# %%
+# The lattice
+# -----------
+# The square lattice, one site per cell and a nearest-neighbour hopping,
+# here as five of its magnetic cells at flux :math:`1/5`
+# (:func:`~tbkit.kspace.magnetic_supercell`, then
+# :func:`~tbkit.bridges.finite_system`): five sites along
+# :math:`\mathbf{a}_1` per magnetic cell. The Peierls phases change the
+# hoppings' phases, not their amplitudes, so every bond is drawn alike.
+
+fig_lat = Plot(finite_system(magnetic_supercell(lattices.square(), square, 1, 5), (1, 5))).lattice(plt_hop=True, ms=12, figsize=(4, 4))
 
 # %%
 # Chern numbers of the subbands, against the Diophantine equation
@@ -61,6 +75,7 @@ bands = mag.mesh_bands(20)
 sigma = np.cumsum([mag.chern_number([n], nk=20) for n in range(q)])[:-1]
 assert np.allclose(sigma, [tknn(p, q, r) for r in range(1, q)], atol=1e-6)
 assert np.allclose(sigma, [-2, 1, -1, 2], atol=1e-6)
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(6, 4))
 for n in range(q):
     ax.fill_between([0, 1], bands[:, n].min(), bands[:, n].max(), color='b', alpha=0.3)

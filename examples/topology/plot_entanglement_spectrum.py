@@ -34,9 +34,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace
 from tbkit.lattice import Lattice
 from tbkit.moire import supercell
+from tbkit.plot import Plot
 from tbkit.topology import entanglement_spectrum
 
 
@@ -56,6 +58,16 @@ def haldane(t2=0.2, M=0.):
     hal.set_onsite({'a': M, 'b': -M})
     return hal
 
+
+# %%
+# The lattices
+# ------------
+# Eight cells of the SSH chain (:func:`~tbkit.bridges.finite_system`),
+# orbitals a and b in two colours, bond widths proportional to the
+# hoppings: here the topological case, :math:`v = 0.4` inside each cell
+# and :math:`w = 1` between cells.
+
+fig_lat = Plot(finite_system(ssh(0.4, 1.), 8)).lattice(plt_hop=True, ms=7, c=4., figsize=(7, 1.2))
 
 # %%
 # The SSH ring: a mode at 1/2 at each cut
@@ -85,6 +97,17 @@ assert np.min(np.abs(xi_ssh['trivial'] - 0.5)) > 0.4
 # between 0 and 1) flow across the interval, and together fill all of it.
 # In the trivial phase (:math:`M = 2`) the spectrum stays away from 1/2.
 
+# %%
+# The Haldane model on a patch of :math:`5\times4` cells, bond widths
+# proportional to the amplitudes: the honeycomb lattice's two sublattices
+# ('a' and 'b', in two colours), the nearest-neighbour hopping (thick) and
+# the complex second-neighbour hoppings :math:`\pm it_2` (thin).
+
+fig_lat = Plot(finite_system(haldane(), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+# %%
+# The entanglement spectrum along :math:`k`:
+
 n_super = 12
 fracs = np.linspace(-0.5, 0.5, 201)
 xi_cyl = {}
@@ -103,6 +126,7 @@ in_trivial = np.sum((xi_cyl['trivial'] > 0.1) & (xi_cyl['trivial'] < 0.9))
 print('trivial phase: {} modes inside (0.1, 0.9).'.format(in_trivial))
 assert in_trivial == 0
 
+# sphinx_gallery_thumbnail_number = 3
 fig, axes = plt.subplots(1, 3, figsize=(13, 4))
 for name, marker, color in (('trivial', 's', 'gray'), ('topological', 'o', 'b')):
     axes[0].plot(np.sort(xi_ssh[name]), marker, color=color, ms=4, label=name)

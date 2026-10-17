@@ -32,6 +32,7 @@ import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
 from tbkit.kspace import ribbon
+from tbkit.plot import Plot
 from tbkit.system import System
 from tbkit.transport import Transport, lead_from_kspace, lead_modes
 
@@ -60,6 +61,16 @@ sys.get_ham()
 tr = Transport(sys.ham)
 tr.add_lead(h_left, v_left, t * np.eye(width), left)
 tr.add_lead(h_right, v_right, t * np.eye(width), right)
+
+# %%
+# The device
+# ----------
+# A :math:`30\times16` strip of the square lattice with its
+# nearest-neighbour bonds, between two semi-infinite leads that continue
+# it to the left and right. The antidot is a smooth onsite potential above
+# the axis of the strip (not drawn).
+
+fig_lat = Plot(sys).lattice(plt_hop=True, ms=4, c=1., figsize=(8, 4.5))
 
 # %%
 # The modes of a lead
@@ -141,6 +152,7 @@ assert err_g[0] > 0.1 and np.all(err_g > err_s)
 print('At 1e-9 from the band edge: relative error {:.1e} (S-matrix), {:.1e} (eta = 1e-9).'.format(
     err_s[0], err_g[0]))
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(2, 2, figsize=(10, 7.5))
 ax = axes[0, 0]
 ks = np.linspace(-np.pi, np.pi, 301)

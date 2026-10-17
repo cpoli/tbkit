@@ -29,6 +29,8 @@ import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice
 from tbkit.kspace import KSpace, cubic_path, high_symmetry_path, reciprocal_vectors
+from tbkit.plot import Plot
+from tbkit.system import System
 
 
 def lattice_2d(prim_vec):
@@ -67,6 +69,21 @@ bravais = {'square': [(1., 0.), (0., 1.)],
            'centred rectangular': [(1., 0.), (0.5, 1.3)],
            'oblique': [(1., 0.), (0.3, 1.2)]}
 
+# The five lattices in real space, with their primitive vectors
+# :math:`\mathbf{a}_1` and :math:`\mathbf{a}_2` (arrows):
+fig_lat, axes = plt.subplots(1, 5, figsize=(17, 3.6))
+for ax, (name, prim_vec) in zip(axes, bravais.items()):
+    patch = lattice_2d(prim_vec)
+    patch.get_lattice(n1=5, n2=5)
+    Plot(System(patch)).lattice(ms=7, ax=ax)
+    for a in prim_vec:
+        ax.annotate('', xy=a, xytext=(0., 0.), arrowprops=dict(arrowstyle='->', color='C3', lw=2))
+    ax.set_title(name)
+
+# %%
+# Their Brillouin zones and high-symmetry paths:
+
+# sphinx_gallery_thumbnail_number = 2
 fig_bz, axes = plt.subplots(1, 5, figsize=(17, 3.9))
 for ax, (name, prim_vec) in zip(axes, bravais.items()):
     points, labels = high_symmetry_path(lattice_2d(prim_vec))

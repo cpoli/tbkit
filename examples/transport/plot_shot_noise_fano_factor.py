@@ -31,6 +31,7 @@ import scipy.sparse as sp
 
 import tbkit.lattices as lattices
 from tbkit.kspace import ribbon
+from tbkit.plot import Plot
 from tbkit.system import System
 from tbkit.transport import Transport, RecursiveTransport, lead_from_kspace
 
@@ -53,6 +54,27 @@ def chain(n, weak_link=None):
     tr.add_lead([[0.]], [[t]], [[t]], [n - 1])
     return tr
 
+
+# %%
+# The lattices
+# ------------
+# Top: a chain with nearest-neighbour hopping, here with a weak link in
+# the middle (bond widths proportional to the hoppings), as in the tunnel
+# barrier below. Bottom: a square-lattice wire 60 sites long and 40 wide,
+# as in the diffusive wires.
+
+lat_vis = lattices.chain()
+lat_vis.get_lattice(12)
+chain_vis = System(lat_vis)
+chain_vis.set_hopping([{'n': 1, 't': t}])
+chain_vis.set_hopping_def({(5, 6): 0.2 * t})
+wire = lattices.square()
+wire.get_lattice(60, 40)
+wire_vis = System(wire)
+wire_vis.set_hopping([{'n': 1, 't': t}])
+fig_lat, axes_lat = plt.subplots(2, 1, figsize=(7, 6), height_ratios=(1, 5))
+Plot(chain_vis).lattice(plt_hop=True, ms=10, c=4., ax=axes_lat[0])
+Plot(wire_vis).lattice(plt_hop=True, ms=2, c=0.6, ax=axes_lat[1])
 
 # %%
 # Ballistic: no noise. A tunnel barrier: Poisson noise.
@@ -95,6 +117,7 @@ open_ = eigenvalues[eigenvalues > 1e-3]
 counts = np.histogram(open_, bins=10, range=(0., 1.))[0]
 assert counts[0] > counts[-1] > counts[2:8].max()
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(9, 3.6))
 axes[0].plot(energies, ballistic, 'o-b', label='ballistic chain')
 axes[0].plot(energies, tunnel, 's-r', label='tunnel junction')

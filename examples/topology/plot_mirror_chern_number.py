@@ -31,9 +31,11 @@ the mirror :math:`M = i\tau_z\sigma_z`.
 """
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
 from tbkit.lattice import Lattice
 from tbkit.kspace import KSpace, PAULI
+from tbkit.system import System
 
 cubic = [(1., 0., 0.), (0., 1., 0.), (0., 0., 1.)]
 SIGMA = [PAULI['x'], PAULI['y'], PAULI['z']]
@@ -78,6 +80,27 @@ for kz in (0., np.pi):
     assert np.allclose(mirror_2 @ ham, ham @ mirror_2)  # M commutes with H on k_z = 0, pi
 ham = tci.get_ham([0.4, -1.1, 0.7])
 assert not np.allclose(mirror_2 @ ham, ham @ mirror_2)  # but not elsewhere
+
+# %%
+# The lattice
+# -----------
+# The simple cubic lattice, here :math:`4\times4\times4` sites, with its
+# nearest-neighbour bonds. Each site holds an s and a p orbital with spin
+# (two such pairs in the doubled model), and every bond carries a hopping
+# matrix that couples them (not drawn).
+
+lat_vis = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0., 0.)}], prim_vec=[(1., 0., 0.), (0., 1., 0.), (0., 0., 1.)])
+lat_vis.get_lattice(4, 4, 4)
+vis = System(lat_vis)
+vis.set_hopping([{'n': 1, 't': 1.}])
+pos = np.column_stack([lat_vis.coor[f] for f in 'xyz'])
+bonds = np.stack([pos[vis.hop['i'].astype(int)], pos[vis.hop['j'].astype(int)]], axis=1)
+fig_lat = plt.figure(figsize=(4.5, 4.5))
+ax_lat = fig_lat.add_subplot(projection='3d')
+ax_lat.add_collection3d(Line3DCollection(bonds, colors='k', linewidths=1))
+ax_lat.scatter(*pos.T, s=30, c='b', depthshade=False)
+ax_lat.set_aspect('equal')
+ax_lat.set_axis_off()
 
 # %%
 # A single topological insulator: nu is the parity of n_M
@@ -134,6 +157,7 @@ peaks = [i for i in range(1, len(col) - 1) if col[i] > max(col[i - 1], col[i + 1
 print('E = 0 on the (100) surface: surface states at k_y =', np.round(kys[peaks], 3))
 assert len(peaks) == 2 and np.allclose(np.abs(kys[peaks]), 0.3, atol=0.03)
 
+# sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(10, 4.2), sharey=True)
 for ax, spec, title in zip(axes, (surface, surface_triv),
                                      (r'$M = 2$: $n_M = 2$, $\mathbb{Z}_2$ trivial', r'$M = -2$: $n_M = 0$')):

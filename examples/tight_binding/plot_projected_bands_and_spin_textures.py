@@ -23,7 +23,10 @@ import numpy as np
 
 import tbkit.lattices as lattices
 from tbkit.lattice import Lattice
+from tbkit.bridges import finite_system
 from tbkit.kspace import KSpace, PAULI, high_symmetry_path
+from tbkit.plot import Plot
+from tbkit.system import System
 
 # %%
 # Gapped graphene: the valleys are sublattice polarized
@@ -42,6 +45,18 @@ mass = 0.3
 gra = KSpace(lat)
 gra.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': -1.} for R in [(0, 0), (-1, 0), (0, -1)]])
 gra.set_onsite({'a': mass, 'b': -mass})
+
+# %%
+# The model on a patch of :math:`5\times4` cells
+# (:func:`~tbkit.bridges.finite_system`): the honeycomb lattice with its
+# nearest-neighbour bonds, sublattice a (onsite :math:`+m`) and b
+# (:math:`-m`) in two colours.
+
+fig_lat = Plot(finite_system(gra, (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+
+# %%
+# The bands, coloured by their weight on sublattice a:
+
 points, labels = high_symmetry_path(lat)
 print('Path:', labels)
 nk = 60
@@ -54,6 +69,7 @@ assert np.allclose(gra.en[k_index], [-mass, mass])
 # the weights on the two sublattices add up to one
 assert np.allclose(weight_a + gra.band_weights('b'), 1.)
 
+# sphinx_gallery_thumbnail_number = 2
 fig = gra.plot_bands(node_labels=labels, weights=weight_a, fs=14, figsize=(6.5, 4.5))
 fig.axes[0].set_title('Gapped graphene: weight on sublattice a', fontsize=14)
 
@@ -73,6 +89,20 @@ alpha = 0.5
 ras = KSpace(lattices.square(), spin=True)
 ras.set_hopping([{'i': 0, 'j': 0, 'R': (1, 0), 't': -np.eye(2) + 1j * alpha * PAULI['y']},
                        {'i': 0, 'j': 0, 'R': (0, 1), 't': -np.eye(2) - 1j * alpha * PAULI['x']}])
+
+# %%
+# The square lattice, one spin-1/2 site per cell, with its nearest-neighbour
+# bonds; each carries the hopping and the Rashba spin flip (not drawn).
+
+patch = lattices.square()
+patch.get_lattice(n1=6, n2=6)
+vis = System(patch)
+vis.set_hopping([{'n': 1, 't': -1.}])
+fig_lat_sq = Plot(vis).lattice(plt_hop=True, ms=10, figsize=(4, 4))
+
+# %%
+# The bands, coloured by :math:`\langle\sigma_y\rangle`:
+
 points, labels = high_symmetry_path(ras.lat)
 ras.k_path(points, nk=nk)
 sigma_y = ras.band_weights(ras.spin_operator('y'))

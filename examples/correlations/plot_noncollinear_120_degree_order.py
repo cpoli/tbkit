@@ -26,10 +26,24 @@ import tbkit.lattices as lattices
 from tbkit.kspace import KSpace
 from tbkit.meanfield import hubbard_mean_field_noncollinear
 from tbkit.higher_order import flake_positions
+from tbkit.plot import Plot
+from tbkit.system import System
 
 tri = KSpace(lattices.triangular())
 tri.set_hopping([{'i': 0, 'j': 0, 'R': (1, 0), 't': 1.}, {'i': 0, 'j': 0, 'R': (0, 1), 't': 1.},
                          {'i': 0, 'j': 0, 'R': (1, -1), 't': 1.}])
+
+# %%
+# The triangular lattice
+# ------------------------
+# One site per unit cell, six nearest neighbours, and every elementary
+# plaquette a triangle: no two-sublattice (Neel) pattern fits on it.
+
+patch = lattices.triangular()
+patch.get_lattice(n1=6, n2=6)
+vis = System(patch)
+vis.set_hopping([{'n': 1, 't': 1.}])
+fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # The 120-degree state and its energy
@@ -72,6 +86,7 @@ pos = flake_positions(tri, n)
 u = m / np.linalg.norm(m, axis=1)[:, None]
 assert np.allclose((u @ u.T)[np.abs(h) > 0], -0.5, atol=1e-4)
 
+# sphinx_gallery_thumbnail_number = 2
 fig, ax = plt.subplots(figsize=(6, 5))
 ax.scatter(pos[:, 0], pos[:, 1], c='0.8', s=40, zorder=1)
 angle = np.arctan2(m @ e2, m @ e1)
