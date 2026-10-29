@@ -164,7 +164,7 @@ the EP finder.
 
  .. code-block:: none
 
-    graphene: vorticity 2.9e-32, discriminant winding 3.6e-32, EPs found: 0
+    graphene: vorticity -2.9e-32, discriminant winding -2.3e-32, EPs found: 0
 
 
 
@@ -210,10 +210,10 @@ the Dirac point's 0, and the splitting follows :math:`4\gamma/3` for small
 
  .. code-block:: none
 
-    gamma = 0.1: EP vorticities +0.500 -0.500, total around both +1.8e-18, splitting 0.1329 (4 gamma / 3 = 0.1333)
-    gamma = 0.2: EP vorticities +0.500 -0.500, total around both +5.5e-19, splitting 0.2632 (4 gamma / 3 = 0.2667)
-    gamma = 0.3: EP vorticities +0.500 -0.500, total around both +1.3e-17, splitting 0.3886 (4 gamma / 3 = 0.4000)
-    gamma = 0.4: EP vorticities +0.500 -0.500, total around both +3.3e-17, splitting 0.5073 (4 gamma / 3 = 0.5333)
+    gamma = 0.1: EP vorticities +0.500 -0.500, total around both -4.7e-18, splitting 0.1329 (4 gamma / 3 = 0.1333)
+    gamma = 0.2: EP vorticities +0.500 -0.500, total around both -7.2e-18, splitting 0.2632 (4 gamma / 3 = 0.2667)
+    gamma = 0.3: EP vorticities +0.500 -0.500, total around both +4.7e-17, splitting 0.3886 (4 gamma / 3 = 0.4000)
+    gamma = 0.4: EP vorticities +0.500 -0.500, total around both -0.0e+00, splitting 0.5073 (4 gamma / 3 = 0.5333)
 
 
 
@@ -259,10 +259,10 @@ inside, they are imaginary, with equal real parts on a whole disk.
 
  .. code-block:: none
 
-    gamma = 0.1: 6 ring points, |f| - gamma = 8.7e-16, radius 0.0670 +- 0.0006 (2 gamma / 3 = 0.0667)
-    gamma = 0.2: 10 ring points, |f| - gamma = 1.2e-15, radius 0.1336 +- 0.0033 (2 gamma / 3 = 0.1333)
+    gamma = 0.1: 6 ring points, |f| - gamma = 9.3e-16, radius 0.0670 +- 0.0006 (2 gamma / 3 = 0.0667)
+    gamma = 0.2: 10 ring points, |f| - gamma = 8.9e-16, radius 0.1336 +- 0.0033 (2 gamma / 3 = 0.1333)
     gamma = 0.3: 18 ring points, |f| - gamma = 1.3e-15, radius 0.2013 +- 0.0070 (2 gamma / 3 = 0.2000)
-    gamma = 0.4: 24 ring points, |f| - gamma = 1.3e-15, radius 0.2717 +- 0.0130 (2 gamma / 3 = 0.2667)
+    gamma = 0.4: 24 ring points, |f| - gamma = 1.5e-15, radius 0.2717 +- 0.0130 (2 gamma / 3 = 0.2667)
 
 
 
@@ -312,7 +312,7 @@ EP pairs and rings around K
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.996 seconds)
+   **Total running time of the script:** (0 minutes 12.083 seconds)
 
 
 .. _sphx_glr_download_api_gallery_non_hermitian_plot_exceptional_point_vorticity.py:

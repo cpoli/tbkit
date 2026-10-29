@@ -164,7 +164,7 @@ unperturbed triangle would have a mirror symmetry.
 
  .. code-block:: none
 
-    diabolical point at (t1, t2) = (1.162474, 0.462589), gap = 0.0e+00
+    diabolical point at (t1, t2) = (1.162474, 0.462589), gap = 1.1e-16
 
 
 
@@ -279,7 +279,7 @@ eigenvector, which cannot be removed by any choice of phases.
 
  .. code-block:: none
 
-    phase around the DP: -3.141593 (level 5), -3.141593 (level 6); around nothing: -2.04e-32
+    phase around the DP: 3.141593 (level 5), 3.141593 (level 6); around nothing: 0.00e+00
 
 
 
@@ -317,9 +317,9 @@ only move, until it meets another diabolical point.
 
     V = 0.30: DP at (1.1625, 0.4626), gap 0.0e+00
     V = 0.35: DP at (1.1905, 0.4722), gap 1.1e-16
-    V = 0.40: DP at (1.2184, 0.4823), gap 1.1e-16
-    V = 0.45: DP at (1.2462, 0.4925), gap 1.1e-16
-    V = 0.50: DP at (1.2735, 0.5029), gap 0.0e+00
+    V = 0.40: DP at (1.2184, 0.4823), gap 0.0e+00
+    V = 0.45: DP at (1.2462, 0.4925), gap 0.0e+00
+    V = 0.50: DP at (1.2735, 0.5029), gap 2.2e-16
 
 
 
@@ -381,7 +381,7 @@ The double cone, and the flip of the eigenvector
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.682 seconds)
+   **Total running time of the script:** (0 minutes 3.966 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_diabolical_points.py:

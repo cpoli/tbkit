@@ -242,12 +242,12 @@ more: both methods raise a ValueError instead of returning a number.
  .. code-block:: none
 
     gamma = 1.2: 6 EPs, charges [-1, 1, 1, -1, 1, -1], orders [2, 2, 2, 2, 2, 2]
-      EP at (+1.5405, +0.8894): d_z = 5.7e-16, |f| = 1.2000000000, 0.3156 from M3
-      EP at (+1.5405, +3.2994): d_z = 5.6e-17, |f| = 1.2000000000, 0.3156 from M1
-      EP at (+2.0871, +1.2050): d_z = 9.8e-16, |f| = 1.2000000000, 0.3156 from M3
-      EP at (+2.0871, +2.9838): d_z = 1.9e-16, |f| = 1.2000000000, 0.3156 from M1
-      EP at (+3.6276, -0.3156): d_z = 5.0e-16, |f| = 1.2000000000, 0.3156 from M2
-      EP at (+3.6276, +0.3156): d_z = 5.0e-16, |f| = 1.2000000000, 0.3156 from M2
+      EP at (+1.5405, +0.8894): d_z = 6.7e-16, |f| = 1.2000000000, 0.3156 from M3
+      EP at (+1.5405, +3.2994): d_z = 8.3e-16, |f| = 1.2000000000, 0.3156 from M1
+      EP at (+2.0871, +1.2050): d_z = 1.0e-15, |f| = 1.2000000000, 0.3156 from M3
+      EP at (+2.0871, +2.9838): d_z = 2.0e-16, |f| = 1.2000000000, 0.3156 from M1
+      EP at (+3.6276, -0.3156): d_z = 3.3e-16, |f| = 1.2000000000, 0.3156 from M2
+      EP at (+3.6276, +0.3156): d_z = 4.8e-16, |f| = 1.2000000000, 0.3156 from M2
     gamma = 1.2: chern_number and biorthogonal_chern_number raise ValueError (no line gap).
 
 
@@ -301,7 +301,7 @@ Line gap and exceptional points
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.923 seconds)
+   **Total running time of the script:** (0 minutes 28.215 seconds)
 
 
 .. _sphx_glr_download_api_gallery_non_hermitian_plot_exceptional_points_chern_number.py:

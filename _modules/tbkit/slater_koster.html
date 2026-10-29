@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 
@@ -26,33 +25,35 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=74e82e83"></script>
+    <script src="../../_static/documentation_options.js?v=5459b468"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tbkit/slater_koster';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <script src="../../_static/js/force_light.js?v=8e7666d6"></script>
+    <script async="async" data-goatcounter="https://cpoli.goatcounter.com/count" src="https://gc.zgo.at/count.js"></script>
     <link rel="canonical" href="https://cpoli.github.io/tbkit/_modules/tbkit/slater_koster.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.6" />
   
@@ -102,7 +103,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -178,7 +179,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -210,6 +211,17 @@
           
           <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
         </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://cpoli.github.io/" title="Charles Poli" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-user fa-lg" aria-hidden="true"></i><span class="visually-hidden">Charles Poli</span></a>
+        </li>
 </ul></div>
       
     </div>
@@ -219,7 +231,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -317,6 +329,17 @@
           
           <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
         </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://cpoli.github.io/" title="Charles Poli" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-user fa-lg" aria-hidden="true"></i><span class="visually-hidden">Charles Poli</span></a>
+        </li>
 </ul></div>
         
       </div>
@@ -379,13 +402,13 @@
                 <article class="bd-article">
                   
   <h1>Source code for tbkit.slater_koster</h1><div class="highlight"><pre>
-<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">Slater-Koster two-centre integrals (J. C. Slater and G. F. Koster, Phys.</span>
 <span class="sd">Rev. 94, 1498 (1954)) between s, p and d orbitals.</span>
 
 <span class="sd">The matrix element between orbital :math:`\alpha` on one atom and orbital</span>
 <span class="sd">:math:`\beta` on a neighbour at :math:`\mathbf{d} = d\,(l, m, n)` depends</span>
-<span class="sd">only on a handful of bond integrals :math:`V_{ll&#39;\mu}`</span>
+<span class="sd">only on a handful of bond integrals :math:`V_{ll'\mu}`</span>
 <span class="sd">(:math:`\mu = \sigma, \pi, \delta`: the angular momentum about the bond),</span>
 <span class="sd">through the direction cosines :math:`(l, m, n)` -- e.g.</span>
 
@@ -397,25 +420,25 @@
 
 <span class="sd">Rather than tabulating all 81 such formulas, they are generated: in a</span>
 <span class="sd">frame whose z axis lies along the bond, the matrix is diagonal in the</span>
-<span class="sd">angular momentum about the bond, with entries :math:`V_{ll&#39;\mu}`; rotating</span>
+<span class="sd">angular momentum about the bond, with entries :math:`V_{ll'\mu}`; rotating</span>
 <span class="sd">the frame onto :math:`\hat{\mathbf{d}}` gives every entry,</span>
-<span class="sd">:math:`E(\hat{\mathbf{d}}) = D_{l}(R)\,E(\hat z)\,D_{l&#39;}(R)^T`, with</span>
+<span class="sd">:math:`E(\hat{\mathbf{d}}) = D_{l}(R)\,E(\hat z)\,D_{l'}(R)^T`, with</span>
 <span class="sd">:math:`D_1 = R` for the p orbitals and :math:`D_2` its action on the</span>
 <span class="sd">quadratic forms of the d orbitals. This is exactly the Slater-Koster table</span>
 <span class="sd">(checked against it in the tests), in the usual real-orbital basis:</span>
 
-<span class="sd">``&#39;s&#39;``, ``&#39;px&#39;``, ``&#39;py&#39;``, ``&#39;pz&#39;``, ``&#39;dxy&#39;``, ``&#39;dyz&#39;``, ``&#39;dzx&#39;``,</span>
-<span class="sd">``&#39;dx2-y2&#39;``, ``&#39;dz2&#39;``.</span>
+<span class="sd">``'s'``, ``'px'``, ``'py'``, ``'pz'``, ``'dxy'``, ``'dyz'``, ``'dzx'``,</span>
+<span class="sd">``'dx2-y2'``, ``'dz2'``.</span>
 
-<span class="sd">Bond integrals are given as a dictionary, with keys ``&#39;ss_sigma&#39;``,</span>
-<span class="sd">``&#39;sp_sigma&#39;``, ``&#39;pp_sigma&#39;``, ``&#39;pp_pi&#39;``, ``&#39;sd_sigma&#39;``,</span>
-<span class="sd">``&#39;pd_sigma&#39;``, ``&#39;pd_pi&#39;``, ``&#39;dd_sigma&#39;``, ``&#39;dd_pi&#39;``, ``&#39;dd_delta&#39;``</span>
+<span class="sd">Bond integrals are given as a dictionary, with keys ``'ss_sigma'``,</span>
+<span class="sd">``'sp_sigma'``, ``'pp_sigma'``, ``'pp_pi'``, ``'sd_sigma'``,</span>
+<span class="sd">``'pd_sigma'``, ``'pd_pi'``, ``'dd_sigma'``, ``'dd_pi'``, ``'dd_delta'``</span>
 <span class="sd">(missing keys are zero). Between different atoms, :math:`V_{sp\sigma}`</span>
 <span class="sd">(s on the first atom, p on the second) and :math:`V_{ps\sigma}` (p on the</span>
-<span class="sd">first, s on the second) differ: give ``&#39;ps_sigma&#39;``, ``&#39;ds_sigma&#39;``,</span>
-<span class="sd">``&#39;dp_sigma&#39;``, ``&#39;dp_pi&#39;`` for the latter (they default to their</span>
+<span class="sd">first, s on the second) differ: give ``'ps_sigma'``, ``'ds_sigma'``,</span>
+<span class="sd">``'dp_sigma'``, ``'dp_pi'`` for the latter (they default to their</span>
 <span class="sd">homonuclear counterparts).</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -425,29 +448,29 @@
 
 
 <span class="c1">#: Real orbitals, with their angular momentum l.</span>
-<span class="n">ORBITALS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;px&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;py&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;pz&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;dxy&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;dyz&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;dzx&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-                   <span class="s1">&#39;dx2-y2&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;dz2&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="n">ORBITALS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'s'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'px'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'py'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'pz'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'dxy'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'dyz'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'dzx'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                   <span class="s1">'dx2-y2'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'dz2'</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
 
 <span class="c1">#: Bond-integral keys (the heteronuclear ps/ds/dp keys are optional).</span>
-<span class="n">PARAMS</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;ss_sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;sp_sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;ps_sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;pp_sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;pp_pi&#39;</span><span class="p">,</span> <span class="s1">&#39;sd_sigma&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;ds_sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;pd_sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;pd_pi&#39;</span><span class="p">,</span> <span class="s1">&#39;dp_sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;dp_pi&#39;</span><span class="p">,</span> <span class="s1">&#39;dd_sigma&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;dd_pi&#39;</span><span class="p">,</span> <span class="s1">&#39;dd_delta&#39;</span><span class="p">)</span>
+<span class="n">PARAMS</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'ss_sigma'</span><span class="p">,</span> <span class="s1">'sp_sigma'</span><span class="p">,</span> <span class="s1">'ps_sigma'</span><span class="p">,</span> <span class="s1">'pp_sigma'</span><span class="p">,</span> <span class="s1">'pp_pi'</span><span class="p">,</span> <span class="s1">'sd_sigma'</span><span class="p">,</span>
+                <span class="s1">'ds_sigma'</span><span class="p">,</span> <span class="s1">'pd_sigma'</span><span class="p">,</span> <span class="s1">'pd_pi'</span><span class="p">,</span> <span class="s1">'dp_sigma'</span><span class="p">,</span> <span class="s1">'dp_pi'</span><span class="p">,</span> <span class="s1">'dd_sigma'</span><span class="p">,</span>
+                <span class="s1">'dd_pi'</span><span class="p">,</span> <span class="s1">'dd_delta'</span><span class="p">)</span>
 
-<span class="n">_P</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;px&#39;</span><span class="p">,</span> <span class="s1">&#39;py&#39;</span><span class="p">,</span> <span class="s1">&#39;pz&#39;</span><span class="p">]</span>
-<span class="n">_D</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;dxy&#39;</span><span class="p">,</span> <span class="s1">&#39;dyz&#39;</span><span class="p">,</span> <span class="s1">&#39;dzx&#39;</span><span class="p">,</span> <span class="s1">&#39;dx2-y2&#39;</span><span class="p">,</span> <span class="s1">&#39;dz2&#39;</span><span class="p">]</span>
+<span class="n">_P</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'px'</span><span class="p">,</span> <span class="s1">'py'</span><span class="p">,</span> <span class="s1">'pz'</span><span class="p">]</span>
+<span class="n">_D</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'dxy'</span><span class="p">,</span> <span class="s1">'dyz'</span><span class="p">,</span> <span class="s1">'dzx'</span><span class="p">,</span> <span class="s1">'dx2-y2'</span><span class="p">,</span> <span class="s1">'dz2'</span><span class="p">]</span>
 <span class="n">_S3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">3.</span><span class="p">)</span>
 <span class="c1"># the d orbitals as quadratic forms r^T M r, all of Frobenius norm^2 = 3/2</span>
-<span class="n">_M</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;dxy&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="n">_S3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="n">_S3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]]),</span>
-         <span class="s1">&#39;dyz&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">_S3</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="n">_S3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]]),</span>
-         <span class="s1">&#39;dzx&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">_S3</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="n">_S3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]]),</span>
-         <span class="s1">&#39;dx2-y2&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="n">_S3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">_S3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]),</span>
-         <span class="s1">&#39;dz2&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])}</span>
+<span class="n">_M</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'dxy'</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="n">_S3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="n">_S3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]]),</span>
+         <span class="s1">'dyz'</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">_S3</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="n">_S3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]]),</span>
+         <span class="s1">'dzx'</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">_S3</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="n">_S3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]]),</span>
+         <span class="s1">'dx2-y2'</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="n">_S3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">_S3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]),</span>
+         <span class="s1">'dz2'</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])}</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_rotation</span><span class="p">(</span><span class="n">d_hat</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">'''</span>
 <span class="sd">    Private function. A rotation matrix taking z onto d_hat.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
     <span class="n">c</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">d_hat</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="mf">1.</span> <span class="o">-</span> <span class="mf">1e-14</span><span class="p">:</span>
@@ -462,10 +485,10 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_rep</span><span class="p">(</span><span class="n">l</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">rot</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">'''</span>
 <span class="sd">    Private function. Real representation D_l(R) of a rotation on the real</span>
 <span class="sd">    orbitals of angular momentum l (columns: rotated orbitals).</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
     <span class="k">if</span> <span class="n">l</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">l</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -474,43 +497,43 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_bond_frame</span><span class="p">(</span><span class="n">l1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">l2</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">'''</span>
 <span class="sd">    Private function. Matrix between the orbitals of angular momentum l1 (first</span>
 <span class="sd">    atom) and l2 (second atom, at +z), in the bond frame.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fallback</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span> <span class="k">if</span> <span class="n">fallback</span> <span class="k">else</span> <span class="mf">0.</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ss_sigma&#39;</span><span class="p">)]])</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">get</span><span class="p">(</span><span class="s1">'ss_sigma'</span><span class="p">)]])</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">get</span><span class="p">(</span><span class="s1">&#39;sp_sigma&#39;</span><span class="p">)]])</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">get</span><span class="p">(</span><span class="s1">'sp_sigma'</span><span class="p">)]])</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ps_sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;sp_sigma&#39;</span><span class="p">)]])</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">get</span><span class="p">(</span><span class="s1">'ps_sigma'</span><span class="p">,</span> <span class="s1">'sp_sigma'</span><span class="p">)]])</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pp_pi&#39;</span><span class="p">),</span> <span class="n">get</span><span class="p">(</span><span class="s1">&#39;pp_pi&#39;</span><span class="p">),</span> <span class="n">get</span><span class="p">(</span><span class="s1">&#39;pp_sigma&#39;</span><span class="p">)])</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="n">get</span><span class="p">(</span><span class="s1">'pp_pi'</span><span class="p">),</span> <span class="n">get</span><span class="p">(</span><span class="s1">'pp_pi'</span><span class="p">),</span> <span class="n">get</span><span class="p">(</span><span class="s1">'pp_sigma'</span><span class="p">)])</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">get</span><span class="p">(</span><span class="s1">&#39;sd_sigma&#39;</span><span class="p">)]])</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">get</span><span class="p">(</span><span class="s1">'sd_sigma'</span><span class="p">)]])</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ds_sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;sd_sigma&#39;</span><span class="p">)]])</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="n">get</span><span class="p">(</span><span class="s1">'ds_sigma'</span><span class="p">,</span> <span class="s1">'sd_sigma'</span><span class="p">)]])</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
         <span class="c1"># (px, dzx), (py, dyz): pi; (pz, dz2): sigma</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-        <span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">out</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s1">&#39;pd_pi&#39;</span><span class="p">)</span>
-        <span class="n">out</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s1">&#39;pd_sigma&#39;</span><span class="p">)</span>
+        <span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">out</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s1">'pd_pi'</span><span class="p">)</span>
+        <span class="n">out</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s1">'pd_sigma'</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">out</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-        <span class="n">out</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">out</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dp_pi&#39;</span><span class="p">,</span> <span class="s1">&#39;pd_pi&#39;</span><span class="p">)</span>
-        <span class="n">out</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dp_sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;pd_sigma&#39;</span><span class="p">)</span>
+        <span class="n">out</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">out</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">get</span><span class="p">(</span><span class="s1">'dp_pi'</span><span class="p">,</span> <span class="s1">'pd_pi'</span><span class="p">)</span>
+        <span class="n">out</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">get</span><span class="p">(</span><span class="s1">'dp_sigma'</span><span class="p">,</span> <span class="s1">'pd_sigma'</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">out</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dd_delta&#39;</span><span class="p">),</span> <span class="n">get</span><span class="p">(</span><span class="s1">&#39;dd_pi&#39;</span><span class="p">),</span> <span class="n">get</span><span class="p">(</span><span class="s1">&#39;dd_pi&#39;</span><span class="p">),</span> <span class="n">get</span><span class="p">(</span><span class="s1">&#39;dd_delta&#39;</span><span class="p">),</span> <span class="n">get</span><span class="p">(</span><span class="s1">&#39;dd_sigma&#39;</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="n">get</span><span class="p">(</span><span class="s1">'dd_delta'</span><span class="p">),</span> <span class="n">get</span><span class="p">(</span><span class="s1">'dd_pi'</span><span class="p">),</span> <span class="n">get</span><span class="p">(</span><span class="s1">'dd_pi'</span><span class="p">),</span> <span class="n">get</span><span class="p">(</span><span class="s1">'dd_delta'</span><span class="p">),</span> <span class="n">get</span><span class="p">(</span><span class="s1">'dd_sigma'</span><span class="p">)])</span>
 
 
 <div class="viewcode-block" id="sk_block">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.slater_koster.sk_block">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">sk_block</span><span class="p">(</span><span class="n">orbs1</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">orbs2</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">d</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Get the Slater-Koster hopping matrix between the orbitals *orbs1* of an</span>
 <span class="sd">    atom and the orbitals *orbs2* of a neighbour at displacement :math:`\mathbf{d}`.</span>
 
@@ -526,15 +549,15 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    block : Real ndarray, shape (len(orbs1), len(orbs2))</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">orbitals</span><span class="p">(</span><span class="n">orbs1</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">orbitals</span><span class="p">(</span><span class="n">orbs2</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">sk_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">bond_vector</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
     <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">))])</span>
     <span class="n">rot</span> <span class="o">=</span> <span class="n">_rotation</span><span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
-    <span class="n">names</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">],</span> <span class="mi">1</span><span class="p">:</span> <span class="n">_P</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="n">_D</span><span class="p">}</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="p">[</span><span class="s1">'s'</span><span class="p">],</span> <span class="mi">1</span><span class="p">:</span> <span class="n">_P</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="n">_D</span><span class="p">}</span>
     <span class="n">block</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">orbs1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">orbs2</span><span class="p">)))</span>
     <span class="k">for</span> <span class="n">l1</span> <span class="ow">in</span> <span class="p">{</span><span class="n">ORBITALS</span><span class="p">[</span><span class="n">o</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">orbs1</span><span class="p">}:</span>
         <span class="k">for</span> <span class="n">l2</span> <span class="ow">in</span> <span class="p">{</span><span class="n">ORBITALS</span><span class="p">[</span><span class="n">o</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">orbs2</span><span class="p">}:</span>
@@ -551,14 +574,14 @@
 <div class="viewcode-block" id="orbital_angular_momentum">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.slater_koster.orbital_angular_momentum">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">orbital_angular_momentum</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Get the orbital angular momentum :math:`(L_x, L_y, L_z)` (:math:`\hbar = 1`)</span>
 <span class="sd">    on the real p orbitals ``(px, py, pz)``: :math:`(L_k)_{ij} = -i\epsilon_{kij}`.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    L : List of three complex ndarrays, shape (3, 3)</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
     <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
     <span class="n">eps</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">eps</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">eps</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
     <span class="n">eps</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">eps</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">eps</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.</span>
@@ -570,7 +593,7 @@
 <a class="viewcode-back" href="../../tbkit.html#tbkit.slater_koster.sk_kspace">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">sk_kspace</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">bonds</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span>
                    <span class="n">onsite</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">overlap</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Get the Slater-Koster Bloch Hamiltonian of a periodic lattice: a</span>
 <span class="sd">    **KSpace** with one orbital per (site, orbital) of the unit cell, and</span>
 <span class="sd">    the hoppings of *sk_block* between the *n*-th neighbours listed in</span>
@@ -597,7 +620,7 @@
 <span class="sd">    ks</span>
 <span class="sd">        **KSpace** instance; *ks.sk_orbitals* lists the (site,</span>
 <span class="sd">        orbital) of each of its orbitals.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">KSpace</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.lattice</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lattice</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">lat</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
@@ -606,21 +629,21 @@
     <span class="k">if</span> <span class="n">overlap</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">sk_bonds</span><span class="p">(</span><span class="n">overlap</span><span class="p">)</span>
     <span class="n">cell</span> <span class="o">=</span> <span class="n">lat</span><span class="o">.</span><span class="n">unit_cell</span>
-    <span class="n">table</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dic</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">orbitals</span><span class="p">[</span><span class="n">dic</span><span class="p">[</span><span class="s1">&#39;tag&#39;</span><span class="p">]]]</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dic</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">orbitals</span><span class="p">[</span><span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">]]]</span>
     <span class="n">index</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">n</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">table</span><span class="p">)}</span>
-    <span class="n">new_cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="n">cell</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;tag&#39;</span><span class="p">],</span> <span class="s1">&#39;r0&#39;</span><span class="p">:</span> <span class="n">cell</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;r0&#39;</span><span class="p">]}</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">table</span><span class="p">]</span>
+    <span class="n">new_cell</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="n">cell</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">'tag'</span><span class="p">],</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="n">cell</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">'r0'</span><span class="p">]}</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">table</span><span class="p">]</span>
     <span class="n">ks</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">Lattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="n">new_cell</span><span class="p">,</span> <span class="n">prim_vec</span><span class="o">=</span><span class="n">lat</span><span class="o">.</span><span class="n">prim_vec</span><span class="p">))</span>
-    <span class="nb">setattr</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="s1">&#39;sk_orbitals&#39;</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>  <span class="c1"># an attribute of this KSpace only</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="s1">'sk_orbitals'</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>  <span class="c1"># an attribute of this KSpace only</span>
     <span class="k">if</span> <span class="n">onsite</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">set_onsite_orb</span><span class="p">(</span><span class="n">onsite</span><span class="p">,</span> <span class="n">lat</span><span class="o">.</span><span class="n">tags</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">table</span><span class="p">):</span>
-            <span class="n">val</span> <span class="o">=</span> <span class="n">onsite</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cell</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;tag&#39;</span><span class="p">],</span> <span class="mf">0.</span><span class="p">)</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">onsite</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cell</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">'tag'</span><span class="p">],</span> <span class="mf">0.</span><span class="p">)</span>
             <span class="n">ks</span><span class="o">.</span><span class="n">onsite</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="n">val</span>
     <span class="c1"># candidate bonds: every site of the home cell to every site of the</span>
     <span class="c1"># neighbouring cells, each unordered bond once</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">prim_vec</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
-    <span class="n">r0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dic</span><span class="p">[</span><span class="s1">&#39;r0&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">dic</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f8&#39;</span><span class="p">)</span>
-    <span class="n">shifts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">prim_vec</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span>
+    <span class="n">r0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dic</span><span class="p">[</span><span class="s1">'r0'</span><span class="p">]</span> <span class="k">for</span> <span class="n">dic</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span>
+    <span class="n">shifts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">'ij'</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
     <span class="n">cand</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">shift</span> <span class="ow">in</span> <span class="n">shifts</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cell</span><span class="p">)):</span>
@@ -636,16 +659,16 @@
     <span class="k">for</span> <span class="n">store</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="p">((</span><span class="n">ks</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">,</span> <span class="n">bonds</span><span class="p">),</span> <span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">set_overlap</span><span class="p">,</span> <span class="n">overlap</span> <span class="ow">or</span> <span class="p">{})):</span>
         <span class="n">hops</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">params</span> <span class="ow">in</span> <span class="n">spec</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int_lim</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">distances</span><span class="p">))</span>
+            <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int_lim</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">'n'</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">distances</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">dist</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">cand</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">dist</span> <span class="o">!=</span> <span class="n">distances</span><span class="p">[</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span>
                     <span class="k">continue</span>
-                <span class="n">orbs_i</span><span class="p">,</span> <span class="n">orbs_j</span> <span class="o">=</span> <span class="n">orbitals</span><span class="p">[</span><span class="n">cell</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;tag&#39;</span><span class="p">]],</span> <span class="n">orbitals</span><span class="p">[</span><span class="n">cell</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;tag&#39;</span><span class="p">]]</span>
+                <span class="n">orbs_i</span><span class="p">,</span> <span class="n">orbs_j</span> <span class="o">=</span> <span class="n">orbitals</span><span class="p">[</span><span class="n">cell</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">'tag'</span><span class="p">]],</span> <span class="n">orbitals</span><span class="p">[</span><span class="n">cell</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">'tag'</span><span class="p">]]</span>
                 <span class="n">block</span> <span class="o">=</span> <span class="n">sk_block</span><span class="p">(</span><span class="n">orbs_i</span><span class="p">,</span> <span class="n">orbs_j</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">oi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">orbs_i</span><span class="p">):</span>
                     <span class="k">for</span> <span class="n">q</span><span class="p">,</span> <span class="n">oj</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">orbs_j</span><span class="p">):</span>
                         <span class="k">if</span> <span class="n">block</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">]:</span>
-                            <span class="n">hops</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="n">index</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">oi</span><span class="p">)],</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="n">index</span><span class="p">[(</span><span class="n">j</span><span class="p">,</span> <span class="n">oj</span><span class="p">)],</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">])})</span>
+                            <span class="n">hops</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">'i'</span><span class="p">:</span> <span class="n">index</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">oi</span><span class="p">)],</span> <span class="s1">'j'</span><span class="p">:</span> <span class="n">index</span><span class="p">[(</span><span class="n">j</span><span class="p">,</span> <span class="n">oj</span><span class="p">)],</span> <span class="s1">'R'</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">])})</span>
         <span class="k">if</span> <span class="n">hops</span><span class="p">:</span>
             <span class="n">store</span><span class="p">(</span><span class="n">hops</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ks</span></div>
@@ -679,8 +702,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -700,8 +723,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
-    <br/>
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.2.0.
   </p>
 </div>
       
@@ -714,7 +736,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
 </p></div>
       
     </div>

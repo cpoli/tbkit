@@ -144,8 +144,8 @@ Around the Dirac point: one loop, Berry phase pi
 
  .. code-block:: none
 
-    Dirac point, band 0: ends on band 0, phase +3.141593, |overlap| 1.0000
-    Dirac point, band 1: ends on band 1, phase +3.141593, |overlap| 1.0000
+    Dirac point, band 0: ends on band 0, phase -3.141593, |overlap| 1.0000
+    Dirac point, band 1: ends on band 1, phase -3.141593, |overlap| 1.0000
 
 
 
@@ -189,10 +189,10 @@ loops it is a property of the EP.)
 
  .. code-block:: none
 
-    EP, 1 loop(s): ends on band 1, factor +0.0000+1.0000i
+    EP, 1 loop(s): ends on band 1, factor -0.0000+1.0000i
     EP, 2 loop(s): ends on band 0, factor -1.0000-0.0000i
     EP, 3 loop(s): ends on band 1, factor +0.0000-1.0000i
-    EP, 4 loop(s): ends on band 0, factor +1.0000-0.0000i
+    EP, 4 loop(s): ends on band 0, factor +1.0000+0.0000i
 
 
 
@@ -226,7 +226,7 @@ turn at all, and one loop is enough to bring both eigenvalues back.
 
  .. code-block:: none
 
-    vorticity: EP +0.500, Dirac point +7.8e-33; around both EPs the state ends on band 0
+    vorticity: EP +0.500, Dirac point -2.4e-32; around both EPs the state ends on band 0
 
 
 
@@ -288,7 +288,7 @@ come back.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.394 seconds)
+   **Total running time of the script:** (0 minutes 4.019 seconds)
 
 
 .. _sphx_glr_download_api_gallery_non_hermitian_plot_exceptional_point_encircling.py:
