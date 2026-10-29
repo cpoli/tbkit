@@ -1,5 +1,26 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- **Faster Bloch matrices.** `KSpace._bloch_sum`, behind every Bloch
+  matrix of the package (`get_ham`, overlaps, Peierls phases, the
+  velocities of the Kubo and optical responses, Floquet grids), now
+  groups the hoppings by lattice vector and builds H(k) at many
+  k-points as one matrix product, sum over R of exp(ik.R) T_R, with
+  the orbital positions as row and column phases. It used to evaluate
+  one complex exponential per hopping and k-point. On the 32-orbital
+  benchmark model of the paper (200 x 200 mesh, one thread), building
+  the matrices takes 0.13 s instead of 2.7 s, with the same matrices
+  to 4e-16. End to end, band energies take 1.5 s instead of 3.9 s, the
+  Chern number 2.8 s instead of 5.2 s and the Wilson-loop flow 2.9 s
+  instead of 5.2 s, now faster than PythTB 2 (2.1 s, 8.2 s and 3.4 s).
+  Models whose hoppings fill less than `KSpace.group_fill`
+  (1%) of the dense per-R blocks, such as large moiré supercells, keep
+  the hopping-by-hopping sum, which is cheaper there and needs no
+  dense blocks.
+
 ## 0.6.1 -- 2026-10-15
 
 ### Changed

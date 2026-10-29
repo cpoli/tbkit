@@ -480,3 +480,54 @@ class TestBatchedDiagonalization(unittest.TestCase):
         self.assertEqual(KSpace.workers, 1)
         self.assertRaises(TypeError, hal.set_workers, 2.)
         self.assertRaises(ValueError, hal.set_workers, 0)
+
+
+class TestGroupedBlochSum(unittest.TestCase):
+    '''
+    _bloch_sum groups the hoppings by lattice vector when they fill enough
+    of the dense blocks, and sums them one by one otherwise: both paths give
+    the same Bloch matrices and derivatives.
+    '''
+
+    def models(self):
+        gra, _ = graphene()
+        lat = gra.lat
+        soc = KSpace(lat, spin=True)
+        soc.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': PAULI['0'] + 0.3j * PAULI['x']}
+                         for R in [(0, 0), (-1, 0), (0, -1)]])
+        for R in [(0, 1), (-1, 0), (1, -1)]:
+            soc.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 0.1j * PAULI['z']}])
+        values = haldane(M=0.3)
+        values.set_hopping([{'i': 1, 'j': 1, 'R': (1, 0), 't': lambda si, sj, s: s}])
+        values.set_params(s=0.2)
+        nonreciprocal, _ = graphene()
+        nonreciprocal.set_hopping([{'i': 0, 'j': 1, 'R': (1, 1), 't': 0.4}], hermitian=False)
+        return [gra, soc, values, nonreciprocal]
+
+    def test_paths_agree(self):
+        rng = np.random.default_rng(3)
+        k_cart = rng.normal(size=(7, 2))
+        directions = [np.array([1., 0.]), np.array([0.6, 0.8])]
+        for ks in self.models():
+            for positions in (False, True):
+                for A in (None, np.array([0.3, -0.2])):
+                    with mock.patch.object(KSpace, 'group_fill', 0.):
+                        grouped = ks._bloch_sum(ks._hop, k_cart, directions, positions, A)
+                    with mock.patch.object(KSpace, 'group_fill', np.inf):
+                        single = ks._bloch_sum(ks._hop, k_cart, directions, positions, A)
+                    for g, s in zip(grouped, single):
+                        self.assertEqual(g.shape, s.shape)
+                        self.assertTrue(np.allclose(g, s, atol=1e-13))
+
+    def test_choice(self):
+        from tbkit.kspace import magnetic_supercell
+        import tbkit.lattices as lattices
+        square = [{'i': 0, 'j': 0, 'R': (1, 0), 't': 1.}, {'i': 0, 'j': 0, 'R': (0, 1), 't': 1.}]
+        dense = graphene()[0]
+        sparse = magnetic_supercell(lattices.square(), square, 1, 100)  # fills 0.8% of its blocks
+        with mock.patch.object(KSpace, '_bloch_grouped', autospec=True,
+                               side_effect=KSpace._bloch_grouped) as grouped:
+            dense.get_ham([0.1, 0.2])
+            self.assertEqual(grouped.call_count, 1)
+            sparse.get_ham([0.1, 0.2])
+            self.assertEqual(grouped.call_count, 1)

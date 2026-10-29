@@ -117,6 +117,10 @@ class KSpace():
     '''
 
     workers = 1  # threads diagonalizing over k, see set_workers
+    # _bloch_sum groups the hoppings by lattice vector when they fill at
+    # least this fraction of the dense (n_R, norb, norb) blocks; sparser
+    # models (large supercells) are summed hopping by hopping
+    group_fill = 0.01
 
     def __init__(self, lat: Lattice, spin: bool = False) -> None:
         error_handling.lat(lat)
@@ -1340,6 +1344,15 @@ class KSpace():
         (len(directions), nk, norb, norb). Every Bloch matrix of the model
         (*get_ham*, *get_overlap*, *get_ham_peierls*, *_bloch_derivatives*)
         is built here.
+
+        When the hoppings fill at least *group_fill* of the blocks
+        :math:`T_{\mathbf{R}}` (one norb x norb matrix per distinct
+        :math:`\mathbf{R}`), the sum is one matrix product
+        :math:`\sum_{\mathbf{R}} e^{i\mathbf{k}\cdot\mathbf{R}}\,T_{\mathbf{R}}`,
+        with the orbital positions as the phases
+        :math:`e^{-i\mathbf{k}\cdot\boldsymbol\tau_i}` and
+        :math:`e^{i\mathbf{k}\cdot\boldsymbol\tau_j}` of its rows and
+        columns. Otherwise, each hopping is summed on its own.
         '''
         n, nk = self.norb, len(k_cart)
         i = np.array([h[0] for h in hops], dtype=int)
@@ -1349,12 +1362,17 @@ class KSpace():
         if positions or A is not None:
             tau = self.orbital_positions()
             bond = d + tau[j] - tau[i]
-            if positions:
-                d = bond
-        phase = k_cart @ d.T
         if A is not None:
-            phase = phase + bond @ A
-        w = np.exp(1j * phase) * t[None, :]
+            # the Peierls phase of a bond does not depend on k
+            t = t * np.exp(1j * (bond @ A))
+        if len(hops):
+            cells, cell = np.unique(d, axis=0, return_inverse=True)
+            if len(hops) >= self.group_fill * len(cells) * n * n:
+                return self._bloch_grouped(i, j, t, cells, cell.ravel(), k_cart, directions,
+                                           tau if positions else None)
+        if positions:
+            d = bond
+        w = np.exp(1j * (k_cart @ d.T)) * t[None, :]
         # accumulate term m of k-point p in entry (p, i_m, j_m): repeated
         # (i, j) pairs add up, as they must
         index = (np.arange(nk)[:, None] * n * n + i * n + j).ravel()
@@ -1366,6 +1384,37 @@ class KSpace():
         mat = scatter(w)
         dmat = np.array([scatter(w * (1j * (d @ u))[None, :]) for u in directions],
                                   dtype='c16').reshape(len(directions), nk, n, n)
+        return mat, dmat
+
+    def _bloch_grouped(
+        self, i: NDArray[np.int_], j: NDArray[np.int_], t: NDArray[np.complex128],
+        cells: NDArray[np.float64], cell: NDArray[np.int_], k_cart: NDArray[np.float64],
+        directions: Sequence[NDArray[np.float64]], tau: NDArray[np.float64] | None,
+    ) -> tuple[NDArray[np.complex128], NDArray[np.complex128]]:
+        r'''
+        Private method. *_bloch_sum* as one matrix product over the distinct
+        lattice vectors *cells* (hopping m connects to cells[cell[m]]), with
+        the orbital positions *tau* in the phases (None: periodic gauge).
+        The derivative along :math:`\mathbf{u}` weights each block by
+        :math:`i\mathbf{u}\cdot\mathbf{R}`, plus
+        :math:`i\mathbf{u}\cdot(\boldsymbol\tau_j-\boldsymbol\tau_i)` with *tau*.
+        '''
+        n, nk = self.norb, len(k_cart)
+        blocks = np.zeros((len(cells), n * n), dtype='c16')
+        np.add.at(blocks, (cell, i * n + j), t)
+        phases = np.exp(1j * (k_cart @ cells.T))
+        mat = (phases @ blocks).reshape(nk, n, n)
+        dmat = np.empty((len(directions), nk, n, n), dtype='c16')
+        for a, u in enumerate(directions):
+            dmat[a] = ((phases * (1j * (cells @ u))[None, :]) @ blocks).reshape(nk, n, n)
+            if tau is not None:
+                x = tau @ u
+                dmat[a] += 1j * (x[None, :] - x[:, None])[None] * mat
+        if tau is not None:
+            orb = np.exp(1j * (k_cart @ tau.T))
+            row, col = orb.conj()[:, :, None], orb[:, None, :]
+            mat = row * mat * col
+            dmat = row[None] * dmat * col[None]
         return mat, dmat
 
     def _bloch_derivatives(
