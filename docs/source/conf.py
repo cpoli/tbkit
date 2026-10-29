@@ -76,6 +76,9 @@ sphinx_gallery_conf = {
     # back to file-path resolution on every single invocation.
     'backreferences_dir': 'gen_modules/backreferences',
     'doc_module': ('tbkit',),
+    # Run the examples in one worker process per core; TBKIT_GALLERY_JOBS=1
+    # runs them one at a time in the Sphinx process instead.
+    'parallel': int(os.environ.get('TBKIT_GALLERY_JOBS', os.cpu_count() or 1)),
 }
 
 # Lets cross-references to numpy/matplotlib/scipy types in autodoc-rendered
@@ -220,6 +223,12 @@ html_theme_options = {
             'icon': '_static/images/pypi.svg',
             'type': 'local',
         },
+        {
+            'name': 'Charles Poli',
+            'url': 'https://cpoli.github.io/',
+            'icon': 'fa-solid fa-user',
+            'type': 'fontawesome',
+        },
     ],
     # No 'theme-switcher': tbkit is light-mode only, unlike the sibling
     # physicskit/mathematicskit/chemistrykit docs (which default to dark).
@@ -257,7 +266,15 @@ html_context = {
 # for a visitor to end up in dark mode on purpose, so force_light.js
 # unconditionally overwrites the stored preference back to light on every
 # page load.
-html_js_files = ['js/force_light.js']
+# GoatCounter counts page views (no cookies, no personal data); one site,
+# cpoli.goatcounter.com, covers every cpoli.github.io project.
+html_js_files = [
+    'js/force_light.js',
+    (
+        'https://gc.zgo.at/count.js',
+        {'async': 'async', 'data-goatcounter': 'https://cpoli.goatcounter.com/count'},
+    ),
+]
 
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []

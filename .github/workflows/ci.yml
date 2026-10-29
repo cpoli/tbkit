@@ -99,6 +99,16 @@ jobs:
       MKL_NUM_THREADS: 1
     steps:
       - uses: actions/checkout@v7
+      # The key covers everything an example's output can depend on, so a
+      # hit means a passing build already ran this exact gallery and
+      # sphinx-gallery skips every example; any change runs them all.
+      - name: Restore executed gallery
+        uses: actions/cache@v5
+        with:
+          path: |
+            docs/source/api/gallery
+            docs/source/gen_modules
+          key: gallery-${{ hashFiles('tbkit/**', 'examples/**', 'docs/source/conf.py', 'pyproject.toml', '.github/workflows/ci.yml') }}
       - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
