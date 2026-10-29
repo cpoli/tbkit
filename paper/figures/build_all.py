@@ -120,6 +120,16 @@ def tex(s):
     return '$'.join(parts)
 
 
+def winner(x, y, fmt):
+    """The two values as printed, the strictly lower one in bold (neither if they print alike)."""
+    sx, sy = format(x, fmt), format(y, fmt)
+    if float(sx) < float(sy):
+        sx = f'\\textbf{{{sx}}}'
+    elif float(sy) < float(sx):
+        sy = f'\\textbf{{{sy}}}'
+    return sx, sy
+
+
 def tables():
     data = json.loads((RESULTS / 'validation.json').read_text())
     lines = []
@@ -136,8 +146,8 @@ def tables():
         for width in sorted({r['width'] for r in bench['transport']}):
             a, b = (next(r for r in bench['transport'] if r['width'] == width and r['package'] == p)
                     for p in ('tbkit', 'kwant'))
-            lines.append(f"{width**2:,} & {a['seconds']:.3g} & {a['peak_mb']:.0f} & "
-                         f"{b['seconds']:.3g} & {b['peak_mb']:.0f} \\\\".replace(',', '{,}'))
+            (ta, tb), (ma, mb) = winner(a['seconds'], b['seconds'], '.3g'), winner(a['peak_mb'], b['peak_mb'], '.0f')
+            lines.append(f"{width**2:,}".replace(',', '{,}') + f" & {ta} & {ma} & {tb} & {mb} \\\\")
         (TABLES / 'bench_transport.tex').write_text('\n'.join(lines) + '\n')
         norb, nk = max(r['norb'] for r in bench['kspace']), max(r['nk'] for r in bench['kspace'])
         names = {'bands': 'band energies', 'chern': 'Chern number', 'wilson': 'Wilson-loop flow'}
@@ -145,8 +155,8 @@ def tables():
         for task, name in names.items():
             a, b = (next(r for r in bench['kspace'] if r['task'] == task and r['norb'] == norb
                          and r['nk'] == nk and r['package'] == p) for p in ('tbkit', 'pythtb'))
-            lines.append(f"{name} & {a['seconds']:.3g} & {a['peak_mb']:.0f} & "
-                         f"{b['seconds']:.3g} & {b['peak_mb']:.0f} \\\\")
+            (ta, tb), (ma, mb) = winner(a['seconds'], b['seconds'], '.3g'), winner(a['peak_mb'], b['peak_mb'], '.0f')
+            lines.append(f"{name} & {ta} & {ma} & {tb} & {mb} \\\\")
         (TABLES / 'bench_kspace.tex').write_text('\n'.join(lines) + '\n')
         (TABLES / 'bench_setup.tex').write_text(
             f"\\newcommand{{\\benchnorb}}{{{norb}}}\n\\newcommand{{\\benchnk}}{{{nk}}}\n"

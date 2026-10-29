@@ -1,72 +1,128 @@
 % tbkit: a verified toolkit for tight-binding models
 %
-% Draft for SciPost Physics Codebases. Written with the standard article
-% class: move the body into SciPost's template (SciPost.cls) before
-% submission. Figures and tables come from paper/figures/build_all.py.
-\documentclass[11pt,a4paper]{article}
+% Submission to SciPost Physics Codebases, on the SciPost LaTeX template
+% (SciPost.cls and SciPost_bibstyle.bst, CC0, from
+% https://git.scipost.org/scipost/SciPost_LaTeX_Templates_Submission).
+% Figures and tables come from paper/figures/build_all.py.
+\documentclass[submission, Phys]{SciPost}
+% the public SciPost.cls has no Codebases option: set the journal name of the header
+\lhead{\colorbox{scipostphys}{\bf \color{white} ~SciPost Physics Codebases }}
 
-\usepackage[margin=2.5cm]{geometry}
-\usepackage{amsmath,amssymb}
-\usepackage{graphicx}
+\binoppenalty=10000
+\relpenalty=10000
+
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+\usepackage[bitstream-charter]{mathdesign}
+\urlstyle{sf}
+\DeclareSymbolFont{usualmathcal}{OMS}{cmsy}{m}{n}
+\DeclareSymbolFontAlphabet{\mathcal}{usualmathcal}
+
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{siunitx}
-\usepackage{xcolor}
 \usepackage{listings}
-\usepackage{hyperref}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning}
+\usepackage[section]{placeins}
+\setlength{\emergencystretch}{2em}
 
 \lstset{language=Python, basicstyle=\ttfamily\footnotesize, columns=fullflexible,
         keywordstyle=\color{blue!60!black}, commentstyle=\color{gray}, frame=lines,
         breaklines=true, showstringspaces=false}
 \newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\yes}{$\checkmark$}
+\newcommand{\no}{--}
 % table rows from paper/figures/build_all.py (the primitive \input is safe inside tabular)
 \makeatletter\newcommand{\rows}[1]{\@@input #1.tex }\makeatother
 \graphicspath{{figures/}}
 \input{tables/versions.tex}
 \IfFileExists{tables/bench_setup.tex}{\input{tables/bench_setup.tex}}{}
 
-\title{tbkit: a verified Python toolkit for tight-binding models,\\
-       from band topology to quantum transport}
-\author{Charles Poli\thanks{\href{mailto:cpoli374@gmail.com}{cpoli374@gmail.com}}}
-\date{Codebase release \tbkitversion}
-
 \begin{document}
-\maketitle
 
-\begin{abstract}
-tbkit is an open-source Python package that builds and solves tight-binding
-models in one, two and three dimensions, written in vectorized NumPy and
-SciPy. One model definition serves finite lattices and Bloch Hamiltonians.
-On these models tbkit computes band structures and densities of states;
-topological invariants (Chern, spin and mirror Chern, $\mathbb{Z}_2$, Bott,
-higher-order, Majorana); Kubo response (Hall, Nernst, thermal Hall,
-orbital magnetization, linear and nonlinear optics); and quantum transport
-from the scattering matrix of exact lead modes. It also covers Floquet
-drives, non-Hermitian bands with exceptional points, moir\'e supercells,
-Wannier functions, and Hubbard and Bogoliubov--de Gennes mean field.
-The package is built around verification. Every argument is validated,
-the 746 unit tests cover every line, and each of the 85 gallery examples
-asserts its key numbers before plotting, so the documentation states
-nothing that the code does not check on every commit. We describe the
-design and the algorithms, present a worked example from bands to
-transport, and validate tbkit against Kwant~\cite{groth2014} and
-PythTB~\cite{pythtb}. The two independent packages agree with tbkit to
-within $10^{-12}$ on transmissions, lead modes, Berry phases and Wannier
-centres. We also benchmark tbkit against both and state where each one is
-the better choice.
-\end{abstract}
+\begin{center}{\Large \textbf{
+tbkit: a verified Python toolkit for tight-binding models,\\
+from band topology to quantum transport
+}}\end{center}
 
-\tableofcontents
+\begin{center}
+Charles Poli\textsuperscript{1$\star$}
+\end{center}
+
+\begin{center}
+{\bf 1} Independent researcher, London, United Kingdom
+\\
+${}^\star$ {\small \sf cpoli374@gmail.com}
+\end{center}
+
+\begin{center}
+\today
+\end{center}
+
+\section*{Abstract}
+{\bf
+A tight-binding study often needs a model's bands, its topological
+invariants, its linear response and the transport through a device cut
+from it, and each step usually needs a different package with its own
+conventions. tbkit is an open-source Python package in which one model
+definition serves all of them. It computes band structures, Chern,
+$\mathbb{Z}_2$, Bott and higher-order invariants, Kubo response, and
+scattering matrices from exact lead modes, and it covers Floquet and
+non-Hermitian systems, Wannier functions and mean-field interactions.
+Every result stated in its documentation is asserted in continuous
+integration, and tbkit agrees with Kwant and PythTB to within $10^{-12}$
+on transmissions, lead modes, Berry phases and Wannier centres. We
+benchmark it against both. tbkit installs from PyPI and
+conda-forge. Its source is at \url{https://github.com/cpoli/tbkit}, and its
+documentation, with the gallery, at \url{https://cpoli.github.io/tbkit}.
+}
+
+\vspace{10pt}
+\noindent\rule{\textwidth}{1pt}
+\tableofcontents\thispagestyle{fancy}
+\noindent\rule{\textwidth}{1pt}
+\vspace{10pt}
 
 %----------------------------------------------------------------------------
 \section{Introduction}
 \label{sec:intro}
 
+\subsection{Overview and scope}
+
+This paper introduces tbkit, a Python package that builds and solves
+tight-binding models in one, two and three dimensions, written in
+vectorized NumPy~\cite{numpy} and SciPy~\cite{scipy}. One model definition
+serves both finite lattices and Bloch Hamiltonians, and the same model
+can be carried from its bands and topological invariants through its
+linear response to the transport through a device cut from it. The
+package is built around verification: every numerical claim of its
+documentation is asserted by code that runs in continuous integration
+(CI), and its results agree with Kwant~\cite{groth2014} and
+PythTB~\cite{pythtb} to near machine precision.
+
+This document is the userguide of tbkit release
+\tbkitversion~\cite{tbkit061}, and the reference to cite when tbkit is
+used in research. It gives the background and the added value of the
+package (this section), describes its design and algorithms
+(Secs.~\ref{sec:design} to~\ref{sec:beyond}), explains how to install,
+test and use it (Sec.~\ref{sec:usage}), and works through a complete
+example (Sec.~\ref{sec:example}). It then validates the results against
+independent packages and closed-form results (Sec.~\ref{sec:validation})
+and measures performance (Sec.~\ref{sec:performance}). The online
+documentation complements it with the full API reference and a gallery of
+107 examples, and grows with each release.
+
+\subsection{Background and motivation}
+
 Tight-binding models are among the most widely used tools of condensed-matter physics. They
 describe the bands of graphene and of transition-metal dichalcogenides,
-quantum Hall and topological insulators, disordered conductors and
+quantum Hall and topological insulators~\cite{tknn1982,hasan2010}, disordered conductors and
 mesoscopic devices, and they are the reference language for teaching band
 theory. Several mature packages serve parts of this landscape.
 Kwant~\cite{groth2014} computes quantum transport through large devices.
@@ -84,22 +140,104 @@ drive. With separate packages, the model has to be rewritten for each, in
 different conventions for the Bloch gauge, the hopping direction or the
 sign of the Hall conductivity. Each rewrite can introduce errors.
 
-tbkit addresses this with a single model definition and a broad
-set of tools that act on it (Sec.~\ref{sec:design}). We do not claim it is
-the fastest package for any one task: Kwant scales further for large
-transport calculations, and PythTB~2 is now as fast as tbkit on Bloch
-meshes (Sec.~\ref{sec:performance}). What tbkit provides is breadth in
-one package, with mechanics that a user can inspect, and verification
-throughout. Every numerical claim in its documentation is asserted by code that
-runs in continuous integration (CI), and its results agree with Kwant and
-PythTB to near machine precision (Sec.~\ref{sec:validation}).
+Earlier versions of tbkit served the author's research at Lancaster
+University, on strain-induced pseudo-Landau levels in
+graphene~\cite{poli2014,bellec2020}, topological interface and defect
+states in microwave resonator lattices~\cite{poli2015,poli2017}, and the
+sign of couplings in photonic tight-binding lattices~\cite{keil2016}.
+Release \tbkitversion{} grew from that code into a general package.
 
-This paper is organized as a user guide. Section~\ref{sec:design} describes the design.
-Sections~\ref{sec:building} to~\ref{sec:beyond} cover the physics, and
-Sec.~\ref{sec:example} works through one complete example.
-Section~\ref{sec:validation} validates the results and
-Sec.~\ref{sec:performance} measures performance. Section~\ref{sec:teaching}
-describes the gallery as teaching material.
+tbkit addresses this with a single model definition and a broad
+set of tools that act on it (Sec.~\ref{sec:design}). Release
+\tbkitversion{} supports
+\begin{enumerate}
+\item finite lattices of any shape and Bloch Hamiltonians built from the
+  same hoppings, with conversions between them, ribbons and slabs;
+\item several orbitals and spin per site, Slater--Koster parameters,
+  overlaps, discretized $k\cdot p$ models and Wannier90 imports;
+\item disorder, defects, strain and magnetic fields through Peierls phases;
+\item topological invariants in reciprocal space (Chern, spin and mirror
+  Chern, $\mathbb{Z}_2$, Fu--Kane parities, Weyl-point chiralities,
+  higher-order and Majorana invariants) and in real space (local Chern
+  marker, Bott index);
+\item Kubo response at any Fermi level and temperature: anomalous and
+  spin Hall, anomalous Nernst and thermal Hall conductivities, orbital
+  magnetization, the axion angle, and linear and nonlinear optics;
+\item scattering matrices from exact lead modes, with conservation laws,
+  scattering states, finite temperature and thermoelectric coefficients,
+  and Green's-function transport for multi-terminal devices;
+\item Floquet drives and non-Hermitian bands, with the anomalous Floquet
+  winding, biorthogonal Chern numbers, the skin effect and exceptional
+  points;
+\item maximally localized Wannier functions, Hubbard and
+  Bogoliubov--de Gennes mean field, and moir\'e supercells;
+\item lattices of $10^5$ sites and more, through sparse diagonalization,
+  the kernel polynomial method and recursive Green's functions.
+\end{enumerate}
+Its added value over existing packages lies in four points. First, one
+model definition serves every tool, so the bands, invariants, response
+and transport of a model are computed with one set of conventions
+(Eq.~\eqref{eq:bloch} below) and no rewriting. Second, scattering matrices
+from exact lead modes, as in Kwant, sit in the same package as Berry-phase
+topology and Kubo response, and a lead is cut automatically from the
+Bloch model of the device. Third, non-Hermitian and Floquet models are
+first-class: exceptional points are found from the discriminant of the
+characteristic polynomial and followed by eigenvalue continuation, and
+every band and topology tool applies to a Floquet Hamiltonian. Fourth,
+verification is part of the design: every number that the documentation
+states is asserted by code on every commit.
+Table~\ref{tab:packages} compares this scope with the two packages tbkit
+is validated against. We do not claim it is the fastest package for any
+one task: Kwant scales further for large transport calculations, and
+PythTB~2 runs within a factor of about three of tbkit on Bloch meshes
+(Sec.~\ref{sec:performance}). What tbkit provides is breadth in one
+package, with mechanics that a user can inspect, and verification
+throughout (Sec.~\ref{sec:validation}).
+
+\begin{table}[htb]
+\centering\small
+\caption{Built-in features of tbkit \tbkitversion, Kwant \kwantversion{}
+and PythTB \pythtbversion. ``KPM'' marks a real-space Kubo formula
+evaluated with the kernel polynomial method. Features that a user can
+assemble from lower-level routines are not counted.}
+\label{tab:packages}
+\begin{tabular}{lccc}
+\toprule
+Feature & tbkit & Kwant & PythTB \\
+\midrule
+Finite real-space lattices & \yes & \yes & \yes \\
+Bloch bands, Berry phases, Wilson loops & \yes & bands only & \yes \\
+Chern number, local Chern marker & \yes & \no & \yes \\
+$\mathbb{Z}_2$, Bott and higher-order invariants & \yes & \no & \no \\
+Maximally localized Wannier functions & \yes & \no & \yes \\
+Kubo response (Hall, Nernst, optics) & \yes & KPM & \no \\
+Kernel polynomial method & \yes & \yes & \no \\
+Scattering matrix from exact lead modes & \yes & \yes & \no \\
+Discretization of $k\cdot p$ models & \yes & \yes & \no \\
+Floquet and non-Hermitian band topology & \yes & \no & \no \\
+Wannier90 import & \yes & \no & \yes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Links, documentation and reporting}
+
+tbkit is distributed under the BSD 3-clause license on PyPI and
+conda-forge (installation in Sec.~\ref{sec:usage}). The source code is at
+\url{https://github.com/cpoli/tbkit}, and the documentation, with the API
+reference, the gallery and its coverage report, at
+\url{https://cpoli.github.io/tbkit}. Bugs and feature requests go to the
+issue tracker of the repository. Every script behind this paper, from
+validation and benchmarks to figures and listings, is in the
+\code{paper/} directory of the repository, and \code{paper/README.md}
+gives the commands that regenerate every number, figure and table.
+
+Each release is a git tag. A release workflow builds it, publishes it to
+PyPI, and archives it on Zenodo under its own DOI. The changelog records
+every change, and for each fixed bug it states which numbers were wrong
+and why. Contributions arrive as pull requests and pass the same CI as
+the rest of the code (Sec.~\ref{sec:design}), so a contribution that
+changes the physics of any documented result fails before it is merged.
 
 %----------------------------------------------------------------------------
 \section{Design}
@@ -146,17 +284,38 @@ supercells, discretized $k\cdot p$ models and Wannier90 imports.
 comes from one vectorized routine (\code{KSpace.\_bloch\_sum}). This holds
 for the Hamiltonian, overlaps, velocities $\partial_\mu H$, vector-potential
 couplings and Floquet grids. The routine evaluates many $\mathbf{k}$ at once,
-with optional analytic derivatives. Every diagonalization over a mesh
+with optional analytic derivatives. It groups the hoppings by lattice
+vector into dense blocks $T_{\mathbf{R}}$, so that $H(\mathbf{k})$ at all
+k-points is one matrix product of the phases $e^{i\mathbf{k}\cdot\mathbf{R}}$
+with these blocks, and the orbital positions enter as phases of the rows
+and columns. For sparse models, such as large moir\'e supercells, it
+sums the hoppings one by one instead. Every diagonalization over a mesh
 goes through one stacked eigensolver (\code{KSpace.\_eigs}), in
 memory-bounded chunks and optionally across threads. Optimizing or
 correcting these two routines therefore affects every method built on
 them.
 
-\paragraph{Conventions.} $H(\mathbf{k})$ uses the periodic gauge (orbital
-positions ignored), which leaves eigenvalues and integrated invariants
-unchanged. Wilson loops, Wannier centres and the quantum metric add
-the positions back when requested (\code{positions=True}), which is the
-convention of PythTB. The Hall conductivity follows the TKNN sign, so in a gap
+\paragraph{Conventions.} A hopping $t_{ij}(\mathbf{R})$ from orbital $j$
+in the cell at lattice vector $\mathbf{R}$ to orbital $i$ in the home cell
+enters the Bloch matrix as
+\begin{equation}
+H_{ij}(\mathbf{k}) = \varepsilon_i\,\delta_{ij}
+  + \sum_{\mathbf{R}} t_{ij}(\mathbf{R})\, e^{i\mathbf{k}\cdot\mathbf{d}_{ij}(\mathbf{R})}\,,
+\qquad
+\mathbf{d}_{ij}(\mathbf{R}) = \mathbf{R}
+\quad\text{or}\quad
+\mathbf{R} + \boldsymbol{\tau}_j - \boldsymbol{\tau}_i\,,
+\label{eq:bloch}
+\end{equation}
+with $\varepsilon_i$ the onsite energies and $\boldsymbol{\tau}_i$ the
+orbital positions. By default $H(\mathbf{k})$ uses the periodic gauge,
+$\mathbf{d} = \mathbf{R}$, which leaves eigenvalues and integrated
+invariants unchanged. Wilson loops, Wannier centres and the quantum metric
+add the positions back when requested (\code{positions=True}), which is
+the convention of PythTB. The derivatives $\partial_\mu H$ follow
+analytically by multiplying each term of Eq.~\eqref{eq:bloch} by
+$i d_\mu$. The Hall conductivity follows the sign of Thouless,
+Kohmoto, Nightingale and den Nijs (TKNN)~\cite{tknn1982}, so in a gap
 it equals the Chern number returned by \code{chern\_number}. The
 conventions are stated in the docstrings and pinned by tests.
 
@@ -166,15 +325,15 @@ of the sites and of named parameters, \code{t(site\_i, site\_j, **params)}.
 diagram reuses one model, as with Kwant's value functions.
 
 \paragraph{Validation.} Each public method first validates its arguments
-through one module (\code{error\_handling}, 251 checks), which raises an
-explicit error naming the problem, for example
+through the 253 checks of one module, \code{error\_handling}. A failed
+check raises an explicit error naming the problem, for example
 the missing lead orbitals of an incomplete interface cell, or a band group of
 a non-Hermitian model without a line gap.
 
 \paragraph{Verification policy.} The test suite runs on Python 3.10--3.14,
 plus a job on the oldest NumPy, SciPy and matplotlib the package declares.
 It covers every line, and any warning fails it. A fixed bug gets a test
-that pins it. The 85 gallery examples are executed by every documentation
+that pins it. The 107 gallery examples are executed by every documentation
 build, which CI runs on each push, and each asserts its key numbers before
 plotting. A change that breaks the physics of an example therefore fails
 CI. Section~\ref{sec:validation} adds independent checks against Kwant and
@@ -209,7 +368,7 @@ or explicit matrices [Fig.~\ref{fig:models}(b)]. Overlaps turn every
 eigenproblem into a generalized one.
 
 \paragraph{From continuum to lattice.} \code{discretize} turns a $k\cdot p$
-Hamiltonian, written in SymPy, into a lattice model on a chain, square or
+Hamiltonian, written in SymPy~\cite{sympy}, into a lattice model on a chain, square or
 cubic grid. Its parameters can stay symbolic and become value functions.
 
 \paragraph{Wannier functions.} \code{read\_wannier90} imports
@@ -232,18 +391,30 @@ extend real-space calculations to $10^5$ sites and more.
 \includegraphics[width=\textwidth]{fig_topology}
 \caption{Band topology. (a)~Berry curvature of the lower band of the
 Haldane model over the Brillouin zone. (b)~Wilson-loop (hybrid Wannier
-centre) flow of the occupied pair of the Kane--Mele model: the centres
+centre) flow of the occupied pair of the Kane--Mele model~\cite{kane2005qsh}: the centres
 wind, so $\mathbb{Z}_2 = 1$. (c)~Corner states of a finite quadrupole
 insulator.}
 \label{fig:topology}
 \end{figure}
 
 Chern numbers use the gauge-invariant plaquette method of Fukui, Hatsugai and
-Suzuki~\cite{fukui2005}. On a coarse mesh it gives an integer
-whenever the gap stays open [Fig.~\ref{fig:topology}(a)]. Spin and mirror
+Suzuki~\cite{fukui2005}. With $M_{mn}(\mathbf{k}, \mathbf{k}') =
+\langle u_m(\mathbf{k})|u_n(\mathbf{k}')\rangle$ the overlaps of the
+occupied Bloch states between neighbouring mesh points, the Berry flux
+through a plaquette with corners $\mathbf{k}_1, \dots, \mathbf{k}_4$ and the
+Chern number are
+\begin{equation}
+\Omega_\square = -\arg\prod_{a=1}^{4}\det M(\mathbf{k}_a, \mathbf{k}_{a+1})\,,
+\qquad
+C = \frac{1}{2\pi}\sum_{\square}\Omega_\square\,,
+\label{eq:fhs}
+\end{equation}
+with $\mathbf{k}_5 = \mathbf{k}_1$. Each flux lies in $(-\pi, \pi]$ and
+is independent of the phases of the states, so on a coarse mesh $C$ is an
+integer whenever the gap stays open [Fig.~\ref{fig:topology}(a)]. Spin and mirror
 Chern numbers project onto the eigenspaces of $s_z$ or of a mirror operator
-first. Wilson loops give Berry and Zak phases, hybrid Wannier centres and
-their flow~\cite{soluyanov2011}, from which the $\mathbb{Z}_2$ invariant
+first. Wilson loops give Berry and Zak phases~\cite{xiao2010}, hybrid Wannier centres and
+their flow~\cite{soluyanov2011}, from which the $\mathbb{Z}_2$ invariant~\cite{kane2005z2}
 is read in 2D [Fig.~\ref{fig:topology}(b)] and the four 3D indices
 follow. Inversion-symmetric models also give Fu--Kane
 parities~\cite{fu2007}. In real space, tbkit computes the local Chern
@@ -254,7 +425,7 @@ higher-order phases~\cite{benalcazar2017} [Fig.~\ref{fig:topology}(c)].
 \code{find\_weyl\_points} locates Weyl nodes and their chiralities from
 the flux through small spheres. For superconductors, \code{bdg} gives
 Kitaev's Majorana number from the Pfaffian~\cite{kitaev2001}, and the
-symmetry tools classify a Hamiltonian in the tenfold way.
+symmetry tools classify a Hamiltonian in the tenfold way~\cite{altland1997,chiu2016}.
 
 %----------------------------------------------------------------------------
 \section{Response and transport}
@@ -268,31 +439,73 @@ Haldane model against the Fermi level: a plateau at $C=1$ in the gap of the
 topological phase, a non-quantized value in the bands. (b)~Conductance
 steps of a quantum point contact. (c)~Optical conductivity of graphene,
 which approaches the universal value $\sigma_0 = e^2/4\hbar$ at low
-frequency.}
+frequency~\cite{nair2008}.}
 \label{fig:response}
 \end{figure}
 
-\paragraph{Kubo response.} The anomalous and spin Hall conductivities are
-evaluated from the Kubo formula at any Fermi level and temperature, with
-analytic velocities $\partial_\mu H$ from the hoppings
-[Fig.~\ref{fig:response}(a)]. The orbital magnetization, the anomalous
-Nernst and thermal Hall conductivities, and the axion angle share the same
-code with different occupation weights. Linear optical conductivity, the
-Berry-curvature dipole and the shift current cover optics
+\paragraph{Kubo response.} The anomalous Hall conductivity is evaluated
+from the Kubo formula at any Fermi level and temperature,
+\begin{equation}
+\sigma_{xy} = \frac{e^2}{\hbar}\int_{\mathrm{BZ}}\frac{d^dk}{(2\pi)^d}
+\sum_{n\neq m} -(w_n - w_m)\,
+\frac{\mathrm{Im}\left[\langle n|\partial_x H|m\rangle\langle m|\partial_y H|n\rangle\right]}
+{(E_n - E_m)^2}\,,
+\label{eq:kubo}
+\end{equation}
+with the weights $w_n = f(E_n)$ given by the Fermi--Dirac occupations and
+the velocities $\partial_\mu H$ from Eq.~\eqref{eq:bloch}
+[Fig.~\ref{fig:response}(a)]. In a gap, Eq.~\eqref{eq:kubo} equals
+$C\,e^2/h$ with $C$ from Eq.~\eqref{eq:fhs}. Written with $w_n - w_m$
+rather than as a sum of band Berry curvatures, it stays finite where
+bands touch, since degenerate pairs have equal weights and drop out. An
+optional adaptive refinement resamples the cells where the integrand
+peaks. The spin Hall conductivity replaces $\partial_x H$ by the spin
+current. The anomalous Nernst and thermal Hall conductivities and the
+orbital magnetization share the same code, with the entropy or
+higher moments of the occupations as weights~\cite{xiao2010}, and the
+axion angle integrates the second Chern form along a model parameter. Linear optical conductivity, the
+Berry-curvature dipole~\cite{sodemann2015} and the shift current~\cite{sipe2000} cover optics
 [Fig.~\ref{fig:response}(c)]. In real space, the kernel polynomial method
-evaluates the Kubo--Bastin formula on large disordered tori.
+evaluates the Kubo--Bastin formula~\cite{garcia2015} on large disordered tori.
 
 \paragraph{Scattering matrix.} \code{Transport} holds a sparse device and
 its leads. A lead is given as matrices or attached automatically from a
-ribbon \code{KSpace}, by matching positions and tags. The lead modes solve
-the transfer-matrix eigenproblem, as an ordinary eigenproblem when the
-inter-cell hopping is invertible and with a QZ decomposition of the pencil
-otherwise. They are normalized to
-unit current, and evanescent modes are kept in an ordered Schur basis. The
-scattering matrix then follows from one sparse LU factorization of the
-device with the lead boundary conditions, as in Kwant~\cite{groth2014}.
-Because no broadening $\eta$ enters, results stay exact up to the band
-edges of the leads. A conservation law, such as $\sigma_z$ or the
+ribbon \code{KSpace}, by matching positions and tags. A lead with unit-cell
+Hamiltonian $h_0$ and inter-cell hopping $v$ carries modes
+$\psi_{n+1} = \lambda\,\psi_n$, which solve the pencil
+\begin{equation}
+\begin{pmatrix} 0 & 1 \\ -v^\dagger & E - h_0 \end{pmatrix}
+\begin{pmatrix} \psi_{n-1} \\ \psi_n \end{pmatrix}
+= \lambda
+\begin{pmatrix} 1 & 0 \\ 0 & v \end{pmatrix}
+\begin{pmatrix} \psi_{n-1} \\ \psi_n \end{pmatrix}.
+\label{eq:pencil}
+\end{equation}
+tbkit solves it as an ordinary eigenproblem when $v$ is well conditioned,
+and with an ordered QZ decomposition otherwise. Modes with $|\lambda| = 1$
+propagate with velocity $-2\,\mathrm{Im}(\lambda\,\phi^\dagger v\,\phi)$
+and are normalized to unit current. Degenerate modes are rotated to
+diagonalize the velocity. Evanescent modes are kept in an ordered Schur
+basis, which stays well conditioned when $v$ is singular. In lead $l$,
+coupled to the device by $\tau_l$, the wave function on its first two cells
+is an incoming mode $\phi^{\mathrm{in}}_l$ plus $U_{0,l}b_l$ and
+$U_{1,l}b_l$, where $U_{0,l}$ and $U_{1,l}$ hold the outgoing and
+evanescent solutions. The device wave function $\psi$ and the amplitudes
+$b_l$ then solve one sparse system,
+\begin{equation}
+\begin{aligned}
+(E - H)\psi - \sum_l\tau_l U_{0,l}b_l &= \sum_l\tau_l\phi^{\mathrm{in}}_l\,,\\
+-\tau_l^\dagger\psi + \left[(E - h_0)U_{0,l} - vU_{1,l}\right]b_l
+  &= -(E - h_0 - \lambda_{\mathrm{in}}v)\,\phi^{\mathrm{in}}_l\,,
+\end{aligned}
+\label{eq:scattering}
+\end{equation}
+factorized once by sparse LU~\cite{li2005} for every incoming mode, as in
+Kwant~\cite{groth2014}. The outgoing entries of $b_l$ form the columns of
+the scattering matrix $S$, and the transmission is
+$T = \sum |S_{nm}|^2$ over modes $m$ of the injecting lead and $n$ of the
+receiving one. Because no broadening $\eta$ enters, results stay exact up
+to the band edges of the leads. A conservation law, such as $\sigma_z$ or the
 electron--hole $\tau_z$, splits the modes into blocks for spin-resolved
 transport or Andreev reflection. Scattering states, their local density of
 states, finite temperature and thermoelectric coefficients build on the
@@ -313,8 +526,8 @@ the surface of a 3D topological insulator.
 \includegraphics[width=\textwidth]{fig_driven}
 \caption{Driven and open systems. (a)~Bloch oscillations of a wavepacket
 in a tilted chain. (b)~Floquet bands of graphene under circularly
-polarized light, gapped at $K$. (c)~Skin effect in the Hatano--Nelson
-chain: the spectrum of a ring winds around a loop, while the open chain
+polarized light, gapped at $K$~\cite{oka2009}. (c)~Skin effect in the Hatano--Nelson
+chain~\cite{hatano1996}: the spectrum of a ring winds around a loop, while the open chain
 has a real spectrum.}
 \label{fig:driven}
 \end{figure}
@@ -326,9 +539,9 @@ exact. The winding number of Rudner \emph{et al.}~\cite{rudner2013}
 identifies anomalous phases that the Chern numbers of $H_F$ miss.
 
 \paragraph{Non-Hermitian bands.} Non-reciprocal hoppings, gain and loss are
-first-class. Biorthogonal Berry curvature and Chern numbers apply to
-line-gapped bands, and the spectral winding and generalized Brillouin zone
-describe the skin effect [Fig.~\ref{fig:driven}(c)]. The module
+first-class~\cite{bergholtz2021}. Biorthogonal Berry curvature and Chern numbers apply to
+line-gapped bands, and the spectral winding and generalized Brillouin
+zone~\cite{yao2018,yokomizo2019} describe the skin effect [Fig.~\ref{fig:driven}(c)]. The module
 \code{exceptional} follows eigenvalues by continuation along a closed loop,
 without sorting them. From this it computes vorticities and the band swap
 on encircling an exceptional point, and finds exceptional points and their
@@ -340,6 +553,92 @@ work on finite systems. Twisted-bilayer supercells with band unfolding
 reach the flat bands at the magic angle~\cite{bistritzer2011}.
 Crank--Nicolson propagation follows wavepackets and adiabatic pumping
 [Fig.~\ref{fig:driven}(a)].
+
+%----------------------------------------------------------------------------
+\section{Using tbkit}
+\label{sec:usage}
+
+\subsection{Installation and tests}
+
+tbkit runs on Python~3.10 and later. It requires NumPy, SciPy and
+matplotlib~\cite{matplotlib}, and optionally SymPy~\cite{sympy} for
+$k\cdot p$ discretization. A release installs with either of
+\begin{verbatim}
+pip install tbkit
+conda install -c conda-forge tbkit
+\end{verbatim}
+and the development version, with the test dependencies, from the
+repository:
+\begin{verbatim}
+git clone https://github.com/cpoli/tbkit
+cd tbkit
+pip install -e ".[test]"
+pytest tests/
+\end{verbatim}
+The last command runs the 752 tests in parallel in about half a minute on
+a laptop, and \code{pytest tests/ --cov=tbkit} also reports their line
+coverage, as CI does. \code{pip install -e ".[docs]"} followed by
+\code{make html} in \code{docs/} builds the documentation, which re-runs
+and asserts every gallery example. The cross-checks against Kwant and
+PythTB and the benchmarks of Secs.~\ref{sec:validation}
+and~\ref{sec:performance} need both packages, which
+\code{paper/environment.yml} installs, and \code{paper/README.md} gives
+the commands that run them.
+
+\subsection{Basic workflow}
+
+\lstinputlisting[caption={A first model, in real space and in reciprocal
+space. Every step asserts its result.}, label=lst:quickstart,
+firstline=2]{../listings/quickstart.py}
+
+Listing~\ref{lst:quickstart} shows the two pipelines of
+Fig.~\ref{fig:design}. In real space (step~1), a \code{Lattice} is
+repeated into a finite patch, a \code{System} addresses its bonds by
+neighbour order (\code{'n': 1}), and \code{get\_ham} and \code{get\_eig}
+build and diagonalize the sparse Hamiltonian. The levels of the
+$20\times20$ flake are checked against their closed form. In reciprocal
+space (step~2), a \code{KSpace} takes each bond as an orbital pair and the
+lattice vector $\mathbf{R}$ of the target cell, adds its Hermitian
+conjugate, and returns $H(\mathbf{k})$ of Eq.~\eqref{eq:bloch}.
+\code{high\_symmetry\_path} recognizes the Bravais lattice and returns a
+standard path, along which \code{k\_path} gives the bands. Energies are in
+the units of the hoppings, lengths in those of the primitive vectors, and
+conductances in $e^2/h$.
+
+From there, every tool of Secs.~\ref{sec:building} to~\ref{sec:beyond} is
+a method of these objects or a function that takes them.
+Table~\ref{tab:entry} lists the main entry points. Each public function
+and method has a docstring with its parameters, conventions and
+references, rendered in the API reference of the documentation, and a
+wrong argument raises an error that names the problem. The gallery
+gives a runnable, self-checking script for each topic, and a tutorial
+page walks through the package in the order of this guide.
+
+\begin{table}[htb]
+\centering\small
+\caption{Main entry points of tbkit, by module.}
+\label{tab:entry}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.6cm}X}
+\toprule
+Entry point & Purpose \\
+\midrule
+\code{lattice.Lattice}, \code{lattices} & unit cells, finite patches, geometry \\
+\code{system.System} & finite real-space models, spectra, LDOS, local Chern marker \\
+\code{kspace.KSpace}, \code{ribbon} & Bloch models, bands, Berry phases, invariants, Kubo response \\
+\code{bridges.finite\_system} & Bloch model to finite system, and back \\
+\code{orbital.OrbitalSystem}, \code{slater\_koster.sk\_kspace} & several orbitals and spin per site \\
+\code{continuum.discretize}, \code{io.read\_wannier90} & models from $k\cdot p$ Hamiltonians and Wannier90 \\
+\code{wannier.wannierize} & maximally localized Wannier functions \\
+\code{topology}, \code{higher\_order} & Bott index, Weyl points, corner charges \\
+\code{optics} & optical conductivity, Berry-curvature dipole, shift current \\
+\code{transport.Transport} & scattering matrix, conductance, scattering states \\
+\code{kpm} & kernel polynomial method: DOS, LDOS, Kubo conductivities \\
+\code{floquet} & Floquet Hamiltonians, step drives, anomalous winding \\
+\code{exceptional} & exceptional points, vorticities, encircling \\
+\code{bdg}, \code{meanfield}, \code{moire} & superconductors, Hubbard mean field, moir\'e supercells \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 %----------------------------------------------------------------------------
 \section{A worked example: the Haldane model, from bands to transport}
@@ -462,7 +761,8 @@ Peak memory is the growth of the resident set during the timed call
 
 \begin{table}[t]
 \centering\small
-\caption{$k$-space tasks, \benchnorb{} orbitals, $\benchnk\times\benchnk$ mesh, one thread.}
+\caption{$k$-space tasks, \benchnorb{} orbitals, $\benchnk\times\benchnk$ mesh, one thread.
+The lower time and the lower memory of each row are in bold.}
 \label{tab:bench-kspace}
 \begin{tabular}{lrrrr}
 \toprule
@@ -476,7 +776,8 @@ Task & time (s) & memory (MB) & time (s) & memory (MB) \\
 
 \begin{table}[t]
 \centering\small
-\caption{Scattering matrix of a $W\times W$ device at one energy, one thread.}
+\caption{Scattering matrix of a $W\times W$ device at one energy, one thread.
+The lower time and the lower memory of each row are in bold.}
 \label{tab:bench-transport}
 \begin{tabular}{rrrrr}
 \toprule
@@ -489,45 +790,52 @@ Sites & time (s) & memory (MB) & time (s) & memory (MB) \\
 \end{table}
 
 On Bloch meshes, tbkit and PythTB~2 scale alike [Fig.~\ref{fig:benchmarks}(a)--(c)].
-Both are vectorized over $k$, and their run times stay within a factor of
-about two. PythTB is faster for band energies and Wilson loops, and tbkit
-is faster for the Chern number. tbkit's chunked eigensolver bounds its
-memory, which is 5 to 17 times lower on the largest meshes. It can also use threads
+Both are vectorized over $k$ and build $H(\mathbf{k})$ by grouping the
+hoppings by lattice vector (Sec.~\ref{sec:design}), and their run times
+stay within a factor of about three. tbkit is 1.2 to 2.9 times faster for
+the Chern number, and 1.1 to 1.4 times faster for band energies except
+on the smallest two-orbital meshes. For Wilson loops, PythTB is up to 1.8
+times faster on small meshes, and tbkit is 1.1 to 1.2 times faster on the
+$200\times200$ mesh with 8 and 32 orbitals. tbkit's chunked eigensolver bounds
+its memory, which is 5 to 75 times lower for 32 orbitals on the largest
+mesh. It can also use threads
 (\code{KSpace.set\_workers}), which this single-thread comparison leaves
 out. For transport, tbkit is as fast as Kwant up to a few thousand
-sites. Beyond that, Kwant's MUMPS factorization, with its nested-dissection
-ordering, pulls ahead of tbkit's SuperLU, and the gap widens slowly with size
-[Fig.~\ref{fig:benchmarks}(d)]. At about $10^5$ sites, Kwant is 2.4 times
-faster, and at about $4\times10^5$ sites 2.7 times faster, using a quarter of
-the memory. For the largest devices, Kwant is the right tool. tbkit's
-transport is aimed at the models that a user already builds for its band and
-topology tools, and at devices of up to about $10^5$ sites, where it takes
-about 5 seconds on one thread.
+sites. Beyond that, Kwant's MUMPS factorization~\cite{amestoy2001}, with its nested-dissection
+ordering, pulls ahead of tbkit's SuperLU~\cite{li2005}, and the gap widens slowly with size
+[Fig.~\ref{fig:benchmarks}(d)]. At about $10^5$ sites, Kwant is 2.3 times
+faster, and at about $4\times10^5$ sites 2.7 times faster, using about a
+quarter of the memory. For the largest devices, Kwant is the right tool.
+tbkit's transport is aimed at the models that a user already builds for
+its band and topology tools, and at devices of up to about $10^5$ sites,
+where it takes under 6 seconds on one thread.
 
 %----------------------------------------------------------------------------
 \section{Teaching}
 \label{sec:teaching}
 
-tbkit was written to be read as well as used. The gallery spans 20 topics,
+tbkit was written to be read as well as used. The gallery spans 21 topics,
 from lattices to Floquet and non-Hermitian physics, and each example is a short
 script that explains its physics and checks it. A history page of the
 documentation tells the story of tight-binding physics as a chronology of
-breakthroughs, from Bloch and Slater--Koster to moir\'e flat bands. Each
-breakthrough links to examples that reproduce it, 73 links in all. The
+87 breakthroughs, from Bloch and Slater--Koster to moir\'e flat bands. Each
+breakthrough links to the examples that reproduce it, 95 examples in all,
+and no example is shared between two breakthroughs. The
 two pipelines expose their intermediate objects (site arrays, bond tables,
 sparse Hamiltonians), so a student can see how a model is assembled.
 
 %----------------------------------------------------------------------------
-\section{Availability and outlook}
-\label{sec:outlook}
+\section{Summary and future directions}
+\label{sec:conclusion}
 
-tbkit is distributed on PyPI (\code{pip install tbkit}) under the BSD
-3-clause license. It requires NumPy, SciPy and matplotlib (SymPy for
-$k\cdot p$ discretization). Its source, documentation and coverage report
-are at \url{https://github.com/cpoli/tbkit} and
-\url{https://cpoli.github.io/tbkit}. Every script behind this paper, from
-validation and benchmarks to figures and listings, is in the \code{paper/}
-directory of the repository.
+tbkit lets one tight-binding model be carried from its bands and
+topological invariants through its linear response to the transport of a
+device cut from it, with one set of conventions. Its results agree with
+Kwant and PythTB to near machine precision, its gallery reproduces
+closed-form results from the literature and asserts them on every commit,
+and its performance is on par with or better than PythTB on Bloch meshes and on par with Kwant
+for devices of up to a few thousand sites. For the largest transport
+calculations, Kwant remains the better choice.
 
 The roadmap of the project lists the next steps. These include extending
 lead interfaces automatically, moving the remaining Green's-function
@@ -535,9 +843,14 @@ transport onto the sparse factorization, energy-parallel transport, import
 and export of Kwant and PythTB models, and Hartree--Fock on Bloch meshes.
 
 \section*{Acknowledgements}
-% TODO: acknowledgements and funding.
+The author thanks Matthieu Bellec, Ulrich Kuhl and Fabrice Mortessagne
+(Universit\'e C\^ote d'Azur) and Henning Schomerus (Lancaster
+University) for the collaborations in which earlier versions of tbkit were
+used~\cite{poli2014,poli2015,keil2016,poli2017,bellec2020}.
 
-\bibliographystyle{unsrt}
+\paragraph{Funding information}
+The author received no specific funding for this work.
+
 \bibliography{references}
 
 \end{document}
