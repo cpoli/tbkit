@@ -3,7 +3,8 @@ Breakthroughs in Flat Bands and Interactions
 
 Flat bands from lattice geometry and from a moiré twist, the Hubbard model
 and magnetic order in mean field, and superconductivity from the BCS gap
-equation to Kitaev's Majorana chain and the nanowires that realize it. It traces the ideas behind
+equation to Kitaev's Majorana chain, the nanowires that realize it, and the
+superfluid weight of flat bands. It traces the ideas behind
 :mod:`tbkit.lattices`, :mod:`tbkit.moire`, :mod:`tbkit.meanfield` and
 :mod:`tbkit.bdg`.
 
@@ -464,6 +465,59 @@ hoppings, since the 1.05° cell (11908 orbitals) is too large for dense
 Bloch matrices -- central bands more than 15 times narrower.
 
 .. minigallery:: ../../examples/moire/plot_magic_angle_twisted_bilayer.py
+
+2015 -- Flat-Band Superconductivity and the Quantum Metric
+------------------------------------------------------------------
+
+The superfluid weight :math:`D` -- the stiffness of London's
+supercurrent, :math:`j = -DA` -- is :math:`n/m` in BCS theory, so a flat
+band, infinitely heavy, should carry no supercurrent however strongly
+its electrons pair. S. Peotta and P. Törmä showed that a flat band of
+several orbitals does: its Cooper pairs move by the geometry of the
+Bloch states. For an isolated flat band at filling :math:`\nu`, with a
+uniform pairing :math:`\Delta` small compared with the band gaps
+(:math:`\hbar = e = 1`),
+
+.. math::
+
+   D_{\mu\nu} = 8\Delta\sqrt{\nu(1-\nu)}\int\frac{d^2\mathbf{k}}{(2\pi)^2}\,g_{\mu\nu}(\mathbf{k})\, ,
+
+with :math:`g` the quantum metric of the band (1980 entry of
+:doc:`topology_breakthroughs`): :math:`D` is linear in :math:`\Delta`,
+hence in the attraction, rather than exponentially small in it. Since
+the metric bounds the Berry curvature, a Chern band has
+:math:`\mathrm{Tr}\,D \ge \frac{4\Delta}{\pi}\sqrt{\nu(1-\nu)}\,|C|`: a
+topological flat band is always a superconductor. Julku et al. (2016)
+found the same geometric superfluid weight in the Lieb lattice, and the
+result became a leading explanation of superconductivity in the flat
+bands of magic-angle twisted bilayer graphene (2011/2018 above).
+
+*Implementation:* :func:`tbkit.bdg.superfluid_weight` (the curvature of
+the BdG grand potential in a uniform vector potential, for any band, at
+any temperature, the spin-down electrons being the time-reversed partners
+of the model); :meth:`tbkit.kspace.KSpace.quantum_geometric_tensor` for
+the metric, and :func:`tbkit.kspace.magnetic_supercell` for Peotta and
+Törmä's Harper-Hubbard model.
+
+*References:* S. Peotta and P. Törmä, "Superfluidity in topologically
+nontrivial flat bands," Nat. Commun. 6, 8944 (2015); A. Julku, S.
+Peotta, T. I. Vanhala, D.-H. Kim, and P. Törmä, "Geometric Origin of
+Superfluidity in the Lieb-Lattice Flat Band," Phys. Rev. Lett. 117,
+045303 (2016); L. Liang, T. I. Vanhala, S. Peotta, T. Siro, A. Harju,
+and P. Törmä, "Band geometry, Berry curvature, and superfluid weight,"
+Phys. Rev. B 95, 024515 (2017).
+
+*Example:* ``examples/superconductivity/plot_flat_band_superconductivity.py``
+confirms, on an exactly flat, isolated band of a dimerized Lieb lattice,
+the formula to 2% for every component of :math:`D` at fillings from
+0.03 to 0.97, and :math:`D/\Delta` constant to 3% up to
+:math:`\Delta = 0.05|t|`, while a dispersive band of the same lattice
+changes by less than 5%; and, for the :math:`C = 1` lowest band of the
+Harper-Hubbard model at flux 1/8, a metric within 1% of the Chern bound
+and a superfluid weight within 4% of the formula and of the topological
+bound.
+
+.. minigallery:: ../../examples/superconductivity/plot_flat_band_superconductivity.py
 
 See Also
 --------

@@ -1141,7 +1141,9 @@ real up to a threshold, the exceptional points at which eigenvalues
 the eigenbasis has been skewed, and the selective amplification of a
 topological edge mode. With non-reciprocal hoppings: the non-Hermitian
 skin effect, its spectral winding number, and the generalized Brillouin
-zone that restores the bulk-boundary correspondence. In two dimensions:
+zone that restores the bulk-boundary correspondence. The 38 symmetry
+classes of non-Hermitian bands, and how reciprocity forbids the
+spectral winding. In two dimensions:
 exceptional points in momentum space, their charges (eigenvalue
 vorticity and discriminant winding), the pair of EPs and the bulk Fermi
 arc into which a Dirac point splits, exceptional rings, encircling an EP
@@ -1159,6 +1161,23 @@ number of a line-gapped band.
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The tenfold way (``topology/plot_tenfold_way.py``) sorts Hermitian Hamiltonians by time reversal, particle-hole and chiral symmetry. For a non-Hermitian Hamiltonian, complex conjugation and transposition are no longer the same operation, H^ \neq H^T, so each of these symmetries splits in two. Time reversal U_TH^(\mathbf{k})U_T^\dagger = H(-\mathbf{k}) gets a partner \mathrm{TRS}^\dagger, U_{C_+}H^T(\mathbf{k})U_{C_+}^\dagger = H(-\mathbf{k}), which is reciprocity. Particle-hole symmetry gets a partner \mathrm{PHS}^\dagger, and the chiral symmetry U_\Gamma H^\dagger U_\Gamma^\dagger = -H becomes distinct from the sublattice symmetry U_SHU_S^\dagger = -H and from pseudo-Hermiticity U_\eta H^\dagger U_\eta^\dagger = H.">
+
+.. only:: html
+
+  .. image:: /api/gallery/non_hermitian/images/thumb/sphx_glr_plot_38_fold_way_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/non_hermitian/plot_38_fold_way`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The 38-Fold Way: Symmetry Classes of Non-Hermitian Bands</div>
+    </div>
+
 
 .. raw:: html
 
@@ -1493,7 +1512,8 @@ in a Zeeman field. The self-consistent BCS gap equation in real space,
 with its universal ratio Delta(0)/T_c = 1.764 and the proximity effect.
 Andreev reflection at a normal-superconductor junction and the BTK
 conductance, from the scattering matrix resolved into electrons and
-holes.
+holes. The superfluid weight of flat bands, set by the quantum metric
+(Peotta-Törmä).
 
 
 .. raw:: html
@@ -1555,6 +1575,23 @@ holes.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">The Bogoliubov-de Gennes Equations: Andreev Bound States</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A supercurrent is carried by Cooper pairs that move. In BCS theory its stiffness, the superfluid weight D (London&#x27;s j = -DA), is the density over the mass of the electrons, n/m: an infinitely heavy band -- a flat band -- should carry no supercurrent at all, however strong the pairing. S. Peotta and P. Törmä (2015) showed that this is wrong when the flat band is made of several orbitals. An isolated flat band at filling \nu, with a uniform pairing \Delta small compared with the band gaps, has (\hbar = e = 1)">
+
+.. only:: html
+
+  .. image:: /api/gallery/superconductivity/images/thumb/sphx_glr_plot_flat_band_superconductivity_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/superconductivity/plot_flat_band_superconductivity`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Flat-Band Superconductivity: a Superfluid Weight Set by the Quantum Metric</div>
     </div>
 
 

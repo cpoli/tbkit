@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=5459b468"></script>
+    <script src="../../_static/documentation_options.js?v=b9678aa1"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.6" />
+  <meta name="docsearch:version" content="0.7" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -451,13 +451,15 @@
 <span class="sd">*four_terminal_resistance* solve the Landauer-Buttiker equations (Hall</span>
 <span class="sd">bars); *bond_currents* and *local_currents* map the current;</span>
 <span class="sd">*transmission_eigenvalues*, *shot_noise* and *fano_factor* give the shot</span>
-<span class="sd">noise. *RecursiveTransport* computes the two-terminal transmission of long</span>
+<span class="sd">noise. By default they too come from the scattering matrix and the</span>
+<span class="sd">scattering states, on the same sparse factorization. *RecursiveTransport* computes the two-terminal transmission of long</span>
 <span class="sd">quasi-1D devices slice by slice (recursive Green's function), without</span>
 <span class="sd">inverting the whole device.</span>
 <span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">TypeVar</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">NDArray</span>
@@ -467,6 +469,7 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.error_handling</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">error_handling</span>
 
+<span class="n">_T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">'_T'</span><span class="p">)</span>
 
 <div class="viewcode-block" id="surface_green">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.transport.surface_green">[docs]</a>
@@ -941,18 +944,64 @@
 
 
 
+<span class="k">class</span><span class="w"> </span><span class="nc">_EnergyWorkers</span><span class="p">():</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Private mixin. The threads over which *Transport* and</span>
+<span class="sd">    *RecursiveTransport* spread the energies of their many-energy methods.</span>
+<span class="sd">    '''</span>
+    <span class="n">workers</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># threads over the energies, see set_workers</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_workers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workers</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">        Set the number of threads over which the methods taking many energies</span>
+<span class="sd">        spread them: *transmission* and *fano_factor*, and for *Transport*</span>
+<span class="sd">        also *shot_noise*, and *conductance*, *thermoelectric*,</span>
+<span class="sd">        *conductance_matrix* and *four_terminal_resistance* at a finite</span>
+<span class="sd">        temperature (the energies of the Fermi window). Each</span>
+<span class="sd">        energy is one sparse factorization or dense inversion, mostly in</span>
+<span class="sd">        LAPACK and SuperLU, which release the GIL, so the energies run in</span>
+<span class="sd">        parallel. The results do not depend on *workers*.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        workers : Positive integer</span>
+<span class="sd">            Number of threads (default 1, no threads).</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        Example usage::</span>
+
+<span class="sd">            tr.set_workers(4)</span>
+<span class="sd">            T = tr.transmission(np.linspace(-2, 2, 400))</span>
+<span class="sd">        '''</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">workers</span><span class="p">,</span> <span class="s1">'workers'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workers</span> <span class="o">=</span> <span class="n">workers</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span> <span class="n">_T</span><span class="p">],</span> <span class="n">energies</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">        Private method. *func* at every energy, in order, spread over</span>
+<span class="sd">        *workers* threads.</span>
+<span class="sd">        '''</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">workers</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workers</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">)))</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">energies</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">func</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">energies</span><span class="p">]</span>
+
+
 <div class="viewcode-block" id="Transport">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Transport</span><span class="p">():</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Transport</span><span class="p">(</span><span class="n">_EnergyWorkers</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    A finite device, of Hamiltonian *ham* (e.g. *System.ham*), to which</span>
 <span class="sd">    semi-infinite leads are attached with *add_lead*; *transmission* then</span>
 <span class="sd">    gives the Landauer transmission between two of them.</span>
 
-<span class="sd">    The device is stored sparse. *smatrix*, *wave_function*, *ldos* and</span>
-<span class="sd">    *transmission* (by default) only factorize the sparse matrix. The</span>
-<span class="sd">    methods with a broadening *eta* use the dense Green's function, and the</span>
-<span class="sd">    dense matrix *ham* is built once, the first time it is needed.</span>
+<span class="sd">    The device is stored sparse. *smatrix*, *wave_function*, *ldos*, and by</span>
+<span class="sd">    default (*eta* None) the transmissions, conductance matrix, currents and</span>
+<span class="sd">    noise, only factorize the sparse matrix. With a broadening *eta* (and,</span>
+<span class="sd">    as a fallback, for non-Hermitian leads, with *eta* = 1e-9) these use the</span>
+<span class="sd">    dense Green's function, and the dense matrix *ham* is built once, the</span>
+<span class="sd">    first time it is needed.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1276,30 +1325,43 @@
         <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_index</span><span class="p">(</span><span class="n">lead_in</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">))</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_index</span><span class="p">(</span><span class="n">lead_out</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">))</span>
         <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">))</span>
-        <span class="n">hermitian</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">h0</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="k">for</span> <span class="n">h0</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">eta</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">hermitian</span> <span class="ow">and</span> <span class="n">lead_in</span> <span class="o">!=</span> <span class="n">lead_out</span><span class="p">:</span>
-            <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">))</span>
-            <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">energies</span><span class="p">):</span>
-                <span class="n">modes</span><span class="p">,</span> <span class="n">sol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scattering</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="p">[</span><span class="n">lead_in</span><span class="p">],</span> <span class="nb">slice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ham</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="kc">None</span><span class="p">))</span>
-                <span class="n">a</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">h0</span><span class="p">)</span> <span class="k">for</span> <span class="n">h0</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">[:</span><span class="n">lead_out</span><span class="p">])</span>
-                <span class="n">n_out</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">modes</span><span class="p">[</span><span class="n">lead_out</span><span class="p">]</span><span class="o">.</span><span class="n">velocities</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">))</span>
-                <span class="n">out</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="n">a</span><span class="p">:</span><span class="n">a</span> <span class="o">+</span> <span class="n">n_out</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">out</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exact</span><span class="p">(</span><span class="n">eta</span><span class="p">)</span> <span class="ow">and</span> <span class="n">lead_in</span> <span class="o">!=</span> <span class="n">lead_out</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_amplitudes</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">),</span>
+                                      <span class="n">energies</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span>
         <span class="n">eta</span> <span class="o">=</span> <span class="mf">1e-9</span> <span class="k">if</span> <span class="n">eta</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">eta</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">energies</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ham</span>  <span class="c1"># built once, before the threads</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">caroli</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
             <span class="n">sig_in</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">self_energy</span><span class="p">(</span><span class="n">lead_in</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
             <span class="n">sig_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">self_energy</span><span class="p">(</span><span class="n">lead_out</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
             <span class="n">gam_in</span> <span class="o">=</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">sig_in</span> <span class="o">-</span> <span class="n">sig_in</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
             <span class="n">gam_out</span> <span class="o">=</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">sig_out</span> <span class="o">-</span> <span class="n">sig_out</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
             <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_green</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
-            <span class="n">out</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">gam_out</span> <span class="o">@</span> <span class="n">g</span> <span class="o">@</span> <span class="n">gam_in</span> <span class="o">@</span> <span class="n">g</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
-        <span class="k">return</span> <span class="n">out</span></div>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">gam_out</span> <span class="o">@</span> <span class="n">g</span> <span class="o">@</span> <span class="n">gam_in</span> <span class="o">@</span> <span class="n">g</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="n">caroli</span><span class="p">,</span> <span class="n">energies</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span></div>
 
 
     <span class="c1"># ------------------------------------------------------------------</span>
     <span class="c1"># Scattering matrix and scattering states</span>
     <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_exact</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">        Private method. Whether a method with a broadening *eta* uses the</span>
+<span class="sd">        scattering matrix and states (*eta* None and Hermitian leads) rather</span>
+<span class="sd">        than the dense Green's function.</span>
+<span class="sd">        '''</span>
+        <span class="k">return</span> <span class="n">eta</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">h0</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="k">for</span> <span class="n">h0</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_amplitudes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">        Private method. The block of the scattering matrix from lead</span>
+<span class="sd">        *lead_in* to lead *lead_out*, from the modes injected by *lead_in*</span>
+<span class="sd">        only: shape (outgoing modes of *lead_out*, incoming modes of *lead_in*).</span>
+<span class="sd">        '''</span>
+        <span class="n">modes</span><span class="p">,</span> <span class="n">sol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scattering</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="p">[</span><span class="n">lead_in</span><span class="p">],</span> <span class="nb">slice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ham</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">h0</span><span class="p">)</span> <span class="k">for</span> <span class="n">h0</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">[:</span><span class="n">lead_out</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">sol</span><span class="p">[</span><span class="n">a</span><span class="p">:</span><span class="n">a</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">modes</span><span class="p">[</span><span class="n">lead_out</span><span class="p">]</span><span class="o">.</span><span class="n">velocities</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">))]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_scattering</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">inject</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">keep</span><span class="p">:</span> <span class="nb">slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
@@ -1583,24 +1645,32 @@
 
 <div class="viewcode-block" id="Transport.transmission_matrix">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.transmission_matrix">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">transmission_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">transmission_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
-<span class="sd">        Get the transmissions between every pair of leads at one energy,</span>
-<span class="sd">        :math:`T_{pq} = \mathrm{Tr}[\Gamma_pG^r\Gamma_qG^a]` from lead</span>
-<span class="sd">        :math:`q` to lead :math:`p` (the diagonal, a reflection, is set to 0).</span>
+<span class="sd">        Get the transmissions :math:`T_{pq}` between every pair of leads at</span>
+<span class="sd">        one energy, from lead :math:`q` to lead :math:`p` (the diagonal, a</span>
+<span class="sd">        reflection, is set to 0). By default (*eta* None) they come from one</span>
+<span class="sd">        scattering matrix (*smatrix*), :math:`T_{pq} = \sum_{ab}|S_{ab}|^2`</span>
+<span class="sd">        over its block from :math:`q` to :math:`p`; with a broadening *eta*,</span>
+<span class="sd">        from the Caroli formula :math:`\mathrm{Tr}[\Gamma_pG^r\Gamma_qG^a]`</span>
+<span class="sd">        (see *transmission*).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        energy : Real number</span>
-<span class="sd">        eta : Positive real, default 1e-9</span>
+<span class="sd">        eta : Positive real or None, default None</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        T : Real ndarray, shape (n_leads, n_leads)</span>
 <span class="sd">        '''</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exact</span><span class="p">(</span><span class="n">eta</span><span class="p">):</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">smatrix</span><span class="p">(</span><span class="n">energy</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">s</span><span class="o">.</span><span class="n">transmission</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="n">q</span> <span class="k">else</span> <span class="mf">0.</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)])</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="mf">1e-9</span> <span class="k">if</span> <span class="n">eta</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">eta</span>
         <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_green</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
         <span class="n">gam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_broadenings</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">)</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
@@ -1613,7 +1683,7 @@
 <div class="viewcode-block" id="Transport.conductance_matrix">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.conductance_matrix">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">conductance_matrix</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">101</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">101</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">        Get the Landauer-Buttiker conductance matrix (Buttiker 1986), in units</span>
@@ -1627,13 +1697,14 @@
 <span class="sd">        Its rows and columns add up to zero (current conservation, and no</span>
 <span class="sd">        current at equal voltages). At a finite *temperature* it is averaged</span>
 <span class="sd">        over the Fermi window, :math:`\int dE\,(-\partial f/\partial E)\,G(E)`</span>
-<span class="sd">        (see *conductance*).</span>
+<span class="sd">        (see *conductance*). The transmissions come from *transmission_matrix*.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        energy : Real number</span>
 <span class="sd">            Fermi energy (chemical potential).</span>
-<span class="sd">        eta : Positive real, default 1e-9</span>
+<span class="sd">        eta : Positive real or None, default None</span>
+<span class="sd">            See *transmission_matrix*.</span>
 <span class="sd">        temperature : Positive real or zero</span>
 <span class="sd">            Default value 0 (:math:`k_B = 1`).</span>
 <span class="sd">        n_points : Positive integer, default 101</span>
@@ -1648,7 +1719,10 @@
         <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="s1">'n_points'</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">temperature</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">energies</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">_fermi_window</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">n_points</span><span class="p">)</span>
-            <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">conductance_matrix</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">eta</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">weights</span><span class="p">))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exact</span><span class="p">(</span><span class="n">eta</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ham</span>  <span class="c1"># built once, before the threads</span>
+            <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">g</span> <span class="k">for</span> <span class="n">g</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">conductance_matrix</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">eta</span><span class="p">),</span> <span class="n">energies</span><span class="p">),</span>
+                                             <span class="n">weights</span><span class="p">))</span>
         <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transmission_matrix</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">-</span> <span class="n">t</span></div>
 
@@ -1656,7 +1730,7 @@
 <div class="viewcode-block" id="Transport.four_terminal_resistance">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.four_terminal_resistance">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">four_terminal_resistance</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">current</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">voltage</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">current</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">voltage</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">101</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
@@ -1676,7 +1750,8 @@
 <span class="sd">            Fermi energy.</span>
 <span class="sd">        current : Tuple of two distinct lead indices (source, drain)</span>
 <span class="sd">        voltage : Tuple of two lead indices (a, b)</span>
-<span class="sd">        eta : Positive real, default 1e-9</span>
+<span class="sd">        eta : Positive real or None, default None</span>
+<span class="sd">            See *transmission_matrix*.</span>
 <span class="sd">        temperature : Positive real or zero</span>
 <span class="sd">            Default value 0 (see *conductance_matrix*).</span>
 <span class="sd">        n_points : Positive integer, default 101</span>
@@ -1697,9 +1772,33 @@
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">volts</span><span class="p">[</span><span class="n">voltage</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">-</span> <span class="n">volts</span><span class="p">[</span><span class="n">voltage</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span></div>
 
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bond_list</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lead</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">        Private method. The bond currents of *bond_currents* on the bonds</span>
+<span class="sd">        :math:`i \neq j` of the device (the nonzero :math:`H_{ij}`): rows,</span>
+<span class="sd">        columns and currents. By default :math:`A^{(q)}_{ji}` comes from the</span>
+<span class="sd">        scattering states, otherwise from the dense Green's function.</span>
+<span class="sd">        '''</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_index</span><span class="p">(</span><span class="n">lead</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">))</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ham</span><span class="o">.</span><span class="n">tocoo</span><span class="p">()</span>
+        <span class="n">bond</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">row</span> <span class="o">!=</span> <span class="n">h</span><span class="o">.</span><span class="n">col</span>
+        <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">hij</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">row</span><span class="p">[</span><span class="n">bond</span><span class="p">],</span> <span class="n">h</span><span class="o">.</span><span class="n">col</span><span class="p">[</span><span class="n">bond</span><span class="p">],</span> <span class="n">h</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">bond</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exact</span><span class="p">(</span><span class="n">eta</span><span class="p">):</span>
+            <span class="n">psi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wave_function</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">lead</span><span class="p">)</span>
+            <span class="n">a_ji</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">psi</span><span class="p">[:,</span> <span class="n">cols</span><span class="p">]</span> <span class="o">*</span> <span class="n">psi</span><span class="p">[:,</span> <span class="n">rows</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">eta</span> <span class="o">=</span> <span class="mf">1e-9</span> <span class="k">if</span> <span class="n">eta</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">eta</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_green</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+            <span class="n">sites</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">[</span><span class="n">lead</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">gam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_broadenings</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">eta</span><span class="p">)[</span><span class="n">lead</span><span class="p">]</span>
+            <span class="n">a_ji</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">g</span><span class="p">[</span><span class="n">cols</span><span class="p">][:,</span> <span class="n">sites</span><span class="p">]</span> <span class="o">@</span> <span class="n">gam</span><span class="p">)</span> <span class="o">*</span> <span class="n">g</span><span class="p">[</span><span class="n">rows</span><span class="p">][:,</span> <span class="n">sites</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">hij</span> <span class="o">*</span> <span class="n">a_ji</span><span class="p">)</span>
+
 <div class="viewcode-block" id="Transport.bond_currents">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.bond_currents">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">bond_currents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lead</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bond_currents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lead</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">        Get the bond currents carried, per unit energy, by the electrons</span>
 <span class="sd">        injected from one lead (the non-equilibrium current when that lead's</span>
@@ -1708,19 +1807,22 @@
 <span class="sd">        .. math::</span>
 
 <span class="sd">            J_{i\to j} = -2\,\mathrm{Im}\left[H_{ij}\,A^{(q)}_{ji}\right]\, ,\qquad</span>
-<span class="sd">            A^{(q)} = G^r\Gamma_qG^a\, ,</span>
+<span class="sd">            A^{(q)} = G^r\Gamma_qG^a = \sum_a\psi_a\psi_a^\dagger\, ,</span>
 
 <span class="sd">        in units of :math:`e/h` per unit energy: summed over a cross-section</span>
 <span class="sd">        of a two-terminal device, it is the transmission :math:`T(E)`. The</span>
 <span class="sd">        matrix is antisymmetric, and the currents are conserved at every</span>
-<span class="sd">        site not touched by a lead.</span>
+<span class="sd">        site not touched by a lead. By default (*eta* None) :math:`A^{(q)}`</span>
+<span class="sd">        comes from the scattering states :math:`\psi_a` of the lead</span>
+<span class="sd">        (*wave_function*, unit current), on the bonds of the sparse device</span>
+<span class="sd">        only; with a broadening *eta*, from the dense Green's function.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        energy : Real number</span>
 <span class="sd">        lead : Integer</span>
 <span class="sd">            Injecting lead.</span>
-<span class="sd">        eta : Positive real, default 1e-9</span>
+<span class="sd">        eta : Positive real or None, default None</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1728,24 +1830,22 @@
 <span class="sd">            Real ndarray, shape of *ham*: J[i, j] is the current</span>
 <span class="sd">            from site i to site j.</span>
 <span class="sd">        '''</span>
-        <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_index</span><span class="p">(</span><span class="n">lead</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">))</span>
-        <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_green</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
-        <span class="n">sites</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">[</span><span class="n">lead</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
-        <span class="n">gam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_broadenings</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">eta</span><span class="p">)[</span><span class="n">lead</span><span class="p">]</span>
-        <span class="n">spectral</span> <span class="o">=</span> <span class="n">g</span><span class="p">[:,</span> <span class="n">sites</span><span class="p">]</span> <span class="o">@</span> <span class="n">gam</span> <span class="o">@</span> <span class="n">g</span><span class="p">[:,</span> <span class="n">sites</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
-        <span class="k">return</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ham</span> <span class="o">*</span> <span class="n">spectral</span><span class="o">.</span><span class="n">T</span><span class="p">)</span></div>
+        <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bond_list</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">lead</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ham</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">sp</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">((</span><span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">)),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Transport.local_currents">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.local_currents">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">local_currents</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lead</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">positions</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lead</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">positions</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">        Get the current density vector on every site from the bond currents</span>
 <span class="sd">        (*bond_currents*): half of the currents of the bonds leaving the</span>
 <span class="sd">        site, along their bond vectors,</span>
 <span class="sd">        :math:`\mathbf{j}_i = \frac12\sum_jJ_{i\to j}(\mathbf{r}_j - \mathbf{r}_i)`.</span>
+<span class="sd">        By default (*eta* None) it never builds a dense matrix of the device.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1755,34 +1855,40 @@
 <span class="sd">        positions : Real array, shape (n_sites, d)</span>
 <span class="sd">            Site positions</span>
 <span class="sd">            (e.g. ``np.column_stack([lat.coor['x'], lat.coor['y']])``).</span>
-<span class="sd">        eta : Positive real, default 1e-9</span>
+<span class="sd">        eta : Positive real or None, default None</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        j : Real ndarray, shape (n_sites, d)</span>
 <span class="sd">        '''</span>
         <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span>
-        <span class="n">error_handling</span><span class="o">.</span><span class="n">site_positions</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ham</span><span class="p">))</span>
-        <span class="n">bonds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bond_currents</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">lead</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
-        <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">bonds</span> <span class="o">@</span> <span class="n">positions</span> <span class="o">-</span> <span class="n">bonds</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">positions</span><span class="p">)</span></div>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">site_positions</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ham</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">bonds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bond_list</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">lead</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">bonds</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span> <span class="o">-</span> <span class="n">positions</span><span class="p">[</span><span class="n">rows</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">out</span></div>
 
 
 <div class="viewcode-block" id="Transport.transmission_eigenvalues">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.transmission_eigenvalues">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transmission_eigenvalues</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">        Get the transmission eigenvalues :math:`T_n`, eigenvalues of</span>
-<span class="sd">        :math:`t^\dagger t` with :math:`t = \Gamma_{out}^{1/2}G^r\Gamma_{in}^{1/2}`:</span>
-<span class="sd">        their sum is the transmission.</span>
+<span class="sd">        :math:`t^\dagger t`: their sum is the transmission. By default (*eta*</span>
+<span class="sd">        None) :math:`t` is the block of the scattering matrix from</span>
+<span class="sd">        *lead_in* to *lead_out* (*smatrix*), and the list is padded with the</span>
+<span class="sd">        zeros of the closed channels; with a broadening *eta* it is</span>
+<span class="sd">        :math:`t = \Gamma_{out}^{1/2}G^r\Gamma_{in}^{1/2}` (and, as a</span>
+<span class="sd">        fallback, with *eta* = 1e-9 for *lead_in* = *lead_out*).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        energy : Real number</span>
 <span class="sd">        lead_in : Integer, default 0</span>
 <span class="sd">        lead_out : Integer, default 1</span>
-<span class="sd">        eta : Positive real, default 1e-9</span>
+<span class="sd">        eta : Positive real or None, default None</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1792,16 +1898,24 @@
 <span class="sd">        '''</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_index</span><span class="p">(</span><span class="n">lead_in</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">))</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">lead_index</span><span class="p">(</span><span class="n">lead_out</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">))</span>
+        <span class="n">s_in</span><span class="p">,</span> <span class="n">s_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">[</span><span class="n">lead_in</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">[</span><span class="n">lead_out</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exact</span><span class="p">(</span><span class="n">eta</span><span class="p">)</span> <span class="ow">and</span> <span class="n">lead_in</span> <span class="o">!=</span> <span class="n">lead_out</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_amplitudes</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">)</span>
+            <span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">compute_uv</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">size</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="c1"># at most min(len(s_in), len(s_out)) channels transmit: the others are zeros</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s_in</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">s_out</span><span class="p">)))</span>
+            <span class="n">out</span><span class="p">[:</span><span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">))]</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="p">)]</span>
+            <span class="k">return</span> <span class="n">out</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="mf">1e-9</span> <span class="k">if</span> <span class="n">eta</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">eta</span>
         <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_green</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
         <span class="n">gam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_broadenings</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
-        <span class="n">s_in</span><span class="p">,</span> <span class="n">s_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">[</span><span class="n">lead_in</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">[</span><span class="n">lead_out</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">_eigen_transmissions</span><span class="p">(</span><span class="n">gam</span><span class="p">[</span><span class="n">lead_out</span><span class="p">],</span> <span class="n">g</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">s_out</span><span class="p">,</span> <span class="n">s_in</span><span class="p">)],</span> <span class="n">gam</span><span class="p">[</span><span class="n">lead_in</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="Transport.shot_noise">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.shot_noise">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">shot_noise</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">        Get the zero-temperature shot-noise factor :math:`\sum_nT_n(1-T_n)`</span>
@@ -1814,7 +1928,8 @@
 <span class="sd">            Energies.</span>
 <span class="sd">        lead_in : Integer, default 0</span>
 <span class="sd">        lead_out : Integer, default 1</span>
-<span class="sd">        eta : Positive real, default 1e-9</span>
+<span class="sd">        eta : Positive real or None, default None</span>
+<span class="sd">            See *transmission_eigenvalues*.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1822,14 +1937,16 @@
 <span class="sd">        '''</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">frequencies</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="s1">'energies'</span><span class="p">)</span>
         <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">_noise</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transmission_eigenvalues</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">lead_in</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">,</span> <span class="n">eta</span><span class="p">))</span>
-                                <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">energies</span><span class="p">])</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_exact</span><span class="p">(</span><span class="n">eta</span><span class="p">)</span> <span class="ow">and</span> <span class="n">lead_in</span> <span class="o">!=</span> <span class="n">lead_out</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ham</span>  <span class="c1"># built once, before the threads</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">_noise</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transmission_eigenvalues</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">,</span> <span class="n">eta</span><span class="p">)),</span>
+                                  <span class="n">energies</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Transport.fano_factor">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.fano_factor">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fano_factor</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">        Get the Fano factor of the zero-temperature shot noise,</span>
@@ -1848,7 +1965,8 @@
 <span class="sd">            Energies.</span>
 <span class="sd">        lead_in : Integer, default 0</span>
 <span class="sd">        lead_out : Integer, default 1</span>
-<span class="sd">        eta : Positive real, default 1e-9</span>
+<span class="sd">        eta : Positive real or None, default None</span>
+<span class="sd">            See *transmission_eigenvalues*.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1858,8 +1976,10 @@
 <span class="sd">        '''</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">frequencies</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="s1">'energies'</span><span class="p">)</span>
         <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">_fano</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transmission_eigenvalues</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">lead_in</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">,</span> <span class="n">eta</span><span class="p">))</span>
-                                <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">energies</span><span class="p">])</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_exact</span><span class="p">(</span><span class="n">eta</span><span class="p">)</span> <span class="ow">and</span> <span class="n">lead_in</span> <span class="o">!=</span> <span class="n">lead_out</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ham</span>  <span class="c1"># built once, before the threads</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">_fano</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transmission_eigenvalues</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">lead_in</span><span class="p">,</span> <span class="n">lead_out</span><span class="p">,</span> <span class="n">eta</span><span class="p">)),</span>
+                                  <span class="n">energies</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span></div>
 </div>
 
 
@@ -1944,7 +2064,7 @@
 
 <div class="viewcode-block" id="RecursiveTransport">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.transport.RecursiveTransport">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">RecursiveTransport</span><span class="p">():</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RecursiveTransport</span><span class="p">(</span><span class="n">_EnergyWorkers</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Two-terminal transport through a long quasi-1D device by the recursive</span>
 <span class="sd">    Green's function method (Thouless and Kirkpatrick 1981; Lee and Fisher</span>
@@ -2066,11 +2186,11 @@
         <span class="n">error_handling</span><span class="o">.</span><span class="n">frequencies</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="s1">'energies'</span><span class="p">)</span>
         <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">))</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span> <span class="s1">'eta'</span><span class="p">)</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">energies</span><span class="p">):</span>
-            <span class="n">g</span><span class="p">,</span> <span class="p">(</span><span class="n">gam_l</span><span class="p">,</span> <span class="n">gam_r</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_propagator</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">eta</span><span class="p">)</span>
-            <span class="n">out</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">gam_r</span> <span class="o">@</span> <span class="n">g</span> <span class="o">@</span> <span class="n">gam_l</span> <span class="o">@</span> <span class="n">g</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
-        <span class="k">return</span> <span class="n">out</span></div>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">caroli</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+            <span class="n">g</span><span class="p">,</span> <span class="p">(</span><span class="n">gam_l</span><span class="p">,</span> <span class="n">gam_r</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_propagator</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">gam_r</span> <span class="o">@</span> <span class="n">g</span> <span class="o">@</span> <span class="n">gam_l</span> <span class="o">@</span> <span class="n">g</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="n">caroli</span><span class="p">,</span> <span class="n">energies</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RecursiveTransport.transmission_eigenvalues">
@@ -2112,7 +2232,7 @@
 <span class="sd">        '''</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">frequencies</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="s1">'energies'</span><span class="p">)</span>
         <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">_fano</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transmission_eigenvalues</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">eta</span><span class="p">))</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">energies</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">_fano</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transmission_eigenvalues</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">eta</span><span class="p">)),</span> <span class="n">energies</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

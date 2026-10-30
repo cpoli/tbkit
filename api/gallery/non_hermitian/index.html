@@ -50,7 +50,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../../_static/documentation_options.js?v=5459b468"></script>
+    <script src="../../../_static/documentation_options.js?v=b9678aa1"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -61,12 +61,12 @@
     <link rel="canonical" href="https://cpoli.github.io/tbkit/api/gallery/non_hermitian/index.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Exceptional Points in Momentum Space: Encircling an EP versus a Dirac Point" href="plot_exceptional_point_encircling.html" />
+    <link rel="next" title="The 38-Fold Way: Symmetry Classes of Non-Hermitian Bands" href="plot_38_fold_way.html" />
     <link rel="prev" title="Magic-Angle Twisted Bilayer Graphene: Flat Moiré Bands" href="../moire/plot_magic_angle_twisted_bilayer.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.6" />
+  <meta name="docsearch:version" content="0.7" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -450,6 +450,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a aria-current="page" class="current reference internal" href="#">Non-Hermitian lattices</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="plot_38_fold_way.html">The 38-Fold Way: Symmetry Classes of Non-Hermitian Bands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_exceptional_point_encircling.html">Exceptional Points in Momentum Space: Encircling an EP versus a Dirac Point</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_exceptional_point_vorticity.html">Exceptional Points in Momentum Space: Vorticity and Exceptional Rings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_exceptional_points_chern_number.html">Exceptional Points in Momentum Space: the Chern Number until the Line Gap Closes</a></li>
@@ -479,6 +480,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_andreev_reflection.html">Andreev Reflection: the BTK Conductance of a Normal-Superconductor Junction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_bcs_gap_equation.html">The BCS Gap Equation: Delta(T) and the Universal Ratio Delta(0)/T_c = 1.764</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_bogoliubov_de_gennes_equations.html">The Bogoliubov-de Gennes Equations: Andreev Bound States</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_flat_band_superconductivity.html">Flat-Band Superconductivity: a Superfluid Weight Set by the Quantum Metric</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_kitaev_chain.html">The Kitaev Chain: Majorana Zero Modes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../superconductivity/plot_majorana_nanowire.html">Majorana Nanowires: Rashba, Zeeman and s-Wave Pairing</a></li>
 </ul>
@@ -608,13 +610,18 @@ real up to a threshold, the exceptional points at which eigenvalues
 the eigenbasis has been skewed, and the selective amplification of a
 topological edge mode. With non-reciprocal hoppings: the non-Hermitian
 skin effect, its spectral winding number, and the generalized Brillouin
-zone that restores the bulk-boundary correspondence. In two dimensions:
+zone that restores the bulk-boundary correspondence. The 38 symmetry
+classes of non-Hermitian bands, and how reciprocity forbids the
+spectral winding. In two dimensions:
 exceptional points in momentum space, their charges (eigenvalue
 vorticity and discriminant winding), the pair of EPs and the bulk Fermi
 arc into which a Dirac point splits, exceptional rings, encircling an EP
 (the state swap and the four-loop return), and the biorthogonal Chern
 number of a line-gapped band.</p>
-<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A loop in the Brillouin zone around a band touching tells what kind of touching it is."><img alt="" src="../../../_images/sphx_glr_plot_exceptional_point_encircling_thumb.png" />
+<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The tenfold way (``topology/plot_tenfold_way.py``) sorts Hermitian Hamiltonians by time reversal, particle-hole and chiral symmetry. For a non-Hermitian Hamiltonian, complex conjugation and transposition are no longer the same operation, H^ \neq H^T, so each of these symmetries splits in two. Time reversal U_TH^(\mathbf{k})U_T^\dagger = H(-\mathbf{k}) gets a partner \mathrm{TRS}^\dagger, U_{C_+}H^T(\mathbf{k})U_{C_+}^\dagger = H(-\mathbf{k}), which is reciprocity. Particle-hole symmetry gets a partner \mathrm{PHS}^\dagger, and the chiral symmetry U_\Gamma H^\dagger U_\Gamma^\dagger = -H becomes distinct from the sublattice symmetry U_SHU_S^\dagger = -H and from pseudo-Hermiticity U_\eta H^\dagger U_\eta^\dagger = H."><img alt="" src="../../../_images/sphx_glr_plot_38_fold_way_thumb.png" />
+<p><a class="reference internal" href="plot_38_fold_way.html"><span class="doc">The 38-Fold Way: Symmetry Classes of Non-Hermitian Bands</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The 38-Fold Way: Symmetry Classes of Non-Hermitian Bands</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="A loop in the Brillouin zone around a band touching tells what kind of touching it is."><img alt="" src="../../../_images/sphx_glr_plot_exceptional_point_encircling_thumb.png" />
 <p><a class="reference internal" href="plot_exceptional_point_encircling.html"><span class="doc">Exceptional Points in Momentum Space: Encircling an EP versus a Dirac Point</span></a></p>
   <div class="sphx-glr-thumbnail-title">Exceptional Points in Momentum Space: Encircling an EP versus a Dirac Point</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="What becomes of a Dirac point when a Hermitian crystal is made non-Hermitian? It depends on the non-Hermitian term, and the answer is organized by a conserved quantity, the eigenvalue vorticity of Shen, Zhen and Fu (Phys. Rev. Lett. 120, 146402 (2018)),"><img alt="" src="../../../_images/sphx_glr_plot_exceptional_point_vorticity_thumb.png" />
@@ -659,11 +666,11 @@ number of a line-gapped band.</p>
       </div>
     </a>
     <a class="right-next"
-       href="plot_exceptional_point_encircling.html"
+       href="plot_38_fold_way.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Exceptional Points in Momentum Space: Encircling an EP versus a Dirac Point</p>
+        <p class="prev-next-title">The 38-Fold Way: Symmetry Classes of Non-Hermitian Bands</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

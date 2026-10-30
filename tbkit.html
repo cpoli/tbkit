@@ -50,7 +50,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=5459b468"></script>
+    <script src="_static/documentation_options.js?v=b9678aa1"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -66,7 +66,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.6" />
+  <meta name="docsearch:version" content="0.7" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -1926,8 +1926,10 @@ non-Hermitian (complex onsite energies, see <em>set_onsite</em>).</p></li>
 over many k-points (<em>get_bands</em>, <em>mesh_bands</em>, <em>berry_curvature</em>,
 the Wilson loops, …). The k-points are split into chunks, each
 diagonalized by one stacked LAPACK call, which releases the GIL, so
-the chunks run in parallel. The results depend on <em>workers</em> only up
-to rounding (and the phases of the eigenvectors).</p>
+the chunks run in parallel. <em>surface_spectral_function</em> spreads its
+k-points (and, with fewer k-points than threads, chunks of its
+energies) over the threads in the same way. The results depend on
+<em>workers</em> only up to rounding (and the phases of the eigenvectors).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>workers</strong> (<em>Positive integer</em>) – Number of threads (default 1, no threads).</p>
@@ -3060,7 +3062,7 @@ two sublattices of graphene, and the identity on spin).</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tbkit.kspace.KSpace.symmetry_error">
-<span class="sig-name descname"><span class="pre">symmetry_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'minus'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">antiunitary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anti</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></span><a class="reference internal" href="_modules/tbkit/kspace.html#KSpace.symmetry_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.kspace.KSpace.symmetry_error" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">symmetry_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'minus'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">antiunitary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anti</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transpose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></span><a class="reference internal" href="_modules/tbkit/kspace.html#KSpace.symmetry_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.kspace.KSpace.symmetry_error" title="Link to this definition">#</a></dt>
 <dd><p>Check a symmetry of the Bloch Hamiltonian,</p>
 <div class="math notranslate nohighlight">
 \[H(g\mathbf{k}) = \pm\, U\, \mathcal{K}H(\mathbf{k})\mathcal{K}^{-1} U^\dagger\, ,\]</div>
@@ -3071,7 +3073,10 @@ minus sign if <em>anti</em>: time reversal is antiunitary with
 antiunitary with <span class="math notranslate nohighlight">\(\mathbf{k}\to-\mathbf{k}\)</span> and the minus sign,
 chiral unitary with <span class="math notranslate nohighlight">\(\mathbf{k}\to\mathbf{k}\)</span> and the minus sign,
 inversion unitary with <span class="math notranslate nohighlight">\(\mathbf{k}\to-\mathbf{k}\)</span> and the plus
-sign.</p>
+sign. With <em>transpose</em>, <span class="math notranslate nohighlight">\(H^T\)</span> replaces <span class="math notranslate nohighlight">\(\mathcal{K}H\mathcal{K}^{-1} = H^*\)</span>
+(and <span class="math notranslate nohighlight">\(H^\dagger\)</span> with <em>antiunitary</em> too): the symmetries
+of non-Hermitian Hamiltonians, where <span class="math notranslate nohighlight">\(H^T \neq H^*\)</span> (see
+<em>non_hermitian_class</em>).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -3082,6 +3087,7 @@ sign.</p>
 <li><p><strong>nk</strong> (<em>Positive integer, default 5</em>) – Points per direction of
 the (randomly shifted) test mesh.</p></li>
 <li><p><strong>seed</strong> (<em>Integer, default 0</em>) – Seed of the random shift.</p></li>
+<li><p><strong>transpose</strong> (<em>Boolean, default False</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -3117,6 +3123,70 @@ three imply the third (<span class="math notranslate nohighlight">\(S = TC\)</sp
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tbkit.kspace.KSpace.non_hermitian_class">
+<span class="sig-name descname"><span class="pre">non_hermitian_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_reversal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">particle_hole</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chiral</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_reversal_dagger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">particle_hole_dagger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sublattice</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pseudo_hermiticity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">canonical</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a></span></span><a class="reference internal" href="_modules/tbkit/kspace.html#KSpace.non_hermitian_class"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.kspace.KSpace.non_hermitian_class" title="Link to this definition">#</a></dt>
+<dd><p>Get the non-Hermitian symmetry class (the “38-fold way”, Kawabata,
+Shiozaki, Ueda and Sato, Phys. Rev. X 9, 041015 (2019); Zhou and Lee,
+Phys. Rev. B 99, 235112 (2019)) of the model. A non-Hermitian
+Hamiltonian has <span class="math notranslate nohighlight">\(H^* \neq H^T\)</span>, so each symmetry of the tenfold
+way (see <em>tenfold_class</em>) splits in two:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\text{TRS: } U_T H^*(\mathbf{k}) U_T^\dagger = H(-\mathbf{k}),\qquad
+\text{TRS}^\dagger\text{: } U_{C_+} H^T(\mathbf{k}) U_{C_+}^\dagger = H(-\mathbf{k}),\\\text{PHS: } U_C H^T(\mathbf{k}) U_C^\dagger = -H(-\mathbf{k}),\qquad
+\text{PHS}^\dagger\text{: } U_{T_-} H^*(\mathbf{k}) U_{T_-}^\dagger = -H(-\mathbf{k}),\\\text{CS: } U_\Gamma H^\dagger(\mathbf{k}) U_\Gamma^\dagger = -H(\mathbf{k}),\qquad
+\text{SLS: } U_S H(\mathbf{k}) U_S^\dagger = -H(\mathbf{k}),\qquad
+\text{pH: } U_\eta H^\dagger(\mathbf{k}) U_\eta^\dagger = H(\mathbf{k}).\end{aligned}\end{align} \]</div>
+<p>Each given operator is first checked (see <em>symmetry_error</em>) to be a
+symmetry. The operators are then closed under products (two
+symmetries imply their product, which need not be given, as
+<span class="math notranslate nohighlight">\(S = TC\)</span> in the tenfold way); a product of two operators of
+the same kind must agree with the given one up to a phase (no
+unitary symmetry left: block-diagonalize it first). The class
+follows from the kinds present, the squares <span class="math notranslate nohighlight">\(UU^* = \pm1\)</span> of
+the four antiunitary kinds, and the commutation of
+<span class="math notranslate nohighlight">\(S\)</span> (or <span class="math notranslate nohighlight">\(\eta\)</span>) with them: <span class="math notranslate nohighlight">\(U_SU = \epsilon\,UU_S^*\)</span>
+gives the subscript <span class="math notranslate nohighlight">\(\epsilon\)</span> (for classes with TRS and PHS,
+the first refers to TRS, the second to PHS; in class AIII it is
+<span class="math notranslate nohighlight">\(U_\Gamma U_S = \epsilon\,U_SU_\Gamma\)</span>).</p>
+<p>The name is that of the tables of Kawabata et al.: an AZ class
+(‘AI’, …), an AZ<span class="math notranslate nohighlight">\(^\dagger\)</span> class (‘AI†’, …), an AZ class
+with SLS (‘A + S’, ‘BDI + S-+’, …) when <span class="math notranslate nohighlight">\(S\)</span> is present, or
+with pseudo-Hermiticity (‘A + η’, ‘D + η+’, …) when <span class="math notranslate nohighlight">\(\eta\)</span>
+is. These 54 names describe 38 classes: <span class="math notranslate nohighlight">\(H \to iH\)</span> turns TRS
+into PHS<span class="math notranslate nohighlight">\(^\dagger\)</span> and CS into pH, keeping the topology but
+exchanging real and imaginary line gaps, so that D† is AI, C† is AII,
+AII + S- is AI + S-, DIII + S-+ is BDI + S-+, A + η is AIII, and so
+on (their Tables XII and XIV). Since the tables differ for such
+partners, the name keeps the symmetries as given unless <em>canonical</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time_reversal</strong> (Matrix <span class="math notranslate nohighlight">\(U_T\)</span> (TRS), or None (absent))</p></li>
+<li><p><strong>particle_hole</strong> (Matrix <span class="math notranslate nohighlight">\(U_C\)</span> (PHS), or None (absent))</p></li>
+<li><p><strong>chiral</strong> (Matrix <span class="math notranslate nohighlight">\(U_\Gamma\)</span> (CS), or None (absent))</p></li>
+<li><p><strong>time_reversal_dagger</strong> (Matrix <span class="math notranslate nohighlight">\(U_{C_+}\)</span> (TRS†), or None (absent))</p></li>
+<li><p><strong>particle_hole_dagger</strong> (Matrix <span class="math notranslate nohighlight">\(U_{T_-}\)</span> (PHS†), or None (absent))</p></li>
+<li><p><strong>sublattice</strong> (Matrix <span class="math notranslate nohighlight">\(U_S\)</span> (SLS), or None (absent))</p></li>
+<li><p><strong>pseudo_hermiticity</strong> (Matrix <span class="math notranslate nohighlight">\(U_\eta\)</span> (pH), or None (absent))</p></li>
+<li><p><strong>canonical</strong> (<em>Boolean, default False</em>) – Return the representative of
+the 38 classes instead (AZ names before AZ† ones, η classes as
+their equivalents without η).</p></li>
+<li><p><strong>nk</strong> (<em>Positive integer, default 5</em>) – See <em>symmetry_error</em>.</p></li>
+<li><p><strong>tol</strong> (<em>Positive real, default 1e-8</em>) – Tolerance of the checks.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>name</strong> (<em>String, for instance ‘A’, ‘AI†’, ‘AIII + S-’, ‘BDI + S+-’ or ‘C + η+’</em>)</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>For a Hermitian model <span class="math notranslate nohighlight">\(H^* = H^T\)</span> and <span class="math notranslate nohighlight">\(H^\dagger = H\)</span>,
+so TRS is also TRS†, PHS also PHS†, CS also SLS, and <span class="math notranslate nohighlight">\(\eta = 1\)</span>
+is a pseudo-Hermiticity: a Hermitian class BDI is ‘BDI + S++’ once
+all of them are given.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tbkit.kspace.KSpace.quantum_geometric_tensor">
 <span class="sig-name descname"><span class="pre">quantum_geometric_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bands</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/kspace.html#KSpace.quantum_geometric_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.kspace.KSpace.quantum_geometric_tensor" title="Link to this definition">#</a></dt>
 <dd><p>Get the quantum geometric tensor of a group of bands at <span class="math notranslate nohighlight">\(\mathbf{k}\)</span>,</p>
@@ -3124,7 +3194,9 @@ three imply the third (<span class="math notranslate nohighlight">\(S = TC\)</sp
 \[Q_{\mu\nu} = \mathrm{Tr}\left[P\,\partial_\mu P\,\partial_\nu P\right]
            = \sum_{n\in\mathrm{bands}}\langle\partial_\mu u_n|(1-P)|\partial_\nu u_n\rangle\, ,\]</div>
 <p>with <span class="math notranslate nohighlight">\(P(\mathbf{k})\)</span> the projector on the bands (gauge
-invariant, so degeneracies within the group are harmless). Its real
+invariant, so degeneracies within the group are harmless), from
+central differences. Many k-points are evaluated at once, with one
+batched diagonalization (see <em>set_workers</em>). Its real
 part is the quantum metric <span class="math notranslate nohighlight">\(g_{\mu\nu}\)</span> (Provost and Vallee,
 1980), minus twice its imaginary part the Berry curvature
 <span class="math notranslate nohighlight">\(\Omega_{\mu\nu} = -2\,\mathrm{Im}\,Q_{\mu\nu}\)</span> (the convention of
@@ -3134,7 +3206,7 @@ part is the quantum metric <span class="math notranslate nohighlight">\(g_{\mu\n
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>bands</strong> (<em>Band index, or list of band indices</em>)</p></li>
-<li><p><strong>k</strong> (<em>k point (see *get_ham</em>)*)</p></li>
+<li><p><strong>k</strong> (<em>k point (see *get_ham</em>), or real array of shape (nk, dim)*) – One or many k-points.</p></li>
 <li><p><strong>dk</strong> (<em>Positive real, default 1e-4</em>) – Finite-difference step.</p></li>
 <li><p><strong>positions</strong> (<em>Boolean, default True</em>) – Include the orbital
 positions in the Bloch functions. The local metric and curvature
@@ -3144,7 +3216,7 @@ do not.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>Q</strong> (<em>Complex ndarray, shape (dim, dim), in the k coordinates of *get_ham*</em>)</p>
+<dd class="field-even"><p><strong>Q</strong> (<em>Complex ndarray, shape (dim, dim), in the k coordinates of *get_ham*</em>) – Shape (nk, dim, dim) for many k-points.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4815,7 +4887,8 @@ default.</p>
 <em>four_terminal_resistance</em> solve the Landauer-Buttiker equations (Hall
 bars); <em>bond_currents</em> and <em>local_currents</em> map the current;
 <em>transmission_eigenvalues</em>, <em>shot_noise</em> and <em>fano_factor</em> give the shot
-noise. <em>RecursiveTransport</em> computes the two-terminal transmission of long
+noise. By default they too come from the scattering matrix and the
+scattering states, on the same sparse factorization. <em>RecursiveTransport</em> computes the two-terminal transmission of long
 quasi-1D devices slice by slice (recursive Green’s function), without
 inverting the whole device.</p>
 <dl class="py function">
@@ -5049,14 +5122,16 @@ reflection of electrons into holes.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tbkit.transport.Transport">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">tbkit.transport.</span></span><span class="sig-name descname"><span class="pre">Transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ham</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tbkit/transport.html#Transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.Transport" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">_EnergyWorkers</span></code></p>
 <p>A finite device, of Hamiltonian <em>ham</em> (e.g. <em>System.ham</em>), to which
 semi-infinite leads are attached with <em>add_lead</em>; <em>transmission</em> then
 gives the Landauer transmission between two of them.</p>
-<p>The device is stored sparse. <em>smatrix</em>, <em>wave_function</em>, <em>ldos</em> and
-<em>transmission</em> (by default) only factorize the sparse matrix. The
-methods with a broadening <em>eta</em> use the dense Green’s function, and the
-dense matrix <em>ham</em> is built once, the first time it is needed.</p>
+<p>The device is stored sparse. <em>smatrix</em>, <em>wave_function</em>, <em>ldos</em>, and by
+default (<em>eta</em> None) the transmissions, conductance matrix, currents and
+noise, only factorize the sparse matrix. With a broadening <em>eta</em> (and,
+as a fallback, for non-Hermitian leads, with <em>eta</em> = 1e-9) these use the
+dense Green’s function, and the dense matrix <em>ham</em> is built once, the
+first time it is needed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ham</strong> (<em>Square matrix (sparse or dense)</em>) – Device Hamiltonian.</p>
@@ -5359,15 +5434,19 @@ are those of <em>conductance</em>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tbkit.transport.Transport.transmission_matrix">
-<span class="sig-name descname"><span class="pre">transmission_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-09</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/transport.html#Transport.transmission_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.Transport.transmission_matrix" title="Link to this definition">#</a></dt>
-<dd><p>Get the transmissions between every pair of leads at one energy,
-<span class="math notranslate nohighlight">\(T_{pq} = \mathrm{Tr}[\Gamma_pG^r\Gamma_qG^a]\)</span> from lead
-<span class="math notranslate nohighlight">\(q\)</span> to lead <span class="math notranslate nohighlight">\(p\)</span> (the diagonal, a reflection, is set to 0).</p>
+<span class="sig-name descname"><span class="pre">transmission_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/transport.html#Transport.transmission_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.Transport.transmission_matrix" title="Link to this definition">#</a></dt>
+<dd><p>Get the transmissions <span class="math notranslate nohighlight">\(T_{pq}\)</span> between every pair of leads at
+one energy, from lead <span class="math notranslate nohighlight">\(q\)</span> to lead <span class="math notranslate nohighlight">\(p\)</span> (the diagonal, a
+reflection, is set to 0). By default (<em>eta</em> None) they come from one
+scattering matrix (<em>smatrix</em>), <span class="math notranslate nohighlight">\(T_{pq} = \sum_{ab}|S_{ab}|^2\)</span>
+over its block from <span class="math notranslate nohighlight">\(q\)</span> to <span class="math notranslate nohighlight">\(p\)</span>; with a broadening <em>eta</em>,
+from the Caroli formula <span class="math notranslate nohighlight">\(\mathrm{Tr}[\Gamma_pG^r\Gamma_qG^a]\)</span>
+(see <em>transmission</em>).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>energy</strong> (<em>Real number</em>)</p></li>
-<li><p><strong>eta</strong> (<em>Positive real, default 1e-9</em>)</p></li>
+<li><p><strong>eta</strong> (<em>Positive real or None, default None</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -5378,7 +5457,7 @@ are those of <em>conductance</em>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tbkit.transport.Transport.conductance_matrix">
-<span class="sig-name descname"><span class="pre">conductance_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-09</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">101</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/transport.html#Transport.conductance_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.Transport.conductance_matrix" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">conductance_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">101</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/transport.html#Transport.conductance_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.Transport.conductance_matrix" title="Link to this definition">#</a></dt>
 <dd><p>Get the Landauer-Buttiker conductance matrix (Buttiker 1986), in units
 of <span class="math notranslate nohighlight">\(e^2/h\)</span>: the linear-response currents flowing <em>into</em> the
 device from each lead, <span class="math notranslate nohighlight">\(I_p = \sum_q G_{pq}V_q\)</span>, with</p>
@@ -5387,12 +5466,12 @@ device from each lead, <span class="math notranslate nohighlight">\(I_p = \sum_q
 <p>Its rows and columns add up to zero (current conservation, and no
 current at equal voltages). At a finite <em>temperature</em> it is averaged
 over the Fermi window, <span class="math notranslate nohighlight">\(\int dE\,(-\partial f/\partial E)\,G(E)\)</span>
-(see <em>conductance</em>).</p>
+(see <em>conductance</em>). The transmissions come from <em>transmission_matrix</em>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>energy</strong> (<em>Real number</em>) – Fermi energy (chemical potential).</p></li>
-<li><p><strong>eta</strong> (<em>Positive real, default 1e-9</em>)</p></li>
+<li><p><strong>eta</strong> (<em>Positive real or None, default None</em>) – See <em>transmission_matrix</em>.</p></li>
 <li><p><strong>temperature</strong> (<em>Positive real or zero</em>) – Default value 0 (<span class="math notranslate nohighlight">\(k_B = 1\)</span>).</p></li>
 <li><p><strong>n_points</strong> (<em>Positive integer, default 101</em>) – Energies in the
 Fermi window, at a finite temperature.</p></li>
@@ -5406,7 +5485,7 @@ Fermi window, at a finite temperature.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tbkit.transport.Transport.four_terminal_resistance">
-<span class="sig-name descname"><span class="pre">four_terminal_resistance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">current</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voltage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-09</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">101</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></span><a class="reference internal" href="_modules/tbkit/transport.html#Transport.four_terminal_resistance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.Transport.four_terminal_resistance" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">four_terminal_resistance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">current</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voltage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">101</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></span><a class="reference internal" href="_modules/tbkit/transport.html#Transport.four_terminal_resistance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.Transport.four_terminal_resistance" title="Link to this definition">#</a></dt>
 <dd><p>Get a four-terminal (or two-terminal) resistance from the
 Landauer-Buttiker equations: a current <span class="math notranslate nohighlight">\(I\)</span> enters through lead
 <code class="docutils literal notranslate"><span class="pre">current[0]</span></code> and leaves through <code class="docutils literal notranslate"><span class="pre">current[1]</span></code>, every other lead is
@@ -5422,7 +5501,7 @@ and <span class="math notranslate nohighlight">\(R_{xx} = 0\)</span> (Buttiker 1
 <li><p><strong>energy</strong> (<em>Real number</em>) – Fermi energy.</p></li>
 <li><p><strong>current</strong> (<em>Tuple of two distinct lead indices (source, drain)</em>)</p></li>
 <li><p><strong>voltage</strong> (<em>Tuple of two lead indices (a, b)</em>)</p></li>
-<li><p><strong>eta</strong> (<em>Positive real, default 1e-9</em>)</p></li>
+<li><p><strong>eta</strong> (<em>Positive real or None, default None</em>) – See <em>transmission_matrix</em>.</p></li>
 <li><p><strong>temperature</strong> (<em>Positive real or zero</em>) – Default value 0 (see <em>conductance_matrix</em>).</p></li>
 <li><p><strong>n_points</strong> (<em>Positive integer, default 101</em>)</p></li>
 </ul>
@@ -5435,23 +5514,26 @@ and <span class="math notranslate nohighlight">\(R_{xx} = 0\)</span> (Buttiker 1
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tbkit.transport.Transport.bond_currents">
-<span class="sig-name descname"><span class="pre">bond_currents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">lead</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-09</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/transport.html#Transport.bond_currents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.Transport.bond_currents" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">bond_currents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">lead</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/transport.html#Transport.bond_currents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.Transport.bond_currents" title="Link to this definition">#</a></dt>
 <dd><p>Get the bond currents carried, per unit energy, by the electrons
 injected from one lead (the non-equilibrium current when that lead’s
 electrochemical potential is raised),</p>
 <div class="math notranslate nohighlight">
 \[J_{i\to j} = -2\,\mathrm{Im}\left[H_{ij}\,A^{(q)}_{ji}\right]\, ,\qquad
-A^{(q)} = G^r\Gamma_qG^a\, ,\]</div>
+A^{(q)} = G^r\Gamma_qG^a = \sum_a\psi_a\psi_a^\dagger\, ,\]</div>
 <p>in units of <span class="math notranslate nohighlight">\(e/h\)</span> per unit energy: summed over a cross-section
 of a two-terminal device, it is the transmission <span class="math notranslate nohighlight">\(T(E)\)</span>. The
 matrix is antisymmetric, and the currents are conserved at every
-site not touched by a lead.</p>
+site not touched by a lead. By default (<em>eta</em> None) <span class="math notranslate nohighlight">\(A^{(q)}\)</span>
+comes from the scattering states <span class="math notranslate nohighlight">\(\psi_a\)</span> of the lead
+(<em>wave_function</em>, unit current), on the bonds of the sparse device
+only; with a broadening <em>eta</em>, from the dense Green’s function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>energy</strong> (<em>Real number</em>)</p></li>
 <li><p><strong>lead</strong> (<em>Integer</em>) – Injecting lead.</p></li>
-<li><p><strong>eta</strong> (<em>Positive real, default 1e-9</em>)</p></li>
+<li><p><strong>eta</strong> (<em>Positive real or None, default None</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -5463,11 +5545,12 @@ from site i to site j.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tbkit.transport.Transport.local_currents">
-<span class="sig-name descname"><span class="pre">local_currents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">lead</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-09</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/transport.html#Transport.local_currents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.Transport.local_currents" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">local_currents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">lead</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/transport.html#Transport.local_currents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.Transport.local_currents" title="Link to this definition">#</a></dt>
 <dd><p>Get the current density vector on every site from the bond currents
 (<em>bond_currents</em>): half of the currents of the bonds leaving the
 site, along their bond vectors,
-<span class="math notranslate nohighlight">\(\mathbf{j}_i = \frac12\sum_jJ_{i\to j}(\mathbf{r}_j - \mathbf{r}_i)\)</span>.</p>
+<span class="math notranslate nohighlight">\(\mathbf{j}_i = \frac12\sum_jJ_{i\to j}(\mathbf{r}_j - \mathbf{r}_i)\)</span>.
+By default (<em>eta</em> None) it never builds a dense matrix of the device.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -5475,7 +5558,7 @@ site, along their bond vectors,
 <li><p><strong>lead</strong> (<em>Integer</em>) – Injecting lead.</p></li>
 <li><p><strong>positions</strong> (<em>Real array, shape (n_sites, d)</em>) – Site positions
 (e.g. <code class="docutils literal notranslate"><span class="pre">np.column_stack([lat.coor['x'],</span> <span class="pre">lat.coor['y']])</span></code>).</p></li>
-<li><p><strong>eta</strong> (<em>Positive real, default 1e-9</em>)</p></li>
+<li><p><strong>eta</strong> (<em>Positive real or None, default None</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -5486,17 +5569,21 @@ site, along their bond vectors,
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tbkit.transport.Transport.transmission_eigenvalues">
-<span class="sig-name descname"><span class="pre">transmission_eigenvalues</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">lead_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lead_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-09</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/transport.html#Transport.transmission_eigenvalues"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.Transport.transmission_eigenvalues" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">transmission_eigenvalues</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">lead_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lead_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/transport.html#Transport.transmission_eigenvalues"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.Transport.transmission_eigenvalues" title="Link to this definition">#</a></dt>
 <dd><p>Get the transmission eigenvalues <span class="math notranslate nohighlight">\(T_n\)</span>, eigenvalues of
-<span class="math notranslate nohighlight">\(t^\dagger t\)</span> with <span class="math notranslate nohighlight">\(t = \Gamma_{out}^{1/2}G^r\Gamma_{in}^{1/2}\)</span>:
-their sum is the transmission.</p>
+<span class="math notranslate nohighlight">\(t^\dagger t\)</span>: their sum is the transmission. By default (<em>eta</em>
+None) <span class="math notranslate nohighlight">\(t\)</span> is the block of the scattering matrix from
+<em>lead_in</em> to <em>lead_out</em> (<em>smatrix</em>), and the list is padded with the
+zeros of the closed channels; with a broadening <em>eta</em> it is
+<span class="math notranslate nohighlight">\(t = \Gamma_{out}^{1/2}G^r\Gamma_{in}^{1/2}\)</span> (and, as a
+fallback, with <em>eta</em> = 1e-9 for <em>lead_in</em> = <em>lead_out</em>).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>energy</strong> (<em>Real number</em>)</p></li>
 <li><p><strong>lead_in</strong> (<em>Integer, default 0</em>)</p></li>
 <li><p><strong>lead_out</strong> (<em>Integer, default 1</em>)</p></li>
-<li><p><strong>eta</strong> (<em>Positive real, default 1e-9</em>)</p></li>
+<li><p><strong>eta</strong> (<em>Positive real or None, default None</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -5508,7 +5595,7 @@ min(len(sites_in), len(sites_out)).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tbkit.transport.Transport.shot_noise">
-<span class="sig-name descname"><span class="pre">shot_noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lead_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lead_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-09</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/transport.html#Transport.shot_noise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.Transport.shot_noise" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">shot_noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lead_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lead_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/transport.html#Transport.shot_noise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.Transport.shot_noise" title="Link to this definition">#</a></dt>
 <dd><p>Get the zero-temperature shot-noise factor <span class="math notranslate nohighlight">\(\sum_nT_n(1-T_n)\)</span>
 (Lesovik 1989; Buttiker 1990): the noise power at bias <span class="math notranslate nohighlight">\(V\)</span> is
 <span class="math notranslate nohighlight">\(S = 2\frac{e^3|V|}{h}\sum_nT_n(1-T_n)\)</span> (per spin).</p>
@@ -5518,7 +5605,7 @@ min(len(sites_in), len(sites_out)).</p>
 <li><p><strong>energies</strong> (<em>Real array</em>) – Energies.</p></li>
 <li><p><strong>lead_in</strong> (<em>Integer, default 0</em>)</p></li>
 <li><p><strong>lead_out</strong> (<em>Integer, default 1</em>)</p></li>
-<li><p><strong>eta</strong> (<em>Positive real, default 1e-9</em>)</p></li>
+<li><p><strong>eta</strong> (<em>Positive real or None, default None</em>) – See <em>transmission_eigenvalues</em>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -5529,7 +5616,7 @@ min(len(sites_in), len(sites_out)).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tbkit.transport.Transport.fano_factor">
-<span class="sig-name descname"><span class="pre">fano_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lead_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lead_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-09</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/transport.html#Transport.fano_factor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.Transport.fano_factor" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">fano_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lead_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lead_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/transport.html#Transport.fano_factor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.Transport.fano_factor" title="Link to this definition">#</a></dt>
 <dd><p>Get the Fano factor of the zero-temperature shot noise,</p>
 <div class="math notranslate nohighlight">
 \[F = \frac{\sum_nT_n(1-T_n)}{\sum_nT_n}\, ,\]</div>
@@ -5542,7 +5629,7 @@ tunnel barrier, 1/3 for a diffusive wire (Beenakker and Buttiker 1992).</p>
 <li><p><strong>energies</strong> (<em>Real array</em>) – Energies.</p></li>
 <li><p><strong>lead_in</strong> (<em>Integer, default 0</em>)</p></li>
 <li><p><strong>lead_out</strong> (<em>Integer, default 1</em>)</p></li>
-<li><p><strong>eta</strong> (<em>Positive real, default 1e-9</em>)</p></li>
+<li><p><strong>eta</strong> (<em>Positive real or None, default None</em>) – See <em>transmission_eigenvalues</em>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -5577,7 +5664,7 @@ the columns of a strip along <span class="math notranslate nohighlight">\(x\)</s
 <dl class="py class">
 <dt class="sig sig-object py" id="tbkit.transport.RecursiveTransport">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">tbkit.transport.</span></span><span class="sig-name descname"><span class="pre">RecursiveTransport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ham</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tbkit/transport.html#RecursiveTransport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.transport.RecursiveTransport" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">_EnergyWorkers</span></code></p>
 <p>Two-terminal transport through a long quasi-1D device by the recursive
 Green’s function method (Thouless and Kirkpatrick 1981; Lee and Fisher
 1981; MacKinnon 1985). The device is cut into slices <span class="math notranslate nohighlight">\(1\dots N\)</span>,
@@ -7459,6 +7546,67 @@ on the largest change of <span class="math notranslate nohighlight">\(\Delta_i\)
 <dd class="field-even"><p><strong>result</strong> (<a class="reference internal" href="#tbkit.bdg.GapResult" title="tbkit.bdg.GapResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">GapResult</span></code></a>)</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tbkit.bdg.superfluid_weight">
+<span class="sig-prename descclassname"><span class="pre">tbkit.bdg.</span></span><span class="sig-name descname"><span class="pre">superfluid_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#complex" title="(in Python v3.15)"><span class="pre">complex</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">NDArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tbkit/bdg.html#superfluid_weight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.bdg.superfluid_weight" title="Link to this definition">#</a></dt>
+<dd><p>Get the superfluid weight of an s-wave superconductor,
+<span class="math notranslate nohighlight">\(D_{\mu\nu} = \partial^2\Omega/\partial A_\mu\partial A_\nu\)</span> at
+<span class="math notranslate nohighlight">\(\mathbf{A} = 0\)</span> (<span class="math notranslate nohighlight">\(\hbar = e = 1\)</span>): the curvature of the
+grand potential per unit volume in a uniform vector potential, which
+gives the supercurrent <span class="math notranslate nohighlight">\(j_\mu = -D_{\mu\nu}A_\nu\)</span> (London). <em>ks</em> is
+the spin-up model; the spin-down electrons are its time-reversed
+partners, <span class="math notranslate nohighlight">\(h_\downarrow(\mathbf{k}) = h(-\mathbf{k})^*\)</span>, so the
+Kramers pairs <span class="math notranslate nohighlight">\((\mathbf{k}\uparrow, -\mathbf{k}\downarrow)\)</span> pair
+even when <em>ks</em> is a Chern band (for real hoppings, the spin-independent
+model). In the Nambu basis
+<span class="math notranslate nohighlight">\((c_{\mathbf{k}\uparrow}, c^\dagger_{-\mathbf{k}\downarrow})\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}H_{\mathbf{A}}(\mathbf{k}) = \begin{pmatrix} h_{\mathbf{A}}(\mathbf{k})-\mu &amp; \Delta \\
+\Delta^* &amp; -[h_{-\mathbf{A}}(\mathbf{k})-\mu]\end{pmatrix}\, ,\qquad
+\Omega(\mathbf{A}) = \frac{1}{N_kV}\sum_{\mathbf{k}}\Big[\mathrm{Tr}\,
+[h_{-\mathbf{A}}(\mathbf{k})-\mu] - T\sum_n\ln\big(1 + e^{-E_n/T}\big)\Big]\, ,\end{split}\]</div>
+<p>with <span class="math notranslate nohighlight">\(h_{\mathbf{A}}\)</span> the Peierls Hamiltonian of
+<em>get_ham_peierls</em> (phases on the bond vectors, orbital positions
+included), <span class="math notranslate nohighlight">\(\Delta = \mathrm{diag}(\Delta_i)\)</span> the onsite pairing,
+<span class="math notranslate nohighlight">\(E_n\)</span> the eigenvalues and <span class="math notranslate nohighlight">\(V\)</span> the cell volume.
+<span class="math notranslate nohighlight">\(\Delta\)</span> is held fixed (not re-solved in the field), which is
+exact when symmetry fixes it, e.g. uniform pairing. The derivatives are
+central differences in <span class="math notranslate nohighlight">\(\mathbf{A}\)</span>.</p>
+<p>For a dispersive band it is the conventional <span class="math notranslate nohighlight">\(n/m\)</span>. For an
+isolated flat band at filling <span class="math notranslate nohighlight">\(\nu\)</span>, with uniform <span class="math notranslate nohighlight">\(\Delta\)</span>
+small compared to the band gaps, there is no dispersion, and
+<span class="math notranslate nohighlight">\(D\)</span> is purely geometric (Peotta and Törmä, Nat. Commun. 6, 8944
+(2015)),</p>
+<div class="math notranslate nohighlight">
+\[D_{\mu\nu} = 8\Delta\sqrt{\nu(1-\nu)}\int\frac{d^d\mathbf{k}}{(2\pi)^d}\,g_{\mu\nu}(\mathbf{k})
+\, ,\qquad \mathrm{Tr}\,D \ge \frac{4\Delta}{\pi}\sqrt{\nu(1-\nu)}\,|C|\ \ (2D)\, ,\]</div>
+<p>with <span class="math notranslate nohighlight">\(g\)</span> the quantum metric of the band (see
+<em>KSpace.quantum_geometric_tensor</em>) and <span class="math notranslate nohighlight">\(C\)</span> its Chern number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ks</strong> (<strong>*KSpace</strong> instance (Hermitian, orthogonal basis, spinless)*) – Spin-up model.</p></li>
+<li><p><strong>delta</strong> (<em>Number, or array of norb numbers</em>) – Onsite pairing <span class="math notranslate nohighlight">\(\Delta_i\)</span>.</p></li>
+<li><p><strong>mu</strong> (<em>Real number, default 0</em>) – Chemical potential.</p></li>
+<li><p><strong>nk</strong> (<em>Positive integer, or tuple of *dim</em> positive integers, default 60*) – k-mesh (see <em>mesh_grid</em>).</p></li>
+<li><p><strong>temperature</strong> (<em>Positive real or zero, default 0</em>)</p></li>
+<li><p><strong>dq</strong> (<em>Positive real, default 1e-3</em>) – Finite-difference step in <span class="math notranslate nohighlight">\(\mathbf{A}\)</span>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>D</strong> (<em>Real ndarray, shape (dim, dim), in the k coordinates of *get_ham*</em>)</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Example usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># BCS chain: D = (1/2 pi) int dk 2t cos k (1 - xi/E)</span>
+<span class="n">chain</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">lattices</span><span class="o">.</span><span class="n">chain</span><span class="p">())</span>
+<span class="n">chain</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.</span><span class="p">}])</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">superfluid_weight</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">mu</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>
@@ -10689,6 +10837,18 @@ is True, keys <span class="math notranslate nohighlight">\((i, i)\)</span> are a
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="tbkit.error_handling.k_points">
+<span class="sig-prename descclassname"><span class="pre">tbkit.error_handling.</span></span><span class="sig-name descname"><span class="pre">k_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ndim</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tbkit/error_handling.html#k_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.error_handling.k_points" title="Link to this definition">#</a></dt>
+<dd><p>Check that <em>k</em> is one k-point (see <em>k_vector</em>) or an array of shape
+(nk, <em>ndim</em>) of real numbers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – Parameter <em>var_name</em> must be of shape (nk, ndim).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="tbkit.error_handling.ks">
 <span class="sig-prename descclassname"><span class="pre">tbkit.error_handling.</span></span><span class="sig-name descname"><span class="pre">ks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ndim</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tbkit/error_handling.html#ks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.error_handling.ks" title="Link to this definition">#</a></dt>
 <dd><p>Check the k-points passed to <em>kspace.get_bands</em>: a 2D array of shape
@@ -10976,6 +11136,18 @@ numbers (fractional coordinates along the other reciprocal vectors).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – The operator is not a symmetry of the model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tbkit.error_handling.symmetry_algebra">
+<span class="sig-prename descclassname"><span class="pre">tbkit.error_handling.</span></span><span class="sig-name descname"><span class="pre">symmetry_algebra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tbkit/error_handling.html#symmetry_algebra"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.error_handling.symmetry_algebra" title="Link to this definition">#</a></dt>
+<dd><p>Check that two symmetry operators of the same kind agree up to a phase
+(in <em>kspace.KSpace.non_hermitian_class</em>, <em>v</em> is a product of others).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – The symmetry operators leave a unitary symmetry: block-diagonalize it first.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -12462,11 +12634,22 @@ them, or the sector wrapped around the circle).</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tbkit.error_handling.pairing_amplitudes">
-<span class="sig-prename descclassname"><span class="pre">tbkit.error_handling.</span></span><span class="sig-name descname"><span class="pre">pairing_amplitudes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tbkit/error_handling.html#pairing_amplitudes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.error_handling.pairing_amplitudes" title="Link to this definition">#</a></dt>
-<dd><p>Check initial pairing amplitudes: a number, or n numbers.</p>
+<span class="sig-prename descclassname"><span class="pre">tbkit.error_handling.</span></span><span class="sig-name descname"><span class="pre">pairing_amplitudes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'delta0'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tbkit/error_handling.html#pairing_amplitudes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.error_handling.pairing_amplitudes" title="Link to this definition">#</a></dt>
+<dd><p>Check pairing amplitudes: a number, or n numbers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – Parameter delta0 must be a number or n numbers.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – Parameter <em>var_name</em> must be a number or n numbers.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tbkit.error_handling.spin_up_model">
+<span class="sig-prename descclassname"><span class="pre">tbkit.error_handling.</span></span><span class="sig-name descname"><span class="pre">spin_up_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spin</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tbkit/error_handling.html#spin_up_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tbkit.error_handling.spin_up_model" title="Link to this definition">#</a></dt>
+<dd><p>Check that a KSpace model is spinless (the spin-up electrons).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – This needs the spinless spin-up model.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -13488,6 +13671,7 @@ counting each orbital once.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.kspace.KSpace.parity_z2"><code class="docutils literal notranslate"><span class="pre">KSpace.parity_z2()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.kspace.KSpace.symmetry_error"><code class="docutils literal notranslate"><span class="pre">KSpace.symmetry_error()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.kspace.KSpace.tenfold_class"><code class="docutils literal notranslate"><span class="pre">KSpace.tenfold_class()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.kspace.KSpace.non_hermitian_class"><code class="docutils literal notranslate"><span class="pre">KSpace.non_hermitian_class()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.kspace.KSpace.quantum_geometric_tensor"><code class="docutils literal notranslate"><span class="pre">KSpace.quantum_geometric_tensor()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.kspace.KSpace.surface_spectral_function"><code class="docutils literal notranslate"><span class="pre">KSpace.surface_spectral_function()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.kspace.KSpace.spin_operator"><code class="docutils literal notranslate"><span class="pre">KSpace.spin_operator()</span></code></a></li>
@@ -13768,6 +13952,7 @@ counting each orbital once.</p>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.bdg.s_wave_gap"><code class="docutils literal notranslate"><span class="pre">s_wave_gap()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.bdg.superfluid_weight"><code class="docutils literal notranslate"><span class="pre">superfluid_weight()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tbkit.floquet">tbkit.floquet module</a><ul class="pst-show_toc_level nav section-nav flex-column">
@@ -13987,6 +14172,7 @@ counting each orbital once.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.get_pump"><code class="docutils literal notranslate"><span class="pre">get_pump()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.prop_type"><code class="docutils literal notranslate"><span class="pre">prop_type()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.k_vector"><code class="docutils literal notranslate"><span class="pre">k_vector()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.k_points"><code class="docutils literal notranslate"><span class="pre">k_points()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.ks"><code class="docutils literal notranslate"><span class="pre">ks()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.spin_matrix"><code class="docutils literal notranslate"><span class="pre">spin_matrix()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.set_hopping_kspace"><code class="docutils literal notranslate"><span class="pre">set_hopping_kspace()</span></code></a></li>
@@ -14009,6 +14195,7 @@ counting each orbital once.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.parities"><code class="docutils literal notranslate"><span class="pre">parities()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.k_map"><code class="docutils literal notranslate"><span class="pre">k_map()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.is_symmetry"><code class="docutils literal notranslate"><span class="pre">is_symmetry()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.symmetry_algebra"><code class="docutils literal notranslate"><span class="pre">symmetry_algebra()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.square"><code class="docutils literal notranslate"><span class="pre">square()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.hermitian"><code class="docutils literal notranslate"><span class="pre">hermitian()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.planar_cell"><code class="docutils literal notranslate"><span class="pre">planar_cell()</span></code></a></li>
@@ -14132,6 +14319,7 @@ counting each orbital once.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.magnetization"><code class="docutils literal notranslate"><span class="pre">magnetization()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.interaction"><code class="docutils literal notranslate"><span class="pre">interaction()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.pairing_amplitudes"><code class="docutils literal notranslate"><span class="pre">pairing_amplitudes()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.spin_up_model"><code class="docutils literal notranslate"><span class="pre">spin_up_model()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.frequencies"><code class="docutils literal notranslate"><span class="pre">frequencies()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.tensor_component"><code class="docutils literal notranslate"><span class="pre">tensor_component()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tbkit.error_handling.band_derivatives"><code class="docutils literal notranslate"><span class="pre">band_derivatives()</span></code></a></li>

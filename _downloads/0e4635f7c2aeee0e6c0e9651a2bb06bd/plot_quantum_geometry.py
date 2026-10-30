@@ -58,14 +58,12 @@ n = 30
 fracs = (np.arange(n) + 0.5) / n
 rec = hal.rec_vec_k
 dA = abs(np.linalg.det(rec)) / n**2
-omega = np.zeros((n, n))
-trace_g = np.zeros((n, n))
-for a, f1 in enumerate(fracs):
-    for b, f2 in enumerate(fracs):
-        q = hal.quantum_geometric_tensor(0, f1*rec[0] + f2*rec[1])
-        omega[a, b] = -2 * q[0, 1].imag
-        trace_g[a, b] = np.trace(q.real)
-        assert np.sqrt(np.linalg.det(q.real)) >= abs(omega[a, b]) / 2 - 1e-8
+f1, f2 = np.meshgrid(fracs, fracs, indexing='ij')
+# the whole mesh in one call: q has shape (n*n, 2, 2)
+q = hal.quantum_geometric_tensor(0, np.outer(f1.ravel(), rec[0]) + np.outer(f2.ravel(), rec[1]))
+omega = (-2 * q[:, 0, 1].imag).reshape(n, n)
+trace_g = np.trace(q.real, axis1=1, axis2=2).reshape(n, n)
+assert np.all(np.sqrt(np.linalg.det(q.real)) >= abs(omega.ravel()) / 2 - 1e-8)
 chern = omega.sum() * dA / (2*np.pi)
 print('Chern number from the curvature: {:.4f}'.format(chern))
 assert np.isclose(chern, hal.chern_number(0, 30), atol=1e-3)

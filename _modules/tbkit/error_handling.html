@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=5459b468"></script>
+    <script src="../../_static/documentation_options.js?v=b9678aa1"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.6" />
+  <meta name="docsearch:version" content="0.7" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -1730,6 +1730,27 @@
 
 
 
+<div class="viewcode-block" id="k_points">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.k_points">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">k_points</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">var_name</span><span class="p">,</span> <span class="n">ndim</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that *k* is one k-point (see *k_vector*) or an array of shape</span>
+<span class="sd">    (nk, *ndim*) of real numbers.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter *var_name* must be of shape (nk, ndim).</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">k_vector</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">var_name</span><span class="p">,</span> <span class="n">ndim</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">ndim</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">iscomplexobj</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter </span><span class="si">{}</span><span class="s1"> must be a real array of shape (nk, </span><span class="si">{}</span><span class="s1">).</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var_name</span><span class="p">,</span> <span class="n">ndim</span><span class="p">))</span></div>
+
+
+
 <div class="viewcode-block" id="ks">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.ks">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">ks</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">ndim</span><span class="p">):</span>
@@ -2221,6 +2242,26 @@
     <span class="k">if</span> <span class="n">err</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The operator is not a symmetry of the model '</span>
                                     <span class="s1">'(deviation </span><span class="si">{:.3g}</span><span class="s1">).</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">err</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="symmetry_algebra">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.symmetry_algebra">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">symmetry_algebra</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">tol</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that two symmetry operators of the same kind agree up to a phase</span>
+<span class="sd">    (in *kspace.KSpace.non_hermitian_class*, *v* is a product of others).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The symmetry operators leave a unitary symmetry: block-diagonalize it first.</span>
+<span class="sd">    '''</span>
+    <span class="n">phase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">v</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">u</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">phase</span> <span class="o">*</span> <span class="n">u</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The symmetry operators leave a unitary symmetry (two products of '</span>
+                                    <span class="s1">'the same kind differ by more than a phase): block-diagonalize '</span>
+                                    <span class="s1">'the Hamiltonian first.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
 
 
 
@@ -4645,21 +4686,38 @@
 
 <div class="viewcode-block" id="pairing_amplitudes">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.pairing_amplitudes">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">pairing_amplitudes</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pairing_amplitudes</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">'delta0'</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">'''</span>
-<span class="sd">    Check initial pairing amplitudes: a number, or n numbers.</span>
+<span class="sd">    Check pairing amplitudes: a number, or n numbers.</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
 <span class="sd">    ValueError</span>
-<span class="sd">        Parameter delta0 must be a number or n numbers.</span>
+<span class="sd">        Parameter *var_name* must be a number or n numbers.</span>
 <span class="sd">    '''</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">number</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="s1">'delta0'</span><span class="p">)</span>
+        <span class="n">number</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">var_name</span><span class="p">)</span>
         <span class="k">return</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">n</span><span class="p">,):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter delta0 must be a number, or </span><span class="si">{}</span><span class="s1"> numbers '</span>
-                                    <span class="s1">'(one per site).</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">))</span></div>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter </span><span class="si">{}</span><span class="s1"> must be a number, or </span><span class="si">{}</span><span class="s1"> numbers '</span>
+                                    <span class="s1">'(one per site).</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var_name</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="spin_up_model">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.spin_up_model">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">spin_up_model</span><span class="p">(</span><span class="n">spin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that a KSpace model is spinless (the spin-up electrons).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        This needs the spinless spin-up model.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">spin</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">This needs a spinless model (spin=False): the spin-up '</span>
+                                   <span class="s1">'electrons, whose time-reversed partners are the spin-down ones.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
 
 <span class="c1"># OPTICAL RESPONSE AND TRANSPORT (tbkit.optics, tbkit.transport)</span>
 <span class="c1">####################################</span>

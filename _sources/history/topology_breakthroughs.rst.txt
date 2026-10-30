@@ -77,7 +77,7 @@ quantum geometric tensor,
 The metric bounds the curvature, :math:`\sqrt{\det g}\ge|\Omega_{xy}|/2`,
 so a Chern band has a minimal quantum geometry; its integral bounds the
 spread of the Wannier functions, and it sets the superfluid weight of
-flat-band superconductors (Peotta and Torma, 2015).
+flat bands (2015 entry of :doc:`interactions_breakthroughs`).
 
 *Implementation:* :meth:`tbkit.kspace.KSpace.quantum_geometric_tensor`.
 

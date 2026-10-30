@@ -11,7 +11,9 @@ real up to a threshold, the exceptional points at which eigenvalues
 the eigenbasis has been skewed, and the selective amplification of a
 topological edge mode. With non-reciprocal hoppings: the non-Hermitian
 skin effect, its spectral winding number, and the generalized Brillouin
-zone that restores the bulk-boundary correspondence. In two dimensions:
+zone that restores the bulk-boundary correspondence. The 38 symmetry
+classes of non-Hermitian bands, and how reciprocity forbids the
+spectral winding. In two dimensions:
 exceptional points in momentum space, their charges (eigenvalue
 vorticity and discriminant winding), the pair of EPs and the bulk Fermi
 arc into which a Dirac point splits, exceptional rings, encircling an EP
@@ -29,6 +31,23 @@ number of a line-gapped band.
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The tenfold way (``topology/plot_tenfold_way.py``) sorts Hermitian Hamiltonians by time reversal, particle-hole and chiral symmetry. For a non-Hermitian Hamiltonian, complex conjugation and transposition are no longer the same operation, H^ \neq H^T, so each of these symmetries splits in two. Time reversal U_TH^(\mathbf{k})U_T^\dagger = H(-\mathbf{k}) gets a partner \mathrm{TRS}^\dagger, U_{C_+}H^T(\mathbf{k})U_{C_+}^\dagger = H(-\mathbf{k}), which is reciprocity. Particle-hole symmetry gets a partner \mathrm{PHS}^\dagger, and the chiral symmetry U_\Gamma H^\dagger U_\Gamma^\dagger = -H becomes distinct from the sublattice symmetry U_SHU_S^\dagger = -H and from pseudo-Hermiticity U_\eta H^\dagger U_\eta^\dagger = H.">
+
+.. only:: html
+
+  .. image:: /api/gallery/non_hermitian/images/thumb/sphx_glr_plot_38_fold_way_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/non_hermitian/plot_38_fold_way`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The 38-Fold Way: Symmetry Classes of Non-Hermitian Bands</div>
+    </div>
+
 
 .. raw:: html
 
@@ -159,6 +178,7 @@ number of a line-gapped band.
 .. toctree::
    :hidden:
 
+   /api/gallery/non_hermitian/plot_38_fold_way
    /api/gallery/non_hermitian/plot_exceptional_point_encircling
    /api/gallery/non_hermitian/plot_exceptional_point_vorticity
    /api/gallery/non_hermitian/plot_exceptional_points_chern_number

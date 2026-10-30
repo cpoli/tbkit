@@ -50,7 +50,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=5459b468"></script>
+    <script src="../../_static/documentation_options.js?v=b9678aa1"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -66,7 +66,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.6" />
+  <meta name="docsearch:version" content="0.7" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -450,6 +450,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="non_hermitian/index.html">Non-Hermitian lattices</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="non_hermitian/plot_38_fold_way.html">The 38-Fold Way: Symmetry Classes of Non-Hermitian Bands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="non_hermitian/plot_exceptional_point_encircling.html">Exceptional Points in Momentum Space: Encircling an EP versus a Dirac Point</a></li>
 <li class="toctree-l2"><a class="reference internal" href="non_hermitian/plot_exceptional_point_vorticity.html">Exceptional Points in Momentum Space: Vorticity and Exceptional Rings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="non_hermitian/plot_exceptional_points_chern_number.html">Exceptional Points in Momentum Space: the Chern Number until the Line Gap Closes</a></li>
@@ -479,6 +480,7 @@
 <li class="toctree-l2"><a class="reference internal" href="superconductivity/plot_andreev_reflection.html">Andreev Reflection: the BTK Conductance of a Normal-Superconductor Junction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="superconductivity/plot_bcs_gap_equation.html">The BCS Gap Equation: Delta(T) and the Universal Ratio Delta(0)/T_c = 1.764</a></li>
 <li class="toctree-l2"><a class="reference internal" href="superconductivity/plot_bogoliubov_de_gennes_equations.html">The Bogoliubov-de Gennes Equations: Andreev Bound States</a></li>
+<li class="toctree-l2"><a class="reference internal" href="superconductivity/plot_flat_band_superconductivity.html">Flat-Band Superconductivity: a Superfluid Weight Set by the Quantum Metric</a></li>
 <li class="toctree-l2"><a class="reference internal" href="superconductivity/plot_kitaev_chain.html">The Kitaev Chain: Majorana Zero Modes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="superconductivity/plot_majorana_nanowire.html">Majorana Nanowires: Rashba, Zeeman and s-Wave Pairing</a></li>
 </ul>
@@ -905,13 +907,18 @@ real up to a threshold, the exceptional points at which eigenvalues
 the eigenbasis has been skewed, and the selective amplification of a
 topological edge mode. With non-reciprocal hoppings: the non-Hermitian
 skin effect, its spectral winding number, and the generalized Brillouin
-zone that restores the bulk-boundary correspondence. In two dimensions:
+zone that restores the bulk-boundary correspondence. The 38 symmetry
+classes of non-Hermitian bands, and how reciprocity forbids the
+spectral winding. In two dimensions:
 exceptional points in momentum space, their charges (eigenvalue
 vorticity and discriminant winding), the pair of EPs and the bulk Fermi
 arc into which a Dirac point splits, exceptional rings, encircling an EP
 (the state swap and the four-loop return), and the biorthogonal Chern
 number of a line-gapped band.</p>
-<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A loop in the Brillouin zone around a band touching tells what kind of touching it is."><img alt="" src="../../_images/sphx_glr_plot_exceptional_point_encircling_thumb.png" />
+<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The tenfold way (``topology/plot_tenfold_way.py``) sorts Hermitian Hamiltonians by time reversal, particle-hole and chiral symmetry. For a non-Hermitian Hamiltonian, complex conjugation and transposition are no longer the same operation, H^ \neq H^T, so each of these symmetries splits in two. Time reversal U_TH^(\mathbf{k})U_T^\dagger = H(-\mathbf{k}) gets a partner \mathrm{TRS}^\dagger, U_{C_+}H^T(\mathbf{k})U_{C_+}^\dagger = H(-\mathbf{k}), which is reciprocity. Particle-hole symmetry gets a partner \mathrm{PHS}^\dagger, and the chiral symmetry U_\Gamma H^\dagger U_\Gamma^\dagger = -H becomes distinct from the sublattice symmetry U_SHU_S^\dagger = -H and from pseudo-Hermiticity U_\eta H^\dagger U_\eta^\dagger = H."><img alt="" src="../../_images/sphx_glr_plot_38_fold_way_thumb.png" />
+<p><a class="reference internal" href="non_hermitian/plot_38_fold_way.html"><span class="doc">The 38-Fold Way: Symmetry Classes of Non-Hermitian Bands</span></a></p>
+  <div class="sphx-glr-thumbnail-title">The 38-Fold Way: Symmetry Classes of Non-Hermitian Bands</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="A loop in the Brillouin zone around a band touching tells what kind of touching it is."><img alt="" src="../../_images/sphx_glr_plot_exceptional_point_encircling_thumb.png" />
 <p><a class="reference internal" href="non_hermitian/plot_exceptional_point_encircling.html"><span class="doc">Exceptional Points in Momentum Space: Encircling an EP versus a Dirac Point</span></a></p>
   <div class="sphx-glr-thumbnail-title">Exceptional Points in Momentum Space: Encircling an EP versus a Dirac Point</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="What becomes of a Dirac point when a Hermitian crystal is made non-Hermitian? It depends on the non-Hermitian term, and the answer is organized by a conserved quantity, the eigenvalue vorticity of Shen, Zhen and Fu (Phys. Rev. Lett. 120, 146402 (2018)),"><img alt="" src="../../_images/sphx_glr_plot_exceptional_point_vorticity_thumb.png" />
@@ -985,7 +992,8 @@ in a Zeeman field. The self-consistent BCS gap equation in real space,
 with its universal ratio Delta(0)/T_c = 1.764 and the proximity effect.
 Andreev reflection at a normal-superconductor junction and the BTK
 conductance, from the scattering matrix resolved into electrons and
-holes.</p>
+holes. The superfluid weight of flat bands, set by the quantum metric
+(Peotta-Törmä).</p>
 <div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="An electron from a normal metal, with an energy inside the superconducting gap \Delta, cannot enter the superconductor alone. Andreev (1964) showed that it is retro-reflected as a hole while a Cooper pair enters the condensate, which carries a charge 2e across the interface. Blonder, Tinkham and Klapwijk (BTK, 1982) turned this into the conductance of a normal-superconductor (NS) junction with a barrier of strength Z,"><img alt="" src="../../_images/sphx_glr_plot_andreev_reflection_thumb.png" />
 <p><a class="reference internal" href="superconductivity/plot_andreev_reflection.html"><span class="doc">Andreev Reflection: the BTK Conductance of a Normal-Superconductor Junction</span></a></p>
   <div class="sphx-glr-thumbnail-title">Andreev Reflection: the BTK Conductance of a Normal-Superconductor Junction</div>
@@ -995,6 +1003,9 @@ holes.</p>
 </div><div class="sphx-glr-thumbcontainer" tooltip="P.-G. de Gennes (1966) wrote the BCS mean field site by site: a quasiparticle is a two-component wave function (u_i, v_i), an electron and a hole, solving"><img alt="" src="../../_images/sphx_glr_plot_bogoliubov_de_gennes_equations_thumb.png" />
 <p><a class="reference internal" href="superconductivity/plot_bogoliubov_de_gennes_equations.html"><span class="doc">The Bogoliubov-de Gennes Equations: Andreev Bound States</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Bogoliubov-de Gennes Equations: Andreev Bound States</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="A supercurrent is carried by Cooper pairs that move. In BCS theory its stiffness, the superfluid weight D (London&#x27;s j = -DA), is the density over the mass of the electrons, n/m: an infinitely heavy band -- a flat band -- should carry no supercurrent at all, however strong the pairing. S. Peotta and P. Törmä (2015) showed that this is wrong when the flat band is made of several orbitals. An isolated flat band at filling \nu, with a uniform pairing \Delta small compared with the band gaps, has (\hbar = e = 1)"><img alt="" src="../../_images/sphx_glr_plot_flat_band_superconductivity_thumb.png" />
+<p><a class="reference internal" href="superconductivity/plot_flat_band_superconductivity.html"><span class="doc">Flat-Band Superconductivity: a Superfluid Weight Set by the Quantum Metric</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Flat-Band Superconductivity: a Superfluid Weight Set by the Quantum Metric</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="A. Kitaev (2001) wrote down the simplest topological superconductor: a chain of spinless fermions with nearest-neighbour hopping t and p-wave pairing \Delta,"><img alt="" src="../../_images/sphx_glr_plot_kitaev_chain_thumb.png" />
 <p><a class="reference internal" href="superconductivity/plot_kitaev_chain.html"><span class="doc">The Kitaev Chain: Majorana Zero Modes</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Kitaev Chain: Majorana Zero Modes</div>
