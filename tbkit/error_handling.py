@@ -1140,6 +1140,24 @@ def k_vector(vec, var_name, ndim):
             raise TypeError('\n\nParameter {} must contain real numbers.\n'.format(var_name))
 
 
+def k_points(k, var_name, ndim):
+    '''
+    Check that *k* is one k-point (see *k_vector*) or an array of shape
+    (nk, *ndim*) of real numbers.
+
+    Raises
+    ------
+    ValueError
+        Parameter *var_name* must be of shape (nk, ndim).
+    '''
+    if np.ndim(k) != 2:
+        k_vector(k, var_name, ndim)
+        return
+    k = np.asarray(k)
+    if k.shape[1] != ndim or not np.issubdtype(k.dtype, np.number) or np.iscomplexobj(k):
+        raise ValueError('\n\nParameter {} must be a real array of shape (nk, {}).\n'.format(var_name, ndim))
+
+
 def ks(ks, ndim):
     '''
     Check the k-points passed to *kspace.get_bands*: a 2D array of shape
@@ -1566,6 +1584,23 @@ def is_symmetry(err, tol):
     if err > tol:
         raise ValueError('\n\nThe operator is not a symmetry of the model '
                                     '(deviation {:.3g}).\n'.format(err))
+
+
+def symmetry_algebra(u, v, tol):
+    '''
+    Check that two symmetry operators of the same kind agree up to a phase
+    (in *kspace.KSpace.non_hermitian_class*, *v* is a product of others).
+
+    Raises
+    ------
+    ValueError
+        The symmetry operators leave a unitary symmetry: block-diagonalize it first.
+    '''
+    phase = np.trace(u.conj().T @ v) / np.trace(u.conj().T @ u)
+    if not np.allclose(v, phase * u, atol=tol):
+        raise ValueError('\n\nThe symmetry operators leave a unitary symmetry (two products of '
+                                    'the same kind differ by more than a phase): block-diagonalize '
+                                    'the Hamiltonian first.\n')
 
 
 def square(sq, tol):
@@ -3621,21 +3656,35 @@ def interaction(V, n):
                                     'numbers (one per site).\n'.format(n))
 
 
-def pairing_amplitudes(delta, n):
+def pairing_amplitudes(delta, n, var_name='delta0'):
     '''
-    Check initial pairing amplitudes: a number, or n numbers.
+    Check pairing amplitudes: a number, or n numbers.
 
     Raises
     ------
     ValueError
-        Parameter delta0 must be a number or n numbers.
+        Parameter *var_name* must be a number or n numbers.
     '''
     if np.ndim(delta) == 0:
-        number(delta, 'delta0')
+        number(delta, var_name)
         return
     if np.shape(delta) != (n,):
-        raise ValueError('\n\nParameter delta0 must be a number, or {} numbers '
-                                    '(one per site).\n'.format(n))
+        raise ValueError('\n\nParameter {} must be a number, or {} numbers '
+                                    '(one per site).\n'.format(var_name, n))
+
+
+def spin_up_model(spin):
+    '''
+    Check that a KSpace model is spinless (the spin-up electrons).
+
+    Raises
+    ------
+    ValueError
+        This needs the spinless spin-up model.
+    '''
+    if spin:
+        raise ValueError('\n\nThis needs a spinless model (spin=False): the spin-up '
+                                   'electrons, whose time-reversed partners are the spin-down ones.\n')
 # OPTICAL RESPONSE AND TRANSPORT (tbkit.optics, tbkit.transport)
 ####################################
 

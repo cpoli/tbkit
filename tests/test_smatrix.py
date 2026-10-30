@@ -110,7 +110,8 @@ class TestSMatrix(unittest.TestCase):
         bar = hall_bar()
         s = bar.smatrix(-3.2)
         t = np.array([[s.transmission(p, q) if p != q else 0. for q in range(6)] for p in range(6)])
-        self.assertTrue(np.allclose(t, bar.transmission_matrix(-3.2), atol=1e-6))
+        self.assertTrue(np.allclose(t, bar.transmission_matrix(-3.2), atol=1e-12))
+        self.assertTrue(np.allclose(t, bar.transmission_matrix(-3.2, eta=1e-9), atol=1e-6))
 
     def test_large_sparse_device(self):
         # a 20 000-site strip: never densified
@@ -122,6 +123,10 @@ class TestSMatrix(unittest.TestCase):
         tr.add_lead(h_r, v_r, np.eye(50), cols[1])
         t = tr.transmission([-0.9])[0]
         self.assertTrue(0. < t < 50.)
+        # the currents and the noise too
+        j = tr.local_currents(-0.9, 0, np.column_stack([lat.coor['x'], lat.coor['y']]))
+        self.assertAlmostEqual(j[:, 0].sum() / 399, t, places=8)  # the current of each of the 399 cuts
+        self.assertTrue(0. < tr.fano_factor(-0.9)[0] < 1.)
         self.assertIsNone(tr._dense)
 
     def test_fallbacks(self):
@@ -287,3 +292,66 @@ class TestScatteringStates(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class TestSparseResponse(unittest.TestCase):
+    '''
+    The conductance matrix, the currents and the noise from the scattering
+    matrix and states (eta None) agree with the dense Green's function to
+    O(eta), without building the dense device.
+    '''
+
+    def setUp(self):
+        from tests.test_transport_response import strip, strip_leads
+        lat, sys, rib = strip(12, 5, disorder=1.5, seed=3)
+        cols, (h_l, v_l), (h_r, v_r) = strip_leads(lat, 12, rib)
+        self.tr = Transport(sys.ham)
+        self.tr.add_lead(h_l, v_l, np.eye(5), cols[0])
+        self.tr.add_lead(h_r, v_r, np.eye(5), cols[1])
+        self.positions = np.column_stack([lat.coor['x'], lat.coor['y']])
+
+    def test_matches_dense(self):
+        tr, e = self.tr, -1.1
+        exact = [tr.transmission_matrix(e), tr.conductance_matrix(e, temperature=0.05, n_points=7),
+                 tr.four_terminal_resistance(e, (0, 1), (0, 1)), tr.bond_currents(e, 1),
+                 tr.local_currents(e, 0, self.positions), tr.transmission_eigenvalues(e),
+                 tr.shot_noise([e, 0.4]), tr.fano_factor([e, 0.4])]
+        self.assertIsNone(tr._dense)
+        dense = [tr.transmission_matrix(e, 1e-9), tr.conductance_matrix(e, 1e-9, 0.05, 7),
+                 tr.four_terminal_resistance(e, (0, 1), (0, 1), 1e-9), tr.bond_currents(e, 1, 1e-9),
+                 tr.local_currents(e, 0, self.positions, 1e-9), tr.transmission_eigenvalues(e, eta=1e-9),
+                 tr.shot_noise([e, 0.4], eta=1e-9), tr.fano_factor([e, 0.4], eta=1e-9)]
+        for a, b in zip(exact, dense):
+            self.assertTrue(np.allclose(a, b, atol=1e-6))
+        # the bond currents are those of the scattering states, on the bonds only
+        bonds = tr.bond_currents(e, 1)
+        self.assertTrue(np.allclose(bonds, -bonds.T, atol=1e-14))
+        self.assertTrue(np.all(bonds[tr._ham.toarray() == 0] == 0))
+
+    def test_eigenvalues(self):
+        tr = self.tr
+        # 5 sites per lead: 5 values, the closed channels as zeros, in decreasing order
+        for e in (-3.5, -1.1, 0.3):
+            eig = tr.transmission_eigenvalues(e)
+            self.assertEqual(len(eig), 5)
+            self.assertTrue(np.all(np.diff(eig) <= 1e-14))
+            self.assertAlmostEqual(eig.sum(), tr.transmission([e])[0], places=12)
+            s = tr.smatrix(e)
+            self.assertEqual(np.count_nonzero(eig), min(s.num_propagating(0), s.num_propagating(1)))
+        # outside the bands of the leads, no channel at all
+        self.assertTrue(np.all(tr.transmission_eigenvalues(9.) == 0))
+
+    def test_fallbacks(self):
+        # the same lead: the Caroli quantity, as before
+        tr = self.tr
+        self.assertTrue(np.allclose(tr.transmission_eigenvalues(-1.1, 0, 0),
+                                    tr.transmission_eigenvalues(-1.1, 0, 0, 1e-9)))
+        self.assertTrue(np.allclose(tr.shot_noise(-1.1, 0, 0), tr.shot_noise(-1.1, 0, 0, 1e-9)))
+        # a non-Hermitian lead: the dense Green's function with eta = 1e-9
+        lossy = Transport(np.array([[0., 1.], [1., 0.]]))
+        lossy.add_lead([[-0.1j]], [[1.]], ONE, [0])
+        lossy.add_lead([[0.]], [[1.]], ONE, [1])
+        for method, args in ((lossy.transmission_matrix, (0.5,)), (lossy.conductance_matrix, (0.5,)),
+                             (lossy.bond_currents, (0.5, 0)), (lossy.transmission_eigenvalues, (0.5,)),
+                             (lossy.fano_factor, ([0.5],))):
+            self.assertTrue(np.allclose(method(*args), method(*args, eta=1e-9)))

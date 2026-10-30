@@ -73,7 +73,7 @@ class TestConductanceMatrix(unittest.TestCase):
     def test_two_terminal(self):
         tr = chain_device(10, impurity={4: 0.7})
         e = 0.3
-        t = tr.transmission([e], eta=1e-9)[0]  # the Caroli path, as conductance_matrix
+        t = tr.transmission([e])[0]  # the scattering matrix, as conductance_matrix
         g = tr.conductance_matrix(e)
         self.assertTrue(np.allclose(g, [[t, -t], [-t, t]]))
         self.assertTrue(np.allclose(tr.transmission_matrix(e), [[0, t], [t, 0]]))
@@ -85,9 +85,8 @@ class TestConductanceMatrix(unittest.TestCase):
         tr = hall_bar()
         for e, nu in ((-3.4, 1), (-2.8, 2)):
             g = tr.conductance_matrix(e)
-            # (to the precision of the lead Green's functions at eta = 1e-9)
-            self.assertTrue(np.allclose(g.sum(axis=0), 0., atol=1e-6))
-            self.assertTrue(np.allclose(g.sum(axis=1), 0., atol=1e-6))
+            self.assertTrue(np.allclose(g.sum(axis=0), 0., atol=1e-10))
+            self.assertTrue(np.allclose(g.sum(axis=1), 0., atol=1e-10))
             r_xy = tr.four_terminal_resistance(e, (0, 5), (1, 3))
             r_xx = tr.four_terminal_resistance(e, (0, 5), (1, 2))
             r_2t = tr.four_terminal_resistance(e, (0, 5), (0, 5))
@@ -143,7 +142,7 @@ class TestCurrents(unittest.TestCase):
             self.assertAlmostEqual(bonds[cut].sum(), t, places=6)
         # and it is conserved on every site away from the leads
         inner = (x > 0.5) & (x < length - 1.5)
-        self.assertTrue(np.allclose(bonds.sum(axis=1)[inner], 0., atol=1e-7))  # up to 2 eta |G|^2
+        self.assertTrue(np.allclose(bonds.sum(axis=1)[inner], 0., atol=1e-10))
 
 
 class TestShotNoise(unittest.TestCase):
@@ -170,7 +169,7 @@ class TestShotNoise(unittest.TestCase):
         clean.add_lead(h_r, v_r, np.eye(width), cols[1])
         eig = clean.transmission_eigenvalues(-1.)
         self.assertEqual(len(eig), width)
-        self.assertAlmostEqual(eig.sum(), clean.transmission([-1.], eta=1e-9)[0], places=8)
+        self.assertAlmostEqual(eig.sum(), clean.transmission([-1.])[0], places=10)
         self.assertTrue(np.allclose(clean.fano_factor([-1., 0.5]), 0., atol=1e-6))
 
     def test_tunnel_barrier(self):
@@ -255,3 +254,43 @@ class TestRecursiveGreenFunction(unittest.TestCase):
         self.assertRaises(ValueError, error_handling.block_tridiagonal, 2)
         self.assertRaises(ValueError, error_handling.site_positions, np.zeros(3), 3)
         self.assertRaises(TypeError, error_handling.lead_pair, (0, 1, 2), 3, 'current', True)
+
+
+class TestWorkers(unittest.TestCase):
+    '''
+    Transport.set_workers and RecursiveTransport.set_workers spread the
+    energies over threads, with the same results.
+    '''
+
+    def test_transport(self):
+        tr = chain_device(10, impurity={4: 0.7, 6: -0.4})
+        energies = np.linspace(-1.9, 1.9, 9)
+
+        def results():
+            return [tr.transmission(energies), tr.transmission(energies, eta=1e-9),
+                    tr.conductance(0.3, 0.1, n_points=11), tr.thermoelectric(0.3, 0.1, n_points=11),
+                    tr.conductance_matrix(0.3, temperature=0.1, n_points=11),
+                    tr.shot_noise(energies), tr.fano_factor(energies)]
+        serial = results()
+        self.assertEqual(tr.workers, 1)
+        tr.set_workers(4)
+        tr._dense = None  # the threaded paths build the dense matrix too
+        for a, b in zip(results(), serial):
+            self.assertTrue(np.allclose(a, b, atol=1e-12))
+        self.assertEqual(Transport.workers, 1)
+        self.assertRaises(TypeError, tr.set_workers, 2.)
+        self.assertRaises(ValueError, tr.set_workers, 0)
+
+    def test_recursive(self):
+        length, width = 8, 3
+        lat, sys, rib = strip(length, width, disorder=1., seed=2)
+        cols, (h_l, v_l), (h_r, v_r) = strip_leads(lat, length, rib)
+        rgf = RecursiveTransport(sys.ham, slices_from_positions(lat.coor['x']),
+                                          (h_l, v_l, np.eye(width)), (h_r, v_r, np.eye(width)))
+        energies = np.linspace(-3., 3., 7)
+        serial = rgf.transmission(energies), rgf.fano_factor(energies)
+        rgf.set_workers(3)
+        self.assertTrue(np.allclose(rgf.transmission(energies), serial[0], atol=1e-12))
+        self.assertTrue(np.allclose(rgf.fano_factor(energies), serial[1], atol=1e-12, equal_nan=True))
+        self.assertAlmostEqual(rgf.transmission(0.)[0], serial[0][3], places=12)  # one energy, no threads
+        self.assertRaises(ValueError, rgf.set_workers, -1)

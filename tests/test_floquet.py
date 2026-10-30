@@ -266,6 +266,20 @@ class TestStepDrive(unittest.TestCase):
         self.assertTrue(drive.is_hermitian())
         self.assertRaises(ValueError, drive.finite_ham, 2)
 
+    def test_batched_floquet_hamiltonians(self):
+        # all k-points evolved together (in several chunks) give the H_F of
+        # the evolution at each k-point, for step, general and vector-potential drives
+        ks = np.random.default_rng(3).uniform(-3., 3., (6, 2))
+        step = rudner(1.7 * np.pi, 0.4)
+        general = DrivenKSpace(step.steps[0], step.ham_kt, 1., n_steps=50)
+        light = FloquetKSpace(graphene(), circular(0.6, 12.), 2*np.pi/12., 30)
+        wide = rudner(1.7 * np.pi, 0.4, width=60)  # 120 orbitals: chunks of 5 k-points
+        for drive in (step, general, light, wide):
+            kk = ks[:, :drive.dim]
+            ref = [LA.logm(drive.get_evolution(k)) * 1j / drive.period for k in kk]
+            self.assertTrue(np.allclose(drive._hams(kk), ref, atol=1e-10))
+            self.assertTrue(np.allclose(drive.get_ham(kk[0]), ref[0], atol=1e-10))
+
     def test_general_drive(self):
         # a sublattice mass switched on and off: no hopping in step 2, so
         # the drive is diagonal and H_F is the time average

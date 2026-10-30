@@ -5,7 +5,8 @@ Lattices out of equilibrium: wavepackets in a tilted lattice and the
 tunnelling between its bands, light in waveguide arrays, periodically
 driven (Floquet) bands, from dynamic localization to their anomalous
 topology, and non-Hermitian bands with gain, loss, exceptional points,
-the skin effect and the generalized Brillouin zone. It traces the ideas
+the skin effect, the generalized Brillouin zone and their 38 symmetry
+classes. It traces the ideas
 behind :mod:`tbkit.propagation`, :mod:`tbkit.floquet` and
 :mod:`tbkit.exceptional`.
 
@@ -593,6 +594,62 @@ modes and the non-Bloch winding number 1 both end at
 stays at :math:`1/2` until :math:`t_1 = t_2 + \gamma/2`.
 
 .. minigallery:: ../../examples/non_hermitian/plot_generalized_brillouin_zone.py
+
+2018/2019 -- The 38-Fold Way of Non-Hermitian Symmetry Classes
+------------------------------------------------------------------------
+
+The tenfold way (1997, see :doc:`topology_breakthroughs`) rests on
+:math:`H^* = H^T`, true only for a Hermitian Hamiltonian. Without it,
+each symmetry splits in two. Time reversal :math:`U_TH^*U_T^\dagger =
+H(-\mathbf{k})` gets a transposed partner,
+:math:`U_{C_+}H^TU_{C_+}^\dagger = H(-\mathbf{k})`, which is reciprocity.
+Particle-hole symmetry gets a conjugated partner. The chiral symmetry
+:math:`U_\Gamma H^\dagger U_\Gamma^\dagger = -H` separates from the
+sublattice symmetry :math:`U_SHU_S^\dagger = -H` and from
+pseudo-Hermiticity :math:`U_\eta H^\dagger U_\eta^\dagger = H`. Gong,
+Ashida, Kawabata, Takasan, Higashikawa and Ueda (2018) first defined the
+gaps a non-Hermitian band can have: a *point gap*, the spectrum avoiding
+an energy :math:`E_P`, or a *line gap*, the spectrum avoiding a line of
+the complex plane. Kawabata, Shiozaki, Ueda and Sato, and independently
+Zhou and Lee (2019), then classified the symmetries. Bernard and LeClair
+(2002) had counted 43 classes of non-Hermitian random matrices. After
+removing the redundant ones and adding those that were missed, the count
+is 38. Several of the symmetry sets are equivalent, because
+multiplying :math:`H` by :math:`i` turns time reversal into the
+conjugated particle-hole symmetry and exchanges real and imaginary line
+gaps. For each class and gap type, Kawabata et al. gave the topological
+invariant in every dimension. In one dimension, for instance, a point
+gap carries an integer, the spectral winding number of the skin effect
+(1996/2018, above), in classes A and AI. In class AI†, the reciprocal
+chains, it is trivial: reciprocity forbids the skin effect.
+
+*Implementation:* :meth:`tbkit.kspace.KSpace.symmetry_error` checks a
+symmetry with :math:`H^*`, :math:`H^T` or :math:`H^\dagger`
+(``antiunitary``, ``transpose``). :meth:`~tbkit.kspace.KSpace.non_hermitian_class`
+closes the given operators under products and names the class: with the
+symmetries as given, or, with ``canonical=True``, the representative of
+the 38.
+
+*References:* D. Bernard and A. LeClair, "A Classification of
+Non-Hermitian Random Matrices," in *Statistical Field Theories*, edited
+by A. Cappelli and G. Mussardo (Springer, 2002), pp. 207-214; Z. Gong, Y.
+Ashida, K. Kawabata, K. Takasan, S. Higashikawa, and M. Ueda,
+"Topological Phases of Non-Hermitian Systems," Phys. Rev. X 8, 031079
+(2018); K. Kawabata, K. Shiozaki, M. Ueda, and M. Sato, "Symmetry and
+Topology in Non-Hermitian Physics," Phys. Rev. X 9, 041015 (2019); H.
+Zhou and J. Y. Lee, "Periodic table for topological bands with
+non-Hermitian symmetries," Phys. Rev. B 99, 235112 (2019).
+
+*Example:* ``examples/non_hermitian/plot_38_fold_way.py`` classifies the
+Hatano-Nelson chain (AI), a reciprocal chain with loss (AI†), :math:`i`
+times the Hatano-Nelson chain (D†, equivalent to AI), the non-Hermitian
+SSH chain (AI + S+) and the Hermitian SSH chain (BDI + S++). It confirms
+that twenty random reciprocal chains have no spectral winding, while
+random chains without the symmetry do. It then realizes all 54 names of
+Kawabata et al.'s tables with random chains, checks that each keeps its
+class as :math:`iH`, and counts the 38 classes.
+
+.. minigallery:: ../../examples/non_hermitian/plot_38_fold_way.py
 
 See Also
 --------

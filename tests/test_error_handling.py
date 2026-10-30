@@ -357,6 +357,14 @@ class TestKSpaceChecks(unittest.TestCase):
         self.assertRaises(ValueError, eh.k_vector, (1.,), 'k', 2)
         self.assertRaises(TypeError, eh.k_vector, (1., 'a'), 'k', 2)
 
+    def test_k_points(self):
+        eh.k_points((1., 2.), 'k', 2)
+        eh.k_points(np.zeros((4, 2)), 'k', 2)
+        self.assertRaises(ValueError, eh.k_points, (1.,), 'k', 2)
+        self.assertRaises(ValueError, eh.k_points, np.zeros((4, 3)), 'k', 2)
+        self.assertRaises(ValueError, eh.k_points, [['a', 'b']], 'k', 2)
+        self.assertRaises(ValueError, eh.k_points, np.zeros((4, 2), 'c16'), 'k', 2)
+
     def test_set_hopping_kspace(self):
         eh.set_hopping_kspace([{'i': 0, 'j': 1, 'R': (0, 0), 't': 1.}], 2, 2)
         self.assertRaises(TypeError, eh.set_hopping_kspace, 0, 2, 2)
@@ -385,6 +393,10 @@ class TestKSpaceChecks(unittest.TestCase):
         eh.k_path_points([(0., 0.), (1., 1.)], 2)
         self.assertRaises(TypeError, eh.k_path_points, 0, 2)
         self.assertRaises(ValueError, eh.k_path_points, [(0., 0.)], 2)
+
+    def test_symmetry_algebra(self):
+        eh.symmetry_algebra(np.eye(2), 1j * np.eye(2), 1e-8)  # a phase
+        self.assertRaises(ValueError, eh.symmetry_algebra, np.eye(2), np.diag([1., -1.]), 1e-8)
 
     def test_nk(self):
         eh.nk(10, 2)

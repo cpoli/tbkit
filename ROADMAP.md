@@ -14,7 +14,6 @@ ragged interfaces, are in place (see Done). What remains for mesoscopic
 device work is, above all, scale (item 1). Until then, Kwant remains the
 right tool for large transport calculations. Items 3 and 5 are smaller,
 and item 4 (interactions) holds the next additions on the physics side.
-Item 6 lists history breakthroughs still missing from the docs.
 
 Each item lists why it matters, the current state, and a sketch of the
 approach. The project conventions (validation in `error_handling.py`, 100%
@@ -30,20 +29,13 @@ large flakes, transport of 2D devices) are dense and single-threaded.
 shift-invert, `RecursiveTransport`) cover part of this. The k-space
 diagonalizations are batched over k and optionally threaded
 (`KSpace.set_workers`, see Done), and `tests/benchmark_kspace.py` times
-them. The scattering matrix (`Transport.smatrix` and the default
-`Transport.transmission`) factorizes the sparse device. Real-space
-`System.get_eig` and the Green's-function methods of `Transport`
-(`get_green`, the conductance matrix, currents and noise) remain dense
-and single-threaded.
-
-**Approach.**
-- Parallelism over energies in transport and in
-  `surface_spectral_function` (`concurrent.futures`, as for k).
-- The rest of `Transport` on the sparse factorization: currents, noise
-  and the conductance matrix from the scattering states and the S-matrix.
-- Batch the remaining per-k loops: `biorthogonal_berry_curvature`, the
-  quantum geometric tensor, and the Floquet `get_ham` (one evolution
-  per k-point today).
+them. The energies of transport and of `surface_spectral_function` are
+threaded too (`set_workers`, see Done). The scattering matrix and the
+scattering states factorize the sparse device, and by default every
+transmission, conductance matrix, current and noise of `Transport`
+comes from them (see Done). Real-space `System.get_eig` (dense and
+single-threaded) and `Transport.get_green` (with the methods given an
+explicit broadening `eta`) remain dense.
 
 ## 2. Interoperability and API limits
 
@@ -96,34 +88,46 @@ torus.
   mostly from the strictness of the NumPy stubs. Fix them module by module,
   then drop `continue-on-error` from the `typecheck` job.
 
-## 6. History breakthroughs to add
-
-**Why.** Two pages of `docs/source/history/` have fewer than 15
-breakthroughs: interactions (11) and driven (11).
-The candidates below have no entry of their own on any page yet. The aim
-is to tell the missing stories, not to reach a count.
-
-**Now.** Unless marked *new code*, the functionality is already in
-tbkit. What is missing is the history entry and a dedicated gallery
-example per breakthrough (no example shared between two entries).
-
-**Flat bands and interactions** (`interactions_breakthroughs.rst`)
-- Optional, *new code*: 2015, flat-band superconductivity and the
-  superfluid weight bounded by the quantum metric (Peotta-Törmä).
-  `quantum_geometric_tensor` exists; a superfluid-weight function does
-  not.
-
-**Driven and open systems** (`driven_breakthroughs.rst`)
-- Optional, *new code*: 2018/2019, the 38-fold non-Hermitian symmetry
-  classification (Kawabata et al.; Zhou-Lee), mirroring
-  `KSpace.tenfold_class`.
-
-**Approach.** One breakthrough per change: the entry (references, link to
-the tbkit functions, `.. minigallery::`) and a new asserted example whose
-title names the breakthrough. Where an entry today mentions the subject in
-passing, move that text into the new entry rather than repeat it.
-
 ## Done
+
+- **38-fold non-Hermitian symmetry classes history breakthrough**
+  (unreleased): `KSpace.non_hermitian_class` names the class of
+  Kawabata, Shiozaki, Ueda and Sato (2019) from up to seven operators
+  (TRS, PHS, CS and their dagger partners, SLS, pseudo-Hermiticity),
+  closed under products, as `tenfold_class` does for the Hermitian
+  classes; `canonical=True` folds the 54 names of their tables into the
+  38 classes. `symmetry_error(..., transpose=True)` checks symmetries
+  with H^T or H^dagger. The 2018/2019 entry in `driven_breakthroughs.rst`
+  (now 12) has its asserted example `non_hermitian/plot_38_fold_way.py`.
+  This was the last candidate of the former item 6 (history
+  breakthroughs); interactions and driven have 12 entries each.
+
+- **Flat-band superconductivity history breakthrough** (unreleased):
+  `bdg.superfluid_weight` (curvature of the BdG grand potential in a
+  vector potential) and the 2015 Peotta-Törmä entry in
+  `interactions_breakthroughs.rst` (now 12), with its asserted example
+  `superconductivity/plot_flat_band_superconductivity.py`. The passing
+  mention in the 1980 quantum-metric entry moved into it.
+
+- **The rest of `Transport` on the sparse factorization** (unreleased):
+  `transmission_matrix`, `conductance_matrix`,
+  `four_terminal_resistance`, `bond_currents`, `local_currents`,
+  `transmission_eigenvalues`, `shot_noise` and `fano_factor` default to
+  `eta=None`: S-matrix blocks and scattering states from one `splu` per
+  energy, never the dense device. An explicit `eta` keeps the dense
+  Caroli path.
+
+- **Batched per-k loops** (unreleased): `biorthogonal_berry_curvature`
+  (one stacked `eig` and link determinants over the mesh),
+  `quantum_geometric_tensor` (one batched diagonalization, now also over
+  many k-points) and the Floquet `get_ham` (`DrivenKSpace._hams`: all
+  k-points evolved together, one stacked exponential per step).
+
+- **Threads over energies** (unreleased): `Transport.set_workers` and
+  `RecursiveTransport.set_workers` run the energies of `transmission`,
+  `shot_noise`, `fano_factor` and the Fermi-window integrals in a
+  `ThreadPoolExecutor`; `surface_spectral_function` spreads its k-points
+  (and chunks of energies) over the `KSpace` workers.
 
 - **Driven and open systems history breakthroughs** (unreleased): five
   entries in `driven_breakthroughs.rst` (now 11), each with its own

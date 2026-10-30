@@ -67,6 +67,10 @@ class TestInteractions(unittest.TestCase):
         eh.pairing_amplitudes(np.ones(3), 3)
         self.assertRaises(TypeError, eh.pairing_amplitudes, 'a', 3)
         self.assertRaises(ValueError, eh.pairing_amplitudes, np.ones(2), 3)
+        with self.assertRaisesRegex(ValueError, 'Parameter delta must'):
+            eh.pairing_amplitudes(np.ones(2), 3, 'delta')
+        eh.spin_up_model(False)
+        self.assertRaises(ValueError, eh.spin_up_model, True)
 
 
 if __name__ == '__main__':

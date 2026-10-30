@@ -81,6 +81,24 @@ class TestSurfaceSpectralFunction(unittest.TestCase):
         self.assertLess(ch.surface_spectral_function([[0.]], 2.5, 0, eta=1e-6)[0, 0], 1e-5)
         self.assertEqual(ch.surface_spectral_function([0.], 0.5, 0).shape, (1, 1))
 
+    def test_workers(self):
+        # threads over the k-points, and over chunks of energies when there
+        # are fewer k-points than threads: the same spectral function
+        ks = KSpace(lattices.honeycomb())
+        ks.set_hopping(HONEY_HOPS)
+        ks.set_onsite(HONEY_ONSITE)
+        k = np.linspace(0, 1, 5)[:, None] * ks.rec_vec_k[0]
+        E = np.linspace(-3., 3., 11)
+        cases = [(d, b) for d in (0, 1) for b in (False, True)]
+        serial = [ks.surface_spectral_function(k, E, d, eta=0.05, bulk=b) for d, b in cases]
+        ks.set_workers(3)
+        for (d, b), ref in zip(cases, serial):
+            self.assertTrue(np.allclose(ks.surface_spectral_function(k, E, d, eta=0.05, bulk=b), ref))
+        ks.set_workers(8)
+        self.assertTrue(np.allclose(ks.surface_spectral_function(k[:2], E, 0, eta=0.05), serial[0][:2]))
+        self.assertTrue(np.allclose(ks.surface_spectral_function(k[:1], E[:3], 0, eta=0.05),
+                                                serial[0][:1, :3]))
+
     def test_spectral_sum_rule(self):
         # int A_s dE = number of orbitals of the surface cell
         ch = chain()

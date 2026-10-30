@@ -180,6 +180,108 @@ class TestSymmetry(unittest.TestCase):
         self.assertRaises(ValueError, chain.tenfold_class, None, None, None, 5, -1.)  # tol
 
 
+class TestNonHermitianClass(unittest.TestCase):
+    """The 38-fold way (Kawabata, Shiozaki, Ueda and Sato 2019)."""
+
+    @staticmethod
+    def chain(blocks):
+        """A chain with hopping matrices blocks[R] (R = -1, 0, 1)."""
+        norb = len(blocks[0])
+        ks = KSpace(Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}] * norb, prim_vec=[(1., 0.)]))
+        hop = []
+        for R, b in blocks.items():
+            for i in range(norb):
+                for j in range(norb):
+                    if R == 0 and i == j:
+                        ks.onsite[i] = b[i, i]
+                    else:
+                        hop.append({'i': i, 'j': j, 'R': (R,), 't': b[i, j]})
+        ks.set_hopping(hop, hermitian=False)
+        return ks
+
+    def symmetric_chain(self, symmetries, norb=2, seed=0):
+        """A random chain with the given symmetries {kind: U}, kind as in kspace._NH_KINDS."""
+        rng = np.random.default_rng(seed)
+        blocks = {R: rng.normal(size=(norb, norb)) + 1j * rng.normal(size=(norb, norb)) for R in (-1, 0, 1)}
+        for (conj, transpose, minus), u in symmetries.items():
+            image = {}
+            for R in blocks:
+                t = blocks[-R if transpose else R]
+                t = t.conj() if conj else t
+                image[R] = (-1) ** minus * u @ (t.T if transpose else t) @ u.conj().T
+            blocks = {R: (blocks[R] + image[R]) / 2 for R in blocks}
+        return self.chain(blocks)
+
+    def test_symmetry_error_transpose(self):
+        hatano_nelson = self.chain({1: np.eye(1), -1: 0.5 * np.eye(1), 0: np.zeros((1, 1))})
+        lossy = self.chain({1: np.eye(1), -1: np.eye(1), 0: -0.5j * np.eye(1)})
+        self.assertLess(hatano_nelson.symmetry_error(np.eye(1), antiunitary=True), 1e-12)
+        self.assertGreater(hatano_nelson.symmetry_error(np.eye(1), transpose=True), 0.1)
+        self.assertLess(lossy.symmetry_error(np.eye(1), transpose=True), 1e-12)
+        self.assertGreater(lossy.symmetry_error(np.eye(1), antiunitary=True), 0.1)
+        # H^dagger: the chiral symmetry of the Hermitian SSH chain
+        self.assertLess(ssh(1., 0.5).symmetry_error(PAULI['z'], 'identity', True, True, transpose=True), 1e-12)
+        self.assertRaises(TypeError, lossy.symmetry_error, np.eye(1), transpose=1)
+        self.assertEqual(hatano_nelson.non_hermitian_class(time_reversal=np.eye(1)), 'AI')
+        self.assertEqual(hatano_nelson.non_hermitian_class(), 'A')
+        self.assertEqual(lossy.non_hermitian_class(time_reversal_dagger=np.eye(1)), 'AI†')
+        self.assertEqual(lossy.non_hermitian_class(particle_hole_dagger=None, time_reversal_dagger=np.eye(1)), 'AI†')
+
+    def test_hermitian_ssh(self):
+        # a Hermitian model has every symmetry twice: TRS = TRS^dagger, CS = SLS, eta = 1
+        chain, sz, i2 = ssh(1., 0.5), PAULI['z'], np.eye(2)
+        self.assertEqual(chain.non_hermitian_class(chiral=sz), 'AIII')
+        self.assertEqual(chain.non_hermitian_class(time_reversal=i2, chiral=sz), 'BDI')
+        self.assertEqual(chain.non_hermitian_class(time_reversal_dagger=i2, particle_hole_dagger=sz), 'BDI†')
+        self.assertEqual(chain.non_hermitian_class(particle_hole_dagger=sz), 'D†')
+        self.assertEqual(chain.non_hermitian_class(particle_hole_dagger=sz, canonical=True), 'AI')
+        self.assertEqual(chain.non_hermitian_class(sublattice=sz), 'A + S')
+        self.assertEqual(chain.non_hermitian_class(chiral=sz, sublattice=sz), 'AIII + S+')
+        self.assertEqual(chain.non_hermitian_class(time_reversal=i2, chiral=sz, pseudo_hermiticity=i2), 'BDI + S++')
+        self.assertEqual(chain.non_hermitian_class(pseudo_hermiticity=i2), 'A + η')
+        self.assertEqual(chain.non_hermitian_class(pseudo_hermiticity=i2, canonical=True), 'AIII')
+        self.assertEqual(chain.non_hermitian_class(time_reversal=i2, pseudo_hermiticity=i2), 'AI + η+')
+        self.assertEqual(chain.non_hermitian_class(particle_hole=sz, pseudo_hermiticity=i2), 'D + η+')
+        self.assertEqual(chain.non_hermitian_class(particle_hole=sz, pseudo_hermiticity=i2, canonical=True), 'BDI')
+
+    def test_sublattice_subscripts(self):
+        # S U = eps U S^*, Gamma S = eps S Gamma (Kawabata et al., Tables VI, VII, XII and XIII)
+        sx, sy, sz = PAULI['x'], PAULI['y'], PAULI['z']
+        trs, phs_d, trs_d, cs, sls = (1, 0, 0), (1, 0, 1), (0, 1, 0), (1, 1, 1), (0, 0, 1)
+        cases = [
+            ({trs: np.eye(2), sls: sz}, dict(time_reversal=np.eye(2), sublattice=sz), 'AI + S+'),
+            ({trs: np.eye(2), sls: sy}, dict(time_reversal=np.eye(2), sublattice=sy), 'AI + S-'),
+            ({trs_d: np.eye(2), sls: sy}, dict(time_reversal_dagger=np.eye(2), sublattice=sy), 'C + S-'),
+            ({cs: sx, sls: sz}, dict(chiral=sx, sublattice=sz), 'AIII + S-'),
+            # BDI^dagger + S_{+-} is DIII + S_{-+} (Table XIII)
+            ({trs_d: np.eye(2), phs_d: sx, sls: sz},
+             dict(time_reversal_dagger=np.eye(2), particle_hole_dagger=sx, sublattice=sz), 'DIII + S-+'),
+        ]
+        for symmetries, kwargs, expected in cases:
+            ks = self.symmetric_chain(symmetries)
+            self.assertEqual(ks.non_hermitian_class(**kwargs), expected)
+        ks = self.symmetric_chain({trs: np.eye(2), sls: sy})
+        self.assertEqual(ks.non_hermitian_class(time_reversal=np.eye(2), sublattice=sy, canonical=True), 'AI + S-')
+        # its partner under H -> iH: TRS becomes PHS^dagger
+        ks = self.symmetric_chain({phs_d: np.eye(2), sls: sy})
+        self.assertEqual(ks.non_hermitian_class(particle_hole_dagger=np.eye(2), sublattice=sy), 'AII + S-')
+        self.assertEqual(ks.non_hermitian_class(particle_hole_dagger=np.eye(2), sublattice=sy, canonical=True),
+                              'AI + S-')
+
+    def test_errors(self):
+        chain = ssh(1., 0.5)
+        self.assertRaises(ValueError, chain.non_hermitian_class, None, None, None, np.eye(2), tol=-1.)
+        self.assertRaises(TypeError, chain.non_hermitian_class, canonical=1)
+        # not a symmetry
+        self.assertRaises(ValueError, haldane().non_hermitian_class, time_reversal_dagger=np.eye(2))
+        lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (0.5, 0.)}],
+                             prim_vec=[(1., 0.)])
+        zero = KSpace(lat)  # H = 0: every operator is a symmetry
+        self.assertRaises(ValueError, zero.non_hermitian_class, np.array([[0., 1.], [1j, 0.]]))  # square
+        # TRS and PHS imply the chiral symmetry U_C U_T^* = 1, not sigma_z: a unitary symmetry is left
+        self.assertRaises(ValueError, zero.non_hermitian_class, np.eye(2), np.eye(2), PAULI['z'])
+
+
 class TestQuantumGeometry(unittest.TestCase):
 
     def test_curvature_and_metric(self):
@@ -203,7 +305,14 @@ class TestQuantumGeometry(unittest.TestCase):
         q1 = hal.quantum_geometric_tensor([0], k)
         q2 = hal.quantum_geometric_tensor([0], k, positions=False)
         self.assertFalse(np.allclose(q1.real, q2.real))
+        # many k-points at once, one tensor per k-point
+        ks = np.array([k, 0.1*rec[0] - 0.4*rec[1]])
+        q = hal.quantum_geometric_tensor([0], ks, positions=False)
+        self.assertEqual(q.shape, (2, 2, 2))
+        self.assertTrue(np.allclose(q[0], q2))
+        self.assertTrue(np.allclose(q[1], hal.quantum_geometric_tensor(0, ks[1], positions=False)))
         self.assertRaises(ValueError, hal.quantum_geometric_tensor, 0, [0.])
+        self.assertRaises(ValueError, hal.quantum_geometric_tensor, 0, np.zeros((3, 1)))
         self.assertRaises(ValueError, hal.quantum_geometric_tensor, 0, [0., 0.], -1.)
 
 

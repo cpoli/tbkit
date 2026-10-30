@@ -47,13 +47,15 @@ With more leads, *Transport.conductance_matrix* and
 *four_terminal_resistance* solve the Landauer-Buttiker equations (Hall
 bars); *bond_currents* and *local_currents* map the current;
 *transmission_eigenvalues*, *shot_noise* and *fano_factor* give the shot
-noise. *RecursiveTransport* computes the two-terminal transmission of long
+noise. By default they too come from the scattering matrix and the
+scattering states, on the same sparse factorization. *RecursiveTransport* computes the two-terminal transmission of long
 quasi-1D devices slice by slice (recursive Green's function), without
 inverting the whole device.
 """
 from __future__ import annotations
 
-from typing import NamedTuple
+from concurrent.futures import ThreadPoolExecutor
+from typing import Callable, NamedTuple, TypeVar
 
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
@@ -63,6 +65,7 @@ import scipy.sparse.linalg as spla
 
 import tbkit.error_handling as error_handling
 
+_T = TypeVar('_T')
 
 def surface_green(
     h0: ArrayLike, v: ArrayLike, energy: float, eta: float = 1e-9, tol: float = 1e-12,
@@ -513,16 +516,62 @@ class SMatrix():
         return float(np.sum(np.abs(self.submatrix(lead_out, lead_in)) ** 2))
 
 
-class Transport():
+class _EnergyWorkers():
+    r'''
+    Private mixin. The threads over which *Transport* and
+    *RecursiveTransport* spread the energies of their many-energy methods.
+    '''
+    workers = 1  # threads over the energies, see set_workers
+
+    def set_workers(self, workers: int) -> None:
+        r'''
+        Set the number of threads over which the methods taking many energies
+        spread them: *transmission* and *fano_factor*, and for *Transport*
+        also *shot_noise*, and *conductance*, *thermoelectric*,
+        *conductance_matrix* and *four_terminal_resistance* at a finite
+        temperature (the energies of the Fermi window). Each
+        energy is one sparse factorization or dense inversion, mostly in
+        LAPACK and SuperLU, which release the GIL, so the energies run in
+        parallel. The results do not depend on *workers*.
+
+        Parameters
+        ----------
+        workers : Positive integer
+            Number of threads (default 1, no threads).
+
+        Examples
+        --------
+        Example usage::
+
+            tr.set_workers(4)
+            T = tr.transmission(np.linspace(-2, 2, 400))
+        '''
+        error_handling.positive_int(workers, 'workers')
+        self.workers = workers
+
+    def _map(self, func: Callable[[float], _T], energies: NDArray[np.float64]) -> list[_T]:
+        r'''
+        Private method. *func* at every energy, in order, spread over
+        *workers* threads.
+        '''
+        if self.workers > 1 and len(energies) > 1:
+            with ThreadPoolExecutor(min(self.workers, len(energies))) as pool:
+                return list(pool.map(func, (float(e) for e in energies)))
+        return [func(float(e)) for e in energies]
+
+
+class Transport(_EnergyWorkers):
     r'''
     A finite device, of Hamiltonian *ham* (e.g. *System.ham*), to which
     semi-infinite leads are attached with *add_lead*; *transmission* then
     gives the Landauer transmission between two of them.
 
-    The device is stored sparse. *smatrix*, *wave_function*, *ldos* and
-    *transmission* (by default) only factorize the sparse matrix. The
-    methods with a broadening *eta* use the dense Green's function, and the
-    dense matrix *ham* is built once, the first time it is needed.
+    The device is stored sparse. *smatrix*, *wave_function*, *ldos*, and by
+    default (*eta* None) the transmissions, conductance matrix, currents and
+    noise, only factorize the sparse matrix. With a broadening *eta* (and,
+    as a fallback, for non-Hermitian leads, with *eta* = 1e-9) these use the
+    dense Green's function, and the dense matrix *ham* is built once, the
+    first time it is needed.
 
     Parameters
     ----------
@@ -832,29 +881,42 @@ class Transport():
         error_handling.lead_index(lead_in, len(self.leads))
         error_handling.lead_index(lead_out, len(self.leads))
         energies = np.atleast_1d(np.asarray(energies, dtype='f8'))
-        hermitian = all(np.allclose(h0, h0.conj().T) for h0, _, _, _ in self.leads)
-        if eta is None and hermitian and lead_in != lead_out:
-            out = np.zeros(len(energies))
-            for n, e in enumerate(energies):
-                modes, sol = self._scattering(float(e), [lead_in], slice(self._ham.shape[0], None))
-                a = sum(len(h0) for h0, _, _, _ in self.leads[:lead_out])
-                n_out = int(np.sum(modes[lead_out].velocities > 0))
-                out[n] = np.sum(np.abs(sol[a:a + n_out]) ** 2)
-            return out
+        if self._exact(eta) and lead_in != lead_out:
+            return np.array(self._map(lambda e: np.sum(np.abs(self._amplitudes(e, lead_in, lead_out)) ** 2),
+                                      energies), dtype='f8')
         eta = 1e-9 if eta is None else eta
-        out = np.zeros(len(energies))
-        for n, e in enumerate(energies):
+        self.ham  # built once, before the threads
+
+        def caroli(e):
             sig_in = self.self_energy(lead_in, e, eta)
             sig_out = self.self_energy(lead_out, e, eta)
             gam_in = 1j * (sig_in - sig_in.conj().T)
             gam_out = 1j * (sig_out - sig_out.conj().T)
             g = self.get_green(e, eta)
-            out[n] = np.trace(gam_out @ g @ gam_in @ g.conj().T).real
-        return out
+            return np.trace(gam_out @ g @ gam_in @ g.conj().T).real
+        return np.array(self._map(caroli, energies), dtype='f8')
 
     # ------------------------------------------------------------------
     # Scattering matrix and scattering states
     # ------------------------------------------------------------------
+
+    def _exact(self, eta: float | None) -> bool:
+        r'''
+        Private method. Whether a method with a broadening *eta* uses the
+        scattering matrix and states (*eta* None and Hermitian leads) rather
+        than the dense Green's function.
+        '''
+        return eta is None and all(np.allclose(h0, h0.conj().T) for h0, _, _, _ in self.leads)
+
+    def _amplitudes(self, energy: float, lead_in: int, lead_out: int) -> NDArray[np.complex128]:
+        r'''
+        Private method. The block of the scattering matrix from lead
+        *lead_in* to lead *lead_out*, from the modes injected by *lead_in*
+        only: shape (outgoing modes of *lead_out*, incoming modes of *lead_in*).
+        '''
+        modes, sol = self._scattering(energy, [lead_in], slice(self._ham.shape[0], None))
+        a = sum(len(h0) for h0, _, _, _ in self.leads[:lead_out])
+        return sol[a:a + int(np.sum(modes[lead_out].velocities > 0))]
 
     def _scattering(self, energy: float, inject: list[int], keep: slice = slice(None)) -> tuple:
         r'''
@@ -1121,24 +1183,32 @@ class Transport():
             out.append(1j * (sig - sig.conj().T))
         return out
 
-    def transmission_matrix(self, energy: float, eta: float = 1e-9) -> NDArray[np.float64]:
+    def transmission_matrix(self, energy: float, eta: float | None = None) -> NDArray[np.float64]:
         r'''
-        Get the transmissions between every pair of leads at one energy,
-        :math:`T_{pq} = \mathrm{Tr}[\Gamma_pG^r\Gamma_qG^a]` from lead
-        :math:`q` to lead :math:`p` (the diagonal, a reflection, is set to 0).
+        Get the transmissions :math:`T_{pq}` between every pair of leads at
+        one energy, from lead :math:`q` to lead :math:`p` (the diagonal, a
+        reflection, is set to 0). By default (*eta* None) they come from one
+        scattering matrix (*smatrix*), :math:`T_{pq} = \sum_{ab}|S_{ab}|^2`
+        over its block from :math:`q` to :math:`p`; with a broadening *eta*,
+        from the Caroli formula :math:`\mathrm{Tr}[\Gamma_pG^r\Gamma_qG^a]`
+        (see *transmission*).
 
         Parameters
         ----------
         energy : Real number
-        eta : Positive real, default 1e-9
+        eta : Positive real or None, default None
 
         Returns
         -------
         T : Real ndarray, shape (n_leads, n_leads)
         '''
+        n = len(self.leads)
+        if self._exact(eta):
+            s = self.smatrix(energy)
+            return np.array([[s.transmission(p, q) if p != q else 0. for q in range(n)] for p in range(n)])
+        eta = 1e-9 if eta is None else eta
         g = self.get_green(energy, eta)
         gam = self._broadenings(energy, eta)
-        n = len(self.leads)
         out = np.zeros((n, n))
         for p in range(n):
             for q in range(n):
@@ -1148,7 +1218,7 @@ class Transport():
         return out
 
     def conductance_matrix(
-        self, energy: float, eta: float = 1e-9, temperature: float = 0., n_points: int = 101,
+        self, energy: float, eta: float | None = None, temperature: float = 0., n_points: int = 101,
     ) -> NDArray[np.float64]:
         r'''
         Get the Landauer-Buttiker conductance matrix (Buttiker 1986), in units
@@ -1162,13 +1232,14 @@ class Transport():
         Its rows and columns add up to zero (current conservation, and no
         current at equal voltages). At a finite *temperature* it is averaged
         over the Fermi window, :math:`\int dE\,(-\partial f/\partial E)\,G(E)`
-        (see *conductance*).
+        (see *conductance*). The transmissions come from *transmission_matrix*.
 
         Parameters
         ----------
         energy : Real number
             Fermi energy (chemical potential).
-        eta : Positive real, default 1e-9
+        eta : Positive real or None, default None
+            See *transmission_matrix*.
         temperature : Positive real or zero
             Default value 0 (:math:`k_B = 1`).
         n_points : Positive integer, default 101
@@ -1183,12 +1254,15 @@ class Transport():
         error_handling.positive_int(n_points, 'n_points')
         if temperature > 0:
             energies, weights = _fermi_window(energy, temperature, n_points)
-            return sum(w * self.conductance_matrix(float(e), eta) for e, w in zip(energies, weights))
+            if not self._exact(eta):
+                self.ham  # built once, before the threads
+            return sum(w * g for g, w in zip(self._map(lambda e: self.conductance_matrix(e, eta), energies),
+                                             weights))
         t = self.transmission_matrix(energy, eta)
         return np.diag(t.sum(axis=0)) - t
 
     def four_terminal_resistance(
-        self, energy: float, current: tuple[int, int], voltage: tuple[int, int], eta: float = 1e-9,
+        self, energy: float, current: tuple[int, int], voltage: tuple[int, int], eta: float | None = None,
         temperature: float = 0., n_points: int = 101,
     ) -> float:
         r'''
@@ -1208,7 +1282,8 @@ class Transport():
             Fermi energy.
         current : Tuple of two distinct lead indices (source, drain)
         voltage : Tuple of two lead indices (a, b)
-        eta : Positive real, default 1e-9
+        eta : Positive real or None, default None
+            See *transmission_matrix*.
         temperature : Positive real or zero
             Default value 0 (see *conductance_matrix*).
         n_points : Positive integer, default 101
@@ -1228,7 +1303,31 @@ class Transport():
         volts[keep] = LA.solve(g[np.ix_(keep, keep)], currents)
         return float(volts[voltage[0]] - volts[voltage[1]])
 
-    def bond_currents(self, energy: float, lead: int, eta: float = 1e-9) -> NDArray[np.float64]:
+    def _bond_list(
+        self, energy: float, lead: int, eta: float | None,
+    ) -> tuple[NDArray[np.int64], NDArray[np.int64], NDArray[np.float64]]:
+        r'''
+        Private method. The bond currents of *bond_currents* on the bonds
+        :math:`i \neq j` of the device (the nonzero :math:`H_{ij}`): rows,
+        columns and currents. By default :math:`A^{(q)}_{ji}` comes from the
+        scattering states, otherwise from the dense Green's function.
+        '''
+        error_handling.lead_index(lead, len(self.leads))
+        h = self._ham.tocoo()
+        bond = h.row != h.col
+        rows, cols, hij = h.row[bond], h.col[bond], h.data[bond]
+        if self._exact(eta):
+            psi = self.wave_function(energy, lead)
+            a_ji = np.sum(psi[:, cols] * psi[:, rows].conj(), axis=0)
+        else:
+            eta = 1e-9 if eta is None else eta
+            g = self.get_green(energy, eta)
+            sites = self.leads[lead][3]
+            gam = self._broadenings(energy, eta)[lead]
+            a_ji = np.sum((g[cols][:, sites] @ gam) * g[rows][:, sites].conj(), axis=1)
+        return rows, cols, -2 * np.imag(hij * a_ji)
+
+    def bond_currents(self, energy: float, lead: int, eta: float | None = None) -> NDArray[np.float64]:
         r'''
         Get the bond currents carried, per unit energy, by the electrons
         injected from one lead (the non-equilibrium current when that lead's
@@ -1237,19 +1336,22 @@ class Transport():
         .. math::
 
             J_{i\to j} = -2\,\mathrm{Im}\left[H_{ij}\,A^{(q)}_{ji}\right]\, ,\qquad
-            A^{(q)} = G^r\Gamma_qG^a\, ,
+            A^{(q)} = G^r\Gamma_qG^a = \sum_a\psi_a\psi_a^\dagger\, ,
 
         in units of :math:`e/h` per unit energy: summed over a cross-section
         of a two-terminal device, it is the transmission :math:`T(E)`. The
         matrix is antisymmetric, and the currents are conserved at every
-        site not touched by a lead.
+        site not touched by a lead. By default (*eta* None) :math:`A^{(q)}`
+        comes from the scattering states :math:`\psi_a` of the lead
+        (*wave_function*, unit current), on the bonds of the sparse device
+        only; with a broadening *eta*, from the dense Green's function.
 
         Parameters
         ----------
         energy : Real number
         lead : Integer
             Injecting lead.
-        eta : Positive real, default 1e-9
+        eta : Positive real or None, default None
 
         Returns
         -------
@@ -1257,21 +1359,19 @@ class Transport():
             Real ndarray, shape of *ham*: J[i, j] is the current
             from site i to site j.
         '''
-        error_handling.lead_index(lead, len(self.leads))
-        g = self.get_green(energy, eta)
-        sites = self.leads[lead][3]
-        gam = self._broadenings(energy, eta)[lead]
-        spectral = g[:, sites] @ gam @ g[:, sites].conj().T
-        return -2 * np.imag(self.ham * spectral.T)
+        rows, cols, j = self._bond_list(energy, lead, eta)
+        n = self._ham.shape[0]
+        return sp.csr_matrix((j, (rows, cols)), shape=(n, n)).toarray()
 
     def local_currents(
-        self, energy: float, lead: int, positions: ArrayLike, eta: float = 1e-9,
+        self, energy: float, lead: int, positions: ArrayLike, eta: float | None = None,
     ) -> NDArray[np.float64]:
         r'''
         Get the current density vector on every site from the bond currents
         (*bond_currents*): half of the currents of the bonds leaving the
         site, along their bond vectors,
         :math:`\mathbf{j}_i = \frac12\sum_jJ_{i\to j}(\mathbf{r}_j - \mathbf{r}_i)`.
+        By default (*eta* None) it never builds a dense matrix of the device.
 
         Parameters
         ----------
@@ -1281,31 +1381,37 @@ class Transport():
         positions : Real array, shape (n_sites, d)
             Site positions
             (e.g. ``np.column_stack([lat.coor['x'], lat.coor['y']])``).
-        eta : Positive real, default 1e-9
+        eta : Positive real or None, default None
 
         Returns
         -------
         j : Real ndarray, shape (n_sites, d)
         '''
         positions = np.asarray(positions, dtype='f8')
-        error_handling.site_positions(positions, len(self.ham))
-        bonds = self.bond_currents(energy, lead, eta)
-        return 0.5 * (bonds @ positions - bonds.sum(axis=1)[:, None] * positions)
+        error_handling.site_positions(positions, self._ham.shape[0])
+        rows, cols, bonds = self._bond_list(energy, lead, eta)
+        out = np.zeros_like(positions)
+        np.add.at(out, rows, 0.5 * bonds[:, None] * (positions[cols] - positions[rows]))
+        return out
 
     def transmission_eigenvalues(
-        self, energy: float, lead_in: int = 0, lead_out: int = 1, eta: float = 1e-9,
+        self, energy: float, lead_in: int = 0, lead_out: int = 1, eta: float | None = None,
     ) -> NDArray[np.float64]:
         r'''
         Get the transmission eigenvalues :math:`T_n`, eigenvalues of
-        :math:`t^\dagger t` with :math:`t = \Gamma_{out}^{1/2}G^r\Gamma_{in}^{1/2}`:
-        their sum is the transmission.
+        :math:`t^\dagger t`: their sum is the transmission. By default (*eta*
+        None) :math:`t` is the block of the scattering matrix from
+        *lead_in* to *lead_out* (*smatrix*), and the list is padded with the
+        zeros of the closed channels; with a broadening *eta* it is
+        :math:`t = \Gamma_{out}^{1/2}G^r\Gamma_{in}^{1/2}` (and, as a
+        fallback, with *eta* = 1e-9 for *lead_in* = *lead_out*).
 
         Parameters
         ----------
         energy : Real number
         lead_in : Integer, default 0
         lead_out : Integer, default 1
-        eta : Positive real, default 1e-9
+        eta : Positive real or None, default None
 
         Returns
         -------
@@ -1315,13 +1421,21 @@ class Transport():
         '''
         error_handling.lead_index(lead_in, len(self.leads))
         error_handling.lead_index(lead_out, len(self.leads))
+        s_in, s_out = self.leads[lead_in][3], self.leads[lead_out][3]
+        if self._exact(eta) and lead_in != lead_out:
+            t = self._amplitudes(energy, lead_in, lead_out)
+            vals = np.linalg.svd(t, compute_uv=False) ** 2 if t.size else np.zeros(0)
+            # at most min(len(s_in), len(s_out)) channels transmit: the others are zeros
+            out = np.zeros(min(len(s_in), len(s_out)))
+            out[:min(len(out), len(vals))] = vals[:len(out)]
+            return out
+        eta = 1e-9 if eta is None else eta
         g = self.get_green(energy, eta)
         gam = self._broadenings(energy, eta)
-        s_in, s_out = self.leads[lead_in][3], self.leads[lead_out][3]
         return _eigen_transmissions(gam[lead_out], g[np.ix_(s_out, s_in)], gam[lead_in])
 
     def shot_noise(
-        self, energies: ArrayLike, lead_in: int = 0, lead_out: int = 1, eta: float = 1e-9,
+        self, energies: ArrayLike, lead_in: int = 0, lead_out: int = 1, eta: float | None = None,
     ) -> NDArray[np.float64]:
         r'''
         Get the zero-temperature shot-noise factor :math:`\sum_nT_n(1-T_n)`
@@ -1334,7 +1448,8 @@ class Transport():
             Energies.
         lead_in : Integer, default 0
         lead_out : Integer, default 1
-        eta : Positive real, default 1e-9
+        eta : Positive real or None, default None
+            See *transmission_eigenvalues*.
 
         Returns
         -------
@@ -1342,11 +1457,13 @@ class Transport():
         '''
         error_handling.frequencies(energies, 'energies')
         energies = np.atleast_1d(np.asarray(energies, dtype='f8'))
-        return np.array([_noise(self.transmission_eigenvalues(float(e), lead_in, lead_out, eta))
-                                for e in energies])
+        if not (self._exact(eta) and lead_in != lead_out):
+            self.ham  # built once, before the threads
+        return np.array(self._map(lambda e: _noise(self.transmission_eigenvalues(e, lead_in, lead_out, eta)),
+                                  energies), dtype='f8')
 
     def fano_factor(
-        self, energies: ArrayLike, lead_in: int = 0, lead_out: int = 1, eta: float = 1e-9,
+        self, energies: ArrayLike, lead_in: int = 0, lead_out: int = 1, eta: float | None = None,
     ) -> NDArray[np.float64]:
         r'''
         Get the Fano factor of the zero-temperature shot noise,
@@ -1365,7 +1482,8 @@ class Transport():
             Energies.
         lead_in : Integer, default 0
         lead_out : Integer, default 1
-        eta : Positive real, default 1e-9
+        eta : Positive real or None, default None
+            See *transmission_eigenvalues*.
 
         Returns
         -------
@@ -1375,8 +1493,10 @@ class Transport():
         '''
         error_handling.frequencies(energies, 'energies')
         energies = np.atleast_1d(np.asarray(energies, dtype='f8'))
-        return np.array([_fano(self.transmission_eigenvalues(float(e), lead_in, lead_out, eta))
-                                for e in energies])
+        if not (self._exact(eta) and lead_in != lead_out):
+            self.ham  # built once, before the threads
+        return np.array(self._map(lambda e: _fano(self.transmission_eigenvalues(e, lead_in, lead_out, eta)),
+                                  energies), dtype='f8')
 
 
 def _fermi_window(
@@ -1454,7 +1574,7 @@ def slices_from_positions(x: ArrayLike, tol: float = 1e-6) -> list[list[int]]:
     return [sorted(s.tolist()) for s in np.split(order, breaks)]
 
 
-class RecursiveTransport():
+class RecursiveTransport(_EnergyWorkers):
     r'''
     Two-terminal transport through a long quasi-1D device by the recursive
     Green's function method (Thouless and Kirkpatrick 1981; Lee and Fisher
@@ -1574,11 +1694,11 @@ class RecursiveTransport():
         error_handling.frequencies(energies, 'energies')
         energies = np.atleast_1d(np.asarray(energies, dtype='f8'))
         error_handling.positive_real(eta, 'eta')
-        out = np.zeros(len(energies))
-        for n, e in enumerate(energies):
-            g, (gam_l, gam_r) = self._propagator(float(e), eta)
-            out[n] = np.trace(gam_r @ g @ gam_l @ g.conj().T).real
-        return out
+
+        def caroli(e):
+            g, (gam_l, gam_r) = self._propagator(e, eta)
+            return np.trace(gam_r @ g @ gam_l @ g.conj().T).real
+        return np.array(self._map(caroli, energies), dtype='f8')
 
     def transmission_eigenvalues(self, energy: float, eta: float = 1e-9) -> NDArray[np.float64]:
         r'''
@@ -1614,4 +1734,4 @@ class RecursiveTransport():
         '''
         error_handling.frequencies(energies, 'energies')
         energies = np.atleast_1d(np.asarray(energies, dtype='f8'))
-        return np.array([_fano(self.transmission_eigenvalues(float(e), eta)) for e in energies])
+        return np.array(self._map(lambda e: _fano(self.transmission_eigenvalues(e, eta)), energies), dtype='f8')

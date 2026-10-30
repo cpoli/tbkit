@@ -36,6 +36,20 @@ PAULI = {
     'z': np.array([[1., 0.], [0., -1.]], dtype='c16'),
 }
 
+# The symmetry kinds of KSpace.non_hermitian_class, in its argument order:
+# (complex conjugation, transposition, minus sign) of U op(H(k)) U^dagger =
+# +-H(+-k). TRS, PHS, CS, TRS^dagger, PHS^dagger, SLS, pseudo-Hermiticity.
+_NH_KINDS = ((1, 0, 0), (0, 1, 1), (1, 1, 1), (0, 1, 0), (1, 0, 1), (0, 0, 1), (1, 1, 0))
+
+# Names of KSpace.non_hermitian_class equivalent under H -> iH (Kawabata et
+# al. 2019, Tables XII and XIV), mapped to the representative of the 38 classes.
+_NH_CANONICAL = {
+    'D†': 'AI', 'C†': 'AII', 'AII + S-': 'AI + S-', 'DIII + S-+': 'BDI + S-+',
+    'DIII + S--': 'BDI + S--', 'CI + S-+': 'CII + S-+', 'CI + S--': 'CII + S--',
+    'A + η': 'AIII', 'AI + η+': 'BDI†', 'AI + η-': 'DIII†', 'AII + η+': 'CII†',
+    'AII + η-': 'CI†', 'D + η+': 'BDI', 'D + η-': 'DIII', 'C + η+': 'CII', 'C + η-': 'CI',
+}
+
 
 #################################
 # CLASS KSPACE
@@ -562,8 +576,10 @@ class KSpace():
         over many k-points (*get_bands*, *mesh_bands*, *berry_curvature*,
         the Wilson loops, ...). The k-points are split into chunks, each
         diagonalized by one stacked LAPACK call, which releases the GIL, so
-        the chunks run in parallel. The results depend on *workers* only up
-        to rounding (and the phases of the eigenvectors).
+        the chunks run in parallel. *surface_spectral_function* spreads its
+        k-points (and, with fewer k-points than threads, chunks of its
+        energies) over the threads in the same way. The results depend on
+        *workers* only up to rounding (and the phases of the eigenvectors).
 
         Parameters
         ----------
@@ -584,7 +600,8 @@ class KSpace():
         '''
         Private method. *get_ham* at the k-points *ks* (shape (nk, dim)),
         shape (nk, norb, norb): one Bloch sum, unless a subclass overrides
-        *get_ham* (a Floquet model), which is then called per k-point.
+        *get_ham*, which is then called per k-point (a Floquet model
+        overrides *_hams* too, see *floquet.DrivenKSpace._hams*).
         '''
         if type(self).get_ham is KSpace.get_ham:
             return self._bloch_ham(ks @ self.k_basis.T)
@@ -1033,18 +1050,13 @@ class KSpace():
         error_handling.no_overlap(self._overlap_hop)
         n1, n2 = nk
         ks = self._plane_mesh(nk, plane, k_fixed)
-        right = np.zeros((n1, n2, self.norb, len(bands)), 'c16')
-        left = np.zeros_like(right)
-        en = np.zeros((n1, n2, self.norb), 'c16')
-        for i1 in range(n1):
-            for i2 in range(n2):
-                w, vl, vr = LA.eig(self.get_ham(ks[i1, i2]), left=True, right=True)
-                order = np.argsort(w.real if gap == 'real' else w.imag, kind='stable')
-                en[i1, i2] = w[order]
-                r, l = vr[:, order][:, bands], vl[:, order][:, bands]
-                # biorthonormal: <L_m|R_n> = delta_mn
-                right[i1, i2] = r
-                left[i1, i2] = l @ np.linalg.inv(l.conj().T @ r).conj().T
+        w, vr = np.linalg.eig(self._hams(ks.reshape(n1 * n2, -1)))
+        order = np.argsort(w.real if gap == 'real' else w.imag, axis=1, kind='stable')
+        en = np.take_along_axis(w, order, axis=1).reshape(n1, n2, self.norb)
+        vr = np.take_along_axis(vr, order[:, None, :], axis=2)
+        # biorthonormal: <L_m|R_n> = delta_mn, the rows of R^-1
+        right = vr[:, :, bands].reshape(n1, n2, self.norb, len(bands))
+        left = np.linalg.inv(vr).conj().transpose(0, 2, 1)[:, :, bands].reshape(right.shape)
         error_handling.line_gap(en.reshape(-1, self.norb).real if gap == 'real'
                                            else en.reshape(-1, self.norb).imag, bands, gap)
         error_handling.band_continuity(en, bands)
@@ -1054,11 +1066,9 @@ class KSpace():
         # its inverse when the edge is run backwards: <L_a|R_b> and <L_b|R_a>
         # are not conjugate, so using both would spoil the exact
         # cancellation of the shared edges (for RR, 1/U has the phase of U*).
-        link = np.zeros((2, n1, n2), 'c16')
-        for i1 in range(n1):
-            for i2 in range(n2):
-                link[0, i1, i2] = np.linalg.det(bra[i1, i2].conj().T @ ket[(i1 + 1) % n1, i2])
-                link[1, i1, i2] = np.linalg.det(bra[i1, i2].conj().T @ ket[i1, (i2 + 1) % n2])
+        bra_h = bra.conj().swapaxes(-1, -2)
+        link = np.stack([np.linalg.det(bra_h @ np.roll(ket, -1, axis=0)),
+                             np.linalg.det(bra_h @ np.roll(ket, -1, axis=1))])
         flux = (link[0] * np.roll(link[1], -1, axis=0)
                    / (np.roll(link[0], -1, axis=1) * link[1]))
         return self._plane_orientation(plane) * -np.angle(flux)
@@ -2799,7 +2809,7 @@ class KSpace():
 
     def symmetry_error(
         self, op, k_map: str = 'minus', antiunitary: bool = False, anti: bool = False,
-        nk: int = 5, seed: int = 0,
+        nk: int = 5, seed: int = 0, transpose: bool = False,
     ) -> float:
         r'''
         Check a symmetry of the Bloch Hamiltonian,
@@ -2815,7 +2825,10 @@ class KSpace():
         antiunitary with :math:`\mathbf{k}\to-\mathbf{k}` and the minus sign,
         chiral unitary with :math:`\mathbf{k}\to\mathbf{k}` and the minus sign,
         inversion unitary with :math:`\mathbf{k}\to-\mathbf{k}` and the plus
-        sign.
+        sign. With *transpose*, :math:`H^T` replaces :math:`\mathcal{K}H\mathcal{K}^{-1} = H^*`
+        (and :math:`H^\dagger` with *antiunitary* too): the symmetries
+        of non-Hermitian Hamiltonians, where :math:`H^T \neq H^*` (see
+        *non_hermitian_class*).
 
         Parameters
         ----------
@@ -2828,6 +2841,7 @@ class KSpace():
             the (randomly shifted) test mesh.
         seed : Integer, default 0
             Seed of the random shift.
+        transpose : Boolean, default False
 
         Returns
         -------
@@ -2838,6 +2852,7 @@ class KSpace():
         error_handling.boolean(antiunitary, 'antiunitary')
         error_handling.boolean(anti, 'anti')
         error_handling.positive_int(nk, 'nk')
+        error_handling.boolean(transpose, 'transpose')
         rng = np.random.default_rng(seed)
         fracs = np.array(np.meshgrid(*[np.arange(nk) / nk] * self.dim, indexing='ij')).reshape(self.dim, -1).T
         fracs = fracs + rng.uniform(0., 1. / nk, self.dim)
@@ -2848,7 +2863,8 @@ class KSpace():
             gk = -k if k_map == 'minus' else k
             ham = self.get_ham(k)
             u = self._operator(op, k)
-            rhs = u @ (ham.conj() if antiunitary else ham) @ u.conj().T
+            ham = ham.conj() if antiunitary else ham
+            rhs = u @ (ham.T if transpose else ham) @ u.conj().T
             err = max(err, float(np.max(np.abs(self.get_ham(gk) - sign * rhs))))
         return err
 
@@ -2909,6 +2925,164 @@ class KSpace():
                      (1, -1, True): 'CI'}
         return table[(squares[0], squares[1], has_s)]
 
+    def non_hermitian_class(
+        self, time_reversal=None, particle_hole=None, chiral=None, time_reversal_dagger=None,
+        particle_hole_dagger=None, sublattice=None, pseudo_hermiticity=None, canonical: bool = False,
+        nk: int = 5, tol: float = 1e-8,
+    ) -> str:
+        r'''
+        Get the non-Hermitian symmetry class (the "38-fold way", Kawabata,
+        Shiozaki, Ueda and Sato, Phys. Rev. X 9, 041015 (2019); Zhou and Lee,
+        Phys. Rev. B 99, 235112 (2019)) of the model. A non-Hermitian
+        Hamiltonian has :math:`H^* \neq H^T`, so each symmetry of the tenfold
+        way (see *tenfold_class*) splits in two:
+
+        .. math::
+
+            \text{TRS: } U_T H^*(\mathbf{k}) U_T^\dagger = H(-\mathbf{k}),\qquad
+            \text{TRS}^\dagger\text{: } U_{C_+} H^T(\mathbf{k}) U_{C_+}^\dagger = H(-\mathbf{k}),
+
+            \text{PHS: } U_C H^T(\mathbf{k}) U_C^\dagger = -H(-\mathbf{k}),\qquad
+            \text{PHS}^\dagger\text{: } U_{T_-} H^*(\mathbf{k}) U_{T_-}^\dagger = -H(-\mathbf{k}),
+
+            \text{CS: } U_\Gamma H^\dagger(\mathbf{k}) U_\Gamma^\dagger = -H(\mathbf{k}),\qquad
+            \text{SLS: } U_S H(\mathbf{k}) U_S^\dagger = -H(\mathbf{k}),\qquad
+            \text{pH: } U_\eta H^\dagger(\mathbf{k}) U_\eta^\dagger = H(\mathbf{k}).
+
+        Each given operator is first checked (see *symmetry_error*) to be a
+        symmetry. The operators are then closed under products (two
+        symmetries imply their product, which need not be given, as
+        :math:`S = TC` in the tenfold way); a product of two operators of
+        the same kind must agree with the given one up to a phase (no
+        unitary symmetry left: block-diagonalize it first). The class
+        follows from the kinds present, the squares :math:`UU^* = \pm1` of
+        the four antiunitary kinds, and the commutation of
+        :math:`S` (or :math:`\eta`) with them: :math:`U_SU = \epsilon\,UU_S^*`
+        gives the subscript :math:`\epsilon` (for classes with TRS and PHS,
+        the first refers to TRS, the second to PHS; in class AIII it is
+        :math:`U_\Gamma U_S = \epsilon\,U_SU_\Gamma`).
+
+        The name is that of the tables of Kawabata et al.: an AZ class
+        ('AI', ...), an AZ\ :math:`^\dagger` class ('AI†', ...), an AZ class
+        with SLS ('A + S', 'BDI + S-+', ...) when :math:`S` is present, or
+        with pseudo-Hermiticity ('A + η', 'D + η+', ...) when :math:`\eta`
+        is. These 54 names describe 38 classes: :math:`H \to iH` turns TRS
+        into PHS\ :math:`^\dagger` and CS into pH, keeping the topology but
+        exchanging real and imaginary line gaps, so that D† is AI, C† is AII,
+        AII + S- is AI + S-, DIII + S-+ is BDI + S-+, A + η is AIII, and so
+        on (their Tables XII and XIV). Since the tables differ for such
+        partners, the name keeps the symmetries as given unless *canonical*.
+
+        Parameters
+        ----------
+        time_reversal : Matrix :math:`U_T` (TRS), or None (absent)
+        particle_hole : Matrix :math:`U_C` (PHS), or None (absent)
+        chiral : Matrix :math:`U_\Gamma` (CS), or None (absent)
+        time_reversal_dagger : Matrix :math:`U_{C_+}` (TRS†), or None (absent)
+        particle_hole_dagger : Matrix :math:`U_{T_-}` (PHS†), or None (absent)
+        sublattice : Matrix :math:`U_S` (SLS), or None (absent)
+        pseudo_hermiticity : Matrix :math:`U_\eta` (pH), or None (absent)
+        canonical : Boolean, default False
+            Return the representative of
+            the 38 classes instead (AZ names before AZ† ones, η classes as
+            their equivalents without η).
+        nk : Positive integer, default 5
+            See *symmetry_error*.
+        tol : Positive real, default 1e-8
+            Tolerance of the checks.
+
+        Returns
+        -------
+        name : String, for instance 'A', 'AI†', 'AIII + S-', 'BDI + S+-' or 'C + η+'
+
+        Notes
+        -----
+        For a Hermitian model :math:`H^* = H^T` and :math:`H^\dagger = H`,
+        so TRS is also TRS†, PHS also PHS†, CS also SLS, and :math:`\eta = 1`
+        is a pseudo-Hermiticity: a Hermitian class BDI is 'BDI + S++' once
+        all of them are given.
+        '''
+        error_handling.positive_real(tol, 'tol')
+        error_handling.boolean(canonical, 'canonical')
+        k0 = np.zeros(self.dim)
+        given = {}
+        ops = (time_reversal, particle_hole, chiral, time_reversal_dagger, particle_hole_dagger,
+                   sublattice, pseudo_hermiticity)
+        for op, kind in zip(ops, _NH_KINDS):
+            if op is not None:
+                conj, transpose, minus = kind
+                k_map = 'minus' if conj != transpose else 'identity'
+                err = self.symmetry_error(op, k_map, bool(conj), bool(minus), nk, transpose=bool(transpose))
+                error_handling.is_symmetry(err, tol)
+                given[kind] = self._operator(op, k0)
+        group = self._symmetry_group(given, tol)
+        squares = {}
+        for kind, u in group.items():
+            if kind[0] != kind[1]:
+                square = u @ u.conj()
+                error_handling.square(square, tol)
+                squares[kind] = int(np.sign(square[0, 0].real))
+        t_p, c_m, c_p, t_m = (squares.get(kind, 0) for kind in ((1, 0, 0), (0, 1, 1), (0, 1, 0), (1, 0, 1)))
+        az = {(1, 1): 'BDI', (-1, 1): 'DIII', (-1, -1): 'CII', (1, -1): 'CI', (1, 0): 'AI',
+                (-1, 0): 'AII', (0, 1): 'D', (0, -1): 'C'}
+
+        def sign(eps):
+            return '+' if eps > 0 else '-'
+
+        if (0, 0, 1) in group:  # SLS
+            if not squares:
+                if (1, 1, 1) not in group:
+                    name = 'A + S'
+                else:
+                    u_g, u_s = group[(1, 1, 1)], group[(0, 0, 1)]
+                    eps = np.trace((u_s @ u_g).conj().T @ u_g @ u_s).real
+                    name = 'AIII + S' + sign(eps)
+            elif not (c_p or c_m):
+                name = az[(t_p, 0)] + ' + S' + sign(t_p * t_m)
+            elif not (t_p or t_m):
+                name = az[(0, c_m)] + ' + S' + sign(c_p * c_m)
+            else:
+                name = az[(t_p, c_m)] + ' + S' + sign(t_p * t_m) + sign(c_p * c_m)
+        elif (1, 1, 0) in group:  # pseudo-Hermiticity
+            if not squares:
+                name = 'A + η'
+            elif t_p:
+                name = az[(t_p, 0)] + ' + η' + sign(t_p * c_p)
+            else:
+                name = az[(0, c_m)] + ' + η' + sign(t_m * c_m)
+        elif t_p or c_m:
+            name = az[(t_p, c_m)]
+        elif c_p or t_m:
+            name = az[(c_p, t_m)] + '†'
+        else:
+            name = 'AIII' if (1, 1, 1) in group else 'A'
+        return _NH_CANONICAL.get(name, name) if canonical else name
+
+    def _symmetry_group(self, given: dict, tol: float) -> dict:
+        '''
+        Private method. Close the symmetry operators *given* ({kind: matrix},
+        kind = (conjugation, transposition, minus sign), see *_NH_KINDS*)
+        under products, checking that two products of the same kind agree up
+        to a phase. Unitary kinds come back normalized to :math:`U^2 = 1`.
+        '''
+        group = {(0, 0, 0): np.eye(self.norb, dtype='c16')}
+        todo = list(given.items())
+        while todo:
+            kind, u = todo.pop()
+            if kind in group:
+                error_handling.symmetry_algebra(group[kind], u, tol)
+                continue
+            group[kind] = u
+            for other, v in list(group.items()):
+                product = tuple(a ^ b for a, b in zip(kind, other))
+                # first one, then the other: U_2 f(U_1), f = conjugation for the antiunitary kinds
+                todo.append((product, v @ (u.conj() if other[0] != other[1] else u)))
+                todo.append((product, u @ (v.conj() if kind[0] != kind[1] else v)))
+        for kind, u in group.items():
+            if kind[0] == kind[1]:
+                group[kind] = u / np.sqrt((u @ u)[0, 0])
+        return group
+
     def quantum_geometric_tensor(
         self, bands: int | list[int], k: ArrayLike, dk: float = 1e-4, positions: bool = True,
     ) -> NDArray[np.complex128]:
@@ -2921,7 +3095,9 @@ class KSpace():
                        = \sum_{n\in\mathrm{bands}}\langle\partial_\mu u_n|(1-P)|\partial_\nu u_n\rangle\, ,
 
         with :math:`P(\mathbf{k})` the projector on the bands (gauge
-        invariant, so degeneracies within the group are harmless). Its real
+        invariant, so degeneracies within the group are harmless), from
+        central differences. Many k-points are evaluated at once, with one
+        batched diagonalization (see *set_workers*). Its real
         part is the quantum metric :math:`g_{\mu\nu}` (Provost and Vallee,
         1980), minus twice its imaginary part the Berry curvature
         :math:`\Omega_{\mu\nu} = -2\,\mathrm{Im}\,Q_{\mu\nu}` (the convention of
@@ -2931,7 +3107,8 @@ class KSpace():
         Parameters
         ----------
         bands : Band index, or list of band indices
-        k : k point (see *get_ham*)
+        k : k point (see *get_ham*), or real array of shape (nk, dim)
+            One or many k-points.
         dk : Positive real, default 1e-4
             Finite-difference step.
         positions : Boolean, default True
@@ -2944,30 +3121,26 @@ class KSpace():
         Returns
         -------
         Q : Complex ndarray, shape (dim, dim), in the k coordinates of *get_ham*
+            Shape (nk, dim, dim) for many k-points.
         '''
         if isinstance(bands, int):
             bands = [bands]
         error_handling.band_indices(bands, self.norb)
-        error_handling.k_vector(k, 'k', self.dim)
+        error_handling.k_points(k, 'k', self.dim)
         error_handling.positive_real(dk, 'dk')
         error_handling.boolean(positions, 'positions')
         k = np.asarray(k, dtype='f8')
-        tau = self.orbital_positions()
-
-        def proj(kk):
-            v = self._subspace(kk, bands)
-            if positions:
-                v = np.exp(-1j * tau @ (self.k_basis @ kk))[:, None] * v
-            return v @ v.conj().T
-
-        p0 = proj(k)
-        dp = []
-        for mu in range(self.dim):
-            e = np.zeros(self.dim)
-            e[mu] = dk
-            dp.append((proj(k + e) - proj(k - e)) / (2 * dk))
-        return np.array([[np.trace(p0 @ dp[mu] @ dp[nu]) for nu in range(self.dim)]
-                               for mu in range(self.dim)])
+        ks = np.atleast_2d(k)
+        # k, then k + dk e_mu and k - dk e_mu for every mu
+        shifts = np.concatenate([np.zeros((1, self.dim)), dk * np.eye(self.dim), -dk * np.eye(self.dim)])
+        kk = (ks[:, None, :] + shifts[None]).reshape(-1, self.dim)
+        v = self._subspaces(kk, bands)
+        if positions:
+            v = np.exp(-1j * (kk @ self.k_basis.T) @ self.orbital_positions().T)[:, :, None] * v
+        proj = (v @ v.conj().transpose(0, 2, 1)).reshape(len(ks), 1 + 2 * self.dim, self.norb, self.norb)
+        dp = (proj[:, 1:1 + self.dim] - proj[:, 1 + self.dim:]) / (2 * dk)
+        q = np.einsum('kab,kmbc,knca->kmn', proj[:, 0], dp, dp)
+        return q if k.ndim == 2 else q[0]
 
     def surface_spectral_function(
         self, ks: ArrayLike, energies: ArrayLike, direction: int, side: int = 1,
@@ -3068,12 +3241,24 @@ class KSpace():
                         out[:, p, :, q, :] = blocks[m]
             return out.reshape(nk, width * norb, width * norb)
         h0, alpha, beta = layer(0), layer(width), layer(-width)
-        spec = np.empty((nk, len(energies)))
-        for n in range(nk):
-            gs, gb = _green_surface_bulk(energies + 1j * eta, h0[n], alpha[n], beta[n], 1e-12,
+        # one task per k-point and chunk of energies, enough tasks for every thread
+        n_e = max(1, min(len(energies), -(-self.workers // nk)))
+        tasks = [(n, part) for n in range(nk) for part in np.array_split(np.arange(len(energies)), n_e)]
+
+        def task(n_part):
+            n, part = n_part
+            gs, gb = _green_surface_bulk(energies[part] + 1j * eta, h0[n], alpha[n], beta[n], 1e-12,
                                                        max_iter, 'surface_spectral_function')
             g = gb if bulk else gs
-            spec[n] = -np.trace(g[:, :norb, :norb], axis1=1, axis2=2).imag / PI
+            return -np.trace(g[:, :norb, :norb], axis1=1, axis2=2).imag / PI
+        if self.workers > 1 and len(tasks) > 1:
+            with ThreadPoolExecutor(min(self.workers, len(tasks))) as pool:
+                out = list(pool.map(task, tasks))
+        else:
+            out = [task(t) for t in tasks]
+        spec = np.empty((nk, len(energies)))
+        for (n, part), a in zip(tasks, out):
+            spec[n, part] = a
         return spec
 
     # ------------------------------------------------------------------

@@ -466,6 +466,16 @@ class TestBatchedDiagonalization(unittest.TestCase):
                 self.assertTrue(np.allclose(e, ref[np.argsort(ref.real)]))
                 self.assertTrue(np.allclose(h @ v, s @ v * e[None]))
 
+    def test_get_ham_override(self):
+        # a subclass that redefines get_ham is evaluated point by point
+        class Shifted(KSpace):
+            def get_ham(self, k, **params):
+                return super().get_ham(k, **params) + 0.5 * np.eye(self.norb)
+        hal = haldane(M=0.3)
+        shifted = haldane(M=0.3)
+        shifted.__class__ = Shifted
+        self.assertTrue(np.allclose(shifted.get_bands(self.ks), hal.get_bands(self.ks) + 0.5))
+
     def test_workers(self):
         hal = haldane(M=0.3)
         serial = hal.get_bands(self.ks, eigenvec=True), hal.berry_curvature(0, 12), hal.wannier_centers(0, 30)

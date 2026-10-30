@@ -7,7 +7,7 @@ import numpy as np
 from scipy.optimize import brentq
 
 import tbkit.lattices as lattices
-from tbkit.bdg import s_wave_gap, GapResult
+from tbkit.bdg import s_wave_gap, superfluid_weight, GapResult
 from tbkit.kspace import KSpace, PAULI
 from tbkit.meanfield import hubbard_mean_field, hubbard_mean_field_noncollinear, NonCollinearResult
 
@@ -173,6 +173,63 @@ class TestGapEquation(unittest.TestCase):
         self.assertRaises(ValueError, s_wave_gap, h, 1., 0., 0., np.ones(3))
         self.assertRaises(TypeError, s_wave_gap, h, 1., 0., 0., 'x')
         self.assertRaises(RuntimeError, s_wave_gap, h, 2., -0.5, 0., 0.1, 1., 1e-14, 2)
+
+
+def dimerized_lieb(dl=0.3, t=-1.):
+    ks = KSpace(lattices.lieb())
+    ks.set_hopping([{'i': 0, 'j': 1, 'R': (0, 0), 't': t * (1 + dl)}, {'i': 0, 'j': 1, 'R': (-1, 0), 't': t * (1 - dl)},
+                            {'i': 0, 'j': 2, 'R': (0, 0), 't': t * (1 + dl)}, {'i': 0, 'j': 2, 'R': (0, -1), 't': t * (1 - dl)}])
+    return ks
+
+
+class TestSuperfluidWeight(unittest.TestCase):
+
+    def test_bcs_chain(self):
+        # one band: D = <eps''(k) (1 - xi/E)> (n/m), lowered by temperature
+        chain = KSpace(lattices.chain())
+        chain.set_hopping([{'i': 0, 'j': 0, 'R': (1,), 't': -1.}])
+        delta, mu = 0.2, -0.5
+        k = 2 * np.pi * np.arange(400) / 400
+        xi = -2 * np.cos(k) - mu
+        expected = np.mean(2 * np.cos(k) * (1 - xi / np.hypot(xi, delta)))
+        d = superfluid_weight(chain, delta, mu=mu, nk=400)
+        self.assertEqual(d.shape, (1, 1))
+        self.assertLess(abs(d[0, 0] - expected), 1e-6)
+        self.assertLess(abs(superfluid_weight(chain, delta, mu=mu, nk=400, temperature=0.01)[0, 0] - expected), 1e-6)
+        self.assertLess(superfluid_weight(chain, delta, mu=mu, nk=400, temperature=0.1)[0, 0], 0.6 * expected)
+
+    def test_flat_band_peotta_torma(self):
+        # isolated flat band: D = 8 Delta sqrt(nu(1-nu)) int g d^2k/(2 pi)^2
+        ks = dimerized_lieb()
+        nk = 20
+        _, kpts = ks.mesh_grid(nk)
+        g = np.mean([ks.quantum_geometric_tensor(1, k).real for k in kpts], axis=0) / 4.
+        delta, mu = 0.005, 0.002
+        nu = (1 + mu / np.hypot(mu, delta)) / 2
+        d = superfluid_weight(ks, delta, mu=mu, nk=nk)
+        np.testing.assert_allclose(d, d.T, atol=1e-12)
+        np.testing.assert_allclose(d, 8 * delta * np.sqrt(nu * (1 - nu)) * g, rtol=0.01)
+        # an array of equal pairings is the same
+        np.testing.assert_allclose(superfluid_weight(ks, np.full(3, delta), mu=mu, nk=nk), d, atol=1e-12)
+
+    def test_square_isotropic(self):
+        sq = KSpace(lattices.square())
+        sq.set_hopping([{'i': 0, 'j': 0, 'R': (1, 0), 't': -1.}, {'i': 0, 'j': 0, 'R': (0, 1), 't': -1.}])
+        d = superfluid_weight(sq, 0.3, mu=-1., nk=(30, 30))
+        self.assertLess(abs(d[0, 0] - d[1, 1]), 1e-8)
+        self.assertLess(abs(d[0, 1]), 1e-8)
+        self.assertGreater(d[0, 0], 0.)
+
+    def test_errors(self):
+        ks = dimerized_lieb()
+        self.assertRaises(TypeError, superfluid_weight, 'lieb', 0.1)
+        self.assertRaises(ValueError, superfluid_weight, KSpace(lattices.chain(), spin=True), 0.1)
+        self.assertRaises(ValueError, superfluid_weight, ks, np.ones(2))
+        self.assertRaises(ValueError, superfluid_weight, ks, 0.1, temperature=-1.)
+        self.assertRaises(ValueError, superfluid_weight, ks, 0.1, dq=0.)
+        nh = KSpace(lattices.chain())
+        nh.set_hopping([{'i': 0, 'j': 0, 'R': (1,), 't': 1.}], hermitian=False)
+        self.assertRaises(ValueError, superfluid_weight, nh, 0.1)
 
 
 if __name__ == '__main__':

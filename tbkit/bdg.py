@@ -395,3 +395,115 @@ def s_wave_gap(
     else:
         error_handling.converged(False, 's_wave_gap')
     return GapResult(new, en, vec, it)
+
+
+def superfluid_weight(
+    ks, delta: complex | NDArray, mu: float = 0., nk: int | tuple[int, ...] = 60,
+    temperature: float = 0., dq: float = 1e-3,
+) -> NDArray[np.float64]:
+    r'''
+    Get the superfluid weight of an s-wave superconductor,
+    :math:`D_{\mu\nu} = \partial^2\Omega/\partial A_\mu\partial A_\nu` at
+    :math:`\mathbf{A} = 0` (:math:`\hbar = e = 1`): the curvature of the
+    grand potential per unit volume in a uniform vector potential, which
+    gives the supercurrent :math:`j_\mu = -D_{\mu\nu}A_\nu` (London). *ks* is
+    the spin-up model; the spin-down electrons are its time-reversed
+    partners, :math:`h_\downarrow(\mathbf{k}) = h(-\mathbf{k})^*`, so the
+    Kramers pairs :math:`(\mathbf{k}\uparrow, -\mathbf{k}\downarrow)` pair
+    even when *ks* is a Chern band (for real hoppings, the spin-independent
+    model). In the Nambu basis
+    :math:`(c_{\mathbf{k}\uparrow}, c^\dagger_{-\mathbf{k}\downarrow})`,
+
+    .. math::
+
+        H_{\mathbf{A}}(\mathbf{k}) = \begin{pmatrix} h_{\mathbf{A}}(\mathbf{k})-\mu & \Delta \\
+        \Delta^* & -[h_{-\mathbf{A}}(\mathbf{k})-\mu]\end{pmatrix}\, ,\qquad
+        \Omega(\mathbf{A}) = \frac{1}{N_kV}\sum_{\mathbf{k}}\Big[\mathrm{Tr}\,
+        [h_{-\mathbf{A}}(\mathbf{k})-\mu] - T\sum_n\ln\big(1 + e^{-E_n/T}\big)\Big]\, ,
+
+    with :math:`h_{\mathbf{A}}` the Peierls Hamiltonian of
+    *get_ham_peierls* (phases on the bond vectors, orbital positions
+    included), :math:`\Delta = \mathrm{diag}(\Delta_i)` the onsite pairing,
+    :math:`E_n` the eigenvalues and :math:`V` the cell volume.
+    :math:`\Delta` is held fixed (not re-solved in the field), which is
+    exact when symmetry fixes it, e.g. uniform pairing. The derivatives are
+    central differences in :math:`\mathbf{A}`.
+
+    For a dispersive band it is the conventional :math:`n/m`. For an
+    isolated flat band at filling :math:`\nu`, with uniform :math:`\Delta`
+    small compared to the band gaps, there is no dispersion, and
+    :math:`D` is purely geometric (Peotta and Törmä, Nat. Commun. 6, 8944
+    (2015)),
+
+    .. math::
+
+        D_{\mu\nu} = 8\Delta\sqrt{\nu(1-\nu)}\int\frac{d^d\mathbf{k}}{(2\pi)^d}\,g_{\mu\nu}(\mathbf{k})
+        \, ,\qquad \mathrm{Tr}\,D \ge \frac{4\Delta}{\pi}\sqrt{\nu(1-\nu)}\,|C|\ \ (2D)\, ,
+
+    with :math:`g` the quantum metric of the band (see
+    *KSpace.quantum_geometric_tensor*) and :math:`C` its Chern number.
+
+    Parameters
+    ----------
+    ks : **KSpace** instance (Hermitian, orthogonal basis, spinless)
+        Spin-up model.
+    delta : Number, or array of norb numbers
+        Onsite pairing :math:`\Delta_i`.
+    mu : Real number, default 0
+        Chemical potential.
+    nk : Positive integer, or tuple of *dim* positive integers, default 60
+        k-mesh (see *mesh_grid*).
+    temperature : Positive real or zero, default 0
+    dq : Positive real, default 1e-3
+        Finite-difference step in :math:`\mathbf{A}`.
+
+    Returns
+    -------
+    D : Real ndarray, shape (dim, dim), in the k coordinates of *get_ham*
+
+    Examples
+    --------
+    Example usage::
+
+        # BCS chain: D = (1/2 pi) int dk 2t cos k (1 - xi/E)
+        chain = KSpace(lattices.chain())
+        chain.set_hopping([{'i': 0, 'j': 0, 'R': (1,), 't': -1.}])
+        d = superfluid_weight(chain, 0.2, mu=-0.5)
+    '''
+    from tbkit.kspace import KSpace
+    error_handling.kspace(ks, KSpace)
+    error_handling.hermitian_kspace(ks.is_hermitian(), ks._overlap_hop)
+    error_handling.spin_up_model(ks.spin)
+    error_handling.pairing_amplitudes(delta, ks.norb, 'delta')
+    error_handling.real_number(mu, 'mu')
+    error_handling.nk(nk, ks.dim)
+    error_handling.positive_real_zero(temperature, 'temperature')
+    error_handling.positive_real(dq, 'dq')
+    n, dim = ks.norb, ks.dim
+    k_cart = ks.mesh_grid(nk)[1] @ ks.k_basis.T
+    diag = np.arange(n)
+    pair = np.broadcast_to(np.asarray(delta, dtype='c16'), (n,))
+    volume = (2 * np.pi) ** dim / abs(np.linalg.det(ks.rec_vec_k))
+
+    def omega(q):
+        A = ks.k_basis @ q
+        hole = ks._bloch_ham(k_cart, A=-A) - mu * np.eye(n)
+        big = np.zeros((len(k_cart), 2 * n, 2 * n), 'c16')
+        big[:, :n, :n] = ks._bloch_ham(k_cart, A=A) - mu * np.eye(n)
+        big[:, n:, n:] = -hole
+        big[:, diag, diag + n] = pair
+        big[:, diag + n, diag] = pair.conj()
+        en = np.linalg.eigvalsh(big)
+        free = (-temperature * np.logaddexp(0., -en / temperature) if temperature > 0
+                   else np.minimum(en, 0.))
+        return (np.trace(hole, axis1=1, axis2=2).real.sum() + free.sum()) / (len(k_cart) * volume)
+
+    step = dq * np.eye(dim)
+    w0 = omega(np.zeros(dim))
+    d = np.zeros((dim, dim))
+    for a in range(dim):
+        d[a, a] = (omega(step[a]) - 2 * w0 + omega(-step[a])) / dq ** 2
+        for b in range(a):
+            d[a, b] = d[b, a] = (omega(step[a] + step[b]) - omega(step[a] - step[b])
+                                      - omega(step[b] - step[a]) + omega(-step[a] - step[b])) / (4 * dq ** 2)
+    return d

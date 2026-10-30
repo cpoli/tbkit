@@ -681,7 +681,24 @@ class DrivenKSpace:
         H_F : Complex ndarray, shape (norb, norb)
         '''
         error_handling.k_vector(k, 'k', self.dim)
-        return _heff(self.get_evolution(k), self.period, self.epsilon)
+        return self._hams(np.asarray(k, dtype='f8')[None])[0]
+
+    def _hams(self, ks: NDArray[np.float64]) -> NDArray[np.complex128]:
+        '''
+        Private method. *get_ham* at the k-points *ks* (shape (nk, dim)): the
+        evolutions of all the k-points advance together, one stacked
+        exponential per time step (the steps of *_grid_steps*), in chunks of
+        bounded memory.
+        '''
+        chunk = max(1, 400000 // (self.norb ** 2 * self.n_steps))
+        out = []
+        for c0 in range(0, len(ks), chunk):
+            hams, durations = self._grid_steps(ks[c0:c0 + chunk])
+            u = np.broadcast_to(np.eye(self.norb, dtype='c16'), (len(hams), self.norb, self.norb))
+            for s, dt in enumerate(durations):
+                u = LA.expm(-1j * dt * hams[:, s]) @ u
+            out += [_heff(uk, self.period, self.epsilon) for uk in u]
+        return np.array(out, dtype='c16').reshape(len(ks), self.norb, self.norb)
 
     def is_hermitian(self) -> bool:
         '''

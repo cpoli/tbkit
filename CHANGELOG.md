@@ -1,5 +1,89 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- **Threads over energies.** `Transport.set_workers(n)` and
+  `RecursiveTransport.set_workers(n)` spread the energies of
+  `transmission`, `shot_noise`, `fano_factor` and the Fermi-window
+  integrals (`conductance`, `thermoelectric`, `conductance_matrix` and
+  `four_terminal_resistance` at a finite temperature) over `n` threads
+  (`concurrent.futures`, as `KSpace.set_workers` does for k-points).
+  `KSpace.surface_spectral_function` now uses the `KSpace` workers too,
+  one task per k-point, with the energies split into chunks when there
+  are fewer k-points than threads. The default stays one thread, with
+  unchanged results.
+- **`quantum_geometric_tensor` over many k-points.** `k` can be an
+  array of shape (nk, dim); the result then has shape (nk, dim, dim).
+  A single k-point still returns one (dim, dim) tensor.
+- **Superfluid weight.** `bdg.superfluid_weight(ks, delta, mu, nk,
+  temperature)` gives the superfluid weight tensor of an s-wave
+  superconductor: the curvature of the BdG grand potential per unit
+  volume in a uniform vector potential (Peierls phases on the bond
+  vectors, fixed onsite pairing, the spin-down electrons the
+  time-reversed partners of `ks`). It is n/m for a dispersive band and,
+  for an isolated flat band, the quantum-metric formula of Peotta and
+  Törmä (2015). `error_handling.pairing_amplitudes` takes the name of
+  the parameter it checks.
+- **History: flat-band superconductivity** (2015, Peotta-Törmä) in
+  `interactions_breakthroughs.rst`, with its own asserted example,
+  `superconductivity/plot_flat_band_superconductivity.py` (dimerized
+  Lieb flat band and the Harper-Hubbard Chern band). The passing mention
+  in the quantum-metric entry now points to it.
+- **Non-Hermitian symmetry classes.** `KSpace.non_hermitian_class`
+  names the 38-fold class (Kawabata, Shiozaki, Ueda and Sato 2019; Zhou
+  and Lee 2019) from the operators of time reversal, particle-hole and
+  chiral symmetry, their transposed or conjugated partners (TRS†, PHS†),
+  sublattice symmetry and pseudo-Hermiticity. It checks each one, closes
+  them under products (refusing a leftover unitary symmetry), and
+  returns the name in Kawabata et al.'s tables (for example 'AI†',
+  'BDI + S-+', 'D + η+'), or with `canonical=True` the representative of
+  the 38 classes. `KSpace.symmetry_error` takes `transpose=True` for
+  symmetries with H^T (H^dagger together with `antiunitary`).
+- **History: the 38-fold way** (2018/2019) in `driven_breakthroughs.rst`,
+  with its own asserted example, `non_hermitian/plot_38_fold_way.py`.
+
+### Changed
+
+- **Batched per-k loops.** `biorthogonal_berry_curvature` (and
+  `biorthogonal_chern_number`) diagonalizes the whole mesh with one
+  stacked `eig`, takes the left eigenvectors from the inverse of the
+  right ones and computes the link determinants as stacked arrays.
+  `quantum_geometric_tensor` gets every projector it needs, at k and at
+  k +- dk, from one batched diagonalization. The Floquet `get_ham` of
+  `DrivenKSpace` and `FloquetKSpace` (and so their bands, Berry
+  curvature and Chern numbers) evolves all the k-points together, one
+  stacked matrix exponential per time step, instead of one evolution
+  per k-point. Results agree with the old loops to 5e-12 or better.
+  Speedups on one thread: 7x for the biorthogonal curvature of a
+  non-Hermitian Haldane model (60 x 60 mesh), 60x for the tensor over
+  a 30 x 30 mesh and 30x for H_F of driven graphene at 200 k-points
+  (60 time steps).
+- **The rest of `Transport` on the sparse factorization.**
+  `transmission_matrix`, `conductance_matrix`, `four_terminal_resistance`,
+  `bond_currents`, `local_currents`, `transmission_eigenvalues`,
+  `shot_noise` and `fano_factor` now default to `eta=None`, as
+  `transmission` already did: the transmissions and transmission
+  eigenvalues come from the blocks of the scattering matrix, and the
+  currents from the scattering states (`G Gamma_q G^+ = sum_a psi_a
+  psi_a^+`, on the bonds of the sparse device only), all from one sparse
+  factorization per energy. The dense matrix is never built. Before,
+  they inverted the dense device with Sancho-Rubio leads at
+  `eta = 1e-9`. The results agree with that path to O(eta), about 1e-7
+  on the Hall bar of the tests, and are now exact up to the band edges
+  of the leads: the rows of the conductance matrix sum to zero to
+  1e-10, not 1e-6, and the Hall plateau R_xy = 1 comes out within 5e-10
+  instead of 2e-7. On a disordered 60 x 20 strip, the local currents,
+  Fano factor and conductance matrix at one energy take 0.044 s
+  instead of 0.76 s. A 400 x 50 strip (20,000 sites, 0.85 s), whose
+  dense Green's function would take 6.4 GB, now fits.
+  `transmission_eigenvalues` keeps its length, min(len(sites_in),
+  len(sites_out)), with the closed channels as zeros. Passing an `eta`
+  keeps the dense Caroli path. Non-Hermitian leads fall back to it with
+  `eta = 1e-9`, as does `lead_in == lead_out` for the eigenvalues and
+  the noise.
+
 ## 0.6.2 -- 2026-10-29
 
 ### Changed

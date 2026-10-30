@@ -9,4 +9,5 @@ in a Zeeman field. The self-consistent BCS gap equation in real space,
 with its universal ratio Delta(0)/T_c = 1.764 and the proximity effect.
 Andreev reflection at a normal-superconductor junction and the BTK
 conductance, from the scattering matrix resolved into electrons and
-holes.
+holes. The superfluid weight of flat bands, set by the quantum metric
+(Peotta-Törmä).

@@ -7,7 +7,9 @@ real up to a threshold, the exceptional points at which eigenvalues
 the eigenbasis has been skewed, and the selective amplification of a
 topological edge mode. With non-reciprocal hoppings: the non-Hermitian
 skin effect, its spectral winding number, and the generalized Brillouin
-zone that restores the bulk-boundary correspondence. In two dimensions:
+zone that restores the bulk-boundary correspondence. The 38 symmetry
+classes of non-Hermitian bands, and how reciprocity forbids the
+spectral winding. In two dimensions:
 exceptional points in momentum space, their charges (eigenvalue
 vorticity and discriminant winding), the pair of EPs and the bulk Fermi
 arc into which a Dirac point splits, exceptional rings, encircling an EP
