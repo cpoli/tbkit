@@ -76,11 +76,8 @@ jobs:
       - run: pip install "ruff==0.16.*"
       - run: ruff check tbkit
 
-  # Advisory until the existing hints pass: most of the current errors
-  # come from the strictness of the NumPy stubs, not from wrong types.
   typecheck:
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7

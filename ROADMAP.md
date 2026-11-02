@@ -12,8 +12,8 @@ scalability. The scattering matrix, conservation laws, finite
 temperature and automatic lead attachment, including the completion of
 ragged interfaces, are in place (see Done). What remains for mesoscopic
 device work is, above all, scale (item 1). Until then, Kwant remains the
-right tool for large transport calculations. Items 3 and 5 are smaller,
-and item 4 (interactions) holds the next additions on the physics side.
+right tool for large transport calculations. Item 3 is smaller, and
+item 4 (interactions) holds the next additions on the physics side.
 
 Each item lists why it matters, the current state, and a sketch of the
 approach. The project conventions (validation in `error_handling.py`, 100%
@@ -74,17 +74,6 @@ torus.
 - Self-consistent Hartree-Poisson for gated devices, on the sparse
   scattering states (`Transport.ldos`).
 
-## 5. Project infrastructure
-
-- **Activate releases and the DOI**: the workflow is in place
-  (`.github/workflows/release.yml`, see Done); register it as a PyPI
-  trusted publisher, create the `pypi` environment on GitHub, and enable
-  the repository on Zenodo, then add the DOI to `CITATION.cff` and the
-  README.
-- **Make the type check blocking**: `mypy tbkit` reports about 260 errors,
-  mostly from the strictness of the NumPy stubs. Fix them module by module,
-  then drop `continue-on-error` from the `typecheck` job.
-
 ## Done
 
 - **Longer sublattice tags** (unreleased): tags of up to 8 characters
@@ -94,8 +83,15 @@ torus.
   `'ab'` strings, `'U1'` arrays for `add_sites` and old archives keep
   working.
 
+- **Blocking type check and live releases** (unreleased): `mypy tbkit`
+  passes (the NumPy >= 2.3 stub errors were fixed module by module), so
+  the `typecheck` job no longer has `continue-on-error`. The release
+  workflow is active: PyPI trusted publishing, the `pypi` environment and
+  Zenodo, which published 0.7.0 with its DOI (in `CITATION.cff` and the
+  README).
+
 - **38-fold non-Hermitian symmetry classes history breakthrough**
-  (unreleased): `KSpace.non_hermitian_class` names the class of
+  (0.7.0): `KSpace.non_hermitian_class` names the class of
   Kawabata, Shiozaki, Ueda and Sato (2019) from up to seven operators
   (TRS, PHS, CS and their dagger partners, SLS, pseudo-Hermiticity),
   closed under products, as `tenfold_class` does for the Hermitian
@@ -106,14 +102,14 @@ torus.
   This was the last candidate of the former item 6 (history
   breakthroughs); interactions and driven have 12 entries each.
 
-- **Flat-band superconductivity history breakthrough** (unreleased):
+- **Flat-band superconductivity history breakthrough** (0.7.0):
   `bdg.superfluid_weight` (curvature of the BdG grand potential in a
   vector potential) and the 2015 Peotta-Törmä entry in
   `interactions_breakthroughs.rst` (now 12), with its asserted example
   `superconductivity/plot_flat_band_superconductivity.py`. The passing
   mention in the 1980 quantum-metric entry moved into it.
 
-- **The rest of `Transport` on the sparse factorization** (unreleased):
+- **The rest of `Transport` on the sparse factorization** (0.7.0):
   `transmission_matrix`, `conductance_matrix`,
   `four_terminal_resistance`, `bond_currents`, `local_currents`,
   `transmission_eigenvalues`, `shot_noise` and `fano_factor` default to
@@ -121,13 +117,13 @@ torus.
   energy, never the dense device. An explicit `eta` keeps the dense
   Caroli path.
 
-- **Batched per-k loops** (unreleased): `biorthogonal_berry_curvature`
+- **Batched per-k loops** (0.7.0): `biorthogonal_berry_curvature`
   (one stacked `eig` and link determinants over the mesh),
   `quantum_geometric_tensor` (one batched diagonalization, now also over
   many k-points) and the Floquet `get_ham` (`DrivenKSpace._hams`: all
   k-points evolved together, one stacked exponential per step).
 
-- **Threads over energies** (unreleased): `Transport.set_workers` and
+- **Threads over energies** (0.7.0): `Transport.set_workers` and
   `RecursiveTransport.set_workers` run the energies of `transmission`,
   `shot_noise`, `fano_factor` and the Fermi-window integrals in a
   `ThreadPoolExecutor`; `surface_spectral_function` spreads its k-points

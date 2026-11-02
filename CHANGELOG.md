@@ -18,6 +18,12 @@
   arrays (any tag field from `'U1'` to `'U8'`), and `load_model` reads
   archives written with the old dtypes.
 
+### Changed
+
+- **The type check is blocking.** `mypy tbkit` has passed since the NumPy
+  >= 2.3 stub fixes, so the CI job `typecheck` no longer runs with
+  `continue-on-error`: a type error now fails CI.
+
 ## 0.7.0 -- 2026-10-30
 
 ### Added

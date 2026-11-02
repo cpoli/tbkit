@@ -24,7 +24,7 @@ cd docs && make html                                 # re-executes every example
 - The suite has 100% line coverage of `tbkit` (published report linked from the README). New code needs tests that keep it there.
 - `tests/conftest.py` forces the matplotlib `Agg` backend.
 - CI also runs the suite on the oldest NumPy, SciPy and matplotlib that `pyproject.toml` allows (job `test-minimum-versions`, Python 3.10). Don't use NumPy 2-only APIs (`np.trapezoid`, `import numpy.char`): use `scipy.integrate.trapezoid` and `np.char`.
-- Ruff lints `tbkit/` (rules in `pyproject.toml`, CI job `lint`: `ruff check tbkit`). No formatter is configured. mypy runs in CI as an advisory job (`typecheck`, `continue-on-error`) until the existing hints pass.
+- Ruff lints `tbkit/` (rules in `pyproject.toml`, CI job `lint`: `ruff check tbkit`). No formatter is configured. mypy runs in CI (job `typecheck`: `mypy tbkit`) and must pass.
 - CI job `docs` builds the docs (re-running every gallery example) and runs `paper/listings/*.py`.
 - `paper/` holds the SciPost Physics Codebases manuscript and everything behind it (Kwant/PythTB cross-checks, benchmarks, figures); see `paper/README.md`. Its scripts need Kwant and PythTB (`paper/environment.yml`), so they are not part of CI, except the listings.
 - The default branch is `master`.
