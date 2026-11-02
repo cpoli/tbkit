@@ -31,7 +31,7 @@ def sites(pos: NDArray[np.float64], tags: NDArray, index: NDArray) -> NDArray:
         Site indices.
     '''
     names = ('x', 'y', 'z')[:pos.shape[1]]
-    rec = np.zeros(len(pos), dtype=[(name, 'f8') for name in names] + [('tag', 'U1'), ('index', 'i8')])
+    rec = np.zeros(len(pos), dtype=[(name, 'f8') for name in names] + [('tag', 'U{}'.format(error_handling.TAG_LEN)), ('index', 'i8')])
     for k, name in enumerate(names):
         rec[name] = pos[:, k]
     rec['tag'] = tags

@@ -168,7 +168,7 @@ class TestWannier90(unittest.TestCase):
         self.assertRaises(ValueError, read_wannier90, good, prim_vec=[(1., 0.), (0., 1.)])
         self.assertRaises(ValueError, read_wannier90, good, prim_vec=[(1., 0., 0.), (1., 0., 0.), (0., 0., 1.)])
         self.assertRaises(ValueError, read_wannier90, good, prim_vec=pv, positions=np.zeros((2, 3)))
-        self.assertRaises(TypeError, read_wannier90, good, prim_vec=pv, tags=['ab'])
+        self.assertRaises(TypeError, read_wannier90, good, prim_vec=pv, tags=['abcdefghi'])
         self.assertRaises(ValueError, read_wannier90, good, prim_vec=pv, tags=['a', 'b'])
         # a 2D model must not hop along R3, and its cell must be planar
         self.assertRaises(ValueError, read_wannier90, good, prim_vec=[(1., 0.), (0., 1.)], dim=2)

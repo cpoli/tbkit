@@ -26,7 +26,7 @@ from numpy.typing import NDArray
 
 import tbkit.error_handling as error_handling
 import tbkit.values as values
-from tbkit.lattice import Lattice
+from tbkit.lattice import Lattice, TAG_LEN, _tag_pair
 from tbkit.system import ATOL, _upper
 
 
@@ -183,7 +183,7 @@ def _bonds(lat: Lattice, n_max: int) -> NDArray:
     _, _, tags = _geometry(lat)
     dim = len(lat.prim_vec)
     bonds = np.zeros(int(keep.sum()), dtype=[('n', 'u2'), ('i', 'u4'), ('j', 'u4'), ('R', 'i8', (dim,)),
-                                                          ('ang', 'f8'), ('tag', 'U2'), ('dis', 'f8')])
+                                                          ('ang', 'f8'), ('tag', 'U{}'.format(2 * TAG_LEN)), ('dis', 'f8')])
     bonds['n'] = n[keep] + 1
     bonds['i'], bonds['j'], bonds['R'] = i[keep], j[keep], R[keep]
     bonds['ang'] = np.maximum(ang[keep], 0.)
@@ -213,8 +213,9 @@ def neighbour_hoppings(
           An angle in :math:`[0, 180)` selects the bonds oriented as they
           are stored (see *neighbour_bonds*), an angle in :math:`[-180, 0)`
           the same bonds oriented the other way (from *j* to *i*).
-        * 'tag': String of length 2. Only the bonds from a site of the
-          first sublattice to one of the second, in the orientation above.
+        * 'tag': String of two one-character tags (``'ab'``), or a pair of
+          tags (``('Mo', 'S')``). Only the bonds from a site of the first
+          sublattice to one of the second, in the orientation above.
         * 't': Complex number (or, if *spin*, a 2x2 matrix): the matrix
           element :math:`\langle i|H|j\rangle` along the oriented bond. Or a
           value function (see *KSpace.set_hopping*), passed on as it is (as
@@ -247,6 +248,7 @@ def neighbour_hoppings(
     error_handling.boolean(spin, 'spin')
     error_handling.boolean(hermitian, 'hermitian')
     bonds = _bonds(lat, max(dic['n'] for dic in list_hop))
+    _, _, tags = _geometry(lat)
     chosen = {}
     for dic in list_hop:
         shell = bonds[bonds['n'] == dic['n']]
@@ -256,7 +258,8 @@ def neighbour_hoppings(
             error_handling.shell_angle(dic['ang'], shell['ang'])
             ind &= np.isclose(dic['ang'] + 180. * reverse, shell['ang'], atol=ATOL)
         if 'tag' in dic:
-            ind &= shell['tag'] == (dic['tag'][::-1] if reverse else dic['tag'])
+            a, b = _tag_pair(dic['tag'])[::-1] if reverse else _tag_pair(dic['tag'])
+            ind &= (tags[shell['i']] == a) & (tags[shell['j']] == b)
         error_handling.index(ind, dic)
         t = dic['t']
         if reverse and hermitian:

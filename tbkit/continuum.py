@@ -229,7 +229,7 @@ def discretize(hamiltonian, a: float = 1., dim: int | None = None,
     dim : 1, 2 or 3
         Default value None: the last axis whose momentum
         appears (1 if none).
-    tags : String or list of one-character strings
+    tags : String or list of strings (1 to 8 characters)
         Default value
         None: 'a', 'b', 'c', ... Tag of each orbital.
 

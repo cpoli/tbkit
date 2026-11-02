@@ -17,13 +17,13 @@ from math import sin, cos
 import tbkit.error_handling as error_handling
 import tbkit.occupation as occupation
 import tbkit.values as values
-from tbkit.lattice import Lattice, COOR_DTYPE
+from tbkit.lattice import Lattice, COOR_DTYPE, TAG_LEN, _tag_pair
 
 
 PI = np.pi
 ATOL = 1e-3
 HOP_DTYPE = [('n', 'u2'), ('i', 'u4'), ('j', 'u4'),
-                       ('ang', 'f8'), ('tag', 'U2'), ('t', 'c16')]
+                       ('ang', 'f8'), ('tag', 'U{}'.format(2 * TAG_LEN)), ('t', 'c16')]
 
 
 def _upper(ang: NDArray) -> NDArray:
@@ -414,9 +414,11 @@ class System():
                         * If :math:`ang \in[0, 180)`, fill the Hamiltonian upper part.
                         * If :math:`ang \in[-180, 0)`, fill the Hamiltonian lower part.
 
-                * 'tag' string of length 2  (optional).
+                * 'tag' string of two one-character tags (``'ab'``), or a
+                  pair of tags (``('Mo', 'S')``) (optional).
 
-                    Hopping tags.
+                    Hopping tags: bonds from a site of the first sublattice
+                    to one of the second (stored as ``tag_i + tag_j``).
 
                 * 't' Complex number, or value function.
 
@@ -515,45 +517,56 @@ class System():
                 error_handling.index(ind, dic)
                 hop = self.set_given_hopping(dic['n'], size, dic, ind, upper_part=upper_part)
             elif len(dic) == 3 and 'tag' in dic:
+                pair = _tag_pair(dic['tag'])
                 if upper_part:
-                    tag_store = dic['tag']
+                    tag_store = pair
                 else:
-                    tag_store = dic['tag'][::-1]
-                size = np.sum(self.store_hop[dic['n']]['tag'] == tag_store)
-                mask = ((self.hop['n'] == dic['n']) & (self.hop['tag'] == dic['tag']))
+                    tag_store = pair[::-1]
+                size = np.sum(self._tag_mask(self.store_hop[dic['n']], tag_store))
+                mask = ((self.hop['n'] == dic['n']) & self._tag_mask(self.hop, pair))
                 if upper_part:
                     mask &= self.hop['ang'] >= 0
                 else:
                     mask &= self.hop['ang'] < 0
                 if np.sum(mask):
                     self.hop = self.hop[np.logical_not(mask)]
-                ind = self.store_hop[dic['n']]['tag'] == tag_store
+                ind = self._tag_mask(self.store_hop[dic['n']], tag_store)
                 error_handling.index(ind, dic)
                 hop = self.set_given_hopping(dic['n'], size, dic, ind, upper_part=upper_part)
             else:
                 error_handling.angle(dic['ang'], np.unique(self.store_hop[dic['n']]['ang']), upper_part=upper_part)
-                error_handling.tag(dic['tag'], np.unique(self.store_hop[dic['n']]['tag']))
+                pair = _tag_pair(dic['tag'])
+                error_handling.tag(''.join(pair), np.unique(self.store_hop[dic['n']]['tag']))
                 if dic['ang'] >= 0:
                     ang_store = dic['ang']
                 else:
                     ang_store = dic['ang'] + 180.
                 if upper_part:
-                    tag_store = dic['tag']
+                    tag_store = pair
                 else:
-                    tag_store = dic['tag'][::-1]
-                size = np.sum((self.store_hop[dic['n']]['tag'] == tag_store) & 
+                    tag_store = pair[::-1]
+                size = np.sum(self._tag_mask(self.store_hop[dic['n']], tag_store) & 
                                        (np.isclose(ang_store, self.store_hop[dic['n']]['ang'], atol=ATOL)))
-                bool1 = (self.hop['n'] == dic['n']) & (self.hop['tag'] == dic['tag'])
+                bool1 = (self.hop['n'] == dic['n']) & self._tag_mask(self.hop, pair)
                 bool2 = np.isclose(self.hop['ang'], dic['ang'], atol=ATOL)
                 mask = bool1 & bool2
                 if np.sum(mask):
                     self.hop = self.hop[np.logical_not(mask)]
-                ind = ((self.store_hop[dic['n']]['tag'] == tag_store) & 
+                ind = (self._tag_mask(self.store_hop[dic['n']], tag_store) & 
                           (np.isclose(ang_store, self.store_hop[dic['n']]['ang'], atol=ATOL)))
                 error_handling.index(ind, dic)
                 hop = self.set_given_hopping(dic['n'], size, dic, ind, upper_part=upper_part)
             self.hop = np.concatenate([self.hop, hop])
             self._assign_hopping(np.arange(len(self.hop) - len(hop), len(self.hop)), dic['t'])
+
+    def _tag_mask(self, hop: NDArray, pair: tuple[str, str]) -> NDArray:
+        '''
+        Private method. Mask of the bonds of *hop* from a site tagged
+        *pair[0]* to a site tagged *pair[1]* (exact for tags of any length,
+        unlike a match on the concatenated ``hop['tag']``).
+        '''
+        tags = self.lat.coor['tag']
+        return (tags[hop['i']] == pair[0]) & (tags[hop['j']] == pair[1])
 
     def check_sites(self) -> None:
         '''
@@ -893,9 +906,9 @@ class System():
             elif len(dic) == 3 and 'ang' in dic:
                 self._assign_hopping(ind & np.isclose(self.hop['ang'], dic['ang'], atol=ATOL), dic['t'])
             elif len(dic) == 3 and 'tag' in dic:
-                self._assign_hopping(ind & (self.hop['tag'] == dic['tag']), dic['t'])
+                self._assign_hopping(ind & self._tag_mask(self.hop, _tag_pair(dic['tag'])), dic['t'])
             else:
-                self._assign_hopping(ind & (self.hop['tag'] == dic['tag'])
+                self._assign_hopping(ind & self._tag_mask(self.hop, _tag_pair(dic['tag']))
                                                   & np.isclose(self.hop['ang'], dic['ang'], atol=ATOL), dic['t'])
 
     def find_square(self, xlims: tuple[float, float], ylims: tuple[float, float]) -> NDArray:
@@ -1334,7 +1347,7 @@ class System():
 
         Parameters
         ----------
-        tag_pola : One-character string
+        tag_pola : String
             Sublattice tag.
 
         Returns
@@ -1355,7 +1368,7 @@ class System():
 
         Parameters
         ----------
-        tag_pola : One-character string
+        tag_pola : String
             Sublattice tag.
 
         Returns

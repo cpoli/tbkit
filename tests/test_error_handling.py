@@ -102,7 +102,7 @@ class TestLatticeChecks(unittest.TestCase):
         self.assertRaises(KeyError, eh.unit_cell, [{'r0': (0., 0.)}])
         self.assertRaises(KeyError, eh.unit_cell, [{'tag': 'a'}])
         self.assertRaises(TypeError, eh.unit_cell, [{'tag': 0, 'r0': (0., 0.)}])
-        self.assertRaises(ValueError, eh.unit_cell, [{'tag': 'ab', 'r0': (0., 0.)}])
+        self.assertRaises(ValueError, eh.unit_cell, [{'tag': 'abcdefghi', 'r0': (0., 0.)}])
         self.assertRaises(TypeError, eh.unit_cell, [{'tag': 'a', 'r0': [0., 0.]}])
         self.assertRaises(ValueError, eh.unit_cell, [{'tag': 'a', 'r0': (0., 0., 0., 0.)}])
         eh.unit_cell([{'tag': 'a', 'r0': (0., 0., 0.)}])  # 3D space
@@ -790,7 +790,7 @@ class TestContinuumChecks(unittest.TestCase):
         self.assertRaises(TypeError, eh.continuum_tags, 3, 2)
         self.assertRaises(TypeError, eh.continuum_tags, ['a', 1], 2)
         self.assertRaises(ValueError, eh.continuum_tags, 'abc', 2)
-        self.assertRaises(ValueError, eh.continuum_tags, ['a', 'bb'], 2)
+        self.assertRaises(ValueError, eh.continuum_tags, ['a', ''], 2)
         eh.continuum_spacing(0.5)
         self.assertRaises(ValueError, eh.continuum_spacing, 0.3)
 

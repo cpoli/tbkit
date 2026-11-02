@@ -12,7 +12,7 @@ class TestLattice(unittest.TestCase):
         self.assertRaises(TypeError, lattice, unit_cell=0, prim_vec=prim_vec)
         self.assertRaises(KeyError, lattice, unit_cell=[{'z': 'a', 'r0': (0, 0)}], prim_vec=prim_vec)
         self.assertRaises(KeyError, lattice, unit_cell=[{'tag': 'a', 'z': (0, 0)}], prim_vec=prim_vec)
-        self.assertRaises(ValueError, lattice, unit_cell=[{'tag': 'ab', 'r0': (0, 0)}], prim_vec=prim_vec)
+        self.assertRaises(ValueError, lattice, unit_cell=[{'tag': '', 'r0': (0, 0)}], prim_vec=prim_vec)
         self.assertRaises(TypeError, lattice, unit_cell=[{'tag': 'a', 'r0': [0, 0]}], prim_vec=prim_vec)
         self.assertRaises(ValueError, lattice, unit_cell=[{'tag': 'a', 'r0': (0, 'z')}], prim_vec=prim_vec)
         self.assertRaises(ValueError, lattice, unit_cell=[{'tag': 'a', 'r0': (0, 0, 0)}], prim_vec=prim_vec)

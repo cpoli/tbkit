@@ -44,9 +44,6 @@ explicit broadening `eta`) remain dense.
   packages one line.
 - Write Wannier90 `_hr.dat` files (not only read them), and read
   `_tb.dat`.
-- Sublattice tags are dtype `'U1'` (one character). Allow longer tags
-  (for example `'Mo'`, `'Se1'`) without breaking existing models: widen
-  the dtype and keep one-character tags working.
 - Optional physical units (eV, Å, tesla) for magnetic fields and
   conductances. The current dimensionless conventions stay the default.
 
@@ -89,6 +86,13 @@ torus.
   then drop `continue-on-error` from the `typecheck` job.
 
 ## Done
+
+- **Longer sublattice tags** (unreleased): tags of up to 8 characters
+  (`'Mo'`, `'Se1'`) in `Lattice.coor` (`'U8'`) and `System.hop`
+  (`'U16'`). Bond selectors take a pair of tags, `('Mo', 'S')`, matched
+  on the tags of the two sites, so concatenations cannot collide;
+  `'ab'` strings, `'U1'` arrays for `add_sites` and old archives keep
+  working.
 
 - **38-fold non-Hermitian symmetry classes history breakthrough**
   (unreleased): `KSpace.non_hermitian_class` names the class of

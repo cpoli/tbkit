@@ -1,5 +1,23 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- **Sublattice tags longer than one character** (`'Mo'`, `'Se1'`, up to 8
+  characters). The `tag` field of `Lattice.coor` is `'U8'` (it was
+  `'U1'`) and that of `System.hop` is `'U16'` (it was `'U2'`, still
+  `tag_i + tag_j`). A bond selector `'tag'` of `System.set_hopping`,
+  `change_hopping_*`, `KSpace.set_hopping`/`set_overlap` and
+  `neighbour_hoppings` may be a pair of tags, `('Mo', 'S')`. It matches
+  the tags of the two sites, so `('M', 'oS')` and `('Mo', 'S')` stay
+  distinct although both join to `'MoS'`. Two-character strings (`'ab'`)
+  work as before. `OrbitalSystem.set_slater_koster` accepts
+  pairs as keys of its per-pair bond integrals, and `read_wannier90` and
+  `continuum.discretize` accept longer tags. `add_sites` still takes `'U1'`
+  arrays (any tag field from `'U1'` to `'U8'`), and `load_model` reads
+  archives written with the old dtypes.
+
 ## 0.7.0 -- 2026-10-30
 
 ### Added

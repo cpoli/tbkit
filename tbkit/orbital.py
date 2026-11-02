@@ -250,7 +250,8 @@ class OrbitalSystem(System):
         params
             Dictionary of bond integrals (e.g. ``{'pp_sigma': 5.04,
             'pp_pi': -3.03}``), or dictionary {tag pair: bond integrals} (e.g.
-            ``{'ab': {...}, 'ba': {...}}``, for bonds from an 'a' to a 'b' site).
+            ``{'ab': {...}, 'ba': {...}}``, for bonds from an 'a' to a 'b' site;
+            with longer tags, pairs as keys: ``{('Mo', 'S'): {...}, ...}``).
         overlap : Dictionary, default None
             Bond integrals of the
             overlap matrix :math:`S_{ij} = \langle i|j\rangle`, in the same
@@ -267,7 +268,8 @@ class OrbitalSystem(System):
             by_pair = error_handling.sk_pair_params(par, tags[i], tags[j])
             blocks = []
             for a, b, vec in zip(i, j, d):
-                p = par[tags[a] + tags[b]] if by_pair else par
+                pair = (tags[a], tags[b])
+                p = par[pair if pair in par else tags[a] + tags[b]] if by_pair else par
                 blocks.append((a, b, self._kron_spin(sk_block(self._site_orbs(a), self._site_orbs(b), vec, p))))
             store[('sk', n)] = blocks
 

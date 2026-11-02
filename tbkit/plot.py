@@ -370,7 +370,7 @@ class Plot:
         fs : Positive Float, default 20
             Fontsize.
         lims : List, lims[0] energy min, lims[1] energy max
-        tag_pola : One-character string, default None
+        tag_pola : String, default None
             Tag of the sublattice.
         ind : List, default None
             List of indices. (used in the method spectrum).

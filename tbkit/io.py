@@ -40,7 +40,7 @@ import tbkit.error_handling as error_handling
 from tbkit.kspace import KSpace
 from tbkit.lattice import Lattice
 from tbkit.orbital import OrbitalSystem
-from tbkit.system import System
+from tbkit.system import System, HOP_DTYPE
 
 
 #: Name of the archive format written by *save_model*.
@@ -106,7 +106,7 @@ def save_model(model: Lattice | System | KSpace, path: str | os.PathLike) -> str
     # that older tbkit versions keep reading everything else
     data: dict[str, Any] = {'format': np.array(FORMAT), 'version': np.array(1), 'kind': np.array(kind),
                 'tbkit_version': np.array(tbkit.__version__),
-                'uc_tag': np.array([dic['tag'] for dic in lat.unit_cell], dtype='U1'),
+                'uc_tag': np.array([dic['tag'] for dic in lat.unit_cell], dtype=str),
                 'uc_r0': np.array([dic['r0'] for dic in lat.unit_cell], dtype='f8'),
                 'prim_vec': np.array(lat.prim_vec, dtype='f8'),
                 'coor': lat.coor,
@@ -161,7 +161,7 @@ def load_model(path: str | os.PathLike) -> Lattice | System | KSpace:
             periodic = tuple(bool(p) for p in data['periodic']) if 'periodic' in data.files else False
             sys = System(lat, periodic=periodic)
             sys.onsite = data['onsite'].copy()
-            sys.hop = data['hop'].copy()
+            sys.hop = data['hop'].astype(HOP_DTYPE)  # archives before 0.8 have a 'U2' tag
             return sys
         ks = KSpace(lat, spin=bool(data['spin']))
         ks.onsite = data['onsite'].copy()
@@ -333,7 +333,7 @@ def read_wannier90(
     positions : Array, shape (num_wann, dim) or (num_wann, 3), default None
         Orbital positions, instead of *centres*. With
         neither, every orbital sits at the origin of the cell.
-    tags : List of num_wann one-character strings
+    tags : List of num_wann strings (1 to 8 characters)
         Default value
         None (every orbital tagged ``'a'``). Sublattice tags.
     dim : 2 or 3, default 3

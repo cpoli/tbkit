@@ -11,9 +11,20 @@ import tbkit.error_handling as error_handling
 
 
 PI = np.pi
-COOR_DTYPE = [('x', 'f8'), ('y', 'f8'), ('tag', 'U1')]
+#: Longest sublattice tag, in characters.
+TAG_LEN = error_handling.TAG_LEN
+COOR_DTYPE = [('x', 'f8'), ('y', 'f8'), ('tag', 'U{}'.format(TAG_LEN))]
 #: Site dtype of a lattice in 3D space (*unit_cell* and *prim_vec* given as 3-tuples).
-COOR_DTYPE_3D = [('x', 'f8'), ('y', 'f8'), ('z', 'f8'), ('tag', 'U1')]
+COOR_DTYPE_3D = [('x', 'f8'), ('y', 'f8'), ('z', 'f8'), ('tag', 'U{}'.format(TAG_LEN))]
+
+
+def _tag_pair(tag: str | Sequence[str]) -> tuple[str, str]:
+    '''
+    Private function. The sublattice tags (tag_i, tag_j) of a bond selector
+    'tag': a string of two one-character tags (``'ab'``) or a pair of tags
+    (``('Mo', 'S')``).
+    '''
+    return str(tag[0]), str(tag[1])
 
 
 #################################
@@ -39,7 +50,8 @@ class Lattice():
     unit_cell : List of dictionaries
         One dictionary per site within the unit cell. Each dictionary has two keys:
 
-           * 'tag', one-character string. Label of the associated sublattice.
+           * 'tag', string of 1 to 8 characters (``'a'``, ``'Mo'``,
+             ``'Se1'``). Label of the associated sublattice.
            * 'r0', Tuple. Position: :math:`(x, y)`, or :math:`(x, y, z)` for a
              lattice in 3D space.
     prim_vec : List of tuples
@@ -144,7 +156,8 @@ class Lattice():
         ----------
         coor
             Structured array with keys: {'x', 'y', 'tag'}
-            ({'x', 'y', 'z', 'tag'} for a lattice in 3D space).
+            ({'x', 'y', 'z', 'tag'} for a lattice in 3D space), with a tag
+            field from 'U1' to 'U8'.
 
         Examples
         --------
@@ -160,7 +173,7 @@ class Lattice():
             lat.add_sites(coor)
         '''
         error_handling.coor(coor, self.dtype)
-        self.coor = np.concatenate([self.coor, coor])
+        self.coor = np.concatenate([self.coor, coor.astype(self.dtype)])
         self.sites += len(coor)
         self.tags = np.unique(np.concatenate([self.tags, coor['tag']]))
         self.coor = np.sort(self.coor, order=self.sort_order())

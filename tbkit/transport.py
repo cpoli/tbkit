@@ -715,7 +715,7 @@ class Transport(_EnergyWorkers):
         error_handling.lead_space_dim(ks.space_dim, sys.lat.space_dim)
         _law_blocks(h0, v, conservation_law)
         pos = self._site_positions(sys)
-        tags = np.concatenate([sys.lat.coor['tag'], np.array(self._added_tags, dtype='U1')])
+        tags = np.concatenate([sys.lat.coor['tag'], np.array(self._added_tags, dtype=str)])
         a = np.array(ks.lat.prim_vec[0], dtype='f8')
         tau = ks.orbital_positions()
         cell = np.zeros(len(pos), int)

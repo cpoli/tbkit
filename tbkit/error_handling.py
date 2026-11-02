@@ -3,6 +3,7 @@ import inspect
 
 
 ATOL = 1e-3  # matches the distance/angle tolerance used throughout tbkit.system
+TAG_LEN = 8  # longest sublattice tag, in characters (the 'U8' tag field of Lattice.coor)
 
 
 ###############################
@@ -363,9 +364,9 @@ def unit_cell(unit_cell):
     KeyError
         Dictionaries must contain the key "r0".
     TypeError
-        Key "tags" must contain a one-character string.
+        Key "tag" must contain a string.
     ValueError
-        Key "tags" must contain a one-character string.
+        Key "tag" must be a string of 1 to TAG_LEN characters.
     ValueError
         Key "r0" must contain be a list.
     TypeError
@@ -383,9 +384,9 @@ def unit_cell(unit_cell):
         if 'r0' not in dic:
             raise KeyError('\n\nDictionaries must contain the key "r0".\n')
         if not isinstance(dic['tag'], str):
-            raise TypeError('\n\nKey "tag" must contain a one-character string.\n')
-        if not len(dic['tag']) == 1:
-            raise ValueError('\n\nKey "tag" must be a one-character string.\n')
+            raise TypeError('\n\nKey "tag" must contain a string.\n')
+        if not 1 <= len(dic['tag']) <= TAG_LEN:
+            raise ValueError('\n\nKey "tag" must be a string of 1 to {} characters.\n'.format(TAG_LEN))
         if not isinstance(dic['r0'], tuple):
             raise TypeError('\n\nKey "r0" must be a tuple.\n')
         if len(dic['r0']) not in (2, 3):
@@ -499,18 +500,21 @@ def get_lattice(prim_vec, n1, n2, n3=1):
 def coor(coor, dtype=None):
     '''
     Check if *coor* is a structured array with
-    dtype=[('x', 'f8'), ('y', 'f8'), ('tag', 'U1')], or, for a lattice in 3D
-    space, dtype=[('x', 'f8'), ('y', 'f8'), ('z', 'f8'), ('tag', 'U1')]. If
-    *dtype* is given, *coor* must have exactly that dtype.
+    dtype=[('x', 'f8'), ('y', 'f8'), ('tag', 'U8')], or, for a lattice in 3D
+    space, dtype=[('x', 'f8'), ('y', 'f8'), ('z', 'f8'), ('tag', 'U8')]. A
+    narrower tag field ('U1' to 'U8') is accepted too. If *dtype* is given,
+    *coor* must have its position fields.
     '''
-    dtypes = [np.dtype([('x', 'f8'), ('y', 'f8'), ('tag', 'U1')]),
-                  np.dtype([('x', 'f8'), ('y', 'f8'), ('z', 'f8'), ('tag', 'U1')])]
+    tags = ['U{}'.format(n) for n in range(1, TAG_LEN + 1)]
+    positions = [[('x', 'f8'), ('y', 'f8')], [('x', 'f8'), ('y', 'f8'), ('z', 'f8')]]
     if dtype is not None:
-        dtypes = [np.dtype(dtype)]
+        positions = [[f for f in np.dtype(dtype).descr if f[0] != 'tag']]
+    dtypes = [np.dtype(f + [('tag', t)]) for f in positions for t in tags]
     if coor.dtype not in dtypes:
         raise TypeError('\n\nParameter coor dtype must be\n'
-                                  'dtype=[("x", "f8"), ("y", "f8"), ("tag", "U1")]\n'
-                                  '(with a ("z", "f8") field after "y" for a lattice in 3D space).\n')
+                                  'dtype=[("x", "f8"), ("y", "f8"), ("tag", "U8")]\n'
+                                  '(with a ("z", "f8") field after "y" for a lattice in 3D space;\n'
+                                  'a tag field from "U1" to "U8").\n')
 
 
 def coor_1d(coor):
@@ -714,13 +718,34 @@ def set_hopping(list_hop, n_max):
         elif len(dic) > 4:
             raise ValueError('\n\nDictionaries must be of length 2, 3, or 4.\n')
         if 'tag' in dic:
-            if not isinstance(dic['tag'], str):
-                raise TypeError('\n\n"tag" value must be a string.\n')
-            if len(dic['tag']) != 2:
-                raise ValueError('\n\n"tag" value must be a string of length 2.\n')
+            hop_tag(dic['tag'])
         if 'ang' in dic:
             if not isinstance(dic['ang'], (int, float)):
                 raise TypeError('\n\n"ang" value must be a real number.\n')
+
+
+def hop_tag(tag):
+    '''
+    Check a bond selector "tag": a string of two one-character tags
+    ('ab'), or a tuple or list of two tags (('Mo', 'S')).
+
+    Raises
+    ------
+    TypeError
+        "tag" value must be a string or a pair of strings.
+    ValueError
+        "tag" value must be a string of length 2 or a pair of tags.
+    '''
+    if isinstance(tag, (tuple, list)):
+        if len(tag) != 2 or not all(isinstance(t, str) for t in tag):
+            raise TypeError('\n\n"tag" value must be a string or a pair of strings.\n')
+        if not all(1 <= len(t) <= TAG_LEN for t in tag):
+            raise ValueError('\n\n"tag" pair must hold tags of 1 to {} characters.\n'.format(TAG_LEN))
+    elif not isinstance(tag, str):
+        raise TypeError('\n\n"tag" value must be a string.\n')
+    elif len(tag) != 2:
+        raise ValueError('\n\n"tag" value must be a string of length 2 (two one-character tags),\n'
+                                  'or a pair of tags such as ("Mo", "S").\n')
 
 
 def index(ind, dic):
@@ -960,7 +985,7 @@ def tag(tag, tags):
         Parameter *tag* is not in tags.
     '''
     if not isinstance(tag, str):
-        raise TypeError('\n\nParameter tag must be a one-character string.\n')
+        raise TypeError('\n\nParameter tag must be a string.\n')
     if tag not in tags:
         raise ValueError('\n\nParameter tag is not in tags.\n')
 
@@ -2404,7 +2429,7 @@ def sk_params(params):
 def sk_pair_params(params, tags_i, tags_j):
     '''
     Check the bond integrals of *set_slater_koster*: one dictionary, or one
-    per tag pair of the bonds.
+    per tag pair of the bonds (keys ``'ab'`` or ``('Mo', 'S')``).
 
     Returns
     -------
@@ -2424,9 +2449,9 @@ def sk_pair_params(params, tags_i, tags_j):
         sk_params(params)
         return False
     for a, b in set(zip(tags_i, tags_j)):
-        if a + b not in params:
+        if (a, b) not in params and a + b not in params:
             raise ValueError('\n\nNo bond integrals for the tag pair {!r}.\n'.format(a + b))
-        sk_params(params[a + b])
+        sk_params(params[(a, b) if (a, b) in params else a + b])
     return True
 
 
@@ -3127,7 +3152,7 @@ def set_hopping_neighbours(list_hop, spin=False):
         "n" must be an integer, "t" a number (or, if *spin*,
         a 2x2 matrix) or a value function, "ang" a real number and "tag" a string.
     ValueError
-        "n" must be positive, "ang" in [-180, 180), "tag" of length 2.
+        "n" must be positive, "ang" in [-180, 180), "tag" of length 2 or a pair of tags.
     '''
     hopping_form(list_hop)
     for dic in list_hop:
@@ -3151,10 +3176,7 @@ def set_hopping_neighbours(list_hop, spin=False):
             if not -180. <= dic['ang'] < 180.:
                 raise ValueError('\n\n"ang" value must be in [-180, 180).\n')
         if 'tag' in dic:
-            if not isinstance(dic['tag'], str):
-                raise TypeError('\n\n"tag" value must be a string.\n')
-            if len(dic['tag']) != 2:
-                raise ValueError('\n\n"tag" value must be a string of length 2.\n')
+            hop_tag(dic['tag'])
 
 
 def shell_angle(ang, angles):
@@ -3451,12 +3473,13 @@ def wannier_tags(tags, num_wann):
     Raises
     ------
     TypeError
-        tags must be a list of one-character strings.
+        tags must be a list of strings of 1 to TAG_LEN characters.
     ValueError
         tags must have num_wann elements.
     '''
-    if not isinstance(tags, list) or not all(isinstance(t, str) and len(t) == 1 for t in tags):
-        raise TypeError('\n\nParameter tags must be a list of one-character strings.\n')
+    if not isinstance(tags, list) or not all(isinstance(t, str) and 1 <= len(t) <= TAG_LEN for t in tags):
+        raise TypeError('\n\nParameter tags must be a list of strings of 1 to {} characters.\n'
+                                  .format(TAG_LEN))
     if len(tags) != num_wann:
         raise ValueError('\n\nParameter tags must have {} elements.\n'.format(num_wann))
 
@@ -4370,7 +4393,7 @@ def continuum_tags(tags, norb):
     TypeError
         Parameter tags must be a string or a list of strings.
     ValueError
-        Parameter tags must hold one one-character tag per orbital.
+        Parameter tags must hold one tag (1 to TAG_LEN characters) per orbital.
     '''
     if tags is None:
         if norb > 52:
@@ -4379,9 +4402,9 @@ def continuum_tags(tags, norb):
         return
     if not isinstance(tags, (str, list, tuple)) or not all(isinstance(t, str) for t in tags):
         raise TypeError('\n\nParameter tags must be a string or a list of strings.\n')
-    if len(tags) != norb or not all(len(t) == 1 for t in tags):
-        raise ValueError('\n\nParameter tags must hold {} one-character tags, one per '
-                                 'orbital.\n'.format(norb))
+    if len(tags) != norb or not all(1 <= len(t) <= TAG_LEN for t in tags):
+        raise ValueError('\n\nParameter tags must hold {} tags of 1 to {} characters, one per '
+                                 'orbital.\n'.format(norb, TAG_LEN))
 
 
 def continuum_spacing(a):
