@@ -4554,3 +4554,43 @@ def projection(s_min, tol=1e-10):
                                  'localized Wannier functions, and any projection vanishes '
                                  'somewhere.\n')
 
+
+
+def invertible_coupling(v, cond_max=1e12):
+    '''
+    Check that the coupling to the farthest slice of a strip is invertible,
+    as the transfer matrix needs.
+
+    Raises
+    ------
+    ValueError
+        The last coupling is singular.
+    '''
+    if np.linalg.cond(v) > cond_max:
+        raise ValueError('\n\nThe coupling to the farthest slice is singular, so the transfer matrix '
+                         'does not exist: group several cells into one slice (e.g. two cells of a '
+                         'zigzag ribbon), or pass the couplings to more slices.\n')
+
+
+def transfer_chunks(n_chunks, n_slices, qr_every):
+    '''
+    Check the number of pieces of a strip for the error of its Lyapunov
+    exponents: an integer of at least 2, each piece holding at least
+    *qr_every* slices.
+
+    Raises
+    ------
+    TypeError
+        Parameter n_chunks must be an integer.
+    ValueError
+        Parameter n_chunks must be at least 2.
+    ValueError
+        Each chunk needs at least qr_every slices.
+    '''
+    if not isinstance(n_chunks, int):
+        raise TypeError('\n\nParameter n_chunks must be an integer.\n')
+    if n_chunks < 2:
+        raise ValueError('\n\nParameter n_chunks must be at least 2.\n')
+    if n_slices < n_chunks * qr_every:
+        raise ValueError('\n\nParameter n_slices must be at least n_chunks * qr_every '
+                         '({}).\n'.format(n_chunks * qr_every))

@@ -74,7 +74,37 @@ torus.
 - Self-consistent Hartree-Poisson for gated devices, on the sparse
   scattering states (`Transport.ldos`).
 
+## 5. Disorder projected onto a flat band
+
+**Why.** The localization of a disordered flat Chern band, and how its
+quantum geometry enters, is a current research question (the critical
+exponent of a projected Chern band, the role of the quantum metric). It
+needs disorder restricted to one band, `PVP`, whose matrix
+elements couple several slices.
+
+**Now.** `localization.lyapunov_exponents` (see Done) propagates strips
+with couplings to several slices, but only with onsite disorder added to
+a fixed slice Hamiltonian.
+
+**Approach.** Maximally localized hybrid Wannier functions of one band
+of a `KSpace` (parallel transport along the transfer direction, the
+twist spread uniformly), white-noise disorder projected onto them, and
+the coupling blocks `<w_x|V|w_{x+l}>` streamed slice
+by slice into the transfer matrix. Validated against exact
+diagonalization of `PVP` on a torus, and the Wannier variances
+against `quantum_geometric_tensor`.
+
 ## Done
+
+- **Transfer-matrix localization length** (unreleased):
+  `localization.lyapunov_exponents(h0, v, energies, disorder, n_slices)`
+  returns the Lyapunov exponents and the localization length of a long
+  strip with box disorder (MacKinnon and Kramer 1981), with errors from
+  pieces of the strip, several energies on the same strip, and couplings
+  to more than one slice. Slices are drawn and discarded, never stored.
+  Example: `disorder/plot_transfer_matrix_localization_length.py`
+  (Thouless's formula, and the crossing of the 3D Anderson transition);
+  history entry 1981 in `fields_breakthroughs.rst`.
 
 - **Longer sublattice tags** (unreleased): tags of up to 8 characters
   (`'Mo'`, `'Se1'`) in `Lattice.coor` (`'U8'`) and `System.hop`

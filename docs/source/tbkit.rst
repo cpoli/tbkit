@@ -163,6 +163,14 @@ tbkit.topology module
     :undoc-members:
     :show-inheritance:
 
+tbkit.localization module
+-------------------------
+
+.. automodule:: tbkit.localization
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 tbkit.wannier module
 --------------------
 

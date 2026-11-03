@@ -59,3 +59,6 @@ __all__ += ["discretize", "discretize_symbolic"]
 # Wannier functions: projection and maximal localization
 from tbkit.wannier import WannierFunctions, wannierize
 __all__ += ["WannierFunctions", "wannierize"]
+# Localization lengths of disordered strips by the transfer matrix
+from tbkit.localization import Lyapunov, lyapunov_exponents
+__all__ += ["Lyapunov", "lyapunov_exponents"]
