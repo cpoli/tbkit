@@ -3,6 +3,8 @@ Large lattices
 
 Lattices far beyond dense diagonalization: sparse neighbour search,
 shift-invert eigensolvers, and the kernel polynomial method, which
-turns spectral densities and conductivities of hundreds of thousands of
-sites into a few hundred sparse matrix-vector products. In k-space,
+turns spectral densities, spectral functions, DC and optical
+conductivities of hundreds of thousands of sites into a few hundred
+sparse matrix-vector products, and evolves wavepackets in time by the
+same Chebyshev recursion. In k-space,
 fine meshes are diagonalized in batches, optionally across threads.

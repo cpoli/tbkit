@@ -405,7 +405,7 @@ class CornerCharges():
 
 def corner_charges(
     ks: KSpace, n_cells: int | tuple[int, int], n_electrons: float | None = None,
-    temperature: float = 0.,
+    temperature: float = 0., background: float | None = None,
 ) -> CornerCharges:
     r'''
     Get the corner charges of a finite flake of :math:`N_1\times N_2` cells
@@ -437,6 +437,12 @@ def corner_charges(
         Default value None (half filling).
         Number of electrons in the flake. An integer at T = 0.
     temperature : Positive real or zero, default 0
+    background : Positive real or zero, default None
+        The uniform background
+        :math:`\bar\rho` (electrons per orbital), if it is not the
+        neutralizing one :math:`N_e/(N\,\mathrm{norb})`: e.g. the ionic
+        charge of the filled bulk bands, when *n_electrons* also fills
+        edge states (the filling anomaly of *symmetry.corner_charge*).
 
     Returns
     -------
@@ -451,12 +457,14 @@ def corner_charges(
         n_electrons = n_states // 2
     error_handling.electrons(n_electrons, n_states)
     error_handling.positive_real_zero(temperature, 'temperature')
+    if background is not None:
+        error_handling.positive_real_zero(background, 'background')
     if temperature == 0:
         error_handling.integer_electrons(n_electrons)
     en, vec = LA.eigh(ks.finite_ham(n_cells))
     f, _, mu = _occupy(en, en[:0], n_electrons, temperature)
     density = (np.abs(vec) ** 2) @ f
-    background = n_electrons / n_states
+    background = n_electrons / n_states if background is None else background
     positions = flake_positions(ks, n_cells)
     # fractional coordinates along a1, a2, split at the middle of the sample
     a = np.array(ks.lat.prim_vec, dtype='f8')

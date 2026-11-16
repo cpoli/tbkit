@@ -1,9 +1,97 @@
 # Changelog
 
-## Unreleased
+## 0.8.0 -- 2026-11-16
 
 ### Added
 
+- **Crystal symmetry** (`tbkit.symmetry`, roadmap item 6):
+  - `Operation(rotation, translation, orbitals, antiunitary)`: a
+    space-group operation (`Operation.about` a centre, `rotation` and
+    `mirror` matrices, products `g1 @ g2` and powers), and
+    `representation(ks, op, k)`, its matrix `U_g(k)` on the Bloch basis
+    (permutation of the orbitals with lattice phases, the spin-1/2
+    rotation with `spin=True`). `KSpace.symmetry_error` accepts an
+    `Operation`.
+  - `find_symmetries(ks, orbitals=, antiunitary=)`: the operations of the
+    Bravais lattice that leave the model invariant, about a common centre
+    for a symmorphic structure (graphene: the 12 of C6v, 24 with time
+    reversal, as qsymm finds).
+  - `irreps(ks, k)`: the little group of k and the irreducible
+    representation of each level (the ten 2D point groups and T, Th, O,
+    Td, Oh; spinless, symmorphic). `KSpace.plot_bands(irreps=)` writes
+    them at the nodes of the path.
+  - Symmetry indicators: `rotation_indicator` (the Chern number modulo n
+    from the C_n eigenvalues), `inversion_indicators` (z4 and the weak
+    z2 of a 3D inversion- and time-reversal-symmetric insulator),
+    `corner_charge` (the corner charge of a C4-symmetric insulator).
+  - `symmetrize(ks, ops)`: the group average of the hoppings, which gives
+    a noisy Wannier90 model its exact degeneracies back (equal to
+    TBmodels' `symmetrize`).
+  - `higher_order.corner_charges(..., background=)`: an ionic background
+    other than the neutralizing one.
+  - Gallery examples `tight_binding/plot_irreps_of_graphene_bands.py`,
+    `tight_binding/plot_symmetrizing_a_wannier90_model.py`,
+    `topology/plot_chern_number_from_rotation_eigenvalues.py`,
+    `topology/plot_symmetry_indicators.py` and
+    `higher_order/plot_corner_charge_from_rotation_eigenvalues.py`, with
+    the history entries 1936 (Bouckaert, Smoluchowski and Wigner), 2012
+    (Fang, Gilbert and Bernevig) and 2017 (symmetry indicators and
+    topological quantum chemistry).
+- **Chebyshev time evolution, spectral function and optical conductivity
+  of large samples** (`tbkit.kpm`, roadmap item 1), on the Chebyshev
+  recursion of the kernel polynomial method, without diagonalizing:
+  - `time_evolution(ham, psi_init, times)`: `exp(-iHt)` expanded with
+    Bessel coefficients (Tal-Ezer and Kosloff 1984), exact to machine
+    precision at any step. `Propagation.get_propagation(...,
+    method='chebyshev')` uses it; the default stays Crank-Nicolson, which
+    also takes non-Hermitian Hamiltonians.
+  - `spectral_function(ham, positions, k, orbitals)`: `A(k, E)` from the
+    moments of one plane wave per sublattice (KITE's `arpes`), equal to
+    `moire.spectral_function`'s unfolding on a torus.
+  - `optical_conductivity(ham, vel, omega, e_fermi, temperature)`:
+    `Re sigma_xx(omega)` from the Kubo-Greenwood formula with two-index
+    moments, in e^2/h, the real part of `optics.optical_conductivity`.
+  `spectral_function` computes its moments in pairs (half the products),
+  and the two-index moments of `conductivity` are accumulated in blocks
+  (half the memory). Gallery examples
+  `large_scale/plot_chebyshev_time_evolution.py` (with the history entry
+  1984, the Chebyshev propagator), `large_scale/plot_kpm_spectral_function.py`
+  and `large_scale/plot_kpm_optical_conductivity.py`.
+
+- **Reactive and Hall parts of the KPM optical conductivity**
+  (`kpm.optical_conductivity`, roadmap item 1): `vel_b=` gives an
+  off-diagonal component `sigma_ab` (with `vel=vy, vel_b=vx`, the optical
+  Hall conductivity `sigma_yx`), and `part='imag'` or `part='complex'`
+  the reactive part, a principal value over the spectral function of the
+  transitions (Kramers-Kronig), from the same moments. The default
+  (`part='real'`, no `vel_b`) returns the same numbers as before. Checked
+  on a Haldane torus with the exact trace against
+  `optics.optical_conductivity` on the same k-mesh: `Re sigma_yx(omega ->
+  0)` is the Chern number to 1%, and `Re sigma_yx` and `Im sigma_xx`
+  below the gap agree within 1-2%. Gallery example
+  `large_scale/plot_kpm_optical_hall_conductivity.py`.
+- **Exact diagonalization of small interacting clusters** (`tbkit.manybody`).
+  `exact_diagonalization(ham, n_up, n_dn, U=, V=)` gives the lowest
+  eigenstates of the (extended) Hubbard model of any single-particle
+  matrix in the sector (N_up, N_down), or of spinless fermions
+  (`n_dn=None`), exactly: sparse Fock-space Hamiltonian, Lanczos above
+  1500 states, about 12 sites at half filling. The `ExactResult` gives
+  densities, double occupancies, density and spin correlations and the
+  total spin. `project_interaction` projects a density-density
+  interaction onto a set of single-particle states (a flat band), and
+  `exact_diagonalization(..., W=, momentum=)` takes the resulting
+  two-body interaction in one sector of total crystal momentum.
+  `FockSector` exposes the basis and the sparse Hamiltonian.
+- **Twisted boundary conditions**: `KSpace.finite_ham(n_cells,
+  periodic=True, twist=theta)` threads a flux `theta / 2 pi` through
+  each cycle of the torus (the spectrum of the mesh shifted by
+  `theta_a / N_a`).
+- Gallery examples `correlations/plot_exact_diagonalization_vs_mean_field.py`,
+  `correlations/plot_lieb_wu_hubbard_chain.py` and
+  `correlations/plot_fractional_chern_insulator.py`, with the history
+  entries 1968 (Lieb and Wu) and 2011 (fractional Chern insulators). The
+  Nagaoka example uses `exact_diagonalization` instead of its own
+  Fock-space code.
 - **Sublattice tags longer than one character** (`'Mo'`, `'Se1'`, up to 8
   characters). The `tag` field of `Lattice.coor` is `'U8'` (it was
   `'U1'`) and that of `System.hop` is `'U16'` (it was `'U2'`, still
@@ -20,6 +108,24 @@
 
 ### Changed
 
+- **Crank-Nicolson time evolution is sparse.** `Propagation.get_propagation`
+  and `get_pumping` factorize `i - dz H/2` once per Hamiltonian
+  (`scipy.sparse.linalg.splu`) instead of inverting a dense matrix: 100
+  steps on a 22,500-site square lattice take 0.3 s, where the dense
+  inverse needed 8 GB. The states are the same to rounding (1e-15).
+- **Broadened transport paths are sparse.** With an explicit `eta` (and
+  for non-Hermitian leads or `lead_in == lead_out`), `Transport.transmission`,
+  `transmission_matrix`, `conductance_matrix`, `four_terminal_resistance`,
+  `transmission_eigenvalues`, `shot_noise`, `fano_factor`, `bond_currents`
+  and `local_currents` take only the columns of `G^r` on the lead sites,
+  from one sparse LU of `E + i eta - H - Sigma`, instead of inverting the
+  dense device. The results are the same to rounding. Only `get_green`
+  and `self_energy`, which return full matrices, still build the dense
+  `Transport.ham`.
+- **`s_wave_gap` is about 5x faster for real models.** When `ham` and
+  `delta0` are real, the BdG matrix is diagonalized in real arithmetic
+  (`eigh` of a real symmetric matrix) instead of complex. The gap is the
+  same to rounding, and `delta` and `states` are still complex arrays.
 - **The type check is blocking.** `mypy tbkit` has passed since the NumPy
   >= 2.3 stub fixes, so the CI job `typecheck` no longer runs with
   `continue-on-error`: a type error now fails CI.

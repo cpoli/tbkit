@@ -112,6 +112,33 @@ class TestTransmission(unittest.TestCase):
         g = tr.get_green(0.5)
         self.assertAlmostEqual(g[0, 0], -1j / np.sqrt(4 - 0.25), places=6)
 
+    def test_broadened_paths_are_sparse(self):
+        # with an explicit eta, the Caroli transmissions, eigenvalues and bond
+        # currents come from the sparse columns of G on the lead sites: the
+        # same numbers as from the dense G, without building the dense device
+        tr = ribbon_device(3, 6, constriction=(3., (1., 2.)))
+        tr.add_lead([[0.]], [[1.]], ONE, [5])  # a third lead, sharing a site with the second
+        e, eta = 0.7, 1e-3
+        t_mat = tr.transmission_matrix(e, eta)
+        t_n = tr.transmission_eigenvalues(e, 0, 1, eta)
+        t_e = tr.transmission([e, -0.4], 0, 2, eta)
+        bonds = tr.bond_currents(e, 1, eta)
+        self.assertIsNone(tr._dense)
+        g = tr.get_green(e, eta)
+        gam = []
+        for lead in range(3):
+            sig = tr.self_energy(lead, e, eta)
+            gam.append(1j * (sig - sig.conj().T))
+        ref = np.array([[np.trace(gam[p] @ g @ gam[q] @ g.conj().T).real if p != q else 0.
+                         for q in range(3)] for p in range(3)])
+        self.assertTrue(np.allclose(t_mat, ref, atol=1e-10))
+        self.assertAlmostEqual(t_e[0], ref[2, 0], places=10)
+        self.assertAlmostEqual(np.sum(t_n), ref[1, 0], places=10)
+        a = g @ gam[1] @ g.conj().T
+        h = tr.ham
+        self.assertTrue(np.allclose(bonds, -2 * np.imag(h * a.T) * (h != 0) * (1 - np.eye(len(h))),
+                                    atol=1e-10))
+
     def test_lead_from_kspace(self):
         chain = KSpace(lattices.chain())
         chain.set_hopping([{'i': 0, 'j': 0, 'R': (1,), 't': 2.}])

@@ -4,10 +4,11 @@ Breakthroughs in Band Topology
 How band structures acquire integer invariants: from the SSH chain, the
 TKNN invariant and the Zak phase, through the Haldane and Kane-Mele models
 and the tenfold way, to three-dimensional, crystalline, Weyl and
-higher-order topological phases, and the real-space markers that detect
+higher-order topological phases, the symmetry indicators that read
+topology from a few eigenvalues, and the real-space markers that detect
 them without a Brillouin zone. It traces the ideas behind
-:mod:`tbkit.kspace`'s Berry-phase tools, :mod:`tbkit.topology` and
-:mod:`tbkit.higher_order`.
+:mod:`tbkit.kspace`'s Berry-phase tools, :mod:`tbkit.topology`,
+:mod:`tbkit.symmetry` and :mod:`tbkit.higher_order`.
 
 .. contents:: Timeline
    :local:
@@ -691,6 +692,40 @@ Weyl points.
 
 .. minigallery:: ../../examples/three_dimensions/plot_weyl_semimetal.py
 
+2012 -- Chern Numbers from Rotation Eigenvalues
+------------------------------------------------------
+
+C. Fang, M. J. Gilbert and B. A. Bernevig showed that a rotation
+:math:`C_n` fixes the Chern number of the occupied bands modulo
+:math:`n` through their rotation eigenvalues at a few momenta: over one
+point :math:`\mathbf{k}_*` of each orbit of rotation-invariant momenta,
+with the power :math:`C_n^s` of the rotation that keeps it,
+:math:`e^{2\pi iC/n} = \prod_{\mathbf{k}_*}\prod_{m}\lambda_m(\mathbf{k}_*, C_n^s)`
+(times :math:`(-1)^N` for spin 1/2). For :math:`C_4`,
+:math:`i^C = \xi(\Gamma)\xi(\mathrm{M})\zeta(\mathrm{X})`; for
+:math:`C_3`, the eigenvalues at :math:`\Gamma`, K and K'. A band
+inversion at one point that changes an eigenvalue changes the Chern
+number, and an integral over the zone becomes a product of a few
+numbers. It was the first of the symmetry indicators of band topology.
+
+*Implementation:* :func:`tbkit.symmetry.rotation_indicator` (any
+:math:`C_2`, :math:`C_3`, :math:`C_4` or :math:`C_6` of a 2D model, as
+an :class:`~tbkit.symmetry.Operation`, spinless or spin 1/2; the orbits
+of invariant momenta are found from the rotation).
+
+*References:* C. Fang, M. J. Gilbert, and B. A. Bernevig, "Bulk
+topological invariants in noninteracting point group symmetric
+insulators," Phys. Rev. B 86, 115112 (2012).
+
+*Example:* ``examples/topology/plot_chern_number_from_rotation_eigenvalues.py``
+checks :math:`C \bmod 4` and :math:`C \bmod 2` from the :math:`C_4` and
+:math:`C_2` eigenvalues of the Qi-Wu-Zhang model against
+:meth:`~tbkit.kspace.KSpace.chern_number` at 30 masses across its three
+phases, and :math:`C \bmod 3` and :math:`C \bmod 6` of the Haldane model
+in six phases with :math:`C = 0, \pm1`.
+
+.. minigallery:: ../../examples/topology/plot_chern_number_from_rotation_eigenvalues.py
+
 2017 -- Quantized Electric Multipole Insulators and Higher-Order Topology
 -------------------------------------------------------------------------------
 
@@ -740,6 +775,58 @@ flake, and corner charges :math:`\pm 1/2` (to :math:`2\cdot10^{-3}`)
 that vanish in the trivial phase.
 
 .. minigallery:: ../../examples/higher_order/plot_quadrupole_insulator.py
+
+2017 -- Symmetry Indicators and Topological Quantum Chemistry
+--------------------------------------------------------------------
+
+H. C. Po, A. Vishwanath and H. Watanabe, and independently B. Bradlyn
+and coauthors (*topological quantum chemistry*), turned the symmetry
+eigenvalues of the occupied bands at the high-symmetry momenta into a
+diagnosis of topology for all 230 space groups. The eigenvalues of an
+atomic insulator (localized Wannier functions at the Wyckoff positions)
+span a lattice; a set of bands whose eigenvalues lie outside it, or need
+negative multiples of atomic ones, is topological. The quotient groups
+are the symmetry indicators: with inversion and time reversal in 3D,
+:math:`\mathbb{Z}_2^3\times\mathbb{Z}_4`, from the parities
+:math:`n^\pm_{\mathbf{K}}` at the eight time-reversal-invariant momenta,
+:math:`z_4 = \sum_{\mathbf{K}}(n^+_{\mathbf{K}} - n^-_{\mathbf{K}})/4 \bmod 4`
+and :math:`z_{2,i}` over the planes :math:`K_i = \pi` (Khalaf, Po,
+Vishwanath and Watanabe 2018). :math:`z_4 \bmod 2` is the strong index
+of Fu and Kane; :math:`z_4 = 2` is an insulator that every
+:math:`\mathbb{Z}_2` index misses, with hinge states. Applied to the
+materials databases, the indicators found thousands of topological
+materials. The same counting gives the fractional corner charge of a
+:math:`C_n`-symmetric insulator (Benalcazar, Li and Hughes 2019).
+
+*Implementation:* :func:`tbkit.symmetry.inversion_indicators`
+(:math:`z_4` and the three :math:`z_{2,i}`) and
+:func:`tbkit.symmetry.corner_charge` (the corner charge of a
+:math:`C_4`-symmetric insulator, from the eigenvalues at
+:math:`\Gamma`, X and M).
+
+*References:* H. C. Po, A. Vishwanath, and H. Watanabe, "Symmetry-based
+indicators of band topology in the 230 space groups," Nat. Commun. 8, 50
+(2017); B. Bradlyn et al., "Topological quantum chemistry," Nature 547,
+298-305 (2017); E. Khalaf, H. C. Po, A. Vishwanath, and H. Watanabe,
+"Symmetry Indicators and Anomalous Surface States of Topological
+Crystalline Insulators," Phys. Rev. X 8, 031070 (2018); W. A.
+Benalcazar, T. Li, and T. L. Hughes, "Quantization of fractional corner
+charge in :math:`C_n`-symmetric higher-order topological crystalline
+insulators," Phys. Rev. B 99, 245151 (2019).
+
+*Example:* ``examples/topology/plot_symmetry_indicators.py`` checks
+:math:`(z_4 \bmod 2; z_{2,1}z_{2,2}z_{2,3})` against
+:meth:`~tbkit.kspace.KSpace.z2_indices_3d` in the four phases of a cubic
+Dirac model, and finds :math:`z_4 = 2` for two copies of its strong phase,
+whose :math:`\mathbb{Z}_2` indices all vanish.
+``examples/higher_order/plot_corner_charge_from_rotation_eigenvalues.py``
+checks the corner charge from the eigenvalues, 1/4, 0 and 1/2 in three
+phases of the 2D SSH model, against the quadrants of an
+:math:`8\times8` flake (:func:`~tbkit.higher_order.corner_charges`).
+
+.. minigallery::
+   ../../examples/topology/plot_symmetry_indicators.py
+   ../../examples/higher_order/plot_corner_charge_from_rotation_eigenvalues.py
 
 See Also
 --------

@@ -464,17 +464,24 @@ k-d tree instead of a dense distance matrix, and
 :meth:`~tbkit.system.System.get_eig_sparse` finds a few eigenstates near
 an energy by shift-invert. For spectral quantities of hundreds of
 thousands of sites, :mod:`tbkit.kpm` expands them in Chebyshev
-polynomials -- density of states, local density of states and the
-Kubo-Greenwood conductivity -- at the cost of a few hundred sparse
-matrix-vector products::
+polynomials -- density of states, local density of states, the
+Kubo-Greenwood conductivity, the spectral function :math:`A(\mathbf{k}, E)`
+of a disordered sample and its optical conductivity -- at the cost of a
+few hundred sparse matrix-vector products. The same recursion, with
+Bessel coefficients, evolves a state in time exactly
+(:func:`~tbkit.kpm.time_evolution`, or
+``Propagation.get_propagation(..., method='chebyshev')``)::
 
     import tbkit.kpm as kpm
 
     energies, rho = kpm.dos(sys.ham, n_moments=256, n_random=24)
+    psi = kpm.time_evolution(sys.ham, psi0, times=[1., 2., 5.])
 
 See ``examples/large_scale/``.
 
 .. minigallery:: ../../examples/large_scale/plot_kernel_polynomial_method.py
+    ../../examples/large_scale/plot_kpm_spectral_function.py
+    ../../examples/large_scale/plot_kpm_optical_conductivity.py
 
 
 Green's functions, occupations, and transport

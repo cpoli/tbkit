@@ -62,8 +62,8 @@ class SupercellKSpace(KSpace):
     ----------
     prim : **KSpace** instance
         The primitive model.
-    matrix : Integer ndarray, shape (dim, dim)
-        Supercell matrix *M*.
+    matrix : Integer ndarray
+        Supercell matrix *M*, of shape (dim, dim).
     cells : Real ndarray, shape (N, space_dim)
         Origins
         :math:`\mathbf{r}_m` of the primitive cells in the supercell.

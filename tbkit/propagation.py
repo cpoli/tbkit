@@ -3,14 +3,28 @@ from __future__ import annotations
 import numpy as np
 from numpy.typing import NDArray
 import scipy.sparse as sparse
-import scipy.linalg as LA
+import scipy.sparse.linalg as spla
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.animation import FuncAnimation
 import os
 import tbkit.error_handling as error_handling
+import tbkit.kpm as kpm
 from tbkit.lattice import Lattice
 
+
+
+def _crank_nicolson(ham, dz: float):
+    r'''
+    Private function. One Crank-Nicolson step,
+    :math:`\psi \mapsto (i - \tfrac{dz}{2}H)^{-1}(i + \tfrac{dz}{2}H)\psi`,
+    with :math:`i - \tfrac{dz}{2}H` factorized once (sparse LU).
+    '''
+    ham = sparse.csc_matrix(ham, dtype='c16')
+    eye = sparse.identity(ham.shape[0], dtype='c16', format='csc')
+    lu = spla.splu((1j * eye - 0.5 * dz * ham).tocsc())
+    rhs = (1j * eye + 0.5 * dz * ham).tocsr()
+    return lambda psi: lu.solve(rhs @ psi)
 
 
 #################################
@@ -28,7 +42,14 @@ class Propagation():
         \psi(z+dz) = \left(1 + \tfrac{i}{2}H\,dz\right)^{-1}
                      \left(1 - \tfrac{i}{2}H\,dz\right)\psi(z)\, ,
 
-    unitary for a Hermitian :math:`H`.
+    unitary for a Hermitian :math:`H`. The matrix
+    :math:`1 + \tfrac{i}{2}H\,dz` is factorized once per Hamiltonian
+    (sparse LU, *scipy.sparse.linalg.splu*) and never inverted, so each
+    step costs one sparse product and two sparse triangular solves.
+    *get_propagation* also takes ``method='chebyshev'``: the exact evolution
+    :math:`e^{-iH\,dz}` from its Chebyshev expansion
+    (*tbkit.kpm.time_evolution*), for Hermitian Hamiltonians, with no
+    factorization at all and no time-step error.
 
     Parameters
     ----------
@@ -42,6 +63,7 @@ class Propagation():
 
     def get_propagation(
         self, ham: sparse.spmatrix, psi_init: NDArray, steps: int, dz: float, norm: bool = False,
+        method: str = 'crank-nicolson',
     ) -> None:
         r'''
         Get the time evolution.
@@ -61,22 +83,30 @@ class Propagation():
             :math:`\sum_i|\psi_i|^2 = 1` at each step. The Crank-Nicolson
             step is unitary, so this only matters for a non-Hermitian
             Hamiltonian (gain/loss), where the norm is not conserved.
+        method : String, default 'crank-nicolson'
+            'crank-nicolson' (one
+            sparse LU factorization; any Hamiltonian, Hermitian or not) or
+            'chebyshev' (the exact :math:`e^{-iH\,dz}` of
+            *tbkit.kpm.time_evolution*; Hermitian Hamiltonians only).
         '''
         error_handling.empty_ham(ham)
         error_handling.ndarray(psi_init, 'psi_init', self.lat.sites)
         error_handling.positive_int(steps, 'steps')
         error_handling.positive_real(dz, 'dz')
         error_handling.boolean(norm, 'norm')
+        error_handling.prop_method(method)
         self.steps = steps
         self.dz = dz
+        if method == 'chebyshev':
+            self.prop = kpm.time_evolution(ham, psi_init, self.dz * np.arange(self.steps))
+            if norm:
+                self.prop /= np.linalg.norm(self.prop, axis=0)
+            return
         self.prop = np.empty((self.lat.sites, self.steps), 'c16')
         self.prop[:, 0] = psi_init
-        diag = 1j*np.ones(self.lat.sites, 'c16')
-        A = (sparse.diags(diag, 0) - 0.5 * self.dz * ham).toarray()
-        B = (sparse.diags(diag, 0) + 0.5 * self.dz * ham).toarray()
-        mat = (np.dot(LA.inv(A), B))
+        step = _crank_nicolson(ham, self.dz)
         for i in range(1, self.steps):
-            self.prop[:, i] = np.dot(mat, self.prop[:, i-1])
+            self.prop[:, i] = step(self.prop[:, i-1])
             if norm:
                 self.prop[:, i] /= np.linalg.norm(self.prop[:, i])
 
@@ -119,38 +149,28 @@ class Propagation():
         no = len(hams)
         self.prop = np.empty((self.lat.sites, self.steps), 'c16')
         self.prop[:, 0] = psi_init
-        diag = 1j * np.ones(self.lat.sites, 'c16')
+
+        def advance(i, step):
+            self.prop[:, i] = step(self.prop[:, i-1])
+            if norm:
+                self.prop[:, i] /= np.linalg.norm(self.prop[:, i])
+
         delta = self.steps // (1 + no)
-        A = (sparse.diags(diag, 0) - 0.5 * self.dz * hams[0]).toarray()
-        B = (sparse.diags(diag, 0) + 0.5 * self.dz * hams[0]).toarray()
-        mat = (np.dot(LA.inv(A), B))
         # before pumping
+        step = _crank_nicolson(hams[0], self.dz)
         for i in range(1, delta):
-           self.prop[:, i] = np.dot(mat, self.prop[:, i-1])
-           if norm:
-               self.prop[:, i] /= np.linalg.norm(self.prop[:, i])
-        # pumping
+            advance(i, step)
+        # pumping: one factorization per interpolated Hamiltonian
         c = np.linspace(0, 1, delta)
         for j in range(0, no-1):
             for i in range(0, delta):
-                ham = (1-c[i])*hams[j]+c[i]*hams[j+1]
-                A = (sparse.diags(diag, 0) - 0.5 * self.dz * ham).toarray()
-                B = (sparse.diags(diag, 0) + 0.5 * self.dz * ham).toarray()
-                mat = (np.dot(LA.inv(A), B))
-                self.prop[:, (j+1)*delta+i] = np.dot(mat, self.prop[:,  (j+1)*delta+i-1])
-                if norm:
-                    self.prop[:,  (j+1)*delta+i] /= \
-                        np.linalg.norm(self.prop[:,  (j+1)*delta+i])
+                advance((j+1)*delta+i, _crank_nicolson((1-c[i])*hams[j]+c[i]*hams[j+1], self.dz))
         # after pumping, under hams[-1] (what the last pumping step ends on).
         # Start at 1 at least: with delta == 0 there were no stages, and
         # index no*delta - 1 = -1 would overwrite the initial state.
-        A = (sparse.diags(diag, 0) - 0.5 * self.dz * hams[-1]).toarray()
-        B = (sparse.diags(diag, 0) + 0.5 * self.dz * hams[-1]).toarray()
-        mat = (np.dot(LA.inv(A), B))
+        step = _crank_nicolson(hams[-1], self.dz)
         for i in range(max(no*delta, 1), self.steps):
-            self.prop[:, i] = np.dot(mat, self.prop[:, i-1])
-            if norm:
-                self.prop[:, i] /= np.linalg.norm(self.prop[:, i])
+            advance(i, step)
 
     def plt_propagation_1d(
         self, prop_type: str = 'real', fs: float = 20, figsize: tuple[float, float] | None = None,

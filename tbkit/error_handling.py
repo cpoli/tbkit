@@ -1138,6 +1138,19 @@ def prop_type(prop_type):
                                    '"real", "imag", "norm".\n')
 
 
+def prop_method(method):
+    '''
+    Check the method of *Propagation.get_propagation*.
+
+    Raises
+    ------
+    ValueError
+        Parameter method must be "crank-nicolson" or "chebyshev".
+    '''
+    if method not in ('crank-nicolson', 'chebyshev'):
+        raise ValueError('\n\nParameter method must be "crank-nicolson" or "chebyshev".\n')
+
+
 ####################################
 # CLASS KSPACE EXCEPTION HANDLING
 ####################################
@@ -2316,7 +2329,7 @@ def kpm_kernel(kernel):
         raise ValueError('\n\nParameter kernel must be "jackson" or "lorentz".\n')
 
 
-def kpm_grid(eps):
+def kpm_grid(eps, var_name='e_grid'):
     '''
     Check that the KPM energies lie inside the (scaled) spectral bounds.
 
@@ -2326,8 +2339,37 @@ def kpm_grid(eps):
         e_grid must lie inside the spectral bounds.
     '''
     if np.any(np.abs(eps) >= 1.):
-        raise ValueError('\n\nParameter e_grid must lie strictly inside the spectral '
-                                    'bounds.\n')
+        raise ValueError('\n\nParameter {} must lie strictly inside the spectral '
+                                    'bounds.\n'.format(var_name))
+
+
+def kpm_times(times):
+    '''
+    Check the times of *kpm.time_evolution*: a non-empty, finite and
+    non-decreasing array.
+
+    Raises
+    ------
+    ValueError
+        Parameter times must be a non-empty, finite, non-decreasing array.
+    '''
+    if times.size == 0 or times.ndim != 1 or not np.all(np.isfinite(times)) \
+            or np.any(np.diff(times) < 0):
+        raise ValueError('\n\nParameter times must be a non-empty, finite, non-decreasing '
+                                    '1D array.\n')
+
+
+def positive_frequencies(omega):
+    '''
+    Check that photon energies are positive.
+
+    Raises
+    ------
+    ValueError
+        Parameter omega must be positive.
+    '''
+    if np.any(omega <= 0):
+        raise ValueError('\n\nParameter omega must be positive.\n')
 
 
 def site_index(site, n):
@@ -3733,6 +3775,19 @@ def frequencies(omega, var_name):
                                     'number.\n'.format(var_name))
 
 
+def optical_part(part):
+    '''
+    Check the part of *kpm.optical_conductivity* to return.
+
+    Raises
+    ------
+    ValueError
+        Parameter part must be "real", "imag" or "complex".
+    '''
+    if part not in ('real', 'imag', 'complex'):
+        raise ValueError('\n\nParameter part must be "real", "imag" or "complex".\n')
+
+
 def tensor_component(component, order):
     '''
     Check a Cartesian tensor component of a 2D response: a string of
@@ -4594,3 +4649,597 @@ def transfer_chunks(n_chunks, n_slices, qr_every):
     if n_slices < n_chunks * qr_every:
         raise ValueError('\n\nParameter n_slices must be at least n_chunks * qr_every '
                          '({}).\n'.format(n_chunks * qr_every))
+
+
+####################################
+# EXACT DIAGONALIZATION (tbkit.manybody, twisted tori)
+####################################
+
+
+def twist(twist, dim, periodic):
+    '''
+    Check the twist angles of *KSpace.finite_ham*: one real angle per
+    dimension, on a periodic sample.
+
+    Raises
+    ------
+    ValueError
+        Parameter twist must hold dim real angles.
+    ValueError
+        Twisted boundary conditions need periodic=True.
+    '''
+    if twist.shape != (dim,) or not np.all(np.isfinite(twist)):
+        raise ValueError('\n\nParameter twist must hold {} real angles.\n'.format(dim))
+    if not periodic:
+        raise ValueError('\n\nTwisted boundary conditions need periodic=True.\n')
+
+
+def fock_sector(n_sites, n_up, n_dn):
+    '''
+    Check a sector of fixed particle numbers: at most 62 sites (the bit
+    patterns are 64-bit integers), and between 0 and *n_sites* fermions of
+    each spin (*n_dn* None for spinless fermions).
+
+    Raises
+    ------
+    TypeError
+        Parameters must be integers.
+    ValueError
+        Parameter n_sites must be at most 62.
+    ValueError
+        The numbers of fermions must be between 0 and n_sites.
+    '''
+    positive_int(n_sites, 'n_sites')
+    if n_sites > 62:
+        raise ValueError('\n\nParameter n_sites must be at most 62.\n')
+    for var, name in ((n_up, 'n_up'), (n_dn, 'n_dn')):
+        if name == 'n_dn' and var is None:
+            continue
+        positive_int_zero(var, name)
+        if var > n_sites:
+            raise ValueError('\n\nParameter {} must be at most the number of sites ({}).\n'
+                             ''.format(name, n_sites))
+
+
+def spinless_onsite(u, spinless):
+    '''
+    Check that spinless fermions get no onsite repulsion.
+
+    Raises
+    ------
+    ValueError
+        Spinless fermions have no onsite interaction U.
+    '''
+    if spinless and np.any(u != 0):
+        raise ValueError('\n\nSpinless fermions have no onsite interaction U: use V.\n')
+
+
+def density_interaction(v, n_sites):
+    '''
+    Check a density-density interaction: a real symmetric (N, N) matrix
+    with zero diagonal.
+
+    Raises
+    ------
+    ValueError
+        Parameter V must be a real symmetric (N, N) matrix with zero diagonal.
+    '''
+    if (v.shape != (n_sites, n_sites) or np.iscomplexobj(v) or not np.allclose(v, v.T)
+            or np.any(np.diag(v) != 0)):
+        raise ValueError('\n\nParameter V must be a real symmetric ({0}, {0}) matrix with zero '
+                         'diagonal (the onsite term is U).\n'.format(n_sites))
+
+
+def n_states(n_states, dim):
+    '''
+    Check the number of eigenstates asked of a sector of dimension *dim*.
+
+    Raises
+    ------
+    ValueError
+        Parameter n_states must be at most the dimension of the sector.
+    '''
+    if n_states > dim:
+        raise ValueError('\n\nParameter n_states must be at most the dimension of the '
+                         'sector ({}).\n'.format(dim))
+
+
+def state_index(state, n_states):
+    '''
+    Check the index of an eigenstate of *exact_diagonalization*.
+
+    Raises
+    ------
+    TypeError
+        Parameter state must be an integer.
+    ValueError
+        Parameter state must be between 0 and n_states - 1.
+    '''
+    positive_int_zero(state, 'state')
+    if state >= n_states:
+        raise ValueError('\n\nParameter state must be smaller than the number of states '
+                         'computed ({}).\n'.format(n_states))
+
+
+def spinful_sector(spinless):
+    '''
+    Check that a spin observable is asked of spinful fermions.
+
+    Raises
+    ------
+    ValueError
+        Spinless fermions have no spin.
+    '''
+    if spinless:
+        raise ValueError('\n\nSpinless fermions have no spin: pass n_dn.\n')
+
+
+def orthonormal_states(phi):
+    '''
+    Check single-particle states for a projection: a 2D array of
+    orthonormal columns.
+
+    Raises
+    ------
+    ValueError
+        Parameter states must be a 2D array of orthonormal columns.
+    '''
+    if phi.ndim != 2 or not np.allclose(phi.conj().T @ phi, np.eye(phi.shape[1]), atol=1e-8):
+        raise ValueError('\n\nParameter states must be a 2D array of orthonormal columns '
+                         '(one single-particle state each).\n')
+
+
+def two_body(w, n_sites):
+    '''
+    Check a two-body interaction W: shape (N, N, N, N), Hermitian
+    (W_abcd = conj(W_cdab)).
+
+    Raises
+    ------
+    ValueError
+        Parameter W must have shape (N, N, N, N).
+    ValueError
+        Parameter W must be Hermitian.
+    '''
+    if w.shape != (n_sites,) * 4:
+        raise ValueError('\n\nParameter W must have shape ({0}, {0}, {0}, {0}).\n'.format(n_sites))
+    if not np.allclose(w, w.transpose(2, 3, 0, 1).conj(), atol=1e-10):
+        raise ValueError('\n\nParameter W must be Hermitian: W[a, b, c, d] = conj(W[c, d, a, b]).\n')
+
+
+def spinless_two_body(w):
+    '''
+    Check that a general two-body interaction is given for spinless fermions.
+
+    Raises
+    ------
+    ValueError
+        Parameter W needs spinless fermions.
+    '''
+    if w is not None:
+        raise ValueError('\n\nParameter W needs spinless fermions (n_dn=None): put the spin '
+                         'in the orbitals.\n')
+
+
+def momentum_sector(momentum, n_sites, spinless):
+    '''
+    Check a momentum sector (labels, n_cells, total) of *FockSector*.
+
+    Raises
+    ------
+    ValueError
+        A momentum sector needs spinless fermions.
+    ValueError
+        Parameter momentum must be a tuple (labels, n_cells, total).
+    ValueError
+        The labels must be integers, one row per orbital.
+    ValueError
+        n_cells must be positive and total must have one entry per dimension.
+    '''
+    if not spinless:
+        raise ValueError('\n\nA momentum sector needs spinless fermions (n_dn=None).\n')
+    if not isinstance(momentum, tuple) or len(momentum) != 3:
+        raise ValueError('\n\nParameter momentum must be a tuple (labels, n_cells, total).\n')
+    labels = np.asarray(momentum[0])
+    if labels.dtype.kind not in 'iu' or len(labels) != n_sites or labels.ndim not in (1, 2):
+        raise ValueError('\n\nThe momentum labels must be integers, one row per orbital '
+                         '({} rows).\n'.format(n_sites))
+    d = 1 if labels.ndim == 1 else labels.shape[1]
+    cells, total = np.asarray(momentum[1]), np.asarray(momentum[2])
+    if (cells.dtype.kind not in 'iu' or total.dtype.kind not in 'iu' or cells.size not in (1, d)
+            or total.size not in (1, d) or np.any(cells < 1)):
+        raise ValueError('\n\nThe n_cells (positive) and total of a momentum sector must be '
+                         'integers, one per dimension ({}).\n'.format(d))
+
+
+def conserves_momentum(h, w, labels, cells, total):
+    '''
+    Check that the one-body matrix *h* (and the two-body *w*, if given)
+    conserve the crystal momentum of the orbitals.
+
+    Raises
+    ------
+    ValueError
+        The Hamiltonian mixes momentum sectors.
+    '''
+    def differ(*pairs):
+        out = 0
+        for sign, lab in pairs:
+            out = out + sign * lab
+        return np.any(out % cells != 0, axis=-1)
+
+    a = labels
+    tol = 1e-10 * max(1., float(np.max(np.abs(h))))
+    bad = np.any((np.abs(h) > tol) & differ((1, a[:, None]), (-1, a[None, :])))
+    if w is not None:
+        tol = 1e-10 * max(1., float(np.max(np.abs(w))))
+        moved = differ((1, a[:, None, None, None]), (1, a[None, :, None, None]),
+                       (-1, a[None, None, :, None]), (-1, a[None, None, None, :]))
+        bad = bad or np.any((np.abs(w) > tol) & moved)
+    if bad:
+        raise ValueError('\n\nThe Hamiltonian mixes momentum sectors: check the momentum '
+                         'labels of the orbitals.\n')
+
+
+####################################
+# CRYSTAL SYMMETRY (tbkit.symmetry)
+####################################
+
+
+def operation(rotation, translation, orbitals, antiunitary, name):
+    '''
+    Check the parameters of *symmetry.Operation*.
+
+    Raises
+    ------
+    ValueError
+        Parameter rotation must be an orthogonal (d, d) matrix, d = 1, 2 or 3.
+    ValueError
+        Parameter translation must be a vector of d real numbers.
+    ValueError
+        Parameter orbitals must be a square unitary matrix.
+    TypeError
+        Parameter antiunitary must be a bool; parameter name a string.
+    '''
+    rot = np.asarray(rotation)
+    if (rot.ndim != 2 or rot.shape[0] != rot.shape[1] or rot.shape[0] not in (1, 2, 3)
+            or not np.isrealobj(rot) or not np.allclose(rot @ rot.T, np.eye(len(rot)), atol=1e-6)):
+        raise ValueError('\n\nParameter rotation must be an orthogonal (d, d) real matrix, '
+                         'd = 1, 2 or 3.\n')
+    if translation is not None:
+        t = np.asarray(translation)
+        if t.shape != (len(rot),) or not np.isrealobj(t):
+            raise ValueError('\n\nParameter translation must be a vector of {} real numbers.\n'
+                             ''.format(len(rot)))
+    if orbitals is not None:
+        d = np.asarray(orbitals)
+        if (d.ndim != 2 or d.shape[0] != d.shape[1]
+                or not np.allclose(d.conj().T @ d, np.eye(len(d)), atol=1e-6)):
+            raise ValueError('\n\nParameter orbitals must be a square unitary matrix.\n')
+    boolean(antiunitary, 'antiunitary')
+    if name is not None and not isinstance(name, str):
+        raise TypeError('\n\nParameter name must be a string.\n')
+
+
+def is_operation(op):
+    '''
+    Check that *op* is a *symmetry.Operation*.
+
+    Raises
+    ------
+    TypeError
+        The operation must be a tbkit.symmetry.Operation.
+    '''
+    from tbkit.symmetry import Operation
+    if not isinstance(op, Operation):
+        raise TypeError('\n\nThe operation must be a tbkit.symmetry.Operation.\n')
+
+
+def operations(ops):
+    '''
+    Check a non-empty list of *symmetry.Operation*.
+
+    Raises
+    ------
+    TypeError
+        Parameter ops must be a non-empty list of Operation.
+    '''
+    if not isinstance(ops, list) or not ops:
+        raise TypeError('\n\nParameter ops must be a non-empty list of tbkit.symmetry.Operation.\n')
+    for op in ops:
+        is_operation(op)
+
+
+def compose(a, b):
+    '''
+    Check that two operations can be multiplied: same dimension, and both
+    or neither with an orbital matrix (of the same size).
+
+    Raises
+    ------
+    ValueError
+        The operations act in different dimensions, or on different orbitals.
+    '''
+    is_operation(b)
+    if len(a.rotation) != len(b.rotation):
+        raise ValueError('\n\nThe two operations act in different dimensions.\n')
+    if (a.orbitals is None) != (b.orbitals is None) or (
+            a.orbitals is not None and a.orbitals.shape != b.orbitals.shape):
+        raise ValueError('\n\nThe two operations must both give orbital matrices of the same '
+                         'size, or neither.\n')
+
+
+def nonzero_vector(vec, var_name):
+    '''
+    Check that *vec* is a nonzero vector.
+
+    Raises
+    ------
+    ValueError
+        Parameter var_name must be a nonzero vector.
+    '''
+    if not np.any(vec):
+        raise ValueError('\n\nParameter {} must be a nonzero vector.\n'.format(var_name))
+
+
+def operation_space(op, space_dim):
+    '''
+    Check that an operation acts in the space of the model.
+
+    Raises
+    ------
+    ValueError
+        The operation must be a (space_dim, space_dim) rotation.
+    '''
+    if len(op.rotation) != space_dim:
+        raise ValueError('\n\nThe operation must act in {} dimensions (that of the '
+                         'positions of the model).\n'.format(space_dim))
+
+
+def maps_lattice(ok):
+    '''
+    Check that an operation sends every position of the unit cell onto a
+    position of the crystal (*ok*: (n, n) booleans, source by target).
+
+    Raises
+    ------
+    ValueError
+        The operation does not map the orbitals onto orbitals of the crystal.
+    '''
+    if not np.all(ok.sum(axis=1) == 1) or not np.all(ok.sum(axis=0) == 1):
+        raise ValueError('\n\nThe operation does not map the orbital positions onto '
+                         'orbital positions of the crystal.\n')
+
+
+def block_sizes(sizes, perm, m):
+    '''
+    Check that an operation maps every position onto one with as many
+    orbitals, and that its orbital matrix (size *m*, or None) fits them.
+
+    Raises
+    ------
+    ValueError
+        The positions exchanged carry different numbers of orbitals.
+    ValueError
+        The orbital matrix does not match the orbitals of a position.
+    '''
+    if any(sizes[p] != s for s, p in zip(sizes, perm)):
+        raise ValueError('\n\nThe operation exchanges positions with different numbers of '
+                         'orbitals.\n')
+    if m is not None and any(s != m for s in sizes):
+        raise ValueError('\n\nThe orbital matrix must be ({0}, {0}): one row per orbital at '
+                         'each position.\n'.format(sizes[0]))
+
+
+def full_dim(dim, space_dim):
+    '''
+    Check that the lattice fills its space (as many primitive vectors as
+    coordinates).
+
+    Raises
+    ------
+    ValueError
+        This needs a lattice that fills its space.
+    '''
+    if dim != space_dim:
+        raise ValueError('\n\nThis needs a lattice with as many primitive vectors as '
+                         'coordinates.\n')
+
+
+def callable_or_none(func, var_name):
+    '''
+    Check that *func* is callable or None.
+
+    Raises
+    ------
+    TypeError
+        Parameter var_name must be callable or None.
+    '''
+    if func is not None and not callable(func):
+        raise TypeError('\n\nParameter {} must be callable or None.\n'.format(var_name))
+
+
+def spinless_irreps(spin):
+    '''
+    Check that the model has no spin (the double groups are not tabulated).
+
+    Raises
+    ------
+    ValueError
+        This needs a spinless model.
+    '''
+    if spin:
+        raise ValueError('\n\nThis needs a spinless model (the double groups of spin 1/2 '
+                         'are not tabulated).\n')
+
+
+def dim_irreps(dim):
+    '''
+    Check that the model is 2D or 3D.
+
+    Raises
+    ------
+    ValueError
+        Irreps are tabulated in 2D and 3D.
+    '''
+    if dim not in (2, 3):
+        raise ValueError('\n\nThe point groups are tabulated in 2D and 3D only.\n')
+
+
+def symmorphic(residual):
+    '''
+    Check that the little group is made of rotations about one point.
+
+    Raises
+    ------
+    ValueError
+        The little group is not symmorphic about one point.
+    '''
+    if residual > 1e-6:
+        raise ValueError('\n\nThe operations are not rotations about one common point: '
+                         'nonsymmorphic groups are not covered, and a rotation about c needs '
+                         'translation c - R c exactly (see Operation.about).\n')
+
+
+def tabulated(res):
+    '''
+    Check that the point group of a little group is tabulated.
+
+    Raises
+    ------
+    ValueError
+        Point group not tabulated.
+    '''
+    if res is None:
+        raise ValueError('\n\nThis point group is not tabulated (in 3D, only the cubic '
+                         'groups T, Th, O, Td, Oh are).\n')
+
+
+def multiplicities(mult):
+    '''
+    Check that the irrep multiplicities are non-negative integers.
+
+    Raises
+    ------
+    ValueError
+        The characters do not decompose into irreps.
+    '''
+    if np.any(np.abs(mult - np.round(mult.real)) > 1e-3) or np.any(np.round(mult.real) < 0):
+        raise ValueError('\n\nThe characters do not decompose into irreps: a level is not '
+                         'invariant (raise deg_tol), or an operation is not a symmetry.\n')
+
+
+def proper_rotation(op):
+    '''
+    Check that an operation is a unitary 2D rotation C_n, n = 2, 3, 4 or 6.
+
+    Raises
+    ------
+    ValueError
+        The operation must be a unitary rotation C_n (n = 2, 3, 4, 6).
+    '''
+    rot = op.rotation
+    ok = len(rot) == 2 and not op.antiunitary and np.linalg.det(rot) > 0
+    if ok:
+        theta = abs(np.arctan2(rot[1, 0], rot[0, 0]))
+        ok = theta > 1e-6 and any(abs(theta - 2 * np.pi / n) < 1e-6 for n in (2, 3, 4, 6))
+    if not ok:
+        raise ValueError('\n\nThe operation must be a unitary 2D rotation C_n, n = 2, 3, 4 or 6.\n')
+
+
+def corner_rotation(n):
+    '''
+    Check that the rotation of *corner_charge* is C_4.
+
+    Raises
+    ------
+    ValueError
+        The corner charge is given for C_4.
+    '''
+    if n != 4:
+        raise ValueError('\n\nThe corner charge is given for a C_4 rotation.\n')
+
+
+def cell_rotation(L):
+    '''
+    Check that an operation maps the orbitals of the unit cell onto
+    themselves (no lattice vector L_s): a rotation about the cell centre.
+
+    Raises
+    ------
+    ValueError
+        The rotation must be about the centre of the unit cell.
+    '''
+    if np.any(L):
+        raise ValueError('\n\nThe rotation must be about the centre of the unit cell: it must '
+                         'map the orbitals of the unit cell onto themselves.\n')
+
+
+def inversion_operation(op):
+    '''
+    Check that an operation is the (unitary) inversion.
+
+    Raises
+    ------
+    ValueError
+        The operation must be the inversion.
+    '''
+    if op.antiunitary or not np.allclose(op.rotation, -np.eye(len(op.rotation))):
+        raise ValueError('\n\nThe operation must be the inversion (rotation -1, unitary).\n')
+
+
+def invariant_bands(singular_values, tol=1e-6):
+    '''
+    Check that the bands are an invariant subspace of an operation.
+
+    Raises
+    ------
+    ValueError
+        The bands are not invariant under the operation.
+    '''
+    if not np.allclose(singular_values, 1., atol=tol):
+        raise ValueError('\n\nThe bands are not invariant under the operation: they touch '
+                         'other bands at a rotation-invariant point.\n')
+
+
+def rotation_power(u_n, tol=1e-6):
+    '''
+    Check that the n-th power of a C_n rotation is +1 or -1 (spin 1/2),
+    and return that sign.
+
+    Raises
+    ------
+    ValueError
+        U^n must be +1 or -1.
+    '''
+    for sign in (1, -1):
+        if np.allclose(u_n, sign * np.eye(len(u_n)), atol=tol):
+            return sign
+    raise ValueError('\n\nThe n-th power of the rotation C_n must be +1 or -1 on the orbitals.\n')
+
+
+def quantized(x, what, tol=1e-3):
+    '''
+    Check that *x* is close to an integer.
+
+    Raises
+    ------
+    ValueError
+        The product of the eigenvalues is not quantized.
+    '''
+    if abs(x - round(x)) > tol:
+        raise ValueError('\n\nThe {} do not give a quantized result.\n'.format(what))
+
+
+def group_size(n, nmax=192):
+    '''
+    Check the size of a group being generated.
+
+    Raises
+    ------
+    ValueError
+        The operations generate more than nmax elements.
+    '''
+    if n > nmax:
+        raise ValueError('\n\nThe operations generate more than {} elements: they are not a '
+                         'crystallographic group of the model.\n'.format(nmax))

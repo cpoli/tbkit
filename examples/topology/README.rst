@@ -15,6 +15,8 @@ Chern number of the Kane-Mele model with Rashba coupling, the mirror
 Chern number of a topological crystalline insulator, the four Z2 indices
 of strong and weak 3D topological insulators, the axion angle pumped by
 2 pi around a cycle of a lattice Dirac model, the tenfold-way
-classification of tight-binding models by their symmetries, and the
+classification of tight-binding models by their symmetries, the
 diabolical points (conical intersections with a Berry phase of pi) of a
-two-parameter family.
+two-parameter family, the Chern number modulo n from the C_n rotation
+eigenvalues at a few momenta, and the inversion symmetry indicators of 3D
+insulators, which see a doubled topological insulator that Z2 misses.

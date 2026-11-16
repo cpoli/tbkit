@@ -2,11 +2,12 @@ Breakthroughs in Flat Bands and Interactions
 ============================================
 
 Flat bands from lattice geometry and from a moiré twist, the Hubbard model
-and magnetic order in mean field, and superconductivity from the BCS gap
-equation to Kitaev's Majorana chain, the nanowires that realize it, and the
-superfluid weight of flat bands. It traces the ideas behind
-:mod:`tbkit.lattices`, :mod:`tbkit.moire`, :mod:`tbkit.meanfield` and
-:mod:`tbkit.bdg`.
+and magnetic order in mean field, its exact solution in one dimension and
+the fractional Chern insulator of a flat Chern band, and superconductivity
+from the BCS gap equation to Kitaev's Majorana chain, the nanowires that
+realize it, and the superfluid weight of flat bands. It traces the ideas
+behind :mod:`tbkit.lattices`, :mod:`tbkit.moire`, :mod:`tbkit.meanfield`,
+:mod:`tbkit.manybody` and :mod:`tbkit.bdg`.
 
 .. contents:: Timeline
    :local:
@@ -175,6 +176,39 @@ of the band, :math:`U_c \approx 3.46\,W`.
 
 .. minigallery:: ../../examples/correlations/plot_flat_band_ferromagnetism.py
 
+1968 -- Lieb and Wu: the Exact Solution of the Hubbard Chain
+-------------------------------------------------------------------
+
+E. H. Lieb and F. Y. Wu solved the one-dimensional Hubbard model exactly,
+by the Bethe ansatz, five years after it was proposed. At half filling
+the ground-state energy per site is an integral over Bessel functions,
+:math:`E_0/N = -4|t|\int_0^\infty J_0(\omega)J_1(\omega)\,d\omega/
+[\omega(1+e^{\omega U/2|t|})]`, from :math:`-4|t|/\pi` for free electrons to
+the Heisenberg chain at large *U*. The charge gap that follows from it is
+positive for every :math:`U > 0`: the half-filled chain is a Mott
+insulator however weak the repulsion, with no Mott transition at a
+finite *U*, exponentially small gap at weak coupling and
+:math:`\Delta \to U - 4|t|` at strong coupling. It remains the benchmark
+of every approximate treatment of the Hubbard model, mean field first.
+
+*Implementation:* :func:`tbkit.manybody.exact_diagonalization` (sparse
+Fock-space Hamiltonian of any cluster, Lanczos), on rings from
+:meth:`tbkit.kspace.KSpace.finite_ham` with ``twist`` for closed-shell
+boundary conditions.
+
+*References:* E. H. Lieb and F. Y. Wu, "Absence of Mott Transition in an
+Exact Solution of the Short-Range, One-Band Model in One Dimension,"
+Phys. Rev. Lett. 20, 1445-1448 (1968).
+
+*Example:* ``examples/correlations/plot_lieb_wu_hubbard_chain.py``
+confirms, by exact diagonalization of rings of 6 to 12 sites (up to
+853776 states) extrapolated in :math:`1/L^2`, the Lieb-Wu energy per site
+within 0.5% at :math:`U = 0, 2, 4, 8|t|`; and, fitted in powers of
+:math:`1/L`, the charge gap within 0.5% at :math:`U = 8|t|` and
+:math:`16|t|`.
+
+.. minigallery:: ../../examples/correlations/plot_lieb_wu_hubbard_chain.py
+
 1973/1988 -- Frustration and the 120-Degree Order of the Triangular Antiferromagnet
 -------------------------------------------------------------------------------------------
 
@@ -281,7 +315,8 @@ Sarma; Neupert, Santos, Chamon, and Mudry) generalized the same idea
 into a broader research program: engineer lattice models whose lowest
 band is simultaneously *nearly flat* and topologically nontrivial, as a
 route to fractional-quantum-Hall-like physics -- a fractional Chern
-insulator -- entirely without Landau levels or a net magnetic field.
+insulator (2011, below) -- entirely without Landau levels or a net
+magnetic field.
 
 *Implementation:* :func:`tbkit.lattices.kagome` with every nearest-neighbor
 hopping set to the same complex amplitude :math:`te^{i\phi}` (rather
@@ -428,6 +463,48 @@ closes at :math:`V_Z = \Delta` and two states at :math:`|E| < 10^{-10}`
 on the outer 20 sites of a 200-site wire beyond it.
 
 .. minigallery:: ../../examples/superconductivity/plot_majorana_nanowire.py
+
+2011 -- Fractional Chern Insulators
+-------------------------------------------
+
+Three groups showed in 2011 that the fractional quantum Hall effect does
+not need Landau levels. T. Neupert, L. Santos, C. Chamon and C. Mudry,
+and D. N. Sheng, Z.-C. Gu, K. Sun and L. Sheng, filled the nearly flat
+Chern band of a lattice model (the checkerboard lattice of Sun, Gu,
+Katsura and Das Sarma, above) to one third with spinless fermions
+repelling on nearest-neighbour bonds, and found by exact
+diagonalization on a torus what the Laughlin state at :math:`\nu = 1/3`
+gives: three nearly degenerate ground states separated by a gap, which
+exchange under the insertion of a flux quantum, so that the Hall
+conductance is :math:`e^2/3h`. N. Regnault and B. A. Bernevig named the
+state a *fractional Chern insulator*, studied it with the interaction
+projected onto the flat band, and showed that its quasiholes count as
+those of the Laughlin state. Fractional Chern insulators were later
+observed without a magnetic field in twisted :math:`\mathrm{MoTe_2}`
+(2023) and in rhombohedral graphene on hexagonal boron nitride (2024).
+
+*Implementation:* :func:`tbkit.manybody.project_interaction` (a
+density-density interaction projected onto Bloch states) and
+:func:`tbkit.manybody.exact_diagonalization` with a general two-body
+interaction ``W`` in a sector of total crystal momentum (``momentum``);
+:meth:`tbkit.kspace.KSpace.finite_ham` with ``twist`` for the flux.
+
+*References:* T. Neupert, L. Santos, C. Chamon, and C. Mudry, "Fractional
+Quantum Hall States at Zero Magnetic Field," Phys. Rev. Lett. 106, 236804
+(2011); D. N. Sheng, Z.-C. Gu, K. Sun, and L. Sheng, "Fractional quantum
+Hall effect in the absence of Landau levels," Nat. Commun. 2, 389 (2011);
+N. Regnault and B. A. Bernevig, "Fractional Chern Insulator," Phys. Rev.
+X 1, 021014 (2011).
+
+*Example:* ``examples/correlations/plot_fractional_chern_insulator.py``
+confirms, for the checkerboard band (flatness 27, :math:`C = -1`) at
+filling 1/3 on a :math:`4\times6` torus (8 fermions, 735471 states in 24
+momentum sectors), three ground states in the sectors :math:`(0, 0)`,
+:math:`(0, 2)` and :math:`(0, 4)`, spread over :math:`0.002t` below a gap
+of :math:`0.07t`; and, as one flux quantum is threaded, a gap that stays
+open while each ground state moves to the next sector.
+
+.. minigallery:: ../../examples/correlations/plot_fractional_chern_insulator.py
 
 2011/2018 -- Magic-Angle Twisted Bilayer Graphene
 --------------------------------------------------------

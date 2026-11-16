@@ -376,9 +376,14 @@ def s_wave_gap(
     error_handling.positive_real(tol, 'tol')
     error_handling.positive_int(max_iter, 'max_iter')
     V = np.broadcast_to(np.asarray(V, dtype='f8'), (n,))
-    delta = np.broadcast_to(np.asarray(delta0, dtype='c16'), (n,)).copy()
-    xi = h.astype('c16') - mu * np.eye(n)
-    big = np.zeros((2 * n, 2 * n), 'c16')
+    delta = np.broadcast_to(np.asarray(delta0, dtype='c16'), (n,))
+    # a real ham and gap keep the BdG matrix real symmetric, and its eigh is
+    # several times faster; the gap (u v^* summed per level) is gauge invariant
+    real = not (np.iscomplexobj(h) and h.imag.any()) and not delta.imag.any()
+    dtype = 'f8' if real else 'c16'
+    delta = (delta.real if real else delta).copy()
+    xi = (h.real if real else h).astype(dtype) - mu * np.eye(n)
+    big = np.zeros((2 * n, 2 * n), dtype)
     big[:n, :n], big[n:, n:] = xi, -xi.conj()
     diag = np.arange(n)
     for it in range(1, max_iter + 1):
@@ -394,7 +399,7 @@ def s_wave_gap(
             break
     else:
         error_handling.converged(False, 's_wave_gap')
-    return GapResult(new, en, vec, it)
+    return GapResult(new.astype('c16'), en, vec.astype('c16'), it)
 
 
 def superfluid_weight(

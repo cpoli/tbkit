@@ -136,10 +136,23 @@ class TestGapEquation(unittest.TestCase):
         self.assertGreater(np.min(np.abs(res.energies)), 0.)
         np.testing.assert_allclose(np.sort(res.energies), -np.sort(res.energies)[::-1], atol=1e-10)
 
+    def test_complex_gauge_matches_real(self):
+        # a real ham and gap run in real arithmetic; site phases on ham and a
+        # global phase on the gap take the complex path to the same |Delta_i|
+        h, _ = square_torus(4)
+        ref = s_wave_gap(h, 2.5, -0.5, temperature=0.1)
+        u = np.exp(1j * np.linspace(0., 2., len(h)))
+        for hc, d0 in ((u[:, None] * h * u.conj()[None], 0.1), (h, 0.1j)):
+            res = s_wave_gap(hc, 2.5, -0.5, temperature=0.1, delta0=d0)
+            np.testing.assert_allclose(np.abs(res.delta), np.abs(ref.delta), atol=1e-7)
+            np.testing.assert_allclose(res.energies, ref.energies, atol=1e-7)
+        self.assertEqual(ref.delta.dtype, np.complex128)
+        self.assertEqual(ref.states.dtype, np.complex128)
+
     def test_bcs_ratio(self):
         # Delta(T)^2 vanishes linearly at T_c; the extrapolated T_c matches the
         # linearized gap equation, and Delta(0) / T_c = 1.764 (weak coupling)
-        h, eps = square_torus(12)
+        h, eps = square_torus(8)
         mu, V = -0.5, 2.5
         xi = eps - mu
         tc = brentq(lambda T: V / len(xi) * np.sum(np.tanh(xi / (2 * T)) / (2 * xi)) - 1, 1e-3, 3.)

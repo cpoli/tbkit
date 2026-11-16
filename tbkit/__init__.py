@@ -6,7 +6,7 @@
 
 """tbkit: build and solve Tight-Binding models."""
 
-__version__ = "0.7.0"
+__version__ = "0.8.0"
 
 __all__ = [
     "Lattice", "System", "Plot", "Propagation", "Save", "KSpace",
@@ -62,3 +62,11 @@ __all__ += ["WannierFunctions", "wannierize"]
 # Localization lengths of disordered strips by the transfer matrix
 from tbkit.localization import Lyapunov, lyapunov_exponents
 __all__ += ["Lyapunov", "lyapunov_exponents"]
+# Exact diagonalization of small interacting clusters
+from tbkit.manybody import FockSector, ExactResult, exact_diagonalization, project_interaction
+__all__ += ["FockSector", "ExactResult", "exact_diagonalization", "project_interaction"]
+# Crystal symmetry: space-group operations, irreps, indicators, symmetrization
+from tbkit.symmetry import (Operation, Irreps, find_symmetries, irreps, rotation_indicator,
+                                     inversion_indicators, corner_charge, symmetrize)
+__all__ += ["Operation", "Irreps", "find_symmetries", "irreps", "rotation_indicator",
+            "inversion_indicators", "corner_charge", "symmetrize"]

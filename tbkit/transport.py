@@ -530,7 +530,8 @@ class _EnergyWorkers():
         also *shot_noise*, and *conductance*, *thermoelectric*,
         *conductance_matrix* and *four_terminal_resistance* at a finite
         temperature (the energies of the Fermi window). Each
-        energy is one sparse factorization or dense inversion, mostly in
+        energy is one sparse factorization (or, for *RecursiveTransport*,
+        dense inversions of slices), mostly in
         LAPACK and SuperLU, which release the GIL, so the energies run in
         parallel. The results do not depend on *workers*.
 
@@ -570,8 +571,10 @@ class Transport(_EnergyWorkers):
     default (*eta* None) the transmissions, conductance matrix, currents and
     noise, only factorize the sparse matrix. With a broadening *eta* (and,
     as a fallback, for non-Hermitian leads, with *eta* = 1e-9) these use the
-    dense Green's function, and the dense matrix *ham* is built once, the
-    first time it is needed.
+    Green's function, but only its columns on the sites of the leads, from
+    one sparse factorization of :math:`E + i\eta - H - \sum_l\Sigma_l` per
+    energy. Only *get_green* and *self_energy*, which return full matrices,
+    build the dense matrix *ham* (once, the first time it is needed).
 
     Parameters
     ----------
@@ -834,7 +837,9 @@ class Transport(_EnergyWorkers):
     def get_green(self, energy: float, eta: float = 1e-9) -> NDArray[np.complex128]:
         r'''
         Get the retarded Green's function of the device with all its leads,
-        :math:`G^r = [E + i\eta - H - \sum_l \Sigma_l]^{-1}`.
+        :math:`G^r = [E + i\eta - H - \sum_l \Sigma_l]^{-1}`, as a dense
+        matrix (a dense inversion: the methods of this class never call it,
+        and only factorize the sparse matrix).
 
         Parameters
         ----------
@@ -885,16 +890,43 @@ class Transport(_EnergyWorkers):
             return np.array(self._map(lambda e: np.sum(np.abs(self._amplitudes(e, lead_in, lead_out)) ** 2),
                                       energies), dtype='f8')
         eta = 1e-9 if eta is None else eta
-        self.ham  # built once, before the threads
+        s_in, s_out = self.leads[lead_in][3], self.leads[lead_out][3]
 
         def caroli(e):
-            sig_in = self.self_energy(lead_in, e, eta)
-            sig_out = self.self_energy(lead_out, e, eta)
-            gam_in = 1j * (sig_in - sig_in.conj().T)
-            gam_out = 1j * (sig_out - sig_out.conj().T)
-            g = self.get_green(e, eta)
-            return np.trace(gam_out @ g @ gam_in @ g.conj().T).real
+            g, gam = self._green_columns(e, eta, s_in)
+            g = g[s_out]
+            return np.trace(gam[lead_out] @ g @ gam[lead_in] @ g.conj().T).real
         return np.array(self._map(caroli, energies), dtype='f8')
+
+    def _green_columns(
+        self, energy: float, eta: float, cols: ArrayLike,
+    ) -> tuple[NDArray[np.complex128], list[NDArray[np.complex128]]]:
+        r'''
+        Private method. The columns *cols* of the retarded Green's function,
+        :math:`G^r_{:,c} = [E + i\eta - H - \sum_l\Sigma_l]^{-1}e_c` (shape
+        (n_sites, len(cols))), from one sparse LU factorization: the
+        self-energies only fill the blocks of the lead sites. Also returns
+        the broadening :math:`\Gamma_l = i(\Sigma_l - \Sigma_l^\dagger)` of
+        every lead, restricted to its sites (shape (len(sites), len(sites))).
+        '''
+        n = self._ham.shape[0]
+        mat = ((energy + 1j * eta) * sp.identity(n, dtype='c16', format='csr') - self._ham).tocoo()
+        rows, columns, data = [mat.row], [mat.col], [mat.data]
+        gam = []
+        for h0, v, tau, sites in self.leads:
+            sig = tau @ surface_green(h0, v, energy, eta) @ tau.conj().T
+            gam.append(1j * (sig - sig.conj().T))
+            rr, cc = np.meshgrid(sites, sites, indexing='ij')
+            rows.append(rr.ravel())
+            columns.append(cc.ravel())
+            data.append(-sig.ravel())
+        # duplicate entries (a site shared by two leads) are summed
+        mat = sp.csc_matrix((np.concatenate(data), (np.concatenate(rows), np.concatenate(columns))),
+                            shape=(n, n))
+        cols = np.asarray(cols, dtype=int).ravel()
+        rhs = np.zeros((n, len(cols)), 'c16')
+        rhs[cols, np.arange(len(cols))] = 1.
+        return spla.splu(mat).solve(rhs), gam
 
     # ------------------------------------------------------------------
     # Scattering matrix and scattering states
@@ -904,7 +936,7 @@ class Transport(_EnergyWorkers):
         r'''
         Private method. Whether a method with a broadening *eta* uses the
         scattering matrix and states (*eta* None and Hermitian leads) rather
-        than the dense Green's function.
+        than the Green's function (*_green_columns*).
         '''
         return eta is None and all(np.allclose(h0, h0.conj().T) for h0, _, _, _ in self.leads)
 
@@ -1172,17 +1204,6 @@ class Transport(_EnergyWorkers):
     # Multi-terminal conductance, currents and noise
     # ------------------------------------------------------------------
 
-    def _broadenings(self, energy: float, eta: float) -> list[NDArray[np.complex128]]:
-        r'''
-        Private method. The broadening :math:`\Gamma_l = i(\Sigma_l - \Sigma_l^\dagger)`
-        of every lead, restricted to its sites (shape (len(sites), len(sites))).
-        '''
-        out = []
-        for h0, v, tau, _ in self.leads:
-            sig = tau @ surface_green(h0, v, energy, eta) @ tau.conj().T
-            out.append(1j * (sig - sig.conj().T))
-        return out
-
     def transmission_matrix(self, energy: float, eta: float | None = None) -> NDArray[np.float64]:
         r'''
         Get the transmissions :math:`T_{pq}` between every pair of leads at
@@ -1207,13 +1228,14 @@ class Transport(_EnergyWorkers):
             s = self.smatrix(energy)
             return np.array([[s.transmission(p, q) if p != q else 0. for q in range(n)] for p in range(n)])
         eta = 1e-9 if eta is None else eta
-        g = self.get_green(energy, eta)
-        gam = self._broadenings(energy, eta)
+        lead_sites = np.unique(np.concatenate([np.asarray(sites, dtype=int).ravel()
+                                               for _, _, _, sites in self.leads]))
+        g, gam = self._green_columns(energy, eta, lead_sites)
         out = np.zeros((n, n))
         for p in range(n):
             for q in range(n):
                 if p != q:
-                    gpq = g[np.ix_(self.leads[p][3], self.leads[q][3])]
+                    gpq = g[np.ix_(self.leads[p][3], np.searchsorted(lead_sites, self.leads[q][3]))]
                     out[p, q] = np.trace(gam[p] @ gpq @ gam[q] @ gpq.conj().T).real
         return out
 
@@ -1254,8 +1276,6 @@ class Transport(_EnergyWorkers):
         error_handling.positive_int(n_points, 'n_points')
         if temperature > 0:
             energies, weights = _fermi_window(energy, temperature, n_points)
-            if not self._exact(eta):
-                self.ham  # built once, before the threads
             return sum(w * g for g, w in zip(self._map(lambda e: self.conductance_matrix(e, eta), energies),
                                              weights))
         t = self.transmission_matrix(energy, eta)
@@ -1310,7 +1330,8 @@ class Transport(_EnergyWorkers):
         Private method. The bond currents of *bond_currents* on the bonds
         :math:`i \neq j` of the device (the nonzero :math:`H_{ij}`): rows,
         columns and currents. By default :math:`A^{(q)}_{ji}` comes from the
-        scattering states, otherwise from the dense Green's function.
+        scattering states, otherwise from the Green's function columns of
+        the lead (*_green_columns*).
         '''
         error_handling.lead_index(lead, len(self.leads))
         h = self._ham.tocoo()
@@ -1321,10 +1342,8 @@ class Transport(_EnergyWorkers):
             a_ji = np.sum(psi[:, cols] * psi[:, rows].conj(), axis=0)
         else:
             eta = 1e-9 if eta is None else eta
-            g = self.get_green(energy, eta)
-            sites = self.leads[lead][3]
-            gam = self._broadenings(energy, eta)[lead]
-            a_ji = np.sum((g[cols][:, sites] @ gam) * g[rows][:, sites].conj(), axis=1)
+            g, gam = self._green_columns(energy, eta, self.leads[lead][3])
+            a_ji = np.sum((g[cols] @ gam[lead]) * g[rows].conj(), axis=1)
         return rows, cols, -2 * np.imag(hij * a_ji)
 
     def bond_currents(self, energy: float, lead: int, eta: float | None = None) -> NDArray[np.float64]:
@@ -1344,7 +1363,8 @@ class Transport(_EnergyWorkers):
         site not touched by a lead. By default (*eta* None) :math:`A^{(q)}`
         comes from the scattering states :math:`\psi_a` of the lead
         (*wave_function*, unit current), on the bonds of the sparse device
-        only; with a broadening *eta*, from the dense Green's function.
+        only; with a broadening *eta*, from the columns of :math:`G^r` on the
+        lead's sites (one sparse factorization).
 
         Parameters
         ----------
@@ -1371,7 +1391,7 @@ class Transport(_EnergyWorkers):
         (*bond_currents*): half of the currents of the bonds leaving the
         site, along their bond vectors,
         :math:`\mathbf{j}_i = \frac12\sum_jJ_{i\to j}(\mathbf{r}_j - \mathbf{r}_i)`.
-        By default (*eta* None) it never builds a dense matrix of the device.
+        It never builds a dense matrix of the device.
 
         Parameters
         ----------
@@ -1430,9 +1450,8 @@ class Transport(_EnergyWorkers):
             out[:min(len(out), len(vals))] = vals[:len(out)]
             return out
         eta = 1e-9 if eta is None else eta
-        g = self.get_green(energy, eta)
-        gam = self._broadenings(energy, eta)
-        return _eigen_transmissions(gam[lead_out], g[np.ix_(s_out, s_in)], gam[lead_in])
+        g, gam = self._green_columns(energy, eta, s_in)
+        return _eigen_transmissions(gam[lead_out], g[s_out], gam[lead_in])
 
     def shot_noise(
         self, energies: ArrayLike, lead_in: int = 0, lead_out: int = 1, eta: float | None = None,
@@ -1457,8 +1476,6 @@ class Transport(_EnergyWorkers):
         '''
         error_handling.frequencies(energies, 'energies')
         energies = np.atleast_1d(np.asarray(energies, dtype='f8'))
-        if not (self._exact(eta) and lead_in != lead_out):
-            self.ham  # built once, before the threads
         return np.array(self._map(lambda e: _noise(self.transmission_eigenvalues(e, lead_in, lead_out, eta)),
                                   energies), dtype='f8')
 
@@ -1493,8 +1510,6 @@ class Transport(_EnergyWorkers):
         '''
         error_handling.frequencies(energies, 'energies')
         energies = np.atleast_1d(np.asarray(energies, dtype='f8'))
-        if not (self._exact(eta) and lead_in != lead_out):
-            self.ham  # built once, before the threads
         return np.array(self._map(lambda e: _fano(self.transmission_eigenvalues(e, lead_in, lead_out, eta)),
                                   energies), dtype='f8')
 

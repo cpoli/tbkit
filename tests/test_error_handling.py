@@ -12,6 +12,11 @@ class TestGeneric(unittest.TestCase):
         eh.boolean(True, 'x')
         self.assertRaises(TypeError, eh.boolean, 1, 'x')
 
+    def test_optical_part(self):
+        for part in ('real', 'imag', 'complex'):
+            eh.optical_part(part)
+        self.assertRaises(ValueError, eh.optical_part, 'abs')
+
     def test_positive_int(self):
         eh.positive_int(1, 'x')
         self.assertRaises(TypeError, eh.positive_int, 1.0, 'x')

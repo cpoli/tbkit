@@ -2141,12 +2141,15 @@ class KSpace():
                    for i, j, R, t in self._hop]
 
     def _finite_entries(
-        self, n_cells: int | tuple[int, ...], periodic: bool,
+        self, n_cells: int | tuple[int, ...], periodic: bool, twist: NDArray | None = None,
     ) -> tuple[tuple[int, ...], int, list[tuple[NDArray, NDArray, int, int, tuple, NDArray, complex]]]:
-        '''
+        r'''
         Private method. For each stored hopping, the row and column indices
         it fills in a finite sample of *n_cells* cells (see *finite_ham*),
         with its orbitals, lattice vector (integers and Cartesian) and amplitude.
+        With *twist* (periodic only), the amplitude is an array: the hopping
+        times the phase :math:`e^{i\theta\cdot w}` of the *w* windings
+        of each bond around the torus.
         '''
         if isinstance(n_cells, int):
             n_cells = (n_cells,) * self.dim
@@ -2168,11 +2171,14 @@ class KSpace():
                 keep = np.all((target >= 0) & (target < dims), axis=1)
             rows = np.arange(n_tot)[keep] * self.norb + i
             cols = (target[keep] @ strides) * self.norb + j
+            if twist is not None:
+                t = t * np.exp(1j * (((cells + np.array(R)[None, :]) // dims) @ twist))
             entries.append((rows, cols, i, j, R, R_cart, t))
         return n_cells, n_tot, entries
 
     def finite_ham(
         self, n_cells: int | tuple[int, ...], periodic: bool = False, sparse: bool = False,
+        twist: ArrayLike | None = None,
     ) -> NDArray[np.complex128] | sp.csr_matrix:
         r'''
         Get the real-space Hamiltonian of a finite sample of
@@ -2192,6 +2198,15 @@ class KSpace():
             Return a sparse CSR
             matrix (for large samples, e.g. with *tbkit.kpm*) instead of a
             dense array.
+        twist : Real array of *dim* angles, or None, default None
+            Twisted boundary conditions (periodic only),
+            :math:`\psi(\mathbf{n} + N_\alpha\mathbf{e}_\alpha) = e^{i\theta_\alpha}\psi(\mathbf{n})`:
+            every bond that winds around the torus along
+            :math:`\mathbf{a}_\alpha` picks up the phase
+            :math:`e^{i\theta_\alpha}`, a flux :math:`\theta_\alpha/2\pi`
+            threaded through that cycle. The spectrum is that of
+            *get_bands* on the mesh shifted by :math:`\theta_\alpha/N_\alpha`
+            along :math:`\mathbf{b}_\alpha`.
 
         Returns
         -------
@@ -2201,7 +2216,10 @@ class KSpace():
         error_handling.nk(n_cells, self.dim)
         error_handling.boolean(periodic, 'periodic')
         error_handling.boolean(sparse, 'sparse')
-        _, n_tot, entries = self._finite_entries(n_cells, periodic)
+        if twist is not None:
+            twist = np.asarray(twist, dtype='f8')
+            error_handling.twist(twist, self.dim, periodic)
+        _, n_tot, entries = self._finite_entries(n_cells, periodic, twist)
         onsite = np.diag(self.onsite) + self._onsite_offdiag
         if sparse:
             onsite_rows, onsite_cols = np.nonzero(onsite)
@@ -2830,9 +2848,15 @@ class KSpace():
         of non-Hermitian Hamiltonians, where :math:`H^T \neq H^*` (see
         *non_hermitian_class*).
 
+        *op* may also be a space-group operation
+        (:class:`tbkit.symmetry.Operation`): then :math:`g\mathbf{k} =
+        R\mathbf{k}` (:math:`-R\mathbf{k}` if antiunitary) and :math:`U =
+        U_g(\mathbf{k})` (*symmetry.representation*), and *k_map* and
+        *antiunitary* are those of the operation (the arguments are ignored).
+
         Parameters
         ----------
-        op : Complex ndarray, shape (norb, norb), or callable of k: :math:`U`
+        op : Complex ndarray, shape (norb, norb), or callable of k: :math:`U`; or an **Operation**
         k_map : 'minus' or 'identity', default 'minus'
         antiunitary : Boolean, default False
         anti : Boolean, default False
@@ -2857,6 +2881,14 @@ class KSpace():
         fracs = np.array(np.meshgrid(*[np.arange(nk) / nk] * self.dim, indexing='ij')).reshape(self.dim, -1).T
         fracs = fracs + rng.uniform(0., 1. / nk, self.dim)
         sign = -1. if anti else 1.
+        from tbkit.symmetry import Operation, _representations
+        if isinstance(op, Operation):
+            k_all = fracs @ self.rec_vec_k
+            u, gk = _representations(self, op, k_all)
+            ham = self._bloch_ham(k_all @ self.k_basis.T)
+            ham = ham.conj() if op.antiunitary else ham
+            rhs = u @ (ham.transpose(0, 2, 1) if transpose else ham) @ u.conj().transpose(0, 2, 1)
+            return float(np.max(np.abs(self._bloch_ham(gk @ self.k_basis.T) - sign * rhs)))
         err = 0.
         for f in fracs:
             k = f @ self.rec_vec_k
@@ -3910,6 +3942,7 @@ class KSpace():
         weights: ArrayLike | None = None,
         style: str = 'color',
         cmap: str | None = None,
+        irreps: list | bool | None = None,
     ) -> Figure:
         '''
         Plot the band structure computed by *k_path* or *get_bands*, against
@@ -3947,6 +3980,12 @@ class KSpace():
         cmap
             Default value None ('viridis', or 'RdBu_r', centred on
             zero, if some weights are negative). Colormap of *style* 'color'.
+        irreps : List of **Operation**, or True, default None
+            Write, at each node of
+            the *k_path*, the irreducible representation of each level (see
+            *symmetry.irreps*), for these operations (True: those of
+            *symmetry.find_symmetries*). Nodes whose point group is not
+            tabulated (in 3D, the non-cubic ones) are left unlabelled.
 
         Returns
         -------
@@ -3957,6 +3996,9 @@ class KSpace():
         error_handling.positive_real(lw, 'lw')
         error_handling.lims(lims)
         error_handling.tuple_2elem(figsize, 'figsize')
+        if irreps is not None and irreps is not False:
+            error_handling.empty_ndarray(self.nodes, 'k_path')
+            error_handling.spinless_irreps(self.spin)
         fig, ax = plt.subplots(figsize=figsize)
         if weights is None:
             for n in range(self.norb):
@@ -3972,12 +4014,31 @@ class KSpace():
             error_handling.ndarray(np.array(node_labels), 'node_labels', len(self.nodes))
             ax.set_xticks(self.nodes)
             ax.set_xticklabels(node_labels, fontsize=fs)
+        if irreps is not None and irreps is not False:
+            self._plot_irreps(ax, irreps, fs)
         ax.set_ylabel('$E$', fontsize=fs)
         for label in ax.yaxis.get_majorticklabels():
             label.set_fontsize(fs)
         fig.set_layout_engine('tight')
         plt.draw()
         return fig
+
+    def _plot_irreps(self, ax, ops, fs: float) -> None:
+        '''
+        Private method. The irreps of the levels at the nodes of the k-path
+        (see *plot_bands*).
+        '''
+        from tbkit import symmetry
+        ops = symmetry.find_symmetries(self, antiunitary=False) if ops is True else ops
+        error_handling.operations(ops)
+        for node in self.nodes:
+            index = int(np.argmin(np.abs(self.ks_dist - node)))
+            res = symmetry._irreps(self, self.ks[index], ops, 1e-6)
+            if res is None:
+                continue
+            for energy, label in zip(res.energies, res.labels):
+                ax.annotate(label, (node, energy), xytext=(3, 2), textcoords='offset points',
+                                 fontsize=0.6 * fs)
 
     def _plot_fat_bands(self, fig, ax, weights, style, cmap, c, lw, ms) -> None:
         '''

@@ -3,6 +3,7 @@ from tbkit.system import system
 from tbkit.propagation import Propagation, propagation
 import unittest
 import numpy as np
+import scipy.sparse as sparse
 import matplotlib.pyplot as plt
 from math import sqrt
 from unittest import mock
@@ -95,6 +96,37 @@ class TestPropagation(unittest.TestCase):
         self.assertEqual(prop.prop.shape, (sys.lat.sites, 21))
         prop.get_pumping([sys.ham, sys2.ham], psi_init, steps=21, dz=0.1, norm=False)
         self.assertEqual(prop.prop.shape, (sys.lat.sites, 21))
+
+    def test_sparse_crank_nicolson(self):
+        # the sparse LU step is the dense (i - dz H/2)^-1 (i + dz H/2), also
+        # for a non-Hermitian Hamiltonian and along a pumping cycle
+        sys = build_chain()
+        ham = (sys.ham + 0.1j * sparse.diags(np.arange(sys.lat.sites) % 2.)).tocsr()
+        ham2 = 2. * sys.ham
+        dz = 0.1
+        eye = 1j * np.eye(sys.lat.sites)
+
+        def step(h):
+            h = np.asarray(h.todense() if hasattr(h, 'todense') else h)
+            return np.linalg.solve(eye - 0.5 * dz * h, eye + 0.5 * dz * h)
+
+        psi = np.zeros(sys.lat.sites, 'c16')
+        psi[0] = 1.
+        prop = Propagation(sys.lat)
+        prop.get_propagation(ham, psi, steps=10, dz=dz)
+        mat = step(ham)
+        ref = [psi]
+        for _ in range(9):
+            ref.append(mat @ ref[-1])
+        self.assertTrue(np.allclose(prop.prop, np.array(ref).T, atol=1e-12))
+        prop.get_pumping([sys.ham, ham2], psi, steps=9, dz=dz, norm=False)
+        delta = 3
+        hams = [sys.ham] * (delta - 1) + [(1 - c) * sys.ham + c * ham2 for c in np.linspace(0, 1, delta)] \
+            + [ham2] * (9 - 2 * delta)
+        ref = [psi]
+        for h in hams:
+            ref.append(step(h) @ ref[-1])
+        self.assertTrue(np.allclose(prop.prop, np.array(ref).T, atol=1e-12))
 
     def test_plt_propagation_1d(self):
         prop = build_propagated()

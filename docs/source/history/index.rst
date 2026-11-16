@@ -13,13 +13,14 @@ pointer to the corresponding **tbkit** functionality and a short,
 runnable, numerically-verified example in ``examples/`` -- nothing here
 is asserted without also being checked in code.
 
-- :doc:`models_breakthroughs` -- Bloch's theorem, Slater-Koster and k·p
-  models, Wannier functions, and solvers for very large lattices.
+- :doc:`models_breakthroughs` -- Bloch's theorem, the irreps of the
+  bands, Slater-Koster and k·p models, Wannier functions, and solvers for
+  very large lattices.
 - :doc:`fields_breakthroughs` -- magnetic fields (Peierls substitution,
   Landau levels, Hofstadter's butterfly), strain, and disorder.
 - :doc:`topology_breakthroughs` -- Chern, Z2, mirror and spin Chern
-  numbers, Berry phases, the Bott index, Weyl points, and higher-order
-  phases.
+  numbers, Berry phases, the Bott index, Weyl points, higher-order
+  phases, and symmetry indicators.
 - :doc:`response_breakthroughs` -- Hall-type responses, Landauer
   transport between leads, and linear and nonlinear optics.
 - :doc:`interactions_breakthroughs` -- flat bands from geometry and from

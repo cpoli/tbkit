@@ -19,4 +19,7 @@ instead of rebuilding the model; periodic boundaries in real space,
 tori and cylinders whose spectra match the Bloch bands on a k-mesh;
 and the analysis of a band structure: Fermi surfaces and their Lifshitz
 transitions, bands projected on sublattices or spins and spin textures,
-and the tetrahedron method for the density of states.
+and the tetrahedron method for the density of states; and crystal
+symmetry: the irreducible representations of graphene's bands at the
+high-symmetry points (the Dirac point as the two-dimensional irrep of
+C3v), and the symmetrization of a noisy Wannier90 model.

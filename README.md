@@ -24,44 +24,6 @@ see [physicskit](https://github.com/cpoli/physicskit), whose
 `physicskit.condensed` subpackage covers tight-binding band theory and
 topology alongside superconductivity.
 
-## Examples
-
-### Building and solving models
-
-Finite lattices, defects, several orbitals per site, real space to k-space and back, k·p models discretized into lattice models, saved models and Wannier90 imports, maximally localized Wannier functions, and solvers for very large lattices.
-
-![An impurity bound state, Slater-Koster sp3 graphene bands with overlaps, and the kernel polynomial method on 45,000 sites](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_models.png)
-
-### Fields, strain and disorder
-
-What happens to a lattice under a magnetic field (Peierls substitution), under strain, and with disorder.
-
-![Graphene's sqrt(n) Landau ladder, triaxial strain as a pseudo-magnetic field, and Anderson localization](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_fields.png)
-
-### Band topology
-
-Chern numbers, Berry phases, the Z2 invariant (and the four 3D indices), spin and mirror Chern numbers, the Bott index and entanglement spectrum, Weyl points and their chirality, Kitaev's Majorana number, quantum geometry, symmetry classes, higher-order and 3D topological phases.
-
-![Berry curvature of the Haldane model, the Kane-Mele Z2 Wannier flow, and the four corner states of a quadrupole insulator](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_topology.png)
-
-### Response and transport
-
-Hall conductivities at any Fermi level (with the orbital magnetization, Nernst and thermal Hall responses), Landauer transport between leads, and linear and nonlinear optical response.
-
-![The anomalous Hall conductivity of the Haldane model, the conductance steps of a quantum point contact, and graphene's universal absorption](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_response.png)
-
-### Flat bands and interactions
-
-Flat bands from lattice geometry and from a moiré twist, the Hubbard model in mean field, and superconductivity.
-
-![The flat bands of twisted bilayer graphene, magnetic zigzag edges in Hubbard mean field, and the Majorana end modes of a Kitaev chain](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_interactions.png)
-
-### Driven and open systems
-
-Wavepacket dynamics, periodically driven (Floquet) lattices, and non-Hermitian bands with exceptional points.
-
-![Bloch oscillations in a tilted chain, the Floquet bands of graphene in circularly polarized light, and the non-Hermitian skin effect](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_driven.png)
-
 ## Install
 
 Requires Python >= 3.10 (tested on 3.10-3.15).
@@ -88,16 +50,6 @@ git clone https://github.com/cpoli/tbkit
 cd tbkit
 pip install -e .
 ```
-
-or, to also install the tools needed to run the test suite:
-
-```bash
-pip install -e ".[test]"
-pytest tests/
-```
-
-The test suite has 100% line coverage of the `tbkit` package; see the
-[HTML coverage report](https://cpoli.github.io/tbkit/coverage/).
 
 ## Quick start
 
@@ -192,6 +144,44 @@ See [`examples/topology/plot_edge_states.py`](examples/topology/plot_edge_states
 graphene ribbon's zero-energy edge band, and the Kane-Mele ribbon's helical
 edge states crossing a spin-orbit gap.
 
+## Examples
+
+### Building and solving models
+
+Finite lattices, defects, several orbitals per site, real space to k-space and back, k·p models discretized into lattice models, saved models and Wannier90 imports, maximally localized Wannier functions, and solvers for very large lattices.
+
+![An impurity bound state, Slater-Koster sp3 graphene bands with overlaps, and the kernel polynomial method on 45,000 sites](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_models.png)
+
+### Fields, strain and disorder
+
+What happens to a lattice under a magnetic field (Peierls substitution), under strain, and with disorder.
+
+![Graphene's sqrt(n) Landau ladder, triaxial strain as a pseudo-magnetic field, and Anderson localization](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_fields.png)
+
+### Band topology
+
+Chern numbers, Berry phases, the Z2 invariant (and the four 3D indices), spin and mirror Chern numbers, the Bott index and entanglement spectrum, Weyl points and their chirality, Kitaev's Majorana number, quantum geometry, symmetry classes, higher-order and 3D topological phases.
+
+![Berry curvature of the Haldane model, the Kane-Mele Z2 Wannier flow, and the four corner states of a quadrupole insulator](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_topology.png)
+
+### Response and transport
+
+Hall conductivities at any Fermi level (with the orbital magnetization, Nernst and thermal Hall responses), Landauer transport between leads, and linear and nonlinear optical response.
+
+![The anomalous Hall conductivity of the Haldane model, the conductance steps of a quantum point contact, and graphene's universal absorption](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_response.png)
+
+### Flat bands and interactions
+
+Flat bands from lattice geometry and from a moiré twist, the Hubbard model in mean field, and superconductivity.
+
+![The flat bands of twisted bilayer graphene, magnetic zigzag edges in Hubbard mean field, and the Majorana end modes of a Kitaev chain](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_interactions.png)
+
+### Driven and open systems
+
+Wavepacket dynamics, periodically driven (Floquet) lattices, and non-Hermitian bands with exceptional points.
+
+![Bloch oscillations in a tilted chain, the Floquet bands of graphene in circularly polarized light, and the non-Hermitian skin effect](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_driven.png)
+
 ## Documentation
 
 Rendered docs (tutorial, API reference, example gallery): https://cpoli.github.io/tbkit/
@@ -210,6 +200,18 @@ Rendered docs (tutorial, API reference, example gallery): https://cpoli.github.i
 
 Build the HTML docs with `cd docs && make html` (output in `docs/build/html`).
 
+## Test
+
+```bash
+pip install -e ".[test]"
+pytest tests/
+```
+
+The 781 tests cover 100% of the lines of the `tbkit` package; see the
+[HTML coverage report](https://cpoli.github.io/tbkit/coverage/). CI runs them
+on Python 3.10-3.15, and its docs job re-runs every gallery example, each
+of which asserts its key numbers.
+
 ## A note on the API
 
 Version 0.2 modernized the package to run on current Python/NumPy/SciPy and
@@ -226,6 +228,25 @@ For continuity, the pre-0.2 lowercase class names (`lattice`, `system`,
 `plot`, `propagation`, `save`) remain available as aliases of the new
 classes, so `from tbkit.lattice import lattice` still works.
 
+## Related toolkits
+
+tbkit belongs to a family of Python toolkits for learning and teaching,
+built the same way:
+
+- [blockchainkit](https://github.com/cpoli/blockchainkit) -- cryptography, consensus and blockchain systems
+- [chemistrykit](https://github.com/cpoli/chemistrykit) -- computational chemistry
+- [earthsciencekit](https://github.com/cpoli/earthsciencekit) -- Earth-system science
+- [engineeringkit](https://github.com/cpoli/engineeringkit) -- computational engineering
+- [financialkit](https://github.com/cpoli/financialkit) -- quantitative finance
+- [mathematicskit](https://github.com/cpoli/mathematicskit) -- computational mathematics
+- [physicskit](https://github.com/cpoli/physicskit) -- computational physics
+
+## Citation
+
+If you use tbkit in your research, please cite it; see
+[CITATION.cff](CITATION.cff). Each release is archived on Zenodo with its own
+DOI; the DOI badge above links the latest release.
+
 ## License
 
-BSD 3-Clause, see [LICENSE](LICENSE).
+BSD 3-Clause -- see [LICENSE](LICENSE).

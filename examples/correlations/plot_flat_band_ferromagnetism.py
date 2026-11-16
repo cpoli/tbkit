@@ -21,19 +21,16 @@ spins align fully anyway.
   into a nearly flat one, of width :math:`W`, provided :math:`U` is
   large enough: the threshold grows with :math:`W`.
 
-The first is checked by exact diagonalization of tiny clusters (a few
-lines of second quantization below), the other two with
+The first is checked by exact diagonalization of tiny clusters
+(:func:`~tbkit.manybody.exact_diagonalization`), the other two with
 :func:`~tbkit.meanfield.hubbard_mean_field` on a :func:`~tbkit.lattices.kagome`
 torus.
 """
-import itertools
-
 import numpy as np
 import matplotlib.pyplot as plt
-import scipy.sparse as sparse
-import scipy.sparse.linalg as sla
 
 import tbkit.lattices as lattices
+from tbkit.manybody import exact_diagonalization
 from tbkit.meanfield import hubbard_mean_field
 from tbkit.plot import Plot
 from tbkit.system import System
@@ -43,40 +40,16 @@ from tbkit.system import System
 # Nagaoka: one hole in a square cluster
 # ----------------------------------------
 # With :math:`N_e = N - 1` electrons, the Hubbard Hamiltonian is
-# diagonalized in the sector :math:`S_z = 1/2` (spin-up and spin-down
-# Fock spaces of spinless fermions, coupled by :math:`U`). Its lowest
+# diagonalized in the sector :math:`S_z = 1/2`. Its lowest
 # energy equals that of the fully polarized state -- the :math:`N_e`
 # lowest single-particle levels, filled with one spin, which feel no
 # :math:`U` -- exactly when the ground state has the maximal spin
 # :math:`S = N_e/2`.
 
 
-def fock_hopping(h, n_el):
-    '''Hopping of n_el spinless fermions, and the occupations of the basis.'''
-    basis = list(itertools.combinations(range(len(h)), n_el))
-    index = {b: k for k, b in enumerate(basis)}
-    occ = np.zeros((len(basis), len(h)))
-    rows, cols, vals = [], [], []
-    for k, b in enumerate(basis):
-        occ[k, list(b)] = 1
-        for j in b:
-            for i in np.flatnonzero(h[:, j]):
-                if i not in b:
-                    lo, hi = sorted((i, j))
-                    sign = (-1) ** sum(lo < m < hi for m in b)
-                    rows.append(index[tuple(sorted(set(b) - {j} | {i}))])
-                    cols.append(k)
-                    vals.append(sign * h[i, j])
-    return sparse.csr_matrix((vals, (rows, cols)), shape=(len(basis),) * 2), occ
-
-
 def hubbard_ground_energy(h, U, n_el):
     '''Lowest energy of the Hubbard model at S_z = 1/2 (or 0).'''
-    h_up, occ_up = fock_hopping(h, (n_el + 1) // 2)
-    h_dn, occ_dn = fock_hopping(h, n_el // 2)
-    ham = sparse.kron(h_up, sparse.identity(h_dn.shape[0])) \
-        + sparse.kron(sparse.identity(h_up.shape[0]), h_dn) + U * sparse.diags((occ_up @ occ_dn.T).ravel())
-    return sla.eigsh(ham, k=1, which='SA')[0][0]
+    return exact_diagonalization(h, (n_el + 1) // 2, n_el // 2, U=U).energies[0]
 
 
 def square_cluster(n1, n2):
@@ -108,6 +81,9 @@ for n1, n2 in ((2, 2), (3, 2), (3, 3)):
     e_ferro = np.linalg.eigvalsh(h)[:n_el].sum()
     gaps = [hubbard_ground_energy(h, U, n_el) - e_ferro for U in (5., 1000.)]
     assert gaps[0] < -1e-3 and abs(gaps[1]) < 1e-8  # low spin at U = 5, S = N_e/2 at U = 1000
+    if len(h) < 9:  # the total spin itself: 1/2 at U = 5, N_e/2 at U = 1000
+        spins = [exact_diagonalization(h, (n_el + 1) // 2, n_el // 2, U=U).total_spin() for U in (5., 1000.)]
+        assert np.allclose(spins, [0.5, n_el / 2])
     if len(h) < 9:  # bisection for the threshold U_c
         lo, hi = 5., 1000.
         for _ in range(30):
