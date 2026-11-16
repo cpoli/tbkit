@@ -7,8 +7,10 @@ Large lattices
 
 Lattices far beyond dense diagonalization: sparse neighbour search,
 shift-invert eigensolvers, and the kernel polynomial method, which
-turns spectral densities and conductivities of hundreds of thousands of
-sites into a few hundred sparse matrix-vector products. In k-space,
+turns spectral densities, spectral functions, DC and optical
+conductivities of hundreds of thousands of sites into a few hundred
+sparse matrix-vector products, and evolves wavepackets in time by the
+same Chebyshev recursion. In k-space,
 fine meshes are diagonalized in batches, optionally across threads.
 
 
@@ -42,6 +44,23 @@ fine meshes are diagonalized in batches, optionally across threads.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Solving i\partial_t\psi = H\psi step by step, with the Crank-Nicolson rule (1 + iH\,dt/2)^{-1}(1 - iH\,dt/2) of Propagation, needs an inverse (or a factorization) of an N\times N matrix. Tal-Ezer and Kosloff (J. Chem. Phys. 81, 3967 (1984)) expanded the propagator itself in Chebyshev polynomials of the rescaled Hamiltonian \tilde H = (H - b)/a,">
+
+.. only:: html
+
+  .. image:: /api/gallery/large_scale/images/thumb/sphx_glr_plot_chebyshev_time_evolution_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/large_scale/plot_chebyshev_time_evolution`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Chebyshev Time Evolution: a Wavepacket on 90,000 Sites</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Diagonalizing N sites costs N^3 operations and N^2 memory: a few thousand sites at most. The kernel polynomial method (Silver and Roder, 1994; reviewed by Weisse, Wellein, Alvermann and Fehske, Rev. Mod. Phys. 78, 275 (2006)) never diagonalizes. It expands the spectral density in Chebyshev polynomials of the rescaled Hamiltonian,">
 
 .. only:: html
@@ -57,6 +76,57 @@ fine meshes are diagonalized in batches, optionally across threads.
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The Kubo-Greenwood formula gives the absorptive part of the optical conductivity as a joint density of occupied and empty states, weighted by the velocity between them:">
+
+.. only:: html
+
+  .. image:: /api/gallery/large_scale/images/thumb/sphx_glr_plot_kpm_optical_conductivity_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/large_scale/plot_kpm_optical_conductivity`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Optical Conductivity of Disordered Graphene, 45,000 Sites</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The full optical conductivity tensor of a sample with no Brillouin zone, from the kernel polynomial method. With two velocities, the Kubo-Greenwood trace j_{ab}(E_1, E_2) = \mathrm{Tr}[v_a\,\delta(E_1-H)\,v_b\,\delta(E_2-H)] is complex, and">
+
+.. only:: html
+
+  .. image:: /api/gallery/large_scale/images/thumb/sphx_glr_plot_kpm_optical_hall_conductivity_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/large_scale/plot_kpm_optical_hall_conductivity`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Optical Hall Conductivity of a Disordered Chern Insulator</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Photoemission (ARPES) measures the spectral function A(\mathbf{k}, E): how much of a plane wave of momentum \mathbf{k} lives at energy E. In a crystal it is peaked on the bands; disorder gives the quasiparticles a finite lifetime, which broadens the peaks, and shifts them. Band unfolding (tbkit.moire.spectral_function) gets it from the eigenstates of a supercell, which caps the sample at a few thousand orbitals. The kernel polynomial method needs none: with one plane wave per sublattice o,">
+
+.. only:: html
+
+  .. image:: /api/gallery/large_scale/images/thumb/sphx_glr_plot_kpm_spectral_function_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/large_scale/plot_kpm_spectral_function`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Spectral Function of Disordered Graphene, 28,800 Sites</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -68,5 +138,9 @@ fine meshes are diagonalized in batches, optionally across threads.
    :hidden:
 
    /api/gallery/large_scale/plot_batched_k_space
+   /api/gallery/large_scale/plot_chebyshev_time_evolution
    /api/gallery/large_scale/plot_kernel_polynomial_method
+   /api/gallery/large_scale/plot_kpm_optical_conductivity
+   /api/gallery/large_scale/plot_kpm_optical_hall_conductivity
+   /api/gallery/large_scale/plot_kpm_spectral_function
 

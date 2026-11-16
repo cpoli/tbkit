@@ -23,7 +23,10 @@ instead of rebuilding the model; periodic boundaries in real space,
 tori and cylinders whose spectra match the Bloch bands on a k-mesh;
 and the analysis of a band structure: Fermi surfaces and their Lifshitz
 transitions, bands projected on sublattices or spins and spin textures,
-and the tetrahedron method for the density of states.
+and the tetrahedron method for the density of states; and crystal
+symmetry: the irreducible representations of graphene's bands at the
+high-symmetry points (the Dirac point as the two-dimensional irrep of
+C3v), and the symmetrization of a noisy Wannier90 model.
 
 
 .. raw:: html
@@ -119,6 +122,23 @@ and the tetrahedron method for the density of states.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Graphene: Real-Space Flake and Reciprocal-Space Bands</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="L. P. Bouckaert, R. Smoluchowski and E. Wigner (1936) read a band structure through its symmetry. At a k-point \mathbf{k}, the operations g of the crystal with g\mathbf{k} = \mathbf{k} (modulo a reciprocal lattice vector) form the little group of \mathbf{k}; the Bloch states of one energy carry a representation of it, and that representation is irreducible unless the degeneracy is accidental. A two-dimensional irrep is a degeneracy that no perturbation respecting the symmetry can lift; one-dimensional irreps of different labels may cross along a line, equal ones must repel.">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_irreps_of_graphene_bands_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_irreps_of_graphene_bands`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Irreducible Representations of the Bands: Why Graphene Has Dirac Points</div>
     </div>
 
 
@@ -243,6 +263,23 @@ and the tetrahedron method for the density of states.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="A tight-binding model read from Wannier90 inherits the numerical noise of the first-principles calculation and of the Wannierization: its hoppings break the crystal symmetry by a little, so that symmetry-protected degeneracies are split and every symmetry check fails. The cure, as in TBmodels, is the group average of the hoppings,">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_symmetrizing_a_wannier90_model_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_symmetrizing_a_wannier90_model`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Symmetrizing a Wannier90 Model</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The density of states \rho(E) = \sum_n\int\frac{d\mathbf{k}}{V_{BZ}}\, \delta(E - E_n(\mathbf{k})) needs an integral over the Brillouin zone, but a calculation only knows the bands on a finite mesh. Broadening each eigenvalue into a Gaussian of width \sigma turns the sum into a smooth curve, at the price of smearing exactly the features that matter: band edges, and the van Hove singularities where \nabla_k E = 0.">
 
 .. only:: html
@@ -307,6 +344,7 @@ and the tetrahedron method for the density of states.
    /api/gallery/tight_binding/plot_defects_and_impurities
    /api/gallery/tight_binding/plot_fermi_surfaces
    /api/gallery/tight_binding/plot_graphene_bands
+   /api/gallery/tight_binding/plot_irreps_of_graphene_bands
    /api/gallery/tight_binding/plot_isolation_of_graphene
    /api/gallery/tight_binding/plot_monkhorst_pack_grids
    /api/gallery/tight_binding/plot_parametrized_hamiltonians
@@ -314,6 +352,7 @@ and the tetrahedron method for the density of states.
    /api/gallery/tight_binding/plot_projected_bands_and_spin_textures
    /api/gallery/tight_binding/plot_square_lattice_bands
    /api/gallery/tight_binding/plot_surface_greens_function
+   /api/gallery/tight_binding/plot_symmetrizing_a_wannier90_model
    /api/gallery/tight_binding/plot_tetrahedron_method
    /api/gallery/tight_binding/plot_visualizing_a_model
    /api/gallery/tight_binding/plot_zigzag_edge_states

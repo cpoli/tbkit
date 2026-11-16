@@ -10,10 +10,10 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cpoli.github.io/tbkit/history/models_breakthroughs.html" />
 <meta property="og:site_name" content="tbkit" />
-<meta property="og:description" content="How a crystal becomes a tight-binding model and how that model is solved: Bloch’s theorem and the Brillouin zone, Wallace’s graphene bands, non-orthogonal bases, the Slater-Koster and k·p framework..." />
+<meta property="og:description" content="How a crystal becomes a tight-binding model and how that model is solved: Bloch’s theorem and the Brillouin zone, the irreducible representations of the bands, Wallace’s graphene bands, non-orthogo..." />
 <meta property="og:image" content="https://cpoli.github.io/tbkit/_static/images/readme_hero.png" />
 <meta property="og:image:alt" content="tbkit" />
-<meta name="description" content="How a crystal becomes a tight-binding model and how that model is solved: Bloch’s theorem and the Brillouin zone, Wallace’s graphene bands, non-orthogonal bases, the Slater-Koster and k·p framework..." />
+<meta name="description" content="How a crystal becomes a tight-binding model and how that model is solved: Bloch’s theorem and the Brillouin zone, the irreducible representations of the bands, Wallace’s graphene bands, non-orthogo..." />
 
     <title>Breakthroughs in Building and Solving Models &#8212; tbkit</title>
   
@@ -34,8 +34,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
@@ -45,12 +45,12 @@
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../_static/documentation_options.js?v=b9678aa1"></script>
+    <script src="../_static/documentation_options.js?v=cce5339e"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.7" />
+  <meta name="docsearch:version" content="0.8" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -115,7 +115,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -252,7 +252,7 @@
   
 
   
-    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page" aria-expanded="false" aria-controls="pst-secondary-sidebar-modal">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -266,7 +266,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
@@ -417,7 +417,7 @@
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../index.html" class="nav-link" aria-label="Home">
-        <i class="fa-solid fa-home"></i>
+        <i class="fa-solid fa-house"></i>
       </a>
     </li>
     
@@ -443,13 +443,15 @@
   <section id="breakthroughs-in-building-and-solving-models">
 <h1>Breakthroughs in Building and Solving Models<a class="headerlink" href="#breakthroughs-in-building-and-solving-models" title="Link to this heading">#</a></h1>
 <p>How a crystal becomes a tight-binding model and how that model is solved:
-Bloch’s theorem and the Brillouin zone, Wallace’s graphene bands,
+Bloch’s theorem and the Brillouin zone, the irreducible
+representations of the bands, Wallace’s graphene bands,
 non-orthogonal bases, the Slater-Koster and k·p frameworks (and the
 fermion doubling of k·p models on a lattice), Wannier functions, edges
 and surfaces, and the numerical methods (k-point grids, tetrahedron
-integration, surface Green’s functions, the kernel polynomial method,
+integration, surface Green’s functions, the Chebyshev propagator and
+the kernel polynomial method,
 band unfolding) that make large or multi-orbital models tractable. It
-traces the ideas behind <a class="reference internal" href="../tbkit.html#module-tbkit.kspace" title="tbkit.kspace"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.kspace</span></code></a>, <a class="reference internal" href="../tbkit.html#module-tbkit.slater_koster" title="tbkit.slater_koster"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.slater_koster</span></code></a>,
+traces the ideas behind <a class="reference internal" href="../tbkit.html#module-tbkit.kspace" title="tbkit.kspace"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.kspace</span></code></a>, <a class="reference internal" href="../tbkit.html#module-tbkit.symmetry" title="tbkit.symmetry"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.symmetry</span></code></a>, <a class="reference internal" href="../tbkit.html#module-tbkit.slater_koster" title="tbkit.slater_koster"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.slater_koster</span></code></a>,
 <a class="reference internal" href="../tbkit.html#module-tbkit.continuum" title="tbkit.continuum"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.continuum</span></code></a>, <a class="reference internal" href="../tbkit.html#module-tbkit.wannier" title="tbkit.wannier"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.wannier</span></code></a>, <a class="reference internal" href="../tbkit.html#module-tbkit.dos" title="tbkit.dos"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.dos</span></code></a>,
 <a class="reference internal" href="../tbkit.html#module-tbkit.transport" title="tbkit.transport"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.transport</span></code></a>, <a class="reference internal" href="../tbkit.html#module-tbkit.kpm" title="tbkit.kpm"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.kpm</span></code></a> and <a class="reference internal" href="../tbkit.html#module-tbkit.moire" title="tbkit.moire"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.moire</span></code></a>.</p>
 <nav class="contents local" id="timeline">
@@ -457,21 +459,23 @@ traces the ideas behind <a class="reference internal" href="../tbkit.html#module
 <ul class="simple">
 <li><p><a class="reference internal" href="#bloch-s-theorem-and-band-theory" id="id1">1928 – Bloch’s Theorem and Band Theory</a></p></li>
 <li><p><a class="reference internal" href="#brillouin-zones-and-standard-high-symmetry-paths" id="id2">1930/2010 – Brillouin Zones and Standard High-Symmetry Paths</a></p></li>
-<li><p><a class="reference internal" href="#wallace-s-tight-binding-prediction-of-graphene" id="id3">1947 – Wallace’s Tight-Binding Prediction of Graphene</a></p></li>
-<li><p><a class="reference internal" href="#lowdin-orthogonalization-and-non-orthogonal-tight-binding" id="id4">1950 – Löwdin Orthogonalization and Non-Orthogonal Tight Binding</a></p></li>
-<li><p><a class="reference internal" href="#the-slater-koster-tight-binding-framework" id="id5">1954 – The Slater-Koster Tight-Binding Framework</a></p></li>
-<li><p><a class="reference internal" href="#the-kp-method-and-effective-mass-theory" id="id6">1955/1957 – The k·p Method and Effective-Mass Theory</a></p></li>
-<li><p><a class="reference internal" href="#the-tetrahedron-method-for-the-density-of-states" id="id7">1971/1972 – The Tetrahedron Method for the Density of States</a></p></li>
-<li><p><a class="reference internal" href="#monkhorst-pack-k-point-grids" id="id8">1976 – Monkhorst-Pack k-Point Grids</a></p></li>
-<li><p><a class="reference internal" href="#fermion-doubling-the-nielsen-ninomiya-theorem" id="id9">1981 – Fermion Doubling: the Nielsen-Ninomiya Theorem</a></p></li>
-<li><p><a class="reference internal" href="#lopez-sancho-decimation-and-the-surface-green-s-function" id="id10">1985 – Lopez Sancho Decimation and the Surface Green’s Function</a></p></li>
-<li><p><a class="reference internal" href="#zigzag-edge-states-of-graphene-ribbons" id="id11">1996 – Zigzag Edge States of Graphene Ribbons</a></p></li>
-<li><p><a class="reference internal" href="#maximally-localized-wannier-functions" id="id12">1997/2008 – Maximally Localized Wannier Functions</a></p></li>
-<li><p><a class="reference internal" href="#disentanglement-of-entangled-bands" id="id13">2001 – Disentanglement of Entangled Bands</a></p></li>
-<li><p><a class="reference internal" href="#isolation-of-graphene" id="id14">2004 – Isolation of Graphene</a></p></li>
-<li><p><a class="reference internal" href="#the-kernel-polynomial-method" id="id15">2006 – The Kernel Polynomial Method</a></p></li>
-<li><p><a class="reference internal" href="#band-unfolding-effective-band-structures-of-supercells" id="id16">2010 – Band Unfolding: Effective Band Structures of Supercells</a></p></li>
-<li><p><a class="reference internal" href="#see-also" id="id17">See Also</a></p></li>
+<li><p><a class="reference internal" href="#irreducible-representations-of-the-bands-the-little-group" id="id3">1936 – Irreducible Representations of the Bands: the Little Group</a></p></li>
+<li><p><a class="reference internal" href="#wallace-s-tight-binding-prediction-of-graphene" id="id4">1947 – Wallace’s Tight-Binding Prediction of Graphene</a></p></li>
+<li><p><a class="reference internal" href="#lowdin-orthogonalization-and-non-orthogonal-tight-binding" id="id5">1950 – Löwdin Orthogonalization and Non-Orthogonal Tight Binding</a></p></li>
+<li><p><a class="reference internal" href="#the-slater-koster-tight-binding-framework" id="id6">1954 – The Slater-Koster Tight-Binding Framework</a></p></li>
+<li><p><a class="reference internal" href="#the-kp-method-and-effective-mass-theory" id="id7">1955/1957 – The k·p Method and Effective-Mass Theory</a></p></li>
+<li><p><a class="reference internal" href="#the-tetrahedron-method-for-the-density-of-states" id="id8">1971/1972 – The Tetrahedron Method for the Density of States</a></p></li>
+<li><p><a class="reference internal" href="#monkhorst-pack-k-point-grids" id="id9">1976 – Monkhorst-Pack k-Point Grids</a></p></li>
+<li><p><a class="reference internal" href="#fermion-doubling-the-nielsen-ninomiya-theorem" id="id10">1981 – Fermion Doubling: the Nielsen-Ninomiya Theorem</a></p></li>
+<li><p><a class="reference internal" href="#the-chebyshev-propagator" id="id11">1984 – The Chebyshev Propagator</a></p></li>
+<li><p><a class="reference internal" href="#lopez-sancho-decimation-and-the-surface-green-s-function" id="id12">1985 – Lopez Sancho Decimation and the Surface Green’s Function</a></p></li>
+<li><p><a class="reference internal" href="#zigzag-edge-states-of-graphene-ribbons" id="id13">1996 – Zigzag Edge States of Graphene Ribbons</a></p></li>
+<li><p><a class="reference internal" href="#maximally-localized-wannier-functions" id="id14">1997/2008 – Maximally Localized Wannier Functions</a></p></li>
+<li><p><a class="reference internal" href="#disentanglement-of-entangled-bands" id="id15">2001 – Disentanglement of Entangled Bands</a></p></li>
+<li><p><a class="reference internal" href="#isolation-of-graphene" id="id16">2004 – Isolation of Graphene</a></p></li>
+<li><p><a class="reference internal" href="#the-kernel-polynomial-method" id="id17">2006 – The Kernel Polynomial Method</a></p></li>
+<li><p><a class="reference internal" href="#band-unfolding-effective-band-structures-of-supercells" id="id18">2010 – Band Unfolding: Effective Band Structures of Supercells</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id19">See Also</a></p></li>
 </ul>
 </nav>
 <section id="bloch-s-theorem-and-band-theory">
@@ -551,8 +555,50 @@ the cube diagonal to <span class="math notranslate nohighlight">\((1,1,1)\,2\pi/
 <p><a class="reference internal" href="../api/gallery/tight_binding/plot_brillouin_zones_and_high_symmetry_paths.html"><span class="doc">Brillouin Zones and Standard High-Symmetry Paths</span></a></p>
   <div class="sphx-glr-thumbnail-title">Brillouin Zones and Standard High-Symmetry Paths</div>
 </div></div></section>
+<section id="irreducible-representations-of-the-bands-the-little-group">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">1936 – Irreducible Representations of the Bands: the Little Group</a><a class="headerlink" href="#irreducible-representations-of-the-bands-the-little-group" title="Link to this heading">#</a></h2>
+<p>L. P. Bouckaert, R. Smoluchowski and E. Wigner read a band structure
+through the symmetry of the crystal. At a point <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> of
+the Brillouin zone, the operations <span class="math notranslate nohighlight">\(g\)</span> with <span class="math notranslate nohighlight">\(g\mathbf{k} =
+\mathbf{k}\)</span> (modulo a reciprocal lattice vector) form the <em>little group</em>
+of <span class="math notranslate nohighlight">\(\mathbf{k}\)</span>. The Bloch states of one energy carry a
+representation of it, irreducible unless the degeneracy is accidental,
+so each level gets a label from the character table of the group: a
+two-dimensional irrep is a degeneracy that no symmetric perturbation can
+lift, and bands of different labels may cross along a line while equal
+ones repel. Going from a point to a line of lower symmetry, each irrep
+decomposes into irreps of the smaller group (the compatibility
+relations), which fixes how the bands connect. Their labels
+(<span class="math notranslate nohighlight">\(\Gamma_1\)</span>, <span class="math notranslate nohighlight">\(X_5\)</span>, …) are still those of band structures
+today; graphene’s Dirac point is the two-dimensional irrep of the group
+of K.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#module-tbkit.symmetry" title="tbkit.symmetry"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.symmetry</span></code></a>: a space-group operation
+(<a class="reference internal" href="../tbkit.html#tbkit.symmetry.Operation" title="tbkit.symmetry.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a>, a rotation or reflection, a
+translation, a matrix on the orbitals of a site, and an antiunitary
+flag) and its representation <span class="math notranslate nohighlight">\(U_g(\mathbf{k})\)</span> on the Bloch basis
+(<a class="reference internal" href="../tbkit.html#tbkit.symmetry.representation" title="tbkit.symmetry.representation"><code class="xref py py-func docutils literal notranslate"><span class="pre">representation()</span></code></a>), tested by
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.symmetry_error" title="tbkit.kspace.KSpace.symmetry_error"><code class="xref py py-meth docutils literal notranslate"><span class="pre">symmetry_error()</span></code></a>;
+<a class="reference internal" href="../tbkit.html#tbkit.symmetry.find_symmetries" title="tbkit.symmetry.find_symmetries"><code class="xref py py-func docutils literal notranslate"><span class="pre">find_symmetries()</span></code></a> (the operations of the Bravais
+lattice that leave the model invariant); <a class="reference internal" href="../tbkit.html#tbkit.symmetry.irreps" title="tbkit.symmetry.irreps"><code class="xref py py-func docutils literal notranslate"><span class="pre">irreps()</span></code></a>
+(the little group, the characters of each level, and their decomposition
+on the tables of the ten 2D point groups and of the five cubic ones);
+<a class="reference internal" href="../tbkit.html#tbkit.kspace.KSpace.plot_bands" title="tbkit.kspace.KSpace.plot_bands"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_bands()</span></code></a> with <code class="docutils literal notranslate"><span class="pre">irreps=</span></code>.</p>
+<p><em>References:</em> L. P. Bouckaert, R. Smoluchowski, and E. Wigner, “Theory
+of Brillouin Zones and Symmetry Properties of Wave Functions in
+Crystals,” Phys. Rev. 50, 58-67 (1936).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/tight_binding/plot_irreps_of_graphene_bands.py</span></code>
+finds the 12 operations of C6v (24 with time reversal, 6 left by a
+sublattice mass), labels the levels at <span class="math notranslate nohighlight">\(\Gamma\)</span> (C6v), M (C2v) and
+K (C3v), where the Dirac point is the irrep E; checks that the mass
+leaves C3 at K, splitting E into ¹E and ²E at <span class="math notranslate nohighlight">\(\pm m\)</span>; and checks
+the compatibility relations of the characters along the three lines of
+the path.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="L. P. Bouckaert, R. Smoluchowski and E. Wigner (1936) read a band structure through its symmetry. At a k-point \mathbf{k}, the operations g of the crystal with g\mathbf{k} = \mathbf{k} (modulo a reciprocal lattice vector) form the little group of \mathbf{k}; the Bloch states of one energy carry a representation of it, and that representation is irreducible unless the degeneracy is accidental. A two-dimensional irrep is a degeneracy that no perturbation respecting the symmetry can lift; one-dimensional irreps of different labels may cross along a line, equal ones must repel."><img alt="" src="../_images/sphx_glr_plot_irreps_of_graphene_bands_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/tight_binding/plot_irreps_of_graphene_bands.html"><span class="doc">Irreducible Representations of the Bands: Why Graphene Has Dirac Points</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Irreducible Representations of the Bands: Why Graphene Has Dirac Points</div>
+</div></div></section>
 <section id="wallace-s-tight-binding-prediction-of-graphene">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">1947 – Wallace’s Tight-Binding Prediction of Graphene</a><a class="headerlink" href="#wallace-s-tight-binding-prediction-of-graphene" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">1947 – Wallace’s Tight-Binding Prediction of Graphene</a><a class="headerlink" href="#wallace-s-tight-binding-prediction-of-graphene" title="Link to this heading">#</a></h2>
 <p>Thirty-nine years before it had a name and fifty-seven years before it
 was isolated, graphene’s electronic structure was already known: P. R.
 Wallace worked out the tight-binding band structure of a single
@@ -584,7 +630,7 @@ evaluated at momenta offset from <span class="math notranslate nohighlight">\(\m
   <div class="sphx-glr-thumbnail-title">Graphene: Real-Space Flake and Reciprocal-Space Bands</div>
 </div></div></section>
 <section id="lowdin-orthogonalization-and-non-orthogonal-tight-binding">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">1950 – Löwdin Orthogonalization and Non-Orthogonal Tight Binding</a><a class="headerlink" href="#lowdin-orthogonalization-and-non-orthogonal-tight-binding" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">1950 – Löwdin Orthogonalization and Non-Orthogonal Tight Binding</a><a class="headerlink" href="#lowdin-orthogonalization-and-non-orthogonal-tight-binding" title="Link to this heading">#</a></h2>
 <p>Atomic orbitals on neighbouring atoms overlap, so in an LCAO basis the
 Schrödinger equation is the generalized eigenproblem <span class="math notranslate nohighlight">\(H\mathbf{c} =
 ES\mathbf{c}\)</span>, with the overlap matrix <span class="math notranslate nohighlight">\(S\)</span>. P.-O. Löwdin (1950)
@@ -621,7 +667,7 @@ same amount.</p>
   <div class="sphx-glr-thumbnail-title">Löwdin Orthogonalization and Non-Orthogonal Tight Binding</div>
 </div></div></section>
 <section id="the-slater-koster-tight-binding-framework">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink">1954 – The Slater-Koster Tight-Binding Framework</a><a class="headerlink" href="#the-slater-koster-tight-binding-framework" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">1954 – The Slater-Koster Tight-Binding Framework</a><a class="headerlink" href="#the-slater-koster-tight-binding-framework" title="Link to this heading">#</a></h2>
 <p>J. Slater and G. Koster showed how to build realistic band
 structures from a <em>minimal</em> empirical basis: a linear combination of
 atomic orbitals (LCAO), with hopping matrix elements between neighboring
@@ -655,7 +701,7 @@ the Periodic Potential Problem,” Phys. Rev. 94, 1498-1524 (1954).</p>
   <div class="sphx-glr-thumbnail-title">The Slater-Koster Method: Graphene's sigma and pi Bands</div>
 </div></div></section>
 <section id="the-kp-method-and-effective-mass-theory">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink">1955/1957 – The k·p Method and Effective-Mass Theory</a><a class="headerlink" href="#the-kp-method-and-effective-mass-theory" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">1955/1957 – The k·p Method and Effective-Mass Theory</a><a class="headerlink" href="#the-kp-method-and-effective-mass-theory" title="Link to this heading">#</a></h2>
 <p>Near a band edge, the Bloch functions at <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> can be
 expanded in those at the band extremum, and the crystal Hamiltonian
 becomes a small matrix polynomial in <span class="math notranslate nohighlight">\(\mathbf{k}\)</span>: the <em>k·p</em>
@@ -705,7 +751,7 @@ and that a finite flake cut from it has edge states in the gap only then.</p>
   <div class="sphx-glr-thumbnail-title">k·p Theory on a Lattice: from a Continuum Hamiltonian to Tight-Binding</div>
 </div></div></section>
 <section id="the-tetrahedron-method-for-the-density-of-states">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink">1971/1972 – The Tetrahedron Method for the Density of States</a><a class="headerlink" href="#the-tetrahedron-method-for-the-density-of-states" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">1971/1972 – The Tetrahedron Method for the Density of States</a><a class="headerlink" href="#the-tetrahedron-method-for-the-density-of-states" title="Link to this heading">#</a></h2>
 <p>The density of states and every Fermi-surface property are integrals over
 the Brillouin zone of functions that are singular: a delta function
 <span class="math notranslate nohighlight">\(\delta(E - E_n(\mathbf{k}))\)</span>, or a step at the Fermi level.
@@ -743,7 +789,7 @@ below the band bottom and converges ten times faster than the Gaussian.</p>
   <div class="sphx-glr-thumbnail-title">The Tetrahedron Method for the Density of States</div>
 </div></div></section>
 <section id="monkhorst-pack-k-point-grids">
-<h2><a class="toc-backref" href="#id8" role="doc-backlink">1976 – Monkhorst-Pack k-Point Grids</a><a class="headerlink" href="#monkhorst-pack-k-point-grids" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">1976 – Monkhorst-Pack k-Point Grids</a><a class="headerlink" href="#monkhorst-pack-k-point-grids" title="Link to this heading">#</a></h2>
 <p>Total energies, densities and forces are averages over the Brillouin
 zone. D. J. Chadi and M. L. Cohen (1973), after A. Baldereschi’s mean-value
 point (1973), chose sets of <em>special points</em> that average the low
@@ -785,7 +831,7 @@ three special points <span class="math notranslate nohighlight">\((1,1), (1,3), 
   <div class="sphx-glr-thumbnail-title">Monkhorst-Pack k-Point Grids</div>
 </div></div></section>
 <section id="fermion-doubling-the-nielsen-ninomiya-theorem">
-<h2><a class="toc-backref" href="#id9" role="doc-backlink">1981 – Fermion Doubling: the Nielsen-Ninomiya Theorem</a><a class="headerlink" href="#fermion-doubling-the-nielsen-ninomiya-theorem" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">1981 – Fermion Doubling: the Nielsen-Ninomiya Theorem</a><a class="headerlink" href="#fermion-doubling-the-nielsen-ninomiya-theorem" title="Link to this heading">#</a></h2>
 <p>A band is periodic in <span class="math notranslate nohighlight">\(\mathbf{k}\)</span>: a branch that crosses the
 Fermi level going up must come back down somewhere in the Brillouin zone.
 H. B. Nielsen and M. Ninomiya (1981) made this a theorem: a local,
@@ -821,8 +867,42 @@ partner at <span class="math notranslate nohighlight">\(k_z = -2\arctan(1/2B)\)<
 <p><a class="reference internal" href="../api/gallery/models/plot_fermion_doubling.html"><span class="doc">Fermion Doubling: the Nielsen-Ninomiya Theorem</span></a></p>
   <div class="sphx-glr-thumbnail-title">Fermion Doubling: the Nielsen-Ninomiya Theorem</div>
 </div></div></section>
+<section id="the-chebyshev-propagator">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">1984 – The Chebyshev Propagator</a><a class="headerlink" href="#the-chebyshev-propagator" title="Link to this heading">#</a></h2>
+<p>Time-dependent Schrödinger equations were solved by small steps –
+second-order differencing, Crank-Nicolson – each accurate only to a
+power of the step, and Crank-Nicolson needs a linear solve per step.
+Tal-Ezer and Kosloff expanded the evolution operator itself in
+Chebyshev polynomials of the rescaled Hamiltonian
+<span class="math notranslate nohighlight">\(\tilde H = (H-b)/a\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[e^{-iH\Delta t} = e^{-ib\Delta t}\sum_{m\ge0}(2-\delta_{m0})\,(-i)^m
+J_m(a\Delta t)\,T_m(\tilde H)\, .\]</div>
+<p>The Bessel coefficients vanish exponentially fast once
+<span class="math notranslate nohighlight">\(m &gt; a\Delta t\)</span>, so a single expansion spans a long time interval
+to machine precision, and it costs nothing but matrix-vector products: the
+same recursion that the kernel polynomial method later used for spectral
+densities, and the propagation method of the large-scale tight-binding
+codes.</p>
+<p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#tbkit.kpm.time_evolution" title="tbkit.kpm.time_evolution"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.kpm.time_evolution()</span></code></a>;
+<code class="docutils literal notranslate"><span class="pre">Propagation.get_propagation(...,</span> <span class="pre">method='chebyshev')</span></code>
+(<a class="reference internal" href="../tbkit.html#tbkit.propagation.Propagation" title="tbkit.propagation.Propagation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbkit.propagation.Propagation</span></code></a>).</p>
+<p><em>References:</em> H. Tal-Ezer and R. Kosloff, “An accurate and efficient
+scheme for propagating the time dependent Schrödinger equation,” J. Chem.
+Phys. 81, 3967-3971 (1984).</p>
+<p><em>Example:</em> <code class="docutils literal notranslate"><span class="pre">examples/large_scale/plot_chebyshev_time_evolution.py</span></code>
+agrees with Crank-Nicolson on a small flake to its <span class="math notranslate nohighlight">\(O(dt^2)\)</span>
+error, reproduces the ballistic spread <span class="math notranslate nohighlight">\(\langle x^2\rangle =
+2t^2\tau^2\)</span> of a site state on a chain to <span class="math notranslate nohighlight">\(10^{-10}\)</span>, and on a
+90,000-site square lattice finds <span class="math notranslate nohighlight">\(\langle r^2\rangle =
+4t^2\tau^2\)</span> without disorder and diffusion,
+<span class="math notranslate nohighlight">\(\langle r^2\rangle\propto\tau\)</span>, with it.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Solving i\partial_t\psi = H\psi step by step, with the Crank-Nicolson rule (1 + iH\,dt/2)^{-1}(1 - iH\,dt/2) of Propagation, needs an inverse (or a factorization) of an N\times N matrix. Tal-Ezer and Kosloff (J. Chem. Phys. 81, 3967 (1984)) expanded the propagator itself in Chebyshev polynomials of the rescaled Hamiltonian \tilde H = (H - b)/a,"><img alt="" src="../_images/sphx_glr_plot_chebyshev_time_evolution_thumb.png" />
+<p><a class="reference internal" href="../api/gallery/large_scale/plot_chebyshev_time_evolution.html"><span class="doc">Chebyshev Time Evolution: a Wavepacket on 90,000 Sites</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Chebyshev Time Evolution: a Wavepacket on 90,000 Sites</div>
+</div></div></section>
 <section id="lopez-sancho-decimation-and-the-surface-green-s-function">
-<h2><a class="toc-backref" href="#id10" role="doc-backlink">1985 – Lopez Sancho Decimation and the Surface Green’s Function</a><a class="headerlink" href="#lopez-sancho-decimation-and-the-surface-green-s-function" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">1985 – Lopez Sancho Decimation and the Surface Green’s Function</a><a class="headerlink" href="#lopez-sancho-decimation-and-the-surface-green-s-function" title="Link to this heading">#</a></h2>
 <p>The local density of states of a surface,
 <span class="math notranslate nohighlight">\(-\frac{1}{\pi}\mathrm{Im}\,G_{00}(E + i\eta)\)</span>, is the Green’s
 function of the outermost layer of a semi-infinite crystal. A finite
@@ -864,7 +944,7 @@ bond.</p>
   <div class="sphx-glr-thumbnail-title">The Surface Green's Function by Lopez Sancho Decimation</div>
 </div></div></section>
 <section id="zigzag-edge-states-of-graphene-ribbons">
-<h2><a class="toc-backref" href="#id11" role="doc-backlink">1996 – Zigzag Edge States of Graphene Ribbons</a><a class="headerlink" href="#zigzag-edge-states-of-graphene-ribbons" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">1996 – Zigzag Edge States of Graphene Ribbons</a><a class="headerlink" href="#zigzag-edge-states-of-graphene-ribbons" title="Link to this heading">#</a></h2>
 <p>M. Fujita, K. Wakabayashi, K. Nakada and K. Kusakabe (1996) found that
 the edges of a graphene ribbon decide its low-energy physics. Along a
 zigzag edge, a band of states sits at exactly <span class="math notranslate nohighlight">\(E = 0\)</span> over a third
@@ -901,7 +981,7 @@ ribbons that are metallic exactly for <span class="math notranslate nohighlight"
   <div class="sphx-glr-thumbnail-title">Zigzag Edge States of Graphene Ribbons</div>
 </div></div></section>
 <section id="maximally-localized-wannier-functions">
-<h2><a class="toc-backref" href="#id12" role="doc-backlink">1997/2008 – Maximally Localized Wannier Functions</a><a class="headerlink" href="#maximally-localized-wannier-functions" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id14" role="doc-backlink">1997/2008 – Maximally Localized Wannier Functions</a><a class="headerlink" href="#maximally-localized-wannier-functions" title="Link to this heading">#</a></h2>
 <p>The Wannier functions of a band are defined only up to a gauge: a
 k-dependent unitary mixing of the Bloch states. N. Marzari and D.
 Vanderbilt fixed it by minimizing their spread, which gives maximally
@@ -950,7 +1030,7 @@ recovers the closed-form energies at <span class="math notranslate nohighlight">
   <div class="sphx-glr-thumbnail-title">Maximally Localized Wannier Functions: Graphene from a Wannier90 File</div>
 </div></div></section>
 <section id="disentanglement-of-entangled-bands">
-<h2><a class="toc-backref" href="#id13" role="doc-backlink">2001 – Disentanglement of Entangled Bands</a><a class="headerlink" href="#disentanglement-of-entangled-bands" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id15" role="doc-backlink">2001 – Disentanglement of Entangled Bands</a><a class="headerlink" href="#disentanglement-of-entangled-bands" title="Link to this heading">#</a></h2>
 <p>Maximally localized Wannier functions need a group of bands separated
 from the rest of the spectrum, and the bands of interest rarely are:
 graphene’s π bands cross its σ bands, and the d bands of transition
@@ -995,7 +1075,7 @@ every step, the frozen bands are reproduced on the mesh to
   <div class="sphx-glr-thumbnail-title">Disentanglement: Wannier Functions of the π Bands of Graphene</div>
 </div></div></section>
 <section id="isolation-of-graphene">
-<h2><a class="toc-backref" href="#id14" role="doc-backlink">2004 – Isolation of Graphene</a><a class="headerlink" href="#isolation-of-graphene" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id16" role="doc-backlink">2004 – Isolation of Graphene</a><a class="headerlink" href="#isolation-of-graphene" title="Link to this heading">#</a></h2>
 <p>A. Geim, K. Novoselov, and coworkers mechanically exfoliated a
 single atomic layer of carbon from graphite, producing the first
 genuinely 2D crystal. Graphene’s low-energy quasiparticles obey a
@@ -1029,7 +1109,7 @@ Effect in Atomically Thin Carbon Films,” Science 306, 666-669 (2004).</p>
   <div class="sphx-glr-thumbnail-title">The Isolation of Graphene: Flakes, Edges, and a Berry Phase of pi</div>
 </div></div></section>
 <section id="the-kernel-polynomial-method">
-<h2><a class="toc-backref" href="#id15" role="doc-backlink">2006 – The Kernel Polynomial Method</a><a class="headerlink" href="#the-kernel-polynomial-method" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id17" role="doc-backlink">2006 – The Kernel Polynomial Method</a><a class="headerlink" href="#the-kernel-polynomial-method" title="Link to this heading">#</a></h2>
 <p>Weisse, Wellein, Alvermann and Fehske turned the Chebyshev expansions of
 Silver and Roder (1994) into the standard way of computing spectral
 properties of very large sparse Hamiltonians without diagonalizing them:
@@ -1040,8 +1120,11 @@ Gibbs oscillations with a kernel. The cost grows linearly with the number
 of sites – millions of them, for densities of states, local densities
 of states, and Kubo conductivities.</p>
 <p><em>Implementation:</em> <a class="reference internal" href="../tbkit.html#module-tbkit.kpm" title="tbkit.kpm"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.kpm</span></code></a> (<a class="reference internal" href="../tbkit.html#tbkit.kpm.dos" title="tbkit.kpm.dos"><code class="xref py py-func docutils literal notranslate"><span class="pre">dos()</span></code></a>,
-<a class="reference internal" href="../tbkit.html#tbkit.kpm.ldos" title="tbkit.kpm.ldos"><code class="xref py py-func docutils literal notranslate"><span class="pre">ldos()</span></code></a>, <a class="reference internal" href="../tbkit.html#tbkit.kpm.conductivity" title="tbkit.kpm.conductivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">conductivity()</span></code></a>, with the Jackson
-and Lorentz kernels).</p>
+<a class="reference internal" href="../tbkit.html#tbkit.kpm.ldos" title="tbkit.kpm.ldos"><code class="xref py py-func docutils literal notranslate"><span class="pre">ldos()</span></code></a>, <a class="reference internal" href="../tbkit.html#tbkit.kpm.conductivity" title="tbkit.kpm.conductivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">conductivity()</span></code></a>,
+<a class="reference internal" href="../tbkit.html#tbkit.kpm.hall_conductivity" title="tbkit.kpm.hall_conductivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">hall_conductivity()</span></code></a>, the spectral function
+<a class="reference internal" href="../tbkit.html#tbkit.kpm.spectral_function" title="tbkit.kpm.spectral_function"><code class="xref py py-func docutils literal notranslate"><span class="pre">spectral_function()</span></code></a> and the optical conductivity
+<a class="reference internal" href="../tbkit.html#tbkit.kpm.optical_conductivity" title="tbkit.kpm.optical_conductivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">optical_conductivity()</span></code></a>, with the Jackson and Lorentz
+kernels).</p>
 <p><em>References:</em> A. Weisse, G. Wellein, A. Alvermann, and H. Fehske, “The
 Kernel Polynomial Method,” Rev. Mod. Phys. 78, 275-306 (2006); R. N.
 Silver and H. Roder, Int. J. Mod. Phys. C 5, 735 (1994).</p>
@@ -1055,7 +1138,7 @@ zero-energy states bound by 2% of vacancies.</p>
   <div class="sphx-glr-thumbnail-title">The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites</div>
 </div></div></section>
 <section id="band-unfolding-effective-band-structures-of-supercells">
-<h2><a class="toc-backref" href="#id16" role="doc-backlink">2010 – Band Unfolding: Effective Band Structures of Supercells</a><a class="headerlink" href="#band-unfolding-effective-band-structures-of-supercells" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id18" role="doc-backlink">2010 – Band Unfolding: Effective Band Structures of Supercells</a><a class="headerlink" href="#band-unfolding-effective-band-structures-of-supercells" title="Link to this heading">#</a></h2>
 <p>Alloys, dopants, vacancies and disorder break the translation symmetry,
 and a calculation in a supercell folds the bands into a Brillouin zone
 <span class="math notranslate nohighlight">\(N\)</span> times smaller, burying the band structure that photoemission
@@ -1084,7 +1167,7 @@ supercell.</p>
   <div class="sphx-glr-thumbnail-title">Band Unfolding: the Effective Band Structure of a Disordered Supercell</div>
 </div></div></section>
 <section id="see-also">
-<h2><a class="toc-backref" href="#id17" role="doc-backlink">See Also</a><a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id19" role="doc-backlink">See Also</a><a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="index.html"><span class="doc">History</span></a> – the other chapters of this chronology.</p></li>
 <li><p><a class="reference internal" href="../tutorial.html"><span class="doc">Tutorial</span></a> – a narrative walkthrough of the same API.</p></li>
@@ -1129,7 +1212,7 @@ supercell.</p>
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <dialog id="pst-secondary-sidebar-modal" tabindex="-1"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
@@ -1143,6 +1226,7 @@ supercell.</p>
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bloch-s-theorem-and-band-theory">1928 – Bloch’s Theorem and Band Theory</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brillouin-zones-and-standard-high-symmetry-paths">1930/2010 – Brillouin Zones and Standard High-Symmetry Paths</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#irreducible-representations-of-the-bands-the-little-group">1936 – Irreducible Representations of the Bands: the Little Group</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wallace-s-tight-binding-prediction-of-graphene">1947 – Wallace’s Tight-Binding Prediction of Graphene</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lowdin-orthogonalization-and-non-orthogonal-tight-binding">1950 – Löwdin Orthogonalization and Non-Orthogonal Tight Binding</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-slater-koster-tight-binding-framework">1954 – The Slater-Koster Tight-Binding Framework</a></li>
@@ -1150,6 +1234,7 @@ supercell.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-tetrahedron-method-for-the-density-of-states">1971/1972 – The Tetrahedron Method for the Density of States</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monkhorst-pack-k-point-grids">1976 – Monkhorst-Pack k-Point Grids</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fermion-doubling-the-nielsen-ninomiya-theorem">1981 – Fermion Doubling: the Nielsen-Ninomiya Theorem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-chebyshev-propagator">1984 – The Chebyshev Propagator</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lopez-sancho-decimation-and-the-surface-green-s-function">1985 – Lopez Sancho Decimation and the Surface Green’s Function</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zigzag-edge-states-of-graphene-ribbons">1996 – Zigzag Edge States of Graphene Ribbons</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximally-localized-wannier-functions">1997/2008 – Maximally Localized Wannier Functions</a></li>
@@ -1183,8 +1268,8 @@ supercell.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1217,7 +1302,7 @@ supercell.</p>
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.24.0.
 </p></div>
       
     </div>

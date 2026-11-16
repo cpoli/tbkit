@@ -106,7 +106,10 @@ the Hubbard model: the magnetism of graphene's zigzag edges and of
 triangular nanoislands, Lieb's theorem and the ferrimagnet of the Lieb
 lattice, and flat-band ferromagnetism (Nagaoka, Mielke, Tasaki). The
 non-collinear mean field finds the 120-degree order of the frustrated
-triangular lattice.
+triangular lattice. Exact diagonalization of small clusters checks mean
+field (the Hubbard dimer, superexchange, where Hartree-Fock fails),
+reproduces the Lieb-Wu solution of the Hubbard chain and its Mott gap,
+and finds a fractional Chern insulator in a flat Chern band.
 
 
 .. raw:: html
@@ -122,6 +125,23 @@ triangular lattice.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Mean field (~tbkit.meanfield.hubbard_mean_field) replaces the Hubbard repulsion by the potential of the average density. The check on it is the exact ground state of a cluster small enough to diagonalize in its full Fock space (~tbkit.manybody.exact_diagonalization), on the same hopping matrix and the same U.">
+
+.. only:: html
+
+  .. image:: /api/gallery/correlations/images/thumb/sphx_glr_plot_exact_diagonalization_vs_mean_field_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/correlations/plot_exact_diagonalization_vs_mean_field`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Exact Diagonalization Against Mean Field</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Itinerant ferromagnetism is hard to get from the Hubbard model: the repulsion U favours aligned spins, which cannot share a site, but aligning them costs kinetic energy. Three exact results say when the spins align fully anyway.">
 
 .. only:: html
@@ -134,6 +154,23 @@ triangular lattice.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Flat-Band Ferromagnetism: Nagaoka, Mielke and Tasaki</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A nearly flat band with Chern number C = \pm1, filled to one third with spinless fermions that repel on nearest-neighbour bonds, behaves like the lowest Landau level at \nu = 1/3: the ground state is a Laughlin-like liquid with no magnetic field at all (Neupert, Santos, Chamon and Mudry; Sheng, Gu, Sun and Sheng; Regnault and Bernevig, all 2011). On a torus its fingerprints are">
+
+.. only:: html
+
+  .. image:: /api/gallery/correlations/images/thumb/sphx_glr_plot_fractional_chern_insulator_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/correlations/plot_fractional_chern_insulator`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Fractional Chern Insulator in a Flat Chern Band</div>
     </div>
 
 
@@ -168,6 +205,23 @@ triangular lattice.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Lieb's Theorem: The Ferrimagnet of the Lieb Lattice</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="E. H. Lieb and F. Y. Wu (1968) solved the one-dimensional Hubbard model exactly by the Bethe ansatz. At half filling the ground-state energy per site is">
+
+.. only:: html
+
+  .. image:: /api/gallery/correlations/images/thumb/sphx_glr_plot_lieb_wu_hubbard_chain_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/correlations/plot_lieb_wu_hubbard_chain`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Lieb and Wu: the Exact Solution of the Hubbard Chain</div>
     </div>
 
 
@@ -219,7 +273,8 @@ strength, and an extended state shown side by side with a localized one.
 The IPR's scaling with size and the multifractal states of a critical
 chain, the self-dual Aubry-André transition of a quasiperiodic chain,
 Lifshitz tails of the density of states, and the zero modes bound by
-vacancies in graphene.
+vacancies in graphene. The transfer-matrix localization length and the
+MacKinnon-Kramer crossing of the 3D Anderson transition.
 
 
 .. raw:: html
@@ -298,6 +353,23 @@ vacancies in graphene.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Lifshitz Tails in the Density of States of a Disordered Lattice</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="MacKinnon and Kramer (1981) measured the localization length of a long disordered bar directly, without diagonalizing anything. On a bar of cross-section M\times M the Schrödinger equation is a recurrence from one slice to the next,">
+
+.. only:: html
+
+  .. image:: /api/gallery/disorder/images/thumb/sphx_glr_plot_transfer_matrix_localization_length_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/disorder/plot_transfer_matrix_localization_length`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Finite-Size Scaling of the Localization Length: MacKinnon and Kramer</div>
     </div>
 
 
@@ -677,7 +749,9 @@ Higher-Order Topology
 
 Topological phases beyond dipoles: Wannier sectors, nested Wilson loops,
 the quantized quadrupole moment of the Benalcazar-Bernevig-Hughes model,
-and the zero-energy corner states and fractional corner charges it binds.
+and the zero-energy corner states and fractional corner charges it binds;
+and the corner charge of a C4-symmetric insulator read from its rotation
+eigenvalues, checked against finite flakes.
 
 
 .. raw:: html
@@ -690,6 +764,23 @@ and the zero-energy corner states and fractional corner charges it binds.
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="W. A. Benalcazar, T. Li and T. L. Hughes (2019) showed that the corner charge of a C_4-symmetric insulator is a symmetry indicator: it follows from the rotation eigenvalues of the occupied bands,">
+
+.. only:: html
+
+  .. image:: /api/gallery/higher_order/images/thumb/sphx_glr_plot_corner_charge_from_rotation_eigenvalues_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/higher_order/plot_corner_charge_from_rotation_eigenvalues`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Fractional Corner Charges from Rotation Eigenvalues</div>
+    </div>
+
 
 .. raw:: html
 
@@ -719,8 +810,10 @@ Large lattices
 
 Lattices far beyond dense diagonalization: sparse neighbour search,
 shift-invert eigensolvers, and the kernel polynomial method, which
-turns spectral densities and conductivities of hundreds of thousands of
-sites into a few hundred sparse matrix-vector products. In k-space,
+turns spectral densities, spectral functions, DC and optical
+conductivities of hundreds of thousands of sites into a few hundred
+sparse matrix-vector products, and evolves wavepackets in time by the
+same Chebyshev recursion. In k-space,
 fine meshes are diagonalized in batches, optionally across threads.
 
 
@@ -754,6 +847,23 @@ fine meshes are diagonalized in batches, optionally across threads.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Solving i\partial_t\psi = H\psi step by step, with the Crank-Nicolson rule (1 + iH\,dt/2)^{-1}(1 - iH\,dt/2) of Propagation, needs an inverse (or a factorization) of an N\times N matrix. Tal-Ezer and Kosloff (J. Chem. Phys. 81, 3967 (1984)) expanded the propagator itself in Chebyshev polynomials of the rescaled Hamiltonian \tilde H = (H - b)/a,">
+
+.. only:: html
+
+  .. image:: /api/gallery/large_scale/images/thumb/sphx_glr_plot_chebyshev_time_evolution_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/large_scale/plot_chebyshev_time_evolution`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Chebyshev Time Evolution: a Wavepacket on 90,000 Sites</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Diagonalizing N sites costs N^3 operations and N^2 memory: a few thousand sites at most. The kernel polynomial method (Silver and Roder, 1994; reviewed by Weisse, Wellein, Alvermann and Fehske, Rev. Mod. Phys. 78, 275 (2006)) never diagonalizes. It expands the spectral density in Chebyshev polynomials of the rescaled Hamiltonian,">
 
 .. only:: html
@@ -766,6 +876,57 @@ fine meshes are diagonalized in batches, optionally across threads.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The Kubo-Greenwood formula gives the absorptive part of the optical conductivity as a joint density of occupied and empty states, weighted by the velocity between them:">
+
+.. only:: html
+
+  .. image:: /api/gallery/large_scale/images/thumb/sphx_glr_plot_kpm_optical_conductivity_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/large_scale/plot_kpm_optical_conductivity`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Optical Conductivity of Disordered Graphene, 45,000 Sites</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The full optical conductivity tensor of a sample with no Brillouin zone, from the kernel polynomial method. With two velocities, the Kubo-Greenwood trace j_{ab}(E_1, E_2) = \mathrm{Tr}[v_a\,\delta(E_1-H)\,v_b\,\delta(E_2-H)] is complex, and">
+
+.. only:: html
+
+  .. image:: /api/gallery/large_scale/images/thumb/sphx_glr_plot_kpm_optical_hall_conductivity_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/large_scale/plot_kpm_optical_hall_conductivity`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Optical Hall Conductivity of a Disordered Chern Insulator</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Photoemission (ARPES) measures the spectral function A(\mathbf{k}, E): how much of a plane wave of momentum \mathbf{k} lives at energy E. In a crystal it is peaked on the bands; disorder gives the quasiparticles a finite lifetime, which broadens the peaks, and shifts them. Band unfolding (tbkit.moire.spectral_function) gets it from the eigenstates of a supercell, which caps the sample at a few thousand orbitals. The kernel polynomial method needs none: with one plane wave per sublattice o,">
+
+.. only:: html
+
+  .. image:: /api/gallery/large_scale/images/thumb/sphx_glr_plot_kpm_spectral_function_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/large_scale/plot_kpm_spectral_function`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Spectral Function of Disordered Graphene, 28,800 Sites</div>
     </div>
 
 
@@ -1716,7 +1877,10 @@ instead of rebuilding the model; periodic boundaries in real space,
 tori and cylinders whose spectra match the Bloch bands on a k-mesh;
 and the analysis of a band structure: Fermi surfaces and their Lifshitz
 transitions, bands projected on sublattices or spins and spin textures,
-and the tetrahedron method for the density of states.
+and the tetrahedron method for the density of states; and crystal
+symmetry: the irreducible representations of graphene's bands at the
+high-symmetry points (the Dirac point as the two-dimensional irrep of
+C3v), and the symmetrization of a noisy Wannier90 model.
 
 
 .. raw:: html
@@ -1812,6 +1976,23 @@ and the tetrahedron method for the density of states.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Graphene: Real-Space Flake and Reciprocal-Space Bands</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="L. P. Bouckaert, R. Smoluchowski and E. Wigner (1936) read a band structure through its symmetry. At a k-point \mathbf{k}, the operations g of the crystal with g\mathbf{k} = \mathbf{k} (modulo a reciprocal lattice vector) form the little group of \mathbf{k}; the Bloch states of one energy carry a representation of it, and that representation is irreducible unless the degeneracy is accidental. A two-dimensional irrep is a degeneracy that no perturbation respecting the symmetry can lift; one-dimensional irreps of different labels may cross along a line, equal ones must repel.">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_irreps_of_graphene_bands_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_irreps_of_graphene_bands`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Irreducible Representations of the Bands: Why Graphene Has Dirac Points</div>
     </div>
 
 
@@ -1936,6 +2117,23 @@ and the tetrahedron method for the density of states.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="A tight-binding model read from Wannier90 inherits the numerical noise of the first-principles calculation and of the Wannierization: its hoppings break the crystal symmetry by a little, so that symmetry-protected degeneracies are split and every symmetry check fails. The cure, as in TBmodels, is the group average of the hoppings,">
+
+.. only:: html
+
+  .. image:: /api/gallery/tight_binding/images/thumb/sphx_glr_plot_symmetrizing_a_wannier90_model_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/tight_binding/plot_symmetrizing_a_wannier90_model`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Symmetrizing a Wannier90 Model</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The density of states \rho(E) = \sum_n\int\frac{d\mathbf{k}}{V_{BZ}}\, \delta(E - E_n(\mathbf{k})) needs an integral over the Brillouin zone, but a calculation only knows the bands on a finite mesh. Broadening each eigenvalue into a Gaussian of width \sigma turns the sum into a smooth curve, at the price of smearing exactly the features that matter: band edges, and the van Hove singularities where \nabla_k E = 0.">
 
 .. only:: html
@@ -2008,9 +2206,11 @@ Chern number of the Kane-Mele model with Rashba coupling, the mirror
 Chern number of a topological crystalline insulator, the four Z2 indices
 of strong and weak 3D topological insulators, the axion angle pumped by
 2 pi around a cycle of a lattice Dirac model, the tenfold-way
-classification of tight-binding models by their symmetries, and the
+classification of tight-binding models by their symmetries, the
 diabolical points (conical intersections with a Berry phase of pi) of a
-two-parameter family.
+two-parameter family, the Chern number modulo n from the C_n rotation
+eigenvalues at a few momenta, and the inversion symmetry indicators of 3D
+insulators, which see a doubled topological insulator that Z2 misses.
 
 
 .. raw:: html
@@ -2072,6 +2272,23 @@ two-parameter family.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">The Bott Index: the Chern Number of a Disordered Torus</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="C. Fang, M. J. Gilbert and B. A. Bernevig (2012) showed that in a crystal with an n-fold rotation C_n the Chern number of the occupied bands is fixed modulo n by their rotation eigenvalues at a few points, without any integral of the Berry curvature:">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_chern_number_from_rotation_eigenvalues_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_chern_number_from_rotation_eigenvalues`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Chern Numbers from Rotation Eigenvalues</div>
     </div>
 
 
@@ -2276,6 +2493,23 @@ two-parameter family.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">The SSH Model: Bulk-Boundary Correspondence</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In 2017 H. C. Po, A. Vishwanath and H. Watanabe, and B. Bradlyn and coauthors (topological quantum chemistry), turned the symmetry eigenvalues of the occupied bands at the high-symmetry momenta into a diagnosis of topology for every space group: a set of bands whose eigenvalues cannot come from any atomic insulator is topological. For a 3D insulator with inversion and time reversal, the indicators of Khalaf, Po, Vishwanath and Watanabe (2018) count the occupied states of parity \pm1 at the eight time-reversal-invariant momenta \mathbf{K}:">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_symmetry_indicators_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_symmetry_indicators`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Symmetry Indicators: Topology from the Parities at Eight Points</div>
     </div>
 
 

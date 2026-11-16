@@ -19,9 +19,11 @@ Chern number of the Kane-Mele model with Rashba coupling, the mirror
 Chern number of a topological crystalline insulator, the four Z2 indices
 of strong and weak 3D topological insulators, the axion angle pumped by
 2 pi around a cycle of a lattice Dirac model, the tenfold-way
-classification of tight-binding models by their symmetries, and the
+classification of tight-binding models by their symmetries, the
 diabolical points (conical intersections with a Berry phase of pi) of a
-two-parameter family.
+two-parameter family, the Chern number modulo n from the C_n rotation
+eigenvalues at a few momenta, and the inversion symmetry indicators of 3D
+insulators, which see a doubled topological insulator that Z2 misses.
 
 
 .. raw:: html
@@ -83,6 +85,23 @@ two-parameter family.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">The Bott Index: the Chern Number of a Disordered Torus</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="C. Fang, M. J. Gilbert and B. A. Bernevig (2012) showed that in a crystal with an n-fold rotation C_n the Chern number of the occupied bands is fixed modulo n by their rotation eigenvalues at a few points, without any integral of the Berry curvature:">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_chern_number_from_rotation_eigenvalues_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_chern_number_from_rotation_eigenvalues`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Chern Numbers from Rotation Eigenvalues</div>
     </div>
 
 
@@ -292,6 +311,23 @@ two-parameter family.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="In 2017 H. C. Po, A. Vishwanath and H. Watanabe, and B. Bradlyn and coauthors (topological quantum chemistry), turned the symmetry eigenvalues of the occupied bands at the high-symmetry momenta into a diagnosis of topology for every space group: a set of bands whose eigenvalues cannot come from any atomic insulator is topological. For a 3D insulator with inversion and time reversal, the indicators of Khalaf, Po, Vishwanath and Watanabe (2018) count the occupied states of parity \pm1 at the eight time-reversal-invariant momenta \mathbf{K}:">
+
+.. only:: html
+
+  .. image:: /api/gallery/topology/images/thumb/sphx_glr_plot_symmetry_indicators_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/topology/plot_symmetry_indicators`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Symmetry Indicators: Topology from the Parities at Eight Points</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="A. Altland and M. Zirnbauer (1997) completed Dyson&#x27;s classification of random matrices: a Hamiltonian&#x27;s non-spatial symmetries -- time reversal T = U_T\mathcal{K}, particle-hole C = U_C\mathcal{K} (each squaring to +1 or -1, or absent) and their product, the chiral symmetry S -- sort it into exactly ten classes. Schnyder, Ryu, Furusaki and Ludwig, and Kitaev, then showed (2008-2009) that the class and the dimension alone decide which topological invariant a gapped phase can carry: the periodic table of topological insulators and superconductors. In 1D, for instance, classes AIII and BDI carry an integer winding number, D a \mathbb{Z}_2; in 2D, classes A and D carry a Chern number, AII a \mathbb{Z}_2.">
 
 .. only:: html
@@ -388,6 +424,7 @@ two-parameter family.
    /api/gallery/topology/plot_3d_topological_insulator
    /api/gallery/topology/plot_axion_angle
    /api/gallery/topology/plot_bott_index
+   /api/gallery/topology/plot_chern_number_from_rotation_eigenvalues
    /api/gallery/topology/plot_diabolical_points
    /api/gallery/topology/plot_edge_states
    /api/gallery/topology/plot_entanglement_spectrum
@@ -400,6 +437,7 @@ two-parameter family.
    /api/gallery/topology/plot_quantum_geometry
    /api/gallery/topology/plot_spin_chern_number
    /api/gallery/topology/plot_ssh_model
+   /api/gallery/topology/plot_symmetry_indicators
    /api/gallery/topology/plot_tenfold_way
    /api/gallery/topology/plot_thouless_pump
    /api/gallery/topology/plot_tknn_hofstadter

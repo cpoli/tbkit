@@ -25,8 +25,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
@@ -36,12 +36,12 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=b9678aa1"></script>
+    <script src="../../_static/documentation_options.js?v=cce5339e"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.7" />
+  <meta name="docsearch:version" content="0.8" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -103,7 +103,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -252,7 +252,7 @@
       
         
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
@@ -378,7 +378,7 @@
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../../index.html" class="nav-link" aria-label="Home">
-        <i class="fa-solid fa-home"></i>
+        <i class="fa-solid fa-house"></i>
       </a>
     </li>
     
@@ -407,6 +407,7 @@
 
 
 <span class="n">ATOL</span> <span class="o">=</span> <span class="mf">1e-3</span>  <span class="c1"># matches the distance/angle tolerance used throughout tbkit.system</span>
+<span class="n">TAG_LEN</span> <span class="o">=</span> <span class="mi">8</span>  <span class="c1"># longest sublattice tag, in characters (the 'U8' tag field of Lattice.coor)</span>
 
 
 <span class="c1">###############################</span>
@@ -832,9 +833,9 @@
 <span class="sd">    KeyError</span>
 <span class="sd">        Dictionaries must contain the key "r0".</span>
 <span class="sd">    TypeError</span>
-<span class="sd">        Key "tags" must contain a one-character string.</span>
+<span class="sd">        Key "tag" must contain a string.</span>
 <span class="sd">    ValueError</span>
-<span class="sd">        Key "tags" must contain a one-character string.</span>
+<span class="sd">        Key "tag" must be a string of 1 to TAG_LEN characters.</span>
 <span class="sd">    ValueError</span>
 <span class="sd">        Key "r0" must contain be a list.</span>
 <span class="sd">    TypeError</span>
@@ -852,9 +853,9 @@
         <span class="k">if</span> <span class="s1">'r0'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dic</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Dictionaries must contain the key "r0".</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Key "tag" must contain a one-character string.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Key "tag" must be a one-character string.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Key "tag" must contain a string.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">TAG_LEN</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Key "tag" must be a string of 1 to </span><span class="si">{}</span><span class="s1"> characters.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">TAG_LEN</span><span class="p">))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'r0'</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Key "r0" must be a tuple.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'r0'</span><span class="p">])</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
@@ -983,18 +984,21 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">coor</span><span class="p">(</span><span class="n">coor</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">'''</span>
 <span class="sd">    Check if *coor* is a structured array with</span>
-<span class="sd">    dtype=[('x', 'f8'), ('y', 'f8'), ('tag', 'U1')], or, for a lattice in 3D</span>
-<span class="sd">    space, dtype=[('x', 'f8'), ('y', 'f8'), ('z', 'f8'), ('tag', 'U1')]. If</span>
-<span class="sd">    *dtype* is given, *coor* must have exactly that dtype.</span>
+<span class="sd">    dtype=[('x', 'f8'), ('y', 'f8'), ('tag', 'U8')], or, for a lattice in 3D</span>
+<span class="sd">    space, dtype=[('x', 'f8'), ('y', 'f8'), ('z', 'f8'), ('tag', 'U8')]. A</span>
+<span class="sd">    narrower tag field ('U1' to 'U8') is accepted too. If *dtype* is given,</span>
+<span class="sd">    *coor* must have its position fields.</span>
 <span class="sd">    '''</span>
-    <span class="n">dtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'f8'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'y'</span><span class="p">,</span> <span class="s1">'f8'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'tag'</span><span class="p">,</span> <span class="s1">'U1'</span><span class="p">)]),</span>
-                  <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'f8'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'y'</span><span class="p">,</span> <span class="s1">'f8'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'z'</span><span class="p">,</span> <span class="s1">'f8'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'tag'</span><span class="p">,</span> <span class="s1">'U1'</span><span class="p">)])]</span>
+    <span class="n">tags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'U</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">TAG_LEN</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="n">positions</span> <span class="o">=</span> <span class="p">[[(</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'f8'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'y'</span><span class="p">,</span> <span class="s1">'f8'</span><span class="p">)],</span> <span class="p">[(</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'f8'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'y'</span><span class="p">,</span> <span class="s1">'f8'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'z'</span><span class="p">,</span> <span class="s1">'f8'</span><span class="p">)]]</span>
     <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">dtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)]</span>
+        <span class="n">positions</span> <span class="o">=</span> <span class="p">[[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">descr</span> <span class="k">if</span> <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">'tag'</span><span class="p">]]</span>
+    <span class="n">dtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">f</span> <span class="o">+</span> <span class="p">[(</span><span class="s1">'tag'</span><span class="p">,</span> <span class="n">t</span><span class="p">)])</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">positions</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">coor</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dtypes</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter coor dtype must be</span><span class="se">\n</span><span class="s1">'</span>
-                                  <span class="s1">'dtype=[("x", "f8"), ("y", "f8"), ("tag", "U1")]</span><span class="se">\n</span><span class="s1">'</span>
-                                  <span class="s1">'(with a ("z", "f8") field after "y" for a lattice in 3D space).</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+                                  <span class="s1">'dtype=[("x", "f8"), ("y", "f8"), ("tag", "U8")]</span><span class="se">\n</span><span class="s1">'</span>
+                                  <span class="s1">'(with a ("z", "f8") field after "y" for a lattice in 3D space;</span><span class="se">\n</span><span class="s1">'</span>
+                                  <span class="s1">'a tag field from "U1" to "U8").</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
 
 
 
@@ -1228,13 +1232,37 @@
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">dic</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Dictionaries must be of length 2, 3, or 4.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
         <span class="k">if</span> <span class="s1">'tag'</span> <span class="ow">in</span> <span class="n">dic</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">"tag" value must be a string.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">"tag" value must be a string of length 2.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+            <span class="n">hop_tag</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">])</span>
         <span class="k">if</span> <span class="s1">'ang'</span> <span class="ow">in</span> <span class="n">dic</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'ang'</span><span class="p">],</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">"ang" value must be a real number.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="hop_tag">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.hop_tag">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">hop_tag</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check a bond selector "tag": a string of two one-character tags</span>
+<span class="sd">    ('ab'), or a tuple or list of two tags (('Mo', 'S')).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        "tag" value must be a string or a pair of strings.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        "tag" value must be a string of length 2 or a pair of tags.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tag</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">"tag" value must be a string or a pair of strings.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">TAG_LEN</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tag</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">"tag" pair must hold tags of 1 to </span><span class="si">{}</span><span class="s1"> characters.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">TAG_LEN</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">"tag" value must be a string.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">"tag" value must be a string of length 2 (two one-character tags),</span><span class="se">\n</span><span class="s1">'</span>
+                                  <span class="s1">'or a pair of tags such as ("Mo", "S").</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
 
 
 
@@ -1522,7 +1550,7 @@
 <span class="sd">        Parameter *tag* is not in tags.</span>
 <span class="sd">    '''</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter tag must be a one-character string.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter tag must be a string.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">tag</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter tag is not in tags.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
 
@@ -1697,6 +1725,22 @@
     <span class="k">if</span> <span class="n">prop_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'real'</span><span class="p">,</span> <span class="s1">'imag'</span><span class="p">,</span> <span class="s1">'norm'</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter prop_type must be a string:</span><span class="se">\n</span><span class="s1">'</span>
                                    <span class="s1">'"real", "imag", "norm".</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="prop_method">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.prop_method">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">prop_method</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check the method of *Propagation.get_propagation*.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter method must be "crank-nicolson" or "chebyshev".</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'crank-nicolson'</span><span class="p">,</span> <span class="s1">'chebyshev'</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter method must be "crank-nicolson" or "chebyshev".</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
 
 
 
@@ -3081,7 +3125,7 @@
 
 <div class="viewcode-block" id="kpm_grid">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.kpm_grid">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">kpm_grid</span><span class="p">(</span><span class="n">eps</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">kpm_grid</span><span class="p">(</span><span class="n">eps</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">'e_grid'</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">'''</span>
 <span class="sd">    Check that the KPM energies lie inside the (scaled) spectral bounds.</span>
 
@@ -3091,8 +3135,43 @@
 <span class="sd">        e_grid must lie inside the spectral bounds.</span>
 <span class="sd">    '''</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">eps</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mf">1.</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter e_grid must lie strictly inside the spectral '</span>
-                                    <span class="s1">'bounds.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter </span><span class="si">{}</span><span class="s1"> must lie strictly inside the spectral '</span>
+                                    <span class="s1">'bounds.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var_name</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="kpm_times">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.kpm_times">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">kpm_times</span><span class="p">(</span><span class="n">times</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check the times of *kpm.time_evolution*: a non-empty, finite and</span>
+<span class="sd">    non-decreasing array.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter times must be a non-empty, finite, non-decreasing array.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">times</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">times</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">times</span><span class="p">))</span> \
+            <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">times</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter times must be a non-empty, finite, non-decreasing '</span>
+                                    <span class="s1">'1D array.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="positive_frequencies">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.positive_frequencies">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">positive_frequencies</span><span class="p">(</span><span class="n">omega</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that photon energies are positive.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter omega must be positive.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">omega</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter omega must be positive.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
 
 
 
@@ -3212,7 +3291,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">sk_pair_params</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">tags_i</span><span class="p">,</span> <span class="n">tags_j</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">'''</span>
 <span class="sd">    Check the bond integrals of *set_slater_koster*: one dictionary, or one</span>
-<span class="sd">    per tag pair of the bonds.</span>
+<span class="sd">    per tag pair of the bonds (keys ``'ab'`` or ``('Mo', 'S')``).</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -3232,9 +3311,9 @@
         <span class="n">sk_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">tags_i</span><span class="p">,</span> <span class="n">tags_j</span><span class="p">)):</span>
-        <span class="k">if</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">params</span> <span class="ow">and</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">No bond integrals for the tag pair </span><span class="si">{!r}</span><span class="s1">.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">))</span>
-        <span class="n">sk_params</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">])</span>
+        <span class="n">sk_params</span><span class="p">(</span><span class="n">params</span><span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="n">params</span> <span class="k">else</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">])</span>
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
@@ -4058,7 +4137,7 @@
 <span class="sd">        "n" must be an integer, "t" a number (or, if *spin*,</span>
 <span class="sd">        a 2x2 matrix) or a value function, "ang" a real number and "tag" a string.</span>
 <span class="sd">    ValueError</span>
-<span class="sd">        "n" must be positive, "ang" in [-180, 180), "tag" of length 2.</span>
+<span class="sd">        "n" must be positive, "ang" in [-180, 180), "tag" of length 2 or a pair of tags.</span>
 <span class="sd">    '''</span>
     <span class="n">hopping_form</span><span class="p">(</span><span class="n">list_hop</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">dic</span> <span class="ow">in</span> <span class="n">list_hop</span><span class="p">:</span>
@@ -4082,10 +4161,7 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="o">-</span><span class="mf">180.</span> <span class="o">&lt;=</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'ang'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">180.</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">"ang" value must be in [-180, 180).</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
         <span class="k">if</span> <span class="s1">'tag'</span> <span class="ow">in</span> <span class="n">dic</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">"tag" value must be a string.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">"tag" value must be a string of length 2.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+            <span class="n">hop_tag</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">])</span></div>
 
 
 
@@ -4442,12 +4518,13 @@
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
 <span class="sd">    TypeError</span>
-<span class="sd">        tags must be a list of one-character strings.</span>
+<span class="sd">        tags must be a list of strings of 1 to TAG_LEN characters.</span>
 <span class="sd">    ValueError</span>
 <span class="sd">        tags must have num_wann elements.</span>
 <span class="sd">    '''</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter tags must be a list of one-character strings.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">TAG_LEN</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter tags must be a list of strings of 1 to </span><span class="si">{}</span><span class="s1"> characters.</span><span class="se">\n</span><span class="s1">'</span>
+                                  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">TAG_LEN</span><span class="p">))</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span> <span class="o">!=</span> <span class="n">num_wann</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter tags must have </span><span class="si">{}</span><span class="s1"> elements.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_wann</span><span class="p">))</span></div>
 
@@ -4744,6 +4821,22 @@
     <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">arr</span><span class="p">)):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter </span><span class="si">{}</span><span class="s1"> must contain at least one finite '</span>
                                     <span class="s1">'number.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var_name</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="optical_part">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.optical_part">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">optical_part</span><span class="p">(</span><span class="n">part</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check the part of *kpm.optical_conductivity* to return.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter part must be "real", "imag" or "complex".</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">part</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'real'</span><span class="p">,</span> <span class="s1">'imag'</span><span class="p">,</span> <span class="s1">'complex'</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter part must be "real", "imag" or "complex".</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
 
 
 
@@ -5520,7 +5613,7 @@
 <span class="sd">    TypeError</span>
 <span class="sd">        Parameter tags must be a string or a list of strings.</span>
 <span class="sd">    ValueError</span>
-<span class="sd">        Parameter tags must hold one one-character tag per orbital.</span>
+<span class="sd">        Parameter tags must hold one tag (1 to TAG_LEN characters) per orbital.</span>
 <span class="sd">    '''</span>
     <span class="k">if</span> <span class="n">tags</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">norb</span> <span class="o">&gt;</span> <span class="mi">52</span><span class="p">:</span>
@@ -5529,9 +5622,9 @@
         <span class="k">return</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter tags must be a string or a list of strings.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span> <span class="o">!=</span> <span class="n">norb</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter tags must hold </span><span class="si">{}</span><span class="s1"> one-character tags, one per '</span>
-                                 <span class="s1">'orbital.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">norb</span><span class="p">))</span></div>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span> <span class="o">!=</span> <span class="n">norb</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">TAG_LEN</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter tags must hold </span><span class="si">{}</span><span class="s1"> tags of 1 to </span><span class="si">{}</span><span class="s1"> characters, one per '</span>
+                                 <span class="s1">'orbital.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">norb</span><span class="p">,</span> <span class="n">TAG_LEN</span><span class="p">))</span></div>
 
 
 
@@ -5703,6 +5796,751 @@
                                  <span class="s1">'somewhere.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
 
 
+
+
+<div class="viewcode-block" id="invertible_coupling">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.invertible_coupling">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">invertible_coupling</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">cond_max</span><span class="o">=</span><span class="mf">1e12</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that the coupling to the farthest slice of a strip is invertible,</span>
+<span class="sd">    as the transfer matrix needs.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The last coupling is singular.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cond</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">cond_max</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The coupling to the farthest slice is singular, so the transfer matrix '</span>
+                         <span class="s1">'does not exist: group several cells into one slice (e.g. two cells of a '</span>
+                         <span class="s1">'zigzag ribbon), or pass the couplings to more slices.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="transfer_chunks">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.transfer_chunks">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">transfer_chunks</span><span class="p">(</span><span class="n">n_chunks</span><span class="p">,</span> <span class="n">n_slices</span><span class="p">,</span> <span class="n">qr_every</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check the number of pieces of a strip for the error of its Lyapunov</span>
+<span class="sd">    exponents: an integer of at least 2, each piece holding at least</span>
+<span class="sd">    *qr_every* slices.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        Parameter n_chunks must be an integer.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter n_chunks must be at least 2.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Each chunk needs at least qr_every slices.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_chunks</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter n_chunks must be an integer.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n_chunks</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter n_chunks must be at least 2.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n_slices</span> <span class="o">&lt;</span> <span class="n">n_chunks</span> <span class="o">*</span> <span class="n">qr_every</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter n_slices must be at least n_chunks * qr_every '</span>
+                         <span class="s1">'(</span><span class="si">{}</span><span class="s1">).</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_chunks</span> <span class="o">*</span> <span class="n">qr_every</span><span class="p">))</span></div>
+
+
+
+<span class="c1">####################################</span>
+<span class="c1"># EXACT DIAGONALIZATION (tbkit.manybody, twisted tori)</span>
+<span class="c1">####################################</span>
+
+
+<div class="viewcode-block" id="twist">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.twist">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">twist</span><span class="p">(</span><span class="n">twist</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">periodic</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check the twist angles of *KSpace.finite_ham*: one real angle per</span>
+<span class="sd">    dimension, on a periodic sample.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter twist must hold dim real angles.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Twisted boundary conditions need periodic=True.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">twist</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">dim</span><span class="p">,)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">twist</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter twist must hold </span><span class="si">{}</span><span class="s1"> real angles.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dim</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">periodic</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Twisted boundary conditions need periodic=True.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="fock_sector">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.fock_sector">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fock_sector</span><span class="p">(</span><span class="n">n_sites</span><span class="p">,</span> <span class="n">n_up</span><span class="p">,</span> <span class="n">n_dn</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check a sector of fixed particle numbers: at most 62 sites (the bit</span>
+<span class="sd">    patterns are 64-bit integers), and between 0 and *n_sites* fermions of</span>
+<span class="sd">    each spin (*n_dn* None for spinless fermions).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        Parameters must be integers.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter n_sites must be at most 62.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The numbers of fermions must be between 0 and n_sites.</span>
+<span class="sd">    '''</span>
+    <span class="n">positive_int</span><span class="p">(</span><span class="n">n_sites</span><span class="p">,</span> <span class="s1">'n_sites'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n_sites</span> <span class="o">&gt;</span> <span class="mi">62</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter n_sites must be at most 62.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">((</span><span class="n">n_up</span><span class="p">,</span> <span class="s1">'n_up'</span><span class="p">),</span> <span class="p">(</span><span class="n">n_dn</span><span class="p">,</span> <span class="s1">'n_dn'</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">'n_dn'</span> <span class="ow">and</span> <span class="n">var</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">positive_int_zero</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">var</span> <span class="o">&gt;</span> <span class="n">n_sites</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter </span><span class="si">{}</span><span class="s1"> must be at most the number of sites (</span><span class="si">{}</span><span class="s1">).</span><span class="se">\n</span><span class="s1">'</span>
+                             <span class="s1">''</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">n_sites</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="spinless_onsite">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.spinless_onsite">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">spinless_onsite</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">spinless</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that spinless fermions get no onsite repulsion.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Spinless fermions have no onsite interaction U.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">spinless</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">u</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Spinless fermions have no onsite interaction U: use V.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="density_interaction">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.density_interaction">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">density_interaction</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">n_sites</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check a density-density interaction: a real symmetric (N, N) matrix</span>
+<span class="sd">    with zero diagonal.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter V must be a real symmetric (N, N) matrix with zero diagonal.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">n_sites</span><span class="p">,</span> <span class="n">n_sites</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">iscomplexobj</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter V must be a real symmetric (</span><span class="si">{0}</span><span class="s1">, </span><span class="si">{0}</span><span class="s1">) matrix with zero '</span>
+                         <span class="s1">'diagonal (the onsite term is U).</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_sites</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="n_states">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.n_states">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">n_states</span><span class="p">(</span><span class="n">n_states</span><span class="p">,</span> <span class="n">dim</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check the number of eigenstates asked of a sector of dimension *dim*.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter n_states must be at most the dimension of the sector.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">n_states</span> <span class="o">&gt;</span> <span class="n">dim</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter n_states must be at most the dimension of the '</span>
+                         <span class="s1">'sector (</span><span class="si">{}</span><span class="s1">).</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dim</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="state_index">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.state_index">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">state_index</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">n_states</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check the index of an eigenstate of *exact_diagonalization*.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        Parameter state must be an integer.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter state must be between 0 and n_states - 1.</span>
+<span class="sd">    '''</span>
+    <span class="n">positive_int_zero</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="s1">'state'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">state</span> <span class="o">&gt;=</span> <span class="n">n_states</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter state must be smaller than the number of states '</span>
+                         <span class="s1">'computed (</span><span class="si">{}</span><span class="s1">).</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_states</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="spinful_sector">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.spinful_sector">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">spinful_sector</span><span class="p">(</span><span class="n">spinless</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that a spin observable is asked of spinful fermions.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Spinless fermions have no spin.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">spinless</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Spinless fermions have no spin: pass n_dn.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="orthonormal_states">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.orthonormal_states">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">orthonormal_states</span><span class="p">(</span><span class="n">phi</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check single-particle states for a projection: a 2D array of</span>
+<span class="sd">    orthonormal columns.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter states must be a 2D array of orthonormal columns.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">phi</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">phi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter states must be a 2D array of orthonormal columns '</span>
+                         <span class="s1">'(one single-particle state each).</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="two_body">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.two_body">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">two_body</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">n_sites</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check a two-body interaction W: shape (N, N, N, N), Hermitian</span>
+<span class="sd">    (W_abcd = conj(W_cdab)).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter W must have shape (N, N, N, N).</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter W must be Hermitian.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">w</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">n_sites</span><span class="p">,)</span> <span class="o">*</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter W must have shape (</span><span class="si">{0}</span><span class="s1">, </span><span class="si">{0}</span><span class="s1">, </span><span class="si">{0}</span><span class="s1">, </span><span class="si">{0}</span><span class="s1">).</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_sites</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">w</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter W must be Hermitian: W[a, b, c, d] = conj(W[c, d, a, b]).</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="spinless_two_body">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.spinless_two_body">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">spinless_two_body</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that a general two-body interaction is given for spinless fermions.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter W needs spinless fermions.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">w</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter W needs spinless fermions (n_dn=None): put the spin '</span>
+                         <span class="s1">'in the orbitals.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="momentum_sector">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.momentum_sector">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">momentum_sector</span><span class="p">(</span><span class="n">momentum</span><span class="p">,</span> <span class="n">n_sites</span><span class="p">,</span> <span class="n">spinless</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check a momentum sector (labels, n_cells, total) of *FockSector*.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        A momentum sector needs spinless fermions.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter momentum must be a tuple (labels, n_cells, total).</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The labels must be integers, one row per orbital.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        n_cells must be positive and total must have one entry per dimension.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">spinless</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">A momentum sector needs spinless fermions (n_dn=None).</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">momentum</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">momentum</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter momentum must be a tuple (labels, n_cells, total).</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">momentum</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">labels</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s1">'iu'</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_sites</span> <span class="ow">or</span> <span class="n">labels</span><span class="o">.</span><span class="n">ndim</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The momentum labels must be integers, one row per orbital '</span>
+                         <span class="s1">'(</span><span class="si">{}</span><span class="s1"> rows).</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_sites</span><span class="p">))</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">labels</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">labels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">cells</span><span class="p">,</span> <span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">momentum</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">momentum</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">cells</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s1">'iu'</span> <span class="ow">or</span> <span class="n">total</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s1">'iu'</span> <span class="ow">or</span> <span class="n">cells</span><span class="o">.</span><span class="n">size</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">total</span><span class="o">.</span><span class="n">size</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">cells</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The n_cells (positive) and total of a momentum sector must be '</span>
+                         <span class="s1">'integers, one per dimension (</span><span class="si">{}</span><span class="s1">).</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">d</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="conserves_momentum">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.conserves_momentum">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">conserves_momentum</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="n">total</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that the one-body matrix *h* (and the two-body *w*, if given)</span>
+<span class="sd">    conserve the crystal momentum of the orbitals.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The Hamiltonian mixes momentum sectors.</span>
+<span class="sd">    '''</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">differ</span><span class="p">(</span><span class="o">*</span><span class="n">pairs</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">sign</span><span class="p">,</span> <span class="n">lab</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">out</span> <span class="o">+</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">lab</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">out</span> <span class="o">%</span> <span class="n">cells</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="n">labels</span>
+    <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-10</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">h</span><span class="p">))))</span>
+    <span class="n">bad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">differ</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">a</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])))</span>
+    <span class="k">if</span> <span class="n">w</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-10</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">w</span><span class="p">))))</span>
+        <span class="n">moved</span> <span class="o">=</span> <span class="n">differ</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">a</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]),</span>
+                       <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]))</span>
+        <span class="n">bad</span> <span class="o">=</span> <span class="n">bad</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">moved</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">bad</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The Hamiltonian mixes momentum sectors: check the momentum '</span>
+                         <span class="s1">'labels of the orbitals.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<span class="c1">####################################</span>
+<span class="c1"># CRYSTAL SYMMETRY (tbkit.symmetry)</span>
+<span class="c1">####################################</span>
+
+
+<div class="viewcode-block" id="operation">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.operation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">operation</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="n">translation</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">,</span> <span class="n">antiunitary</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check the parameters of *symmetry.Operation*.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter rotation must be an orthogonal (d, d) matrix, d = 1, 2 or 3.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter translation must be a vector of d real numbers.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter orbitals must be a square unitary matrix.</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        Parameter antiunitary must be a bool; parameter name a string.</span>
+<span class="sd">    '''</span>
+    <span class="n">rot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">rot</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">rot</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">rot</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="n">rot</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isrealobj</span><span class="p">(</span><span class="n">rot</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">rot</span> <span class="o">@</span> <span class="n">rot</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rot</span><span class="p">)),</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter rotation must be an orthogonal (d, d) real matrix, '</span>
+                         <span class="s1">'d = 1, 2 or 3.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">translation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">translation</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rot</span><span class="p">),)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isrealobj</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter translation must be a vector of </span><span class="si">{}</span><span class="s1"> real numbers.</span><span class="se">\n</span><span class="s1">'</span>
+                             <span class="s1">''</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rot</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">orbitals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">orbitals</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">d</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">d</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)),</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter orbitals must be a square unitary matrix.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+    <span class="n">boolean</span><span class="p">(</span><span class="n">antiunitary</span><span class="p">,</span> <span class="s1">'antiunitary'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter name must be a string.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="is_operation">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.is_operation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_operation</span><span class="p">(</span><span class="n">op</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that *op* is a *symmetry.Operation*.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        The operation must be a tbkit.symmetry.Operation.</span>
+<span class="sd">    '''</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.symmetry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Operation</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">Operation</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The operation must be a tbkit.symmetry.Operation.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="operations">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.operations">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">operations</span><span class="p">(</span><span class="n">ops</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check a non-empty list of *symmetry.Operation*.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        Parameter ops must be a non-empty list of Operation.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ops</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">ops</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter ops must be a non-empty list of tbkit.symmetry.Operation.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">ops</span><span class="p">:</span>
+        <span class="n">is_operation</span><span class="p">(</span><span class="n">op</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="compose">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.compose">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compose</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that two operations can be multiplied: same dimension, and both</span>
+<span class="sd">    or neither with an orbital matrix (of the same size).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The operations act in different dimensions, or on different orbitals.</span>
+<span class="sd">    '''</span>
+    <span class="n">is_operation</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">rotation</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">rotation</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The two operations act in different dimensions.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">orbitals</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">orbitals</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="n">a</span><span class="o">.</span><span class="n">orbitals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">a</span><span class="o">.</span><span class="n">orbitals</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">b</span><span class="o">.</span><span class="n">orbitals</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The two operations must both give orbital matrices of the same '</span>
+                         <span class="s1">'size, or neither.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="nonzero_vector">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.nonzero_vector">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">nonzero_vector</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">var_name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that *vec* is a nonzero vector.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter var_name must be a nonzero vector.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">vec</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter </span><span class="si">{}</span><span class="s1"> must be a nonzero vector.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var_name</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="operation_space">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.operation_space">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">operation_space</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">space_dim</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that an operation acts in the space of the model.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The operation must be a (space_dim, space_dim) rotation.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">rotation</span><span class="p">)</span> <span class="o">!=</span> <span class="n">space_dim</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The operation must act in </span><span class="si">{}</span><span class="s1"> dimensions (that of the '</span>
+                         <span class="s1">'positions of the model).</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">space_dim</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="maps_lattice">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.maps_lattice">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">maps_lattice</span><span class="p">(</span><span class="n">ok</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that an operation sends every position of the unit cell onto a</span>
+<span class="sd">    position of the crystal (*ok*: (n, n) booleans, source by target).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The operation does not map the orbitals onto orbitals of the crystal.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">ok</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">ok</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The operation does not map the orbital positions onto '</span>
+                         <span class="s1">'orbital positions of the crystal.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="block_sizes">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.block_sizes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">block_sizes</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span> <span class="n">perm</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that an operation maps every position onto one with as many</span>
+<span class="sd">    orbitals, and that its orbital matrix (size *m*, or None) fits them.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The positions exchanged carry different numbers of orbitals.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The orbital matrix does not match the orbitals of a position.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">sizes</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">!=</span> <span class="n">s</span> <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span> <span class="n">perm</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The operation exchanges positions with different numbers of '</span>
+                         <span class="s1">'orbitals.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="n">m</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sizes</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The orbital matrix must be (</span><span class="si">{0}</span><span class="s1">, </span><span class="si">{0}</span><span class="s1">): one row per orbital at '</span>
+                         <span class="s1">'each position.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sizes</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span></div>
+
+
+
+<div class="viewcode-block" id="full_dim">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.full_dim">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">full_dim</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">space_dim</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that the lattice fills its space (as many primitive vectors as</span>
+<span class="sd">    coordinates).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        This needs a lattice that fills its space.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">dim</span> <span class="o">!=</span> <span class="n">space_dim</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">This needs a lattice with as many primitive vectors as '</span>
+                         <span class="s1">'coordinates.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="callable_or_none">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.callable_or_none">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">callable_or_none</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">var_name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that *func* is callable or None.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        Parameter var_name must be callable or None.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter </span><span class="si">{}</span><span class="s1"> must be callable or None.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var_name</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="spinless_irreps">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.spinless_irreps">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">spinless_irreps</span><span class="p">(</span><span class="n">spin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that the model has no spin (the double groups are not tabulated).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        This needs a spinless model.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">spin</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">This needs a spinless model (the double groups of spin 1/2 '</span>
+                         <span class="s1">'are not tabulated).</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="dim_irreps">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.dim_irreps">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">dim_irreps</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that the model is 2D or 3D.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Irreps are tabulated in 2D and 3D.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">dim</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The point groups are tabulated in 2D and 3D only.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="symmorphic">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.symmorphic">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">symmorphic</span><span class="p">(</span><span class="n">residual</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that the little group is made of rotations about one point.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The little group is not symmorphic about one point.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">residual</span> <span class="o">&gt;</span> <span class="mf">1e-6</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The operations are not rotations about one common point: '</span>
+                         <span class="s1">'nonsymmorphic groups are not covered, and a rotation about c needs '</span>
+                         <span class="s1">'translation c - R c exactly (see Operation.about).</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="tabulated">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.tabulated">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tabulated</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that the point group of a little group is tabulated.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Point group not tabulated.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">This point group is not tabulated (in 3D, only the cubic '</span>
+                         <span class="s1">'groups T, Th, O, Td, Oh are).</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="multiplicities">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.multiplicities">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">multiplicities</span><span class="p">(</span><span class="n">mult</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that the irrep multiplicities are non-negative integers.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The characters do not decompose into irreps.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mult</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mult</span><span class="o">.</span><span class="n">real</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mf">1e-3</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mult</span><span class="o">.</span><span class="n">real</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The characters do not decompose into irreps: a level is not '</span>
+                         <span class="s1">'invariant (raise deg_tol), or an operation is not a symmetry.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="proper_rotation">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.proper_rotation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">proper_rotation</span><span class="p">(</span><span class="n">op</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that an operation is a unitary 2D rotation C_n, n = 2, 3, 4 or 6.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The operation must be a unitary rotation C_n (n = 2, 3, 4, 6).</span>
+<span class="sd">    '''</span>
+    <span class="n">rot</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">rotation</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rot</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">op</span><span class="o">.</span><span class="n">antiunitary</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">rot</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">rot</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">rot</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">&gt;</span> <span class="mf">1e-6</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">theta</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-6</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The operation must be a unitary 2D rotation C_n, n = 2, 3, 4 or 6.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="corner_rotation">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.corner_rotation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">corner_rotation</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that the rotation of *corner_charge* is C_4.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The corner charge is given for C_4.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The corner charge is given for a C_4 rotation.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="cell_rotation">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.cell_rotation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cell_rotation</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that an operation maps the orbitals of the unit cell onto</span>
+<span class="sd">    themselves (no lattice vector L_s): a rotation about the cell centre.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The rotation must be about the centre of the unit cell.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The rotation must be about the centre of the unit cell: it must '</span>
+                         <span class="s1">'map the orbitals of the unit cell onto themselves.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="inversion_operation">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.inversion_operation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">inversion_operation</span><span class="p">(</span><span class="n">op</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that an operation is the (unitary) inversion.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The operation must be the inversion.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">antiunitary</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">rotation</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">rotation</span><span class="p">))):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The operation must be the inversion (rotation -1, unitary).</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="invariant_bands">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.invariant_bands">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">invariant_bands</span><span class="p">(</span><span class="n">singular_values</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that the bands are an invariant subspace of an operation.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The bands are not invariant under the operation.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">singular_values</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The bands are not invariant under the operation: they touch '</span>
+                         <span class="s1">'other bands at a rotation-invariant point.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="rotation_power">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.rotation_power">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">rotation_power</span><span class="p">(</span><span class="n">u_n</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that the n-th power of a C_n rotation is +1 or -1 (spin 1/2),</span>
+<span class="sd">    and return that sign.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        U^n must be +1 or -1.</span>
+<span class="sd">    '''</span>
+    <span class="k">for</span> <span class="n">sign</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">u_n</span><span class="p">,</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">u_n</span><span class="p">)),</span> <span class="n">atol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">sign</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The n-th power of the rotation C_n must be +1 or -1 on the orbitals.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="quantized">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.quantized">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">quantized</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">what</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that *x* is close to an integer.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The product of the eigenvalues is not quantized.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The </span><span class="si">{}</span><span class="s1"> do not give a quantized result.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">what</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="group_size">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.group_size">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">group_size</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nmax</span><span class="o">=</span><span class="mi">192</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check the size of a group being generated.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The operations generate more than nmax elements.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="n">nmax</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The operations generate more than </span><span class="si">{}</span><span class="s1"> elements: they are not a '</span>
+                         <span class="s1">'crystallographic group of the model.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nmax</span><span class="p">))</span></div>
+
 </pre></div>
 
                 </article>
@@ -5732,8 +6570,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -5766,7 +6604,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.24.0.
 </p></div>
       
     </div>

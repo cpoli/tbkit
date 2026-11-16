@@ -1,0 +1,118 @@
+r"""
+Symmetry Indicators: Topology from the Parities at Eight Points
+================================================================
+
+In 2017 H. C. Po, A. Vishwanath and H. Watanabe, and B. Bradlyn and
+coauthors (topological quantum chemistry), turned the symmetry
+eigenvalues of the occupied bands at the high-symmetry momenta into a
+diagnosis of topology for every space group: a set of bands whose
+eigenvalues cannot come from any atomic insulator is topological. For a
+3D insulator with inversion and time reversal, the indicators of Khalaf,
+Po, Vishwanath and Watanabe (2018) count the occupied states of parity
+:math:`\pm1` at the eight time-reversal-invariant momenta :math:`\mathbf{K}`:
+
+.. math::
+
+    z_4 = \sum_{\mathbf{K}} \frac{n^+_{\mathbf{K}} - n^-_{\mathbf{K}}}{4} \bmod 4\, ,\qquad
+    z_{2,i} = \sum_{K_i = 1/2} \frac{n^+_{\mathbf{K}} - n^-_{\mathbf{K}}}{4} \bmod 2\, .
+
+:math:`z_4 \bmod 2` is the strong :math:`\mathbb{Z}_2` index of Fu and
+Kane and the :math:`z_{2,i}` are the weak ones; :math:`z_4 = 2` is new: an
+insulator that every :math:`\mathbb{Z}_2` index calls trivial, two copies
+of a strong topological insulator, with hinge states instead of surface
+Dirac cones.
+
+:func:`~tbkit.symmetry.inversion_indicators` is checked here against
+:meth:`~tbkit.kspace.KSpace.z2_indices_3d` (Wannier-centre flows, which
+need no inversion) on the phases of a cubic Dirac model, and on two
+copies of its strong phase, where only :math:`z_4` sees the topology.
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+
+from tbkit.kspace import KSpace, PAULI
+from tbkit.lattice import Lattice
+from tbkit.symmetry import Operation, inversion_indicators
+
+SIGMA = [PAULI['x'], PAULI['y'], PAULI['z']]
+
+
+def cubic_ti(M, copies=1):
+    r'''
+    H = m(k) tau_z + sum_i sin k_i tau_x sigma_i, m = M - 2 sum_i (1 - cos k_i),
+    an s and a p orbital with spin on a simple cubic lattice, *copies* times.
+    '''
+    cell = [{'tag': o + str(c), 'r0': (0., 0., 0.)} for c in range(copies) for o in 'sp']
+    ks = KSpace(Lattice(unit_cell=cell, prim_vec=[(1., 0., 0.), (0., 1., 0.), (0., 0., 1.)]), spin=True)
+    hops = []
+    for c in range(copies):
+        s, p = 2 * c, 2 * c + 1
+        for d in range(3):
+            R = tuple(int(x) for x in np.eye(3, dtype=int)[d])
+            hops += [{'i': s, 'j': s, 'R': R, 't': PAULI['0']}, {'i': p, 'j': p, 'R': R, 't': -PAULI['0']},
+                         {'i': s, 'j': p, 'R': R, 't': -0.5j * SIGMA[d]},
+                         {'i': p, 'j': s, 'R': R, 't': -0.5j * SIGMA[d]}]
+    ks.set_hopping(hops)
+    ks.set_onsite({o + str(c): (1 if o == 's' else -1) * (M - 6) * PAULI['0'] for c in range(copies) for o in 'sp'})
+    return ks
+
+
+def inversion(copies=1):
+    '''s even, p odd, the identity on spin'''
+    return Operation(-np.eye(3), orbitals=np.kron(np.diag([1., -1.] * copies), np.eye(2)))
+
+
+# %%
+# Indicators and Z2 indices across the phase diagram
+# --------------------------------------------------
+
+masses = [-2., 2., 6., 10.]
+rows = []
+for M in masses:
+    ks = cubic_ti(M)
+    assert ks.symmetry_error(inversion()) < 1e-12
+    z4, *weak = inversion_indicators(ks, inversion(), [0, 1])
+    z2 = ks.z2_indices_3d([0, 1], nk=30, nk_perp=15)
+    print('M = {:5.1f}: (z4; z2) = ({}; {}{}{})   Z2 = ({}; {}{}{})'.format(M, z4, *weak, *z2))
+    assert (z4 % 2, *weak) == z2
+    rows.append((z4, *weak, *z2))
+
+# %%
+# Two copies of a strong topological insulator
+# --------------------------------------------
+# Each copy has :math:`z_4 = 3`; together :math:`z_4 = 2`, while the
+# :math:`\mathbb{Z}_2` indices of the four occupied bands all vanish.
+
+double = cubic_ti(2., copies=2)
+occ = [0, 1, 2, 3]
+z_double = inversion_indicators(double, inversion(2), occ)
+z2_double = double.z2_indices_3d(occ, nk=20, nk_perp=11)
+print('two copies: (z4; z2) =', z_double, ' Z2 =', z2_double)
+assert z_double == (2, 0, 0, 0) and z2_double == (0, 0, 0, 0)
+
+# %%
+# The parities at the eight momenta
+# ---------------------------------
+# :math:`n^+ - n^-` at each TRIM for the strong phase (:math:`M = 2`):
+# only :math:`\Gamma` is inverted.
+
+fracs = np.array(np.meshgrid(*[[0., 0.5]] * 3, indexing='ij')).reshape(3, -1).T
+ks = cubic_ti(2.)
+diff = []
+for f in fracs:
+    k = 2 * np.pi * f
+    v = np.linalg.eigh(ks.get_ham(k))[1][:, :2]  # the occupied Kramers pair
+    xi = np.linalg.eigvals(v.conj().T @ np.kron(np.diag([1., -1.]), np.eye(2)) @ v).real
+    diff.append(int(np.sum(xi > 0) - np.sum(xi < 0)))
+print('n+ - n- at the TRIMs:', diff)
+assert diff[0] == -2 and all(d == 2 for d in diff[1:])
+
+fig, ax = plt.subplots(figsize=(6.5, 3.2))
+names = ['({:g},{:g},{:g})'.format(*f) for f in fracs]
+ax.bar(names, diff, color=['r' if d < 0 else 'b' for d in diff])
+ax.axhline(0, color='k', lw=0.5)
+ax.set_ylabel('$n^+ - n^-$')
+ax.set_xlabel(r'TRIM (fractional coordinates)')
+ax.set_title('strong phase: z4 = (-2 + 7 x 2)/4 mod 4 = 3')
+plt.setp(ax.get_xticklabels(), rotation=30)
+fig.set_layout_engine('tight')

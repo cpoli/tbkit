@@ -2,13 +2,15 @@ Breakthroughs in Building and Solving Models
 ============================================
 
 How a crystal becomes a tight-binding model and how that model is solved:
-Bloch's theorem and the Brillouin zone, Wallace's graphene bands,
+Bloch's theorem and the Brillouin zone, the irreducible
+representations of the bands, Wallace's graphene bands,
 non-orthogonal bases, the Slater-Koster and k·p frameworks (and the
 fermion doubling of k·p models on a lattice), Wannier functions, edges
 and surfaces, and the numerical methods (k-point grids, tetrahedron
-integration, surface Green's functions, the kernel polynomial method,
+integration, surface Green's functions, the Chebyshev propagator and
+the kernel polynomial method,
 band unfolding) that make large or multi-orbital models tractable. It
-traces the ideas behind :mod:`tbkit.kspace`, :mod:`tbkit.slater_koster`,
+traces the ideas behind :mod:`tbkit.kspace`, :mod:`tbkit.symmetry`, :mod:`tbkit.slater_koster`,
 :mod:`tbkit.continuum`, :mod:`tbkit.wannier`, :mod:`tbkit.dos`,
 :mod:`tbkit.transport`, :mod:`tbkit.kpm` and :mod:`tbkit.moire`.
 
@@ -107,6 +109,51 @@ the cube diagonal to :math:`(1,1,1)\,2\pi/a`, an image of
 :math:`\Gamma`.
 
 .. minigallery:: ../../examples/tight_binding/plot_brillouin_zones_and_high_symmetry_paths.py
+
+1936 -- Irreducible Representations of the Bands: the Little Group
+------------------------------------------------------------------------
+
+L. P. Bouckaert, R. Smoluchowski and E. Wigner read a band structure
+through the symmetry of the crystal. At a point :math:`\mathbf{k}` of
+the Brillouin zone, the operations :math:`g` with :math:`g\mathbf{k} =
+\mathbf{k}` (modulo a reciprocal lattice vector) form the *little group*
+of :math:`\mathbf{k}`. The Bloch states of one energy carry a
+representation of it, irreducible unless the degeneracy is accidental,
+so each level gets a label from the character table of the group: a
+two-dimensional irrep is a degeneracy that no symmetric perturbation can
+lift, and bands of different labels may cross along a line while equal
+ones repel. Going from a point to a line of lower symmetry, each irrep
+decomposes into irreps of the smaller group (the compatibility
+relations), which fixes how the bands connect. Their labels
+(:math:`\Gamma_1`, :math:`X_5`, ...) are still those of band structures
+today; graphene's Dirac point is the two-dimensional irrep of the group
+of K.
+
+*Implementation:* :mod:`tbkit.symmetry`: a space-group operation
+(:class:`~tbkit.symmetry.Operation`, a rotation or reflection, a
+translation, a matrix on the orbitals of a site, and an antiunitary
+flag) and its representation :math:`U_g(\mathbf{k})` on the Bloch basis
+(:func:`~tbkit.symmetry.representation`), tested by
+:meth:`~tbkit.kspace.KSpace.symmetry_error`;
+:func:`~tbkit.symmetry.find_symmetries` (the operations of the Bravais
+lattice that leave the model invariant); :func:`~tbkit.symmetry.irreps`
+(the little group, the characters of each level, and their decomposition
+on the tables of the ten 2D point groups and of the five cubic ones);
+:meth:`~tbkit.kspace.KSpace.plot_bands` with ``irreps=``.
+
+*References:* L. P. Bouckaert, R. Smoluchowski, and E. Wigner, "Theory
+of Brillouin Zones and Symmetry Properties of Wave Functions in
+Crystals," Phys. Rev. 50, 58-67 (1936).
+
+*Example:* ``examples/tight_binding/plot_irreps_of_graphene_bands.py``
+finds the 12 operations of C6v (24 with time reversal, 6 left by a
+sublattice mass), labels the levels at :math:`\Gamma` (C6v), M (C2v) and
+K (C3v), where the Dirac point is the irrep E; checks that the mass
+leaves C3 at K, splitting E into ¹E and ²E at :math:`\pm m`; and checks
+the compatibility relations of the characters along the three lines of
+the path.
+
+.. minigallery:: ../../examples/tight_binding/plot_irreps_of_graphene_bands.py
 
 1947 -- Wallace's Tight-Binding Prediction of Graphene
 ----------------------------------------------------------
@@ -408,6 +455,46 @@ partner at :math:`k_z = -2\arctan(1/2B)`.
 
 .. minigallery:: ../../examples/models/plot_fermion_doubling.py
 
+1984 -- The Chebyshev Propagator
+--------------------------------------
+
+Time-dependent Schrödinger equations were solved by small steps --
+second-order differencing, Crank-Nicolson -- each accurate only to a
+power of the step, and Crank-Nicolson needs a linear solve per step.
+Tal-Ezer and Kosloff expanded the evolution operator itself in
+Chebyshev polynomials of the rescaled Hamiltonian
+:math:`\tilde H = (H-b)/a`,
+
+.. math::
+
+    e^{-iH\Delta t} = e^{-ib\Delta t}\sum_{m\ge0}(2-\delta_{m0})\,(-i)^m
+    J_m(a\Delta t)\,T_m(\tilde H)\, .
+
+The Bessel coefficients vanish exponentially fast once
+:math:`m > a\Delta t`, so a single expansion spans a long time interval
+to machine precision, and it costs nothing but matrix-vector products: the
+same recursion that the kernel polynomial method later used for spectral
+densities, and the propagation method of the large-scale tight-binding
+codes.
+
+*Implementation:* :func:`tbkit.kpm.time_evolution`;
+``Propagation.get_propagation(..., method='chebyshev')``
+(:class:`tbkit.propagation.Propagation`).
+
+*References:* H. Tal-Ezer and R. Kosloff, "An accurate and efficient
+scheme for propagating the time dependent Schrödinger equation," J. Chem.
+Phys. 81, 3967-3971 (1984).
+
+*Example:* ``examples/large_scale/plot_chebyshev_time_evolution.py``
+agrees with Crank-Nicolson on a small flake to its :math:`O(dt^2)`
+error, reproduces the ballistic spread :math:`\langle x^2\rangle =
+2t^2\tau^2` of a site state on a chain to :math:`10^{-10}`, and on a
+90,000-site square lattice finds :math:`\langle r^2\rangle =
+4t^2\tau^2` without disorder and diffusion,
+:math:`\langle r^2\rangle\propto\tau`, with it.
+
+.. minigallery:: ../../examples/large_scale/plot_chebyshev_time_evolution.py
+
 1985 -- Lopez Sancho Decimation and the Surface Green's Function
 ---------------------------------------------------------------------
 
@@ -654,8 +741,11 @@ of sites -- millions of them, for densities of states, local densities
 of states, and Kubo conductivities.
 
 *Implementation:* :mod:`tbkit.kpm` (:func:`~tbkit.kpm.dos`,
-:func:`~tbkit.kpm.ldos`, :func:`~tbkit.kpm.conductivity`, with the Jackson
-and Lorentz kernels).
+:func:`~tbkit.kpm.ldos`, :func:`~tbkit.kpm.conductivity`,
+:func:`~tbkit.kpm.hall_conductivity`, the spectral function
+:func:`~tbkit.kpm.spectral_function` and the optical conductivity
+:func:`~tbkit.kpm.optical_conductivity`, with the Jackson and Lorentz
+kernels).
 
 *References:* A. Weisse, G. Wellein, A. Alvermann, and H. Fehske, "The
 Kernel Polynomial Method," Rev. Mod. Phys. 78, 275-306 (2006); R. N.

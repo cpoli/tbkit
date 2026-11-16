@@ -54,8 +54,8 @@
             </div>
         </aside>
         <h2>
-            <span class="text">33 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">33<span class="text"> run</span></button>
+            <span class="text">39 statements &nbsp;</span>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">39<span class="text"> run</span></button>
             <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">0<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
         </h2>
@@ -64,8 +64,8 @@
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="z_9c3955d98c44937c_bdg_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.17.0">coverage.py v7.17.0</a>,
-            created at 2026-10-30 11:04 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.17.3">coverage.py v7.17.3</a>,
+            created at 2026-11-16 16:25 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -88,7 +88,7 @@
     <p class="pln"><span class="n"><a id="t6" href="#t6">6</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t7" href="#t7">7</a></span><span class="t"><span class="str">&quot;&quot;&quot;tbkit: build and solve Tight-Binding models.&quot;&quot;&quot;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t8" href="#t8">8</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t9" href="#t9">9</a></span><span class="t"><span class="nam">__version__</span> <span class="op">=</span> <span class="str">&quot;0.7.0&quot;</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t9" href="#t9">9</a></span><span class="t"><span class="nam">__version__</span> <span class="op">=</span> <span class="str">&quot;0.8.0&quot;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t10" href="#t10">10</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t11" href="#t11">11</a></span><span class="t"><span class="nam">__all__</span> <span class="op">=</span> <span class="op">[</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t12" href="#t12">12</a></span><span class="t">    <span class="str">&quot;Lattice&quot;</span><span class="op">,</span> <span class="str">&quot;System&quot;</span><span class="op">,</span> <span class="str">&quot;Plot&quot;</span><span class="op">,</span> <span class="str">&quot;Propagation&quot;</span><span class="op">,</span> <span class="str">&quot;Save&quot;</span><span class="op">,</span> <span class="str">&quot;KSpace&quot;</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
@@ -141,6 +141,17 @@
     <p class="pln"><span class="n"><a id="t59" href="#t59">59</a></span><span class="t"><span class="com"># Wannier functions: projection and maximal localization</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t60" href="#t60">60</a></span><span class="t"><span class="key">from</span> <span class="nam">tbkit</span><span class="op">.</span><span class="nam">wannier</span> <span class="key">import</span> <span class="nam">WannierFunctions</span><span class="op">,</span> <span class="nam">wannierize</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t61" href="#t61">61</a></span><span class="t"><span class="nam">__all__</span> <span class="op">+=</span> <span class="op">[</span><span class="str">&quot;WannierFunctions&quot;</span><span class="op">,</span> <span class="str">&quot;wannierize&quot;</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t62" href="#t62">62</a></span><span class="t"><span class="com"># Localization lengths of disordered strips by the transfer matrix</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t63" href="#t63">63</a></span><span class="t"><span class="key">from</span> <span class="nam">tbkit</span><span class="op">.</span><span class="nam">localization</span> <span class="key">import</span> <span class="nam">Lyapunov</span><span class="op">,</span> <span class="nam">lyapunov_exponents</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t64" href="#t64">64</a></span><span class="t"><span class="nam">__all__</span> <span class="op">+=</span> <span class="op">[</span><span class="str">&quot;Lyapunov&quot;</span><span class="op">,</span> <span class="str">&quot;lyapunov_exponents&quot;</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t65" href="#t65">65</a></span><span class="t"><span class="com"># Exact diagonalization of small interacting clusters</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t66" href="#t66">66</a></span><span class="t"><span class="key">from</span> <span class="nam">tbkit</span><span class="op">.</span><span class="nam">manybody</span> <span class="key">import</span> <span class="nam">FockSector</span><span class="op">,</span> <span class="nam">ExactResult</span><span class="op">,</span> <span class="nam">exact_diagonalization</span><span class="op">,</span> <span class="nam">project_interaction</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t67" href="#t67">67</a></span><span class="t"><span class="nam">__all__</span> <span class="op">+=</span> <span class="op">[</span><span class="str">&quot;FockSector&quot;</span><span class="op">,</span> <span class="str">&quot;ExactResult&quot;</span><span class="op">,</span> <span class="str">&quot;exact_diagonalization&quot;</span><span class="op">,</span> <span class="str">&quot;project_interaction&quot;</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t68" href="#t68">68</a></span><span class="t"><span class="com"># Crystal symmetry: space-group operations, irreps, indicators, symmetrization</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t69" href="#t69">69</a></span><span class="t"><span class="key">from</span> <span class="nam">tbkit</span><span class="op">.</span><span class="nam">symmetry</span> <span class="key">import</span> <span class="op">(</span><span class="nam">Operation</span><span class="op">,</span> <span class="nam">Irreps</span><span class="op">,</span> <span class="nam">find_symmetries</span><span class="op">,</span> <span class="nam">irreps</span><span class="op">,</span> <span class="nam">rotation_indicator</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t70" href="#t70">70</a></span><span class="t">                                     <span class="nam">inversion_indicators</span><span class="op">,</span> <span class="nam">corner_charge</span><span class="op">,</span> <span class="nam">symmetrize</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t71" href="#t71">71</a></span><span class="t"><span class="nam">__all__</span> <span class="op">+=</span> <span class="op">[</span><span class="str">&quot;Operation&quot;</span><span class="op">,</span> <span class="str">&quot;Irreps&quot;</span><span class="op">,</span> <span class="str">&quot;find_symmetries&quot;</span><span class="op">,</span> <span class="str">&quot;irreps&quot;</span><span class="op">,</span> <span class="str">&quot;rotation_indicator&quot;</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t72" href="#t72">72</a></span><span class="t">            <span class="str">&quot;inversion_indicators&quot;</span><span class="op">,</span> <span class="str">&quot;corner_charge&quot;</span><span class="op">,</span> <span class="str">&quot;symmetrize&quot;</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -149,8 +160,8 @@
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a class="nav" href="z_9c3955d98c44937c_bdg_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.17.0">coverage.py v7.17.0</a>,
-            created at 2026-10-30 11:04 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.17.3">coverage.py v7.17.3</a>,
+            created at 2026-11-16 16:25 +0000
         </p>
     </div>
 </footer>

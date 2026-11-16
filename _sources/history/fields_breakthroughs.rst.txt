@@ -5,7 +5,8 @@ What happens to a lattice under a magnetic field, under strain, and with
 disorder: the Peierls phase and the Aharonov-Bohm effect, Landau levels,
 Zak's magnetic translations and Hofstadter's butterfly, Rashba
 spin-orbit coupling, strain as a pseudo-magnetic field, and disorder
-from Anderson localization and its scaling theory to Lifshitz tails,
+from Anderson localization, its scaling theory and the transfer-matrix
+localization length to Lifshitz tails,
 multifractal wave functions, quasiperiodic localization and vacancy
 zero modes. It traces the ideas behind
 :class:`tbkit.system.System`'s field, strain and disorder modifiers and
@@ -514,6 +515,49 @@ with :math:`\beta = 144/233` the spectrum at :math:`\lambda` is exactly
 :math:`\lambda/2t` times the spectrum at :math:`4t^2/\lambda`.
 
 .. minigallery:: ../../examples/disorder/plot_aubry_andre_localization.py
+
+1981 -- MacKinnon and Kramer: the Transfer-Matrix Localization Length
+---------------------------------------------------------------------------
+
+A. MacKinnon and B. Kramer turned the scaling theory into a numerical
+test. On a long bar of cross-section :math:`M\times M`, the Schrödinger
+equation is a recurrence from one slice to the next. The slowest growth
+of a product of these transfer matrices, the smallest positive Lyapunov
+exponent, is the inverse localization length :math:`1/\lambda_M` of the
+bar. It is obtained with QR factorizations along a strip of
+:math:`10^4`-:math:`10^6` slices, none of which is stored. The ratio
+:math:`\Lambda_M = \lambda_M/M` grows with :math:`M` in a metal and
+shrinks in an insulator, and the curves for different :math:`M` cross at
+the transition. Fitting them to one function of :math:`M/\xi` was the
+first numerical confirmation of one-parameter scaling, and it remains the
+standard way to measure critical exponents: the 3D Anderson transition,
+:math:`\nu \approx 1.57` (Slevin and Ohtsuki 1999), and the integer
+quantum Hall transition, :math:`\nu \approx 2.6`.
+
+*Implementation:* :func:`tbkit.localization.lyapunov_exponents` takes
+the clean slice :math:`h_0` and its couplings to the next slices (e.g.
+from :func:`tbkit.transport.lead_from_kspace`), adds box disorder slice
+by slice, and returns the Lyapunov exponents and :math:`\lambda_M` with
+their errors, for several energies on the same strip.
+
+*References:* A. MacKinnon and B. Kramer, "One-Parameter Scaling of
+Localization Length and Conductance in Disordered Systems," Phys. Rev.
+Lett. 47, 1546-1549 (1981); A. MacKinnon and B. Kramer, "The scaling
+theory of electrons in disordered solids," Z. Phys. B 53, 1-13 (1983);
+D. J. Thouless, "Electrons in disordered systems and the theory of
+localization," Phys. Rep. 13, 93-142 (1974); K. Slevin and T. Ohtsuki,
+"Corrections to Scaling at the Anderson Transition," Phys. Rev. Lett.
+82, 382-385 (1999); K. Slevin and T. Ohtsuki, "Critical exponent for the
+quantum Hall transition," Phys. Rev. B 80, 041304(R) (2009).
+
+*Example:* ``examples/disorder/plot_transfer_matrix_localization_length.py``
+confirms Thouless's weak-disorder formula for a chain within three
+standard errors (plus 3%), and that for the cubic Anderson model
+:math:`\Lambda_8 > \Lambda_4` at :math:`W = 12t`, :math:`\Lambda_8 <
+\Lambda_4` at :math:`W = 20t`, with the curves crossing between
+:math:`14t` and :math:`19t`.
+
+.. minigallery:: ../../examples/disorder/plot_transfer_matrix_localization_length.py
 
 2006 -- Vacancy-Induced Zero Modes in Graphene
 ----------------------------------------------

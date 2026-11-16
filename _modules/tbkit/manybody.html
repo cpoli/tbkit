@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tbkit.manybody &#8212; tbkit</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
+
+    <script src="../../_static/documentation_options.js?v=cce5339e"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tbkit/manybody';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../_static/js/force_light.js?v=8e7666d6"></script>
+    <script async="async" data-goatcounter="https://cpoli.goatcounter.com/count" src="https://gc.zgo.at/count.js"></script>
+    <link rel="canonical" href="https://cpoli.github.io/tbkit/_modules/tbkit/manybody.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.8" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../_static/tbkit_logo.png" class="logo__image only-light" alt="tbkit logo"/>
+    <img src="../../_static/tbkit_logo.png" class="logo__image only-dark pst-js-only" alt="tbkit logo"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history/index.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://cpoli.github.io/" title="Charles Poli" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-user fa-lg" aria-hidden="true"></i><span class="visually-hidden">Charles Poli</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history/index.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://cpoli.github.io/" title="Charles Poli" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-user fa-lg" aria-hidden="true"></i><span class="visually-hidden">Charles Poli</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-house"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tbkit.manybody</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for tbkit.manybody</h1><div class="highlight"><pre>
+<span></span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">Exact diagonalization of small interacting clusters: the reference against</span>
+<span class="sd">which the mean-field solvers of :mod:`tbkit.meanfield` are checked.</span>
+
+<span class="sd">The Hamiltonian is the extended Hubbard model of any single-particle</span>
+<span class="sd">matrix :math:`t_{ij}` (e.g. *System.ham*, or *KSpace.finite_ham* for a</span>
+<span class="sd">torus),</span>
+
+<span class="sd">.. math::</span>
+
+<span class="sd">    H = \sum_{ij\sigma} t_{ij}c^\dagger_{i\sigma}c_{j\sigma}</span>
+<span class="sd">        + \sum_i U_i\,n_{i\uparrow}n_{i\downarrow}</span>
+<span class="sd">        + \sum_{i&lt;j} V_{ij}\,n_i n_j\, ,\qquad n_i = n_{i\uparrow} + n_{i\downarrow}\, ,</span>
+
+<span class="sd">or its spinless version (one species, no *U*). It conserves</span>
+<span class="sd">:math:`N_\uparrow` and :math:`N_\downarrow`, so it is built in one sector</span>
+<span class="sd">at a time (:class:`FockSector`). A basis state is a pair of bit patterns,</span>
+<span class="sd">bit *i* the occupation of site *i*, in increasing order; the fermion</span>
+<span class="sd">operators are ordered by site, all spins up before all spins down, so</span>
+<span class="sd">:math:`c^\dagger_i c_j` carries the sign :math:`(-1)^m`, *m* the number of</span>
+<span class="sd">occupied sites strictly between *i* and *j*. Every hopping is applied to</span>
+<span class="sd">all basis states at once (one vectorized pass per bond), and the lowest</span>
+<span class="sd">states come from ``scipy.sparse.linalg.eigsh``: about 12 sites at half</span>
+<span class="sd">filling (853776 states) take seconds.</span>
+<span class="sd">'''</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">comb</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.linalg</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">LA</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.sparse</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.sparse.linalg</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sla</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">NDArray</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.error_handling</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">error_handling</span>
+
+<span class="c1">#: Largest sector diagonalized densely (all eigenvalues), above it eigsh.</span>
+<span class="n">DENSE_MAX</span> <span class="o">=</span> <span class="mi">1500</span>
+
+<span class="n">_M1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint64</span><span class="p">(</span><span class="mh">0x5555555555555555</span><span class="p">)</span>
+<span class="n">_M2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint64</span><span class="p">(</span><span class="mh">0x3333333333333333</span><span class="p">)</span>
+<span class="n">_M4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint64</span><span class="p">(</span><span class="mh">0x0F0F0F0F0F0F0F0F</span><span class="p">)</span>
+<span class="n">_H01</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint64</span><span class="p">(</span><span class="mh">0x0101010101010101</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_popcount</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Private function. Number of set bits of every element of an integer array.</span>
+<span class="sd">    '''</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint64</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="p">((</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">uint64</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">&amp;</span> <span class="n">_M1</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&amp;</span> <span class="n">_M2</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">uint64</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">&amp;</span> <span class="n">_M2</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">uint64</span><span class="p">(</span><span class="mi">4</span><span class="p">)))</span> <span class="o">&amp;</span> <span class="n">_M4</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">x</span> <span class="o">*</span> <span class="n">_H01</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">uint64</span><span class="p">(</span><span class="mi">56</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+
+
+<span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_all_patterns</span><span class="p">(</span><span class="n">n_sites</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n_particles</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Private function. Cached (read-only) result of *_patterns*, reused by</span>
+<span class="sd">    the momentum sectors of one cluster.</span>
+<span class="sd">    '''</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">comb</span><span class="p">(</span><span class="n">n_sites</span><span class="p">,</span> <span class="n">n_particles</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n_particles</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sites</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromiter</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_sites</span><span class="p">),</span> <span class="n">n_particles</span><span class="p">)),</span>
+                            <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="n">count</span> <span class="o">*</span> <span class="n">n_particles</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">n_particles</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">left_shift</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">sites</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">writeable</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_patterns</span><span class="p">(</span><span class="n">n_sites</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n_particles</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Private function. Every way to put *n_particles* fermions on *n_sites*</span>
+<span class="sd">    sites, as bit patterns in increasing order.</span>
+<span class="sd">    '''</span>
+    <span class="k">return</span> <span class="n">_all_patterns</span><span class="p">(</span><span class="n">n_sites</span><span class="p">,</span> <span class="n">n_particles</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_occupations</span><span class="p">(</span><span class="n">patterns</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span> <span class="n">n_sites</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Private function. Occupation numbers, shape (len(patterns), n_sites).</span>
+<span class="sd">    '''</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">patterns</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_sites</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'f8'</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_hop</span><span class="p">(</span><span class="n">patterns</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Private function. :math:`c^\dagger_i c_j` (i != j) on every pattern: the</span>
+<span class="sd">    patterns it acts on (indices), their images (indices) and the signs.</span>
+<span class="sd">    '''</span>
+    <span class="n">occ_j</span> <span class="o">=</span> <span class="p">(</span><span class="n">patterns</span> <span class="o">&gt;&gt;</span> <span class="n">j</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span>
+    <span class="n">occ_i</span> <span class="o">=</span> <span class="p">(</span><span class="n">patterns</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">occ_j</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">occ_i</span><span class="p">))</span>
+    <span class="n">src</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+    <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+    <span class="n">between</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">hi</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">^</span> <span class="p">((</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">signs</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">_popcount</span><span class="p">(</span><span class="n">src</span> <span class="o">&amp;</span> <span class="n">between</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">patterns</span><span class="p">,</span> <span class="n">src</span> <span class="o">^</span> <span class="p">((</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">j</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">signs</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_hopping_matrix</span><span class="p">(</span><span class="n">patterns</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span> <span class="n">h</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">occ</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">sp</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Private function. One species' kinetic energy in the basis *patterns*.</span>
+<span class="sd">    '''</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">patterns</span><span class="p">)</span>
+    <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">dim</span><span class="p">)],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">dim</span><span class="p">)],</span> <span class="p">[</span><span class="n">occ</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">h</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">h</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">h</span><span class="p">)))):</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">_hop</span><span class="p">(</span><span class="n">patterns</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span> <span class="o">*</span> <span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">sp</span><span class="o">.</span><span class="n">coo_matrix</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">vals</span><span class="p">),</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">rows</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">cols</span><span class="p">))),</span>
+                         <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span><span class="o">.</span><span class="n">tocsr</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_pair_coefficients</span><span class="p">(</span><span class="n">w</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-12</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Private function. The two-body operator</span>
+<span class="sd">    :math:`\tfrac12\sum W_{abcd}a^\dagger_aa^\dagger_ba_da_c` as</span>
+<span class="sd">    :math:`\sum_{a&lt;b,\,c&lt;d} C_{ab,cd}\,a^\dagger_aa^\dagger_ba_da_c`: the</span>
+<span class="sd">    pairs (c, d) annihilated, and for each the pairs (a, b) created with</span>
+<span class="sd">    their nonzero coefficients.</span>
+<span class="sd">    '''</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span> <span class="o">-</span> <span class="n">w</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">-</span> <span class="n">w</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">w</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+    <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">triu_indices</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">block</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="n">lo</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">hi</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">lo</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:],</span> <span class="n">hi</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]]</span>  <span class="c1"># (created pair, annihilated pair)</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">block</span><span class="p">))))</span> <span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">size</span> <span class="k">else</span> <span class="mf">1.</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lo</span><span class="p">)):</span>
+        <span class="n">keep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">block</span><span class="p">[:,</span> <span class="n">q</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">tol</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">keep</span><span class="p">):</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">lo</span><span class="p">[</span><span class="n">q</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">hi</span><span class="p">[</span><span class="n">q</span><span class="p">]),</span> <span class="n">lo</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span> <span class="n">hi</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span> <span class="n">block</span><span class="p">[</span><span class="n">keep</span><span class="p">,</span> <span class="n">q</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_two_body_matrix</span><span class="p">(</span><span class="n">patterns</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span> <span class="n">w</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sp</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Private function. A two-body operator of spinless fermions in the basis</span>
+<span class="sd">    *patterns* (each annihilated pair applied to every state at once).</span>
+<span class="sd">    '''</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">patterns</span><span class="p">)</span>
+    <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">)],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">)],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="o">.</span><span class="n">dtype</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">created_a</span><span class="p">,</span> <span class="n">created_b</span><span class="p">,</span> <span class="n">coef</span> <span class="ow">in</span> <span class="n">_pair_coefficients</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+        <span class="n">cols0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(((</span><span class="n">patterns</span> <span class="o">&gt;&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">((</span><span class="n">patterns</span> <span class="o">&gt;&gt;</span> <span class="n">d</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">cols0</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">[</span><span class="n">cols0</span><span class="p">]</span>
+        <span class="c1"># a_d a_c: (-1)^(occupied below c) (-1)^(occupied below d, after removing c)</span>
+        <span class="n">sign0</span> <span class="o">=</span> <span class="n">_popcount</span><span class="p">(</span><span class="n">s</span> <span class="o">&amp;</span> <span class="p">((</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="n">_popcount</span><span class="p">(</span><span class="n">s</span> <span class="o">&amp;</span> <span class="p">((</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">d</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">s2</span> <span class="o">=</span> <span class="n">s</span> <span class="o">^</span> <span class="p">((</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">d</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">created_a</span><span class="p">,</span> <span class="n">created_b</span><span class="p">,</span> <span class="n">coef</span><span class="p">):</span>
+            <span class="n">empty</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">((((</span><span class="n">s2</span> <span class="o">&gt;&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">s2</span> <span class="o">&gt;&gt;</span> <span class="n">b</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">empty</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">s2</span><span class="p">[</span><span class="n">empty</span><span class="p">]</span>
+            <span class="c1"># a+_a a+_b: (-1)^(occupied below b) (-1)^(occupied below a), a &lt; b</span>
+            <span class="n">sign</span> <span class="o">=</span> <span class="n">sign0</span><span class="p">[</span><span class="n">empty</span><span class="p">]</span> <span class="o">+</span> <span class="n">_popcount</span><span class="p">(</span><span class="n">t</span> <span class="o">&amp;</span> <span class="p">((</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="n">_popcount</span><span class="p">(</span><span class="n">t</span> <span class="o">&amp;</span> <span class="p">((</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">a</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">patterns</span><span class="p">,</span> <span class="n">t</span> <span class="o">|</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">a</span><span class="p">))</span> <span class="o">|</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">))))</span>
+            <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cols0</span><span class="p">[</span><span class="n">empty</span><span class="p">])</span>
+            <span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">sign</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sp</span><span class="o">.</span><span class="n">coo_matrix</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">vals</span><span class="p">),</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">rows</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">cols</span><span class="p">))),</span>
+                         <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span><span class="o">.</span><span class="n">tocsr</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="project_interaction">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.manybody.project_interaction">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">project_interaction</span><span class="p">(</span><span class="n">states</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Get a density-density interaction projected onto a set of</span>
+<span class="sd">    single-particle states :math:`\phi_a` (e.g. the Bloch states of one</span>
+<span class="sd">    band of a torus): with :math:`c_r \to \sum_a\phi_a(r)\,a_a`,</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \sum_{r&lt;r'}V_{rr'}n_rn_{r'} \to \frac12\sum_{abcd}W_{abcd}\,</span>
+<span class="sd">        a^\dagger_aa^\dagger_ba_da_c\, ,\qquad</span>
+<span class="sd">        W_{abcd} = \sum_{rr'}V_{rr'}\,\phi^*_a(r)\phi^*_b(r')\phi_c(r)\phi_d(r')\, .</span>
+
+<span class="sd">    Pass *W* to *exact_diagonalization*, with the projected one-body</span>
+<span class="sd">    Hamiltonian (``diag`` of the band energies) as *ham*. This is how a</span>
+<span class="sd">    partially filled flat band is studied on clusters too large for the</span>
+<span class="sd">    full Fock space (e.g. a fractional Chern insulator).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    states : Complex array, shape (N, n)</span>
+<span class="sd">        Orthonormal single-particle states (columns) on the N sites.</span>
+<span class="sd">    V : Real symmetric (N, N) matrix with zero diagonal</span>
+<span class="sd">        Density-density interaction on the sites.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    W : Complex ndarray, shape (n, n, n, n)</span>
+<span class="sd">    '''</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'c16'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">orthonormal_states</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="s1">'toarray'</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">density_interaction</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">phi</span><span class="p">))</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'f8'</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">pair</span> <span class="o">=</span> <span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">conj</span><span class="p">()[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">phi</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>  <span class="c1"># (r, (a, c))</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="p">(</span><span class="n">pair</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">v</span> <span class="o">@</span> <span class="n">pair</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>  <span class="c1"># (a, c, b, d)</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="FockSector">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.manybody.FockSector">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FockSector</span><span class="p">():</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Basis of the many-body states with :math:`N_\uparrow` spin-up and</span>
+<span class="sd">    :math:`N_\downarrow` spin-down fermions on *n_sites* sites (or</span>
+<span class="sd">    :math:`N_\uparrow` spinless ones, with ``n_dn=None``).</span>
+
+<span class="sd">    The state of index ``a * len(dn) + b`` has spin-up pattern ``up[a]``</span>
+<span class="sd">    and spin-down pattern ``dn[b]``: a wave function reshaped to</span>
+<span class="sd">    ``(len(up), len(dn))`` has the spin-up configurations along its rows.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_sites : Positive integer, at most 62</span>
+<span class="sd">    n_up : Integer from 0 to *n_sites*</span>
+<span class="sd">        Spin-up fermions (or spinless ones).</span>
+<span class="sd">    n_dn : Integer from 0 to *n_sites*, or None, default None</span>
+<span class="sd">        Spin-down fermions; None for spinless fermions.</span>
+<span class="sd">    momentum : Tuple (labels, n_cells, total), or None, default None</span>
+<span class="sd">        Spinless fermions only: keep the states of one total crystal</span>
+<span class="sd">        momentum. *labels* (integers, shape (n_sites, d)) is the momentum</span>
+<span class="sd">        :math:`(m_1, \dots)` of each orbital, in units of</span>
+<span class="sd">        :math:`\mathbf{b}_\alpha/N_\alpha`, *n_cells* the</span>
+<span class="sd">        :math:`(N_1, \dots)` of the torus and *total* the sector</span>
+<span class="sd">        :math:`\sum m \bmod N`. The orbitals are then Bloch states (see</span>
+<span class="sd">        *project_interaction*), and the Hamiltonian must conserve momentum.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    up : Integer ndarray</span>
+<span class="sd">        Spin-up (or spinless) occupation patterns, bit *i* for site *i*,</span>
+<span class="sd">        in increasing order.</span>
+<span class="sd">    dn : Integer ndarray</span>
+<span class="sd">        Spin-down patterns (the single empty pattern ``[0]`` when spinless).</span>
+<span class="sd">    dim : Integer</span>
+<span class="sd">        Number of basis states.</span>
+<span class="sd">    spinless : Boolean</span>
+<span class="sd">    '''</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_sites</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n_up</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n_dn</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">momentum</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_up</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">):</span>
+            <span class="n">n_up</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_up</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_dn</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">):</span>
+            <span class="n">n_dn</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_dn</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">fock_sector</span><span class="p">(</span><span class="n">n_sites</span><span class="p">,</span> <span class="n">n_up</span><span class="p">,</span> <span class="n">n_dn</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_sites</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_up</span> <span class="o">=</span> <span class="n">n_sites</span><span class="p">,</span> <span class="n">n_up</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_dn</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">n_dn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spinless</span> <span class="o">=</span> <span class="n">n_dn</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">up</span> <span class="o">=</span> <span class="n">_patterns</span><span class="p">(</span><span class="n">n_sites</span><span class="p">,</span> <span class="n">n_up</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dn</span> <span class="o">=</span> <span class="n">_patterns</span><span class="p">(</span><span class="n">n_sites</span><span class="p">,</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">n_dn</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">n_dn</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">momentum</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">momentum</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">error_handling</span><span class="o">.</span><span class="n">momentum_sector</span><span class="p">(</span><span class="n">momentum</span><span class="p">,</span> <span class="n">n_sites</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spinless</span><span class="p">)</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">momentum</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_sites</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">cells</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">momentum</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+            <span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">momentum</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">momentum</span> <span class="o">=</span> <span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="n">total</span> <span class="o">%</span> <span class="n">cells</span><span class="p">)</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="n">_occupations</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">up</span><span class="p">,</span> <span class="n">n_sites</span><span class="p">)</span> <span class="o">@</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="o">%</span> <span class="n">cells</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">up</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">up</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="n">total</span> <span class="o">%</span> <span class="n">cells</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">up</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dn</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sz</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">        :math:`S_z = (N_\uparrow - N_\downarrow)/2` (0 when spinless).</span>
+<span class="sd">        '''</span>
+        <span class="k">return</span> <span class="mf">0.</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_dn</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_up</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_dn</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+<div class="viewcode-block" id="FockSector.occupations">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.manybody.FockSector.occupations">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">occupations</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">'''</span>
+<span class="sd">        Occupation numbers of the spin-up and spin-down patterns.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        occ_up, occ_dn</span>
+<span class="sd">            Real ndarrays, shapes (len(up), n_sites) and (len(dn), n_sites).</span>
+<span class="sd">        '''</span>
+        <span class="k">return</span> <span class="n">_occupations</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">up</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sites</span><span class="p">),</span> <span class="n">_occupations</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sites</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FockSector.hamiltonian">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.manybody.FockSector.hamiltonian">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">hamiltonian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ham</span><span class="p">,</span> <span class="n">U</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">ArrayLike</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">V</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">W</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sp</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">        Get the sparse Hamiltonian of the sector.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ham</span>
+<span class="sd">            Hermitian (N, N) matrix, sparse or dense: the hoppings</span>
+<span class="sd">            :math:`t_{ij}` and onsite energies :math:`t_{ii}`, the same</span>
+<span class="sd">            for both spins.</span>
+<span class="sd">        U : Real number, or array of one per site, default 0</span>
+<span class="sd">            Onsite repulsion :math:`U_i n_{i\uparrow}n_{i\downarrow}`</span>
+<span class="sd">            (must be 0 for spinless fermions).</span>
+<span class="sd">        V : Real symmetric (N, N) matrix with zero diagonal, or None, default None</span>
+<span class="sd">            Density-density interaction :math:`\sum_{i&lt;j}V_{ij}n_in_j`</span>
+<span class="sd">            (e.g. a constant on the nearest-neighbour bonds).</span>
+<span class="sd">        W : Complex array, shape (N, N, N, N), or None, default None</span>
+<span class="sd">            Spinless fermions only: a general two-body interaction</span>
+<span class="sd">            :math:`\tfrac12\sum_{abcd}W_{abcd}c^\dagger_ac^\dagger_bc_dc_c`,</span>
+<span class="sd">            Hermitian (:math:`W_{abcd} = W^*_{cdab}`), e.g. from</span>
+<span class="sd">            *project_interaction*.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ham : CSR matrix</span>
+<span class="sd">            Of shape (dim, dim). Real when *ham* and *W* are real, else complex.</span>
+<span class="sd">        '''</span>
+        <span class="n">h</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interactions</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+        <span class="n">occ_up</span><span class="p">,</span> <span class="n">occ_dn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span><span class="p">()</span>
+        <span class="n">h_up</span> <span class="o">=</span> <span class="n">_hopping_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">up</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">occ_up</span><span class="p">)</span>
+        <span class="n">diag_up</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">occ_up</span> <span class="o">@</span> <span class="n">v</span><span class="p">)</span> <span class="o">*</span> <span class="n">occ_up</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spinless</span><span class="p">:</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">h_up</span> <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">diags</span><span class="p">(</span><span class="n">diag_up</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">W</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+                <span class="n">error_handling</span><span class="o">.</span><span class="n">two_body</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sites</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">momentum</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">error_handling</span><span class="o">.</span><span class="n">conserves_momentum</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">momentum</span><span class="p">)</span>
+                <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span> <span class="o">+</span> <span class="n">_two_body_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">up</span><span class="p">,</span> <span class="n">w</span><span class="o">.</span><span class="n">real</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span> <span class="k">else</span> <span class="n">w</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">mat</span><span class="o">.</span><span class="n">tocsr</span><span class="p">()</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">spinless_two_body</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+        <span class="n">h_dn</span> <span class="o">=</span> <span class="n">_hopping_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dn</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">occ_dn</span><span class="p">)</span>
+        <span class="n">diag_dn</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">occ_dn</span> <span class="o">@</span> <span class="n">v</span><span class="p">)</span> <span class="o">*</span> <span class="n">occ_dn</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">diag</span> <span class="o">=</span> <span class="p">(</span><span class="n">diag_up</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="n">diag_dn</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="p">(</span><span class="n">occ_up</span> <span class="o">*</span> <span class="n">u</span><span class="p">)</span> <span class="o">@</span> <span class="n">occ_dn</span><span class="o">.</span><span class="n">T</span> <span class="o">+</span> <span class="n">occ_up</span> <span class="o">@</span> <span class="n">v</span> <span class="o">@</span> <span class="n">occ_dn</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">n_up</span><span class="p">,</span> <span class="n">n_dn</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">up</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dn</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">h_up</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">n_dn</span><span class="p">),</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'csr'</span><span class="p">)</span> <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">n_up</span><span class="p">),</span> <span class="n">h_dn</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'csr'</span><span class="p">)</span>
+                <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">diags</span><span class="p">(</span><span class="n">diag</span><span class="o">.</span><span class="n">ravel</span><span class="p">()))</span><span class="o">.</span><span class="n">tocsr</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_interactions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ham</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">'''</span>
+<span class="sd">        Private method. Check and densify the hoppings and interactions.</span>
+<span class="sd">        '''</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="s1">'toarray'</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">square_matrix</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="s1">'ham'</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="s1">'ham'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sites</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">hermitian_dense</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="mf">0.</span><span class="p">):</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">real</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'f8'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">momentum</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">error_handling</span><span class="o">.</span><span class="n">conserves_momentum</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">momentum</span><span class="p">)</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_sites</span><span class="p">,))</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">U</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> \
+            <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">'U'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sites</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">spinless_onsite</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spinless</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">V</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n_sites</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sites</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="s1">'toarray'</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">density_interaction</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sites</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">h</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'f8'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ExactResult">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.manybody.ExactResult">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExactResult</span><span class="p">():</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Lowest eigenstates of a sector, from *exact_diagonalization*.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    energies : Real ndarray</span>
+<span class="sd">        The lowest energies, in increasing order.</span>
+<span class="sd">    states : ndarray</span>
+<span class="sd">        The eigenvectors (columns, shape (dim, n_states)), in the basis of</span>
+<span class="sd">        *sector*.</span>
+<span class="sd">    sector : :class:`FockSector`</span>
+<span class="sd">    '''</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">sector</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">energies</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">states</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sector</span> <span class="o">=</span> <span class="n">energies</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">sector</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_occ</span> <span class="o">=</span> <span class="n">sector</span><span class="o">.</span><span class="n">occupations</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_psi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">'''</span>
+<span class="sd">        Private method. Wave function *state*, shape (len(up), len(dn)).</span>
+<span class="sd">        '''</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">state_index</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">energies</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">states</span><span class="p">[:,</span> <span class="n">state</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sector</span><span class="o">.</span><span class="n">up</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sector</span><span class="o">.</span><span class="n">dn</span><span class="p">))</span>
+
+<div class="viewcode-block" id="ExactResult.densities">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.manybody.ExactResult.densities">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">densities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">        Get the densities :math:`\langle n_{i\uparrow}\rangle` and</span>
+<span class="sd">        :math:`\langle n_{i\downarrow}\rangle` of an eigenstate.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        state : Integer, default 0</span>
+<span class="sd">            Index of the eigenstate (0 the lowest).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        n_up, n_dn : Real ndarrays</span>
+<span class="sd">            The densities on every site (*n_dn* all zero when spinless).</span>
+<span class="sd">        '''</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_psi</span><span class="p">(</span><span class="n">state</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">p</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">_occ</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">_occ</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="ExactResult.density_correlation">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.manybody.ExactResult.density_correlation">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">density_correlation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">        Get :math:`\langle n_in_j\rangle` (:math:`n_i` summed over spin).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        state : Integer, default 0</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        corr : Real ndarray, shape (N, N)</span>
+<span class="sd">        '''</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_psi</span><span class="p">(</span><span class="n">state</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">occ_up</span><span class="p">,</span> <span class="n">occ_dn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_occ</span>
+        <span class="n">uu</span> <span class="o">=</span> <span class="n">occ_up</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">occ_up</span><span class="p">)</span>
+        <span class="n">dd</span> <span class="o">=</span> <span class="n">occ_dn</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">occ_dn</span><span class="p">)</span>
+        <span class="n">ud</span> <span class="o">=</span> <span class="n">occ_up</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">p</span> <span class="o">@</span> <span class="n">occ_dn</span>
+        <span class="k">return</span> <span class="n">uu</span> <span class="o">+</span> <span class="n">dd</span> <span class="o">+</span> <span class="n">ud</span> <span class="o">+</span> <span class="n">ud</span><span class="o">.</span><span class="n">T</span></div>
+
+
+<div class="viewcode-block" id="ExactResult.double_occupancy">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.manybody.ExactResult.double_occupancy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">double_occupancy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">        Get :math:`\langle n_{i\uparrow}n_{i\downarrow}\rangle` on every site.</span>
+<span class="sd">        The local moment is</span>
+<span class="sd">        :math:`\langle (n_{i\uparrow} - n_{i\downarrow})^2\rangle = \langle n_i\rangle - 2\langle n_{i\uparrow}n_{i\downarrow}\rangle`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        state : Integer, default 0</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        d : Real ndarray</span>
+<span class="sd">        '''</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">spinful_sector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sector</span><span class="o">.</span><span class="n">spinless</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_psi</span><span class="p">(</span><span class="n">state</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">p</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">_occ</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_occ</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ExactResult.spin_correlation">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.manybody.ExactResult.spin_correlation">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">spin_correlation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">        Get :math:`\langle\mathbf{S}_i\cdot\mathbf{S}_j\rangle`. The sum of</span>
+<span class="sd">        all its elements is :math:`S(S+1)`; its diagonal is</span>
+<span class="sd">        :math:`\tfrac34\langle(n_{i\uparrow} - n_{i\downarrow})^2\rangle`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        state : Integer, default 0</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        corr : Real ndarray, shape (N, N)</span>
+<span class="sd">        '''</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">spinful_sector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sector</span><span class="o">.</span><span class="n">spinless</span><span class="p">)</span>
+        <span class="n">psi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_psi</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">psi</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">occ_up</span><span class="p">,</span> <span class="n">occ_dn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_occ</span>
+        <span class="n">uu</span> <span class="o">=</span> <span class="n">occ_up</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">occ_up</span><span class="p">)</span>
+        <span class="n">dd</span> <span class="o">=</span> <span class="n">occ_dn</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">occ_dn</span><span class="p">)</span>
+        <span class="n">ud</span> <span class="o">=</span> <span class="n">occ_up</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">p</span> <span class="o">@</span> <span class="n">occ_dn</span>
+        <span class="n">corr</span> <span class="o">=</span> <span class="p">(</span><span class="n">uu</span> <span class="o">+</span> <span class="n">dd</span> <span class="o">-</span> <span class="n">ud</span> <span class="o">-</span> <span class="n">ud</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sector</span><span class="o">.</span><span class="n">n_sites</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+                <span class="c1"># S+_i S-_j = -(c+_{i up} c_{j up})(c+_{j dn} c_{i dn})</span>
+                <span class="n">ru</span><span class="p">,</span> <span class="n">cu</span><span class="p">,</span> <span class="n">su</span> <span class="o">=</span> <span class="n">_hop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sector</span><span class="o">.</span><span class="n">up</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+                <span class="n">rd</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">sd</span> <span class="o">=</span> <span class="n">_hop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sector</span><span class="o">.</span><span class="n">dn</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ru</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">rd</span><span class="p">)):</span>
+                    <span class="k">continue</span>
+                <span class="n">moved</span> <span class="o">=</span> <span class="p">(</span><span class="n">su</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">sd</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span> <span class="o">*</span> <span class="n">psi</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">cu</span><span class="p">,</span> <span class="n">cd</span><span class="p">)]</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">psi</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">ru</span><span class="p">,</span> <span class="n">rd</span><span class="p">)],</span> <span class="n">moved</span><span class="p">)</span>
+                <span class="c1"># &lt;S_i.S_j&gt; gets (&lt;S+_i S-_j&gt; + &lt;S-_i S+_j&gt;)/2 = Re &lt;S+_i S-_j&gt;</span>
+                <span class="n">corr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">x</span><span class="o">.</span><span class="n">real</span>
+                <span class="n">corr</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">x</span><span class="o">.</span><span class="n">real</span>
+        <span class="n">occ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">densities</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="n">corr</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">diag_indices</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.75</span> <span class="o">*</span> <span class="p">(</span><span class="n">occ</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">occ</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">double_occupancy</span><span class="p">(</span><span class="n">state</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">corr</span></div>
+
+
+<div class="viewcode-block" id="ExactResult.total_spin">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.manybody.ExactResult.total_spin">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">total_spin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">        Get the total spin *S*, from</span>
+<span class="sd">        :math:`S(S+1) = \|S^+\psi\|^2 + S_z(S_z+1)`. Within a degenerate</span>
+<span class="sd">        multiplet the eigensolver may return a mixture of spins, whose *S*</span>
+<span class="sd">        is then not a half-integer.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        state : Integer, default 0</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        S : Real number</span>
+<span class="sd">        '''</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">spinful_sector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sector</span><span class="o">.</span><span class="n">spinless</span><span class="p">)</span>
+        <span class="n">psi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_psi</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="n">sec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sector</span>
+        <span class="n">sz</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">sz</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="mf">0.</span>
+        <span class="k">if</span> <span class="n">sec</span><span class="o">.</span><span class="n">n_dn</span> <span class="ow">and</span> <span class="n">sec</span><span class="o">.</span><span class="n">n_up</span> <span class="o">&lt;</span> <span class="n">sec</span><span class="o">.</span><span class="n">n_sites</span><span class="p">:</span>
+            <span class="n">up2</span><span class="p">,</span> <span class="n">dn2</span> <span class="o">=</span> <span class="n">_patterns</span><span class="p">(</span><span class="n">sec</span><span class="o">.</span><span class="n">n_sites</span><span class="p">,</span> <span class="n">sec</span><span class="o">.</span><span class="n">n_up</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">_patterns</span><span class="p">(</span><span class="n">sec</span><span class="o">.</span><span class="n">n_sites</span><span class="p">,</span> <span class="n">sec</span><span class="o">.</span><span class="n">n_dn</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">up2</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">dn2</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">psi</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sec</span><span class="o">.</span><span class="n">n_sites</span><span class="p">):</span>
+                <span class="n">cu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(((</span><span class="n">sec</span><span class="o">.</span><span class="n">up</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">cd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">((</span><span class="n">sec</span><span class="o">.</span><span class="n">dn</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">below</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="n">su</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">_popcount</span><span class="p">(</span><span class="n">sec</span><span class="o">.</span><span class="n">up</span><span class="p">[</span><span class="n">cu</span><span class="p">]</span> <span class="o">&amp;</span> <span class="n">below</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">sd</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">_popcount</span><span class="p">(</span><span class="n">sec</span><span class="o">.</span><span class="n">dn</span><span class="p">[</span><span class="n">cd</span><span class="p">]</span> <span class="o">&amp;</span> <span class="n">below</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">ru</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">up2</span><span class="p">,</span> <span class="n">sec</span><span class="o">.</span><span class="n">up</span><span class="p">[</span><span class="n">cu</span><span class="p">]</span> <span class="o">|</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">))</span>
+                <span class="n">rd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">dn2</span><span class="p">,</span> <span class="n">sec</span><span class="o">.</span><span class="n">dn</span><span class="p">[</span><span class="n">cd</span><span class="p">]</span> <span class="o">^</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">))</span>
+                <span class="n">target</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">ru</span><span class="p">,</span> <span class="n">rd</span><span class="p">)]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">su</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">sd</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span> <span class="o">*</span> <span class="n">psi</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">cu</span><span class="p">,</span> <span class="n">cd</span><span class="p">)]</span>
+            <span class="n">norm</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">target</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">s_s1</span> <span class="o">=</span> <span class="n">norm</span> <span class="o">+</span> <span class="n">sz</span> <span class="o">*</span> <span class="p">(</span><span class="n">sz</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">s_s1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="exact_diagonalization">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.manybody.exact_diagonalization">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">exact_diagonalization</span><span class="p">(</span>
+    <span class="n">ham</span><span class="p">,</span> <span class="n">n_up</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n_dn</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">U</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">ArrayLike</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">V</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_states</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">W</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">momentum</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExactResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Get the lowest eigenstates of the (extended) Hubbard model of a small</span>
+<span class="sd">    cluster, exactly, in the sector of :math:`N_\uparrow` and</span>
+<span class="sd">    :math:`N_\downarrow` electrons (see :mod:`tbkit.manybody`).</span>
+
+<span class="sd">    The spin-up and spin-down hoppings are those of *ham*, so this is the</span>
+<span class="sd">    exact counterpart of :func:`tbkit.meanfield.hubbard_mean_field` on the</span>
+<span class="sd">    same matrix and *U*. Sectors of up to :data:`DENSE_MAX` states are</span>
+<span class="sd">    diagonalized densely; larger ones by ``eigsh`` (Lanczos), from a fixed</span>
+<span class="sd">    starting vector so that results are reproducible.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ham</span>
+<span class="sd">        Hermitian (N, N) matrix, sparse or dense, e.g. *System.ham*.</span>
+<span class="sd">    n_up : Integer from 0 to N</span>
+<span class="sd">        Spin-up electrons (or spinless fermions, with ``n_dn=None``).</span>
+<span class="sd">    n_dn : Integer from 0 to N, or None, default None</span>
+<span class="sd">        Spin-down electrons; None for spinless fermions.</span>
+<span class="sd">    U : Real number, or array of one per site, default 0</span>
+<span class="sd">        Onsite repulsion (0 for spinless fermions).</span>
+<span class="sd">    V : Real symmetric (N, N) matrix with zero diagonal, or None, default None</span>
+<span class="sd">        Density-density interaction :math:`\sum_{i&lt;j}V_{ij}n_in_j`.</span>
+<span class="sd">    n_states : Positive integer, default 1</span>
+<span class="sd">        Number of lowest states, at most the dimension of the sector.</span>
+<span class="sd">    W : Complex array, shape (N, N, N, N), or None, default None</span>
+<span class="sd">        Spinless fermions only: a general two-body interaction (see</span>
+<span class="sd">        *FockSector.hamiltonian*), e.g. from *project_interaction*.</span>
+<span class="sd">    momentum : Tuple (labels, n_cells, total), or None, default None</span>
+<span class="sd">        Spinless fermions only: the sector of one total crystal momentum</span>
+<span class="sd">        (see :class:`FockSector`).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result : :class:`ExactResult`</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    The Hubbard dimer at half filling::</span>
+
+<span class="sd">        res = exact_diagonalization([[0., -1.], [-1., 0.]], 1, 1, U=4.)</span>
+<span class="sd">        res.energies[0]             # (U - sqrt(U^2 + 16 t^2)) / 2 = -0.828</span>
+<span class="sd">        res.total_spin()            # 0, a singlet</span>
+<span class="sd">    '''</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="s1">'toarray'</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">square_matrix</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="s1">'ham'</span><span class="p">)</span>
+    <span class="n">sector</span> <span class="o">=</span> <span class="n">FockSector</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="n">n_up</span><span class="p">,</span> <span class="n">n_dn</span><span class="p">,</span> <span class="n">momentum</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n_states</span><span class="p">,</span> <span class="s1">'n_states'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">n_states</span><span class="p">(</span><span class="n">n_states</span><span class="p">,</span> <span class="n">sector</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+    <span class="n">mat</span> <span class="o">=</span> <span class="n">sector</span><span class="o">.</span><span class="n">hamiltonian</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sector</span><span class="o">.</span><span class="n">dim</span> <span class="o">&lt;=</span> <span class="n">DENSE_MAX</span> <span class="ow">or</span> <span class="n">n_states</span> <span class="o">&gt;=</span> <span class="n">sector</span><span class="o">.</span><span class="n">dim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">energies</span><span class="p">,</span> <span class="n">states</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">subset_by_index</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_states</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">v0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">sector</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">energies</span><span class="p">,</span> <span class="n">states</span> <span class="o">=</span> <span class="n">sla</span><span class="o">.</span><span class="n">eigsh</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">n_states</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">'SA'</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
+        <span class="n">energies</span><span class="p">,</span> <span class="n">states</span> <span class="o">=</span> <span class="n">energies</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">states</span><span class="p">[:,</span> <span class="n">order</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">ExactResult</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">sector</span><span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2026, Charles Poli.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.2.0.
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.24.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

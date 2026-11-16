@@ -10,7 +10,10 @@ the Hubbard model: the magnetism of graphene's zigzag edges and of
 triangular nanoislands, Lieb's theorem and the ferrimagnet of the Lieb
 lattice, and flat-band ferromagnetism (Nagaoka, Mielke, Tasaki). The
 non-collinear mean field finds the 120-degree order of the frustrated
-triangular lattice.
+triangular lattice. Exact diagonalization of small clusters checks mean
+field (the Hubbard dimer, superexchange, where Hartree-Fock fails),
+reproduces the Lieb-Wu solution of the Hubbard chain and its Mott gap,
+and finds a fractional Chern insulator in a flat Chern band.
 
 
 .. raw:: html
@@ -26,6 +29,23 @@ triangular lattice.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Mean field (~tbkit.meanfield.hubbard_mean_field) replaces the Hubbard repulsion by the potential of the average density. The check on it is the exact ground state of a cluster small enough to diagonalize in its full Fock space (~tbkit.manybody.exact_diagonalization), on the same hopping matrix and the same U.">
+
+.. only:: html
+
+  .. image:: /api/gallery/correlations/images/thumb/sphx_glr_plot_exact_diagonalization_vs_mean_field_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/correlations/plot_exact_diagonalization_vs_mean_field`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Exact Diagonalization Against Mean Field</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Itinerant ferromagnetism is hard to get from the Hubbard model: the repulsion U favours aligned spins, which cannot share a site, but aligning them costs kinetic energy. Three exact results say when the spins align fully anyway.">
 
 .. only:: html
@@ -38,6 +58,23 @@ triangular lattice.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Flat-Band Ferromagnetism: Nagaoka, Mielke and Tasaki</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A nearly flat band with Chern number C = \pm1, filled to one third with spinless fermions that repel on nearest-neighbour bonds, behaves like the lowest Landau level at \nu = 1/3: the ground state is a Laughlin-like liquid with no magnetic field at all (Neupert, Santos, Chamon and Mudry; Sheng, Gu, Sun and Sheng; Regnault and Bernevig, all 2011). On a torus its fingerprints are">
+
+.. only:: html
+
+  .. image:: /api/gallery/correlations/images/thumb/sphx_glr_plot_fractional_chern_insulator_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/correlations/plot_fractional_chern_insulator`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Fractional Chern Insulator in a Flat Chern Band</div>
     </div>
 
 
@@ -72,6 +109,23 @@ triangular lattice.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Lieb's Theorem: The Ferrimagnet of the Lieb Lattice</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="E. H. Lieb and F. Y. Wu (1968) solved the one-dimensional Hubbard model exactly by the Bethe ansatz. At half filling the ground-state energy per site is">
+
+.. only:: html
+
+  .. image:: /api/gallery/correlations/images/thumb/sphx_glr_plot_lieb_wu_hubbard_chain_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/correlations/plot_lieb_wu_hubbard_chain`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Lieb and Wu: the Exact Solution of the Hubbard Chain</div>
     </div>
 
 
@@ -119,9 +173,12 @@ triangular lattice.
 .. toctree::
    :hidden:
 
+   /api/gallery/correlations/plot_exact_diagonalization_vs_mean_field
    /api/gallery/correlations/plot_flat_band_ferromagnetism
+   /api/gallery/correlations/plot_fractional_chern_insulator
    /api/gallery/correlations/plot_hubbard_edge_magnetism
    /api/gallery/correlations/plot_lieb_theorem
+   /api/gallery/correlations/plot_lieb_wu_hubbard_chain
    /api/gallery/correlations/plot_noncollinear_120_degree_order
    /api/gallery/correlations/plot_triangular_graphene_nanoislands
 

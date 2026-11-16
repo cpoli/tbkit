@@ -25,8 +25,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
@@ -36,12 +36,12 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=b9678aa1"></script>
+    <script src="../../_static/documentation_options.js?v=cce5339e"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.7" />
+  <meta name="docsearch:version" content="0.8" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -103,7 +103,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -252,7 +252,7 @@
       
         
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
@@ -378,7 +378,7 @@
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../../index.html" class="nav-link" aria-label="Home">
-        <i class="fa-solid fa-home"></i>
+        <i class="fa-solid fa-house"></i>
       </a>
     </li>
     
@@ -421,13 +421,13 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.error_handling</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">error_handling</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.occupation</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">occupation</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.values</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">values</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.lattice</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lattice</span><span class="p">,</span> <span class="n">COOR_DTYPE</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.lattice</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lattice</span><span class="p">,</span> <span class="n">COOR_DTYPE</span><span class="p">,</span> <span class="n">TAG_LEN</span><span class="p">,</span> <span class="n">_tag_pair</span>
 
 
 <span class="n">PI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
 <span class="n">ATOL</span> <span class="o">=</span> <span class="mf">1e-3</span>
 <span class="n">HOP_DTYPE</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">'n'</span><span class="p">,</span> <span class="s1">'u2'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'i'</span><span class="p">,</span> <span class="s1">'u4'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'j'</span><span class="p">,</span> <span class="s1">'u4'</span><span class="p">),</span>
-                       <span class="p">(</span><span class="s1">'ang'</span><span class="p">,</span> <span class="s1">'f8'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'tag'</span><span class="p">,</span> <span class="s1">'U2'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'t'</span><span class="p">,</span> <span class="s1">'c16'</span><span class="p">)]</span>
+                       <span class="p">(</span><span class="s1">'ang'</span><span class="p">,</span> <span class="s1">'f8'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'tag'</span><span class="p">,</span> <span class="s1">'U</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">TAG_LEN</span><span class="p">)),</span> <span class="p">(</span><span class="s1">'t'</span><span class="p">,</span> <span class="s1">'c16'</span><span class="p">)]</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_upper</span><span class="p">(</span><span class="n">ang</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">:</span>
@@ -840,9 +840,11 @@
 <span class="sd">                        * If :math:`ang \in[0, 180)`, fill the Hamiltonian upper part.</span>
 <span class="sd">                        * If :math:`ang \in[-180, 0)`, fill the Hamiltonian lower part.</span>
 
-<span class="sd">                * 'tag' string of length 2  (optional).</span>
+<span class="sd">                * 'tag' string of two one-character tags (``'ab'``), or a</span>
+<span class="sd">                  pair of tags (``('Mo', 'S')``) (optional).</span>
 
-<span class="sd">                    Hopping tags.</span>
+<span class="sd">                    Hopping tags: bonds from a site of the first sublattice</span>
+<span class="sd">                    to one of the second (stored as ``tag_i + tag_j``).</span>
 
 <span class="sd">                * 't' Complex number, or value function.</span>
 
@@ -941,46 +943,57 @@
                 <span class="n">error_handling</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">dic</span><span class="p">)</span>
                 <span class="n">hop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_given_hopping</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">],</span> <span class="n">size</span><span class="p">,</span> <span class="n">dic</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="n">upper_part</span><span class="o">=</span><span class="n">upper_part</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">dic</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="s1">'tag'</span> <span class="ow">in</span> <span class="n">dic</span><span class="p">:</span>
+                <span class="n">pair</span> <span class="o">=</span> <span class="n">_tag_pair</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">upper_part</span><span class="p">:</span>
-                    <span class="n">tag_store</span> <span class="o">=</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">]</span>
+                    <span class="n">tag_store</span> <span class="o">=</span> <span class="n">pair</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">tag_store</span> <span class="o">=</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-                <span class="n">size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store_hop</span><span class="p">[</span><span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]][</span><span class="s1">'tag'</span><span class="p">]</span> <span class="o">==</span> <span class="n">tag_store</span><span class="p">)</span>
-                <span class="n">mask</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]</span> <span class="o">==</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">]</span> <span class="o">==</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">]))</span>
+                    <span class="n">tag_store</span> <span class="o">=</span> <span class="n">pair</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tag_mask</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store_hop</span><span class="p">[</span><span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]],</span> <span class="n">tag_store</span><span class="p">))</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]</span> <span class="o">==</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">])</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tag_mask</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">,</span> <span class="n">pair</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">upper_part</span><span class="p">:</span>
                     <span class="n">mask</span> <span class="o">&amp;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'ang'</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">mask</span> <span class="o">&amp;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'ang'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span>
                 <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mask</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">hop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">mask</span><span class="p">)]</span>
-                <span class="n">ind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">store_hop</span><span class="p">[</span><span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]][</span><span class="s1">'tag'</span><span class="p">]</span> <span class="o">==</span> <span class="n">tag_store</span>
+                <span class="n">ind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tag_mask</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store_hop</span><span class="p">[</span><span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]],</span> <span class="n">tag_store</span><span class="p">)</span>
                 <span class="n">error_handling</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">dic</span><span class="p">)</span>
                 <span class="n">hop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_given_hopping</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">],</span> <span class="n">size</span><span class="p">,</span> <span class="n">dic</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="n">upper_part</span><span class="o">=</span><span class="n">upper_part</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">error_handling</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'ang'</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store_hop</span><span class="p">[</span><span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]][</span><span class="s1">'ang'</span><span class="p">]),</span> <span class="n">upper_part</span><span class="o">=</span><span class="n">upper_part</span><span class="p">)</span>
-                <span class="n">error_handling</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store_hop</span><span class="p">[</span><span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]][</span><span class="s1">'tag'</span><span class="p">]))</span>
+                <span class="n">pair</span> <span class="o">=</span> <span class="n">_tag_pair</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">])</span>
+                <span class="n">error_handling</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pair</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store_hop</span><span class="p">[</span><span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]][</span><span class="s1">'tag'</span><span class="p">]))</span>
                 <span class="k">if</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'ang'</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">ang_store</span> <span class="o">=</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'ang'</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">ang_store</span> <span class="o">=</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'ang'</span><span class="p">]</span> <span class="o">+</span> <span class="mf">180.</span>
                 <span class="k">if</span> <span class="n">upper_part</span><span class="p">:</span>
-                    <span class="n">tag_store</span> <span class="o">=</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">]</span>
+                    <span class="n">tag_store</span> <span class="o">=</span> <span class="n">pair</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">tag_store</span> <span class="o">=</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-                <span class="n">size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">store_hop</span><span class="p">[</span><span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]][</span><span class="s1">'tag'</span><span class="p">]</span> <span class="o">==</span> <span class="n">tag_store</span><span class="p">)</span> <span class="o">&amp;</span> 
+                    <span class="n">tag_store</span> <span class="o">=</span> <span class="n">pair</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tag_mask</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store_hop</span><span class="p">[</span><span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]],</span> <span class="n">tag_store</span><span class="p">)</span> <span class="o">&amp;</span> 
                                        <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">ang_store</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">store_hop</span><span class="p">[</span><span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]][</span><span class="s1">'ang'</span><span class="p">],</span> <span class="n">atol</span><span class="o">=</span><span class="n">ATOL</span><span class="p">)))</span>
-                <span class="n">bool1</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]</span> <span class="o">==</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">]</span> <span class="o">==</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">])</span>
+                <span class="n">bool1</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]</span> <span class="o">==</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">])</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tag_mask</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">,</span> <span class="n">pair</span><span class="p">)</span>
                 <span class="n">bool2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'ang'</span><span class="p">],</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'ang'</span><span class="p">],</span> <span class="n">atol</span><span class="o">=</span><span class="n">ATOL</span><span class="p">)</span>
                 <span class="n">mask</span> <span class="o">=</span> <span class="n">bool1</span> <span class="o">&amp;</span> <span class="n">bool2</span>
                 <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mask</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">hop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">mask</span><span class="p">)]</span>
-                <span class="n">ind</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">store_hop</span><span class="p">[</span><span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]][</span><span class="s1">'tag'</span><span class="p">]</span> <span class="o">==</span> <span class="n">tag_store</span><span class="p">)</span> <span class="o">&amp;</span> 
+                <span class="n">ind</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tag_mask</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store_hop</span><span class="p">[</span><span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]],</span> <span class="n">tag_store</span><span class="p">)</span> <span class="o">&amp;</span> 
                           <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">ang_store</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">store_hop</span><span class="p">[</span><span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">]][</span><span class="s1">'ang'</span><span class="p">],</span> <span class="n">atol</span><span class="o">=</span><span class="n">ATOL</span><span class="p">)))</span>
                 <span class="n">error_handling</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">dic</span><span class="p">)</span>
                 <span class="n">hop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_given_hopping</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'n'</span><span class="p">],</span> <span class="n">size</span><span class="p">,</span> <span class="n">dic</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="n">upper_part</span><span class="o">=</span><span class="n">upper_part</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">hop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">,</span> <span class="n">hop</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_assign_hopping</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">hop</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">)),</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'t'</span><span class="p">])</span></div>
 
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_tag_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hop</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">pair</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">'''</span>
+<span class="sd">        Private method. Mask of the bonds of *hop* from a site tagged</span>
+<span class="sd">        *pair[0]* to a site tagged *pair[1]* (exact for tags of any length,</span>
+<span class="sd">        unlike a match on the concatenated ``hop['tag']``).</span>
+<span class="sd">        '''</span>
+        <span class="n">tags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">coor</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">tags</span><span class="p">[</span><span class="n">hop</span><span class="p">[</span><span class="s1">'i'</span><span class="p">]]</span> <span class="o">==</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">tags</span><span class="p">[</span><span class="n">hop</span><span class="p">[</span><span class="s1">'j'</span><span class="p">]]</span> <span class="o">==</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
 <div class="viewcode-block" id="System.check_sites">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.system.System.check_sites">[docs]</a>
@@ -1349,9 +1362,9 @@
             <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">dic</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="s1">'ang'</span> <span class="ow">in</span> <span class="n">dic</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_assign_hopping</span><span class="p">(</span><span class="n">ind</span> <span class="o">&amp;</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'ang'</span><span class="p">],</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'ang'</span><span class="p">],</span> <span class="n">atol</span><span class="o">=</span><span class="n">ATOL</span><span class="p">),</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'t'</span><span class="p">])</span>
             <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">dic</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="s1">'tag'</span> <span class="ow">in</span> <span class="n">dic</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_assign_hopping</span><span class="p">(</span><span class="n">ind</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">]</span> <span class="o">==</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">]),</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'t'</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_assign_hopping</span><span class="p">(</span><span class="n">ind</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tag_mask</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">,</span> <span class="n">_tag_pair</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">])),</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'t'</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_assign_hopping</span><span class="p">(</span><span class="n">ind</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">]</span> <span class="o">==</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_assign_hopping</span><span class="p">(</span><span class="n">ind</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tag_mask</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">,</span> <span class="n">_tag_pair</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s1">'tag'</span><span class="p">]))</span>
                                                   <span class="o">&amp;</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hop</span><span class="p">[</span><span class="s1">'ang'</span><span class="p">],</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'ang'</span><span class="p">],</span> <span class="n">atol</span><span class="o">=</span><span class="n">ATOL</span><span class="p">),</span> <span class="n">dic</span><span class="p">[</span><span class="s1">'t'</span><span class="p">])</span></div>
 
 
@@ -1841,7 +1854,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        tag_pola : One-character string</span>
+<span class="sd">        tag_pola : String</span>
 <span class="sd">            Sublattice tag.</span>
 
 <span class="sd">        Returns</span>
@@ -1865,7 +1878,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        tag_pola : One-character string</span>
+<span class="sd">        tag_pola : String</span>
 <span class="sd">            Sublattice tag.</span>
 
 <span class="sd">        Returns</span>
@@ -2039,8 +2052,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -2073,7 +2086,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.24.0.
 </p></div>
       
     </div>

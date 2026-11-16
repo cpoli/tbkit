@@ -25,8 +25,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
@@ -36,12 +36,12 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=b9678aa1"></script>
+    <script src="../../_static/documentation_options.js?v=cce5339e"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.7" />
+  <meta name="docsearch:version" content="0.8" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -103,7 +103,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -252,7 +252,7 @@
       
         
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
@@ -378,7 +378,7 @@
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../../index.html" class="nav-link" aria-label="Home">
-        <i class="fa-solid fa-home"></i>
+        <i class="fa-solid fa-house"></i>
       </a>
     </li>
     
@@ -2634,12 +2634,15 @@
                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hop</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_finite_entries</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">n_cells</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">periodic</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">n_cells</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">periodic</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">twist</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">,</span> <span class="nb">complex</span><span class="p">]]]:</span>
-<span class="w">        </span><span class="sd">'''</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">        Private method. For each stored hopping, the row and column indices</span>
 <span class="sd">        it fills in a finite sample of *n_cells* cells (see *finite_ham*),</span>
 <span class="sd">        with its orbitals, lattice vector (integers and Cartesian) and amplitude.</span>
+<span class="sd">        With *twist* (periodic only), the amplitude is an array: the hopping</span>
+<span class="sd">        times the phase :math:`e^{i\theta\cdot w}` of the *w* windings</span>
+<span class="sd">        of each bond around the torus.</span>
 <span class="sd">        '''</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_cells</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="n">n_cells</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_cells</span><span class="p">,)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span>
@@ -2661,6 +2664,8 @@
                 <span class="n">keep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">((</span><span class="n">target</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">target</span> <span class="o">&lt;</span> <span class="n">dims</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">rows</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_tot</span><span class="p">)[</span><span class="n">keep</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">norb</span> <span class="o">+</span> <span class="n">i</span>
             <span class="n">cols</span> <span class="o">=</span> <span class="p">(</span><span class="n">target</span><span class="p">[</span><span class="n">keep</span><span class="p">]</span> <span class="o">@</span> <span class="n">strides</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">norb</span> <span class="o">+</span> <span class="n">j</span>
+            <span class="k">if</span> <span class="n">twist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(((</span><span class="n">cells</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">R</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span> <span class="o">//</span> <span class="n">dims</span><span class="p">)</span> <span class="o">@</span> <span class="n">twist</span><span class="p">))</span>
             <span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">R_cart</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">n_cells</span><span class="p">,</span> <span class="n">n_tot</span><span class="p">,</span> <span class="n">entries</span>
 
@@ -2668,6 +2673,7 @@
 <a class="viewcode-back" href="../../tbkit.html#tbkit.kspace.KSpace.finite_ham">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">finite_ham</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">n_cells</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">periodic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">sparse</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">twist</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]</span> <span class="o">|</span> <span class="n">sp</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">        Get the real-space Hamiltonian of a finite sample of</span>
@@ -2687,6 +2693,15 @@
 <span class="sd">            Return a sparse CSR</span>
 <span class="sd">            matrix (for large samples, e.g. with *tbkit.kpm*) instead of a</span>
 <span class="sd">            dense array.</span>
+<span class="sd">        twist : Real array of *dim* angles, or None, default None</span>
+<span class="sd">            Twisted boundary conditions (periodic only),</span>
+<span class="sd">            :math:`\psi(\mathbf{n} + N_\alpha\mathbf{e}_\alpha) = e^{i\theta_\alpha}\psi(\mathbf{n})`:</span>
+<span class="sd">            every bond that winds around the torus along</span>
+<span class="sd">            :math:`\mathbf{a}_\alpha` picks up the phase</span>
+<span class="sd">            :math:`e^{i\theta_\alpha}`, a flux :math:`\theta_\alpha/2\pi`</span>
+<span class="sd">            threaded through that cycle. The spectrum is that of</span>
+<span class="sd">            *get_bands* on the mesh shifted by :math:`\theta_\alpha/N_\alpha`</span>
+<span class="sd">            along :math:`\mathbf{b}_\alpha`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -2696,7 +2711,10 @@
         <span class="n">error_handling</span><span class="o">.</span><span class="n">nk</span><span class="p">(</span><span class="n">n_cells</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">periodic</span><span class="p">,</span> <span class="s1">'periodic'</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">sparse</span><span class="p">,</span> <span class="s1">'sparse'</span><span class="p">)</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">n_tot</span><span class="p">,</span> <span class="n">entries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finite_entries</span><span class="p">(</span><span class="n">n_cells</span><span class="p">,</span> <span class="n">periodic</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">twist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">twist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">twist</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span>
+            <span class="n">error_handling</span><span class="o">.</span><span class="n">twist</span><span class="p">(</span><span class="n">twist</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">periodic</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">n_tot</span><span class="p">,</span> <span class="n">entries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finite_entries</span><span class="p">(</span><span class="n">n_cells</span><span class="p">,</span> <span class="n">periodic</span><span class="p">,</span> <span class="n">twist</span><span class="p">)</span>
         <span class="n">onsite</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">onsite</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_onsite_offdiag</span>
         <span class="k">if</span> <span class="n">sparse</span><span class="p">:</span>
             <span class="n">onsite_rows</span><span class="p">,</span> <span class="n">onsite_cols</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">onsite</span><span class="p">)</span>
@@ -3364,9 +3382,15 @@
 <span class="sd">        of non-Hermitian Hamiltonians, where :math:`H^T \neq H^*` (see</span>
 <span class="sd">        *non_hermitian_class*).</span>
 
+<span class="sd">        *op* may also be a space-group operation</span>
+<span class="sd">        (:class:`tbkit.symmetry.Operation`): then :math:`g\mathbf{k} =</span>
+<span class="sd">        R\mathbf{k}` (:math:`-R\mathbf{k}` if antiunitary) and :math:`U =</span>
+<span class="sd">        U_g(\mathbf{k})` (*symmetry.representation*), and *k_map* and</span>
+<span class="sd">        *antiunitary* are those of the operation (the arguments are ignored).</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        op : Complex ndarray, shape (norb, norb), or callable of k: :math:`U`</span>
+<span class="sd">        op : Complex ndarray, shape (norb, norb), or callable of k: :math:`U`; or an **Operation**</span>
 <span class="sd">        k_map : 'minus' or 'identity', default 'minus'</span>
 <span class="sd">        antiunitary : Boolean, default False</span>
 <span class="sd">        anti : Boolean, default False</span>
@@ -3391,6 +3415,14 @@
         <span class="n">fracs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nk</span><span class="p">)</span> <span class="o">/</span> <span class="n">nk</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">'ij'</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
         <span class="n">fracs</span> <span class="o">=</span> <span class="n">fracs</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">nk</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
         <span class="n">sign</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.</span> <span class="k">if</span> <span class="n">anti</span> <span class="k">else</span> <span class="mf">1.</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.symmetry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">_representations</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">Operation</span><span class="p">):</span>
+            <span class="n">k_all</span> <span class="o">=</span> <span class="n">fracs</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec_vec_k</span>
+            <span class="n">u</span><span class="p">,</span> <span class="n">gk</span> <span class="o">=</span> <span class="n">_representations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">k_all</span><span class="p">)</span>
+            <span class="n">ham</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bloch_ham</span><span class="p">(</span><span class="n">k_all</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_basis</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="n">ham</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span> <span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">antiunitary</span> <span class="k">else</span> <span class="n">ham</span>
+            <span class="n">rhs</span> <span class="o">=</span> <span class="n">u</span> <span class="o">@</span> <span class="p">(</span><span class="n">ham</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">transpose</span> <span class="k">else</span> <span class="n">ham</span><span class="p">)</span> <span class="o">@</span> <span class="n">u</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bloch_ham</span><span class="p">(</span><span class="n">gk</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_basis</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">-</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">rhs</span><span class="p">)))</span>
         <span class="n">err</span> <span class="o">=</span> <span class="mf">0.</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fracs</span><span class="p">:</span>
             <span class="n">k</span> <span class="o">=</span> <span class="n">f</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec_vec_k</span>
@@ -4489,6 +4521,7 @@
         <span class="n">weights</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'color'</span><span class="p">,</span>
         <span class="n">cmap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">irreps</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Figure</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">'''</span>
 <span class="sd">        Plot the band structure computed by *k_path* or *get_bands*, against</span>
@@ -4526,6 +4559,12 @@
 <span class="sd">        cmap</span>
 <span class="sd">            Default value None ('viridis', or 'RdBu_r', centred on</span>
 <span class="sd">            zero, if some weights are negative). Colormap of *style* 'color'.</span>
+<span class="sd">        irreps : List of **Operation**, or True, default None</span>
+<span class="sd">            Write, at each node of</span>
+<span class="sd">            the *k_path*, the irreducible representation of each level (see</span>
+<span class="sd">            *symmetry.irreps*), for these operations (True: those of</span>
+<span class="sd">            *symmetry.find_symmetries*). Nodes whose point group is not</span>
+<span class="sd">            tabulated (in 3D, the non-cubic ones) are left unlabelled.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -4536,6 +4575,9 @@
         <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">lw</span><span class="p">,</span> <span class="s1">'lw'</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">lims</span><span class="p">(</span><span class="n">lims</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">tuple_2elem</span><span class="p">(</span><span class="n">figsize</span><span class="p">,</span> <span class="s1">'figsize'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">irreps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">irreps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">error_handling</span><span class="o">.</span><span class="n">empty_ndarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">,</span> <span class="s1">'k_path'</span><span class="p">)</span>
+            <span class="n">error_handling</span><span class="o">.</span><span class="n">spinless_irreps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spin</span><span class="p">)</span>
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">norb</span><span class="p">):</span>
@@ -4551,6 +4593,8 @@
             <span class="n">error_handling</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">node_labels</span><span class="p">),</span> <span class="s1">'node_labels'</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">))</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">node_labels</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">irreps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">irreps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plot_irreps</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">irreps</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'$E$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">get_majorticklabels</span><span class="p">():</span>
             <span class="n">label</span><span class="o">.</span><span class="n">set_fontsize</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
@@ -4558,6 +4602,23 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">fig</span></div>
 
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_plot_irreps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">ops</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">'''</span>
+<span class="sd">        Private method. The irreps of the levels at the nodes of the k-path</span>
+<span class="sd">        (see *plot_bands*).</span>
+<span class="sd">        '''</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">tbkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">symmetry</span>
+        <span class="n">ops</span> <span class="o">=</span> <span class="n">symmetry</span><span class="o">.</span><span class="n">find_symmetries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">antiunitary</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">if</span> <span class="n">ops</span> <span class="ow">is</span> <span class="kc">True</span> <span class="k">else</span> <span class="n">ops</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">operations</span><span class="p">(</span><span class="n">ops</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ks_dist</span> <span class="o">-</span> <span class="n">node</span><span class="p">)))</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">symmetry</span><span class="o">.</span><span class="n">_irreps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ks</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">ops</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">for</span> <span class="n">energy</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">energies</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">labels</span><span class="p">):</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">energy</span><span class="p">),</span> <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s1">'offset points'</span><span class="p">,</span>
+                                 <span class="n">fontsize</span><span class="o">=</span><span class="mf">0.6</span> <span class="o">*</span> <span class="n">fs</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_plot_fat_bands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">lw</span><span class="p">,</span> <span class="n">ms</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">'''</span>
@@ -5171,8 +5232,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -5205,7 +5266,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.24.0.
 </p></div>
       
     </div>

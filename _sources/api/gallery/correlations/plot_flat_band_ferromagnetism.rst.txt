@@ -40,23 +40,20 @@ spins align fully anyway.
   into a nearly flat one, of width :math:`W`, provided :math:`U` is
   large enough: the threshold grows with :math:`W`.
 
-The first is checked by exact diagonalization of tiny clusters (a few
-lines of second quantization below), the other two with
+The first is checked by exact diagonalization of tiny clusters
+(:func:`~tbkit.manybody.exact_diagonalization`), the other two with
 :func:`~tbkit.meanfield.hubbard_mean_field` on a :func:`~tbkit.lattices.kagome`
 torus.
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-42
+.. GENERATED FROM PYTHON SOURCE LINES 29-39
 
 .. code-block:: Python
 
-    import itertools
-
     import numpy as np
     import matplotlib.pyplot as plt
-    import scipy.sparse as sparse
-    import scipy.sparse.linalg as sla
 
     import tbkit.lattices as lattices
+    from tbkit.manybody import exact_diagonalization
     from tbkit.meanfield import hubbard_mean_field
     from tbkit.plot import Plot
     from tbkit.system import System
@@ -69,50 +66,26 @@ torus.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-52
+.. GENERATED FROM PYTHON SOURCE LINES 40-48
 
 Nagaoka: one hole in a square cluster
 ----------------------------------------
 With :math:`N_e = N - 1` electrons, the Hubbard Hamiltonian is
-diagonalized in the sector :math:`S_z = 1/2` (spin-up and spin-down
-Fock spaces of spinless fermions, coupled by :math:`U`). Its lowest
+diagonalized in the sector :math:`S_z = 1/2`. Its lowest
 energy equals that of the fully polarized state -- the :math:`N_e`
 lowest single-particle levels, filled with one spin, which feel no
 :math:`U` -- exactly when the ground state has the maximal spin
 :math:`S = N_e/2`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-91
+.. GENERATED FROM PYTHON SOURCE LINES 48-64
 
 .. code-block:: Python
 
 
 
-    def fock_hopping(h, n_el):
-        '''Hopping of n_el spinless fermions, and the occupations of the basis.'''
-        basis = list(itertools.combinations(range(len(h)), n_el))
-        index = {b: k for k, b in enumerate(basis)}
-        occ = np.zeros((len(basis), len(h)))
-        rows, cols, vals = [], [], []
-        for k, b in enumerate(basis):
-            occ[k, list(b)] = 1
-            for j in b:
-                for i in np.flatnonzero(h[:, j]):
-                    if i not in b:
-                        lo, hi = sorted((i, j))
-                        sign = (-1) ** sum(lo < m < hi for m in b)
-                        rows.append(index[tuple(sorted(set(b) - {j} | {i}))])
-                        cols.append(k)
-                        vals.append(sign * h[i, j])
-        return sparse.csr_matrix((vals, (rows, cols)), shape=(len(basis),) * 2), occ
-
-
     def hubbard_ground_energy(h, U, n_el):
         '''Lowest energy of the Hubbard model at S_z = 1/2 (or 0).'''
-        h_up, occ_up = fock_hopping(h, (n_el + 1) // 2)
-        h_dn, occ_dn = fock_hopping(h, n_el // 2)
-        ham = sparse.kron(h_up, sparse.identity(h_dn.shape[0])) \
-            + sparse.kron(sparse.identity(h_up.shape[0]), h_dn) + U * sparse.diags((occ_up @ occ_dn.T).ravel())
-        return sla.eigsh(ham, k=1, which='SA')[0][0]
+        return exact_diagonalization(h, (n_el + 1) // 2, n_el // 2, U=U).energies[0]
 
 
     def square_cluster(n1, n2):
@@ -131,12 +104,12 @@ lowest single-particle levels, filled with one spin, which feel no
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-94
+.. GENERATED FROM PYTHON SOURCE LINES 65-67
 
 The largest cluster, a :math:`3\times3` square of nine sites with
 nearest-neighbour hopping and open boundaries:
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-101
+.. GENERATED FROM PYTHON SOURCE LINES 67-74
 
 .. code-block:: Python
 
@@ -159,11 +132,11 @@ nearest-neighbour hopping and open boundaries:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 102-103
+.. GENERATED FROM PYTHON SOURCE LINES 75-76
 
 One hole in each cluster:
 
-.. GENERATED FROM PYTHON SOURCE LINES 103-121
+.. GENERATED FROM PYTHON SOURCE LINES 76-97
 
 .. code-block:: Python
 
@@ -175,6 +148,9 @@ One hole in each cluster:
         e_ferro = np.linalg.eigvalsh(h)[:n_el].sum()
         gaps = [hubbard_ground_energy(h, U, n_el) - e_ferro for U in (5., 1000.)]
         assert gaps[0] < -1e-3 and abs(gaps[1]) < 1e-8  # low spin at U = 5, S = N_e/2 at U = 1000
+        if len(h) < 9:  # the total spin itself: 1/2 at U = 5, N_e/2 at U = 1000
+            spins = [exact_diagonalization(h, (n_el + 1) // 2, n_el // 2, U=U).total_spin() for U in (5., 1000.)]
+            assert np.allclose(spins, [0.5, n_el / 2])
         if len(h) < 9:  # bisection for the threshold U_c
             lo, hi = 5., 1000.
             for _ in range(30):
@@ -198,7 +174,7 @@ One hole in each cluster:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 122-127
+.. GENERATED FROM PYTHON SOURCE LINES 98-103
 
 Mielke: the flat band of the kagome lattice
 -----------------------------------------------
@@ -206,7 +182,7 @@ On a :math:`4\times4` kagome torus (48 sites) with hopping :math:`t > 0`,
 the flat band at :math:`E = -2t` holds 17 states (16, plus the one where
 it touches the next band). Seventeen electrons of one spin fill it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 127-140
+.. GENERATED FROM PYTHON SOURCE LINES 103-116
 
 .. code-block:: Python
 
@@ -230,13 +206,13 @@ it touches the next band). Seventeen electrons of one spin fill it.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 141-144
+.. GENERATED FROM PYTHON SOURCE LINES 117-120
 
 The kagome lattice: three sites per unit cell ('a', 'b' and 'c', one per
 colour) on corner-sharing triangles. The bonds that close the torus are
 not drawn.
 
-.. GENERATED FROM PYTHON SOURCE LINES 144-147
+.. GENERATED FROM PYTHON SOURCE LINES 120-123
 
 .. code-block:: Python
 
@@ -255,11 +231,11 @@ not drawn.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 148-149
+.. GENERATED FROM PYTHON SOURCE LINES 124-125
 
 Mean field from a saturated and from a paramagnetic start:
 
-.. GENERATED FROM PYTHON SOURCE LINES 149-175
+.. GENERATED FROM PYTHON SOURCE LINES 125-151
 
 .. code-block:: Python
 
@@ -302,7 +278,7 @@ Mean field from a saturated and from a paramagnetic start:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 176-182
+.. GENERATED FROM PYTHON SOURCE LINES 152-158
 
 Tasaki: a nearly flat band needs a large enough U
 ------------------------------------------------------
@@ -311,7 +287,7 @@ A second-neighbour hopping :math:`t_2` bends the flat band, to a width
 beats the paramagnet, only above a threshold :math:`U_c`, here
 proportional to the width.
 
-.. GENERATED FROM PYTHON SOURCE LINES 182-218
+.. GENERATED FROM PYTHON SOURCE LINES 158-194
 
 .. code-block:: Python
 
@@ -377,7 +353,7 @@ proportional to the width.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.182 seconds)
+   **Total running time of the script:** (0 minutes 3.095 seconds)
 
 
 .. _sphx_glr_download_api_gallery_correlations_plot_flat_band_ferromagnetism.py:

@@ -34,8 +34,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
@@ -45,12 +45,12 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../../_static/documentation_options.js?v=b9678aa1"></script>
+    <script src="../../../_static/documentation_options.js?v=cce5339e"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -66,7 +66,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.7" />
+  <meta name="docsearch:version" content="0.8" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -114,7 +114,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -251,7 +251,7 @@
   
 
   
-    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page" aria-expanded="false" aria-controls="pst-secondary-sidebar-modal">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -265,7 +265,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
@@ -374,9 +374,12 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../correlations/index.html">Correlations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../correlations/plot_exact_diagonalization_vs_mean_field.html">Exact Diagonalization Against Mean Field</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../correlations/plot_flat_band_ferromagnetism.html">Flat-Band Ferromagnetism: Nagaoka, Mielke and Tasaki</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../correlations/plot_fractional_chern_insulator.html">Fractional Chern Insulator in a Flat Chern Band</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../correlations/plot_hubbard_edge_magnetism.html">The Hubbard Model: Magnetism of Graphene’s Zigzag Edges</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../correlations/plot_lieb_theorem.html">Lieb’s Theorem: The Ferrimagnet of the Lieb Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../correlations/plot_lieb_wu_hubbard_chain.html">Lieb and Wu: the Exact Solution of the Hubbard Chain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../correlations/plot_noncollinear_120_degree_order.html">Frustrated Magnetism: the 120-Degree Order of the Triangular Hubbard Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../correlations/plot_triangular_graphene_nanoislands.html">Magnetism of Triangular Graphene Nanoislands</a></li>
 </ul>
@@ -386,6 +389,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../disorder/plot_aubry_andre_localization.html">Aubry-André Localization: a Self-Dual Metal-Insulator Transition in 1D</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../disorder/plot_inverse_participation_ratio.html">The Inverse Participation Ratio and Multifractal Wave Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../disorder/plot_lifshitz_tails.html">Lifshitz Tails in the Density of States of a Disordered Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../disorder/plot_transfer_matrix_localization_length.html">Finite-Size Scaling of the Localization Length: MacKinnon and Kramer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../disorder/plot_vacancy_zero_modes.html">Vacancy-Induced Zero Modes in Graphene</a></li>
 </ul>
 </details></li>
@@ -416,12 +420,17 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../higher_order/index.html">Higher-Order Topology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../higher_order/plot_corner_charge_from_rotation_eigenvalues.html">Fractional Corner Charges from Rotation Eigenvalues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../higher_order/plot_quadrupole_insulator.html">Quantized Electric Quadrupole Insulators: the Benalcazar-Bernevig-Hughes Model</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../large_scale/index.html">Large lattices</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_batched_k_space.html">Batched and Threaded k-Space Diagonalization: the Haldane Model on 90,000 k-Points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_chebyshev_time_evolution.html">Chebyshev Time Evolution: a Wavepacket on 90,000 Sites</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_kernel_polynomial_method.html">The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_kpm_optical_conductivity.html">The Optical Conductivity of Disordered Graphene, 45,000 Sites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_kpm_optical_hall_conductivity.html">The Optical Hall Conductivity of a Disordered Chern Insulator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_kpm_spectral_function.html">The Spectral Function of Disordered Graphene, 28,800 Sites</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../magnetic_field/index.html">Magnetic Field</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -496,6 +505,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_defects_and_impurities.html">Defects and Impurities in a Graphene Flake: Vacancy Zero Modes and Bound States</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_fermi_surfaces.html">Fermi Surfaces and Constant-Energy Contours</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_graphene_bands.html">Graphene: Real-Space Flake and Reciprocal-Space Bands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_irreps_of_graphene_bands.html">Irreducible Representations of the Bands: Why Graphene Has Dirac Points</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_isolation_of_graphene.html">The Isolation of Graphene: Flakes, Edges, and a Berry Phase of pi</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_monkhorst_pack_grids.html">Monkhorst-Pack k-Point Grids</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_parametrized_hamiltonians.html">Parametrized Hamiltonians: Sweeping Without Rebuilding</a></li>
@@ -503,6 +513,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_projected_bands_and_spin_textures.html">Projected Bands and Spin Textures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_square_lattice_bands.html">The Square Lattice: Bloch’s Theorem in its Simplest Form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_surface_greens_function.html">The Surface Green’s Function by Lopez Sancho Decimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_symmetrizing_a_wannier90_model.html">Symmetrizing a Wannier90 Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_tetrahedron_method.html">The Tetrahedron Method for the Density of States</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_visualizing_a_model.html">Visualizing a Model: tbkit.plot.Plot</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tight_binding/plot_zigzag_edge_states.html">Zigzag Edge States of Graphene Ribbons</a></li>
@@ -512,6 +523,7 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_3d_topological_insulator.html">Three-Dimensional Topological Insulators: the Surface Dirac Cone</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_axion_angle.html">The Axion Angle and the Topological Magnetoelectric Effect</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bott_index.html">The Bott Index: the Chern Number of a Disordered Torus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_chern_number_from_rotation_eigenvalues.html">Chern Numbers from Rotation Eigenvalues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_diabolical_points.html">Diabolical Points: Conical Intersections in a Two-Parameter Family</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_edge_states.html">Helical Edge States of the Kane-Mele Ribbon</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_entanglement_spectrum.html">The Entanglement Spectrum: Edge States Without an Edge</a></li>
@@ -524,6 +536,7 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_quantum_geometry.html">The Quantum Metric: The Geometry of a Bloch Band</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_spin_chern_number.html">The Spin Chern Number: Quantum Spin Hall Without Spin Conservation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_ssh_model.html">The SSH Model: Bulk-Boundary Correspondence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_symmetry_indicators.html">Symmetry Indicators: Topology from the Parities at Eight Points</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_tenfold_way.html">The Tenfold Way: Symmetry Classes of Tight-Binding Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_thouless_pump.html">The Thouless Quantum Pump (Rice-Mele Model)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_tknn_hofstadter.html">TKNN: The Quantized Hall Conductance of the Hofstadter Bands</a></li>
@@ -579,7 +592,7 @@
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../../../index.html" class="nav-link" aria-label="Home">
-        <i class="fa-solid fa-home"></i>
+        <i class="fa-solid fa-house"></i>
       </a>
     </li>
     
@@ -618,9 +631,11 @@ Chern number of the Kane-Mele model with Rashba coupling, the mirror
 Chern number of a topological crystalline insulator, the four Z2 indices
 of strong and weak 3D topological insulators, the axion angle pumped by
 2 pi around a cycle of a lattice Dirac model, the tenfold-way
-classification of tight-binding models by their symmetries, and the
+classification of tight-binding models by their symmetries, the
 diabolical points (conical intersections with a Berry phase of pi) of a
-two-parameter family.</p>
+two-parameter family, the Chern number modulo n from the C_n rotation
+eigenvalues at a few momenta, and the inversion symmetry indicators of 3D
+insulators, which see a doubled topological insulator that Z2 misses.</p>
 <div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="In 2007 Fu, Kane and Mele, Moore and Balents, and Roy showed that the \mathbb{Z}_2 topology of the quantum spin Hall effect has a 3D sequel. A time-reversal-invariant insulator in three dimensions carries four \mathbb{Z}_2 indices, and the strong index \nu_0 -- with inversion symmetry, the product of the parities of the occupied Kramers pairs at all eight time-reversal-invariant momenta -- forces every surface to host an odd number of Dirac cones: metallic, spin-momentum-locked surface states that no time-reversal-invariant perturbation can gap. Hsieh et al. saw them by photoemission in Bi\ 1-x\ Sb\ x (2008), then Xia et al. and Zhang et al. found the simplest case, a single cone, in Bi\ 2\ Se\ 3 (2009)."><img alt="" src="../../../_images/sphx_glr_plot_3d_topological_insulator_thumb.png" />
 <p><a class="reference internal" href="plot_3d_topological_insulator.html"><span class="doc">Three-Dimensional Topological Insulators: the Surface Dirac Cone</span></a></p>
   <div class="sphx-glr-thumbnail-title">Three-Dimensional Topological Insulators: the Surface Dirac Cone</div>
@@ -630,6 +645,9 @@ two-parameter family.</p>
 </div><div class="sphx-glr-thumbcontainer" tooltip="The Chern number is an integral over the Brillouin zone, and disorder removes the Brillouin zone. T. Loring and M. Hastings (2010) found an invariant of a finite sample that needs none. Put the sample on a torus, where the coordinates X_1, X_2 (in units of the torus sides) are only defined modulo 1, but their exponentials e^{2\pi iX_{1,2}} are well defined. Project them onto the occupied states, \tilde U = Pe^{2\pi iX_1}P and \tilde V = Pe^{2\pi iX_2}P. In a gapped or localized phase they almost commute, and the winding of their commutator,"><img alt="" src="../../../_images/sphx_glr_plot_bott_index_thumb.png" />
 <p><a class="reference internal" href="plot_bott_index.html"><span class="doc">The Bott Index: the Chern Number of a Disordered Torus</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Bott Index: the Chern Number of a Disordered Torus</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="C. Fang, M. J. Gilbert and B. A. Bernevig (2012) showed that in a crystal with an n-fold rotation C_n the Chern number of the occupied bands is fixed modulo n by their rotation eigenvalues at a few points, without any integral of the Berry curvature:"><img alt="" src="../../../_images/sphx_glr_plot_chern_number_from_rotation_eigenvalues_thumb.png" />
+<p><a class="reference internal" href="plot_chern_number_from_rotation_eigenvalues.html"><span class="doc">Chern Numbers from Rotation Eigenvalues</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Chern Numbers from Rotation Eigenvalues</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Berry and Wilkinson (1984) asked when two energy levels of a real symmetric Hamiltonian -- the quantum billiard in a triangle, in their case -- can be degenerate. The answer goes back to von Neumann and Wigner: a real symmetric 2\times2 block has two conditions for degeneracy (equal diagonal elements, vanishing off-diagonal one), so without a symmetry one parameter is not enough. Levels avoid crossing along any one-parameter path, and meet only at isolated points of a two-parameter plane. There the two sheets of the spectrum touch like the tips of two cones -- a double cone, the &quot;diabolo&quot; that gave diabolical points their name."><img alt="" src="../../../_images/sphx_glr_plot_diabolical_points_thumb.png" />
 <p><a class="reference internal" href="plot_diabolical_points.html"><span class="doc">Diabolical Points: Conical Intersections in a Two-Parameter Family</span></a></p>
   <div class="sphx-glr-thumbnail-title">Diabolical Points: Conical Intersections in a Two-Parameter Family</div>
@@ -666,6 +684,9 @@ two-parameter family.</p>
 </div><div class="sphx-glr-thumbcontainer" tooltip="A 1D dimerized chain -- alternating intracell hopping v and intercell hopping w -- is the earliest and simplest example of a topological insulator: for w &gt; v the chain is topological and an open finite chain hosts a pair of exponentially localized, near-zero-energy edge modes, one per end. For v &gt; w it is trivial and no such modes exist. The bulk gap (2|v-w|) closes exactly at the transition, v = w."><img alt="" src="../../../_images/sphx_glr_plot_ssh_model_thumb.png" />
 <p><a class="reference internal" href="plot_ssh_model.html"><span class="doc">The SSH Model: Bulk-Boundary Correspondence</span></a></p>
   <div class="sphx-glr-thumbnail-title">The SSH Model: Bulk-Boundary Correspondence</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="In 2017 H. C. Po, A. Vishwanath and H. Watanabe, and B. Bradlyn and coauthors (topological quantum chemistry), turned the symmetry eigenvalues of the occupied bands at the high-symmetry momenta into a diagnosis of topology for every space group: a set of bands whose eigenvalues cannot come from any atomic insulator is topological. For a 3D insulator with inversion and time reversal, the indicators of Khalaf, Po, Vishwanath and Watanabe (2018) count the occupied states of parity \pm1 at the eight time-reversal-invariant momenta \mathbf{K}:"><img alt="" src="../../../_images/sphx_glr_plot_symmetry_indicators_thumb.png" />
+<p><a class="reference internal" href="plot_symmetry_indicators.html"><span class="doc">Symmetry Indicators: Topology from the Parities at Eight Points</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Symmetry Indicators: Topology from the Parities at Eight Points</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="A. Altland and M. Zirnbauer (1997) completed Dyson&#x27;s classification of random matrices: a Hamiltonian&#x27;s non-spatial symmetries -- time reversal T = U_T\mathcal{K}, particle-hole C = U_C\mathcal{K} (each squaring to +1 or -1, or absent) and their product, the chiral symmetry S -- sort it into exactly ten classes. Schnyder, Ryu, Furusaki and Ludwig, and Kitaev, then showed (2008-2009) that the class and the dimension alone decide which topological invariant a gapped phase can carry: the periodic table of topological insulators and superconductors. In 1D, for instance, classes AIII and BDI carry an integer winding number, D a \mathbb{Z}_2; in 2D, classes A and D carry a Chern number, AII a \mathbb{Z}_2."><img alt="" src="../../../_images/sphx_glr_plot_tenfold_way_thumb.png" />
 <p><a class="reference internal" href="plot_tenfold_way.html"><span class="doc">The Tenfold Way: Symmetry Classes of Tight-Binding Models</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Tenfold Way: Symmetry Classes of Tight-Binding Models</div>
@@ -720,7 +741,7 @@ two-parameter family.</p>
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <dialog id="pst-secondary-sidebar-modal" tabindex="-1"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
@@ -746,8 +767,8 @@ two-parameter family.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -780,7 +801,7 @@ two-parameter family.</p>
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.24.0.
 </p></div>
       
     </div>
