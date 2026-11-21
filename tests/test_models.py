@@ -120,10 +120,13 @@ class TestTwoDimensions(unittest.TestCase):
         self.assertLess(abs(np.min(np.diff(ks.mesh_bands(60), axis=1)[:, 0]) - (en[1] - en[0])), 1e-10)
         self.assertLess(abs(ks.chern_number([0], nk=30)), 1e-6)
         # valley Hall: the curvature peaks at K (fractions (1/3, -1/3), mesh
-        # point (10, 20)) and K' (20, 10), with opposite signs
+        # point (10, 20)) and K' (20, 10), with opposite signs. The plaquettes
+        # (9, 19) / (19, 9) on the other side of each valley tie to rounding,
+        # so compare values rather than argmin/argmax indices.
         curv = ks.berry_curvature([0], nk=30)
-        self.assertEqual(np.unravel_index(np.argmin(curv), curv.shape), (10, 20))
-        self.assertEqual(np.unravel_index(np.argmax(curv), curv.shape), (20, 10))
+        self.assertLess(abs(curv[10, 20] - curv.min()), 1e-12)
+        self.assertLess(abs(curv[20, 10] - curv.max()), 1e-12)
+        self.assertLess(curv[10, 20], 0.)
         self.assertLess(abs(curv[10, 20] + curv[20, 10]), 1e-12)
         # spin-orbit: valence band split by 2 lam at K, spin-valley locked
         for q in models.TMD_PARAMETERS.values():
