@@ -1,5 +1,19 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- **The adaptive refinement of the Berry-curvature responses no longer
+  depends on rounding noise.** `refine > 1` picked the hot cells with
+  `np.argsort` of the curvature size. When symmetric cells tied at the
+  cutoff, rounding noise chose among them: `hall_conductivity` of the
+  Haldane model (`nk=16`, `refine=3`) moved by 3.5e-4 between a model and
+  its Wannier90 round trip on Linux, whose sizes differ by 2e-10. Sizes
+  within 1e-7 (relative) of their predecessor in the descending order are
+  now ties, ranked by mesh index (rounding them would still split
+  near-equal sizes across a rounding edge).
+
 ## 0.9.0 -- 2026-11-21
 
 ### Added

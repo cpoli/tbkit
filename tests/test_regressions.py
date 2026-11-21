@@ -209,6 +209,28 @@ class TestKSpaceRegressions(unittest.TestCase):
             self.assertAlmostEqual(dk * np.linalg.norm(a), 2*np.pi, places=10,
                                                 msg='direction={}'.format(direction))
 
+    def test_refined_cells_ignore_rounding_noise(self):
+        # the adaptive refinement ranked the cells with np.argsort of |F|:
+        # where symmetric cells tie at the cutoff, rounding noise chose
+        # among them and moved sigma_xy of the Haldane model by 3.5e-4.
+        # Rounding the sizes to 1e-9 did not settle it: a model and its
+        # Wannier90 round trip differ by 2e-10, which straddles rounding edges.
+        from unittest import mock
+
+        from tbkit import models
+        hal = models.haldane(t2=0.15, phi=np.pi / 2, M=0.1)
+        expected = hal.hall_conductivity(1., temperature=0.02, nk=16, refine=3)
+        kubo = KSpace._kubo
+        rng = np.random.default_rng(0)
+
+        def noisy(self, k, *args):
+            values, size = kubo(self, k, *args)
+            return values, size * (1 + 2e-10 * rng.standard_normal(size.shape))
+        with mock.patch.object(KSpace, '_kubo', noisy):
+            for _ in range(20):
+                self.assertAlmostEqual(hal.hall_conductivity(1., temperature=0.02, nk=16, refine=3),
+                                       expected, places=9)
+
     def test_spin_onsite_accepts_2x2_matrix(self):
         # an in-plane Zeeman field was inexpressible: set_hopping refused
         # i == j with R == 0 and pointed at set_onsite, which took only a

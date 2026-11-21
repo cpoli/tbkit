@@ -1638,8 +1638,17 @@ class KSpace():
             # The cells are ranked by the size of the curvature whatever the
             # occupations, so that cells straddling the Fermi surface are
             # refined together with their neighbours.
+            # Symmetric cells have equal sizes up to rounding, and the cutoff
+            # can fall among them: rank sizes within 1e-7 (relative) of the
+            # previous one in the descending order as ties, ordered by their
+            # mesh index, so the cells chosen do not depend on noise
+            # (rounding would split near-equal sizes across a rounding edge).
             n_hot = int(np.ceil(refine_fraction * len(fracs)))
-            hot = np.argsort(size)[::-1][:n_hot]
+            scale = size.max() if size.max() > 0 else 1.
+            rel = size / scale
+            order = np.argsort(-rel, kind='stable')
+            group = np.concatenate(([0], np.cumsum(-np.diff(rel[order]) > 1e-7)))
+            hot = order[np.lexsort((order, group))][:n_hot]
             sub = np.array(np.meshgrid(*[(np.arange(refine) + 0.5) / refine - 0.5] * len(axes),
                                                     indexing='ij')).reshape(len(axes), -1).T
             offsets = np.zeros((len(sub), self.dim))
