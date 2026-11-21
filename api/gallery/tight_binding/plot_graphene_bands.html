@@ -38,7 +38,7 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -50,7 +50,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../../_static/documentation_options.js?v=cce5339e"></script>
+    <script src="../../../_static/documentation_options.js?v=a82ae3da"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.8" />
+  <meta name="docsearch:version" content="0.9" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -746,7 +746,7 @@ through the high-symmetry points <span class="math notranslate nohighlight">\(\G
 </span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">en_K</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-numpy-linalg sphx-glr-backref-type-py-function reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.eigvalsh.html#numpy.linalg.eigvalsh" title="numpy.linalg.eigvalsh"><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvalsh</span></a><span class="p">(</span><a class="sphx-glr-backref-module-tbkit sphx-glr-backref-type-py-method reference internal" href="../../../tbkit.html#tbkit.kspace.KSpace.get_ham" title="tbkit.KSpace.get_ham"><span class="n">kag</span><span class="o">.</span><span class="n">get_ham</span></a><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">K</span></a><span class="p">)</span><span class="p">)</span><span class="w">
 </span><span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="s1">Energies at K: </span><span class="si">{}</span><span class="s1"> (should be ~0, ~0 -- the Dirac point)</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">en_K</span></a><span class="p">)</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<img src="../../../_images/sphx_glr_plot_graphene_bands_003.png" srcset="../../../_images/sphx_glr_plot_graphene_bands_003.png" alt="plot graphene bands" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Energies at K: [-1.11022302e-16  1.11022302e-16] (should be ~0, ~0 -- the Dirac point)
+<img src="../../../_images/sphx_glr_plot_graphene_bands_003.png" srcset="../../../_images/sphx_glr_plot_graphene_bands_003.png" alt="plot graphene bands" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Energies at K: [-1.24126708e-16  1.24126708e-16] (should be ~0, ~0 -- the Dirac point)
 </pre></div>
 </div>
 </section>
@@ -772,7 +772,7 @@ with <span class="math notranslate nohighlight">\(a\)</span> the nearest-neighbo
 Linear (Dirac) dispersion near K confirmed to within 2% for |q|&lt;=0.05.
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.067 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.134 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-api-gallery-tight-binding-plot-graphene-bands-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/e4bef8e058c4854e3d2506f50ac030ee/plot_graphene_bands.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_graphene_bands.ipynb</span></code></a></p>

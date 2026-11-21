@@ -38,7 +38,7 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -50,7 +50,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../../_static/documentation_options.js?v=cce5339e"></script>
+    <script src="../../../_static/documentation_options.js?v=a82ae3da"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.8" />
+  <meta name="docsearch:version" content="0.9" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -744,9 +744,9 @@ with a divergent Petermann factor) and sits exactly where
 </span>    <span class="k">assert</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.isclose.html#numpy.isclose" title="numpy.isclose"><span class="n">np</span><span class="o">.</span><span class="n">isclose</span></a><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">nu</span></a><span class="p">,</span> <span class="o">-</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">q</span></a> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">)</span><span class="w">
 </span><span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="s1">Total charge over the zone: </span><span class="si">{}</span><span class="s1"> (EPs come in pairs).</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><a class="sphx-glr-backref-module-tbkit sphx-glr-backref-type-py-property reference internal" href="../../../tbkit.html#tbkit.exceptional.ExceptionalPoints.total_charge" title="tbkit.ExceptionalPoints.total_charge"><span class="n">eps</span><span class="o">.</span><span class="n">total_charge</span></a><span class="p">)</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>EP at k = (+1.055715, +1.971630): charge -1, order 2, Petermann 1.2e+15, Re f = 1.1e-16, |Im f| = 0.3000000000
-EP at k = (+1.392260, +2.165934): charge +1, order 2, Petermann 4.6e+14, Re f = -2.8e-16, |Im f| = 0.3000000000
-EP at k = (+2.235339, -0.071539): charge +1, order 2, Petermann 1.9e+15, Re f = 5.6e-17, |Im f| = 0.3000000000
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>EP at k = (+1.055715, +1.971630): charge -1, order 2, Petermann 3.4e+14, Re f = 5.0e-16, |Im f| = 0.3000000000
+EP at k = (+1.392260, +2.165934): charge +1, order 2, Petermann 2.7e+14, Re f = 5.6e-16, |Im f| = 0.3000000000
+EP at k = (+2.235339, -0.071539): charge +1, order 2, Petermann 5.4e+14, Re f = 3.3e-16, |Im f| = 0.3000000000
 EP at k = (+2.571884, +0.122766): charge -1, order 2, Petermann 3.4e+14, Re f = 2.2e-16, |Im f| = 0.3000000000
 Total charge over the zone: 0 (EPs come in pairs).
 </pre></div>
@@ -812,7 +812,7 @@ from one EP to the other. Red and blue crosses mark the charges +1 and -1.</p>
 </span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">axes</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'</span><span class="s1">lower left</span><span class="s1">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span><span class="w">
 </span><a class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.tight_layout.html#matplotlib.figure.Figure.tight_layout" title="matplotlib.figure.Figure.tight_layout"><span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<img src="../../../_images/sphx_glr_plot_exceptional_points_fermi_arcs_002.png" srcset="../../../_images/sphx_glr_plot_exceptional_points_fermi_arcs_002.png" alt="Re $E_+$ near K, $\gamma = 0.3$, Im $E_+$ near K, $\gamma = 0.3$" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.104 seconds)</p>
+<img src="../../../_images/sphx_glr_plot_exceptional_points_fermi_arcs_002.png" srcset="../../../_images/sphx_glr_plot_exceptional_points_fermi_arcs_002.png" alt="Re $E_+$ near K, $\gamma = 0.3$, Im $E_+$ near K, $\gamma = 0.3$" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.938 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-api-gallery-non-hermitian-plot-exceptional-points-fermi-arcs-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/541f32f76854ed4f5535561f027c4318/plot_exceptional_points_fermi_arcs.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_exceptional_points_fermi_arcs.ipynb</span></code></a></p>

@@ -38,7 +38,7 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -50,7 +50,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../../_static/documentation_options.js?v=cce5339e"></script>
+    <script src="../../../_static/documentation_options.js?v=a82ae3da"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.8" />
+  <meta name="docsearch:version" content="0.9" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -743,9 +743,9 @@ channels carry the current.</p>
 </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="s1">E_F = </span><span class="si">{}</span><span class="s1">: R_xy = </span><span class="si">{:.6f}</span><span class="s1"> h/e^2 (1/</span><span class="si">{}</span><span class="s1">), R_xx = </span><span class="si">{:.1e}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">e</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">rxy</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">nu</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">rxx</span></a><span class="p">)</span><span class="p">)</span><span class="w">
 </span>    <span class="k">assert</span> <span class="nb">abs</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">rxy</span></a> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">nu</span></a><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-5</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">rxx</span></a><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-5</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>E_F = -3.4: R_xy = 1.000000 h/e^2 (1/1), R_xx = 1.2e-07
-E_F = -2.8: R_xy = 0.500000 h/e^2 (1/2), R_xx = 1.2e-08
-E_F = -2.25: R_xy = 0.333333 h/e^2 (1/3), R_xx = 2.6e-08
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>E_F = -3.4: R_xy = 1.000000 h/e^2 (1/1), R_xx = -2.1e-13
+E_F = -2.8: R_xy = 0.500000 h/e^2 (1/2), R_xx = 2.0e-11
+E_F = -2.25: R_xy = 0.333333 h/e^2 (1/3), R_xx = 1.9e-08
 </pre></div>
 </div>
 </section>
@@ -782,7 +782,7 @@ the top edge (for this sign of the field), a few magnetic lengths
 <img src="../../../_images/sphx_glr_plot_hall_bar_edge_channels_002.png" srcset="../../../_images/sphx_glr_plot_hall_bar_edge_channels_002.png" alt="Hall bar: edge channels and quantized resistances, current injected by the source, $\nu = 1$" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>fraction of the current in the top half: 1.0000
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.998 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.024 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-api-gallery-transport-plot-hall-bar-edge-channels-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/4cc89efe65687a2a8316697fd3216191/plot_hall_bar_edge_channels.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_hall_bar_edge_channels.ipynb</span></code></a></p>

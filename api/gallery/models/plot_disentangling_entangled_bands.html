@@ -38,7 +38,7 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -50,7 +50,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../../_static/documentation_options.js?v=cce5339e"></script>
+    <script src="../../../_static/documentation_options.js?v=a82ae3da"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.8" />
+  <meta name="docsearch:version" content="0.9" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -802,8 +802,8 @@ leave it).</p>
 </span>    <span class="k">assert</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64"><span class="n">err_mesh</span></a> <span class="o">&lt;</span> <span class="mf">1e-10</span><span class="w">
 </span><span class="k">assert</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="dict"><span class="n">results</span></a><span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.05</span> <span class="ow">and</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="dict"><span class="n">results</span></a><span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="dict"><span class="n">results</span></a><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="mi">4</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>nk =  6: Omega_I 0.1279 -&gt; 0.0250 in 362 steps; frozen bands on the mesh to 4e-15, on the path to 0.232 eV
-nk = 12: Omega_I 0.3809 -&gt; 0.0591 in 870 steps; frozen bands on the mesh to 4e-15, on the path to 0.036 eV
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>nk =  6: Omega_I 0.1279 -&gt; 0.0250 in 362 steps; frozen bands on the mesh to 3e-15, on the path to 0.232 eV
+nk = 12: Omega_I 0.3809 -&gt; 0.0591 in 870 steps; frozen bands on the mesh to 6e-15, on the path to 0.036 eV
 </pre></div>
 </div>
 <p>Plots: the buckled bands (grey) with the Wannier-interpolated π bands
@@ -833,7 +833,7 @@ from the 12 x 12 mesh, and the descent of <span class="math notranslate nohighli
 </span><a class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.set_layout_engine.html#matplotlib.figure.Figure.set_layout_engine" title="matplotlib.figure.Figure.set_layout_engine"><span class="n">fig</span><span class="o">.</span><span class="n">set_layout_engine</span></a><span class="p">(</span><span class="s1">'</span><span class="s1">tight</span><span class="s1">'</span><span class="p">)</span><span class="w">
 </span><a class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<img src="../../../_images/sphx_glr_plot_disentangling_entangled_bands_002.png" srcset="../../../_images/sphx_glr_plot_disentangling_entangled_bands_002.png" alt="Buckled graphene (0.25), Minimization of $\Omega_I$" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.225 seconds)</p>
+<img src="../../../_images/sphx_glr_plot_disentangling_entangled_bands_002.png" srcset="../../../_images/sphx_glr_plot_disentangling_entangled_bands_002.png" alt="Buckled graphene (0.25), Minimization of $\Omega_I$" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.545 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-api-gallery-models-plot-disentangling-entangled-bands-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/ecb45993242500597a52ec84a55d69f6/plot_disentangling_entangled_bands.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_disentangling_entangled_bands.ipynb</span></code></a></p>

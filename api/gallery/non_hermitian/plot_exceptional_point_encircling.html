@@ -38,7 +38,7 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -50,7 +50,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../../_static/documentation_options.js?v=cce5339e"></script>
+    <script src="../../../_static/documentation_options.js?v=a82ae3da"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.8" />
+  <meta name="docsearch:version" content="0.9" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -733,7 +733,7 @@ intra-cell bond, adds no bond and is not drawn.</p>
 </span><a class="sphx-glr-backref-module-tbkit sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../tbkit.html#tbkit.exceptional.Encircling" title="tbkit.Encircling"><span class="n">dp_one</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-tbkit-exceptional sphx-glr-backref-type-py-function reference internal" href="../../../tbkit.html#tbkit.exceptional.encircle" title="tbkit.exceptional.encircle"><span class="n">ex</span><span class="o">.</span><span class="n">encircle</span></a><span class="p">(</span><a class="sphx-glr-backref-module-tbkit sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../tbkit.html#tbkit.kspace.KSpace" title="tbkit.KSpace"><span class="n">graphene</span></a><span class="p">,</span> <span class="n">dp_loop</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">band</span></a><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_loops</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nk</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Dirac point, band 0: ends on band 0, phase +3.141593, |overlap| 1.0000
-Dirac point, band 1: ends on band 1, phase +3.141593, |overlap| 1.0000
+Dirac point, band 1: ends on band 1, phase -3.141593, |overlap| 1.0000
 </pre></div>
 </div>
 </section>
@@ -780,7 +780,7 @@ turn at all, and one loop is enough to bring both eigenvalues back.</p>
 </span><span class="k">assert</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.isclose.html#numpy.isclose" title="numpy.isclose"><span class="n">np</span><span class="o">.</span><span class="n">isclose</span></a><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">nu_ep</span></a><span class="p">)</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">nu_dp</span></a><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-10</span><span class="w">
 </span><span class="k">assert</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">both</span><span class="o">.</span><span class="n">final_band</span></a> <span class="o">==</span> <span class="mi">0</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>vorticity: EP +0.500, Dirac point +7.8e-33; around both EPs the state ends on band 0
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>vorticity: EP +0.500, Dirac point -3.9e-32; around both EPs the state ends on band 0
 </pre></div>
 </div>
 </section>
@@ -819,7 +819,7 @@ come back.</p>
 </span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">axes</span></a><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span><span class="w">
 </span><a class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.tight_layout.html#matplotlib.figure.Figure.tight_layout" title="matplotlib.figure.Figure.tight_layout"><span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<img src="../../../_images/sphx_glr_plot_exceptional_point_encircling_002.png" srcset="../../../_images/sphx_glr_plot_exceptional_point_encircling_002.png" alt="Dirac point: no swap, EP: eigenvalues swap each loop, EP: -1 after 2 loops, +1 after 4" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.394 seconds)</p>
+<img src="../../../_images/sphx_glr_plot_exceptional_point_encircling_002.png" srcset="../../../_images/sphx_glr_plot_exceptional_point_encircling_002.png" alt="Dirac point: no swap, EP: eigenvalues swap each loop, EP: -1 after 2 loops, +1 after 4" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.705 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-api-gallery-non-hermitian-plot-exceptional-point-encircling-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/4cd8864b3bcf3310df5ceb3e2393c3c5/plot_exceptional_point_encircling.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_exceptional_point_encircling.ipynb</span></code></a></p>

@@ -38,7 +38,7 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -50,7 +50,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../../_static/documentation_options.js?v=cce5339e"></script>
+    <script src="../../../_static/documentation_options.js?v=a82ae3da"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.8" />
+  <meta name="docsearch:version" content="0.9" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -749,7 +749,7 @@ the EP finder.</p>
 </span><span class="k">assert</span> <span class="nb">abs</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">nu_dp</span></a><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-10</span><span class="w">
 </span><span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><a class="sphx-glr-backref-module-tbkit sphx-glr-backref-type-py-function reference internal" href="../../../tbkit.html#tbkit.exceptional.find_exceptional_points" title="tbkit.find_exceptional_points"><span class="n">ex</span><span class="o">.</span><span class="n">find_exceptional_points</span></a><span class="p">(</span><a class="sphx-glr-backref-module-tbkit sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../tbkit.html#tbkit.kspace.KSpace" title="tbkit.KSpace"><span class="n">graphene</span></a><span class="p">,</span> <span class="n">nk</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">k</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>graphene: vorticity 2.9e-32, discriminant winding 3.6e-32, EPs found: 0
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>graphene: vorticity -3.9e-33, discriminant winding 7.3e-34, EPs found: 0
 </pre></div>
 </div>
 </section>
@@ -778,10 +778,10 @@ the Dirac point’s 0, and the splitting follows <span class="math notranslate n
 </span>    <span class="k">assert</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.isclose.html#numpy.isclose" title="numpy.isclose"><span class="n">np</span><span class="o">.</span><span class="n">isclose</span></a><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64"><span class="n">split</span></a><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">gamma</span></a> <span class="o">/</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">V_F</span></a><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">0.06</span><span class="p">)</span><span class="w">
 </span><span class="k">assert</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.isclose.html#numpy.isclose" title="numpy.isclose"><span class="n">np</span><span class="o">.</span><span class="n">isclose</span></a><span class="p">(</span><a class="sphx-glr-backref-module-numpy-linalg sphx-glr-backref-type-py-function reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html#numpy.linalg.norm" title="numpy.linalg.norm"><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span></a><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc"><span class="n">np</span><span class="o">.</span><span class="n">subtract</span></a><span class="p">(</span><span class="o">*</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="dict"><span class="n">pairs</span></a><span class="p">[</span><span class="mf">0.1</span><span class="p">]</span><span class="p">)</span><span class="p">)</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="mf">0.1</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">0.005</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>gamma = 0.1: EP vorticities +0.500 -0.500, total around both +1.8e-18, splitting 0.1329 (4 gamma / 3 = 0.1333)
-gamma = 0.2: EP vorticities +0.500 -0.500, total around both +5.5e-19, splitting 0.2632 (4 gamma / 3 = 0.2667)
-gamma = 0.3: EP vorticities +0.500 -0.500, total around both +1.3e-17, splitting 0.3886 (4 gamma / 3 = 0.4000)
-gamma = 0.4: EP vorticities +0.500 -0.500, total around both +3.3e-17, splitting 0.5073 (4 gamma / 3 = 0.5333)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>gamma = 0.1: EP vorticities +0.500 -0.500, total around both +2.3e-18, splitting 0.1329 (4 gamma / 3 = 0.1333)
+gamma = 0.2: EP vorticities +0.500 -0.500, total around both +6.6e-18, splitting 0.2632 (4 gamma / 3 = 0.2667)
+gamma = 0.3: EP vorticities +0.500 -0.500, total around both +2.8e-17, splitting 0.3886 (4 gamma / 3 = 0.4000)
+gamma = 0.4: EP vorticities +0.500 -0.500, total around both -3.1e-17, splitting 0.5073 (4 gamma / 3 = 0.5333)
 </pre></div>
 </div>
 </section>
@@ -810,7 +810,7 @@ inside, they are imaginary, with equal real parts on a whole disk.</p>
 </span>    <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">inside</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-numpy-linalg sphx-glr-backref-type-py-function reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.eigvals.html#numpy.linalg.eigvals" title="numpy.linalg.eigvals"><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span></a><span class="p">(</span><a class="sphx-glr-backref-module-tbkit sphx-glr-backref-type-py-method reference internal" href="../../../tbkit.html#tbkit.kspace.KSpace.get_ham" title="tbkit.KSpace.get_ham"><span class="n">m</span><span class="o">.</span><span class="n">get_ham</span></a><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">K</span></a><span class="p">)</span><span class="p">)</span><span class="w">
 </span>    <span class="k">assert</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.allclose.html#numpy.allclose" title="numpy.allclose"><span class="n">np</span><span class="o">.</span><span class="n">allclose</span></a><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">inside</span><span class="o">.</span><span class="n">real</span></a><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>  <span class="c1"># equal real parts inside the ring</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>gamma = 0.1: 6 ring points, |f| - gamma = 8.7e-16, radius 0.0670 +- 0.0006 (2 gamma / 3 = 0.0667)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>gamma = 0.1: 6 ring points, |f| - gamma = 9.3e-16, radius 0.0670 +- 0.0006 (2 gamma / 3 = 0.0667)
 gamma = 0.2: 10 ring points, |f| - gamma = 1.2e-15, radius 0.1336 +- 0.0033 (2 gamma / 3 = 0.1333)
 gamma = 0.3: 18 ring points, |f| - gamma = 1.3e-15, radius 0.2013 +- 0.0070 (2 gamma / 3 = 0.2000)
 gamma = 0.4: 24 ring points, |f| - gamma = 1.3e-15, radius 0.2717 +- 0.0130 (2 gamma / 3 = 0.2667)
@@ -840,7 +840,7 @@ gamma = 0.4: 24 ring points, |f| - gamma = 1.3e-15, radius 0.2717 +- 0.0130 (2 g
 </span>    <a class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.legend.html#matplotlib.axes.Axes.legend" title="matplotlib.axes.Axes.legend"><span class="n">ax</span><span class="o">.</span><span class="n">legend</span></a><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span><span class="w">
 </span><a class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.tight_layout.html#matplotlib.figure.Figure.tight_layout" title="matplotlib.figure.Figure.tight_layout"><span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<img src="../../../_images/sphx_glr_plot_exceptional_point_vorticity_002.png" srcset="../../../_images/sphx_glr_plot_exceptional_point_vorticity_002.png" alt="$i\gamma\sigma_x$: EP pairs, $\nu = \pm1/2$, $i\gamma\sigma_z$: exceptional rings, $|f| = \gamma$" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.996 seconds)</p>
+<img src="../../../_images/sphx_glr_plot_exceptional_point_vorticity_002.png" srcset="../../../_images/sphx_glr_plot_exceptional_point_vorticity_002.png" alt="$i\gamma\sigma_x$: EP pairs, $\nu = \pm1/2$, $i\gamma\sigma_z$: exceptional rings, $|f| = \gamma$" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.637 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-api-gallery-non-hermitian-plot-exceptional-point-vorticity-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/cadd06d174233b128700fe9a6ae14c32/plot_exceptional_point_vorticity.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_exceptional_point_vorticity.ipynb</span></code></a></p>
