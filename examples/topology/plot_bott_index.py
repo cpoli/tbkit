@@ -31,26 +31,16 @@ the Haldane model with Anderson disorder.
 import numpy as np
 import matplotlib.pyplot as plt
 
-import tbkit.lattices as lattices
 from tbkit.bridges import finite_system
 from tbkit.higher_order import flake_positions
-from tbkit.kspace import KSpace
 from tbkit.plot import Plot
 from tbkit.topology import bott_index
-
-
-def haldane(t2=0.2, M=0.):
-    hal = KSpace(lattices.honeycomb())
-    hal.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
-    for R in [(0, 1), (-1, 0), (1, -1)]:
-        hal.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j*t2}, {'i': 1, 'j': 1, 'R': R, 't': -1j*t2}])
-    hal.set_onsite({'a': M, 'b': -M})
-    return hal
+from tbkit import models
 
 
 n = 14  # a 14 x 14-cell torus, 392 sites
-positions = flake_positions(haldane(), (n, n))
-cell = [n * np.array(a) for a in haldane().lat.prim_vec]
+positions = flake_positions(models.haldane(t2=0.2), (n, n))
+cell = [n * np.array(a) for a in models.haldane(t2=0.2).lat.prim_vec]
 
 # %%
 # The lattice
@@ -63,14 +53,14 @@ cell = [n * np.array(a) for a in haldane().lat.prim_vec]
 # within each sublattice (thin), which break time-reversal symmetry. The
 # torus below is :math:`14\times14` cells.
 
-fig_lat = Plot(finite_system(haldane(), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+fig_lat = Plot(finite_system(models.haldane(t2=0.2), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # Clean tori: the Bott index is the Chern number
 # --------------------------------------------------
 
 for t2, M in ((0.2, 0.), (0.2, 0.5), (0.2, 1.5), (-0.2, 0.)):
-    hal = haldane(t2, M)
+    hal = models.haldane(t2=t2, M=M)
     bott = bott_index(hal.finite_ham((n, n), periodic=True), positions, cell)
     chern = hal.chern_number(0, 30)
     print('t2 = {:+.1f}, M = {:.1f}: Bott index {:+.3f}, Chern number {:+.3f}'.format(t2, M, bott, chern))
@@ -86,7 +76,7 @@ for t2, M in ((0.2, 0.), (0.2, 0.5), (0.2, 1.5), (-0.2, 0.)):
 # states of the two bands meet (the topological Anderson transition, near
 # :math:`W \approx 6` here) does it drop to 0, sample by sample.
 
-hal = haldane()
+hal = models.haldane(t2=0.2)
 ham = hal.finite_ham((n, n), periodic=True)
 bands = hal.mesh_bands(60)
 clean_gap = np.min(bands[:, 1] - bands[:, 0])

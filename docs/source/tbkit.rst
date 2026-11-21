@@ -35,6 +35,14 @@ tbkit.lattices module
     :undoc-members:
     :show-inheritance:
 
+tbkit.models module
+-------------------
+
+.. automodule:: tbkit.models
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 tbkit.dos module
 ----------------
 
@@ -223,6 +231,14 @@ tbkit.io module
 ---------------
 
 .. automodule:: tbkit.io
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+tbkit.interop module
+--------------------
+
+.. automodule:: tbkit.interop
     :members:
     :undoc-members:
     :show-inheritance:

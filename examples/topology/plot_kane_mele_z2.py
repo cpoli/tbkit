@@ -22,33 +22,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
-from tbkit.kspace import KSpace, PAULI
 from tbkit.orbital import OrbitalSystem
 from tbkit.plot import Plot
 from tbkit.system import System
+from tbkit import models
 
 
-lat = lattices.honeycomb()
 lam = 0.06
 M_c = 3 * np.sqrt(3) * lam
-
-
-def kane_mele(M=0., rashba=0.):
-    km = KSpace(lat, spin=True)
-    km.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
-    for R in [(0, 1), (-1, 0), (1, -1)]:
-        km.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j*lam*PAULI['z']},
-                                {'i': 1, 'j': 1, 'R': R, 't': -1j*lam*PAULI['z']}])
-    if rashba:
-        tau = np.array([d['r0'] for d in lat.unit_cell])
-        a = np.array(lat.prim_vec)
-        for R in [(0, 0), (-1, 0), (0, -1)]:
-            d = tau[1] + R[0]*a[0] + R[1]*a[1] - tau[0]
-            d = d / np.linalg.norm(d)
-            km.set_hopping([{'i': 0, 'j': 1, 'R': R,
-                                     't': 1j*rashba*(PAULI['x']*d[1] - PAULI['y']*d[0])}])
-    km.set_onsite({'a': M, 'b': -M})
-    return km
 
 
 # %%
@@ -73,7 +54,7 @@ fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 # sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(9, 4), sharey=True)
 for ax, M, title in [(axes[0], 0.1, 'topological'), (axes[1], 0.5, 'trivial')]:
-    fracs, centres = kane_mele(M).wannier_flow([0, 1], nk=60, nk_perp=41, k_range=(0., 0.5),
+    fracs, centres = models.kane_mele(lambda_so=lam, lambda_v=M).wannier_flow([0, 1], nk=60, nk_perp=41, k_range=(0., 0.5),
                                                                    positions=False)
     ax.plot(fracs, centres, 'o', color='b', ms=3)
     ax.set_title(r'$M = {:.2f}$: {}'.format(M, title))
@@ -86,17 +67,17 @@ fig.set_layout_engine('tight')
 # -------------------------------------------
 
 masses = np.array([0., 0.1, 0.2, 0.4, 0.5])
-nu = [kane_mele(M).z2_invariant([0, 1], nk=60, nk_perp=41) for M in masses]
+nu = [models.kane_mele(lambda_so=lam, lambda_v=M).z2_invariant([0, 1], nk=60, nk_perp=41) for M in masses]
 print('M / M_c:', np.round(masses / M_c, 2), '-> nu =', nu)
 assert nu == [int(M < M_c) for M in masses]
 
 # Rashba coupling mixes the spins (S_z is no longer conserved, so the two
 # spins no longer carry Chern numbers of their own), but nu does not change
-nu_r = kane_mele(0.1, rashba=0.05).z2_invariant([0, 1], nk=60, nk_perp=41)
+nu_r = models.kane_mele(lambda_so=lam, lambda_v=0.1, lambda_r=0.05).z2_invariant([0, 1], nk=60, nk_perp=41)
 assert nu_r == 1
 print('With Rashba coupling: nu = {}.'.format(nu_r))
 # and the total Chern number is zero throughout
-assert abs(kane_mele(0.1, rashba=0.05).chern_number([0, 1], nk=20)) < 1e-6
+assert abs(models.kane_mele(lambda_so=lam, lambda_v=0.1, lambda_r=0.05).chern_number([0, 1], nk=20)) < 1e-6
 
 # %%
 # The same model in real space: a spinful flake
@@ -115,8 +96,8 @@ sys.set_spin_orbit(lam)
 sys.set_onsite({'a': 0.1, 'b': -0.1})
 sys.get_ham()
 sys.get_eig(eigenvec=True)
-assert np.allclose(sys.en, np.linalg.eigvalsh(kane_mele(0.1).finite_ham((12, 12))))
-bands = kane_mele(0.1).mesh_bands(60)
+assert np.allclose(sys.en, np.linalg.eigvalsh(models.kane_mele(lambda_so=lam, lambda_v=0.1).finite_ham((12, 12))))
+bands = models.kane_mele(lambda_so=lam, lambda_v=0.1).mesh_bands(60)
 bulk_gap = np.min(bands[:, 2] - bands[:, 1])
 in_gap = np.abs(sys.en) < bulk_gap / 2
 x, y = flake.coor['x'], flake.coor['y']

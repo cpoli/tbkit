@@ -9,4 +9,7 @@ calculation on a torus, and the intrinsic spin Hall conductivity of the
 Kane-Mele model with its departure from quantization under Rashba coupling.
 The same curvature, weighted by entropy or by energy, drives the anomalous
 Nernst effect (with the Mott relation) and the thermal Hall effect (with
-the Wiedemann-Franz law and its quantized Chern plateau).
+the Wiedemann-Franz law and its quantized Chern plateau). The anomalous
+Hall conductivity of a metal also depends on the position operator of the
+Wannier functions: a model read from a Wannier90 ``_tb.dat`` file uses all
+its matrix elements, not only the centres.

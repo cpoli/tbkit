@@ -28,35 +28,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice
-from tbkit.kspace import KSpace, PAULI
+from tbkit.kspace import PAULI
 from tbkit.plot import Plot
 from tbkit.system import System
+from tbkit import models
 
 
 # orbitals: (s, up), (s, down), (p, up), (p, down) -> two "sites" with spin
-lat = Lattice(unit_cell=[{'tag': 's', 'r0': (0., 0.)}, {'tag': 'p', 'r0': (0., 0.)}],
-                     prim_vec=[(1., 0.), (0., 1.)])
-SZ = PAULI['z']
 INVERSION = np.kron(np.diag([1., -1.]), np.eye(2))  # s even, p odd
 TIME_REVERSAL = np.kron(np.eye(2), 1j * PAULI['y'])
-
-
-def bhz(m, a=1.):
-    r'''
-    H(k) = sin kx tau_x s_z + sin ky tau_y + d_z(k) tau_z  (tau: orbital, s: spin),
-    i.e. two time-reversed Chern insulators, one per spin.
-    '''
-    model = KSpace(lat, spin=True)
-    model.set_onsite({'s': (m - 4.) * PAULI['0'], 'p': -(m - 4.) * PAULI['0']})
-    for R in [(1, 0), (0, 1)]:
-        model.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': PAULI['0']},
-                                    {'i': 1, 'j': 1, 'R': R, 't': -PAULI['0']}])
-    # tau_x s_z sin kx + tau_y sin ky between s and p
-    model.set_hopping([{'i': 0, 'j': 1, 'R': (1, 0), 't': -0.5j * a * SZ},
-                                {'i': 0, 'j': 1, 'R': (-1, 0), 't': 0.5j * a * SZ},
-                                {'i': 0, 'j': 1, 'R': (0, 1), 't': -0.5 * a * PAULI['0']},
-                                {'i': 0, 'j': 1, 'R': (0, -1), 't': 0.5 * a * PAULI['0']}])
-    return model
 
 
 # %%
@@ -66,7 +46,7 @@ def bhz(m, a=1.):
 # s and a p orbital, each with spin, and every bond carries a
 # :math:`4\times4` hopping matrix that couples them (not drawn).
 
-patch = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}], prim_vec=lat.prim_vec)
+patch = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}], prim_vec=[(1., 0.), (0., 1.)])
 patch.get_lattice(n1=6, n2=6)
 vis = System(patch)
 vis.set_hopping([{'n': 1, 't': 1.}])
@@ -76,7 +56,7 @@ fig_lat = Plot(vis).lattice(plt_hop=True, ms=10, figsize=(4, 4))
 # Both symmetries hold
 # --------------------------
 
-model = bhz(1.)
+model = models.bhz(M=1.)
 assert model.symmetry_error(INVERSION) < 1e-12
 assert model.symmetry_error(TIME_REVERSAL, antiunitary=True) < 1e-12
 print('Inversion and time reversal (T^2 = -1): class', model.tenfold_class(time_reversal=TIME_REVERSAL))
@@ -90,8 +70,8 @@ print('Inversion and time reversal (T^2 = -1): class', model.tenfold_class(time_
 # :math:`0 < m < 4` and :math:`4 < m < 8`, and 0 otherwise.
 
 masses = np.array([-1., 1., 3., 5., 7., 9.])
-nu_parity = [bhz(m).parity_z2(INVERSION, [0, 1]) for m in masses]
-nu_flow = [bhz(m).z2_invariant([0, 1], nk=40, nk_perp=31) for m in masses]
+nu_parity = [models.bhz(M=m).parity_z2(INVERSION, [0, 1]) for m in masses]
+nu_flow = [models.bhz(M=m).z2_invariant([0, 1], nk=40, nk_perp=31) for m in masses]
 expected = [int(0 < m < 4 or 4 < m < 8) for m in masses]
 print('m:', masses, '\n  Fu-Kane parity:', nu_parity, '\n  Wannier flow:  ', nu_flow)
 assert nu_parity == expected and nu_flow == expected

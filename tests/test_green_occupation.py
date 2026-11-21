@@ -3,12 +3,14 @@ Sparse eigensolver, Green's function and local density of states, and the
 occupation of states (Fermi-Dirac, Fermi level, charge, band energy).
 """
 import unittest
+from unittest import mock
 
 import numpy as np
 from scipy.integrate import trapezoid
 
 import tbkit.lattices as lattices
 import tbkit.occupation as occupation
+import tbkit.system as system_module
 from tbkit.kspace import KSpace
 from tbkit.lattice import Lattice
 from tbkit.system import System
@@ -61,6 +63,97 @@ class TestSparse(unittest.TestCase):
         self.assertRaises(TypeError, sys.get_eig_sparse, 2.)
         self.assertRaises(TypeError, sys.get_eig_sparse, 2, 'a')
         self.assertRaises(TypeError, sys.get_eig_sparse, 2, 0., 1)
+
+
+def disordered_flake(n=16, w=1.5, vacancies=()):
+    lat = lattices.honeycomb()
+    lat.get_lattice(n, n)
+    if vacancies:
+        lat.remove_sites(list(vacancies))
+    sys = System(lat)
+    sys.set_hopping([{'n': 1, 't': -1.}])
+    if w:
+        np.random.seed(5)
+        sys.set_onsite({'a': 0., 'b': 0.})
+        sys.set_onsite_dis(w)
+    sys.get_ham()
+    return sys
+
+
+class TestEigWindow(unittest.TestCase):
+
+    def assert_window(self, sys, e_min, e_max, n_slice):
+        sys.get_eig()
+        dense = sys.en.copy()
+        sys.get_eig_window(e_min, e_max, eigenvec=True, n_slice=n_slice)
+        inside = dense[(dense >= e_min - 1e-9) & (dense <= e_max + 1e-9)]
+        self.assertEqual(len(sys.en), len(inside))
+        self.assertTrue(np.allclose(sys.en, inside, atol=1e-10))
+        ham = sys.ham.toarray()
+        self.assertTrue(np.allclose(ham @ sys.rn, sys.rn * sys.en[None, :], atol=1e-9))
+        self.assertTrue(np.allclose(sys.rn.conj().T @ sys.rn, np.eye(len(sys.en)), atol=1e-9))
+        self.assertEqual(sys.pola.shape, (len(sys.en), 2))
+        return inside
+
+    def test_matches_dense(self):
+        # bisected into slices of at most 12 eigenvalues
+        inside = self.assert_window(disordered_flake(), -0.6, 0.9, 12)
+        self.assertGreater(len(inside), 50)
+        sys = disordered_flake()
+        sys.get_eig_window(-0.6, 0.9)
+        self.assertTrue(np.allclose(sys.en, inside, atol=1e-10))
+
+    def test_zero_modes_at_a_split(self):
+        # three vacancies on sublattice a (the first 144 sites): three zero
+        # modes, exactly at the midpoint of the window, where the first split falls
+        sys = disordered_flake(12, 0., vacancies=(10, 76, 196))
+        sys.get_eig()
+        self.assertEqual(int(np.sum(np.abs(sys.en) < 1e-9)), 3)
+        self.assert_window(sys, -1., 1., 10)
+        # degenerate levels of a clean flake (eight-fold at E = -1), more
+        # than a slice holds: Lanczos alone misses copies, deflation finds them
+        self.assert_window(disordered_flake(14, 0.), -1., 1.2, 2)
+
+    def test_dense_and_empty(self):
+        sys = disordered_flake(6)
+        # (almost) the whole spectrum: diagonalized densely
+        self.assert_window(sys, -10., 10., 50)
+        sys.get_eig_window(-10., 10.)
+        self.assertEqual(len(sys.en), sys.lat.sites)
+        # nothing below the band
+        sys.get_eig_window(-20., -10., eigenvec=True)
+        self.assertEqual(sys.en.shape, (0,))
+        self.assertEqual(sys.rn.shape, (sys.lat.sites, 0))
+
+    def test_inertia_fallback(self):
+        sys = disordered_flake(6)
+        ham = sys.ham.tocsc().astype('c16')
+        count = int(np.sum(np.linalg.eigvalsh(ham.toarray()) < 0.3))
+        self.assertEqual(system_module._inertia(ham, 0.3), count)
+
+        class Pivoted:
+            perm_r, perm_c = np.array([0, 1]), np.array([1, 0])
+
+        def singular(*args, **kwargs):
+            raise RuntimeError('Factor is exactly singular')
+
+        for splu in (lambda *args, **kwargs: Pivoted(), singular):
+            with mock.patch.object(system_module.SLA, 'splu', splu):
+                self.assertEqual(system_module._inertia(ham, 0.3), count)
+
+    def test_checks(self):
+        sys = disordered_flake(6)
+        self.assertRaises(TypeError, sys.get_eig_window, 0, 'a')
+        self.assertRaises(ValueError, sys.get_eig_window, 1., 0.)
+        self.assertRaises(TypeError, sys.get_eig_window, -1., 1., 1)
+        self.assertRaises(ValueError, sys.get_eig_window, -1., 1., False, 0)
+        # ARPACK missing the eigenvalues of a slice
+        eigsh = system_module.SLA.eigsh
+        with mock.patch.object(system_module.SLA, 'eigsh',
+                                       lambda *args, **kwargs: (lambda en, vec: (en + 100., vec))(*eigsh(*args, **kwargs))):
+            self.assertRaises(RuntimeError, sys.get_eig_window, -1., 1., False, 5)
+        non_hermitian = square_sys(6, onsite={0: 0.5j})
+        self.assertRaises(ValueError, non_hermitian.get_eig_window, -1., 1.)
 
 
 class TestGreen(unittest.TestCase):

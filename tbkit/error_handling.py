@@ -77,6 +77,20 @@ def real_number(var, var_name):
         raise TypeError('\n\nParameter {} must be a real number.\n'.format(var_name))
 
 
+def real_numbers(params):
+    '''
+    Check that every value of the dictionary *params* (name: value) is a
+    real number.
+
+    Raises
+    ------
+    TypeError
+        Parameter *name* must be a real number.
+    '''
+    for name, var in params.items():
+        real_number(var, name)
+
+
 def positive_real(var, var_name):
     '''
     Check if parameter *var* is a positive number.
@@ -2056,6 +2070,21 @@ def n_eig(n_eig, sites):
                                     'the full spectrum).\n'.format(sites - 2))
 
 
+def slice_count(found, expected, lo, hi):
+    '''
+    Check that a shift-invert slice of *System.get_eig_window* found as
+    many independent eigenvectors as its inertia count.
+
+    Raises
+    ------
+    RuntimeError
+        The sparse solver missed eigenvalues of a slice.
+    '''
+    if found != expected:
+        raise RuntimeError('\n\nThe sparse solver found {} independent eigenvectors in [{:.6g}, {:.6g}) '
+                                      'instead of {} (Sylvester inertia): use get_eig.\n'.format(found, lo, hi, expected))
+
+
 ####################################
 # TRANSPORT
 ####################################
@@ -2252,6 +2281,19 @@ def lead_index(lead, n_leads):
         raise TypeError('\n\nThe lead index must be an integer.\n')
     if not 0 <= lead < n_leads:
         raise ValueError('\n\nNo lead {} ({} lead(s) attached with add_lead).\n'.format(lead, n_leads))
+
+
+def transport_solver(solver):
+    '''
+    Check the sparse solver of *Transport* (*Transport.solver*).
+
+    Raises
+    ------
+    ValueError
+        Transport.solver must be "auto", "mumps" or "superlu".
+    '''
+    if solver not in ('auto', 'mumps', 'superlu'):
+        raise ValueError('\n\nTransport.solver must be "auto", "mumps" or "superlu".\n')
 
 
 def lead_band_edge(flag, energy):
@@ -3345,10 +3387,10 @@ def model_archive(data, fmt, version):
                                    'upgrade tbkit.\n'.format(int(data['version']), version))
 
 
-def hr_header(tokens):
+def hr_header(tokens, name='_hr.dat'):
     '''
-    Check the header of a Wannier90 ``_hr.dat`` file: num_wann, nrpts and
-    the nrpts degeneracy weights, as positive integers.
+    Check the header of a Wannier90 ``_hr.dat`` (or *name*) file: num_wann,
+    nrpts and the nrpts degeneracy weights, as positive integers.
 
     Raises
     ------
@@ -3359,11 +3401,11 @@ def hr_header(tokens):
         num_wann, nrpts = int(tokens[0]), int(tokens[1])
         weights = [int(w) for w in tokens[2:2 + nrpts]]
     except (IndexError, ValueError):
-        raise ValueError('\n\nNot a Wannier90 _hr.dat file: expected num_wann, nrpts and '
-                                   'the degeneracy weights after the header line.\n') from None
+        raise ValueError('\n\nNot a Wannier90 {} file: expected num_wann, nrpts and '
+                                   'the degeneracy weights after the header.\n'.format(name)) from None
     if num_wann < 1 or nrpts < 1 or len(weights) != nrpts or min(weights) < 1:
-        raise ValueError('\n\nNot a Wannier90 _hr.dat file: num_wann, nrpts and the '
-                                   'degeneracy weights must be positive integers.\n')
+        raise ValueError('\n\nNot a Wannier90 {} file: num_wann, nrpts and the '
+                                   'degeneracy weights must be positive integers.\n'.format(name))
 
 
 def hr_body(n_tokens, nrpts, num_wann):
@@ -3408,10 +3450,10 @@ def win_block(found):
         raise ValueError('\n\nThe .win file has no "begin unit_cell_cart ... end unit_cell_cart" block.\n')
 
 
-def win_cell(cell):
+def win_cell(cell, what='The unit_cell_cart block'):
     '''
-    Check the ``unit_cell_cart`` block of a ``.win`` file: three lines of
-    three real numbers.
+    Check the ``unit_cell_cart`` block of a ``.win`` file (or the cell of
+    a ``_tb.dat`` file, *what*): three lines of three real numbers.
 
     Raises
     ------
@@ -3424,7 +3466,7 @@ def win_cell(cell):
     except ValueError:
         ok = False
     if not ok:
-        raise ValueError('\n\nThe unit_cell_cart block must hold three vectors of three real numbers.\n')
+        raise ValueError('\n\n{} must hold three vectors of three real numbers.\n'.format(what))
 
 
 def centres_count(n, num_wann):
@@ -3538,6 +3580,268 @@ def layer_hoppings(h_max, tol):
     if h_max > tol:
         raise ValueError('\n\nFor dim=2, the matrix elements with R3 != 0 must vanish '
                                    '(largest: {:.3g}).\n'.format(h_max))
+
+
+def tb_body(n_tokens, nrpts, num_wann):
+    '''
+    Check the number of entries of a Wannier90 ``_tb.dat`` file.
+
+    Raises
+    ------
+    ValueError
+        The file must have nrpts blocks of the Hamiltonian, then nrpts of positions.
+    '''
+    if n_tokens != nrpts * (6 + 12 * num_wann ** 2):
+        raise ValueError('\n\nThe _tb.dat file must hold, after the weights, nrpts = {0} blocks '
+                                   '"R1 R2 R3" followed by num_wann**2 = {1} lines "m n Re Im", then '
+                                   'nrpts blocks "R1 R2 R3" followed by {1} lines of 2 + 6 numbers.\n'
+                                   .format(nrpts, num_wann ** 2))
+
+
+def tb_vectors(ok):
+    '''
+    Check that the position blocks of a ``_tb.dat`` file come in the order
+    of its Hamiltonian blocks.
+
+    Raises
+    ------
+    ValueError
+        The two lists of lattice vectors differ.
+    '''
+    if not ok:
+        raise ValueError('\n\nThe position blocks of the _tb.dat file must list the lattice '
+                                   'vectors R in the order of the Hamiltonian blocks.\n')
+
+
+def tb_origin(n):
+    '''
+    Check that a ``_tb.dat`` file lists the lattice vector R = 0 once.
+
+    Raises
+    ------
+    ValueError
+        R = 0 must appear once.
+    '''
+    if n != 1:
+        raise ValueError('\n\nThe _tb.dat file must list the lattice vector R = (0, 0, 0) once '
+                                   '(it holds the Wannier centres); it does {} times.\n'.format(n))
+
+
+def wannier_export_dim(dim, space_dim):
+    '''
+    Check that a KSpace can be written in the Wannier90 formats: a 2D
+    lattice in the plane or a 3D lattice.
+
+    Raises
+    ------
+    ValueError
+        Only 2D models in the plane and 3D models.
+    '''
+    if dim not in (2, 3) or dim != space_dim:
+        raise ValueError('\n\nOnly a 2D model in the plane (dim = space_dim = 2) or a 3D model '
+                                   'can be written in the Wannier90 formats (dim = {}, space_dim = {}).\n'
+                                   .format(dim, space_dim))
+
+
+def no_position_elements(present, method):
+    '''
+    Check that a response which knows only the orbital positions is not
+    asked to use the position matrix elements of a ``_tb.dat`` model.
+
+    Raises
+    ------
+    ValueError
+        *method* does not use the position matrix elements.
+    '''
+    if present:
+        raise ValueError('\n\n{} does not use the position matrix elements of a _tb.dat model '
+                                   'besides the Wannier centres: read the model with '
+                                   'read_wannier90_tb(..., elements=False) to keep the centres only, '
+                                   'or pass positions=False.\n'.format(method))
+
+
+####################################
+# INTEROPERABILITY (tbkit.interop)
+####################################
+
+
+def site_tags(tags, n):
+    '''
+    Check a list of *n* sublattice tags (strings of 1 to TAG_LEN characters).
+
+    Raises
+    ------
+    TypeError
+        tags must be a list of strings.
+    ValueError
+        One tag per site, of 1 to TAG_LEN characters.
+    '''
+    if not isinstance(tags, list) or not all(isinstance(t, str) for t in tags):
+        raise TypeError('\n\nParameter tags must be a list of strings.\n')
+    if len(tags) != n or not all(1 <= len(t) <= TAG_LEN for t in tags):
+        raise ValueError('\n\nParameter tags must hold {} strings (one per site) of 1 to {} '
+                                   'characters.\n'.format(n, TAG_LEN))
+
+
+def ase_periodic(pbc):
+    '''
+    Check that an ASE Atoms object has a periodic direction.
+
+    Raises
+    ------
+    ValueError
+        At least one periodic direction.
+    '''
+    if not np.any(pbc):
+        raise ValueError('\n\nThe Atoms object needs at least one periodic direction (pbc).\n')
+
+
+def ase_space_dim(space_dim, planar):
+    '''
+    Check the space dimension asked of *lattice_from_ase*.
+
+    Raises
+    ------
+    ValueError
+        space_dim must be 2 or 3, and 2 only for a planar structure.
+    '''
+    if space_dim not in (2, 3):
+        raise ValueError('\n\nParameter space_dim must be 2, 3 or None.\n')
+    if space_dim == 2 and not planar:
+        raise ValueError('\n\nspace_dim=2 needs at most two periodic vectors in the (x, y) plane '
+                                   'and every atom at the same height.\n')
+
+
+def chemical_symbols(names, known):
+    '''
+    Check that every name is a chemical symbol of ASE.
+
+    Raises
+    ------
+    ValueError
+        Not a chemical symbol: give a dictionary symbols={tag: symbol}.
+    '''
+    unknown = sorted({n for n in names if n not in known})
+    if unknown:
+        raise ValueError('\n\n{} are not chemical symbols: map the tags to symbols with '
+                                   'symbols={{tag: symbol}}.\n'.format(unknown))
+
+
+def pythtb_periodic(n_per):
+    '''
+    Check that a PythTB model has a periodic direction.
+
+    Raises
+    ------
+    ValueError
+        A finite PythTB model has no KSpace.
+    '''
+    if n_per < 1:
+        raise ValueError('\n\nThe PythTB model has no periodic direction: a KSpace needs one.\n')
+
+
+def numeric_terms(values, code):
+    '''
+    Check that the onsite energies and hoppings of a model of *code* are
+    numbers (or matrices of numbers).
+
+    Raises
+    ------
+    ValueError
+        Parametric terms are not supported.
+    '''
+    for v in values:
+        if callable(v) or np.asarray(v).dtype.kind not in 'biufc':
+            raise ValueError('\n\nThe {} model has parametric terms (strings or functions): '
+                                       'give them numbers before importing it.\n'.format(code))
+
+
+def pybinding_aliases(unique):
+    '''
+    Check that a pybinding lattice has no sublattice aliases.
+
+    Raises
+    ------
+    ValueError
+        Sublattice aliases are not supported.
+    '''
+    if not all(unique):
+        raise ValueError('\n\nThe pybinding lattice has sublattice aliases, which tbkit does '
+                                   'not import.\n')
+
+
+def pybinding_spin(sizes):
+    '''
+    Check that every sublattice has two orbitals, for spin=True.
+
+    Raises
+    ------
+    ValueError
+        spin=True needs two orbitals per sublattice.
+    '''
+    if any(n != 2 for n in sizes):
+        raise ValueError('\n\nspin=True needs every sublattice to have 2 orbitals '
+                                   '(they have {}).\n'.format(sizes))
+
+
+def kwant_ham(n_ham, n_sites):
+    '''
+    Check that a System's Hamiltonian is built, before exporting it.
+
+    Raises
+    ------
+    ValueError
+        Call get_ham first.
+    '''
+    if n_ham != n_sites:
+        raise ValueError('\n\nThe System has no Hamiltonian of its {} sites: call get_ham first.\n'
+                                   .format(n_sites))
+
+
+def hermitian_matrix(ham, leads=(), tol=1e-12):
+    '''
+    Check that a sparse Hamiltonian, and the leads (h0, v, coupling,
+    sites) attached to it, are Hermitian.
+
+    Raises
+    ------
+    ValueError
+        The Hamiltonian must be Hermitian.
+    '''
+    dev = abs(ham - ham.conj().T).max() if ham.nnz else 0.
+    dev = max([dev] + [float(np.abs(h0 - h0.conj().T).max()) for h0, *_ in leads])
+    if dev > tol:
+        raise ValueError('\n\nKwant needs a Hermitian Hamiltonian (largest deviation {:.3g}).\n'
+                                   .format(dev))
+
+
+def kwant_finite(fsys):
+    '''
+    Check that an object is a finalized, finite Kwant system.
+
+    Raises
+    ------
+    TypeError
+        Not a finalized finite Kwant system.
+    '''
+    if not (hasattr(fsys, 'hamiltonian_submatrix') and hasattr(fsys, 'sites')) \
+            or hasattr(fsys, 'cell_size'):
+        raise TypeError('\n\nExpected a finalized, finite Kwant system '
+                                  '(builder.finalized(), not a lead).\n')
+
+
+def kwant_orbitals(n_orbitals, n_ham):
+    '''
+    Check that the orbitals of a Kwant system match its Hamiltonian.
+
+    Raises
+    ------
+    ValueError
+        Set norbs on the site families.
+    '''
+    if n_orbitals != n_ham:
+        raise ValueError('\n\nThe Kwant system has {} orbitals for {} sites: set norbs on its '
+                                   'site families.\n'.format(n_ham, n_orbitals))
 
 
 def spinless(spin):
@@ -3786,6 +4090,65 @@ def optical_part(part):
     '''
     if part not in ('real', 'imag', 'complex'):
         raise ValueError('\n\nParameter part must be "real", "imag" or "complex".\n')
+
+
+def cartesian_axes(axes, space_dim, var_name='component', length=None):
+    '''
+    Check a string of Cartesian axes ('x', 'y', 'z', within the space
+    dimension), for the derivatives of *KSpace.finite_derivatives* and the
+    components of *kpm.nonlinear_optical_conductivity*.
+
+    Raises
+    ------
+    TypeError
+        Parameter must be a string.
+    ValueError
+        Parameter must be letters among the axes (*length* of them if given).
+    '''
+    if not isinstance(axes, str):
+        raise TypeError('\n\nParameter {} must be a string.\n'.format(var_name))
+    letters = 'xyz'[:space_dim]
+    if not axes or any(c not in letters for c in axes) or (length is not None and len(axes) != length):
+        raise ValueError('\n\nParameter {} must be a string of {} letters among '
+                                    "'{}'.\n".format(var_name, length or 'one or more', letters))
+
+
+def nonlinear_derivatives(derivatives, keys, n):
+    '''
+    Check the derivatives of the Hamiltonian given to
+    *kpm.nonlinear_optical_conductivity*: a dict holding every key in
+    *keys*, each a (n, n) matrix.
+
+    Raises
+    ------
+    TypeError
+        Parameter derivatives must be a dict.
+    ValueError
+        Parameter derivatives must hold the derivative along each key.
+    '''
+    if not isinstance(derivatives, dict):
+        raise TypeError('\n\nParameter derivatives must be a dict (see KSpace.finite_derivatives).\n')
+    missing = [k for k in keys if k not in derivatives]
+    if missing:
+        raise ValueError('\n\nParameter derivatives lacks the derivatives {} (see '
+                                    'KSpace.finite_derivatives).\n'.format(missing))
+    for k in keys:
+        velocity(derivatives[k], n, "derivatives['{}']".format(k))
+
+
+def nonzero_frequencies(omega, var_name):
+    '''
+    Check that the frequencies of a nonlinear response are finite and
+    nonzero (the velocity gauge divides by them).
+
+    Raises
+    ------
+    ValueError
+        Parameter must be nonzero.
+    '''
+    frequencies(omega, var_name)
+    if np.any(np.asarray(omega) == 0):
+        raise ValueError('\n\nParameter {} must be nonzero.\n'.format(var_name))
 
 
 def tensor_component(component, order):

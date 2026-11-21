@@ -526,6 +526,16 @@ class OrbitalSystem(System):
         error_handling.orthogonal(self.overlap)
         System.get_eig_sparse(self, n_eig, sigma, eigenvec)
 
+    def get_eig_window(
+        self, e_min: float, e_max: float, eigenvec: bool = False, n_slice: int = 50,
+    ) -> None:
+        '''
+        Get all the eigenpairs in the window [e_min, e_max] (see
+        *System.get_eig_window*; orthogonal basis only).
+        '''
+        error_handling.orthogonal(self.overlap)
+        System.get_eig_window(self, e_min, e_max, eigenvec, n_slice)
+
     def get_local_chern_marker(self, e_fermi: float = 0., area: float | None = None) -> NDArray[np.float64]:
         '''
         Get the local Chern marker (see *System.get_local_chern_marker*),

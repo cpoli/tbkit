@@ -21,9 +21,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
-from tbkit.kspace import KSpace
 from tbkit.plot import Plot
 from tbkit.system import System
+from tbkit import models
 
 t2 = 0.2
 
@@ -42,10 +42,7 @@ def haldane_system(n1, n2, periodic):
     return sys
 
 
-hal = KSpace(lattices.honeycomb())
-hal.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
-for R in [(0, 1), (-1, 0), (1, -1)]:
-    hal.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j*t2}, {'i': 1, 'j': 1, 'R': R, 't': -1j*t2}])
+hal = models.haldane(t2=t2)
 
 # %%
 # The lattice

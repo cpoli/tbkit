@@ -22,7 +22,12 @@ lattice embedded in 3D space, the axes of *KSpace.k_basis*). With
 ``positions=True`` (the default) the bond vectors include the orbital
 positions, :math:`\mathbf{d} = \mathbf{R} + \boldsymbol\tau_j -
 \boldsymbol\tau_i`, so that the velocity is the physical :math:`i[H,
-\mathbf{r}]` (see *KSpace.hall_conductivity*).
+\mathbf{r}]` (see *KSpace.hall_conductivity*). A model read from a
+Wannier90 ``_tb.dat`` file (*tbkit.io.read_wannier90_tb*) also carries the
+other matrix elements of the position operator: :func:`optical_conductivity`
+includes them in :math:`i[H, \mathbf{r}]`, while
+:func:`berry_curvature_dipole` and :func:`shift_current` refuse them (read
+the model with ``elements=False``, or pass ``positions=False``).
 
 Examples
 --------
@@ -342,6 +347,7 @@ def berry_curvature_dipole(
         ``e_fermi.shape + (2,)``), in units of length (of *prim_vec*).
     '''
     kpts = _mesh(ks, nk, positions)
+    error_handling.no_position_elements(positions and bool(ks._position_hop), 'berry_curvature_dipole')
     error_handling.fermi_energies(e_fermi)
     error_handling.positive_real(temperature, 'temperature')
     mus = np.atleast_1d(np.asarray(e_fermi, dtype='f8')).ravel()
@@ -473,6 +479,7 @@ def shift_current(
     '''
     kpts = _mesh(ks, nk, positions)
     error_handling.no_overlap(bool(ks._overlap_hop))
+    error_handling.no_position_elements(positions and bool(ks._position_hop), 'shift_current')
     error_handling.frequencies(omega, 'omega')
     error_handling.real_number(e_fermi, 'e_fermi')
     error_handling.positive_real_zero(temperature, 'temperature')

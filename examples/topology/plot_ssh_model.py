@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from tbkit.lattice import Lattice
 from tbkit.system import System
 from tbkit.plot import Plot
-from tbkit.kspace import KSpace
+from tbkit import models
 
 
 unit_cell = [{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (0.5, 0.)}]
@@ -29,21 +29,13 @@ prim_vec = [(1., 0.)]
 # :math:`2\min_k|v+we^{-ik}| = 2|v-w|` (minimized at :math:`k=\pi`),
 # closing exactly at the transition v = w.
 
-def ssh_bulk(v, w):
-    lat = Lattice(unit_cell=unit_cell, prim_vec=prim_vec)
-    ssh = KSpace(lat)
-    ssh.set_hopping([{'i': 0, 'j': 1, 'R': (0,), 't': v},
-                            {'i': 0, 'j': 1, 'R': (-1,), 't': w}])
-    return ssh
-
-
 for v, w in [(1., 0.5), (0.5, 1.), (1., 1.)]:
-    en = ssh_bulk(v, w).mesh_bands(nk=200)
+    en = models.ssh(v, w).mesh_bands(nk=200)
     gap = en[:, 1].min() - en[:, 0].max()
     assert np.isclose(gap, 2*abs(v - w), atol=1e-6)
 print('Bulk gap = 2|v - w| confirmed for several (v, w).')
 
-ssh = ssh_bulk(v=0.6, w=1.)
+ssh = models.ssh(v=0.6, w=1.)
 ssh.k_path([(-np.pi,), (np.pi,)], nk=200)
 fig = ssh.plot_bands()
 

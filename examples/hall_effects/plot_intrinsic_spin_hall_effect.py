@@ -25,41 +25,10 @@ phase -- survive.
 import numpy as np
 import matplotlib.pyplot as plt
 
-import tbkit.lattices as lattices
 from tbkit.bridges import finite_system
-from tbkit.kspace import KSpace, PAULI
 from tbkit.plot import Plot
+from tbkit import models
 
-NN = [(0, 0), (-1, 0), (0, -1)]
-NNN = [(0, 1), (-1, 0), (1, -1)]  # a2, -a1, a1 - a2: 120 degrees apart
-
-
-def kane_mele(lam_so, lam_r=0.):
-    '''Kane-Mele model: t = 1, intrinsic spin-orbit lam_so, Rashba lam_r.'''
-    lat = lattices.honeycomb()
-    km = KSpace(lat, spin=True)
-    km.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in NN])
-    for R in NNN:
-        km.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j*lam_so*PAULI['z']},
-                                {'i': 1, 'j': 1, 'R': R, 't': -1j*lam_so*PAULI['z']}])
-    tau = np.array([d['r0'] for d in lat.unit_cell])
-    a = np.array(lat.prim_vec)
-    for R in NN:
-        d = tau[1] + R[0]*a[0] + R[1]*a[1] - tau[0]
-        d = d / np.linalg.norm(d)
-        # i lam_r (sigma x d)_z on the nearest-neighbour bonds
-        km.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1j*lam_r*(PAULI['x']*d[1] - PAULI['y']*d[0])}])
-    return km
-
-
-def haldane_sector(lam_so, spin):
-    '''One spin sector of Kane-Mele without Rashba: a Haldane model, t2 = +-i lam_so.'''
-    ks = KSpace(lattices.honeycomb())
-    ks.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in NN])
-    for R in NNN:
-        ks.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j*spin*lam_so},
-                                {'i': 1, 'j': 1, 'R': R, 't': -1j*spin*lam_so}])
-    return ks
 
 
 lam_so = 0.06
@@ -75,7 +44,7 @@ lam_so = 0.06
 # :math:`t` (thick) and the spin-orbit hoppings :math:`\pm i\lambda_{SO}`
 # between second neighbours (thin). Spin down has the opposite signs.
 
-fig_lat = Plot(finite_system(haldane_sector(lam_so, +1), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+fig_lat = Plot(finite_system(models.haldane(t2=+1 * lam_so), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 
 # %%
@@ -87,8 +56,8 @@ fig_lat = Plot(finite_system(haldane_sector(lam_so, +1), (5, 4))).lattice(plt_ho
 # of the two sectors' Hall conductivities (each spin carries
 # :math:`\pm\hbar/2`).
 
-km = kane_mele(lam_so)
-up, down = haldane_sector(lam_so, +1), haldane_sector(lam_so, -1)
+km = models.kane_mele(lambda_so=lam_so)
+up, down = models.haldane(t2=+1 * lam_so), models.haldane(t2=-1 * lam_so)
 c_up, c_dn = up.chern_number([0], 40), down.chern_number([0], 40)
 gap = 3 * np.sqrt(3) * lam_so  # half-gap at K and K'
 e_f = np.linspace(-0.99, 0.99, 199)  # off the van Hove level |E| = 1, met exactly on the mesh
@@ -117,7 +86,7 @@ assert np.max(np.abs(km.hall_conductivity(e_f, nk=60))) < 1e-12
 rashba = [0., 0.05, 0.1]
 curves, plateau = {}, []
 for lam_r in rashba:
-    model = kane_mele(lam_so, lam_r)
+    model = models.kane_mele(lambda_so=lam_so, lambda_r=lam_r)
     curves[lam_r] = model.spin_hall_conductivity(e_f, nk=150)
     plateau.append(model.spin_hall_conductivity(0., nk=150))
     nu = model.z2_invariant([0, 1], nk=40, nk_perp=21)

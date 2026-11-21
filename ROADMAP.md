@@ -13,9 +13,9 @@ tbkit already covers more physics than Kwant or PythTB: band topology,
 Hall and optical response, non-Hermitian and Floquet models, mean field,
 moiré systems. The scattering matrix, conservation laws, finite
 temperature and automatic lead attachment, including the completion of
-ragged interfaces, are in place (see Done). What remains for mesoscopic
-device work is, above all, scale (item 1). Until then, Kwant remains the
-right tool for large transport calculations. On the physics side the
+ragged interfaces, are in place (see Done). For the scattering matrix,
+scale is no longer the limit: with MUMPS, tbkit is as fast as Kwant or
+faster up to 4x10^5 sites (see Done). On the physics side the
 audit found three holes that the other packages fill in part and tbkit
 not at all: crystal symmetry (item 6, now done), response at a finite wave vector
 (item 7) and the semiclassical conductivity of a metal (item 11). It
@@ -25,27 +25,44 @@ done), spin observables in transport (item 8), lattices without a unit
 cell (item 10) and the scaling fit of a localization transition
 (item 12).
 
+Items 13 to 15 come from a second review (2026-11-17), which asked a
+different question: what stops someone from starting with tbkit, or from
+moving to it from Kwant or PythTB? Its answer is that the missing physics
+is not what holds adoption back. Getting existing models in and out,
+ready-made models, a guide for users of the other packages and fitting
+to bands come first, and the physics items follow in their previous order.
+
 The items keep their numbers, because other notes cite them, so the
-numbers are no longer the priority order. The order is:
+numbers are not the priority order. The order is:
 
-1. **Item 1**, performance and scale. Still what most limits tbkit
-   against Kwant (dense `System.get_eig` and `Transport.get_green` with
-   an explicit `eta`). The Chebyshev time evolution, spectral function
-   and optical conductivity that KITE and TBPLaS have are done.
-2. **Item 4**, interactions beyond on-site Hubbard mean field. Its exact
+1. **Item 2**, interoperability, without its units bullet: done (see
+   Done). The cross-checks of items 8 and 11 can now use
+   `tbkit.interop` (Kwant, PythTB, Z2Pack).
+2. **Item 15**, migration guides from Kwant and PythTB: done (see
+   Done).
+3. **Item 14**, fitting a model to bands.
+4. **Item 1**, performance and scale. What remains dense is
+   `Transport.get_green` and `self_energy` (full matrices) and the full
+   spectrum of `System.get_eig`; the scattering matrix runs on MUMPS,
+   every eigenstate of an energy window comes from spectrum slicing, and
+   the Chebyshev time evolution, spectral function, optical and
+   second-order optical conductivities that KITE and TBPLaS have are
+   done (see Done).
+5. **Item 2**, the units bullet.
+6. **Item 4**, interactions beyond on-site Hubbard mean field. Its exact
    references come from `tbkit.manybody` (item 9, done).
-3. **Item 7**, the Lindhard function and RPA. It says which orders item 4
+7. **Item 7**, the Lindhard function and RPA. It says which orders item 4
    should look for, and in which enlarged cell.
-4. **Item 8**, spin densities, spin currents and torques.
-5. **Item 10**, quasicrystals and amorphous lattices.
-6. **Item 2**, interoperability. The cross-checks of items 8 and 11
-   get shorter once it is done, but none of them waits for it.
-7. **Item 11**, semiclassical transport.
-8. **Item 12**, finite-size scaling. Small. Item 5 needs it.
-9. **Item 5**, disorder projected onto a flat band (research).
-10. **Item 3**, time-dependent transport (niche).
+8. **Item 8**, spin densities, spin currents and torques.
+9. **Item 10**, quasicrystals and amorphous lattices.
+10. **Item 11**, semiclassical transport.
+11. **Item 12**, finite-size scaling. Small. Item 5 needs it, and it can
+    share the least-squares code of item 14.
+12. **Item 5**, disorder projected onto a flat band (research).
+13. **Item 3**, time-dependent transport (niche).
 
-Item 6, crystal symmetry, is done (see Done).
+Item 6, crystal symmetry, and item 13, the library of named models, are
+done (see Done).
 
 Each item lists why it matters, the current state, and a sketch of the
 approach. The project conventions (validation in `error_handling.py`, 100%
@@ -66,7 +83,9 @@ diagonalizations are batched over k and optionally threaded
 (`KSpace.set_workers`, see Done), and `tests/benchmark_kspace.py` times
 them. The energies of transport and of `surface_spectral_function` are
 threaded too (`set_workers`, see Done). The scattering matrix and the
-scattering states factorize the sparse device, and by default every
+scattering states factorize the sparse device, with MUMPS when
+python-mumps is installed and the leads are wide (`Transport.solver`,
+see Done), and by default every
 transmission, conductance matrix, current and noise of `Transport`
 comes from them (see Done). With an explicit broadening `eta`, the
 same methods take only the columns of the Green's function on the lead
@@ -74,35 +93,52 @@ sites from one sparse factorization (see Done); `Transport.get_green`
 and `self_energy`, which return full matrices, remain dense.
 Real-space `System.get_eig` is a full dense diagonalization, by
 definition `O(N^3)` (LAPACK, threaded through BLAS); the scalable paths
-are `get_eig_sparse` (shift-invert near a target energy) and KPM.
-Still open: all the eigenpairs in an energy window of a large flake
-(spectrum slicing: several shift-invert windows, counted by Sylvester
-inertia or a KPM estimate of the number of states).
+are `get_eig_sparse` (shift-invert near a target energy),
+`get_eig_window` (every eigenpair of an energy window by spectrum
+slicing, see Done) and KPM. Still open: spectrum slicing of a
+generalized problem (`OrbitalSystem` with an overlap, whose inertia is
+that of `H - sigma S`), and of non-Hermitian Hamiltonians, which have no
+inertia to count with.
 
 **At scale.** `tbkit.kpm` now has Chebyshev time evolution, the
-spectral function `A(k, E)` and the optical conductivity besides `dos`,
-`ldos`, `conductivity` and `hall_conductivity`, and
-`optical_conductivity` has its reactive part and Hall components (see
-Done). The Crank-Nicolson steps of `Propagation` factorize a sparse
-matrix (see Done). Still missing next to KITE: nonlinear optical
-responses (second-order conductivities from three-index Chebyshev
-moments, KITE's `conductivity_optical_nonlinear`).
+spectral function `A(k, E)`, the optical conductivity and the
+second-order optical conductivity besides `dos`, `ldos`, `conductivity`
+and `hall_conductivity`, and `optical_conductivity` has its reactive
+part and Hall components (see Done). The Crank-Nicolson steps of
+`Propagation` factorize a sparse matrix (see Done). Nothing of KITE's
+list is missing. Open: the cost of the second-order conductivity, whose
+energy integral takes `O(M^4)` operations per pair of frequencies, and
+whose random trace is noisy (about 20% at `R N ~ 10^4`); and
+`hall_conductivity`-style Fermi-sea formulas for it, which would avoid
+the velocity-gauge cancellations at low frequency.
 
 ## 2. Interoperability and API limits
 
-- Import and export Kwant `Builder`s, PythTB `tb_model`s, pybinding
-  models and ASE `Atoms` geometries. That makes cross-checks against these
-  packages one line.
-- Write Wannier90 `_hr.dat` files (not only read them), and read
-  `_tb.dat`. Once `_tb.dat` is read, use its position matrix elements in
-  the optical and Berry-curvature responses, which today know only the
-  Wannier centres (`positions=True`).
-- Export a TBmodels `Model` (and its HDF5 file) and the callable `H(k)`
-  that `z2pack.hm.System` takes, so that Z2 invariants and Chern numbers
-  cross-check against Z2Pack. Export a qsymm `Model`, for the
-  cross-checks of item 6.
+**Why.** People who use Kwant, PythTB or Wannier90 already have their
+models. If tbkit cannot read them, moving means rewriting them. Before
+this item, `io.py` read `_hr.dat` and tbkit's own archives, and nothing
+else.
+
+Done (unreleased), except the units: see "Wannier90 output, `_tb.dat`
+and `tbkit.interop`" under Done. Left out of this pass, each small once
+needed:
+
+- The position matrix elements of a `_tb.dat` model in the spin Hall
+  conductivity, the orbital magnetization, the axion angle, the Berry
+  curvature dipole and the shift current (each needs its own extra
+  terms, e.g. the generalized derivative of the connection for the
+  shift current). These refuse such a model with `positions=True` today.
+- Importing a TBmodels model, a qsymm model or a Kwant `Builder` (see
+  "Looked at and left out" for the last).
+- `paper/validation/pythtb_bridge.py` predates `interop.from_pythtb`,
+  which does the same; the paper's cross-check could use the latter.
+
+Still open:
+
 - Optional physical units (eV, Å, tesla) for magnetic fields and
-  conductances. The current dimensionless conventions stay the default.
+  conductances, with conductances in e²/h. The current dimensionless
+  conventions stay the default. Lower priority than the rest of this
+  item (see the order at the top).
 
 ## 3. Time-dependent transport
 
@@ -407,7 +443,165 @@ digits beyond these are *unverified*). The example states the cross
 sections and the strip lengths it could afford and the interval it
 obtained, and asserts only that.
 
+## 13. A library of named models
+
+Done (unreleased): see "Named models" under Done. Left out: more
+models (the Kagome and Lieb flat bands, the BBH quadrupole insulator,
+the 2D SSH model, Slater-Koster graphene beyond first neighbours), a
+`System` for the spinful models (`bridges.finite_system` takes spinless
+ones; `bridges.finite_model` gives the sparse Hamiltonian of all), and
+the TNN version of the TMD model (Table III of Liu et al.).
+
+## 14. Fitting a model to bands
+
+**Why.** Fitting tight-binding parameters to DFT or ARPES bands is one
+of the most common uses of a tight-binding code, and tbkit has no
+function for it. Neither Kwant nor PythTB has one.
+
+**Now.** Value functions and `KSpace.set_params` make a model a function
+of named parameters, and `KSpace._eigs` diagonalizes it on any set of
+k-points in one call. `slater_koster.sk_kspace` builds a `KSpace` from
+Slater-Koster parameters, and `read_wannier90` gives reference bands.
+Nothing minimizes over the parameters.
+
+**Approach.**
+- `fit_bands(ks, params, k_points, energies, weights=None, bands=None)`
+  with `scipy.optimize.least_squares` (SciPy only, no new dependency).
+  The residuals are the differences between the model's bands and the
+  reference ones, with a weight per k-point and per band, and `bands`
+  selects which model bands face the reference when it has fewer. It
+  returns the fitted parameters with their covariance and the residual
+  per band.
+- The Jacobian from the Hellmann-Feynman theorem,
+  `dE_n/dp = <u_n| dH/dp |u_n>`, with `dH/dp` exact when the parameter
+  is a hopping amplitude and by finite differences of `_bloch_sum`
+  otherwise. Degenerate levels are handled by diagonalizing `dH/dp` in
+  the degenerate subspace.
+- Check: bands computed from known parameters give them back, from a
+  displaced start and with noise within the covariance; a third-neighbour graphene model fitted to the bands of
+  a `read_wannier90` file reproduces them better than the
+  nearest-neighbour fit, band by band; the
+  analytical Jacobian equals the finite-difference one to 1e-6.
+- The polynomial scaling fit of item 12 uses the same wrapper (errors
+  of the data, goodness of fit, bootstrap intervals).
+- No automatic differentiation: see "Looked at and left out".
+
+## 15. Migration guides from Kwant and PythTB
+
+Done (unreleased): see "Migration guides" under Done. Left out: a guide
+for pybinding or TBmodels users, and a port of a Kwant model with
+conservation laws or several orbitals per site.
+
 ## Done
+
+- **Migration guides** (unreleased, item 15): `coming_from_kwant.rst`
+  and `coming_from_pythtb.rst`, linked from the index. Each starts with
+  the one-line `tbkit.interop` conversion, then a side-by-side table of
+  the same tasks and the differences of convention: hopping values are
+  `H_ij` with no sign added in all three codes, a Kwant hopping value
+  function and a tbkit Peierls phase give the phase of the same `H_ij`
+  (the two matrices compared element by element, outside CI), PythTB takes reduced k and puts the
+  orbital positions in its Bloch phases while tbkit's `get_ham` uses
+  the periodic gauge (Berry phases agree with `positions=True`; the
+  *unverified* of the item for 2.0 is now checked: the two `H(k)` differ
+  by the diagonal unitary of the positions), and
+  PythTB unwraps a line of Berry phases. One model per page ported line
+  by line, the other package's half shown and not run
+  (`docs/source/migration/original/`), tbkit's half run in the `docs`
+  CI job with its assertions: Kwant's tutorial wire with a field window
+  (conductances equal to Kwant 1.5's to 1e-12), and the Haldane model of
+  `pythtb.models` (bands, C = -1 and Berry phases equal to PythTB 2.0's
+  to 1e-12).
+- **Spectrum slicing** (unreleased, item 1):
+  `System.get_eig_window(e_min, e_max, eigenvec, n_slice)` (also
+  `OrbitalSystem`, without an overlap). The number of eigenvalues below
+  an energy from Sylvester's law of inertia (negative pivots of SuperLU
+  with a symmetric permutation and diagonal pivots, `system._inertia`;
+  dense count if SuperLU exchanges rows), bisection until each slice
+  holds at most `n_slice`, and shift-invert Lanczos with deflation per
+  slice (`system._slice_pairs`): passes on `P (H - sigma)^-1 P` until the
+  slice gives as many independent eigenvectors as its count, since
+  Lanczos alone missed copies of the eight-fold level at `E = -t` of a
+  clean graphene flake, and once returned a vector twice. Checked
+  against the dense spectrum (values, residuals, orthonormality) with
+  zero modes on a split point and degenerate levels larger than a slice;
+  320 states of a 28,800-site disordered flake in 8 s, their number
+  within 2.2% of the KPM density of states. Example:
+  `large_scale/plot_spectrum_slicing.py`.
+
+- **Second-order optical conductivity by KPM** (unreleased, item 1):
+  `kpm.nonlinear_optical_conductivity(ham, derivatives, omega1, omega2,
+  component)`, as KITE's `conductivity_optical_nonlinear`, in the
+  velocity gauge, with `KSpace.finite_derivatives` for the vertices
+  `h^{ab...}`. The density matrix to second order, with the occupations
+  moved onto one state at a time by partial fractions (which needs
+  `2 eta` at `omega_1 + omega_2`), gives three traces with one delta
+  function and two Green's functions, expanded in the moments
+  `Tr[T_m h^a T_n h^b T_p h^c]` (one tensor serves both orders of b and
+  c), plus two-index and one-index moments of `h^ab`, `h^bc` and
+  `h^abc`. Checked: against the sum over eigenstates of the density
+  matrix (the error falls as `(pi a / M eta)^2`, 19% to 0.5% for M = 64
+  to 512); the mirror relations of gapped graphene and zero response
+  with inversion; and, as `eta -> 0`, the length-gauge
+  `optics.shift_current` on the Rice-Mele chain (0.972, 0.988, 0.995 at
+  eta = 0.04, 0.02, 0.01), so the velocity gauge is exact in the
+  tight-binding basis. The reference of Joao and Lopes (J. Phys.:
+  Condens. Matter 32, 125901 (2020)) was written from memory and is
+  *unverified*; the formula was derived independently. Example:
+  `large_scale/plot_kpm_nonlinear_optical_conductivity.py`.
+
+- **Wannier90 output, `_tb.dat` and `tbkit.interop`** (unreleased, item
+  2 without its units bullet). `io.write_wannier90` (`_hr.dat`,
+  `_tb.dat`, `.win`, `_centres.xyz`) and `io.read_wannier90_tb`, whose
+  position matrix elements the Berry-curvature and optical responses
+  use with `positions=True`: `KSpace._position_hop`, the velocity
+  `i[H, r]` in `_bloch_derivatives` and the curvature of the Wannier
+  connection in `_kubo` (Wang, Yates, Souza and Vanderbilt 2006),
+  validated on a model rewritten in a k-dependent basis.
+  `tbkit.interop`: ASE (`Lattice` both ways), PythTB 1.x and 2 (both
+  ways, spinful too), TBmodels (with its HDF5 file), Z2Pack (`H(k)` and
+  `hm.System`), qsymm (`BlochModel`), pybinding (`Lattice` both ways,
+  `Model` in), Kwant (`System` and `Transport` with its leads out, as
+  `ModesLead`s with their conservation laws; finalized systems in). Each
+  checked against the package itself where installed (bands, Chern and
+  Z2 invariants, symmetry groups, transmissions); CI runs stand-ins.
+  PythTB 2.0 does include the orbital positions in its Bloch phases
+  (convention 1), as 1.x did.
+
+- **Named models** (unreleased, item 13): `tbkit.models`, one
+  function per model, with the parameters of the original paper as
+  keyword arguments, returning a `KSpace`: `ssh`, `rice_mele`,
+  `rice_mele_pump` (the Thouless pump as a 2D model), `kitaev_chain`,
+  `haldane`, `qi_wu_zhang`, `kane_mele`, `bhz`, `tmd_three_band`
+  (Liu et al. 2013, with `TMD_PARAMETERS` for the six MX2 and the
+  spin-orbit coupling of their Table IV), `topological_insulator_3d`
+  and `weyl_semimetal`. `tests/test_models.py` checks each model's
+  invariant in each phase (`berry_phase`, `chern_number`,
+  `z2_invariant`, `parity_z2`, `z2_indices_3d`, `majorana_number`,
+  `find_weyl_points`) and the TMD Hamiltonian against Eq. (4)-(10) of
+  the paper (gap 1.663 eV at K for MoS2, valence splitting 2 lambda).
+  Twenty-four gallery examples now call the library; those whose subject
+  is how a model is built (`plot_pipeline_bridges`, `plot_save_load`,
+  `plot_kp_theory_on_a_lattice`) and the variants (non-Hermitian,
+  disordered flakes, other hopping patterns) keep their own. The README
+  instance is `system`, not `sys`.
+
+- **MUMPS and Schur complements in transport** (unreleased, item 1):
+  `Transport.solver` (`'auto'`, `'mumps'`, `'superlu'`). Every sparse
+  solve of `Transport` goes through `transport._solve`. With the optional
+  python-mumps and leads of 50 orbitals or more, the lead quantities
+  (`smatrix`, transmissions, noise, with or without `eta`) come from the
+  Schur complement of the device on the lead sites, with a fallback to a
+  full factorization when the device cut from its leads is singular at
+  the energy; the states and currents come from a full MUMPS
+  factorization. Narrow or small devices, the threads of `set_workers`
+  and installations without python-mumps keep SuperLU. On the paper's
+  benchmark tbkit is 1.1 to 2 times faster than Kwant from 400 to
+  409,600 sites (11.7 s against 17.1 s at the largest), where Kwant was
+  2.3 to 2.8 times faster. Not done: a criterion for `'auto'` that sees
+  a wide device behind narrow leads (it needs `solver = 'mumps'` set by
+  hand), and python-mumps in CI (the tests use a NumPy stand-in there,
+  and the library itself where it is installed).
 
 - **Crystal symmetry** (unreleased, item 6): `tbkit.symmetry`.
   `Operation` (rotation or reflection, translation, orbital matrix,
@@ -778,12 +972,13 @@ obtained, and asserts only that.
 | Surface states | Ribbons and slabs, semi-infinite surface spectral function | Leads and `kwant.physics` | Finite slabs (`cut_piece`) |
 | Response | Anomalous and spin Hall, orbital magnetization, anomalous Nernst and thermal Hall, axion angle, Kubo-Bastin, optics, Berry curvature dipole, shift current | Kubo conductivity (KPM) | Berry curvature and velocities, no conductivity routines |
 | Non-Hermitian, Floquet | Extensive | None | None |
-| Scale | NumPy/SciPy, mostly dense; k-meshes batched and threaded; sparse LU for the S-matrix | Cython and MUMPS, about 10^6 sites | Vectorized NumPy since 2.0 |
+| Scale | NumPy/SciPy; k-meshes batched and threaded; SuperLU, or MUMPS with python-mumps, for the S-matrix; shift-invert and spectrum slicing for the eigenstates of large flakes; KPM for spectral, linear and second-order optical quantities | Cython and MUMPS, about 10^6 sites | Vectorized NumPy since 2.0 |
 
 Measured on one thread (`paper/benchmarks/run_benchmarks.py`, Kwant 1.5.0,
 PythTB 2.0.2): on k-meshes tbkit and PythTB 2 are within a factor of two of
-each other, tbkit using 5-14x less memory; for the scattering matrix Kwant
-is faster from about 10^3 sites, and ten times faster at 4x10^5 sites.
+each other, tbkit using 5-14x less memory; for the scattering matrix tbkit
+with MUMPS is 1.1 to 2 times faster than Kwant from 400 to 4x10^5 sites
+(with SuperLU alone, Kwant is 2.8 times faster at 4x10^5 sites).
 Kwant 1.5.0 (June 2024) and PythTB 2.0.2 were still the latest releases
 on 2026-11-15.
 
@@ -801,7 +996,9 @@ What each has that tbkit lacks, from their feature lists as read on
   repository (graphene, phosphorene, group 6 TMDs; left out below).
 - **KITE** 1.1 (July 2022): `arpes`, `conductivity_optical`,
   `conductivity_optical_nonlinear` and `gaussian_wave_packet` by
-  Chebyshev expansion, on 10^9 and more sites. Item 1.
+  Chebyshev expansion, on 10^9 and more sites. All four are now in
+  `tbkit.kpm` (item 1, see Done), on the sizes a single NumPy process
+  reaches.
 - **TBPLaS** 2.0.1 (July 2025): the Lindhard function, the dielectric
   function and plasmons (item 7), time propagation at scale and GPUs
   (item 1), quasicrystals and fractals (item 10).
@@ -856,9 +1053,23 @@ not start from them again.
 - **Nonlinear propagation** (the discrete nonlinear Schrödinger
   equation, for the discrete solitons the waveguide-array entry
   mentions). A small addition to `Propagation`; photonics only.
-- **A library of named models** (Haldane, Kane-Mele, BHZ, the three-band
-  TMD model). PythTB 2, pybinding and TBPLaS ship one. A convenience,
-  not a capability.
+- **A library of named models.** Left out on 2026-11-15 as a
+  convenience; now item 13.
+- **A JAX backend and GPUs** (looked at on 2026-11-17). A second array
+  backend doubles the code behind `_bloch_sum` and `_eigs`, which the
+  package keeps single on purpose, and the 100% coverage with it. The
+  fits of item 14 get exact gradients without it. Gradients of
+  eigenvectors are ill-defined at degeneracies, where the topology is.
+  The real-space bottlenecks are sparse factorizations and shift-invert,
+  which a GPU array library does not speed up for free. TBPLaS has GPUs.
+- **Importing a Kwant `Builder`** with its value functions, symmetries
+  and leads. Item 2 exports to Kwant and imports a finalized system
+  only.
+- **One model definition for `System` and `KSpace`.** The two take
+  different hopping lists (`{'n', 't'}` by neighbour order,
+  `{'i', 'j', 'R', 't'}` by cell). Merging them touches the separation
+  of the two pipelines; the bridges and item 13 cover the newcomer's
+  case.
 - **More nonlinear and gyrotropic responses** (injection current, second
   harmonic generation, the gyrotropic magnetic effect), and
   `optics` in 3D. Research tools with few users; the shift current and

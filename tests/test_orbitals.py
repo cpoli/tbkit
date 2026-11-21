@@ -160,6 +160,7 @@ class TestOrbitalSystem(unittest.TestCase):
         self.assertTrue(np.allclose(sys.intensity.sum(axis=0), 1.))
         self.assertRaises(ValueError, sys.get_eig, True, True)
         self.assertRaises(ValueError, sys.get_eig_sparse, 2)
+        self.assertRaises(ValueError, sys.get_eig_window, -1., 1.)
         self.assertRaises(ValueError, sys.get_local_chern_marker, 0., 1.)
         # non-Hermitian with an overlap
         sys.set_onsite({'a': 0.2j, 'b': 0.})
@@ -243,6 +244,11 @@ class TestOrbitalSystem(unittest.TestCase):
         self.assertEqual(len(fig.axes[0].lines[0].get_xdata()), sys.n_rows)
         sys.get_eig_sparse(4, sigma=0.)
         self.assertEqual(len(sys.en), 4)
+        # every spin-orbital in a window, against the dense spectrum
+        dense = LA.eigvalsh(sys.ham.toarray())
+        sys.get_eig_window(-0.5, 1., eigenvec=True, n_slice=4)
+        self.assertTrue(np.allclose(sys.en, dense[(dense >= -0.5) & (dense <= 1.)]))
+        self.assertTrue(np.allclose(sys.intensity.sum(axis=0), 1.))
         self.assertTrue(np.allclose(sys.get_local_chern_marker(0.).sum(), 0.))
         self.assertRaises(ValueError, sys.row, 0, 'dxy')
         self.assertRaises(ValueError, sys.row, 0, 's', 2)

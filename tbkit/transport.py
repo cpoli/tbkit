@@ -54,6 +54,7 @@ inverting the whole device.
 """
 from __future__ import annotations
 
+import threading
 from concurrent.futures import ThreadPoolExecutor
 from typing import Callable, NamedTuple, TypeVar
 
@@ -64,6 +65,13 @@ import scipy.sparse as sp
 import scipy.sparse.linalg as spla
 
 import tbkit.error_handling as error_handling
+
+_MUMPS: list = []  # [the python-mumps module, or None without it], once looked for
+_MUMPS_LOCK = threading.Lock()  # MUMPS is not thread-safe: one call at a time
+_MUMPS_WIDTH = 50  # orbitals of the widest lead from which solver 'auto' takes MUMPS
+_POOL = threading.local()  # .active is set in the threads of _EnergyWorkers._map
+_SCHUR_FILL = 64  # largest Schur complement of _mumps_schur, in entries per unknown
+_SCHUR_GROWTH = 1e3  # largest Schur entry, over the largest of the matrix, that is trusted
 
 _T = TypeVar('_T')
 
@@ -420,6 +428,112 @@ def _lead_modes(
     return LeadModes(phis, ks, vels, np.zeros(len(ks), int)), n_in, u0, u1
 
 
+def _mumps_module(solver: str, width: int):
+    r'''
+    Private function. The python-mumps module that the sparse solver
+    *solver* (*Transport.solver*) uses, or None for SuperLU. ``'auto'`` is
+    MUMPS when python-mumps is installed and the widest lead has at least
+    *_MUMPS_WIDTH* orbitals (*width*): below, on narrow or small devices,
+    SuperLU is as fast or faster. In the threads of *set_workers* it is
+    SuperLU too: MUMPS runs one factorization at a time, SuperLU one per
+    thread.
+    '''
+    error_handling.transport_solver(solver)
+    if solver == 'superlu' or (solver == 'auto' and (width < _MUMPS_WIDTH or getattr(_POOL, 'active', False))):
+        return None
+    if not _MUMPS:
+        try:
+            import mumps
+        except ImportError:
+            mumps = None
+        _MUMPS.append(mumps)
+    if _MUMPS[0] is None and solver == 'mumps':
+        raise ImportError("\n\nTransport.solver = 'mumps' needs the python-mumps package "
+                          "(conda install -c conda-forge python-mumps).\n")
+    return _MUMPS[0]
+
+
+def _solve(mat, rhs, rows: NDArray[np.int64] | None, solver: str, width: int) -> NDArray[np.complex128]:
+    r'''
+    Private function. Solve the sparse system *mat* x = *rhs* (both CSC,
+    one column of *rhs* per right-hand side) with one factorization, and
+    return the rows *rows* of x (every row for None), as a dense array.
+    *solver* and *width* (the orbitals of the widest lead) choose between
+    MUMPS and SuperLU (*_mumps_module*).
+
+    With MUMPS and *rows*, nothing but the interface (*rows* and the rows
+    where *rhs* is not zero) is solved for: MUMPS eliminates the other
+    unknowns and returns the Schur complement on the interface
+    (*_mumps_schur*), a small dense system. Otherwise the matrix is
+    factorized (MUMPS or *scipy.sparse.linalg.splu*) and the right-hand
+    sides are solved in column blocks.
+    '''
+    mumps = _mumps_module(solver, width)
+    if mumps is None or mat.shape[0] == 1:  # python-mumps 0.0.6 refuses a 1 x 1 solution
+        lu = spla.splu(mat)
+        return _solve_columns(lambda b: lu.solve(b.toarray()), rhs, rows)
+    with _MUMPS_LOCK:
+        sol = None if rows is None else _mumps_schur(mumps, mat, rhs, rows)
+        return _mumps_columns(mumps, mat, rhs, rows) if sol is None else sol
+
+
+def _solve_columns(solve: Callable, rhs, rows: NDArray[np.int64] | None) -> NDArray[np.complex128]:
+    r'''
+    Private function. The rows *rows* of the solutions *solve* (rhs), from
+    the sparse right-hand sides in column blocks whose dense solutions
+    take at most 64 MB.
+    '''
+    size, n_rhs = rhs.shape
+    chunk = max(1, 2**22 // size)
+    keep = slice(None) if rows is None else rows
+    return np.hstack([solve(rhs[:, c:c + chunk])[keep] for c in range(0, n_rhs, chunk)])
+
+
+def _mumps_columns(mumps, mat, rhs, rows: NDArray[np.int64] | None) -> NDArray[np.complex128]:
+    r'''
+    Private function. *_solve* by a MUMPS factorization of the whole matrix.
+    '''
+    ctx = mumps.Context()
+    try:  # the MUMPS instance is freed here, under _MUMPS_LOCK, even after an error
+        ctx.factor(mat.tocoo())
+        return _solve_columns(ctx.solve, rhs, rows)
+    finally:
+        del ctx
+
+
+def _mumps_schur(mumps, mat, rhs, rows: NDArray[np.int64]) -> NDArray[np.complex128] | None:
+    r'''
+    Private function. *_solve* through the Schur complement. With I the
+    interface (*rows* and the non-zero rows of *rhs*) and D the other
+    unknowns, where the right-hand side vanishes,
+
+    .. math::
+
+        S x_I = b_I\, ,\qquad S = A_{II} - A_{ID}A_{DD}^{-1}A_{DI}\, ,
+
+    and MUMPS returns S without the triangular solves of a full solution.
+
+    Returns None, for *_solve* to factorize the whole matrix instead, when
+    the interface is the whole system or too large for a dense S (more
+    than *_SCHUR_FILL* entries per unknown), or when :math:`A_{DD}` is singular or nearly so
+    (an eigenstate of the device cut from its leads at this energy), which
+    shows as an S with entries above *_SCHUR_GROWTH* times those of the matrix.
+    '''
+    idx = np.union1d(rows, rhs.indices)
+    if idx.size == mat.shape[0] or idx.size**2 > _SCHUR_FILL * mat.shape[0]:
+        return None
+    ctx = mumps.Context()
+    try:  # the MUMPS instance is freed here, under _MUMPS_LOCK
+        schur = ctx.schur(idx, mat.tocoo(), discard_factors=True)
+    except mumps.MUMPSError:
+        return None
+    finally:
+        del ctx
+    if not np.all(np.isfinite(schur)) or np.abs(schur).max() > _SCHUR_GROWTH * np.abs(mat.data).max():
+        return None
+    return np.linalg.solve(schur, rhs.tocsr()[idx].toarray())[np.searchsorted(idx, rows)]
+
+
 class SMatrix():
     r'''
     The scattering matrix of a device at one energy (see
@@ -533,7 +647,9 @@ class _EnergyWorkers():
         energy is one sparse factorization (or, for *RecursiveTransport*,
         dense inversions of slices), mostly in
         LAPACK and SuperLU, which release the GIL, so the energies run in
-        parallel. The results do not depend on *workers*.
+        parallel. In these threads the default *Transport.solver* keeps
+        SuperLU, since MUMPS factorizes one matrix at a time. The
+        results do not depend on *workers*, up to rounding.
 
         Parameters
         ----------
@@ -556,7 +672,8 @@ class _EnergyWorkers():
         *workers* threads.
         '''
         if self.workers > 1 and len(energies) > 1:
-            with ThreadPoolExecutor(min(self.workers, len(energies))) as pool:
+            with ThreadPoolExecutor(min(self.workers, len(energies)),
+                                    initializer=setattr, initargs=(_POOL, 'active', True)) as pool:
                 return list(pool.map(func, (float(e) for e in energies)))
         return [func(float(e)) for e in energies]
 
@@ -576,11 +693,24 @@ class Transport(_EnergyWorkers):
     energy. Only *get_green* and *self_energy*, which return full matrices,
     build the dense matrix *ham* (once, the first time it is needed).
 
+    The sparse solver is *solver*: ``'mumps'`` (the optional python-mumps
+    package, ``conda install -c conda-forge python-mumps``), ``'superlu'``
+    (SciPy) or ``'auto'``, the default. MUMPS is several times faster on
+    large 2D and 3D devices, and where only the leads matter (*smatrix*,
+    the transmissions, the noise) it solves for the lead sites alone.
+    SuperLU is as fast or faster on small devices and on narrow ones,
+    however long. ``'auto'`` takes MUMPS when it is installed and a lead
+    has at least 50 orbitals, and SuperLU otherwise; for a wide device
+    with narrow leads, set MUMPS, on the class or on one object::
+
+        tr.solver = 'mumps'
+
     Parameters
     ----------
     ham : Square matrix (sparse or dense)
         Device Hamiltonian.
     '''
+    solver = 'auto'  # sparse solver: 'auto', 'mumps' or 'superlu'
 
     def __init__(self, ham) -> None:
         ham = sp.csr_matrix(ham, dtype='c16')
@@ -893,18 +1023,18 @@ class Transport(_EnergyWorkers):
         s_in, s_out = self.leads[lead_in][3], self.leads[lead_out][3]
 
         def caroli(e):
-            g, gam = self._green_columns(e, eta, s_in)
-            g = g[s_out]
+            g, gam = self._green_columns(e, eta, s_in, s_out)
             return np.trace(gam[lead_out] @ g @ gam[lead_in] @ g.conj().T).real
         return np.array(self._map(caroli, energies), dtype='f8')
 
     def _green_columns(
-        self, energy: float, eta: float, cols: ArrayLike,
+        self, energy: float, eta: float, cols: ArrayLike, keep: ArrayLike | None = None,
     ) -> tuple[NDArray[np.complex128], list[NDArray[np.complex128]]]:
         r'''
         Private method. The columns *cols* of the retarded Green's function,
         :math:`G^r_{:,c} = [E + i\eta - H - \sum_l\Sigma_l]^{-1}e_c` (shape
-        (n_sites, len(cols))), from one sparse LU factorization: the
+        (n_sites, len(cols)), or (len(keep), len(cols)) with only the sites
+        *keep*), from one sparse factorization (*_solve*): the
         self-energies only fill the blocks of the lead sites. Also returns
         the broadening :math:`\Gamma_l = i(\Sigma_l - \Sigma_l^\dagger)` of
         every lead, restricted to its sites (shape (len(sites), len(sites))).
@@ -924,9 +1054,16 @@ class Transport(_EnergyWorkers):
         mat = sp.csc_matrix((np.concatenate(data), (np.concatenate(rows), np.concatenate(columns))),
                             shape=(n, n))
         cols = np.asarray(cols, dtype=int).ravel()
-        rhs = np.zeros((n, len(cols)), 'c16')
-        rhs[cols, np.arange(len(cols))] = 1.
-        return spla.splu(mat).solve(rhs), gam
+        rhs = sp.csc_matrix((np.ones(len(cols), 'c16'), (cols, np.arange(len(cols)))), shape=(n, len(cols)))
+        return _solve(mat, rhs, None if keep is None else np.asarray(keep, dtype=int).ravel(),
+                      self.solver, self._width()), gam
+
+    def _width(self) -> int:
+        r'''
+        Private method. The number of orbitals of the widest lead, the
+        cross-section by which the solver ``'auto'`` chooses (*_mumps_module*).
+        '''
+        return max(len(h0) for h0, _, _, _ in self.leads)
 
     # ------------------------------------------------------------------
     # Scattering matrix and scattering states
@@ -967,8 +1104,8 @@ class Transport(_EnergyWorkers):
             -\tau_l^\dagger\psi + [(E - h_0)U_0 - vU_1]b_l = -(E - h_0 - \lambda_{in}v)\phi^{in}_l\, ,
 
         one sparse system of size n_sites + sum_l m_l, factorized once
-        (*scipy.sparse.linalg.splu*) for every right-hand side. Only the rows
-        *keep* of the solution are stored (e.g. the lead amplitudes for the
+        (*_solve*) for every right-hand side. Only the rows
+        *keep* of the solution are computed (e.g. the lead amplitudes for the
         scattering matrix).
 
         Returns
@@ -1011,11 +1148,8 @@ class Transport(_EnergyWorkers):
             return [f[0] for f in found], np.zeros((size, 0), 'c16')[keep]
         mat, rhs = (sp.csc_matrix((np.concatenate(x), (np.concatenate(r), np.concatenate(c))), shape=(size, s))
                     for (r, c, x), s in ((coo, size), (rhs_coo, n_rhs)))
-        lu = spla.splu(mat)
-        # the right-hand sides are dense in blocks of at most 64 MB
-        chunk = max(1, 2**22 // size)
-        sol = np.hstack([lu.solve(rhs[:, c:c + chunk].toarray())[keep] for c in range(0, n_rhs, chunk)])
-        return [f[0] for f in found], sol
+        rows = None if keep == slice(None) else np.arange(size)[keep]
+        return [f[0] for f in found], _solve(mat, rhs, rows, self.solver, self._width())
 
     def smatrix(self, energy: float) -> SMatrix:
         r'''
@@ -1230,12 +1364,13 @@ class Transport(_EnergyWorkers):
         eta = 1e-9 if eta is None else eta
         lead_sites = np.unique(np.concatenate([np.asarray(sites, dtype=int).ravel()
                                                for _, _, _, sites in self.leads]))
-        g, gam = self._green_columns(energy, eta, lead_sites)
+        g, gam = self._green_columns(energy, eta, lead_sites, lead_sites)
+        at = [np.searchsorted(lead_sites, sites) for _, _, _, sites in self.leads]
         out = np.zeros((n, n))
         for p in range(n):
             for q in range(n):
                 if p != q:
-                    gpq = g[np.ix_(self.leads[p][3], np.searchsorted(lead_sites, self.leads[q][3]))]
+                    gpq = g[np.ix_(at[p], at[q])]
                     out[p, q] = np.trace(gam[p] @ gpq @ gam[q] @ gpq.conj().T).real
         return out
 
@@ -1450,8 +1585,8 @@ class Transport(_EnergyWorkers):
             out[:min(len(out), len(vals))] = vals[:len(out)]
             return out
         eta = 1e-9 if eta is None else eta
-        g, gam = self._green_columns(energy, eta, s_in)
-        return _eigen_transmissions(gam[lead_out], g[s_out], gam[lead_in])
+        g, gam = self._green_columns(energy, eta, s_in, s_out)
+        return _eigen_transmissions(gam[lead_out], g, gam[lead_in])
 
     def shot_noise(
         self, energies: ArrayLike, lead_in: int = 0, lead_out: int = 1, eta: float | None = None,

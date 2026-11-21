@@ -1,3 +1,4 @@
+import types
 import unittest
 import numpy as np
 import scipy.sparse as sparse
@@ -706,6 +707,58 @@ class TestModelBuilding(unittest.TestCase):
         self.assertRaises(ValueError, eh.wannier_tags, ['a'], 2)
         eh.layer_hoppings(0., 1e-6)
         self.assertRaises(ValueError, eh.layer_hoppings, 1e-3, 1e-6)
+        # _tb.dat files and Wannier90 output
+        self.assertRaises(ValueError, eh.hr_header, ['x'], '_tb.dat')
+        self.assertRaises(ValueError, eh.win_cell, [['1']], 'The cell')
+        eh.tb_body(2 * (6 + 12), 2, 1)
+        self.assertRaises(ValueError, eh.tb_body, 2 * (6 + 12) - 1, 2, 1)
+        eh.tb_vectors(True)
+        self.assertRaises(ValueError, eh.tb_vectors, False)
+        eh.tb_origin(1)
+        self.assertRaises(ValueError, eh.tb_origin, 0)
+        self.assertRaises(ValueError, eh.tb_origin, 2)
+        eh.wannier_export_dim(2, 2)
+        eh.wannier_export_dim(3, 3)
+        self.assertRaises(ValueError, eh.wannier_export_dim, 1, 2)
+        self.assertRaises(ValueError, eh.wannier_export_dim, 2, 3)
+        eh.no_position_elements(False, 'f')
+        self.assertRaises(ValueError, eh.no_position_elements, True, 'f')
+
+    def test_interop(self):
+        eh.site_tags(['a', 'Mo'], 2)
+        self.assertRaises(TypeError, eh.site_tags, 'ab', 2)
+        self.assertRaises(TypeError, eh.site_tags, ['a', 1], 2)
+        self.assertRaises(ValueError, eh.site_tags, ['a'], 2)
+        self.assertRaises(ValueError, eh.site_tags, ['a', 'abcdefghi'], 2)
+        eh.ase_periodic([True, False, False])
+        self.assertRaises(ValueError, eh.ase_periodic, [False] * 3)
+        eh.ase_space_dim(2, True)
+        eh.ase_space_dim(3, False)
+        self.assertRaises(ValueError, eh.ase_space_dim, 1, True)
+        self.assertRaises(ValueError, eh.ase_space_dim, 2, False)
+        eh.chemical_symbols(['C', 'C'], ['X', 'C'])
+        self.assertRaises(ValueError, eh.chemical_symbols, ['a'], ['X', 'C'])
+        eh.pythtb_periodic(1)
+        self.assertRaises(ValueError, eh.pythtb_periodic, 0)
+        eh.numeric_terms([1., 2j, np.eye(2)], 'PythTB')
+        self.assertRaises(ValueError, eh.numeric_terms, ['t'], 'PythTB')
+        self.assertRaises(ValueError, eh.numeric_terms, [abs], 'PythTB')
+        eh.pybinding_aliases([True, True])
+        self.assertRaises(ValueError, eh.pybinding_aliases, [True, False])
+        eh.pybinding_spin([2, 2])
+        self.assertRaises(ValueError, eh.pybinding_spin, [2, 1])
+        eh.kwant_ham(3, 3)
+        self.assertRaises(ValueError, eh.kwant_ham, 0, 3)
+        eh.hermitian_matrix(sparse.csr_matrix(np.eye(2)), [(np.eye(2), None, None, None)])
+        eh.hermitian_matrix(sparse.csr_matrix((2, 2)))
+        self.assertRaises(ValueError, eh.hermitian_matrix, sparse.csr_matrix(np.eye(2, k=1)))
+        self.assertRaises(ValueError, eh.hermitian_matrix, sparse.csr_matrix(np.eye(2)), [(np.eye(2, k=1),)])
+        finite = types.SimpleNamespace(hamiltonian_submatrix=None, sites=[])
+        eh.kwant_finite(finite)
+        self.assertRaises(TypeError, eh.kwant_finite, types.SimpleNamespace(sites=[]))
+        self.assertRaises(TypeError, eh.kwant_finite, types.SimpleNamespace(cell_size=1, **vars(finite)))
+        eh.kwant_orbitals(2, 2)
+        self.assertRaises(ValueError, eh.kwant_orbitals, 1, 2)
 
 
 

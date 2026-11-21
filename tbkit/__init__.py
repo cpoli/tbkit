@@ -36,6 +36,10 @@ import tbkit.error_handling
 # Model I/O (tbkit.io): appended here to keep the list above untouched.
 from tbkit.io import save_model, load_model, read_wannier90
 __all__ += ["save_model", "load_model", "read_wannier90"]
+# Wannier90 output and _tb.dat input; tbkit.interop (ASE, PythTB, TBmodels,
+# Z2Pack, qsymm, pybinding, Kwant) imports those packages only when called
+from tbkit.io import write_wannier90, read_wannier90_tb
+__all__ += ["write_wannier90", "read_wannier90_tb"]
 
 # Higher-order topology, moire supercells, self-consistent interactions
 from tbkit.higher_order import CornerCharges, quadrupole_moment, corner_charges

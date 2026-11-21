@@ -29,23 +29,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import NullFormatter, ScalarFormatter
 
-import tbkit.lattices as lattices
 from tbkit.bridges import finite_system
-from tbkit.kspace import KSpace
 from tbkit.plot import Plot
 from tbkit.wannier import wannierize
+from tbkit import models
 
 
-def haldane(t2=0.2, M=0.):
-    hal = KSpace(lattices.honeycomb())
-    hal.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
-    for R in [(0, 1), (-1, 0), (1, -1)]:
-        hal.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j*t2}, {'i': 1, 'j': 1, 'R': R, 't': -1j*t2}])
-    hal.set_onsite({'a': M, 'b': -M})
-    return hal
-
-
-trivial, chern = haldane(M=1.5), haldane(M=0.)
+trivial, chern = models.haldane(t2=0.2, M=1.5), models.haldane(t2=0.2, M=0.)
 c_triv, c_chern = trivial.chern_number(0, 30), chern.chern_number(0, 30)
 print('Chern numbers: trivial {:.3f}, Chern {:.3f}'.format(c_triv, c_chern))
 assert np.isclose(c_triv, 0., atol=1e-8) and np.isclose(c_chern, 1., atol=1e-8)

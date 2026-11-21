@@ -30,25 +30,20 @@ symmetry (class D). With the extra chiral symmetry of this real chain
 (class BDI), the Berry (Zak) phase of the occupied BdG band,
 :math:`\pi` or 0, says the same.
 
-:mod:`tbkit.bdg` builds the chain in real space (*bdg_ham*) and in
-reciprocal space (*bdg_kspace*).
+:func:`tbkit.models.kitaev_chain` gives the Bloch model (through
+:func:`tbkit.bdg.bdg_kspace`); :mod:`tbkit.bdg` also builds the chain in
+real space (*bdg_ham*).
 """
 import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
-from tbkit.bdg import bdg_ham, bdg_kspace, majorana_number, pairing_bonds, particle_hole
-from tbkit.kspace import KSpace
+from tbkit.bdg import bdg_ham, majorana_number, pairing_bonds, particle_hole
 from tbkit.plot import Plot
 from tbkit.system import System
+from tbkit import models
 
 t, delta = 1., 0.6
-
-
-def kitaev(mu):
-    chain = KSpace(lattices.chain())
-    chain.set_hopping([{'i': 0, 'j': 0, 'R': (1,), 't': t}])
-    return bdg_kspace(chain, [{'i': 0, 'j': 0, 'R': (1,), 'delta': delta}], mu=mu)
 
 
 # %%
@@ -71,21 +66,21 @@ fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(7, 1.2))
 for mu in (0.5, 1.5, 3.):
     for k in (0.4, 1.3, 2.7):
         e = np.sqrt((2*t*np.cos(k) - mu)**2 + 4*delta**2*np.sin(k)**2)
-        assert np.allclose(np.linalg.eigvalsh(kitaev(mu).get_ham([k])), [-e, e])
-assert kitaev(0.5).symmetry_error(particle_hole(1), antiunitary=True, anti=True) < 1e-12
-print('Class:', kitaev(0.5).tenfold_class(time_reversal=np.eye(2), particle_hole=particle_hole(1)))
+        assert np.allclose(np.linalg.eigvalsh(models.kitaev_chain(t, delta, mu).get_ham([k])), [-e, e])
+assert models.kitaev_chain(t, delta, 0.5).symmetry_error(particle_hole(1), antiunitary=True, anti=True) < 1e-12
+print('Class:', models.kitaev_chain(t, delta, 0.5).tenfold_class(time_reversal=np.eye(2), particle_hole=particle_hole(1)))
 
 mus = np.linspace(-3.5, 3.5, 29)
-zak = np.array([abs(kitaev(mu).berry_phase(0, nk=200)) for mu in mus])
+zak = np.array([abs(models.kitaev_chain(t, delta, mu).berry_phase(0, nk=200)) for mu in mus])
 topological = np.abs(mus) < 2 * abs(t)
 assert np.allclose(zak[topological], np.pi) and np.allclose(zak[~topological], 0., atol=1e-8)
 print('Berry phase pi for |mu| < 2|t|, 0 outside.')
 # at |mu| = 2|t| the gap closes at k = 0 or pi, and the Majorana number is undefined
 gapped = ~np.isclose(np.abs(mus), 2 * abs(t))
-majorana = np.array([majorana_number(kitaev(mu)) for mu in mus[gapped]])
+majorana = np.array([majorana_number(models.kitaev_chain(t, delta, mu)) for mu in mus[gapped]])
 assert np.all(majorana[topological[gapped]] == -1) and np.all(majorana[~topological[gapped]] == 1)
 try:
-    majorana_number(kitaev(2 * t))
+    majorana_number(models.kitaev_chain(t, delta, 2 * t))
     raise AssertionError('the gap closes at k = 0')
 except ValueError:
     pass
@@ -117,7 +112,7 @@ ends = weight[:5].sum() + weight[-5:].sum()
 print('Weight of the two zero modes on the outer 5 sites of each end: {:.0%}.'.format(ends / 2))
 assert ends / 2 > 0.95
 # and the same chain from the Bloch model
-assert np.allclose(spectra[0.5], np.linalg.eigvalsh(kitaev(0.5).finite_ham(n)))
+assert np.allclose(spectra[0.5], np.linalg.eigvalsh(models.kitaev_chain(t, delta, 0.5).finite_ham(n)))
 
 # sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(10, 4))

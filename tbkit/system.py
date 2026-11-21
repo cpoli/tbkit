@@ -36,6 +36,68 @@ def _upper(ang: NDArray) -> NDArray:
     return (ang >= -ATOL) & (ang < 180. - ATOL)
 
 
+def _inertia(ham: sparse.csc_matrix, sigma: float) -> int:
+    '''
+    Private function. The number of eigenvalues of the Hermitian *ham* below
+    *sigma* (Sylvester's law of inertia): the negative pivots of the sparse
+    LDL^dagger factorization of ham - sigma, from SuperLU with a symmetric
+    permutation and diagonal pivots. Should SuperLU still exchange rows (or
+    find an exactly zero pivot), the count comes from the dense spectrum.
+    '''
+    shifted = (ham - sigma * sparse.identity(ham.shape[0], format='csc')).tocsc()
+    try:
+        lu = SLA.splu(shifted, permc_spec='MMD_AT_PLUS_A', diag_pivot_thresh=0.,
+                      options={'SymmetricMode': True})
+    except RuntimeError:  # exactly singular
+        lu = None
+    if lu is None or not np.array_equal(lu.perm_r, lu.perm_c):
+        return int(np.sum(LA.eigvalsh(ham.toarray()) < sigma))
+    return int(np.sum(lu.U.diagonal().real < 0))
+
+
+def _slice_pairs(
+    ham: sparse.csc_matrix, lo: float, hi: float, count: int, sigma: float,
+) -> tuple[NDArray[np.float64], NDArray[np.complex128]]:
+    r'''
+    Private function. The *count* eigenpairs of the Hermitian *ham* in
+    [lo, hi), by shift-invert Lanczos about *sigma* with deflation: one
+    factorization of ham - sigma, then passes of ARPACK on
+    :math:`P(H - \sigma)^{-1}P`, *P* projecting out the eigenvectors already
+    found. Lanczos from one start vector finds one vector of a degenerate
+    eigenspace at a time (it may also return a vector twice); deflation
+    makes the missing ones dominant. Every candidate is orthogonalized
+    against those kept, and kept only if it is independent of them.
+    '''
+    n = ham.shape[0]
+    lu = SLA.splu((ham - sigma * sparse.identity(n, format='csc')).tocsc())
+    found = np.zeros((n, 0), 'c16')
+    values: list[float] = []
+    rng = np.random.default_rng(0)
+    for _ in range(count + 2):
+        if len(values) == count:
+            break
+
+        def solve(x, basis=found):
+            x = np.asarray(x, dtype='c16')
+            y = lu.solve(x - basis @ (basis.conj().T @ x))
+            return y - basis @ (basis.conj().T @ y)
+
+        op = SLA.LinearOperator((n, n), matvec=solve, dtype='c16')
+        v0 = rng.standard_normal(n) + 0j
+        v0 -= found @ (found.conj().T @ v0)
+        k = min(count - len(values) + 2, n - found.shape[1] - 2)
+        en, vec = SLA.eigsh(ham, k=k, sigma=sigma, OPinv=op, v0=v0)
+        for e, v in zip(en, vec.T):
+            if lo <= e < hi:
+                v = v - found @ (found.conj().T @ v)
+                norm = np.linalg.norm(v)
+                if norm > 0.5:
+                    found = np.column_stack([found, v / norm])
+                    values.append(float(e))
+    error_handling.slice_count(len(values), count, lo, hi)
+    return np.array(values), found
+
+
 class System():
     r'''
     Solve the Tight-Binding eigenvalue problem of a lattice defined 
@@ -1175,6 +1237,87 @@ class System():
         self.en = en[ind]
         if vec is not None:
             self.rn = vec[:, ind]
+            self._set_states()
+
+    def get_eig_window(
+        self, e_min: float, e_max: float, eigenvec: bool = False, n_slice: int = 50,
+    ) -> None:
+        r'''
+        Get all the eigenenergies in the window :math:`[E_\mathrm{min},
+        E_\mathrm{max}]` of a Hermitian Hamiltonian, and optionally their
+        eigenvectors, by spectrum slicing: the window is cut into slices of
+        at most *n_slice* eigenvalues, and each slice is solved by
+        shift-invert Lanczos about its centre, as *get_eig_sparse* does.
+
+        The number of eigenvalues below an energy :math:`\sigma` comes from
+        Sylvester's law of inertia: the sparse factorization
+        :math:`P(H - \sigma)P^T = LDL^\dagger` (SuperLU with a symmetric
+        permutation and diagonal pivots) has as many negative pivots
+        :math:`D_{ii}` as :math:`H` has eigenvalues below :math:`\sigma`.
+        This count is exact, so it says how many eigenvalues each slice must
+        give, and the slices are bisected until each holds at most
+        *n_slice* of them. Nothing is dense: the cost is one factorization
+        per count and per slice, so all the states of a band, or of an
+        energy window around a gap, of a flake of :math:`10^5` sites are
+        within reach. The results replace *en* (sorted) and, with
+        *eigenvec*, *rn*, *intensity* and *pola*, as for *get_eig*.
+
+        Parameters
+        ----------
+        e_min, e_max : Real numbers
+            The window. Eigenvalues within about 1e-9 (relative to the
+            largest matrix element) of its ends count as inside.
+        eigenvec : Boolean, default False
+        n_slice : Positive integer, default 50
+            Largest number of eigenvalues solved together (a degenerate
+            level that holds more is solved in one slice).
+        '''
+        error_handling.empty_ham(self.ham)
+        error_handling.energy_window((e_min, e_max), '(e_min, e_max)')
+        error_handling.boolean(eigenvec, 'eigenvec')
+        error_handling.positive_int(n_slice, 'n_slice')
+        error_handling.hermitian(self.ham)
+        self.ln = np.array([], 'c16')
+        ham = sparse.csc_matrix(self.ham, dtype='c16')
+        n = ham.shape[0]
+        # the ends move out by delta, so that no count factorizes H - sigma
+        # at an eigenvalue (see get_eig_sparse), and the split points by
+        # delta from the midpoints, where symmetric spectra have levels
+        delta = 1e-9 * (1. + max(abs(e_min), abs(e_max)) + abs(ham).max())
+        lo, hi = e_min - delta, e_max + delta
+        counts = {lo: _inertia(ham, lo), hi: _inertia(ham, hi)}
+        total = counts[hi] - counts[lo]
+        if total + 2 > n - 2:  # the window holds (almost) the whole spectrum
+            if eigenvec:
+                en, vec = LA.eigh(ham.toarray())
+            else:
+                en, vec = LA.eigvalsh(ham.toarray()), None
+            keep = (en >= lo) & (en < hi)
+            self.en = en[keep]
+            if vec is not None:
+                self.rn = vec[:, keep]
+                self._set_states()
+            return
+        slices, todo = [], [(lo, hi)]
+        while todo:
+            a, b = todo.pop()
+            count = counts[b] - counts[a]
+            if count > n_slice and b - a > 1e3 * delta:
+                mid = (a + b) / 2. + delta
+                counts[mid] = _inertia(ham, mid)
+                todo += [(mid, b), (a, mid)]
+            elif count:
+                slices.append((a, b, count))
+        values, vectors = [], []
+        for a, b, count in sorted(slices):
+            en, vec = _slice_pairs(ham, a, b, count, (a + b) / 2. + delta)
+            values.append(en)
+            vectors.append(vec)
+        en = np.concatenate(values) if values else np.zeros(0)
+        ind = np.argsort(en, kind='stable')
+        self.en = en[ind]
+        if eigenvec:
+            self.rn = np.concatenate(vectors, axis=1)[:, ind] if vectors else np.zeros((n, 0), 'c16')
             self._set_states()
 
     def get_green(self, energy: complex, eta: float = 1e-6) -> NDArray[np.complex128]:

@@ -9,7 +9,14 @@ import unittest
 
 import numpy as np
 
-from tbkit.io import read_wannier90, read_hr, read_win_cell, read_centres, BOHR
+import scipy.linalg as sla
+
+from tbkit import models
+from tbkit.io import (read_wannier90, read_hr, read_win_cell, read_centres, BOHR, write_hr, write_tb,
+                      write_wannier90, read_tb, read_wannier90_tb, save_model, load_model, _hr_kspace)
+from tbkit.kspace import KSpace
+from tbkit.lattice import Lattice
+from tbkit.optics import optical_conductivity, berry_curvature_dipole, shift_current
 
 
 def hr_text(num_wann, entries, weights, header=' written on 26Sep2026 at 12:00:00'):
@@ -174,6 +181,199 @@ class TestWannier90(unittest.TestCase):
         self.assertRaises(ValueError, read_wannier90, good, prim_vec=[(1., 0.), (0., 1.)], dim=2)
         tilted = self.write('t.win', 'begin unit_cell_cart\n1 0 0.5\n0 1 0\n0 0 1\nend unit_cell_cart\n')
         self.assertRaises(ValueError, read_wannier90, good, win=tilted, dim=2)
+
+
+
+def rotated(ks, eps=0.6, n=25):
+    r'''
+    The 2-orbital model *ks* (orbitals at their positions, a diagonal
+    position operator) in the basis of the k-dependent unitary
+    V(k) = exp(i eps S(k)), S(k) a periodic Hermitian matrix: the same
+    physics, whose position operator, A'(k) = V^dagger tau V + i V^dagger dV,
+    has elements off the diagonal and between cells, components that do not
+    commute and a curl. H'(R) and A'(R) from an n x n mesh (odd n, every R
+    with its opposite); the Fourier tails are below 1e-13.
+    '''
+    a, b, tau = np.array(ks.lat.prim_vec), np.array(ks.rec_vec), ks.orbital_positions()
+    f = np.arange(n) / n
+    kc = np.array(np.meshgrid(f, f, indexing='ij')).reshape(2, -1).T @ b
+    sx, sy, sz = (np.array(m, dtype=complex) for m in ([[0, 1], [1, 0]], [[0, -1j], [1j, 0]], [[1, 0], [0, -1]]))
+    v = np.array([sla.expm(1j * eps * (sx * np.cos(k @ a[0]) + sy * np.sin(k @ a[1])
+                                         + 0.5 * sz * np.cos(k @ (a[0] - a[1])))) for k in kc])
+    cells = np.array(np.meshgrid(np.arange(n), np.arange(n), indexing='ij')).reshape(2, -1).T
+    cells = (cells + n // 2) % n - n // 2
+    rc = cells @ a
+    phase = np.exp(-1j * kc @ rc.T) / len(kc)
+    v_r = np.einsum('kR,kij->Rij', phase, v)
+    vh = v.conj().transpose(0, 2, 1)
+    conn = [vh @ np.diag(tau[:, c]) @ v
+            + 1j * vh @ np.einsum('kR,Rij->kij', 1 / phase / len(kc), 1j * rc[:, c, None, None] * v_r)
+            for c in range(2)]
+    ham_r = np.einsum('kR,kij->Rij', phase, vh @ ks._bloch_ham(kc) @ v)
+    pos_r = np.stack([np.einsum('kR,kij->Rij', phase, c) for c in conn], axis=-1)
+    origin = np.flatnonzero((cells == 0).all(axis=1))[0]
+    centres = pos_r[origin].diagonal().T.real.copy()
+    new = _hr_kspace(ks.lat.prim_vec, centres, ['a', 'b'], cells, ham_r, 1e-13, 1e-7)
+    pos_r[origin, [0, 1], [0, 1]] = 0.
+    new._position_hop = [(int(i), int(j), cells[p] @ a, pos_r[p, i, j])
+                         for p, i, j in zip(*np.nonzero(np.abs(pos_r).max(axis=-1) > 1e-13))]
+    return new
+
+
+class TestWriteWannier90(unittest.TestCase):
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.path = lambda name: os.path.join(self.tmp.name, name)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def assert_same_bands(self, ks1, ks2, atol=1e-10):
+        ks = np.random.default_rng(4).uniform(-3, 3, (12, ks1.dim))
+        np.testing.assert_allclose(ks1.get_bands(ks), ks2.get_bands(ks), rtol=0, atol=atol)
+
+    def test_round_trips(self):
+        hal = models.haldane(t2=0.15, phi=0.7, M=0.2)
+        hal.set_onsite({'a': 0.3})
+        hr, tb, win, xyz = write_wannier90(hal, self.path('hal'))
+        self.assertEqual([os.path.basename(p) for p in (hr, tb, win, xyz)],
+                         ['hal_hr.dat', 'hal_tb.dat', 'hal.win', 'hal_centres.xyz'])
+        back = read_wannier90(hr, win=win, centres=xyz, dim=2)
+        self.assert_same_bands(hal, back)
+        np.testing.assert_allclose(back.orbital_positions(), hal.orbital_positions(), atol=1e-11)
+        self.assertEqual(len(back._hop), len(hal._hop))
+        # the cell of a 2D model: a3 along z, as long as the longest primitive vector
+        cell = read_win_cell(win)
+        np.testing.assert_allclose(cell[2], [0., 0., np.sqrt(3.)], atol=1e-11)
+        back = read_wannier90_tb(tb, dim=2)
+        self.assert_same_bands(hal, back)
+        self.assertEqual(back._position_hop, [])  # the centres only
+        np.testing.assert_allclose(back.orbital_positions(), hal.orbital_positions(), atol=1e-11)
+        # a spinful 3D model, orbital by orbital; its onsite spin blocks become R = 0 hoppings
+        ti = models.topological_insulator_3d()
+        ti._onsite_offdiag[0, 1] = ti._onsite_offdiag[1, 0] = 0.1
+        hr = write_hr(ti, self.path('ti_hr.dat'))
+        back = read_wannier90(hr, prim_vec=ti.lat.prim_vec, positions=ti.orbital_positions())
+        self.assertFalse(back.spin)
+        self.assert_same_bands(ti, back)
+        num_wann, R, ndegen, ham = read_hr(hr)
+        self.assertEqual(num_wann, ti.norb)
+        self.assertTrue(np.all(ndegen == 1))
+        self.assertEqual(len(R), len(np.unique(np.concatenate([R, -R]), axis=0)))  # every R with its opposite
+        self.assert_same_bands(ti, read_wannier90_tb(write_tb(ti, self.path('ti_tb.dat'))))
+        # a value function is written with the parameters of set_params
+        chain = KSpace(Lattice([{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (0.5, 0.)}],
+                               [(1., 0.), (0., 1.)]))
+        chain.set_hopping([{'i': 0, 'j': 1, 'R': (0, 0), 't': lambda si, sj, w: w},
+                           {'i': 1, 'j': 0, 'R': (1, 0), 't': 1.}])
+        chain.set_params(w=0.4)
+        self.assert_same_bands(chain, read_wannier90(write_hr(chain, self.path('c_hr.dat')),
+                                                     prim_vec=[(1., 0.), (0., 1.)], dim=2))
+
+    def test_export_errors(self):
+        line = KSpace(Lattice([{'tag': 'a', 'r0': (0., 0.)}], [(1., 0.)]))
+        self.assertRaises(ValueError, write_hr, line, self.path('x'))
+        slab = models.kane_mele()
+        slab3 = KSpace(Lattice([{'tag': 'a', 'r0': (0., 0., 0.)}], [(1., 0., 0.), (0., 1., 0.)]))
+        self.assertRaises(ValueError, write_tb, slab3, self.path('x'))
+        gra = models.haldane(t2=0.)
+        gra.set_overlap([{'n': 1, 't': 0.1}])
+        self.assertRaises(ValueError, write_wannier90, gra, self.path('x'))
+        self.assertRaises(TypeError, write_hr, slab, 1)
+        self.assertRaises(TypeError, write_tb, slab, 1)
+        self.assertRaises(TypeError, write_wannier90, slab, 1)
+        self.assertRaises(TypeError, write_hr, 'model', self.path('x'))
+
+    def test_position_elements(self):
+        r'''
+        A model whose position operator has elements beyond the centres
+        (*rotated*): with them, the responses of positions=True are those of
+        the original model, at every filling; with the centres alone, those
+        of a metal differ.
+        '''
+        hal = models.haldane(t2=0.15, phi=np.pi / 2, M=0.1)
+        new = rotated(hal)
+        tb = write_tb(new, self.path('rot_tb.dat'))
+        cell, R, ndegen, ham, pos = read_tb(tb)
+        np.testing.assert_allclose(cell[:2, :2], np.array(hal.lat.prim_vec), atol=1e-11)
+        back = read_wannier90_tb(tb, tags=['a', 'b'], dim=2)
+        centres = read_wannier90_tb(tb, dim=2, elements=False)
+        self.assertGreater(len(back._position_hop), 100)
+        self.assertEqual(centres._position_hop, [])
+        stored = load_model(save_model(back, self.path('rot.npz')))
+        self.assertEqual(len(stored._position_hop), len(back._position_hop))
+        for e_fermi in (1., -1.5):  # in the bands
+            expected = hal.hall_conductivity(e_fermi, temperature=0.02, nk=30)
+            for ks in (back, stored):
+                self.assertAlmostEqual(ks.hall_conductivity(e_fermi, temperature=0.02, nk=30), expected, places=9)
+            self.assertGreater(abs(centres.hall_conductivity(e_fermi, temperature=0.02, nk=30) - expected), 0.05)
+            # the refinement resamples with the same integrand
+            self.assertAlmostEqual(back.hall_conductivity(e_fermi, temperature=0.02, nk=16, refine=3),
+                                   hal.hall_conductivity(e_fermi, temperature=0.02, nk=16, refine=3), places=9)
+        self.assertAlmostEqual(back.anomalous_nernst_conductivity(0.8, 0.05, nk=24),
+                               hal.anomalous_nernst_conductivity(0.8, 0.05, nk=24), places=9)
+        self.assertAlmostEqual(back.thermal_hall_conductivity(0.8, 0.05, nk=24),
+                               hal.thermal_hall_conductivity(0.8, 0.05, nk=24), places=9)
+        omega = np.array([0.5, 2.])
+        for component in ('xx', 'xy'):
+            np.testing.assert_allclose(
+                optical_conductivity(back, omega, e_fermi=1., temperature=0.05, nk=24, component=component),
+                optical_conductivity(hal, omega, e_fermi=1., temperature=0.05, nk=24, component=component),
+                rtol=0, atol=1e-9)
+        # positions=False ignores every position (centres included)
+        np.testing.assert_allclose(back.hall_conductivity(1., temperature=0.02, nk=12, positions=False),
+                                   centres.hall_conductivity(1., temperature=0.02, nk=12, positions=False))
+        # the responses that know the centres only refuse the other elements
+        km = models.kane_mele()
+        km._position_hop = [(0, 2, np.zeros(2), np.array([0.1, 0.]))]
+        self.assertRaises(ValueError, km.spin_hall_conductivity, 0., nk=6)
+        km.spin_hall_conductivity(0., nk=6, positions=False)
+        for call in (lambda: back.orbital_magnetization(0.5, nk=6),
+                     lambda: berry_curvature_dipole(back, 0.5, 0.1, nk=6),
+                     lambda: shift_current(back, 1., nk=6)):
+            self.assertRaises(ValueError, call)
+        back.orbital_magnetization(0.5, nk=6, positions=False)
+        berry_curvature_dipole(back, 0.5, 0.1, nk=6, positions=False)
+        ti = models.topological_insulator_3d()
+        ti._position_hop = [(0, 1, np.zeros(3), np.array([0.1, 0., 0.]))]
+        self.assertRaises(ValueError, ti.axion_angle, [0, 1], 'M', [2., 2.1], nk=2)
+        # with an overlap, the position elements are refused
+        back.set_overlap([{'i': 0, 'j': 1, 'R': (0, 0), 't': 0.05}])
+        self.assertRaises(ValueError, back.hall_conductivity, 1., nk=6)
+
+    def test_tb_errors(self):
+        hal = models.haldane()
+        with open(write_tb(hal, self.path('g_tb.dat'))) as f:
+            good = f.read().splitlines()
+
+        def write(name, lines):
+            path = self.path(name)
+            with open(path, 'w') as f:
+                f.write('\n'.join(lines) + '\n')
+            return path
+        self.assertRaises(ValueError, read_tb, write('a', good[:1] + ['1 0', '0 1 0', '0 0 1'] + good[4:]))
+        self.assertRaises(ValueError, read_tb, write('b', good[:4] + ['x'] + good[5:]))
+        self.assertRaises(ValueError, read_tb, write('c', good[:-1]))
+        # the position blocks must follow the order of the Hamiltonian blocks
+        blocks = [p for p, line in enumerate(good) if line == '']
+        half = blocks[len(blocks) // 2]
+        swapped = good[:half + 1] + ['   99    0    0'] + good[half + 2:]
+        self.assertRaises(ValueError, read_tb, write('d', swapped))
+        # no R = 0 (the vectors shifted by one cell along a3)
+        shifted = [line if not (p > blocks[0] and p - 1 in blocks) else
+                   line[:10] + '{:5d}'.format(int(line[10:15]) + 1) for p, line in enumerate(good)]
+        self.assertRaises(ValueError, read_wannier90_tb, write('e', shifted), dim=3)
+        # a 2D model must not reach along a3: H and the positions alike
+        self.assertRaises(ValueError, read_wannier90_tb, write('f', shifted), dim=2)
+        self.assertRaises(TypeError, read_tb, 1)
+        tb = self.path('g_tb.dat')
+        self.assertRaises(TypeError, read_wannier90_tb, 1)
+        self.assertRaises(ValueError, read_wannier90_tb, tb, dim=1)
+        self.assertRaises(ValueError, read_wannier90_tb, tb, cutoff=-1.)
+        self.assertRaises(ValueError, read_wannier90_tb, tb, tol=0.)
+        self.assertRaises(TypeError, read_wannier90_tb, tb, elements=1)
+        self.assertRaises(ValueError, read_wannier90_tb, tb, tags=['a'])
 
 
 if __name__ == '__main__':

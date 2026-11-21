@@ -27,33 +27,8 @@ model (:math:`C_4`, two orbitals on one site) and of the Haldane model
 import numpy as np
 import matplotlib.pyplot as plt
 
-from tbkit import lattices
-from tbkit.kspace import KSpace, PAULI
-from tbkit.lattice import Lattice
 from tbkit.symmetry import Operation, find_symmetries, rotation, rotation_indicator
-
-
-def qwz(m):
-    r'''H = sin kx sigma_x + sin ky sigma_y + (m + cos kx + cos ky) sigma_z.'''
-    lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (0., 0.)}],
-                         prim_vec=[(1., 0.), (0., 1.)])
-    ks = KSpace(lat)
-    hops = []
-    for R, s in (((1, 0), PAULI['x']), ((0, 1), PAULI['y'])):
-        t = s / 2j + PAULI['z'] / 2
-        hops += [{'i': i, 'j': j, 'R': R, 't': t[i, j]} for i in range(2) for j in range(2) if t[i, j] != 0]
-    ks.set_hopping(hops)
-    ks.set_onsite({'a': m, 'b': -m})
-    return ks
-
-
-def haldane(t2, mass):
-    ks = KSpace(lattices.honeycomb())
-    ks.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
-    for R in [(0, 1), (-1, 0), (1, -1)]:
-        ks.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j * t2}, {'i': 1, 'j': 1, 'R': R, 't': -1j * t2}])
-    ks.set_onsite({'a': mass, 'b': -mass})
-    return ks
+from tbkit import models
 
 
 # %%
@@ -63,12 +38,12 @@ def haldane(t2, mass):
 # it acts on the two orbitals as ``diag(1, i)``, with :math:`C_4^4 = 1`.
 
 C4 = Operation(rotation(np.pi / 2), orbitals=np.diag([1., 1j]))
-assert qwz(-1.).symmetry_error(C4) < 1e-12
+assert models.qi_wu_zhang(-1.).symmetry_error(C4) < 1e-12
 
 masses = np.linspace(-2.9, 2.9, 30)  # gapped: avoids m = 0, +-2
-c_qwz = [qwz(m).chern_number(0) for m in masses]
-c4_qwz = [rotation_indicator(qwz(m), C4, [0]) for m in masses]
-c2_qwz = [rotation_indicator(qwz(m), C4 ** 2, [0]) for m in masses]
+c_qwz = [models.qi_wu_zhang(m).chern_number(0) for m in masses]
+c4_qwz = [rotation_indicator(models.qi_wu_zhang(m), C4, [0]) for m in masses]
+c2_qwz = [rotation_indicator(models.qi_wu_zhang(m), C4 ** 2, [0]) for m in masses]
 for c, c4, c2 in zip(c_qwz, c4_qwz, c2_qwz):
     assert round(c) % 4 == c4 and round(c) % 2 == c2
 print('QWZ  C:', [int(round(c)) for c in c_qwz])
@@ -82,7 +57,7 @@ print('     C mod 4 from C4 eigenvalues:', c4_qwz)
 
 phases = [(0.2, 0.), (-0.2, 0.), (0.2, 0.5), (0.2, 1.5), (-0.1, 0.2), (0.1, 1.)]
 for t2, mass in phases:
-    model = haldane(t2, mass)
+    model = models.haldane(t2=t2, M=mass)
     ops = {op.name: op for op in find_symmetries(model, antiunitary=False)}
     c = int(round(model.chern_number(0)))
     c3 = rotation_indicator(model, ops['C3'], [0])

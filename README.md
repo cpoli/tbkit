@@ -42,6 +42,14 @@ pip install "tbkit[continuum]"
 conda install -c conda-forge tbkit sympy
 ```
 
+Transport of large 2D and 3D devices is several times faster with the
+MUMPS solver, which `Transport` uses when python-mumps is installed (from
+conda-forge; PyPI has no binary of it):
+
+```bash
+conda install -c conda-forge python-mumps
+```
+
 or, for an editable install from a clone (e.g. to run the test suite or
 work on tbkit itself):
 
@@ -63,11 +71,27 @@ lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}],
                        prim_vec=[(1., 0.), (0., 1.)])
 lat.get_lattice(n1=10, n2=10)
 
-sys = System(lat)
-sys.set_hopping([{'n': 1, 't': 1.}])
-sys.get_ham()
-sys.get_eig()
-print(sys.en)
+system = System(lat)
+system.set_hopping([{'n': 1, 't': 1.}])
+system.get_ham()
+system.get_eig()
+print(system.en)
+```
+
+Named models in one call (`tbkit.models`: SSH, Rice-Mele, Kitaev chain,
+Haldane, Qi-Wu-Zhang, Kane-Mele, BHZ, the three-band TMD model, a 3D
+topological insulator, a Weyl semimetal), with the parameters of the
+original papers. Each is a `KSpace`, and `bridges.finite_system` cuts the
+same model into a finite `System`:
+
+```python
+import numpy as np
+from tbkit import models
+from tbkit.bridges import finite_system
+
+hal = models.haldane(t1=1., t2=0.1, phi=np.pi / 2, M=0.2)
+print(hal.chern_number(bands=[0]))       # 1.0
+flake = finite_system(hal, (20, 20))     # the same model on a 20 x 20-cell flake
 ```
 
 Graphene band structure (reciprocal space):
@@ -99,9 +123,9 @@ A magnetic field is added with `System.set_magnetic_field` (uniform field) or
 hoppings *after* `set_hopping`/`set_hopping_manual`:
 
 ```python
-sys.set_hopping_manual(hop_dict)
-sys.set_magnetic_field(alpha=0.01)  # flux quanta per unit area
-sys.get_ham()
+system.set_hopping_manual(hop_dict)
+system.set_magnetic_field(alpha=0.01)  # flux quanta per unit area
+system.get_ham()
 ```
 
 See [`examples/magnetic_field/plot_magnetic_field.py`](examples/magnetic_field/plot_magnetic_field.py) for a full
@@ -148,7 +172,7 @@ edge states crossing a spin-orbit gap.
 
 ### Building and solving models
 
-Finite lattices, defects, several orbitals per site, real space to k-space and back, k·p models discretized into lattice models, saved models and Wannier90 imports, maximally localized Wannier functions, and solvers for very large lattices.
+Finite lattices, defects, several orbitals per site, real space to k-space and back, k·p models discretized into lattice models, saved models, Wannier90 files (`_hr.dat` and `_tb.dat` in, both out), models exchanged with ASE, PythTB, TBmodels, Z2Pack, qsymm, pybinding and Kwant (`tbkit.interop`), maximally localized Wannier functions, and solvers for very large lattices.
 
 ![An impurity bound state, Slater-Koster sp3 graphene bands with overlaps, and the kernel polynomial method on 45,000 sites](https://raw.githubusercontent.com/cpoli/tbkit/master/docs/source/_static/images/readme_models.png)
 

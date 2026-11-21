@@ -18,6 +18,7 @@ from tbkit.kspace import KSpace
 from tbkit.propagation import Propagation
 from tbkit.system import System
 from tests.test_hall import anisotropic_haldane, haldane, torus_kubo
+from tests.test_optics import graphene as gapped_graphene, rice_mele
 
 
 def disordered_square(n=8, w=1., seed=3):
@@ -447,6 +448,152 @@ class TestOpticalConductivity(unittest.TestCase):
         self.assertRaises(ValueError, kpm.optical_conductivity, ham, vx, 1., 0., -1.)
         self.assertRaises(ValueError, kpm.optical_conductivity, ham, vx, 1., 0., 0., 8, None,
                                 'jackson', None, None, -1.)
+
+
+def velocity_gauge_sum(ham, derivatives, component, w1, w2, eta, e_fermi=0., area=None):
+    r'''
+    sigma^abc(w1, w2) as the sum over eigenstates of the density matrix to
+    second order in the vector potential (velocity gauge, charge -e), before
+    the occupations are moved onto single states as in
+    kpm.nonlinear_optical_conductivity: rho_1 = [h^c, f] / (w2 + i eta - E_nm),
+    rho_2 = ([h^b, rho_1] + [h^bc, f] / 2) / (w3 + 2 i eta - E_nm), and
+    j^a = -Tr[rho_2 h^a + rho_1 h^ab + f h^abc / 2] / area.
+    '''
+    en, vec = LA.eigh(ham)
+    f = (en < e_fermi).astype(float)
+    h = {k: vec.conj().T @ v @ vec for k, v in derivatives.items()}
+    fmn = f[None, :] - f[:, None]  # f_m - f_n at [n, m]
+    enm = en[:, None] - en[None, :]
+
+    def key(*letters):
+        return ''.join(sorted(letters))
+
+    def kernel(a, b, c, o1, o2):
+        rho1 = h[c] * fmn / (o2 + 1j * eta - enm)
+        rho2 = (h[b] @ rho1 - rho1 @ h[b] + h[key(b, c)] * fmn / 2) / (o1 + o2 + 2j * eta - enm)
+        return (np.sum(rho2 * h[a].T) + np.sum(rho1 * h[key(a, b)].T)
+                + np.sum(f * np.diag(h[key(a, b, c)]).real) / 2)
+
+    a, b, c = component
+    if area is None:
+        area = len(ham)
+    # -1/area for the current, A_b A_c = -E_b E_c/(w1 w2), symmetrized in (b, w1) <-> (c, w2)
+    return (kernel(a, b, c, w1, w2) + kernel(a, c, b, w2, w1)) / (2 * area * w1 * w2)
+
+
+class TestNonlinearOpticalConductivity(unittest.TestCase):
+
+    def setUp(self):
+        self.hbn = gapped_graphene(mass=0.4)
+        self.ham = self.hbn.finite_ham(3, periodic=True, sparse=True)
+        self.w1, self.w2 = np.array([1.5, 1., 2.2]), np.array([-1.5, 1., 0.7])
+
+    def test_sum_over_states(self):
+        # the Chebyshev series tends to the sum over eigenstates with
+        # Lorentzian broadening, with an error ~ (pi a / M eta)^2 (0.17 here):
+        # shift current (w, -w), second harmonic (w, w), sum frequency
+        der = self.hbn.finite_derivatives(3, 'yyy', periodic=True, sparse=True)
+        dense = {k: v.toarray() for k, v in der.items()}
+        exact = np.array([velocity_gauge_sum(self.ham.toarray(), dense, 'yyy', w1, w2, 0.5)
+                                for w1, w2 in zip(self.w1, self.w2)])
+        sigma = kpm.nonlinear_optical_conductivity(self.ham, der, self.w1, self.w2, 'yyy', eta=0.5,
+                                                   n_moments=128, n_random=None)
+        self.assertTrue(np.all(np.abs(sigma / exact - 1) < 0.06))
+        self.assertGreater(abs(exact[1].imag), 0.05)
+        # a dense matrix, at a low temperature in the gap: the same
+        warm = kpm.nonlinear_optical_conductivity(self.ham.toarray(), dense, 1.5, -1.5, 'yyy', eta=0.5,
+                                                  temperature=0.02, n_moments=128, n_random=None)
+        self.assertLess(abs(warm[0] / sigma[0] - 1), 1e-3)
+
+    def test_symmetries(self):
+        # gapped graphene (C3v, mirror x -> -x): sigma^yxx = sigma^xxy = sigma^xyx = -sigma^yyy,
+        # sigma^xxx = 0, for every pair of frequencies
+        sig = {}
+        for comp in ('yyy', 'yxx', 'xxy', 'xyx', 'xxx'):
+            der = self.hbn.finite_derivatives(3, comp, periodic=True, sparse=True)
+            sig[comp] = kpm.nonlinear_optical_conductivity(self.ham, der, self.w1, self.w2, comp, eta=0.5,
+                                                           n_moments=48, n_random=None)
+        self.assertGreater(np.abs(sig['yyy']).min(), 1e-3)
+        for comp in ('yxx', 'xxy', 'xyx'):
+            self.assertTrue(np.allclose(sig[comp], -sig['yyy'], atol=1e-10))
+        self.assertTrue(np.allclose(sig['xxx'], 0., atol=1e-10))
+        # inversion symmetry (gapless graphene): no second-order response
+        gra = gapped_graphene()
+        der = gra.finite_derivatives(3, 'yyy', periodic=True, sparse=True)
+        zero = kpm.nonlinear_optical_conductivity(gra.finite_ham(3, periodic=True, sparse=True), der,
+                                                  self.w1, self.w2, 'yyy', eta=0.5, n_moments=48, n_random=None)
+        self.assertTrue(np.allclose(zero, 0., atol=1e-10))
+
+    def test_length_gauge(self):
+        # in the tight-binding basis the velocity gauge is exact: as eta -> 0,
+        # sigma^xxx(w, -w) is the length-gauge shift conductivity of
+        # optics.shift_current (validated against Rice-Mele's closed form in
+        # test_optics), per unit cell, with its sign
+        rm = rice_mele(1., 0.4, 0.3)
+        n = 400
+        ham = rm.finite_ham((n, 1), periodic=True)
+        der = rm.finite_derivatives((n, 1), 'xxx', periodic=True)
+        for eta, tol in ((0.04, 0.035), (0.02, 0.015)):
+            sigma = velocity_gauge_sum(ham, der, 'xxx', 1.5, -1.5, eta, area=n)
+            shift = optics.shift_current(rm, 1.5, eta=eta, nk=(20000, 1))
+            self.assertLess(abs(sigma.real / shift - 1), tol)
+            self.assertLess(abs(sigma.imag), 1e-12)
+
+    def test_random_trace(self):
+        hbn = self.hbn
+        ham = hbn.finite_ham(8, periodic=True, sparse=True)
+        der = hbn.finite_derivatives(8, 'yyy', periodic=True, sparse=True)
+        args = (ham, der, self.w1[1:], self.w2[1:], 'yyy')
+        exact = kpm.nonlinear_optical_conductivity(*args, eta=0.5, n_moments=48, n_random=None)
+        # the random trace is noisy, about 20% for R N ~ 10^4 (R vectors, N
+        # orbitals), falling as 1/sqrt(R N): here R N = 41,000
+        noisy = kpm.nonlinear_optical_conductivity(*args, eta=0.5, n_moments=48, n_random=320, seed=0)
+        self.assertTrue(np.all(np.abs(noisy / exact - 1) < 0.15))
+        cell = abs(np.linalg.det(np.array(hbn.lat.prim_vec)))
+        per_area = kpm.nonlinear_optical_conductivity(*args, eta=0.5, n_moments=48, n_random=None,
+                                                      area=64 * cell, kernel='lorentz')
+        self.assertEqual(per_area.shape, (2,))
+
+    def test_finite_derivatives(self):
+        hal = haldane(M=0.3)
+        der = hal.finite_derivatives(3, 'xyy')
+        self.assertEqual(list(der), ['x', 'y', 'xy', 'yy', 'xyy'])
+        # open sample: each derivative is i[., r_alpha] of the previous one
+        ham = hal.finite_ham(3)
+        tau = hal.orbital_positions()
+        cells = np.array([(n1, n2) for n2 in range(3) for n1 in range(3)])
+        r = np.repeat(cells @ np.array(hal.lat.prim_vec), 2, axis=0) + np.tile(tau, (9, 1))
+        x, y = np.diag(r[:, 0]), np.diag(r[:, 1])
+        self.assertTrue(np.allclose(der['x'], 1j * (ham @ x - x @ ham)))
+        self.assertTrue(np.allclose(der['xy'], 1j * (der['x'] @ y - y @ der['x'])))
+        self.assertTrue(np.allclose(der['yy'], 1j * (der['y'] @ y - y @ der['y'])))
+        self.assertTrue(np.allclose(der['xyy'], 1j * (der['xy'] @ y - y @ der['xy'])))
+        # on a torus too, as finite_velocity, sparse or dense
+        tor = hal.finite_derivatives(4, 'xx', periodic=True, sparse=True)
+        self.assertTrue(np.allclose(tor['x'].toarray(), hal.finite_velocity(4, periodic=True)[0]))
+        self.assertTrue(np.allclose(tor['xx'].toarray(), hal.finite_derivatives(4, 'xx', True)['xx']))
+        self.assertRaises(ValueError, hal.finite_derivatives, 3, 'xz')
+        self.assertRaises(ValueError, hal.finite_derivatives, 3, '')
+        self.assertRaises(TypeError, hal.finite_derivatives, 3, 1)
+        self.assertRaises(TypeError, hal.finite_derivatives, 3, 'x', 1)
+
+    def test_checks(self):
+        der = self.hbn.finite_derivatives(3, 'yyy', periodic=True, sparse=True)
+        f = kpm.nonlinear_optical_conductivity
+        self.assertRaises(ValueError, f, self.ham, der, 1., 1., 'yy')
+        self.assertRaises(ValueError, f, self.ham, der, 1., 1., 'yyw')
+        self.assertRaises(TypeError, f, self.ham, der, 1., 1., 3)
+        self.assertRaises(ValueError, f, self.ham, der, 1., 1., 'xyy')
+        self.assertRaises(TypeError, f, self.ham, list(der.values()), 1., 1., 'yyy')
+        self.assertRaises(ValueError, f, self.ham, dict(der, y=der['y'][:4, :4]), 1., 1., 'yyy')
+        self.assertRaises(ValueError, f, self.ham, dict(der, y=1j * der['y']), 1., 1., 'yyy')
+        self.assertRaises(ValueError, f, self.ham, der, 0., 1., 'yyy')
+        self.assertRaises(ValueError, f, self.ham, der, 1., [1., 0.], 'yyy')
+        self.assertRaises(TypeError, f, self.ham, der, 'a', 1., 'yyy')
+        self.assertRaises(ValueError, f, self.ham, der, 1., 1., 'yyy', 10.)
+        self.assertRaises(ValueError, f, self.ham, der, 1., 1., 'yyy', 0., -1.)
+        self.assertRaises(ValueError, f, self.ham, der, 1., 1., 'yyy', 0., 0., 0.)
+        self.assertRaises(ValueError, f, self.ham, der, 1., 1., 'yyy', area=-1.)
 
 
 if __name__ == '__main__':

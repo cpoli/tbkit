@@ -27,14 +27,7 @@ from tbkit.lattice import Lattice
 from tbkit.kspace import KSpace, PAULI
 from tbkit.bdg import bdg_kspace, particle_hole
 from tbkit.plot import Plot
-
-
-def ssh(v, w):
-    lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (0.5, 0.)}],
-                         prim_vec=[(1., 0.)])
-    model = KSpace(lat)
-    model.set_hopping([{'i': 0, 'j': 1, 'R': (0,), 't': v}, {'i': 1, 'j': 0, 'R': (1,), 't': w}])
-    return model
+from tbkit import models
 
 
 def honeycomb_model(t2=0., lam=0., spin=False):
@@ -47,12 +40,6 @@ def honeycomb_model(t2=0., lam=0., spin=False):
         else:
             model.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j*t2}, {'i': 1, 'j': 1, 'R': R, 't': -1j*t2}])
     return model
-
-
-def kitaev(delta):
-    chain = KSpace(lattices.chain())
-    chain.set_hopping([{'i': 0, 'j': 0, 'R': (1,), 't': 1.}])
-    return bdg_kspace(chain, [{'i': 0, 'j': 0, 'R': (1,), 'delta': delta}], mu=0.5)
 
 
 SZ = PAULI['z']
@@ -70,7 +57,7 @@ T_SPINFUL = np.kron(np.eye(2), 1j * PAULI['y'])
 # model (thin).
 
 fig_lat, axes_lat = plt.subplots(1, 2, figsize=(11, 4), width_ratios=(1.2, 1))
-Plot(finite_system(ssh(0.4, 1.), 8)).lattice(plt_hop=True, ms=7, c=4., ax=axes_lat[0])
+Plot(finite_system(models.ssh(0.4, 1.), 8)).lattice(plt_hop=True, ms=7, c=4., ax=axes_lat[0])
 Plot(finite_system(honeycomb_model(t2=0.2), (5, 4))).lattice(plt_hop=True, ms=10, ax=axes_lat[1])
 
 # %%
@@ -91,12 +78,12 @@ for model in (ssh_complex, kitaev_complex, honeycomb_model(t2=0.2)):
     assert model.symmetry_error(np.eye(model.norb), antiunitary=True) > 0.1
 
 cases = [
-    ('SSH chain', ssh(0.5, 1.), dict(time_reversal=T_SPINLESS, chiral=SZ), 'BDI'),
+    ('SSH chain', models.ssh(0.5, 1.), dict(time_reversal=T_SPINLESS, chiral=SZ), 'BDI'),
     ('SSH chain, complex hoppings', ssh_complex, dict(chiral=SZ), 'AIII'),
     ('Haldane model', honeycomb_model(t2=0.2), {}, 'A'),
     ('graphene (spinless)', honeycomb_model(), dict(time_reversal=np.eye(2), chiral=SZ), 'BDI'),
     ('Kane-Mele model', honeycomb_model(lam=0.06, spin=True), dict(time_reversal=T_SPINFUL), 'AII'),
-    ('Kitaev chain', kitaev(0.6), dict(time_reversal=np.eye(2), particle_hole=particle_hole(1)), 'BDI'),
+    ('Kitaev chain', models.kitaev_chain(delta=0.6, mu=0.5), dict(time_reversal=np.eye(2), particle_hole=particle_hole(1)), 'BDI'),
     ('Kitaev chain, complex hopping', kitaev_complex, dict(particle_hole=particle_hole(1)), 'D'),
 ]
 for name, model, symmetries, expected in cases:

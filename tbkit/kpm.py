@@ -889,3 +889,234 @@ def optical_conductivity(
     if part == 'imag':
         return sigma.imag
     return sigma
+
+
+def _resolvent_coefficients(z: NDArray[np.complex128], n_moments: int) -> NDArray[np.complex128]:
+    r'''
+    Private function. The Chebyshev coefficients of the scaled resolvent,
+    :math:`(z - \tilde H)^{-1} = \sum_n c_n(z)\,T_n(\tilde H)`,
+    :math:`c_n = (2-\delta_{n0})\,w^n/\sqrt{z^2-1}`, :math:`w = z - \sqrt{z^2-1}`
+    (:math:`|w| < 1`, the branch of the root that behaves as :math:`z` at
+    infinity), at the complex scaled energies *z*, shape (n_moments, len(z)).
+    '''
+    root = np.sqrt(z - 1.) * np.sqrt(z + 1.)
+    w = z - root
+    coef = w[None, :] ** np.arange(n_moments)[:, None] / root[None, :]
+    coef[1:] *= 2.
+    return coef
+
+
+def _three_index_moments(ham_s, va, vb, vc, vec: NDArray[np.complex128], n_moments: int) -> NDArray[np.complex128]:
+    '''
+    Private function. Gamma_mnp = sum_r <r| T_m(H~) v_a T_n(H~) v_b T_p(H~) v_c |r>
+    over the columns r of vec (not divided by their number), for Hermitian
+    v_a, v_b, v_c: O(M^2) sparse products and O(M^3 N) operations per vector.
+    '''
+    gamma = np.zeros((n_moments, n_moments, n_moments), 'c16')
+    for r in vec.T:
+        left = np.array([va @ t for t in _chebyshev(ham_s, r, n_moments)]).conj()  # (v_a T_m |r>)^*
+        right = np.array(list(_chebyshev(ham_s, vc @ r, n_moments))).T  # T_p v_c |r>, columns p
+        for nn, t in enumerate(_chebyshev(ham_s, vb @ right, n_moments)):  # T_n v_b T_p v_c |r>
+            gamma[:, nn, :] += left @ t
+    return gamma
+
+
+def nonlinear_optical_conductivity(
+    ham, derivatives: dict, omega1: float | ArrayLike, omega2: float | ArrayLike,
+    component: str = 'xxx', e_fermi: float = 0., temperature: float = 0., eta: float = 0.05,
+    n_moments: int = 128, n_random: int | None = 10, kernel: str = 'jackson', seed=None,
+    bounds: tuple[float, float] | None = None, area: float | None = None,
+) -> NDArray[np.complex128]:
+    r'''
+    Get the second-order optical conductivity :math:`\sigma^{abc}(\omega_1, \omega_2)`
+    of a large sample, :math:`j^a(\omega_1+\omega_2) = \sum\sigma^{abc}(\omega_1,\omega_2)
+    E^b(\omega_1)E^c(\omega_2)` (the sum running over the ordered pairs of
+    frequencies of the field), from three-index Chebyshev moments, as KITE's
+    ``conductivity_optical_nonlinear`` (Joao and Lopes, J. Phys.: Condens.
+    Matter 32, 125901 (2020)). It covers second-harmonic generation
+    (:math:`\omega_1 = \omega_2`), the shift and injection currents
+    (:math:`\omega_2 = -\omega_1`) and optical rectification, in clean or
+    disordered samples.
+
+    **Velocity gauge.** The field enters through the Peierls phases,
+    :math:`H(\mathbf{A}) = H + A_bh^b + \frac12A_bA_ch^{bc} + \dots`, with
+    the derivatives :math:`h^{b\dots}` of *KSpace.finite_derivatives* and
+    :math:`\mathbf{E} = -\partial_t\mathbf{A}`; the current is
+    :math:`j^a = -\frac1\Omega\langle\partial H/\partial A_a\rangle` (charge
+    :math:`-e`, :math:`\hbar = e = 1`). The density matrix to second order
+    gives, after the occupations are moved onto one state at a time,
+
+    .. math::
+
+        \sigma^{abc}(\omega_1,\omega_2) = \frac{1}{2\Omega\,\omega_1\omega_2}
+        \left[S^{abc}(\omega_1,\omega_2) + S^{acb}(\omega_2,\omega_1)\right]\, ,
+
+    .. math::
+
+        S^{abc}(\omega_1,\omega_2) = \int d\varepsilon\,f(\varepsilon)\Big\{
+        \tfrac12\mathrm{Tr}[\delta\,h^{abc}]
+        + \tfrac12\mathcal{T}(h^{bc}, h^a; \omega_3)
+        + \mathcal{T}(h^c, h^{ab}; \omega_2)
+        + \mathrm{Tr}[\delta\,h^aG^R_{\omega_3}h^bG^R_{\omega_2}h^c]
+        + \mathrm{Tr}[G^A_{-\omega_2}h^aG^R_{\omega_1}h^b\,\delta\,h^c]
+        + \mathrm{Tr}[G^A_{-\omega_3}h^a\,\delta\,h^bG^A_{-\omega_1}h^c]\Big\}\, ,
+
+    with :math:`\delta = \delta(\varepsilon - H)`,
+    :math:`G^{R}_{\omega} = (\varepsilon + \omega + i\eta - H)^{-1}`,
+    :math:`G^{A}_{-\omega} = (\varepsilon - \omega - i\eta - H)^{-1}`,
+    :math:`\omega_3 = \omega_1 + \omega_2` (with :math:`2\eta`: each
+    field is switched on as :math:`e^{\eta t}`) and
+    :math:`\mathcal{T}(P, Q; \omega) = \mathrm{Tr}[P\,\delta\,Q\,G^R_\omega]
+    + \mathrm{Tr}[Q\,\delta\,P\,G^A_{-\omega}]`. The delta functions are
+    expanded with the kernel, the Green's functions with the broadening
+    :math:`\eta`. The result tends to the sum over eigenstates with
+    Lorentzian broadening :math:`\eta` as the width of the kernel,
+    :math:`\pi a/M` (:math:`2a` the spectral width), becomes small next to
+    :math:`\eta`, with a relative error of about :math:`(\pi a/M\eta)^2`:
+    20% for :math:`\pi a/M\eta = 0.34`, 2-5% for 0.17, 0.6-1.3% for 0.085.
+    The moments :math:`\mathrm{Tr}[T_m h^aT_n h^bT_p h^c]` cost
+    :math:`O(M^2R)` sparse products and :math:`O(M^3RN)` operations,
+    :math:`O(M^3)` memory; they serve every frequency, Fermi level and
+    temperature, and each frequency pair then costs :math:`O(M^4)`
+    operations (the energy integral).
+
+    In the tight-binding basis the velocity gauge is exact, and equal to
+    the length gauge of *tbkit.optics* with ``positions=True``: for a
+    linear polarization in a time-reversal-symmetric crystal,
+    :math:`\mathrm{Re}\,\sigma^{abb}(\omega, -\omega)` is the shift
+    conductivity of *tbkit.optics.shift_current* (up to the Lorentzian
+    instead of the Gaussian broadening). The cancellations between the
+    terms are exact only as :math:`\eta \to 0` and :math:`M \to \infty`; at
+    low frequency, where the prefactor :math:`1/\omega_1\omega_2` grows,
+    they need more moments.
+
+    The random trace is much noisier than that of *dos* or
+    *optical_conductivity*: on gapped graphene, about 20% for
+    :math:`RN \sim 10^4` (:math:`R` random vectors, :math:`N` orbitals),
+    falling as :math:`1/\sqrt{RN}`.
+
+    The trace must run over a sample without edges, a torus
+    (*KSpace.finite_ham* and *KSpace.finite_derivatives* with
+    ``periodic=True``).
+
+    Parameters
+    ----------
+    ham : Square sparse Hermitian matrix
+    derivatives : Dict
+        The derivatives :math:`h^a, h^b, h^c, h^{ab}, h^{ac}, h^{bc}, h^{abc}`
+        of *ham*, Hermitian matrices of its shape, keyed by their axes in
+        alphabetical order, as *KSpace.finite_derivatives* returns them.
+    omega1, omega2 : Nonzero real numbers, or arrays of them (broadcast together)
+        Frequencies :math:`\hbar\omega_1`, :math:`\hbar\omega_2` (negative
+        for the conjugate field).
+    component : String, default 'xxx'
+        Three letters among 'x', 'y', 'z': :math:`a, b, c`.
+    e_fermi : Real number, default 0
+        Fermi energy, inside the spectral bounds.
+    temperature : Positive real or zero, default 0
+        In energy units.
+    eta : Positive real, default 0.05
+        Broadening of the Green's functions.
+    n_moments : Positive integer, default 128
+        Number of Chebyshev moments :math:`M`.
+    n_random : Positive integer, or None, default 10
+        See *dos*.
+    kernel
+        See *dos*.
+    seed
+        See *dos*.
+    bounds
+        See *dos*.
+    area : Positive real
+        Default value None (the number of orbitals). Area (volume)
+        :math:`\Omega` of the sample.
+
+    Returns
+    -------
+    sigma
+        Complex ndarray, the broadcast shape of *omega1* and *omega2*
+        (raveled), in units of :math:`e^3/\hbar^2` times length per energy
+        (:math:`\hbar = e = 1`), the units of *tbkit.optics.shift_current*.
+    '''
+    ham_s, _, _, a, b = _setup(ham, n_moments, kernel, bounds, [0.])
+    n = ham_s.shape[0]
+    error_handling.cartesian_axes(component, 3, length=3)
+    ca, cb, cc = component[0], component[1], component[2]
+    key = lambda *letters: ''.join(sorted(letters))  # noqa: E731
+    keys = [key(ca), key(cb), key(cc), key(ca, cb), key(ca, cc), key(cb, cc), key(ca, cb, cc)]
+    error_handling.nonlinear_derivatives(derivatives, keys, n)
+    h = {k: sparse.csr_matrix(derivatives[k], dtype='c16') for k in keys}
+    for k in keys:
+        error_handling.hermitian(h[k])
+    error_handling.nonzero_frequencies(omega1, 'omega1')
+    error_handling.nonzero_frequencies(omega2, 'omega2')
+    w1, w2 = np.broadcast_arrays(np.asarray(omega1, dtype='f8'), np.asarray(omega2, dtype='f8'))
+    w1, w2 = w1.ravel(), w2.ravel()
+    error_handling.real_number(e_fermi, 'e_fermi')
+    error_handling.kpm_grid(np.array([(e_fermi - b) / a]), 'e_fermi')
+    error_handling.positive_real_zero(temperature, 'temperature')
+    error_handling.positive_real(eta, 'eta')
+    if area is None:
+        area = float(n)
+    error_handling.positive_real(area, 'area')
+    vec = _vectors(n, n_random, seed)
+    # the moments: Tr[h^abc T_m]; Tr[P T_m Q T_n] for the pairs (P, Q) of
+    # the T terms; Tr[T_m h^a T_n h^b T_p h^c] (that of h^a, h^c, h^b is
+    # its conjugate with m and n exchanged)
+    mu1 = np.array([np.vdot(h[keys[6]] @ vec, t) for t in _chebyshev(ham_s, vec, n_moments)])
+    pairs = {(p, q): _two_index_moments(ham_s, h[p], h[q], vec, n_moments)
+                for p, q in ((keys[2], keys[3]), (keys[1], keys[4]), (keys[5], keys[0]))}
+    gamma = _three_index_moments(ham_s, h[keys[0]], h[keys[1]], h[keys[2]], vec, n_moments)
+    if n_random is not None:
+        mu1 = mu1 / n_random
+        pairs = {pq: mu / n_random for pq, mu in pairs.items()}
+        gamma = gamma / n_random
+    gamma_swap = gamma.transpose(1, 0, 2).conj()
+    # the energy integral, on a grid uniform in theta = arccos(eps), where
+    # delta(eps - H~) d eps = sum_m (2 - delta_m0) g_m cos(m theta) T_m d theta / pi
+    n_int = max(201, 4 * n_moments + 1, int(4 * PI * a / eta) + 1)
+    if temperature == 0:
+        theta = np.linspace(np.arccos((e_fermi - b) / a), PI, n_int)
+        occ = np.ones(n_int)
+    else:
+        theta = np.linspace(0., PI, n_int)
+        occ = occupation.fermi_dirac(a * np.cos(theta) + b, e_fermi, temperature)
+    weights = occ * np.full(n_int, theta[1] - theta[0])
+    weights[[0, -1]] /= 2.  # trapezoid
+    g = jackson_kernel(n_moments) if kernel == 'jackson' else lorentz_kernel(n_moments)
+    m = np.arange(n_moments)
+    delta = (np.where(m == 0, 1., 2.) * g)[:, None] * np.cos(m[:, None] * theta[None, :]) / PI * weights[None, :]
+    eps = np.cos(theta)
+
+    def green(omega, n_eta=1):
+        # coefficients of G^R(eps + omega) = c(z)/a, z = eps~ + (omega + i n_eta eta)/a
+        # (G^A(eps - omega) is the conjugate of G^R at -omega); each field
+        # is switched on as exp(eta t), so omega_3 carries 2 eta
+        return _resolvent_coefficients(eps + (omega + 1j * n_eta * eta) / a, n_moments) / a
+
+    def pair(p, q, omega, n_eta):
+        # T(P, Q; omega) = Tr[P delta Q G^R_omega] + Tr[Q delta P G^A_-omega]
+        mu = pairs[(p, q)]
+        return np.sum(delta * (mu @ green(omega, n_eta) + mu.T @ green(-omega, n_eta).conj()))
+
+    def triple(gam, om1, om2):
+        # the three terms of Tr[. h^a . h^b . h^c] with G and delta in turn
+        om3 = om1 + om2
+        total = 0j
+        for x, y, z in ((delta, green(om3, 2), green(om2)),
+                              (green(-om2).conj(), green(om1), delta),
+                              (green(-om3, 2).conj(), delta, green(-om1).conj())):
+            for e0 in range(0, n_int, 64):  # sum_p first, 64 energies at a time
+                sl = slice(e0, e0 + 64)
+                inner = (gam.reshape(-1, n_moments) @ z[:, sl]).reshape(n_moments, n_moments, -1)
+                total += np.einsum('mne,me,ne->', inner, x[:, sl], y[:, sl])
+        return total
+
+    one = 0.5 * np.sum(delta * mu1.real[:, None])  # Tr[delta h^abc] is real
+    sigma = np.zeros(len(w1), 'c16')
+    for i, (om1, om2) in enumerate(zip(w1, w2)):
+        rect = 0.5 * pair(keys[5], keys[0], om1 + om2, 2)
+        s_abc = one + rect + pair(keys[2], keys[3], om2, 1) + triple(gamma, om1, om2)
+        s_acb = one + rect + pair(keys[1], keys[4], om1, 1) + triple(gamma_swap, om2, om1)
+        sigma[i] = (s_abc + s_acb) / (2. * area * om1 * om2)
+    return sigma

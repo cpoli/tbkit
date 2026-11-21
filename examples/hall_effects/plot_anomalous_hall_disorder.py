@@ -35,23 +35,12 @@ import matplotlib.pyplot as plt
 import scipy.sparse as sparse
 
 import tbkit.kpm as kpm
-import tbkit.lattices as lattices
 from tbkit.bridges import finite_system
-from tbkit.kspace import KSpace
 from tbkit.plot import Plot
+from tbkit import models
 
 
-def haldane(M, t2=0.2):
-    '''Haldane model: nearest-neighbour t = 1, i t2 on the second neighbours, mass +-M.'''
-    hal = KSpace(lattices.honeycomb())
-    hal.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
-    for R in [(0, 1), (-1, 0), (1, -1)]:  # a2, -a1, a1 - a2: 120 degrees apart
-        hal.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j*t2}, {'i': 1, 'j': 1, 'R': R, 't': -1j*t2}])
-    hal.set_onsite({'a': M, 'b': -M})
-    return hal
-
-
-hal = haldane(0.3)
+hal = models.haldane(t2=0.2, M=0.3)
 n = 100
 ham_clean = hal.finite_ham(n, periodic=True, sparse=True)
 vx, vy = hal.finite_velocity(n, periodic=True, sparse=True)
@@ -70,7 +59,7 @@ n_moments, n_random = 256, 6
 # (thick) and the complex second-neighbour hoppings :math:`\pm it_2`
 # within each sublattice (thin), which break time-reversal symmetry.
 
-fig_lat = Plot(finite_system(haldane(0.3), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+fig_lat = Plot(finite_system(models.haldane(t2=0.2, M=0.3), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # The clean torus

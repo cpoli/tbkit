@@ -2,11 +2,17 @@
 Scattering-matrix transport: lead modes, the S-matrix, scattering states
 and the local density of states (tbkit.transport).
 """
+import importlib.util
+import sys
+import types
 import unittest
+from unittest import mock
 
 import numpy as np
 import scipy.sparse as sp
 
+import tbkit.error_handling as error_handling
+import tbkit.transport as transport
 from tbkit.transport import SMatrix, Transport, lead_modes
 from tests.test_transport import chain_device, ribbon_device, ONE
 
@@ -355,3 +361,178 @@ class TestSparseResponse(unittest.TestCase):
                              (lossy.bond_currents, (0.5, 0)), (lossy.transmission_eigenvalues, (0.5,)),
                              (lossy.fano_factor, ([0.5],))):
             self.assertTrue(np.allclose(method(*args), method(*args, eta=1e-9)))
+
+
+def fake_mumps():
+    '''
+    A stand-in for the python-mumps module, as far as tbkit uses it, in
+    dense NumPy; *calls* lists the methods called.
+    '''
+    module = types.ModuleType('mumps')
+    module.calls = []
+
+    class MUMPSError(RuntimeError):
+        pass
+
+    class Context():
+
+        def factor(self, a):
+            module.calls.append('factor')
+            self.a = a.toarray()
+
+        def solve(self, b):
+            return np.linalg.solve(self.a, b.toarray())
+
+        def schur(self, indices, a, discard_factors=False):
+            module.calls.append('schur')
+            a = a.toarray()
+            rest = np.setdiff1d(np.arange(len(a)), indices)
+            try:
+                x = np.linalg.solve(a[np.ix_(rest, rest)], a[np.ix_(rest, indices)])
+            except np.linalg.LinAlgError:
+                raise MUMPSError('singular') from None
+            return a[np.ix_(indices, indices)] - a[np.ix_(indices, rest)] @ x
+
+    module.MUMPSError, module.Context = MUMPSError, Context
+    return module
+
+
+def strip_device(length, width, disorder=1.5):
+    from tests.test_transport_response import strip, strip_leads
+    lat, sys_, rib = strip(length, width, disorder=disorder, seed=3)
+    cols, (h_l, v_l), (h_r, v_r) = strip_leads(lat, length, rib)
+    tr = Transport(sys_.ham)
+    tr.add_lead(h_l, v_l, np.eye(width), cols[0])
+    tr.add_lead(h_r, v_r, np.eye(width), cols[1])
+    return tr
+
+
+def responses(tr, e):
+    '''Every quantity that goes through the sparse solver, with and without broadening.'''
+    return [tr.smatrix(e).data, tr.transmission([e, e + 0.13]), tr.transmission_eigenvalues(e),
+            tr.wave_function(e, 0), tr.ldos(e), tr.bond_currents(e, 1),
+            tr.transmission([e], eta=1e-6), tr.transmission_matrix(e, eta=1e-6),
+            tr.transmission_eigenvalues(e, eta=1e-6), tr.bond_currents(e, 1, eta=1e-6)]
+
+
+class TestSolver(unittest.TestCase):
+    '''
+    Transport.solver: MUMPS (the optional python-mumps package) gives the
+    results of SuperLU, through the Schur complement on the lead sites
+    where only those are needed, and through a factorization of the whole
+    matrix otherwise.
+    '''
+
+    def compare(self, mumps, tr, e):
+        tr.solver = 'superlu'
+        reference = responses(tr, e)
+        with mock.patch.object(transport, '_MUMPS', [mumps]):
+            tr.solver = 'mumps'
+            for a, b in zip(responses(tr, e), reference):
+                self.assertTrue(np.allclose(a, b, rtol=0, atol=1e-10))
+
+    def test_schur_and_factorization(self):
+        mumps = fake_mumps()
+        self.compare(mumps, strip_device(12, 5), -1.1)
+        # the lead quantities from Schur complements, the states and currents from factorizations
+        self.assertEqual(mumps.calls, ['schur'] * 4 + ['factor'] * 3 + ['schur'] * 3 + ['factor'])
+
+    def test_schur_fallbacks(self):
+        with mock.patch.object(transport, '_MUMPS', [fake_mumps()]) as (mumps,):
+            Transport.solver = 'mumps'
+            self.addCleanup(setattr, Transport, 'solver', 'auto')
+            # a short device: the interface is too large for a dense Schur complement
+            short = strip_device(3, 21)
+            t = short.smatrix(-1.1).transmission(1, 0)
+            self.assertEqual(mumps.calls, ['factor'])
+            # two sites, each on a lead: the interface is the whole system
+            mumps.calls.clear()
+            pair = Transport(np.array([[0., 1.], [1., 0.]]))
+            pair.add_lead([[0.]], [[1.]], ONE, [0])
+            pair.add_lead([[0.]], [[1.]], ONE, [1])
+            self.assertAlmostEqual(pair.smatrix(0.3).transmission(1, 0), 1., places=12)
+            self.assertEqual(mumps.calls, ['factor'])
+            # a chain whose interior (3 sites) has an eigenvalue at E = 0: singular
+            # there (MUMPS fails), and nearly so next to it (the Schur complement
+            # is huge). The whole matrix is factorized instead, and T = 1
+            for e in (0., 1e-13):
+                mumps.calls.clear()
+                chain = Transport(np.eye(5, k=1) + np.eye(5, k=-1))
+                chain.add_lead([[0.]], [[1.]], ONE, [0])
+                chain.add_lead([[0.]], [[1.]], ONE, [4])
+                self.assertAlmostEqual(chain.smatrix(e).transmission(1, 0), 1., places=12)
+                self.assertEqual(mumps.calls, ['schur', 'factor'])
+            # one unknown: SuperLU
+            mumps.calls.clear()
+            dot = Transport(np.zeros((1, 1)))
+            dot.add_lead([[0.]], [[1.]], ONE, [0])
+            dot.add_lead([[0.]], [[1.]], ONE, [0])
+            self.assertAlmostEqual(dot.transmission([0.5], eta=1e-9)[0], 1., places=6)
+            self.assertEqual(mumps.calls, [])
+        Transport.solver = 'superlu'
+        self.assertAlmostEqual(short.smatrix(-1.1).transmission(1, 0), t, places=10)
+
+    def test_auto(self):
+        tr = strip_device(12, 5)
+        energies = np.linspace(-1.5, 1.5, 4)
+        self.assertEqual(tr.solver, 'auto')
+        narrow = mock.patch.object(transport, '_MUMPS_WIDTH', 5)  # leads of 5 orbitals count as wide
+        with mock.patch.object(transport, '_MUMPS', [None]), narrow:  # no python-mumps: SuperLU
+            reference = tr.transmission(energies)
+            tr.solver = 'mumps'
+            self.assertRaises(ImportError, tr.smatrix, 0.3)
+        tr.solver = 'auto'
+        with mock.patch.object(transport, '_MUMPS', [fake_mumps()]) as (mumps,):
+            # leads narrower than _MUMPS_WIDTH: SuperLU
+            self.assertEqual(tr._width(), 5)
+            self.assertTrue(np.array_equal(tr.transmission(energies), reference))
+            self.assertEqual(mumps.calls, [])
+            narrow.start()
+            self.addCleanup(narrow.stop)
+            self.assertTrue(np.allclose(tr.transmission(energies), reference, rtol=0, atol=1e-10))
+            self.assertEqual(mumps.calls, ['schur'] * 4)
+            # in the threads of set_workers, 'auto' keeps SuperLU and 'mumps' takes turns
+            mumps.calls.clear()
+            tr.set_workers(2)
+            self.assertTrue(np.allclose(tr.transmission(energies), reference, rtol=0, atol=1e-10))
+            self.assertEqual(mumps.calls, [])
+            tr.solver = 'mumps'
+            self.assertTrue(np.allclose(tr.transmission(energies), reference, rtol=0, atol=1e-10))
+            self.assertEqual(mumps.calls, ['schur'] * 4)
+            # outside them, MUMPS again
+            tr.solver = 'auto'
+            tr.smatrix(0.3)
+            self.assertEqual(mumps.calls, ['schur'] * 5)
+
+    def test_import(self):
+        # python-mumps is looked for once, the first time a solver is needed
+        mumps = fake_mumps()
+        for module in (mumps, None):
+            with mock.patch.dict(sys.modules, {'mumps': module}), mock.patch.object(transport, '_MUMPS', []):
+                self.assertIs(transport._mumps_module('auto', transport._MUMPS_WIDTH), module)
+                self.assertEqual(transport._MUMPS, [module])
+                self.assertIsNone(transport._mumps_module('superlu', transport._MUMPS_WIDTH))
+
+    def test_checks(self):
+        tr = chain_device()
+        tr.solver = 'pardiso'
+        self.assertRaises(ValueError, tr.smatrix, 0.5)
+        self.assertRaises(ValueError, tr.transmission, [0.5], eta=1e-6)
+        self.assertRaises(ValueError, error_handling.transport_solver, None)
+        error_handling.transport_solver('mumps')
+
+    @unittest.skipUnless(importlib.util.find_spec('mumps'), 'python-mumps is not installed')
+    def test_mumps(self):
+        # the library itself
+        import mumps
+        self.compare(mumps, strip_device(12, 5), -1.1)
+        self.compare(mumps, strip_device(3, 21), -1.1)
+        self.compare(mumps, ribbon_device(6, 9), 0.)  # a clean strip at E = 0: singular interior
+        self.compare(mumps, chain_device(impurity={5: 0.8}), 0.3)
+        with mock.patch.object(transport, '_MUMPS', [mumps]):
+            tr = strip_device(12, 5)
+            tr.solver = 'mumps'
+            energies = np.linspace(-1.5, 1.5, 8)
+            serial = tr.transmission(energies)
+            tr.set_workers(4)  # one MUMPS call at a time
+            self.assertTrue(np.array_equal(tr.transmission(energies), serial))

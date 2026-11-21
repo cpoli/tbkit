@@ -1,5 +1,144 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- **Migration guides** (roadmap item 15): "Coming from Kwant" and
+  "Coming from PythTB" in the docs, each with a side-by-side table of
+  the same tasks, the differences of convention, and one model ported
+  line by line whose numbers agree with the other package (run in the
+  `docs` CI job).
+- **Wannier90 output and `_tb.dat` input** (`tbkit.io`, roadmap item 2):
+  - `write_wannier90(ks, seedname)` writes `seedname_hr.dat`,
+    `seedname_tb.dat`, `seedname.win` and `seedname_centres.xyz` (also
+    `write_hr`, `write_tb` alone), for 2D and 3D models, with 12
+    decimals: `read_wannier90` gives the bands back to 1e-12.
+  - `read_wannier90_tb(tb, ...)` (and `read_tb`) reads Wannier90's
+    `seedname_tb.dat`: the cell, the Hamiltonian and the matrix elements
+    of the position operator between the Wannier functions. The centres
+    become the orbital positions, and the other elements are kept
+    (`elements=True`, the default; `save_model` stores them).
+  - With them, the responses of `positions=True` use the whole position
+    operator (Wang, Yates, Souza and Vanderbilt 2006): the velocity is
+    `i[H, r]` and the band curvature gains that of the Wannier
+    functions' own Berry connection, in `hall_conductivity`,
+    `anomalous_nernst_conductivity`, `thermal_hall_conductivity` and
+    `optics.optical_conductivity`. Checked on the Haldane model rewritten
+    in a k-dependent basis (non-commuting, curling connection): the
+    anomalous Hall conductivity of the metal is that of the original
+    model to 1e-11, where the centres alone are off by up to 0.2 e²/h.
+    `spin_hall_conductivity`, `orbital_magnetization`, `axion_angle`,
+    `optics.berry_curvature_dipole` and `optics.shift_current` refuse
+    such a model with `positions=True` instead of ignoring the elements.
+- **Models exchanged with other codes** (`tbkit.interop`, roadmap item 2).
+  None of these packages is a dependency: each function imports its
+  package when called, never on `import tbkit`.
+  - ASE: `lattice_from_ase(atoms)` and `lattice_to_ase(lat)` (the unit
+    cell, or with `sites=True` the finite sample as a cluster).
+  - PythTB, 1.x (`tb_model`) and 2 (`TBModel`): `from_pythtb`,
+    `to_pythtb`, spinful models included. Both store
+    `<i,0|H|j,R>`, so the hoppings translate one to one; PythTB 2.0
+    still includes the orbital positions in its Bloch phases. Checked
+    against PythTB 1.8.0 and 2.0: the same bands (to 1e-15), Chern
+    numbers and Z2 invariants, on the Haldane and Kane-Mele models of the
+    paper.
+  - TBmodels: `to_tbmodels(ks, path=)` (and its HDF5 file). Z2Pack:
+    `z2pack_hamiltonian(ks)`, the callable `H(k)` of `z2pack.hm.System`,
+    and `to_z2pack(ks, bands=)`; Z2Pack's Chern number has tbkit's sign
+    on the surface `lambda t1, t2: [t2, t1]`. qsymm: `to_qsymm(ks)`, a
+    `BlochModel` (qsymm finds the 24 operations of graphene that
+    `find_symmetries` finds).
+  - pybinding: `to_pybinding(ks)` (a `Lattice`) and `from_pybinding`
+    (a `Lattice` to a `KSpace`, a `Model` to its matrix and positions).
+    pybinding's Bloch phases are `e^{-ik.R}`: its `H(k)` is tbkit's
+    `H(-k)`.
+  - Kwant: `to_kwant(sys_or_transport, sys=)`, a `Builder`. A
+    `Transport`'s leads become a copy of their first cell plus a
+    `ModesLead` of the lead's `h0`, `v` and conservation law: Kwant gives
+    the same transmissions, spin-resolved blocks included (to 1e-10).
+    `from_kwant(fsys, params=)`: the Hamiltonian matrix and orbital
+    positions of a finalized system.
+  - Not done: the optional physical units of item 2 (eV, Angstrom, tesla,
+    e²/h), which the roadmap puts after items 13, 14 and 1.
+
+- **A library of named models: `tbkit.models`.** One call per model,
+  with the parameters of the original paper as keyword arguments, and a
+  `KSpace` as the result, so every band, topology and response tool
+  applies; `bridges.finite_system` cuts the same model into a `System`
+  (spinless models), `bridges.finite_model` into a sparse Hamiltonian
+  (all). The models: `ssh`, `rice_mele`, `rice_mele_pump` (the Thouless
+  pump, the cycle as a second momentum), `kitaev_chain`, `haldane`,
+  `qi_wu_zhang`, `kane_mele`, `bhz`, `tmd_three_band` (the three-band
+  model of the group-VIB dichalcogenides of Liu et al., PRB 88, 085433
+  (2013), with `TMD_PARAMETERS` for MoS2, WS2, MoSe2, WSe2, MoTe2 and
+  WTe2 and, with `spin=True`, their spin-orbit coupling),
+  `topological_insulator_3d` and `weyl_semimetal`. Each gives, in each
+  phase, the invariant its gallery example asserts, and the gallery
+  examples that are not about building the model now call the library.
+- **Every eigenstate in an energy window: `System.get_eig_window(e_min,
+  e_max, eigenvec=False, n_slice=50)`** (also `OrbitalSystem`, without
+  an overlap). Spectrum slicing for Hermitian Hamiltonians: the number
+  of eigenvalues below an energy comes exactly from Sylvester's law of
+  inertia (the negative pivots of a sparse LDL^dagger factorization by
+  SuperLU), the window is bisected until each slice holds at most
+  `n_slice` eigenvalues, and each slice is solved by shift-invert
+  Lanczos with deflation, so that the copies of a degenerate level that
+  Lanczos alone misses are found too. Nothing is dense: the 320 states
+  in |E| <= 0.15t of a disordered graphene flake of 28,800 sites take
+  8 s. Example: `large_scale/plot_spectrum_slicing.py`.
+- **Second-order optical conductivity by the kernel polynomial method:
+  `kpm.nonlinear_optical_conductivity(ham, derivatives, omega1, omega2,
+  component)`**, KITE's `conductivity_optical_nonlinear`:
+  sigma^abc(omega1, omega2) of a large sample (second-harmonic
+  generation, shift and injection currents, optical rectification) in
+  the velocity gauge, from the three-index Chebyshev moments
+  Tr[T_m h^a T_n h^b T_p h^c] and the two- and one-index moments of the
+  higher derivatives. `KSpace.finite_derivatives(n_cells, component)`
+  gives the derivatives h^{ab...} of the Hamiltonian of a finite sample
+  with respect to the vector potential. Checked against the sum over
+  eigenstates of the density matrix to second order (the error falls as
+  (pi a / M eta)^2: 2-5% at 0.17) and, in the limit of small
+  broadening, against the length-gauge `optics.shift_current` (to 1.2%
+  at eta = 0.02t on the Rice-Mele chain). Example:
+  `large_scale/plot_kpm_nonlinear_optical_conductivity.py`.
+
+### Changed
+
+- The README quick start names its `System` instance `system`: `sys`
+  shadowed the standard-library module.
+
+- **Faster scattering matrices with MUMPS.** `Transport` has a `solver`
+  attribute: `'mumps'` (the optional
+  [python-mumps](https://gitlab.kwant-project.org/kwant/python-mumps)
+  package, `conda install -c conda-forge python-mumps`), `'superlu'`
+  (SciPy, as before) or `'auto'`, the default. `'auto'` takes MUMPS when
+  it is installed and a lead has at least 50 orbitals, and SuperLU
+  otherwise: on small devices and on narrow ones, however long, SuperLU
+  is as fast or faster. In the threads of `set_workers` it also keeps
+  SuperLU, because MUMPS factorizes one matrix at a time (tbkit guards
+  it with a lock). Without python-mumps nothing changes.
+  Where only the leads matter (`smatrix`, the transmissions, their
+  eigenvalues, the conductance matrix and the noise, with or without
+  `eta`), MUMPS returns the Schur complement of the device on the lead
+  sites and tbkit solves that small dense system, with no triangular
+  solve over the device. When the device cut from its leads has an
+  eigenvalue at the energy (a clean strip at `E = 0`), the Schur
+  complement is ill-conditioned: tbkit sees it by its size and
+  factorizes the whole matrix instead, as it does for `wave_function`,
+  `ldos` and the currents, which need the whole solution.
+  On the benchmark of the paper (a disordered square device with two
+  square leads, one thread), `smatrix` takes 0.26 s instead of 0.54 s
+  at 25,600 sites, 1.7 s instead of 5.3 s at 102,400 sites and 11.7 s
+  instead of 47 s at 409,600 sites, with the same transmissions to
+  1e-12. Kwant 1.5.0 takes 0.33 s, 2.3 s and 17.1 s: tbkit is now 1.1
+  to 2 times faster than Kwant at every size of the benchmark, and
+  uses 0.6 to 0.8 of its memory from 25,600 sites on.
+- **Less memory for the lead amplitudes with SuperLU.** The solutions
+  of the column blocks stayed in memory until the last block, although
+  only their lead rows are kept. They are now freed block by block: at
+  409,600 sites the peak memory of `smatrix` goes from 5.1 GB to 2.2 GB.
+
 ## 0.8.0 -- 2026-11-16
 
 ### Added

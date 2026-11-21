@@ -30,18 +30,23 @@ from tbkit.lattice import Lattice
 from tbkit.kspace import KSpace, PAULI, ribbon
 from tbkit.system import System
 from tbkit.topology import find_weyl_points
+from tbkit import models
 
 k0 = np.pi / 2
 cubic = [(1., 0., 0.), (0., 1., 0.), (0., 0., 1.)]
 lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0., 0.)}], prim_vec=cubic)
 # the two components are the "spin" of a spinful site
+weyl = models.weyl_semimetal(k0)
+# its hoppings, written out for the slab below (ribbon cuts a slab out of a
+# list of hoppings): the same model
 hops = [{'i': 0, 'j': 0, 'R': (1, 0, 0), 't': -0.5j*PAULI['x'] - 0.5*PAULI['z']},
             {'i': 0, 'j': 0, 'R': (0, 1, 0), 't': -0.5j*PAULI['y'] - 0.5*PAULI['z']},
             {'i': 0, 'j': 0, 'R': (0, 0, 1), 't': -0.5*PAULI['z']}]
 onsite = {'a': (2. + np.cos(k0)) * PAULI['z']}
-weyl = KSpace(lat, spin=True)
-weyl.set_hopping(hops)
-weyl.set_onsite(onsite)
+check = KSpace(lat, spin=True)
+check.set_hopping(hops)
+check.set_onsite(onsite)
+assert np.allclose(check.get_ham((0.3, -0.8, 1.2)), weyl.get_ham((0.3, -0.8, 1.2)))
 
 # %%
 # The lattice

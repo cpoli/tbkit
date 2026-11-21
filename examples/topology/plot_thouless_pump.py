@@ -19,43 +19,20 @@ momentum.
 
 Because :math:`v(\phi)` and :math:`w(\phi)` only ever appear as
 :math:`\cos\phi = (e^{i\phi}+e^{-i\phi})/2`, this is a completely ordinary
-2D Bloch Hamiltonian, built with :class:`tbkit.kspace.KSpace` exactly like
-any other -- no new machinery needed, just one extra "synthetic"
-reciprocal dimension.
+2D Bloch Hamiltonian, a :class:`tbkit.kspace.KSpace` like any other
+(:func:`tbkit.models.rice_mele_pump`) -- no new machinery needed, just one
+extra "synthetic" reciprocal dimension.
 """
 import numpy as np
 import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice
-from tbkit.kspace import KSpace
 from tbkit.system import System
 from tbkit.plot import Plot
+from tbkit import models
 
 
 unit_cell = [{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (0.5, 0.)}]
-prim_vec = [(1., 0.), (0., 1.)]  # 2nd direction: the synthetic pump parameter
-
-
-def rice_mele(v0, delta, Delta, onsite_offset=0.):
-    '''
-    Rice-Mele model as a 2D Bloch Hamiltonian H(k, phi): a family of SSH
-    chains (dimerization v(phi), w(phi)) with a staggered onsite potential
-    Delta*sin(phi) + onsite_offset, phi playing the role of a second,
-    synthetic crystal momentum.
-    '''
-    lat = Lattice(unit_cell=unit_cell, prim_vec=prim_vec)
-    rm = KSpace(lat)
-    rm.set_hopping([{'i': 0, 'j': 1, 'R': (0, 0), 't': v0},
-                            {'i': 0, 'j': 1, 'R': (-1, 0), 't': v0},
-                            {'i': 0, 'j': 1, 'R': (0, 1), 't': delta/2},
-                            {'i': 0, 'j': 1, 'R': (0, -1), 't': delta/2},
-                            {'i': 0, 'j': 1, 'R': (-1, 1), 't': -delta/2},
-                            {'i': 0, 'j': 1, 'R': (-1, -1), 't': -delta/2},
-                            {'i': 0, 'j': 0, 'R': (0, 1), 't': Delta/(2j)},
-                            {'i': 1, 'j': 1, 'R': (0, 1), 't': -Delta/(2j)}])
-    if onsite_offset:
-        rm.set_onsite({'a': onsite_offset, 'b': -onsite_offset})
-    return rm
 
 
 # %%
@@ -102,12 +79,12 @@ v0, delta, Delta = 1., 0.5, 0.6
 # the origin entirely gives a trivial, unquantized (here, exactly zero)
 # pump instead.
 
-rm = rice_mele(v0, delta, Delta)
+rm = models.rice_mele_pump(v0, delta, Delta)
 chern = rm.chern_number(bands=[0], nk=50)
 print('Loop encircling the origin: Chern number = {:.4f} (expect exactly +-1).'.format(chern))
 assert np.isclose(abs(chern), 1., atol=1e-3)
 
-rm_offset = rice_mele(v0, delta, Delta, onsite_offset=2*Delta)
+rm_offset = models.rice_mele_pump(v0, delta, Delta, offset=2*Delta)
 chern_offset = rm_offset.chern_number(bands=[0], nk=50)
 print('Loop missing the origin (large constant offset): Chern number = {:.4f} '
            '(expect exactly 0).'.format(chern_offset))

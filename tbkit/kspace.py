@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor
-from itertools import product
+from itertools import combinations, product
 from typing import Literal, Sequence, overload
 
 import numpy as np
@@ -159,6 +159,10 @@ class KSpace():
         self.params: dict = {}
         self._nonreciprocal = False  # set_hopping(hermitian=False) was used
         self._overlap_hop: list = []  # overlaps, as _hop: list of (i, j, R_cartesian, s)
+        # position matrix elements <i,0|r|j,R> other than the orbital
+        # positions (a Wannier90 _tb.dat file, see io.read_wannier90_tb):
+        # list of (i, j, R_cartesian, r), r a complex vector of space_dim
+        self._position_hop: list = []
         self.rec_vec = reciprocal_vectors(lat.prim_vec)
         # Orthonormal basis (columns) of the span of prim_vec, in which k is
         # given: the identity when the lattice fills its space, a1/|a1| for a
@@ -1448,6 +1452,13 @@ class KSpace():
         hops = self._hop if params is None else self._hops(params)
         ham, dham = self._bloch_sum(hops, k_cart, directions, positions)
         ham = ham + (np.diag(self.onsite) + self._onsite_offdiag)[None]
+        if positions and self._position_hop:
+            # the velocity i[H, r] with the whole position operator: the
+            # derivative in the gauge of the orbital positions, plus
+            # i[H, A_u] with the connection of the other elements
+            error_handling.no_overlap(bool(self._overlap_hop))
+            conn = self._connection(k_cart, directions)[0]
+            dham = dham + 1j * (ham[None] @ conn - conn @ ham[None])
         if not self._overlap_hop:
             return ham, dham
         s, ds = self._bloch_sum(self._overlap_hop, k_cart, directions, positions)
@@ -1464,6 +1475,29 @@ class KSpace():
         ds_inv = vs @ ((vh @ ds @ vs) * lk) @ vh
         dham = ds_inv @ ham @ s_inv + s_inv @ dham @ s_inv + s_inv @ ham @ ds_inv
         return s_inv @ ham @ s_inv, dham
+
+    def _connection(
+        self, k_cart: NDArray[np.float64], directions: Sequence[NDArray[np.float64]],
+        derivatives: bool = False,
+    ) -> tuple[NDArray[np.complex128], NDArray[np.complex128]]:
+        r'''
+        Private method. The Berry connection of the orbitals beyond their
+        positions, :math:`A_u(\mathbf{k}) = \sum_{\mathbf{R}}(\mathbf{u}\cdot\mathbf{r}_{ij}(\mathbf{R}))\,
+        e^{i\mathbf{k}\cdot(\mathbf{R}+\boldsymbol\tau_j-\boldsymbol\tau_i)}` with
+        :math:`\mathbf{r}_{ij}(\mathbf{R}) = \langle i,\mathbf{0}|\mathbf{r}|j,\mathbf{R}\rangle`
+        the position matrix elements of *_position_hop*, in the gauge of the
+        orbital positions (*positions=True*), along each Cartesian unit
+        vector *directions*: shape (len(directions), nk, norb, norb). With
+        *derivatives*, also :math:`\partial_v A_u`, shape
+        (len(directions), len(directions), nk, norb, norb) (u first).
+        '''
+        conn, dconn = [], []
+        for u in directions:
+            hops = [(i, j, R, complex(r @ u)) for i, j, R, r in self._position_hop]
+            a, da = self._bloch_sum(hops, k_cart, directions if derivatives else (), True)
+            conn.append(a)
+            dconn.append(da)
+        return np.array(conn), np.array(dconn)
 
     def _kubo(
         self, ks: NDArray[np.float64], e_fermi: NDArray[np.float64], temperature: float,
@@ -1483,10 +1517,21 @@ class KSpace():
         returns, per k-point, the occupation-independent size of the
         curvature, :math:`\sum_{n\neq m}|\mathrm{Im}[X_{nm}Y_{mn}]|/(E_n-E_m)^2`,
         which locates the hot spots of the adaptive refinement.
+
+        With position matrix elements beyond the orbital positions
+        (*_position_hop*, ``positions=True``), the velocities include
+        :math:`i[H, A]` (see *_bloch_derivatives*) and the band curvature
+        gains the curvature of the orbitals' own connection (Wang, Yates,
+        Souza and Vanderbilt, Phys. Rev. B 74, 195118 (2006)):
+        :math:`\Omega_n = -2\,\mathrm{Im}\sum_{m\neq n}v^a_{nm}v^b_{mn}/(E_n-E_m)^2
+        + \langle n|\partial_aA_b-\partial_bA_a-i[A_a, A_b]|n\rangle`. Only the
+        responses :math:`\sum_n w_n\Omega_n` take it ('hall', 'nernst',
+        'thermal' without *spin_op*); the others are refused upstream.
         '''
         out = np.zeros((len(ks), len(e_fermi), len(pairs)))
         hot = np.zeros(len(ks))
         chunk = max(1, 400000 // self.norb ** 2)
+        internal = positions and bool(self._position_hop)
         for c0 in range(0, len(ks), chunk):
             ham, dham = self._bloch_derivatives(ks[c0:c0 + chunk], directions, positions)
             en, vec = np.linalg.eigh(ham)
@@ -1497,13 +1542,23 @@ class KSpace():
             inv2 = np.where(degenerate, 0., 1. / np.where(degenerate, 1., de) ** 2)
             if spin_op is not None:
                 s_e = vh @ spin_op @ vec
+            if internal:
+                conn, dconn = self._connection(ks[c0:c0 + chunk] @ self.k_basis.T, directions, True)
             for p, (a, b) in enumerate(pairs):
                 x = vel[a] if spin_op is None else 0.5 * (s_e @ vel[a] + vel[a] @ s_e)
                 w = np.imag(x * vel[b].transpose(0, 2, 1)) * inv2
                 hot[c0:c0 + chunk] += np.abs(w).sum(axis=(1, 2))
+                if internal:
+                    # the curvature of the connection, on the diagonal of the eigenbasis
+                    curv = dconn[b, a] - dconn[a, b] - 1j * (conn[a] @ conn[b] - conn[b] @ conn[a])
+                    omega = np.real(np.einsum('kni,kij,kjn->kn', vh, curv, vec))
+                    hot[c0:c0 + chunk] += np.abs(omega).sum(axis=1)
                 for e, mu in enumerate(e_fermi):
                     weights = _response_weights(en, float(mu), temperature, response)
                     out[c0:c0 + chunk, e, p] = np.einsum('knm,knm->k', weights, w)
+                    if internal:
+                        occ = _response_occupations(en, float(mu), temperature, response)
+                        out[c0:c0 + chunk, e, p] += np.einsum('kn,kn->k', occ, omega)
         return out, hot
 
     def _hall(
@@ -1528,6 +1583,10 @@ class KSpace():
         error_handling.plane(plane, self.dim)
         error_handling.k_fixed_hall(k_fixed, self.dim, spin_axis is None)
         error_handling.boolean(positions, 'positions')
+        if spin_axis is not None or response == 'magnetization':
+            error_handling.no_position_elements(positions and bool(self._position_hop),
+                                                'spin_hall_conductivity' if spin_axis is not None
+                                                else 'orbital_magnetization')
         error_handling.positive_int(refine, 'refine')
         error_handling.refine_fraction(refine_fraction)
         full = self.dim == 3 and k_fixed is None
@@ -1668,7 +1727,16 @@ class KSpace():
         :math:`E_F` are all full (in a gap, at any temperature well below
         the gap) and differ in general at partial filling, by the circulation
         :math:`\frac{1}{2\pi}\oint_{FS}\langle n|\boldsymbol\tau|n\rangle\cdot d\mathbf{k}`
-        around the Fermi surface. The default is the physical one.
+        around the Fermi surface. The default is the physical one. A model
+        read from a Wannier90 ``_tb.dat`` file (*tbkit.io.read_wannier90_tb*)
+        knows the other matrix elements of the position operator too, and
+        ``positions=True`` then uses the whole operator: the velocity is
+        :math:`i[H, \mathbf{r}]` with all of them, and each band's curvature
+        gains that of the Wannier functions' own Berry connection (Wang,
+        Yates, Souza and Vanderbilt, Phys. Rev. B 74, 195118 (2006)). The
+        anomalous Nernst and thermal Hall conductivities do the same;
+        *spin_hall_conductivity*, *orbital_magnetization* and *axion_angle*
+        refuse such a model with ``positions=True``.
 
         **Units and dimensions.** In 2D, :math:`\sigma` is in units of
         :math:`e^2/h` (:math:`\frac{1}{2\pi}\int d^2k\,F`). In 3D, with
@@ -2119,6 +2187,7 @@ class KSpace():
         error_handling.nk(nk, 3)
         error_handling.real_number(theta0, 'theta0')
         error_handling.boolean(positions, 'positions')
+        error_handling.no_position_elements(positions and bool(self._position_hop), 'axion_angle')
         values = np.asarray(values, dtype='f8')
         fracs = np.array(np.meshgrid(*[np.arange(n) / n for n in nk], indexing='ij')).reshape(3, -1).T
         ks = fracs @ self.rec_vec_k
@@ -2278,21 +2347,81 @@ class KSpace():
         error_handling.nk(n_cells, self.dim)
         error_handling.boolean(periodic, 'periodic')
         error_handling.boolean(sparse, 'sparse')
+        return [self._finite_derivative(n_cells, periodic, sparse, (alpha,)) for alpha in range(self.space_dim)]
+
+    def finite_derivatives(
+        self, n_cells: int | tuple[int, ...], component: str, periodic: bool = False,
+        sparse: bool = False,
+    ) -> dict[str, NDArray[np.complex128] | sp.csr_matrix]:
+        r'''
+        Get the derivatives of the Hamiltonian of the finite sample of
+        *finite_ham* with respect to a uniform vector potential, the
+        vertices of the nonlinear optical response in the velocity gauge
+        (*tbkit.kpm.nonlinear_optical_conductivity*). With the Peierls
+        phases :math:`H_{ab}(\mathbf{A}) = H_{ab}\,e^{i\mathbf{A}\cdot\mathbf{d}}`
+        (:math:`\mathbf{d}` the bond vector of *finite_velocity*, a charge
+        :math:`-e`, :math:`\hbar = e = 1`),
+
+        .. math::
+
+            h^{\alpha_1\dots\alpha_n}_{ab} =
+            \frac{\partial^n H_{ab}}{\partial A_{\alpha_1}\cdots\partial A_{\alpha_n}}
+            = i^n\,d_{\alpha_1}\cdots d_{\alpha_n}\,H_{ab}\, ,
+
+        the real-space counterparts of :math:`\partial^nH/\partial k_{\alpha_1}\cdots`
+        with ``positions=True``. :math:`h^\alpha` is the velocity
+        :math:`v_\alpha` of *finite_velocity*.
+
+        Parameters
+        ----------
+        n_cells
+            See *finite_ham*.
+        component : String
+            Cartesian axes, e.g. 'xyy' for :math:`\sigma^{xyy}`.
+        periodic : Boolean, default False
+            See *finite_ham*.
+        sparse : Boolean, default False
+            See *finite_ham*.
+
+        Returns
+        -------
+        derivatives
+            Dict from axes (letters in alphabetical order, e.g. 'y', 'xy',
+            'xyy') to complex ndarrays (or CSR matrices): one entry per
+            nonempty subset of the letters of *component*.
+        '''
+        error_handling.nk(n_cells, self.dim)
+        error_handling.cartesian_axes(component, self.space_dim)
+        error_handling.boolean(periodic, 'periodic')
+        error_handling.boolean(sparse, 'sparse')
+        keys = {''.join(sorted(component[i] for i in subset))
+                for size in range(1, len(component) + 1) for subset in combinations(range(len(component)), size)}
+        return {key: self._finite_derivative(n_cells, periodic, sparse, tuple('xyz'.index(c) for c in key))
+                   for key in sorted(keys, key=lambda s: (len(s), s))}
+
+    def _finite_derivative(
+        self, n_cells: int | tuple[int, ...], periodic: bool, sparse: bool, axes: tuple[int, ...],
+    ) -> NDArray[np.complex128] | sp.csr_matrix:
+        r'''
+        Private method. :math:`i^n d_{\alpha_1}\cdots d_{\alpha_n}H` on the
+        finite sample (see *finite_derivatives*), one term per stored
+        hopping, so that bonds that wrap onto the same pair of a small
+        torus keep their own displacements.
+        '''
         _, n_tot, entries = self._finite_entries(n_cells, periodic)
         tau = self.orbital_positions()
         n = n_tot * self.norb
-        vel = []
-        for alpha in range(self.space_dim):
-            rows, cols, vals = [np.zeros(0, int)], [np.zeros(0, int)], [np.zeros(0, 'c16')]
-            for r, c, i, j, _, R_cart, t in entries:
-                d = R_cart[alpha] + tau[j, alpha] - tau[i, alpha]
-                rows.append(r)
-                cols.append(c)
-                vals.append(np.full(len(r), 1j * t * d, dtype='c16'))
-            mat = sp.coo_matrix((np.concatenate(vals), (np.concatenate(rows), np.concatenate(cols))),
-                                          shape=(n, n)).tocsr()
-            vel.append(mat if sparse else mat.toarray())
-        return vel
+        rows, cols, vals = [np.zeros(0, int)], [np.zeros(0, int)], [np.zeros(0, 'c16')]
+        for r, c, i, j, _, R_cart, t in entries:
+            factor = 1j ** len(axes) * t
+            for alpha in axes:
+                factor *= R_cart[alpha] + tau[j, alpha] - tau[i, alpha]
+            rows.append(r)
+            cols.append(c)
+            vals.append(np.full(len(r), factor, dtype='c16'))
+        mat = sp.coo_matrix((np.concatenate(vals), (np.concatenate(rows), np.concatenate(cols))),
+                                      shape=(n, n)).tocsr()
+        return mat if sparse else mat.toarray()
 
     def get_ham_beta(self, beta: complex) -> NDArray[np.complex128]:
         r'''
@@ -4283,19 +4412,28 @@ def _response_weights(
             g = temperature * np.logaddexp(0., -(en - mu) / temperature)
         return 0.5 * (f[:, :, None] + f[:, None, :]) * (en[:, None, :] - en[:, :, None]) \
             - (g[:, :, None] - g[:, None, :])
-    if response == 'hall':
-        w = occupation.fermi_dirac(en, mu, temperature)
-    else:
-        a = np.abs(en - mu) / temperature
-        if response == 'nernst':
-            w = np.log1p(np.exp(-a)) + a * expit(-a)
-        else:
-            # int_a^inf y^2 (-f') dy = a^2 f(a) + 2 [a ln(1 + e^-a) - Li2(-e^-a)]
-            # for a >= 0, and pi^2/3 minus it below the Fermi level
-            # (Li2(z) = spence(1 - z) in scipy's convention)
-            c2 = a ** 2 * expit(-a) + 2 * (a * np.log1p(np.exp(-a)) - spence(1 + np.exp(-a)))
-            w = temperature * np.where(en >= mu, c2, PI ** 2 / 3 - c2)
+    w = _response_occupations(en, mu, temperature, response)
     return -(w[:, :, None] - w[:, None, :])
+
+
+def _response_occupations(
+    en: NDArray[np.float64], mu: float, temperature: float, response: str,
+) -> NDArray[np.float64]:
+    r'''
+    Private. The weights :math:`w_n` of the responses
+    :math:`\sum_n w_n\Omega_n` ('hall', 'nernst', 'thermal'), shape of
+    *en*: see *_response_weights*.
+    '''
+    if response == 'hall':
+        return occupation.fermi_dirac(en, mu, temperature)
+    a = np.abs(en - mu) / temperature
+    if response == 'nernst':
+        return np.log1p(np.exp(-a)) + a * expit(-a)
+    # int_a^inf y^2 (-f') dy = a^2 f(a) + 2 [a ln(1 + e^-a) - Li2(-e^-a)]
+    # for a >= 0, and pi^2/3 minus it below the Fermi level
+    # (Li2(z) = spence(1 - z) in scipy's convention)
+    c2 = a ** 2 * expit(-a) + 2 * (a * np.log1p(np.exp(-a)) - spence(1 + np.exp(-a)))
+    return temperature * np.where(en >= mu, c2, PI ** 2 / 3 - c2)
 
 
 def _path(
