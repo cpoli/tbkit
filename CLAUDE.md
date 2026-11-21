@@ -11,6 +11,7 @@ pip install -e ".[docs]"          # docs (sphinx, pydata-sphinx-theme, sphinx-ga
 pytest tests/                                        # full suite, in parallel (pytest-xdist, set in pyproject addopts)
 pytest tests/ --cov=tbkit --cov-report=term-missing  # what CI runs (Python 3.10-3.14)
 pytest tests/test_kspace.py::test_name -q -n0        # a single test, without worker startup
+pytest tests/ --fragile                              # also list test-side near-ties and exact float asserts (tests/fragile_probe.py)
 
 python examples/<section>/plot_<name>.py             # run one gallery example
 cd docs && make html                                 # re-executes every examples/*/plot_*.py; output in docs/build/html
