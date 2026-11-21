@@ -21,7 +21,7 @@ cd docs && make html                                 # re-executes every example
 - `filterwarnings = ["error"]`: any warning fails the suite. A warning from tbkit is a defect. Add a targeted `ignore::` only for dependency warnings outside our control.
 - Coverage of `tbkit` is 100% of lines. New code needs tests that keep it there.
 - `test-minimum-versions` runs on the oldest NumPy/SciPy/matplotlib that `pyproject.toml` allows (Python 3.10). No NumPy 2-only APIs: use `scipy.integrate.trapezoid` and `np.char`, not `np.trapezoid` or `import numpy.char`.
-- `lint`: `ruff check tbkit` (no formatter). `typecheck`: `mypy tbkit`, must pass. `docs`: builds the docs (every gallery example) and runs `paper/listings/*.py`.
+- `lint`: `ruff check tbkit` (no formatter). `typecheck`: `mypy tbkit`, must pass. `docs`: builds the docs (every gallery example) and runs `paper/listings/*.py` and the migration-guide ports `docs/source/migration/*.py`.
 - `tests/conftest.py` forces the matplotlib `Agg` backend.
 - `paper/` is the SciPost manuscript with its Kwant/PythTB cross-checks and benchmarks (`paper/README.md`, `paper/environment.yml`). Not in CI except the listings.
 - The default branch is `master`.

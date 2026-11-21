@@ -14,6 +14,8 @@ tbkit: Tight-Binding Models in Python
     :hidden:
 
     tutorial
+    coming_from_kwant
+    coming_from_pythtb
     history/index
     api/gallery/index
     tbkit
@@ -30,6 +32,8 @@ on their own, and educators building a demonstration.
 Start with the :doc:`tutorial`, trace the :doc:`history of Tight-Binding
 breakthroughs </history/index>`, browse the :doc:`example gallery
 </api/gallery/index>`, or jump straight to the :doc:`API reference <tbkit>`.
+Coming from another code? See :doc:`coming_from_kwant` or
+:doc:`coming_from_pythtb`.
 
 For computational physics beyond tight-binding -- quantum mechanics,
 classical mechanics, statistical physics, general relativity, and more

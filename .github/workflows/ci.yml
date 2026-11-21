@@ -113,8 +113,9 @@ jobs:
           cache-dependency-path: pyproject.toml
       - run: pip install .[docs]
       - run: make -C docs html
-      # The code listings printed in the paper (paper/listings) assert their results too.
-      - run: for f in paper/listings/*.py; do python "$f" || exit 1; done
+      # The code listings printed in the paper (paper/listings) assert their results too,
+      # and the tbkit ports of the migration guides their agreement with Kwant and PythTB.
+      - run: for f in paper/listings/*.py docs/source/migration/*.py; do python "$f" || exit 1; done
       - uses: actions/upload-artifact@v7
         with:
           name: docs-html
