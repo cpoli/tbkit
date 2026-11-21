@@ -222,7 +222,9 @@ Rendered docs (tutorial, API reference, example gallery): https://cpoli.github.i
 * [`ROADMAP.md`](ROADMAP.md) -- what is planned next, and what tbkit
   does not do yet (compared with Kwant and PythTB).
 
-Build the HTML docs with `cd docs && make html` (output in `docs/build/html`).
+Build the HTML docs with `cd docs && make html` (output in `docs/build/html`),
+or `make html-noplot` to skip running the gallery examples. `make publish`
+builds them in full and pushes them to the gh-pages branch.
 
 ## Test
 

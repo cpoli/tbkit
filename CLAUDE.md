@@ -14,6 +14,8 @@ pytest tests/test_kspace.py::test_name -q -n0        # a single test, without wo
 
 python examples/<section>/plot_<name>.py             # run one gallery example
 cd docs && make html                                 # re-executes every examples/*/plot_*.py; output in docs/build/html
+make -C docs html-noplot                             # pages only, no examples run (what CI builds)
+make -C docs publish                                 # full build + listings, ports, coverage report, pushed to gh-pages (NOPUSH=1 to stop before the push)
 ```
 
 ## Tests and CI
@@ -21,7 +23,7 @@ cd docs && make html                                 # re-executes every example
 - `filterwarnings = ["error"]`: any warning fails the suite. A warning from tbkit is a defect. Add a targeted `ignore::` only for dependency warnings outside our control.
 - Coverage of `tbkit` is 100% of lines. New code needs tests that keep it there.
 - `test-minimum-versions` runs on the oldest NumPy/SciPy/matplotlib that `pyproject.toml` allows (Python 3.10). No NumPy 2-only APIs: use `scipy.integrate.trapezoid` and `np.char`, not `np.trapezoid` or `import numpy.char`.
-- `lint`: `ruff check tbkit` (no formatter). `typecheck`: `mypy tbkit`, must pass. `docs`: builds the docs (every gallery example) and runs `paper/listings/*.py` and the migration-guide ports `docs/source/migration/*.py`.
+- `lint`: `ruff check tbkit` (no formatter). `typecheck`: `mypy tbkit`, must pass. `docs`: `make -C docs html-noplot` only. The gallery examples, `paper/listings/*.py`, the migration-guide ports `docs/source/migration/*.py` and the coverage report run only in the local `make -C docs publish`, which deploys gh-pages (the release workflow no longer does).
 - `tests/conftest.py` forces the matplotlib `Agg` backend.
 - `paper/` is the SciPost manuscript with its Kwant/PythTB cross-checks and benchmarks (`paper/README.md`, `paper/environment.yml`). Not in CI except the listings.
 - The default branch is `master`.

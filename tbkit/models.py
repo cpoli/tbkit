@@ -9,21 +9,21 @@ sample in real space, cut it with :mod:`tbkit.bridges`:
 the spinless models, *finite_model* the sparse Hamiltonian (with the
 site positions) for every model, spinful ones included.
 
-==============================  ===========  ======================================
-Function                        Dimension    Invariant
-==============================  ===========  ======================================
-:func:`ssh`                     1D           Zak phase (*berry_phase*)
-:func:`rice_mele`               1D           (polarization, not quantized)
-:func:`rice_mele_pump`          1D + cycle   *chern_number* of the pump
-:func:`kitaev_chain`            1D, BdG      *bdg.majorana_number*
-:func:`haldane`                 2D           *chern_number*
-:func:`qi_wu_zhang`             2D           *chern_number*
-:func:`kane_mele`               2D, spin     *z2_invariant*
-:func:`bhz`                     2D, spin     *z2_invariant*
-:func:`tmd_three_band`          2D           (trivial; valley Berry curvature)
-:func:`topological_insulator_3d` 3D, spin    *z2_indices_3d*
-:func:`weyl_semimetal`          3D           *topology.find_weyl_points*
-==============================  ===========  ======================================
+=================================  ===========  ======================================
+Function                           Dimension    Invariant
+=================================  ===========  ======================================
+:func:`ssh`                        1D           Zak phase (*berry_phase*)
+:func:`rice_mele`                  1D           (polarization, not quantized)
+:func:`rice_mele_pump`             1D + cycle   *chern_number* of the pump
+:func:`kitaev_chain`               1D, BdG      *bdg.majorana_number*
+:func:`haldane`                    2D           *chern_number*
+:func:`qi_wu_zhang`                2D           *chern_number*
+:func:`kane_mele`                  2D, spin     *z2_invariant*
+:func:`bhz`                        2D, spin     *z2_invariant*
+:func:`tmd_three_band`             2D           (trivial; valley Berry curvature)
+:func:`topological_insulator_3d`   3D, spin     *z2_indices_3d*
+:func:`weyl_semimetal`             3D           *topology.find_weyl_points*
+=================================  ===========  ======================================
 
 Examples
 --------

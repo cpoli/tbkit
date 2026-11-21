@@ -29,19 +29,17 @@ import tbkit.error_handling as error_handling
 
 class Lyapunov(NamedTuple):
     r'''
-    Result of *lyapunov_exponents*, one row per energy.
+    Result of *lyapunov_exponents*, one row per energy:
 
-    Attributes
-    ----------
-    exponents : Real ndarray, shape (n_e, l0*m)
-        The positive Lyapunov exponents per slice, in decreasing order.
-    error : Real ndarray, shape (n_e,)
-        Standard error of the smallest one, from the scatter of its means
-        over *n_chunks* consecutive pieces of the strip.
-    localization_length : Real ndarray, shape (n_e,)
-        :math:`\lambda = 1/\gamma_{\min}`, in slices.
-    length_error : Real ndarray, shape (n_e,)
-        Standard error of *localization_length*.
+    * **exponents** -- Real ndarray, shape (n_e, l0*m). The positive
+      Lyapunov exponents per slice, in decreasing order.
+    * **error** -- Real ndarray, shape (n_e,). Standard error of the
+      smallest one, from the scatter of its means over *n_chunks*
+      consecutive pieces of the strip.
+    * **localization_length** -- Real ndarray, shape (n_e,).
+      :math:`\lambda = 1/\gamma_{\min}`, in slices.
+    * **length_error** -- Real ndarray, shape (n_e,). Standard error of
+      *localization_length*.
     '''
     exponents: NDArray[np.float64]
     error: NDArray[np.float64]

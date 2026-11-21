@@ -13,6 +13,9 @@ name: release
 # Zenodo mints the version DOI only after the GitHub Release, so the job
 # zenodo-doi waits for it, then writes it to CITATION.cff and the README
 # badge in a commit on master.
+#
+# The docs are not built here: publish them with `make -C docs publish`
+# from a checkout of the tag.
 
 on:
   push:
@@ -131,30 +134,3 @@ jobs:
           done
           exit 1
 
-  docs:
-    needs: pypi
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    env:
-      OMP_NUM_THREADS: 1
-      OPENBLAS_NUM_THREADS: 1
-      MKL_NUM_THREADS: 1
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
-        with:
-          python-version: "3.13"
-      - run: pip install .[docs,test]
-      - run: make -C docs html
-      # The coverage report linked from the README lives at /coverage/.
-      - run: pytest tests/ --cov=tbkit --cov-report=html:docs/build/html/coverage
-      # coverage.py writes a .gitignore of "*" into its HTML directory, which
-      # would keep the report out of the gh-pages commit.
-      - run: rm -f docs/build/html/coverage/.gitignore
-      - run: touch docs/build/html/.nojekyll
-      - uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ github.token }}
-          publish_dir: docs/build/html
-          commit_message: "Rebuild docs for ${{ github.ref_name }}"

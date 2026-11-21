@@ -7,8 +7,8 @@
 - **Migration guides** (roadmap item 15): "Coming from Kwant" and
   "Coming from PythTB" in the docs, each with a side-by-side table of
   the same tasks, the differences of convention, and one model ported
-  line by line whose numbers agree with the other package (run in the
-  `docs` CI job).
+  line by line whose numbers agree with the other package (run, with
+  their assertions, by `make -C docs publish`).
 - **Wannier90 output and `_tb.dat` input** (`tbkit.io`, roadmap item 2):
   - `write_wannier90(ks, seedname)` writes `seedname_hr.dat`,
     `seedname_tb.dat`, `seedname.win` and `seedname_centres.xyz` (also
@@ -107,6 +107,13 @@
 
 - The README quick start names its `System` instance `system`: `sys`
   shadowed the standard-library module.
+
+- **The docs are built and published locally.** The `docs` CI job builds
+  the pages without running the gallery examples (`make -C docs
+  html-noplot`), and the release workflow no longer deploys them.
+  `make -C docs publish` runs the examples, the paper listings, the
+  migration-guide ports and the coverage report, and pushes the result
+  to the gh-pages branch (`NOPUSH=1` stops before the push).
 
 - **Faster scattering matrices with MUMPS.** `Transport` has a `solver`
   attribute: `'mumps'` (the optional

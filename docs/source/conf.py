@@ -76,6 +76,13 @@ sphinx_gallery_conf = {
     # back to file-path resolution on every single invocation.
     'backreferences_dir': 'gen_modules/backreferences',
     'doc_module': ('tbkit',),
+    # Backreference files are named after the objects, and on a
+    # case-insensitive file system (macOS) tbkit.Irreps / tbkit.irreps and
+    # tbkit.Transport.smatrix / tbkit.transport.SMatrix would share a file.
+    # Drop the implicit uses (return types, attribute access) of the first of
+    # each pair; the explicit calls keep their backreferences.
+    'exclude_implicit_doc': {r'^tbkit\.(symmetry\.)?Irreps$',
+                             r'^tbkit\.(transport\.)?Transport\.smatrix$'},
     # Run the examples in one worker process per core; TBKIT_GALLERY_JOBS=1
     # runs them one at a time in the Sphinx process instead.
     'parallel': int(os.environ.get('TBKIT_GALLERY_JOBS', os.cpu_count() or 1)),

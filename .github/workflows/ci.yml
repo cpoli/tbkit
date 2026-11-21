@@ -86,36 +86,21 @@ jobs:
       - run: pip install mypy .
       - run: mypy tbkit
 
-  # Building the docs re-runs every gallery example, and each one asserts
-  # its key numbers, so a change that breaks an example fails here.
+  # Builds the pages without running the gallery examples, the paper
+  # listings or the migration-guide ports: text, cross-references and
+  # toctrees only. The full build, which runs them all and checks their
+  # assertions, is `make -C docs publish`, run locally.
   docs:
     runs-on: ubuntu-latest
-    env:
-      OMP_NUM_THREADS: 1
-      OPENBLAS_NUM_THREADS: 1
-      MKL_NUM_THREADS: 1
     steps:
       - uses: actions/checkout@v7
-      # The key covers everything an example's output can depend on, so a
-      # hit means a passing build already ran this exact gallery and
-      # sphinx-gallery skips every example; any change runs them all.
-      - name: Restore executed gallery
-        uses: actions/cache@v5
-        with:
-          path: |
-            docs/source/api/gallery
-            docs/source/gen_modules
-          key: gallery-${{ hashFiles('tbkit/**', 'examples/**', 'docs/source/conf.py', 'pyproject.toml', '.github/workflows/ci.yml') }}
       - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
           cache: pip
           cache-dependency-path: pyproject.toml
       - run: pip install .[docs]
-      - run: make -C docs html
-      # The code listings printed in the paper (paper/listings) assert their results too,
-      # and the tbkit ports of the migration guides their agreement with Kwant and PythTB.
-      - run: for f in paper/listings/*.py docs/source/migration/*.py; do python "$f" || exit 1; done
+      - run: make -C docs html-noplot
       - uses: actions/upload-artifact@v7
         with:
           name: docs-html
