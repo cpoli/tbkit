@@ -49,37 +49,18 @@ the Hamiltonian. :func:`~tbkit.topology.entanglement_spectrum` handles finite
 samples, :meth:`~tbkit.kspace.KSpace.entanglement_spectrum` the k-resolved
 case.
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-62
+.. GENERATED FROM PYTHON SOURCE LINES 33-43
 
 .. code-block:: Python
 
     import numpy as np
     import matplotlib.pyplot as plt
 
-    import tbkit.lattices as lattices
     from tbkit.bridges import finite_system
-    from tbkit.kspace import KSpace
-    from tbkit.lattice import Lattice
     from tbkit.moire import supercell
     from tbkit.plot import Plot
     from tbkit.topology import entanglement_spectrum
-
-
-    def ssh(v, w):
-        lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (0.5, 0.)}],
-                             prim_vec=[(1., 0.)])
-        chain = KSpace(lat)
-        chain.set_hopping([{'i': 0, 'j': 1, 'R': (0,), 't': v}, {'i': 1, 'j': 0, 'R': (1,), 't': w}])
-        return chain
-
-
-    def haldane(t2=0.2, M=0.):
-        hal = KSpace(lattices.honeycomb())
-        hal.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
-        for R in [(0, 1), (-1, 0), (1, -1)]:
-            hal.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j*t2}, {'i': 1, 'j': 1, 'R': R, 't': -1j*t2}])
-        hal.set_onsite({'a': M, 'b': -M})
-        return hal
+    from tbkit import models
 
 
 
@@ -89,7 +70,7 @@ case.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-69
+.. GENERATED FROM PYTHON SOURCE LINES 44-50
 
 The lattices
 ------------
@@ -98,12 +79,12 @@ orbitals a and b in two colours, bond widths proportional to the
 hoppings: here the topological case, :math:`v = 0.4` inside each cell
 and :math:`w = 1` between cells.
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-72
+.. GENERATED FROM PYTHON SOURCE LINES 50-53
 
 .. code-block:: Python
 
 
-    fig_lat = Plot(finite_system(ssh(0.4, 1.), 8)).lattice(plt_hop=True, ms=7, c=4., figsize=(7, 1.2))
+    fig_lat = Plot(finite_system(models.ssh(0.4, 1.), 8)).lattice(plt_hop=True, ms=7, c=4., figsize=(7, 1.2))
 
 
 
@@ -117,14 +98,14 @@ and :math:`w = 1` between cells.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-77
+.. GENERATED FROM PYTHON SOURCE LINES 54-58
 
 The SSH ring: a mode at 1/2 at each cut
 -------------------------------------------
 A ring of 40 cells (periodic, so no end states), cut into two halves of
 20 cells: two cuts.
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-90
+.. GENERATED FROM PYTHON SOURCE LINES 58-71
 
 .. code-block:: Python
 
@@ -133,7 +114,7 @@ A ring of 40 cells (periodic, so no end states), cut into two halves of
     half = list(range(n_cells))  # the 40 orbitals of the first 20 cells
     xi_ssh = {}
     for (v, w), name in (((1., 0.4), 'trivial'), ((0.4, 1.), 'topological')):
-        ring = ssh(v, w).finite_ham(n_cells, periodic=True)
+        ring = models.ssh(v, w).finite_ham(n_cells, periodic=True)
         xi_ssh[name] = entanglement_spectrum(ring, half)
     mid = np.sort(np.abs(xi_ssh['topological'] - 0.5))
     print('topological: |xi - 1/2| of the two closest modes {:.1e}, next {:.3f}'.format(mid[1], mid[2]))
@@ -149,13 +130,13 @@ A ring of 40 cells (periodic, so no end states), cut into two halves of
 
  .. code-block:: none
 
-    topological: |xi - 1/2| of the two closest modes 6.1e-15, next 0.500
+    topological: |xi - 1/2| of the two closest modes 4.4e-15, next 0.500
     trivial: closest mode to 1/2 at |xi - 1/2| = 0.489
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-99
+.. GENERATED FROM PYTHON SOURCE LINES 72-80
 
 The Haldane cylinder: spectral flow
 ---------------------------------------
@@ -166,19 +147,19 @@ entanglement modes of the two cuts (never more than two at a time
 between 0 and 1) flow across the interval, and together fill all of it.
 In the trivial phase (:math:`M = 2`) the spectrum stays away from 1/2.
 
-.. GENERATED FROM PYTHON SOURCE LINES 101-105
+.. GENERATED FROM PYTHON SOURCE LINES 82-86
 
 The Haldane model on a patch of :math:`5\times4` cells, bond widths
 proportional to the amplitudes: the honeycomb lattice's two sublattices
 ('a' and 'b', in two colours), the nearest-neighbour hopping (thick) and
 the complex second-neighbour hoppings :math:`\pm it_2` (thin).
 
-.. GENERATED FROM PYTHON SOURCE LINES 105-108
+.. GENERATED FROM PYTHON SOURCE LINES 86-89
 
 .. code-block:: Python
 
 
-    fig_lat = Plot(finite_system(haldane(), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+    fig_lat = Plot(finite_system(models.haldane(t2=0.2), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 
 
@@ -192,11 +173,11 @@ the complex second-neighbour hoppings :math:`\pm it_2` (thin).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-110
+.. GENERATED FROM PYTHON SOURCE LINES 90-91
 
 The entanglement spectrum along :math:`k`:
 
-.. GENERATED FROM PYTHON SOURCE LINES 110-144
+.. GENERATED FROM PYTHON SOURCE LINES 91-125
 
 .. code-block:: Python
 
@@ -205,7 +186,7 @@ The entanglement spectrum along :math:`k`:
     fracs = np.linspace(-0.5, 0.5, 201)
     xi_cyl = {}
     for M, name in ((0., 'Chern'), (2., 'trivial')):
-        sc = supercell(haldane(M=M), [[1, 0], [0, n_super]])
+        sc = supercell(models.haldane(t2=0.2, M=M), [[1, 0], [0, n_super]])
         k = fracs[:, None] * sc.rec_vec_k[0][None, :]
         occupied = list(range(sc.norb // 2))
         region = list(range(sc.norb // 2))  # the orbitals of the first 6 cells
@@ -256,7 +237,7 @@ The entanglement spectrum along :math:`k`:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.442 seconds)
+   **Total running time of the script:** (0 minutes 0.274 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_entanglement_spectrum.py:

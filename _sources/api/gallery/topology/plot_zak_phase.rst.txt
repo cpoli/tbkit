@@ -45,26 +45,16 @@ the end charges and zero modes of an open topological chain.
 :meth:`~tbkit.kspace.KSpace.wannier_centers` compute both, from the
 gauge-invariant discrete Wilson loop.
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-47
+.. GENERATED FROM PYTHON SOURCE LINES 29-37
 
 .. code-block:: Python
 
     import numpy as np
     import matplotlib.pyplot as plt
 
-    from tbkit.lattice import Lattice
     from tbkit.bridges import finite_system
-    from tbkit.kspace import KSpace
     from tbkit.plot import Plot
-
-
-    def ssh(v, w):
-        lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (0.5, 0.)}],
-                             prim_vec=[(1., 0.)])
-        chain = KSpace(lat)
-        chain.set_hopping([{'i': 0, 'j': 1, 'R': (0,), 't': v},
-                                    {'i': 1, 'j': 0, 'R': (1,), 't': w}])
-        return chain
+    from tbkit import models
 
 
 
@@ -74,7 +64,7 @@ gauge-invariant discrete Wilson loop.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-54
+.. GENERATED FROM PYTHON SOURCE LINES 38-44
 
 The lattice
 -----------
@@ -83,14 +73,14 @@ orbitals a and b in two colours, bond widths proportional to the
 hoppings: :math:`v` inside each cell, :math:`w` between cells, for
 :math:`v > w` (top) and :math:`v < w` (bottom).
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-59
+.. GENERATED FROM PYTHON SOURCE LINES 44-49
 
 .. code-block:: Python
 
 
     fig_lat, axes_lat = plt.subplots(2, 1, figsize=(7, 2.2))
-    Plot(finite_system(ssh(1., 0.4), 8)).lattice(plt_hop=True, ms=7, c=4., ax=axes_lat[0])
-    Plot(finite_system(ssh(0.4, 1.), 8)).lattice(plt_hop=True, ms=7, c=4., ax=axes_lat[1])
+    Plot(finite_system(models.ssh(1., 0.4), 8)).lattice(plt_hop=True, ms=7, c=4., ax=axes_lat[0])
+    Plot(finite_system(models.ssh(0.4, 1.), 8)).lattice(plt_hop=True, ms=7, c=4., ax=axes_lat[1])
 
 
 
@@ -110,18 +100,18 @@ hoppings: :math:`v` inside each cell, :math:`w` between cells, for
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-62
+.. GENERATED FROM PYTHON SOURCE LINES 50-52
 
 The Wannier centre sits on the strong bond
 -------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-68
+.. GENERATED FROM PYTHON SOURCE LINES 52-58
 
 .. code-block:: Python
 
 
     for v, w, centre in [(1., 0.4, 0.25), (0.4, 1., 0.75)]:
-        x = ssh(v, w).wannier_centers(0, nk=200)[0]
+        x = models.ssh(v, w).wannier_centers(0, nk=200)[0]
         print('v = {}, w = {}: Wannier centre x = {:.6f}'.format(v, w, x))
         assert np.isclose(x, centre, atol=1e-8)
 
@@ -139,20 +129,20 @@ The Wannier centre sits on the strong bond
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-73
+.. GENERATED FROM PYTHON SOURCE LINES 59-63
 
 Across the transition: a jump of pi
 -------------------------------------
 The Zak phase is pinned while the gap stays open, and jumps by
 :math:`\pi` where it closes, at :math:`v = w`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-90
+.. GENERATED FROM PYTHON SOURCE LINES 63-80
 
 .. code-block:: Python
 
 
     ratios = np.linspace(0.2, 2., 37)
-    zak = np.array([ssh(r, 1.).berry_phase(0, nk=200) for r in ratios])
+    zak = np.array([models.ssh(r, 1.).berry_phase(0, nk=200) for r in ratios])
     centres = (zak / (2*np.pi)) % 1.
     topo = ratios < 1.
     assert np.allclose(centres[topo], 0.75, atol=1e-8)
@@ -185,20 +175,20 @@ The Zak phase is pinned while the gap stays open, and jumps by
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-96
+.. GENERATED FROM PYTHON SOURCE LINES 82-86
 
 The polarization is a property of the band, not of the gauge
 -------------------------------------------------------------------
 Placing both orbitals on the cell origin (``positions=False``) shifts
 each phase, but not the quantized difference between the two phases.
 
-.. GENERATED FROM PYTHON SOURCE LINES 96-101
+.. GENERATED FROM PYTHON SOURCE LINES 86-91
 
 .. code-block:: Python
 
 
-    diff = (ssh(0.4, 1.).berry_phase(0, positions=False)
-                - ssh(1., 0.4).berry_phase(0, positions=False)) % (2*np.pi)
+    diff = (models.ssh(0.4, 1.).berry_phase(0, positions=False)
+                - models.ssh(1., 0.4).berry_phase(0, positions=False)) % (2*np.pi)
     assert np.isclose(diff, np.pi)
     print('Zak-phase difference in the periodic gauge: {:.6f} = pi.'.format(diff))
 
@@ -217,7 +207,7 @@ each phase, but not the quantized difference between the two phases.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.196 seconds)
+   **Total running time of the script:** (0 minutes 0.133 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_zak_phase.py:

@@ -37,7 +37,7 @@ carry a Chern number, AII a :math:`\mathbb{Z}_2`.
 Bloch Hamiltonian, and :meth:`~tbkit.kspace.KSpace.tenfold_class` names
 the class of the models of this gallery.
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-62
+.. GENERATED FROM PYTHON SOURCE LINES 21-49
 
 .. code-block:: Python
 
@@ -50,14 +50,7 @@ the class of the models of this gallery.
     from tbkit.kspace import KSpace, PAULI
     from tbkit.bdg import bdg_kspace, particle_hole
     from tbkit.plot import Plot
-
-
-    def ssh(v, w):
-        lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (0.5, 0.)}],
-                             prim_vec=[(1., 0.)])
-        model = KSpace(lat)
-        model.set_hopping([{'i': 0, 'j': 1, 'R': (0,), 't': v}, {'i': 1, 'j': 0, 'R': (1,), 't': w}])
-        return model
+    from tbkit import models
 
 
     def honeycomb_model(t2=0., lam=0., spin=False):
@@ -72,12 +65,6 @@ the class of the models of this gallery.
         return model
 
 
-    def kitaev(delta):
-        chain = KSpace(lattices.chain())
-        chain.set_hopping([{'i': 0, 'j': 0, 'R': (1,), 't': 1.}])
-        return bdg_kspace(chain, [{'i': 0, 'j': 0, 'R': (1,), 'delta': delta}], mu=0.5)
-
-
     SZ = PAULI['z']
     T_SPINLESS = np.eye(2)
     T_SPINFUL = np.kron(np.eye(2), 1j * PAULI['y'])
@@ -89,7 +76,7 @@ the class of the models of this gallery.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-71
+.. GENERATED FROM PYTHON SOURCE LINES 50-58
 
 The lattices
 ------------
@@ -100,13 +87,13 @@ with :math:`v = 0.4` inside each cell and :math:`w = 1` between cells
 here with the second-neighbour hoppings :math:`\pm 0.2i` of the Haldane
 model (thin).
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-76
+.. GENERATED FROM PYTHON SOURCE LINES 58-63
 
 .. code-block:: Python
 
 
     fig_lat, axes_lat = plt.subplots(1, 2, figsize=(11, 4), width_ratios=(1.2, 1))
-    Plot(finite_system(ssh(0.4, 1.), 8)).lattice(plt_hop=True, ms=7, c=4., ax=axes_lat[0])
+    Plot(finite_system(models.ssh(0.4, 1.), 8)).lattice(plt_hop=True, ms=7, c=4., ax=axes_lat[0])
     Plot(finite_system(honeycomb_model(t2=0.2), (5, 4))).lattice(plt_hop=True, ms=10, ax=axes_lat[1])
 
 
@@ -127,7 +114,7 @@ model (thin).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-82
+.. GENERATED FROM PYTHON SOURCE LINES 64-69
 
 Time reversal, particle-hole, chiral: which hold?
 --------------------------------------------------------
@@ -135,7 +122,7 @@ Complex hoppings break the (spinless) time reversal of the SSH chain,
 but not its sublattice (chiral) symmetry; a complex hopping phase breaks
 the Kitaev chain's time reversal, leaving particle-hole symmetry alone.
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-106
+.. GENERATED FROM PYTHON SOURCE LINES 69-93
 
 .. code-block:: Python
 
@@ -151,12 +138,12 @@ the Kitaev chain's time reversal, leaving particle-hole symmetry alone.
         assert model.symmetry_error(np.eye(model.norb), antiunitary=True) > 0.1
 
     cases = [
-        ('SSH chain', ssh(0.5, 1.), dict(time_reversal=T_SPINLESS, chiral=SZ), 'BDI'),
+        ('SSH chain', models.ssh(0.5, 1.), dict(time_reversal=T_SPINLESS, chiral=SZ), 'BDI'),
         ('SSH chain, complex hoppings', ssh_complex, dict(chiral=SZ), 'AIII'),
         ('Haldane model', honeycomb_model(t2=0.2), {}, 'A'),
         ('graphene (spinless)', honeycomb_model(), dict(time_reversal=np.eye(2), chiral=SZ), 'BDI'),
         ('Kane-Mele model', honeycomb_model(lam=0.06, spin=True), dict(time_reversal=T_SPINFUL), 'AII'),
-        ('Kitaev chain', kitaev(0.6), dict(time_reversal=np.eye(2), particle_hole=particle_hole(1)), 'BDI'),
+        ('Kitaev chain', models.kitaev_chain(delta=0.6, mu=0.5), dict(time_reversal=np.eye(2), particle_hole=particle_hole(1)), 'BDI'),
         ('Kitaev chain, complex hopping', kitaev_complex, dict(particle_hole=particle_hole(1)), 'D'),
     ]
     for name, model, symmetries, expected in cases:
@@ -185,7 +172,7 @@ the Kitaev chain's time reversal, leaving particle-hole symmetry alone.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.130 seconds)
+   **Total running time of the script:** (0 minutes 0.095 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_tenfold_way.py:

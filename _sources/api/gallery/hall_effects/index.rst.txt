@@ -13,7 +13,10 @@ calculation on a torus, and the intrinsic spin Hall conductivity of the
 Kane-Mele model with its departure from quantization under Rashba coupling.
 The same curvature, weighted by entropy or by energy, drives the anomalous
 Nernst effect (with the Mott relation) and the thermal Hall effect (with
-the Wiedemann-Franz law and its quantized Chern plateau).
+the Wiedemann-Franz law and its quantized Chern plateau). The anomalous
+Hall conductivity of a metal also depends on the position operator of the
+Wannier functions: a model read from a Wannier90 ``_tb.dat`` file uses all
+its matrix elements, not only the centres.
 
 
 .. raw:: html
@@ -112,6 +115,23 @@ the Wiedemann-Franz law and its quantized Chern plateau).
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A tight-binding model knows the position operator only through its orbitals. If each orbital sits at its centre and is an eigenstate of position, \mathbf{r} is diagonal, the velocity is i[H, \mathbf{r}] = \partial H/\partial\mathbf{k} with the centres in the Bloch phases, and the Berry curvature follows from the bands alone. Wannier functions computed from first principles are not eigenstates of position: Wannier90 writes, in seedname_tb.dat, every matrix element \langle m\mathbf{0}|\mathbf{r}|n\mathbf{R}\rangle, not only the centres. Wang, Yates, Souza and Vanderbilt (Phys. Rev. B 74, 195118 (2006)) showed how they enter the anomalous Hall conductivity: in the velocity, i[H, \mathbf{r}] with the whole operator, and in each band&#x27;s curvature, which gains the curvature of the Wannier functions&#x27; own Berry connection \mathbf{A}(\mathbf{k}),">
+
+.. only:: html
+
+  .. image:: /api/gallery/hall_effects/images/thumb/sphx_glr_plot_wannier_position_operator_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/hall_effects/plot_wannier_position_operator`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">The Position Operator of Wannier Functions in the Anomalous Hall Effect</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -127,4 +147,5 @@ the Wiedemann-Franz law and its quantized Chern plateau).
    /api/gallery/hall_effects/plot_anomalous_nernst_effect
    /api/gallery/hall_effects/plot_intrinsic_spin_hall_effect
    /api/gallery/hall_effects/plot_thermal_hall_effect
+   /api/gallery/hall_effects/plot_wannier_position_operator
 

@@ -39,7 +39,7 @@ disorder closes the mobility gap -- the topological Anderson transition.
 :meth:`~tbkit.system.System.get_local_chern_marker` computes it on a
 flake of the Haldane model (built in real space, bond by bond).
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-64
+.. GENERATED FROM PYTHON SOURCE LINES 23-61
 
 .. code-block:: Python
 
@@ -47,9 +47,9 @@ flake of the Haldane model (built in real space, bond by bond).
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
-    from tbkit.kspace import KSpace
     from tbkit.plot import Plot
     from tbkit.system import System
+    from tbkit import models
 
     t2 = 0.2
 
@@ -78,10 +78,7 @@ flake of the Haldane model (built in real space, bond by bond).
 
 
     # the same model in reciprocal space
-    hal = KSpace(lattices.honeycomb())
-    hal.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
-    for R in [(0, 1), (-1, 0), (1, -1)]:
-        hal.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j*t2}, {'i': 1, 'j': 1, 'R': R, 't': -1j*t2}])
+    hal = models.haldane(t2=t2)
     chern = hal.chern_number(0, 30)
 
 
@@ -91,7 +88,7 @@ flake of the Haldane model (built in real space, bond by bond).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-71
+.. GENERATED FROM PYTHON SOURCE LINES 62-68
 
 The lattice
 -----------
@@ -100,7 +97,7 @@ proportional to the amplitudes: the honeycomb lattice's two sublattices
 ('a' and 'b', in two colours), the nearest-neighbour hopping (thick) and
 the second-neighbour hoppings :math:`\pm it_2` (thin).
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-74
+.. GENERATED FROM PYTHON SOURCE LINES 68-71
 
 .. code-block:: Python
 
@@ -119,12 +116,12 @@ the second-neighbour hoppings :math:`\pm it_2` (thin).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-77
+.. GENERATED FROM PYTHON SOURCE LINES 72-74
 
 Clean flake: C in the bulk, -C on the edge
 ------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-92
+.. GENERATED FROM PYTHON SOURCE LINES 74-89
 
 .. code-block:: Python
 
@@ -156,18 +153,18 @@ Clean flake: C in the bulk, -C on the edge
 
  .. code-block:: none
 
-    Chern number 1.000; bulk marker 1.000; total 7.1e-14.
+    Chern number 1.000; bulk marker 1.000; total -4.3e-13.
 
     Text(0.5, 1.0, 'Haldane flake: the Chern number, site by site')
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-96
+.. GENERATED FROM PYTHON SOURCE LINES 91-93
 
 Disorder: robust, until it closes the gap
 ------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 96-105
+.. GENERATED FROM PYTHON SOURCE LINES 93-102
 
 .. code-block:: Python
 
@@ -196,7 +193,7 @@ Disorder: robust, until it closes the gap
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.692 seconds)
+   **Total running time of the script:** (0 minutes 0.668 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_local_chern_marker.py:

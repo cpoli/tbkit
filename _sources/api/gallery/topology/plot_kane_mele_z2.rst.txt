@@ -37,7 +37,7 @@ those crossings (the largest-gap method of Soluyanov and Vanderbilt,
 :math:`|M| = 3\sqrt3\lambda`, :math:`\nu = 0` above it -- with or without
 Rashba coupling.
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-54
+.. GENERATED FROM PYTHON SOURCE LINES 21-35
 
 .. code-block:: Python
 
@@ -45,33 +45,16 @@ Rashba coupling.
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
-    from tbkit.kspace import KSpace, PAULI
     from tbkit.orbital import OrbitalSystem
     from tbkit.plot import Plot
     from tbkit.system import System
+    from tbkit import models
 
 
-    lat = lattices.honeycomb()
     lam = 0.06
     M_c = 3 * np.sqrt(3) * lam
 
 
-    def kane_mele(M=0., rashba=0.):
-        km = KSpace(lat, spin=True)
-        km.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
-        for R in [(0, 1), (-1, 0), (1, -1)]:
-            km.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j*lam*PAULI['z']},
-                                    {'i': 1, 'j': 1, 'R': R, 't': -1j*lam*PAULI['z']}])
-        if rashba:
-            tau = np.array([d['r0'] for d in lat.unit_cell])
-            a = np.array(lat.prim_vec)
-            for R in [(0, 0), (-1, 0), (0, -1)]:
-                d = tau[1] + R[0]*a[0] + R[1]*a[1] - tau[0]
-                d = d / np.linalg.norm(d)
-                km.set_hopping([{'i': 0, 'j': 1, 'R': R,
-                                         't': 1j*rashba*(PAULI['x']*d[1] - PAULI['y']*d[0])}])
-        km.set_onsite({'a': M, 'b': -M})
-        return km
 
 
 
@@ -79,9 +62,7 @@ Rashba coupling.
 
 
 
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 55-62
+.. GENERATED FROM PYTHON SOURCE LINES 36-43
 
 The lattice
 -----------
@@ -91,7 +72,7 @@ nearest-neighbour hopping (thick) and the spin-orbit hoppings
 :math:`\pm i\lambda\sigma_z` between second neighbours (thin, not to
 scale; their spin matrices are not drawn).
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-69
+.. GENERATED FROM PYTHON SOURCE LINES 43-50
 
 .. code-block:: Python
 
@@ -114,19 +95,19 @@ scale; their spin matrices are not drawn).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-72
+.. GENERATED FROM PYTHON SOURCE LINES 51-53
 
 The flow: Kramers pairs swap partners
 ------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-83
+.. GENERATED FROM PYTHON SOURCE LINES 53-64
 
 .. code-block:: Python
 
 
     fig, axes = plt.subplots(1, 2, figsize=(9, 4), sharey=True)
     for ax, M, title in [(axes[0], 0.1, 'topological'), (axes[1], 0.5, 'trivial')]:
-        fracs, centres = kane_mele(M).wannier_flow([0, 1], nk=60, nk_perp=41, k_range=(0., 0.5),
+        fracs, centres = models.kane_mele(lambda_so=lam, lambda_v=M).wannier_flow([0, 1], nk=60, nk_perp=41, k_range=(0., 0.5),
                                                                        positions=False)
         ax.plot(fracs, centres, 'o', color='b', ms=3)
         ax.set_title(r'$M = {:.2f}$: {}'.format(M, title))
@@ -146,28 +127,28 @@ The flow: Kramers pairs swap partners
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 85-87
+.. GENERATED FROM PYTHON SOURCE LINES 66-68
 
 The invariant across the phase diagram
 -------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-101
+.. GENERATED FROM PYTHON SOURCE LINES 68-82
 
 .. code-block:: Python
 
 
     masses = np.array([0., 0.1, 0.2, 0.4, 0.5])
-    nu = [kane_mele(M).z2_invariant([0, 1], nk=60, nk_perp=41) for M in masses]
+    nu = [models.kane_mele(lambda_so=lam, lambda_v=M).z2_invariant([0, 1], nk=60, nk_perp=41) for M in masses]
     print('M / M_c:', np.round(masses / M_c, 2), '-> nu =', nu)
     assert nu == [int(M < M_c) for M in masses]
 
     # Rashba coupling mixes the spins (S_z is no longer conserved, so the two
     # spins no longer carry Chern numbers of their own), but nu does not change
-    nu_r = kane_mele(0.1, rashba=0.05).z2_invariant([0, 1], nk=60, nk_perp=41)
+    nu_r = models.kane_mele(lambda_so=lam, lambda_v=0.1, lambda_r=0.05).z2_invariant([0, 1], nk=60, nk_perp=41)
     assert nu_r == 1
     print('With Rashba coupling: nu = {}.'.format(nu_r))
     # and the total Chern number is zero throughout
-    assert abs(kane_mele(0.1, rashba=0.05).chern_number([0, 1], nk=20)) < 1e-6
+    assert abs(models.kane_mele(lambda_so=lam, lambda_v=0.1, lambda_r=0.05).chern_number([0, 1], nk=20)) < 1e-6
 
 
 
@@ -183,7 +164,7 @@ The invariant across the phase diagram
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 102-109
+.. GENERATED FROM PYTHON SOURCE LINES 83-90
 
 The same model in real space: a spinful flake
 ------------------------------------------------
@@ -193,7 +174,7 @@ second-neighbour path). Its spectrum equals that of the Bloch model cut
 to the same open parallelogram, and shows in-gap states on the edges in
 the topological phase.
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-128
+.. GENERATED FROM PYTHON SOURCE LINES 90-109
 
 .. code-block:: Python
 
@@ -206,8 +187,8 @@ the topological phase.
     sys.set_onsite({'a': 0.1, 'b': -0.1})
     sys.get_ham()
     sys.get_eig(eigenvec=True)
-    assert np.allclose(sys.en, np.linalg.eigvalsh(kane_mele(0.1).finite_ham((12, 12))))
-    bands = kane_mele(0.1).mesh_bands(60)
+    assert np.allclose(sys.en, np.linalg.eigvalsh(models.kane_mele(lambda_so=lam, lambda_v=0.1).finite_ham((12, 12))))
+    bands = models.kane_mele(lambda_so=lam, lambda_v=0.1).mesh_bands(60)
     bulk_gap = np.min(bands[:, 2] - bands[:, 1])
     in_gap = np.abs(sys.en) < bulk_gap / 2
     x, y = flake.coor['x'], flake.coor['y']
@@ -232,7 +213,7 @@ the topological phase.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.727 seconds)
+   **Total running time of the script:** (0 minutes 0.979 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_kane_mele_z2.py:

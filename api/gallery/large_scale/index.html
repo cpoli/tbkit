@@ -10,10 +10,10 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cpoli.github.io/tbkit/api/gallery/large_scale/index.html" />
 <meta property="og:site_name" content="tbkit" />
-<meta property="og:description" content="Lattices far beyond dense diagonalization: sparse neighbour search, shift-invert eigensolvers, and the kernel polynomial method, which turns spectral densities, spectral functions, DC and optical c..." />
+<meta property="og:description" content="Lattices far beyond dense diagonalization: sparse neighbour search, shift-invert eigensolvers, every eigenstate in an energy window by spectrum slicing, and the kernel polynomial method, which turn..." />
 <meta property="og:image" content="https://cpoli.github.io/tbkit/_static/images/readme_hero.png" />
 <meta property="og:image:alt" content="tbkit" />
-<meta name="description" content="Lattices far beyond dense diagonalization: sparse neighbour search, shift-invert eigensolvers, and the kernel polynomial method, which turns spectral densities, spectral functions, DC and optical c..." />
+<meta name="description" content="Lattices far beyond dense diagonalization: sparse neighbour search, shift-invert eigensolvers, every eigenstate in an energy window by spectrum slicing, and the kernel polynomial method, which turn..." />
 
     <title>Large lattices &#8212; tbkit</title>
   
@@ -38,7 +38,7 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -155,6 +155,20 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../tutorial.html">
     Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../coming_from_pythtb.html">
+    Coming from PythTB
   </a>
 </li>
 
@@ -289,6 +303,20 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../coming_from_pythtb.html">
+    Coming from PythTB
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../history/index.html">
     History
   </a>
@@ -417,6 +445,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_anomalous_nernst_effect.html">The Berry-Phase Anomalous Nernst Effect</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_intrinsic_spin_hall_effect.html">The Intrinsic Spin Hall Effect: Kane-Mele Plateau and Rashba Coupling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_thermal_hall_effect.html">The Intrinsic Thermal Hall Effect and the Wiedemann-Franz Law</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_wannier_position_operator.html">The Position Operator of Wannier Functions in the Anomalous Hall Effect</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../higher_order/index.html">Higher-Order Topology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -428,9 +457,11 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_batched_k_space.html">Batched and Threaded k-Space Diagonalization: the Haldane Model on 90,000 k-Points</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_chebyshev_time_evolution.html">Chebyshev Time Evolution: a Wavepacket on 90,000 Sites</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_kernel_polynomial_method.html">The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_kpm_nonlinear_optical_conductivity.html">Second-Order Optical Conductivity from Three-Index Chebyshev Moments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_kpm_optical_conductivity.html">The Optical Conductivity of Disordered Graphene, 45,000 Sites</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_kpm_optical_hall_conductivity.html">The Optical Hall Conductivity of a Disordered Chern Insulator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_kpm_spectral_function.html">The Spectral Function of Disordered Graphene, 28,800 Sites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_spectrum_slicing.html">Every State in an Energy Window: Spectrum Slicing</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../magnetic_field/index.html">Magnetic Field</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -618,11 +649,12 @@
   <section id="large-lattices">
 <span id="sphx-glr-api-gallery-large-scale"></span><h1>Large lattices<a class="headerlink" href="#large-lattices" title="Link to this heading">#</a></h1>
 <p>Lattices far beyond dense diagonalization: sparse neighbour search,
-shift-invert eigensolvers, and the kernel polynomial method, which
-turns spectral densities, spectral functions, DC and optical
-conductivities of hundreds of thousands of sites into a few hundred
-sparse matrix-vector products, and evolves wavepackets in time by the
-same Chebyshev recursion. In k-space,
+shift-invert eigensolvers, every eigenstate in an energy window by
+spectrum slicing, and the kernel polynomial method, which turns spectral
+densities, spectral functions, DC, optical and second-order optical
+conductivities of hundreds of thousands of sites into sparse
+matrix-vector products, and evolves wavepackets in time by the same
+Chebyshev recursion. In k-space,
 fine meshes are diagonalized in batches, optionally across threads.</p>
 <div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The band and topology tools of KSpace diagonalize H(\mathbf{k}) at every point of a mesh. Calling the eigensolver once per k-point spends most of its time in Python, not in LAPACK. tbkit builds all the Bloch matrices with one vectorized Bloch sum, then diagonalizes them with stacked LAPACK calls (``numpy.linalg.eigh`` on an array of shape (nk, norb, norb)), in chunks of bounded memory. set_workers spreads the chunks over threads (LAPACK releases the GIL)."><img alt="" src="../../../_images/sphx_glr_plot_batched_k_space_thumb.png" />
 <p><a class="reference internal" href="plot_batched_k_space.html"><span class="doc">Batched and Threaded k-Space Diagonalization: the Haldane Model on 90,000 k-Points</span></a></p>
@@ -633,6 +665,9 @@ fine meshes are diagonalized in batches, optionally across threads.</p>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Diagonalizing N sites costs N^3 operations and N^2 memory: a few thousand sites at most. The kernel polynomial method (Silver and Roder, 1994; reviewed by Weisse, Wellein, Alvermann and Fehske, Rev. Mod. Phys. 78, 275 (2006)) never diagonalizes. It expands the spectral density in Chebyshev polynomials of the rescaled Hamiltonian,"><img alt="" src="../../../_images/sphx_glr_plot_kernel_polynomial_method_thumb.png" />
 <p><a class="reference internal" href="plot_kernel_polynomial_method.html"><span class="doc">The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="A crystal without inversion symmetry answers a field \mathbf{E}(\omega_1) + \mathbf{E}(\omega_2) with a current at \omega_1 + \omega_2, j^a = \sigma^{abc}(\omega_1, \omega_2)E^b(\omega_1)E^c(\omega_2): second-harmonic generation at \omega_1 = \omega_2, and at \omega_2 = -\omega_1 a direct current, the shift current of /api/gallery/optics/plot_bulk_photovoltaic_shift_current."><img alt="" src="../../../_images/sphx_glr_plot_kpm_nonlinear_optical_conductivity_thumb.png" />
+<p><a class="reference internal" href="plot_kpm_nonlinear_optical_conductivity.html"><span class="doc">Second-Order Optical Conductivity from Three-Index Chebyshev Moments</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Second-Order Optical Conductivity from Three-Index Chebyshev Moments</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="The Kubo-Greenwood formula gives the absorptive part of the optical conductivity as a joint density of occupied and empty states, weighted by the velocity between them:"><img alt="" src="../../../_images/sphx_glr_plot_kpm_optical_conductivity_thumb.png" />
 <p><a class="reference internal" href="plot_kpm_optical_conductivity.html"><span class="doc">The Optical Conductivity of Disordered Graphene, 45,000 Sites</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Optical Conductivity of Disordered Graphene, 45,000 Sites</div>
@@ -642,6 +677,9 @@ fine meshes are diagonalized in batches, optionally across threads.</p>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Photoemission (ARPES) measures the spectral function A(\mathbf{k}, E): how much of a plane wave of momentum \mathbf{k} lives at energy E. In a crystal it is peaked on the bands; disorder gives the quasiparticles a finite lifetime, which broadens the peaks, and shifts them. Band unfolding (tbkit.moire.spectral_function) gets it from the eigenstates of a supercell, which caps the sample at a few thousand orbitals. The kernel polynomial method needs none: with one plane wave per sublattice o,"><img alt="" src="../../../_images/sphx_glr_plot_kpm_spectral_function_thumb.png" />
 <p><a class="reference internal" href="plot_kpm_spectral_function.html"><span class="doc">The Spectral Function of Disordered Graphene, 28,800 Sites</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Spectral Function of Disordered Graphene, 28,800 Sites</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="A dense diagonalization gives every eigenstate of a flake, at a cost O(N^3) and N^2 numbers in memory: 32 GB of complex numbers for 45,000 sites. Shift-invert (~tbkit.system.System.get_eig_sparse) gives the few states nearest one energy. Between the two, one often wants all the states in a window: those near a Dirac point, inside a gap, or in one band."><img alt="" src="../../../_images/sphx_glr_plot_spectrum_slicing_thumb.png" />
+<p><a class="reference internal" href="plot_spectrum_slicing.html"><span class="doc">Every State in an Energy Window: Spectrum Slicing</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Every State in an Energy Window: Spectrum Slicing</div>
 </div></div><div class="toctree-wrapper compound">
 </div>
 </section>
@@ -728,7 +766,7 @@ fine meshes are diagonalized in batches, optionally across threads.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.2.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.1.
   </p>
 </div>
       

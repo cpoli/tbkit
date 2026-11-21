@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tbkit.models &#8212; tbkit</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
+
+    <script src="../../_static/documentation_options.js?v=cce5339e"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tbkit/models';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../_static/js/force_light.js?v=8e7666d6"></script>
+    <script async="async" data-goatcounter="https://cpoli.goatcounter.com/count" src="https://gc.zgo.at/count.js"></script>
+    <link rel="canonical" href="https://cpoli.github.io/tbkit/_modules/tbkit/models.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.8" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../_static/tbkit_logo.png" class="logo__image only-light" alt="tbkit logo"/>
+    <img src="../../_static/tbkit_logo.png" class="logo__image only-dark pst-js-only" alt="tbkit logo"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_pythtb.html">
+    Coming from PythTB
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history/index.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://cpoli.github.io/" title="Charles Poli" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-user fa-lg" aria-hidden="true"></i><span class="visually-hidden">Charles Poli</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_pythtb.html">
+    Coming from PythTB
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history/index.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://cpoli.github.io/" title="Charles Poli" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-user fa-lg" aria-hidden="true"></i><span class="visually-hidden">Charles Poli</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-house"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tbkit.models</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for tbkit.models</h1><div class="highlight"><pre>
+<span></span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">A library of named Tight-Binding models, each in one call.</span>
+
+<span class="sd">Every function takes the parameters of the paper that introduced the</span>
+<span class="sd">model as keyword arguments and returns a :class:`tbkit.kspace.KSpace`, so</span>
+<span class="sd">every band, topology and response tool applies to it. For a finite</span>
+<span class="sd">sample in real space, cut it with :mod:`tbkit.bridges`:</span>
+<span class="sd">*finite_system* gives a ready-to-use :class:`tbkit.system.System` for</span>
+<span class="sd">the spinless models, *finite_model* the sparse Hamiltonian (with the</span>
+<span class="sd">site positions) for every model, spinful ones included.</span>
+
+<span class="sd">=================================  ===========  ======================================</span>
+<span class="sd">Function                           Dimension    Invariant</span>
+<span class="sd">=================================  ===========  ======================================</span>
+<span class="sd">:func:`ssh`                        1D           Zak phase (*berry_phase*)</span>
+<span class="sd">:func:`rice_mele`                  1D           (polarization, not quantized)</span>
+<span class="sd">:func:`rice_mele_pump`             1D + cycle   *chern_number* of the pump</span>
+<span class="sd">:func:`kitaev_chain`               1D, BdG      *bdg.majorana_number*</span>
+<span class="sd">:func:`haldane`                    2D           *chern_number*</span>
+<span class="sd">:func:`qi_wu_zhang`                2D           *chern_number*</span>
+<span class="sd">:func:`kane_mele`                  2D, spin     *z2_invariant*</span>
+<span class="sd">:func:`bhz`                        2D, spin     *z2_invariant*</span>
+<span class="sd">:func:`tmd_three_band`             2D           (trivial; valley Berry curvature)</span>
+<span class="sd">:func:`topological_insulator_3d`   3D, spin     *z2_indices_3d*</span>
+<span class="sd">:func:`weyl_semimetal`             3D           *topology.find_weyl_points*</span>
+<span class="sd">=================================  ===========  ======================================</span>
+
+<span class="sd">Examples</span>
+<span class="sd">--------</span>
+<span class="sd">Example usage::</span>
+
+<span class="sd">    from tbkit import models</span>
+<span class="sd">    from tbkit.bridges import finite_system</span>
+
+<span class="sd">    hal = models.haldane(t2=0.1, phi=np.pi / 2, M=0.2)</span>
+<span class="sd">    hal.chern_number(bands=[0])            # 1.0</span>
+<span class="sd">    flake = finite_system(hal, (20, 20))   # the same model, in real space</span>
+<span class="sd">'''</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sqrt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.error_handling</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">error_handling</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.bdg</span><span class="w"> </span><span class="kn">import</span> <span class="n">bdg_kspace</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">PAULI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.lattice</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lattice</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.lattices</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">lattices</span>
+
+<span class="c1"># Liu, Shan, Yao, Yao and Xiao, Phys. Rev. B 88, 085433 (2013): GGA</span>
+<span class="c1"># nearest-neighbour parameters (Table II; a in angstrom, energies in eV)</span>
+<span class="c1"># and spin-orbit couplings lam (Table IV).</span>
+<span class="n">TMD_PARAMETERS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'MoS2'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">3.190</span><span class="p">,</span> <span class="n">eps1</span><span class="o">=</span><span class="mf">1.046</span><span class="p">,</span> <span class="n">eps2</span><span class="o">=</span><span class="mf">2.104</span><span class="p">,</span> <span class="n">t0</span><span class="o">=-</span><span class="mf">0.184</span><span class="p">,</span> <span class="n">t1</span><span class="o">=</span><span class="mf">0.401</span><span class="p">,</span> <span class="n">t2</span><span class="o">=</span><span class="mf">0.507</span><span class="p">,</span>
+                 <span class="n">t11</span><span class="o">=</span><span class="mf">0.218</span><span class="p">,</span> <span class="n">t12</span><span class="o">=</span><span class="mf">0.338</span><span class="p">,</span> <span class="n">t22</span><span class="o">=</span><span class="mf">0.057</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mf">0.073</span><span class="p">),</span>
+    <span class="s1">'WS2'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">3.191</span><span class="p">,</span> <span class="n">eps1</span><span class="o">=</span><span class="mf">1.130</span><span class="p">,</span> <span class="n">eps2</span><span class="o">=</span><span class="mf">2.275</span><span class="p">,</span> <span class="n">t0</span><span class="o">=-</span><span class="mf">0.206</span><span class="p">,</span> <span class="n">t1</span><span class="o">=</span><span class="mf">0.567</span><span class="p">,</span> <span class="n">t2</span><span class="o">=</span><span class="mf">0.536</span><span class="p">,</span>
+                <span class="n">t11</span><span class="o">=</span><span class="mf">0.286</span><span class="p">,</span> <span class="n">t12</span><span class="o">=</span><span class="mf">0.384</span><span class="p">,</span> <span class="n">t22</span><span class="o">=-</span><span class="mf">0.061</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mf">0.211</span><span class="p">),</span>
+    <span class="s1">'MoSe2'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">3.326</span><span class="p">,</span> <span class="n">eps1</span><span class="o">=</span><span class="mf">0.919</span><span class="p">,</span> <span class="n">eps2</span><span class="o">=</span><span class="mf">2.065</span><span class="p">,</span> <span class="n">t0</span><span class="o">=-</span><span class="mf">0.188</span><span class="p">,</span> <span class="n">t1</span><span class="o">=</span><span class="mf">0.317</span><span class="p">,</span> <span class="n">t2</span><span class="o">=</span><span class="mf">0.456</span><span class="p">,</span>
+                  <span class="n">t11</span><span class="o">=</span><span class="mf">0.211</span><span class="p">,</span> <span class="n">t12</span><span class="o">=</span><span class="mf">0.290</span><span class="p">,</span> <span class="n">t22</span><span class="o">=</span><span class="mf">0.130</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mf">0.091</span><span class="p">),</span>
+    <span class="s1">'WSe2'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">3.325</span><span class="p">,</span> <span class="n">eps1</span><span class="o">=</span><span class="mf">0.943</span><span class="p">,</span> <span class="n">eps2</span><span class="o">=</span><span class="mf">2.179</span><span class="p">,</span> <span class="n">t0</span><span class="o">=-</span><span class="mf">0.207</span><span class="p">,</span> <span class="n">t1</span><span class="o">=</span><span class="mf">0.457</span><span class="p">,</span> <span class="n">t2</span><span class="o">=</span><span class="mf">0.486</span><span class="p">,</span>
+                 <span class="n">t11</span><span class="o">=</span><span class="mf">0.263</span><span class="p">,</span> <span class="n">t12</span><span class="o">=</span><span class="mf">0.329</span><span class="p">,</span> <span class="n">t22</span><span class="o">=</span><span class="mf">0.034</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mf">0.228</span><span class="p">),</span>
+    <span class="s1">'MoTe2'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">3.557</span><span class="p">,</span> <span class="n">eps1</span><span class="o">=</span><span class="mf">0.605</span><span class="p">,</span> <span class="n">eps2</span><span class="o">=</span><span class="mf">1.972</span><span class="p">,</span> <span class="n">t0</span><span class="o">=-</span><span class="mf">0.169</span><span class="p">,</span> <span class="n">t1</span><span class="o">=</span><span class="mf">0.228</span><span class="p">,</span> <span class="n">t2</span><span class="o">=</span><span class="mf">0.390</span><span class="p">,</span>
+                  <span class="n">t11</span><span class="o">=</span><span class="mf">0.207</span><span class="p">,</span> <span class="n">t12</span><span class="o">=</span><span class="mf">0.239</span><span class="p">,</span> <span class="n">t22</span><span class="o">=</span><span class="mf">0.252</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mf">0.107</span><span class="p">),</span>
+    <span class="s1">'WTe2'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">3.560</span><span class="p">,</span> <span class="n">eps1</span><span class="o">=</span><span class="mf">0.606</span><span class="p">,</span> <span class="n">eps2</span><span class="o">=</span><span class="mf">2.102</span><span class="p">,</span> <span class="n">t0</span><span class="o">=-</span><span class="mf">0.175</span><span class="p">,</span> <span class="n">t1</span><span class="o">=</span><span class="mf">0.342</span><span class="p">,</span> <span class="n">t2</span><span class="o">=</span><span class="mf">0.410</span><span class="p">,</span>
+                 <span class="n">t11</span><span class="o">=</span><span class="mf">0.233</span><span class="p">,</span> <span class="n">t12</span><span class="o">=</span><span class="mf">0.270</span><span class="p">,</span> <span class="n">t22</span><span class="o">=</span><span class="mf">0.190</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mf">0.237</span><span class="p">),</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_two_orbitals</span><span class="p">(</span><span class="n">tags</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">prim_vec</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Lattice</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Private function. Two orbitals on one site at the origin.</span>
+<span class="sd">    '''</span>
+    <span class="n">r0</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">prim_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">Lattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="p">[{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="n">tags</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="n">r0</span><span class="p">},</span> <span class="p">{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="n">tags</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="n">r0</span><span class="p">}],</span>
+                   <span class="n">prim_vec</span><span class="o">=</span><span class="n">prim_vec</span><span class="p">)</span>
+
+
+<span class="n">_SQUARE</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)]</span>
+<span class="n">_CUBIC</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_chain_lattice</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Lattice</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Private function. Two sites per cell, half a lattice constant apart.</span>
+<span class="sd">    '''</span>
+    <span class="k">return</span> <span class="n">Lattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="p">[{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'a'</span><span class="p">,</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)},</span> <span class="p">{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)}],</span>
+                   <span class="n">prim_vec</span><span class="o">=</span><span class="p">[(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)])</span>
+
+
+<div class="viewcode-block" id="ssh">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.models.ssh">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ssh</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KSpace</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Su-Schrieffer-Heeger chain (Phys. Rev. Lett. 42, 1698 (1979)): two</span>
+<span class="sd">    sites 'a', 'b' per cell, intracell hopping *v* and intercell hopping</span>
+<span class="sd">    *w*,</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        H(k) = \begin{pmatrix} 0 &amp; v + w e^{-ik} \\ v + w e^{ik} &amp; 0\end{pmatrix}\, .</span>
+
+<span class="sd">    The gap :math:`2|v - w|` closes at :math:`|v| = |w|`. For :math:`|w| &gt; |v|`</span>
+<span class="sd">    the lower band's Zak phase (*berry_phase* with ``positions=False``) is</span>
+<span class="sd">    :math:`\pi` and an open chain has a zero mode at each end; for</span>
+<span class="sd">    :math:`|w| &lt; |v|` it is 0.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : Real number, default 0.5</span>
+<span class="sd">        Intracell hopping.</span>
+<span class="sd">    w : Real number, default 1</span>
+<span class="sd">        Intercell hopping.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ks</span>
+<span class="sd">        **KSpace** instance (1D, spinless).</span>
+<span class="sd">    '''</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_numbers</span><span class="p">({</span><span class="s1">'v'</span><span class="p">:</span> <span class="n">v</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">:</span> <span class="n">w</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">rice_mele</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">v</span> <span class="o">+</span> <span class="n">w</span><span class="p">),</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">w</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="rice_mele">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.models.rice_mele">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">rice_mele</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">Delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KSpace</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Rice-Mele chain (Phys. Rev. Lett. 49, 1455 (1982)): the SSH chain</span>
+<span class="sd">    with alternating hoppings :math:`t\pm\delta` and a staggered onsite</span>
+<span class="sd">    energy :math:`\pm\Delta`,</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        H(k) = \begin{pmatrix} \Delta &amp; v + w e^{-ik} \\ v + w e^{ik} &amp; -\Delta\end{pmatrix}\, ,</span>
+<span class="sd">        \qquad v = t + \delta,\ w = t - \delta\, .</span>
+
+<span class="sd">    Its gap, at :math:`k = \pi`, is :math:`2\sqrt{\Delta^2 + 4\delta^2}`.</span>
+<span class="sd">    With :math:`\Delta = 0` it is :func:`ssh`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : Real number, default 1</span>
+<span class="sd">        Mean hopping.</span>
+<span class="sd">    delta : Real number, default -0.25</span>
+<span class="sd">        Dimerization: intracell hopping :math:`t+\delta`, intercell :math:`t-\delta`.</span>
+<span class="sd">    Delta : Real number, default 0</span>
+<span class="sd">        Staggered onsite energy, :math:`+\Delta` on 'a' and :math:`-\Delta` on 'b'.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ks</span>
+<span class="sd">        **KSpace** instance (1D, spinless).</span>
+<span class="sd">    '''</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_numbers</span><span class="p">({</span><span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">,</span> <span class="s1">'delta'</span><span class="p">:</span> <span class="n">delta</span><span class="p">,</span> <span class="s1">'Delta'</span><span class="p">:</span> <span class="n">Delta</span><span class="p">})</span>
+    <span class="n">ks</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">_chain_lattice</span><span class="p">())</span>
+    <span class="n">ks</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span> <span class="o">+</span> <span class="n">delta</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span> <span class="o">-</span> <span class="n">delta</span><span class="p">}])</span>
+    <span class="n">ks</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">'a'</span><span class="p">:</span> <span class="n">Delta</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">:</span> <span class="o">-</span><span class="n">Delta</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">ks</span></div>
+
+
+
+<div class="viewcode-block" id="rice_mele_pump">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.models.rice_mele_pump">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">rice_mele_pump</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">Delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+                   <span class="n">offset</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KSpace</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Thouless pump of the Rice-Mele chain (D. J. Thouless, Phys. Rev. B 27,</span>
+<span class="sd">    6083 (1983)): the chain of :func:`rice_mele` with dimerization</span>
+<span class="sd">    :math:`\delta\cos\phi` and staggering :math:`\Delta\sin\phi + \Delta_0`,</span>
+<span class="sd">    cycled over :math:`\phi\in[0, 2\pi)`. The cycle parameter is the second</span>
+<span class="sd">    crystal momentum of a 2D Bloch Hamiltonian :math:`H(k, \phi)`</span>
+<span class="sd">    (primitive vectors (1, 0) and (0, 1)), whose lower band's</span>
+<span class="sd">    *chern_number* is the charge pumped per cycle: :math:`\pm 1` when the</span>
+<span class="sd">    loop encircles the gap closing :math:`\delta\cos\phi = \Delta\sin\phi + \Delta_0 = 0`</span>
+<span class="sd">    (:math:`|\Delta_0| &lt; |\Delta|` and :math:`\delta \neq 0`), 0 otherwise.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : Real number, default 1</span>
+<span class="sd">        Mean hopping.</span>
+<span class="sd">    delta : Real number, default 0.5</span>
+<span class="sd">        Amplitude of the dimerization.</span>
+<span class="sd">    Delta : Real number, default 0.6</span>
+<span class="sd">        Amplitude of the staggered onsite energy.</span>
+<span class="sd">    offset : Real number, default 0</span>
+<span class="sd">        Constant staggered onsite energy :math:`\Delta_0`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ks</span>
+<span class="sd">        **KSpace** instance (2D: :math:`k` and :math:`\phi`, spinless).</span>
+<span class="sd">    '''</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_numbers</span><span class="p">({</span><span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">,</span> <span class="s1">'delta'</span><span class="p">:</span> <span class="n">delta</span><span class="p">,</span> <span class="s1">'Delta'</span><span class="p">:</span> <span class="n">Delta</span><span class="p">,</span> <span class="s1">'offset'</span><span class="p">:</span> <span class="n">offset</span><span class="p">})</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">Lattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="p">[{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'a'</span><span class="p">,</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)},</span> <span class="p">{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)}],</span>
+                  <span class="n">prim_vec</span><span class="o">=</span><span class="n">_SQUARE</span><span class="p">)</span>
+    <span class="n">ks</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
+    <span class="n">ks</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">delta</span> <span class="o">/</span> <span class="mi">2</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">delta</span> <span class="o">/</span> <span class="mi">2</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="o">-</span><span class="n">delta</span> <span class="o">/</span> <span class="mi">2</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="o">-</span><span class="n">delta</span> <span class="o">/</span> <span class="mi">2</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">Delta</span> <span class="o">/</span> <span class="mi">2</span><span class="n">j</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="o">-</span><span class="n">Delta</span> <span class="o">/</span> <span class="mi">2</span><span class="n">j</span><span class="p">}])</span>
+    <span class="n">ks</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">'a'</span><span class="p">:</span> <span class="n">offset</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">:</span> <span class="o">-</span><span class="n">offset</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">ks</span></div>
+
+
+
+<div class="viewcode-block" id="kitaev_chain">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.models.kitaev_chain">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">kitaev_chain</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">mu</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KSpace</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Kitaev chain (A. Yu. Kitaev, Phys.-Usp. 44, 131 (2001)): spinless</span>
+<span class="sd">    fermions with nearest-neighbour hopping *t* and p-wave pairing</span>
+<span class="sd">    *delta*, in the Bogoliubov-de Gennes form of :func:`tbkit.bdg.bdg_kspace`</span>
+<span class="sd">    (particle then hole),</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        E(k) = \pm\sqrt{(2t\cos k - \mu)^2 + 4\Delta^2\sin^2 k}\, .</span>
+
+<span class="sd">    For :math:`|\mu| &lt; 2|t|` (and :math:`\Delta\neq 0`) it is topological:</span>
+<span class="sd">    *bdg.majorana_number* is :math:`-1`, and an open chain has a Majorana</span>
+<span class="sd">    zero mode at each end; for :math:`|\mu| &gt; 2|t|` it is :math:`+1`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : Real number, default 1</span>
+<span class="sd">        Hopping.</span>
+<span class="sd">    delta : Real number, default 1</span>
+<span class="sd">        p-wave pairing.</span>
+<span class="sd">    mu : Real number, default 0</span>
+<span class="sd">        Chemical potential.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ks</span>
+<span class="sd">        **KSpace** instance (1D, two orbitals: particle and hole).</span>
+<span class="sd">    '''</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_numbers</span><span class="p">({</span><span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">,</span> <span class="s1">'delta'</span><span class="p">:</span> <span class="n">delta</span><span class="p">,</span> <span class="s1">'mu'</span><span class="p">:</span> <span class="n">mu</span><span class="p">})</span>
+    <span class="n">chain</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">lattices</span><span class="o">.</span><span class="n">chain</span><span class="p">())</span>
+    <span class="n">chain</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">}])</span>
+    <span class="k">return</span> <span class="n">bdg_kspace</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span> <span class="p">[{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="s1">'delta'</span><span class="p">:</span> <span class="n">delta</span><span class="p">}],</span> <span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_honeycomb_nnn</span><span class="p">(</span><span class="n">ks</span><span class="p">:</span> <span class="n">KSpace</span><span class="p">,</span> <span class="n">t_a</span><span class="p">:</span> <span class="nb">complex</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">t_b</span><span class="p">:</span> <span class="nb">complex</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Private function. Second-neighbour hoppings of the honeycomb lattice</span>
+<span class="sd">    along a2, -a1 and a1 - a2 (120 degrees apart): *t_a* within sublattice</span>
+<span class="sd">    'a', *t_b* within 'b'; the reverse bonds carry the conjugates.</span>
+<span class="sd">    '''</span>
+    <span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]:</span>
+        <span class="n">ks</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t_a</span><span class="p">},</span> <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t_b</span><span class="p">}])</span>
+
+
+<span class="n">_HONEYCOMB_NN</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+
+
+<div class="viewcode-block" id="haldane">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.models.haldane">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">haldane</span><span class="p">(</span><span class="n">t1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">t2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">phi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">M</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KSpace</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Haldane model (F. D. M. Haldane, Phys. Rev. Lett. 61, 2015 (1988)),</span>
+<span class="sd">    the first Chern insulator: the honeycomb lattice</span>
+<span class="sd">    (:func:`tbkit.lattices.honeycomb`, nearest neighbours a distance 1</span>
+<span class="sd">    apart) with nearest-neighbour hopping :math:`t_1`, second-neighbour</span>
+<span class="sd">    hopping :math:`t_2 e^{\pm i\phi}` of opposite chirality on the two</span>
+<span class="sd">    sublattices (a staggered flux, no net field) and a staggered onsite</span>
+<span class="sd">    energy :math:`\pm M`.</span>
+
+<span class="sd">    The gaps at K and K' are :math:`2|M \pm 3\sqrt3\,t_2\sin\phi|`: the</span>
+<span class="sd">    lower band's *chern_number* is :math:`\mathrm{sign}(t_2\sin\phi)` for</span>
+<span class="sd">    :math:`|M| &lt; 3\sqrt3\,|t_2\sin\phi|` (with :math:`t_1&gt;0`), 0 above.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t1 : Real number, default 1</span>
+<span class="sd">        Nearest-neighbour hopping.</span>
+<span class="sd">    t2 : Real number, default 0.1</span>
+<span class="sd">        Second-neighbour hopping amplitude.</span>
+<span class="sd">    phi : Real number, default pi/2</span>
+<span class="sd">        Phase of the second-neighbour hopping.</span>
+<span class="sd">    M : Real number, default 0</span>
+<span class="sd">        Staggered onsite energy, :math:`+M` on 'a' and :math:`-M` on 'b'.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ks</span>
+<span class="sd">        **KSpace** instance (2D, spinless).</span>
+<span class="sd">    '''</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_numbers</span><span class="p">({</span><span class="s1">'t1'</span><span class="p">:</span> <span class="n">t1</span><span class="p">,</span> <span class="s1">'t2'</span><span class="p">:</span> <span class="n">t2</span><span class="p">,</span> <span class="s1">'phi'</span><span class="p">:</span> <span class="n">phi</span><span class="p">,</span> <span class="s1">'M'</span><span class="p">:</span> <span class="n">M</span><span class="p">})</span>
+    <span class="n">ks</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">lattices</span><span class="o">.</span><span class="n">honeycomb</span><span class="p">())</span>
+    <span class="n">ks</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t1</span><span class="p">}</span> <span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">_HONEYCOMB_NN</span><span class="p">])</span>
+    <span class="n">_honeycomb_nnn</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">t2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">phi</span><span class="p">),</span> <span class="n">t2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">phi</span><span class="p">))</span>
+    <span class="n">ks</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">'a'</span><span class="p">:</span> <span class="n">M</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">:</span> <span class="o">-</span><span class="n">M</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">ks</span></div>
+
+
+
+<div class="viewcode-block" id="qi_wu_zhang">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.models.qi_wu_zhang">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">qi_wu_zhang</span><span class="p">(</span><span class="n">m</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KSpace</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Qi-Wu-Zhang model (X.-L. Qi, Y.-S. Wu and S.-C. Zhang, Phys. Rev. B</span>
+<span class="sd">    74, 085308 (2006)), the simplest Chern insulator: two orbitals 'a',</span>
+<span class="sd">    'b' on one site of the square lattice,</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        H(\mathbf{k}) = \sin k_x\,\sigma_x + \sin k_y\,\sigma_y</span>
+<span class="sd">        + (m + \cos k_x + \cos k_y)\,\sigma_z\, .</span>
+
+<span class="sd">    The gap closes at :math:`m = 0, \pm2`: the lower band's</span>
+<span class="sd">    *chern_number* is :math:`+1` for :math:`-2 &lt; m &lt; 0`, :math:`-1` for</span>
+<span class="sd">    :math:`0 &lt; m &lt; 2`, 0 for :math:`|m| &gt; 2`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    m : Real number, default -1</span>
+<span class="sd">        Mass.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ks</span>
+<span class="sd">        **KSpace** instance (2D, spinless, two orbitals per site).</span>
+<span class="sd">    '''</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s1">'m'</span><span class="p">)</span>
+    <span class="n">ks</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">_two_orbitals</span><span class="p">((</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">),</span> <span class="n">_SQUARE</span><span class="p">))</span>
+    <span class="n">hops</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">R</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">(((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]),</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'y'</span><span class="p">])):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">s</span> <span class="o">/</span> <span class="mi">2</span><span class="n">j</span> <span class="o">+</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">hops</span> <span class="o">+=</span> <span class="p">[{</span><span class="s1">'i'</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="n">j</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">ks</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">(</span><span class="n">hops</span><span class="p">)</span>
+    <span class="n">ks</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">'a'</span><span class="p">:</span> <span class="n">m</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">:</span> <span class="o">-</span><span class="n">m</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">ks</span></div>
+
+
+
+<div class="viewcode-block" id="kane_mele">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.models.kane_mele">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">kane_mele</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">lambda_so</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.06</span><span class="p">,</span> <span class="n">lambda_r</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span>
+              <span class="n">lambda_v</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KSpace</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Kane-Mele model (C. L. Kane and E. J. Mele, Phys. Rev. Lett. 95,</span>
+<span class="sd">    226801 (2005)), the quantum spin Hall insulator of graphene: the</span>
+<span class="sd">    honeycomb lattice with spin, nearest-neighbour hopping *t*, intrinsic</span>
+<span class="sd">    spin-orbit coupling :math:`i\lambda_{SO}\nu_{ij}s_z` between second</span>
+<span class="sd">    neighbours, Rashba coupling :math:`i\lambda_R(\mathbf{s}\times\hat{\mathbf{d}}_{ij})_z`</span>
+<span class="sd">    between first neighbours and a staggered onsite energy</span>
+<span class="sd">    :math:`\pm\lambda_v`,</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        H = t\sum_{\langle ij\rangle} c_i^\dagger c_j</span>
+<span class="sd">        + i\lambda_{SO}\sum_{\langle\langle ij\rangle\rangle}\nu_{ij}c_i^\dagger s_z c_j</span>
+<span class="sd">        + i\lambda_R\sum_{\langle ij\rangle}c_i^\dagger(\mathbf{s}\times\hat{\mathbf{d}}_{ij})_z c_j</span>
+<span class="sd">        + \lambda_v\sum_i\xi_i c_i^\dagger c_i\, .</span>
+
+<span class="sd">    The :math:`\mathbb{Z}_2` invariant of the two lower bands</span>
+<span class="sd">    (*z2_invariant*) is 1 for :math:`|\lambda_v| &lt; 3\sqrt3\,|\lambda_{SO}|`</span>
+<span class="sd">    at :math:`\lambda_R = 0` (the boundary moves with :math:`\lambda_R`),</span>
+<span class="sd">    0 above.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : Real number, default 1</span>
+<span class="sd">        Nearest-neighbour hopping.</span>
+<span class="sd">    lambda_so : Real number, default 0.06</span>
+<span class="sd">        Intrinsic spin-orbit coupling.</span>
+<span class="sd">    lambda_r : Real number, default 0</span>
+<span class="sd">        Rashba coupling.</span>
+<span class="sd">    lambda_v : Real number, default 0</span>
+<span class="sd">        Staggered onsite energy, :math:`+\lambda_v` on 'a' and :math:`-\lambda_v` on 'b'.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ks</span>
+<span class="sd">        **KSpace** instance (2D, ``spin=True``).</span>
+<span class="sd">    '''</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_numbers</span><span class="p">({</span><span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">,</span> <span class="s1">'lambda_so'</span><span class="p">:</span> <span class="n">lambda_so</span><span class="p">,</span> <span class="s1">'lambda_r'</span><span class="p">:</span> <span class="n">lambda_r</span><span class="p">,</span>
+                                 <span class="s1">'lambda_v'</span><span class="p">:</span> <span class="n">lambda_v</span><span class="p">})</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">lattices</span><span class="o">.</span><span class="n">honeycomb</span><span class="p">()</span>
+    <span class="n">ks</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">spin</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ks</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">t</span><span class="p">}</span> <span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">_HONEYCOMB_NN</span><span class="p">])</span>
+    <span class="n">_honeycomb_nnn</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">lambda_so</span> <span class="o">*</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'z'</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">lambda_so</span> <span class="o">*</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'z'</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">lambda_r</span><span class="p">:</span>
+        <span class="n">tau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="s1">'r0'</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">lat</span><span class="o">.</span><span class="n">unit_cell</span><span class="p">])</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">prim_vec</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">_HONEYCOMB_NN</span><span class="p">:</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">tau</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">tau</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">d</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+            <span class="n">ks</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span>
+                             <span class="s1">'t'</span><span class="p">:</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">lambda_r</span> <span class="o">*</span> <span class="p">(</span><span class="n">PAULI</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">*</span> <span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">*</span> <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">])}])</span>
+    <span class="n">ks</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">'a'</span><span class="p">:</span> <span class="n">lambda_v</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">:</span> <span class="o">-</span><span class="n">lambda_v</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">ks</span></div>
+
+
+
+<div class="viewcode-block" id="bhz">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.models.bhz">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">bhz</span><span class="p">(</span><span class="n">A</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">B</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">C</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">D</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">M</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KSpace</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Bernevig-Hughes-Zhang model of HgTe quantum wells (B. A. Bernevig,</span>
+<span class="sd">    T. L. Hughes and S.-C. Zhang, Science 314, 1757 (2006)), in its</span>
+<span class="sd">    square-lattice form (lattice constant 1): an s-like orbital 's'</span>
+<span class="sd">    (:math:`E_1`) and a p-like orbital 'p' (:math:`H_1`) with spin, on one</span>
+<span class="sd">    site,</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        H(\mathbf{k}) = \begin{pmatrix} h(\mathbf{k}) &amp; 0 \\ 0 &amp; h^*(-\mathbf{k})\end{pmatrix},</span>
+<span class="sd">        \quad h = \epsilon(\mathbf{k}) + A\sin k_x\,\tau_x + A\sin k_y\,\tau_y + d_z(\mathbf{k})\,\tau_z\, ,</span>
+
+<span class="sd">    :math:`d_z = M - 2B(2 - \cos k_x - \cos k_y)` and</span>
+<span class="sd">    :math:`\epsilon = C - 2D(2 - \cos k_x - \cos k_y)` (:math:`\tau`:</span>
+<span class="sd">    orbital). The basis is that of *KSpace* with ``spin=True``</span>
+<span class="sd">    (:math:`E_1\uparrow, E_1\downarrow, H_1\uparrow, H_1\downarrow`), so</span>
+<span class="sd">    the two blocks give :math:`A\sin k_x\,\tau_x s_z + A\sin k_y\,\tau_y`.</span>
+<span class="sd">    Inversion is ``diag(1, -1)`` on the orbitals. The :math:`\mathbb{Z}_2`</span>
+<span class="sd">    invariant of the two lower bands (*z2_invariant*, *parity_z2*; for</span>
+<span class="sd">    :math:`|D| &lt; |B|`) is 1 for :math:`0 &lt; M/B &lt; 4` and :math:`4 &lt; M/B &lt; 8`,</span>
+<span class="sd">    0 otherwise.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    A : Real number, default 1</span>
+<span class="sd">        Velocity (orbital mixing).</span>
+<span class="sd">    B : Real number, default 1</span>
+<span class="sd">        Band curvature of the mass.</span>
+<span class="sd">    C : Real number, default 0</span>
+<span class="sd">        Energy offset.</span>
+<span class="sd">    D : Real number, default 0</span>
+<span class="sd">        Band curvature common to both orbitals.</span>
+<span class="sd">    M : Real number, default 1</span>
+<span class="sd">        Mass: the bands are inverted at :math:`\Gamma` for :math:`M/B &gt; 0`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ks</span>
+<span class="sd">        **KSpace** instance (2D, ``spin=True``, two orbitals per site).</span>
+<span class="sd">    '''</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_numbers</span><span class="p">({</span><span class="s1">'A'</span><span class="p">:</span> <span class="n">A</span><span class="p">,</span> <span class="s1">'B'</span><span class="p">:</span> <span class="n">B</span><span class="p">,</span> <span class="s1">'C'</span><span class="p">:</span> <span class="n">C</span><span class="p">,</span> <span class="s1">'D'</span><span class="p">:</span> <span class="n">D</span><span class="p">,</span> <span class="s1">'M'</span><span class="p">:</span> <span class="n">M</span><span class="p">})</span>
+    <span class="n">ks</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">_two_orbitals</span><span class="p">((</span><span class="s1">'s'</span><span class="p">,</span> <span class="s1">'p'</span><span class="p">),</span> <span class="n">_SQUARE</span><span class="p">),</span> <span class="n">spin</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ks</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">'s'</span><span class="p">:</span> <span class="n">C</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">D</span> <span class="o">+</span> <span class="n">M</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">B</span><span class="p">,</span> <span class="s1">'p'</span><span class="p">:</span> <span class="n">C</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">D</span> <span class="o">-</span> <span class="n">M</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">B</span><span class="p">})</span>
+    <span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]:</span>
+        <span class="n">ks</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="p">(</span><span class="n">D</span> <span class="o">+</span> <span class="n">B</span><span class="p">)</span> <span class="o">*</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'0'</span><span class="p">]},</span>
+                        <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="p">(</span><span class="n">D</span> <span class="o">-</span> <span class="n">B</span><span class="p">)</span> <span class="o">*</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'0'</span><span class="p">]}])</span>
+    <span class="n">ks</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.5</span><span class="n">j</span> <span class="o">*</span> <span class="n">A</span> <span class="o">*</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]},</span>
+                    <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">0.5</span><span class="n">j</span> <span class="o">*</span> <span class="n">A</span> <span class="o">*</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]},</span>
+                    <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">A</span> <span class="o">*</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'0'</span><span class="p">]},</span>
+                    <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">A</span> <span class="o">*</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'0'</span><span class="p">]}])</span>
+    <span class="k">return</span> <span class="n">ks</span></div>
+
+
+
+<div class="viewcode-block" id="tmd_three_band">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.models.tmd_three_band">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tmd_three_band</span><span class="p">(</span>
+    <span class="n">a</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">3.190</span><span class="p">,</span> <span class="n">eps1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.046</span><span class="p">,</span> <span class="n">eps2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.104</span><span class="p">,</span> <span class="n">t0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.184</span><span class="p">,</span>
+    <span class="n">t1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.401</span><span class="p">,</span> <span class="n">t2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.507</span><span class="p">,</span> <span class="n">t11</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.218</span><span class="p">,</span> <span class="n">t12</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.338</span><span class="p">,</span>
+    <span class="n">t22</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.057</span><span class="p">,</span> <span class="n">lam</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.073</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KSpace</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Three-band model of the monolayer group-VIB transition-metal</span>
+<span class="sd">    dichalcogenides MX\ :sub:`2` (G.-B. Liu, W.-Y. Shan, Y. Yao, W. Yao and</span>
+<span class="sd">    D. Xiao, Phys. Rev. B 88, 085433 (2013)): the :math:`d_{z^2}`,</span>
+<span class="sd">    :math:`d_{xy}`, :math:`d_{x^2-y^2}` orbitals of the metal (tags 'z2',</span>
+<span class="sd">    'xy', 'x2y2') on a triangular lattice of constant *a*, with</span>
+<span class="sd">    nearest-neighbour hoppings. The hopping matrix to the neighbour at</span>
+<span class="sd">    :math:`\mathbf{R}_1 = (a, 0)` is</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        E(\mathbf{R}_1) = \begin{pmatrix} t_0 &amp; t_1 &amp; t_2 \\ -t_1 &amp; t_{11} &amp; t_{12}</span>
+<span class="sd">        \\ t_2 &amp; -t_{12} &amp; t_{22}\end{pmatrix}\, ,</span>
+
+<span class="sd">    and those to the other neighbours follow by the :math:`C_3` rotations</span>
+<span class="sd">    (which turn :math:`(d_{xy}, d_{x^2-y^2})` by twice the angle) and</span>
+<span class="sd">    Hermiticity, so that :math:`H(\mathbf{k})` is Eq. (4)-(10) of the</span>
+<span class="sd">    paper. The defaults are the GGA parameters of MoS\ :sub:`2`;</span>
+<span class="sd">    ``tmd_three_band(**TMD_PARAMETERS['WSe2'])`` gives another material</span>
+<span class="sd">    (Mo/W, S/Se/Te). The smallest direct gap is at K and K' (1.663 eV for</span>
+<span class="sd">    MoS\ :sub:`2`, the conduction band there being pure :math:`d_{z^2}` at</span>
+<span class="sd">    :math:`\epsilon_1 - 3t_0`); the model is trivial (*chern_number* 0),</span>
+<span class="sd">    with opposite Berry curvatures at K and K' (the valley Hall effect).</span>
+
+<span class="sd">    With ``spin=True`` the spin-orbit coupling :math:`\lambda L_z s_z/2`</span>
+<span class="sd">    of the paper's Eq. (25)-(26) is added: it splits the valence band at</span>
+<span class="sd">    K by :math:`2\lambda`, the upper state having spin down at K and spin</span>
+<span class="sd">    up at K' (spin-valley locking).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a : Positive real number, default 3.190</span>
+<span class="sd">        Lattice constant, in angstrom.</span>
+<span class="sd">    eps1, eps2 : Real numbers, default 1.046, 2.104</span>
+<span class="sd">        Onsite energies of :math:`d_{z^2}` and of :math:`d_{xy}, d_{x^2-y^2}` (eV).</span>
+<span class="sd">    t0, t1, t2, t11, t12, t22 : Real numbers</span>
+<span class="sd">        Nearest-neighbour hoppings (eV), defaults</span>
+<span class="sd">        -0.184, 0.401, 0.507, 0.218, 0.338, 0.057.</span>
+<span class="sd">    lam : Real number, default 0.073</span>
+<span class="sd">        Spin-orbit coupling (eV), used with ``spin=True``.</span>
+<span class="sd">    spin : Boolean, default False</span>
+<span class="sd">        Spin-1/2 orbitals, with spin-orbit coupling.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ks</span>
+<span class="sd">        **KSpace** instance (2D, three orbitals per site).</span>
+<span class="sd">    '''</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">'a'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_numbers</span><span class="p">({</span><span class="s1">'eps1'</span><span class="p">:</span> <span class="n">eps1</span><span class="p">,</span> <span class="s1">'eps2'</span><span class="p">:</span> <span class="n">eps2</span><span class="p">,</span> <span class="s1">'t0'</span><span class="p">:</span> <span class="n">t0</span><span class="p">,</span> <span class="s1">'t1'</span><span class="p">:</span> <span class="n">t1</span><span class="p">,</span> <span class="s1">'t2'</span><span class="p">:</span> <span class="n">t2</span><span class="p">,</span>
+                                 <span class="s1">'t11'</span><span class="p">:</span> <span class="n">t11</span><span class="p">,</span> <span class="s1">'t12'</span><span class="p">:</span> <span class="n">t12</span><span class="p">,</span> <span class="s1">'t22'</span><span class="p">:</span> <span class="n">t22</span><span class="p">,</span> <span class="s1">'lam'</span><span class="p">:</span> <span class="n">lam</span><span class="p">})</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="s1">'spin'</span><span class="p">)</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">Lattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="p">[{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="n">tag</span><span class="p">,</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)}</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'z2'</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">,</span> <span class="s1">'x2y2'</span><span class="p">)],</span>
+                  <span class="n">prim_vec</span><span class="o">=</span><span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">a</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">a</span><span class="p">)])</span>
+    <span class="n">ks</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">spin</span><span class="o">=</span><span class="n">spin</span><span class="p">)</span>
+    <span class="n">e_r1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">t1</span><span class="p">,</span> <span class="n">t11</span><span class="p">,</span> <span class="n">t12</span><span class="p">],</span> <span class="p">[</span><span class="n">t2</span><span class="p">,</span> <span class="o">-</span><span class="n">t12</span><span class="p">,</span> <span class="n">t22</span><span class="p">]])</span>
+    <span class="n">hops</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># R1 = a1, then R1 turned by 120 and 240 degrees; the opposite</span>
+    <span class="c1"># neighbours are the Hermitian conjugates</span>
+    <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">R</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]):</span>
+        <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">rot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">s</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="p">]])</span>
+        <span class="n">e_r</span> <span class="o">=</span> <span class="n">rot</span> <span class="o">@</span> <span class="n">e_r1</span> <span class="o">@</span> <span class="n">rot</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">hops</span> <span class="o">+=</span> <span class="p">[{</span><span class="s1">'i'</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="n">j</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">e_r</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">])}</span>
+                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e_r</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mf">1e-14</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">spin</span><span class="p">:</span>
+        <span class="n">hops</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]})</span>
+    <span class="n">ks</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">(</span><span class="n">hops</span><span class="p">)</span>
+    <span class="n">ks</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">'z2'</span><span class="p">:</span> <span class="n">eps1</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">:</span> <span class="n">eps2</span><span class="p">,</span> <span class="s1">'x2y2'</span><span class="p">:</span> <span class="n">eps2</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">ks</span></div>
+
+
+
+<div class="viewcode-block" id="topological_insulator_3d">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.models.topological_insulator_3d">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">topological_insulator_3d</span><span class="p">(</span><span class="n">M</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.</span><span class="p">,</span> <span class="n">A</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">B</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KSpace</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Lattice model of a 3D topological insulator (the cubic-lattice</span>
+<span class="sd">    regularization of the Bi\ :sub:`2`\ Se\ :sub:`3` model of H. Zhang et</span>
+<span class="sd">    al., Nature Phys. 5, 438 (2009)): orbitals 's' and 'p' of opposite</span>
+<span class="sd">    parity, with spin, on one site of the cubic lattice,</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        H(\mathbf{k}) = m(\mathbf{k})\,\tau_z + A\sum_{i=x,y,z}\sin k_i\,\tau_x\sigma_i\, ,</span>
+<span class="sd">        \qquad m(\mathbf{k}) = M - 2B\sum_i(1 - \cos k_i)\, .</span>
+
+<span class="sd">    Inversion is ``diag(1, -1)`` on the orbitals. The four</span>
+<span class="sd">    :math:`\mathbb{Z}_2` indices of the two lower bands (*z2_indices_3d*),</span>
+<span class="sd">    for :math:`B &gt; 0` and :math:`A \neq 0`, are :math:`(0;000)` for</span>
+<span class="sd">    :math:`M &lt; 0` or :math:`M &gt; 12B`, :math:`(1;000)` for</span>
+<span class="sd">    :math:`0 &lt; M &lt; 4B` (a strong topological insulator), :math:`(0;111)`</span>
+<span class="sd">    for :math:`4B &lt; M &lt; 8B` (weak), :math:`(1;111)` for :math:`8B &lt; M &lt; 12B`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    M : Real number, default 2</span>
+<span class="sd">        Mass at :math:`\Gamma`.</span>
+<span class="sd">    A : Real number, default 1</span>
+<span class="sd">        Velocity.</span>
+<span class="sd">    B : Real number, default 1</span>
+<span class="sd">        Band curvature of the mass.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ks</span>
+<span class="sd">        **KSpace** instance (3D, ``spin=True``, two orbitals per site).</span>
+<span class="sd">    '''</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_numbers</span><span class="p">({</span><span class="s1">'M'</span><span class="p">:</span> <span class="n">M</span><span class="p">,</span> <span class="s1">'A'</span><span class="p">:</span> <span class="n">A</span><span class="p">,</span> <span class="s1">'B'</span><span class="p">:</span> <span class="n">B</span><span class="p">})</span>
+    <span class="n">ks</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">_two_orbitals</span><span class="p">((</span><span class="s1">'s'</span><span class="p">,</span> <span class="s1">'p'</span><span class="p">),</span> <span class="n">_CUBIC</span><span class="p">),</span> <span class="n">spin</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="p">[</span><span class="n">PAULI</span><span class="p">[</span><span class="s1">'x'</span><span class="p">],</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'y'</span><span class="p">],</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]]</span>
+    <span class="n">hops</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)[</span><span class="n">d</span><span class="p">])</span>
+        <span class="n">hops</span> <span class="o">+=</span> <span class="p">[{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="n">B</span> <span class="o">*</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'0'</span><span class="p">]},</span>
+                 <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="o">-</span><span class="n">B</span> <span class="o">*</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'0'</span><span class="p">]},</span>
+                 <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.5</span><span class="n">j</span> <span class="o">*</span> <span class="n">A</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">[</span><span class="n">d</span><span class="p">]},</span>
+                 <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="n">R</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.5</span><span class="n">j</span> <span class="o">*</span> <span class="n">A</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">[</span><span class="n">d</span><span class="p">]}]</span>
+    <span class="n">ks</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">(</span><span class="n">hops</span><span class="p">)</span>
+    <span class="n">ks</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">'s'</span><span class="p">:</span> <span class="n">M</span> <span class="o">-</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">B</span><span class="p">,</span> <span class="s1">'p'</span><span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">M</span> <span class="o">-</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">B</span><span class="p">)})</span>
+    <span class="k">return</span> <span class="n">ks</span></div>
+
+
+
+<div class="viewcode-block" id="weyl_semimetal">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.models.weyl_semimetal">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">weyl_semimetal</span><span class="p">(</span><span class="n">k0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KSpace</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Minimal Weyl semimetal (two Weyl points, broken time reversal) on the</span>
+<span class="sd">    cubic lattice: a two-component orbital ('a', ``spin=True``) with</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        H(\mathbf{k}) = \sin k_x\,\sigma_x + \sin k_y\,\sigma_y</span>
+<span class="sd">        + (2 + \cos k_0 - \cos k_x - \cos k_y - \cos k_z)\,\sigma_z\, ,</span>
+
+<span class="sd">    whose bands touch at :math:`(0, 0, \pm k_0)` (*topology.find_weyl_points*),</span>
+<span class="sd">    with chiralities :math:`\pm 1`: the planes :math:`|k_z| &lt; k_0` have</span>
+<span class="sd">    *chern_number* :math:`-1`, the others 0 (for :math:`0 &lt; k_0 &lt; \pi`).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    k0 : Real number, default pi/2</span>
+<span class="sd">        Position of the Weyl points along :math:`k_z`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ks</span>
+<span class="sd">        **KSpace** instance (3D, ``spin=True``, one site).</span>
+<span class="sd">    '''</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">k0</span><span class="p">,</span> <span class="s1">'k0'</span><span class="p">)</span>
+    <span class="n">ks</span> <span class="o">=</span> <span class="n">KSpace</span><span class="p">(</span><span class="n">Lattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="p">[{</span><span class="s1">'tag'</span><span class="p">:</span> <span class="s1">'a'</span><span class="p">,</span> <span class="s1">'r0'</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)}],</span> <span class="n">prim_vec</span><span class="o">=</span><span class="n">_CUBIC</span><span class="p">),</span> <span class="n">spin</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ks</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.5</span><span class="n">j</span> <span class="o">*</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]},</span>
+                    <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.5</span><span class="n">j</span> <span class="o">*</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]},</span>
+                    <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">PAULI</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]}])</span>
+    <span class="n">ks</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">'a'</span><span class="p">:</span> <span class="p">(</span><span class="mf">2.</span> <span class="o">+</span> <span class="n">cos</span><span class="p">(</span><span class="n">k0</span><span class="p">),</span> <span class="o">-</span><span class="mf">2.</span> <span class="o">-</span> <span class="n">cos</span><span class="p">(</span><span class="n">k0</span><span class="p">))})</span>  <span class="c1"># (2 + cos k0) sigma_z</span>
+    <span class="k">return</span> <span class="n">ks</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2026, Charles Poli.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.1.
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.24.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

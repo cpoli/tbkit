@@ -149,6 +149,20 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_pythtb.html">
+    Coming from PythTB
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../history/index.html">
     History
   </a>
@@ -271,6 +285,20 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../tutorial.html">
     Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_pythtb.html">
+    Coming from PythTB
   </a>
 </li>
 
@@ -438,6 +466,68 @@
 <span class="sd">    horizontal (0), one at 179.99999 as pointing the other way.</span>
 <span class="sd">    '''</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">ang</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="n">ATOL</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">ang</span> <span class="o">&lt;</span> <span class="mf">180.</span> <span class="o">-</span> <span class="n">ATOL</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_inertia</span><span class="p">(</span><span class="n">ham</span><span class="p">:</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Private function. The number of eigenvalues of the Hermitian *ham* below</span>
+<span class="sd">    *sigma* (Sylvester's law of inertia): the negative pivots of the sparse</span>
+<span class="sd">    LDL^dagger factorization of ham - sigma, from SuperLU with a symmetric</span>
+<span class="sd">    permutation and diagonal pivots. Should SuperLU still exchange rows (or</span>
+<span class="sd">    find an exactly zero pivot), the count comes from the dense spectrum.</span>
+<span class="sd">    '''</span>
+    <span class="n">shifted</span> <span class="o">=</span> <span class="p">(</span><span class="n">ham</span> <span class="o">-</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">sparse</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">ham</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'csc'</span><span class="p">))</span><span class="o">.</span><span class="n">tocsc</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">lu</span> <span class="o">=</span> <span class="n">SLA</span><span class="o">.</span><span class="n">splu</span><span class="p">(</span><span class="n">shifted</span><span class="p">,</span> <span class="n">permc_spec</span><span class="o">=</span><span class="s1">'MMD_AT_PLUS_A'</span><span class="p">,</span> <span class="n">diag_pivot_thresh</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span>
+                      <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s1">'SymmetricMode'</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+    <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>  <span class="c1"># exactly singular</span>
+        <span class="n">lu</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">lu</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">lu</span><span class="o">.</span><span class="n">perm_r</span><span class="p">,</span> <span class="n">lu</span><span class="o">.</span><span class="n">perm_c</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">LA</span><span class="o">.</span><span class="n">eigvalsh</span><span class="p">(</span><span class="n">ham</span><span class="o">.</span><span class="n">toarray</span><span class="p">())</span> <span class="o">&lt;</span> <span class="n">sigma</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">lu</span><span class="o">.</span><span class="n">U</span><span class="o">.</span><span class="n">diagonal</span><span class="p">()</span><span class="o">.</span><span class="n">real</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_slice_pairs</span><span class="p">(</span>
+    <span class="n">ham</span><span class="p">:</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">,</span> <span class="n">lo</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">hi</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Private function. The *count* eigenpairs of the Hermitian *ham* in</span>
+<span class="sd">    [lo, hi), by shift-invert Lanczos about *sigma* with deflation: one</span>
+<span class="sd">    factorization of ham - sigma, then passes of ARPACK on</span>
+<span class="sd">    :math:`P(H - \sigma)^{-1}P`, *P* projecting out the eigenvectors already</span>
+<span class="sd">    found. Lanczos from one start vector finds one vector of a degenerate</span>
+<span class="sd">    eigenspace at a time (it may also return a vector twice); deflation</span>
+<span class="sd">    makes the missing ones dominant. Every candidate is orthogonalized</span>
+<span class="sd">    against those kept, and kept only if it is independent of them.</span>
+<span class="sd">    '''</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">lu</span> <span class="o">=</span> <span class="n">SLA</span><span class="o">.</span><span class="n">splu</span><span class="p">((</span><span class="n">ham</span> <span class="o">-</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">sparse</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'csc'</span><span class="p">))</span><span class="o">.</span><span class="n">tocsc</span><span class="p">())</span>
+    <span class="n">found</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'c16'</span><span class="p">)</span>
+    <span class="n">values</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span> <span class="o">+</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">==</span> <span class="n">count</span><span class="p">:</span>
+            <span class="k">break</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">solve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="n">found</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'c16'</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">lu</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">basis</span> <span class="o">@</span> <span class="p">(</span><span class="n">basis</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">x</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">y</span> <span class="o">-</span> <span class="n">basis</span> <span class="o">@</span> <span class="p">(</span><span class="n">basis</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">y</span><span class="p">)</span>
+
+        <span class="n">op</span> <span class="o">=</span> <span class="n">SLA</span><span class="o">.</span><span class="n">LinearOperator</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">matvec</span><span class="o">=</span><span class="n">solve</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'c16'</span><span class="p">)</span>
+        <span class="n">v0</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="mi">0</span><span class="n">j</span>
+        <span class="n">v0</span> <span class="o">-=</span> <span class="n">found</span> <span class="o">@</span> <span class="p">(</span><span class="n">found</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">v0</span><span class="p">)</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">count</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="n">found</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">en</span><span class="p">,</span> <span class="n">vec</span> <span class="o">=</span> <span class="n">SLA</span><span class="o">.</span><span class="n">eigsh</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">OPinv</span><span class="o">=</span><span class="n">op</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="n">vec</span><span class="o">.</span><span class="n">T</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">lo</span> <span class="o">&lt;=</span> <span class="n">e</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">v</span> <span class="o">-</span> <span class="n">found</span> <span class="o">@</span> <span class="p">(</span><span class="n">found</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">v</span><span class="p">)</span>
+                <span class="n">norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">norm</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
+                    <span class="n">found</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">found</span><span class="p">,</span> <span class="n">v</span> <span class="o">/</span> <span class="n">norm</span><span class="p">])</span>
+                    <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">slice_count</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">),</span> <span class="n">count</span><span class="p">,</span> <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">values</span><span class="p">),</span> <span class="n">found</span>
 
 
 <div class="viewcode-block" id="System">
@@ -1658,6 +1748,90 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_states</span><span class="p">()</span></div>
 
 
+<div class="viewcode-block" id="System.get_eig_window">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.system.System.get_eig_window">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_eig_window</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">e_min</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">e_max</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">eigenvec</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">n_slice</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">        Get all the eigenenergies in the window :math:`[E_\mathrm{min},</span>
+<span class="sd">        E_\mathrm{max}]` of a Hermitian Hamiltonian, and optionally their</span>
+<span class="sd">        eigenvectors, by spectrum slicing: the window is cut into slices of</span>
+<span class="sd">        at most *n_slice* eigenvalues, and each slice is solved by</span>
+<span class="sd">        shift-invert Lanczos about its centre, as *get_eig_sparse* does.</span>
+
+<span class="sd">        The number of eigenvalues below an energy :math:`\sigma` comes from</span>
+<span class="sd">        Sylvester's law of inertia: the sparse factorization</span>
+<span class="sd">        :math:`P(H - \sigma)P^T = LDL^\dagger` (SuperLU with a symmetric</span>
+<span class="sd">        permutation and diagonal pivots) has as many negative pivots</span>
+<span class="sd">        :math:`D_{ii}` as :math:`H` has eigenvalues below :math:`\sigma`.</span>
+<span class="sd">        This count is exact, so it says how many eigenvalues each slice must</span>
+<span class="sd">        give, and the slices are bisected until each holds at most</span>
+<span class="sd">        *n_slice* of them. Nothing is dense: the cost is one factorization</span>
+<span class="sd">        per count and per slice, so all the states of a band, or of an</span>
+<span class="sd">        energy window around a gap, of a flake of :math:`10^5` sites are</span>
+<span class="sd">        within reach. The results replace *en* (sorted) and, with</span>
+<span class="sd">        *eigenvec*, *rn*, *intensity* and *pola*, as for *get_eig*.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        e_min, e_max : Real numbers</span>
+<span class="sd">            The window. Eigenvalues within about 1e-9 (relative to the</span>
+<span class="sd">            largest matrix element) of its ends count as inside.</span>
+<span class="sd">        eigenvec : Boolean, default False</span>
+<span class="sd">        n_slice : Positive integer, default 50</span>
+<span class="sd">            Largest number of eigenvalues solved together (a degenerate</span>
+<span class="sd">            level that holds more is solved in one slice).</span>
+<span class="sd">        '''</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">empty_ham</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ham</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">energy_window</span><span class="p">((</span><span class="n">e_min</span><span class="p">,</span> <span class="n">e_max</span><span class="p">),</span> <span class="s1">'(e_min, e_max)'</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">eigenvec</span><span class="p">,</span> <span class="s1">'eigenvec'</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">n_slice</span><span class="p">,</span> <span class="s1">'n_slice'</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">hermitian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ham</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ln</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="s1">'c16'</span><span class="p">)</span>
+        <span class="n">ham</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ham</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'c16'</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">ham</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># the ends move out by delta, so that no count factorizes H - sigma</span>
+        <span class="c1"># at an eigenvalue (see get_eig_sparse), and the split points by</span>
+        <span class="c1"># delta from the midpoints, where symmetric spectra have levels</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="mf">1e-9</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">+</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">e_min</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e_max</span><span class="p">))</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+        <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="n">e_min</span> <span class="o">-</span> <span class="n">delta</span><span class="p">,</span> <span class="n">e_max</span> <span class="o">+</span> <span class="n">delta</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="p">{</span><span class="n">lo</span><span class="p">:</span> <span class="n">_inertia</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">lo</span><span class="p">),</span> <span class="n">hi</span><span class="p">:</span> <span class="n">_inertia</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">hi</span><span class="p">)}</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="n">hi</span><span class="p">]</span> <span class="o">-</span> <span class="n">counts</span><span class="p">[</span><span class="n">lo</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">total</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">&gt;</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># the window holds (almost) the whole spectrum</span>
+            <span class="k">if</span> <span class="n">eigenvec</span><span class="p">:</span>
+                <span class="n">en</span><span class="p">,</span> <span class="n">vec</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">ham</span><span class="o">.</span><span class="n">toarray</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">en</span><span class="p">,</span> <span class="n">vec</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eigvalsh</span><span class="p">(</span><span class="n">ham</span><span class="o">.</span><span class="n">toarray</span><span class="p">()),</span> <span class="kc">None</span>
+            <span class="n">keep</span> <span class="o">=</span> <span class="p">(</span><span class="n">en</span> <span class="o">&gt;=</span> <span class="n">lo</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">en</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">en</span> <span class="o">=</span> <span class="n">en</span><span class="p">[</span><span class="n">keep</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">vec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rn</span> <span class="o">=</span> <span class="n">vec</span><span class="p">[:,</span> <span class="n">keep</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_states</span><span class="p">()</span>
+            <span class="k">return</span>
+        <span class="n">slices</span><span class="p">,</span> <span class="n">todo</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[(</span><span class="n">lo</span><span class="p">,</span> <span class="n">hi</span><span class="p">)]</span>
+        <span class="k">while</span> <span class="n">todo</span><span class="p">:</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">todo</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">-</span> <span class="n">counts</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">n_slice</span> <span class="ow">and</span> <span class="n">b</span> <span class="o">-</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="mf">1e3</span> <span class="o">*</span> <span class="n">delta</span><span class="p">:</span>
+                <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span> <span class="o">+</span> <span class="n">delta</span>
+                <span class="n">counts</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">=</span> <span class="n">_inertia</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">mid</span><span class="p">)</span>
+                <span class="n">todo</span> <span class="o">+=</span> <span class="p">[(</span><span class="n">mid</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">mid</span><span class="p">)]</span>
+            <span class="k">elif</span> <span class="n">count</span><span class="p">:</span>
+                <span class="n">slices</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">count</span><span class="p">))</span>
+        <span class="n">values</span><span class="p">,</span> <span class="n">vectors</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">slices</span><span class="p">):</span>
+            <span class="n">en</span><span class="p">,</span> <span class="n">vec</span> <span class="o">=</span> <span class="n">_slice_pairs</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span> <span class="o">+</span> <span class="n">delta</span><span class="p">)</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">en</span><span class="p">)</span>
+            <span class="n">vectors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span>
+        <span class="n">en</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="k">if</span> <span class="n">values</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">'stable'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">en</span> <span class="o">=</span> <span class="n">en</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">eigenvec</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="n">ind</span><span class="p">]</span> <span class="k">if</span> <span class="n">vectors</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'c16'</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_states</span><span class="p">()</span></div>
+
+
 <div class="viewcode-block" id="System.get_green">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.system.System.get_green">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_green</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">complex</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
@@ -2073,7 +2247,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.2.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.1.
   </p>
 </div>
       

@@ -149,6 +149,20 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_pythtb.html">
+    Coming from PythTB
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../history/index.html">
     History
   </a>
@@ -271,6 +285,20 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../tutorial.html">
     Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_pythtb.html">
+    Coming from PythTB
   </a>
 </li>
 
@@ -426,7 +454,12 @@
 <span class="sd">``positions=True`` (the default) the bond vectors include the orbital</span>
 <span class="sd">positions, :math:`\mathbf{d} = \mathbf{R} + \boldsymbol\tau_j -</span>
 <span class="sd">\boldsymbol\tau_i`, so that the velocity is the physical :math:`i[H,</span>
-<span class="sd">\mathbf{r}]` (see *KSpace.hall_conductivity*).</span>
+<span class="sd">\mathbf{r}]` (see *KSpace.hall_conductivity*). A model read from a</span>
+<span class="sd">Wannier90 ``_tb.dat`` file (*tbkit.io.read_wannier90_tb*) also carries the</span>
+<span class="sd">other matrix elements of the position operator: :func:`optical_conductivity`</span>
+<span class="sd">includes them in :math:`i[H, \mathbf{r}]`, while</span>
+<span class="sd">:func:`berry_curvature_dipole` and :func:`shift_current` refuse them (read</span>
+<span class="sd">the model with ``elements=False``, or pass ``positions=False``).</span>
 
 <span class="sd">Examples</span>
 <span class="sd">--------</span>
@@ -757,6 +790,7 @@
 <span class="sd">        ``e_fermi.shape + (2,)``), in units of length (of *prim_vec*).</span>
 <span class="sd">    '''</span>
     <span class="n">kpts</span> <span class="o">=</span> <span class="n">_mesh</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">nk</span><span class="p">,</span> <span class="n">positions</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">no_position_elements</span><span class="p">(</span><span class="n">positions</span> <span class="ow">and</span> <span class="nb">bool</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">_position_hop</span><span class="p">),</span> <span class="s1">'berry_curvature_dipole'</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">fermi_energies</span><span class="p">(</span><span class="n">e_fermi</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">'temperature'</span><span class="p">)</span>
     <span class="n">mus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">e_fermi</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">))</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
@@ -894,6 +928,7 @@
 <span class="sd">    '''</span>
     <span class="n">kpts</span> <span class="o">=</span> <span class="n">_mesh</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">nk</span><span class="p">,</span> <span class="n">positions</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">no_overlap</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">_overlap_hop</span><span class="p">))</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">no_position_elements</span><span class="p">(</span><span class="n">positions</span> <span class="ow">and</span> <span class="nb">bool</span><span class="p">(</span><span class="n">ks</span><span class="o">.</span><span class="n">_position_hop</span><span class="p">),</span> <span class="s1">'shift_current'</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">frequencies</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="s1">'omega'</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">e_fermi</span><span class="p">,</span> <span class="s1">'e_fermi'</span><span class="p">)</span>
     <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">'temperature'</span><span class="p">)</span>
@@ -963,7 +998,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.2.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.1.
   </p>
 </div>
       

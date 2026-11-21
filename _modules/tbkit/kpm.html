@@ -149,6 +149,20 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_pythtb.html">
+    Coming from PythTB
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../history/index.html">
     History
   </a>
@@ -271,6 +285,20 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../tutorial.html">
     Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_pythtb.html">
+    Coming from PythTB
   </a>
 </li>
 
@@ -1326,6 +1354,240 @@
         <span class="k">return</span> <span class="n">sigma</span><span class="o">.</span><span class="n">imag</span>
     <span class="k">return</span> <span class="n">sigma</span></div>
 
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_resolvent_coefficients</span><span class="p">(</span><span class="n">z</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">n_moments</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Private function. The Chebyshev coefficients of the scaled resolvent,</span>
+<span class="sd">    :math:`(z - \tilde H)^{-1} = \sum_n c_n(z)\,T_n(\tilde H)`,</span>
+<span class="sd">    :math:`c_n = (2-\delta_{n0})\,w^n/\sqrt{z^2-1}`, :math:`w = z - \sqrt{z^2-1}`</span>
+<span class="sd">    (:math:`|w| &lt; 1`, the branch of the root that behaves as :math:`z` at</span>
+<span class="sd">    infinity), at the complex scaled energies *z*, shape (n_moments, len(z)).</span>
+<span class="sd">    '''</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="mf">1.</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">z</span> <span class="o">+</span> <span class="mf">1.</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">z</span> <span class="o">-</span> <span class="n">root</span>
+    <span class="n">coef</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_moments</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">/</span> <span class="n">root</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">coef</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">*=</span> <span class="mf">2.</span>
+    <span class="k">return</span> <span class="n">coef</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_three_index_moments</span><span class="p">(</span><span class="n">ham_s</span><span class="p">,</span> <span class="n">va</span><span class="p">,</span> <span class="n">vb</span><span class="p">,</span> <span class="n">vc</span><span class="p">,</span> <span class="n">vec</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">n_moments</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Private function. Gamma_mnp = sum_r &lt;r| T_m(H~) v_a T_n(H~) v_b T_p(H~) v_c |r&gt;</span>
+<span class="sd">    over the columns r of vec (not divided by their number), for Hermitian</span>
+<span class="sd">    v_a, v_b, v_c: O(M^2) sparse products and O(M^3 N) operations per vector.</span>
+<span class="sd">    '''</span>
+    <span class="n">gamma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_moments</span><span class="p">,</span> <span class="n">n_moments</span><span class="p">,</span> <span class="n">n_moments</span><span class="p">),</span> <span class="s1">'c16'</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">vec</span><span class="o">.</span><span class="n">T</span><span class="p">:</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">va</span> <span class="o">@</span> <span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">_chebyshev</span><span class="p">(</span><span class="n">ham_s</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">n_moments</span><span class="p">)])</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span>  <span class="c1"># (v_a T_m |r&gt;)^*</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">_chebyshev</span><span class="p">(</span><span class="n">ham_s</span><span class="p">,</span> <span class="n">vc</span> <span class="o">@</span> <span class="n">r</span><span class="p">,</span> <span class="n">n_moments</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># T_p v_c |r&gt;, columns p</span>
+        <span class="k">for</span> <span class="n">nn</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">_chebyshev</span><span class="p">(</span><span class="n">ham_s</span><span class="p">,</span> <span class="n">vb</span> <span class="o">@</span> <span class="n">right</span><span class="p">,</span> <span class="n">n_moments</span><span class="p">)):</span>  <span class="c1"># T_n v_b T_p v_c |r&gt;</span>
+            <span class="n">gamma</span><span class="p">[:,</span> <span class="n">nn</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+=</span> <span class="n">left</span> <span class="o">@</span> <span class="n">t</span>
+    <span class="k">return</span> <span class="n">gamma</span>
+
+
+<div class="viewcode-block" id="nonlinear_optical_conductivity">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.kpm.nonlinear_optical_conductivity">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">nonlinear_optical_conductivity</span><span class="p">(</span>
+    <span class="n">ham</span><span class="p">,</span> <span class="n">derivatives</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">omega1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">omega2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="n">component</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'xxx'</span><span class="p">,</span> <span class="n">e_fermi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">n_moments</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span> <span class="n">n_random</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">kernel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'jackson'</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">bounds</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">area</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Get the second-order optical conductivity :math:`\sigma^{abc}(\omega_1, \omega_2)`</span>
+<span class="sd">    of a large sample, :math:`j^a(\omega_1+\omega_2) = \sum\sigma^{abc}(\omega_1,\omega_2)</span>
+<span class="sd">    E^b(\omega_1)E^c(\omega_2)` (the sum running over the ordered pairs of</span>
+<span class="sd">    frequencies of the field), from three-index Chebyshev moments, as KITE's</span>
+<span class="sd">    ``conductivity_optical_nonlinear`` (Joao and Lopes, J. Phys.: Condens.</span>
+<span class="sd">    Matter 32, 125901 (2020)). It covers second-harmonic generation</span>
+<span class="sd">    (:math:`\omega_1 = \omega_2`), the shift and injection currents</span>
+<span class="sd">    (:math:`\omega_2 = -\omega_1`) and optical rectification, in clean or</span>
+<span class="sd">    disordered samples.</span>
+
+<span class="sd">    **Velocity gauge.** The field enters through the Peierls phases,</span>
+<span class="sd">    :math:`H(\mathbf{A}) = H + A_bh^b + \frac12A_bA_ch^{bc} + \dots`, with</span>
+<span class="sd">    the derivatives :math:`h^{b\dots}` of *KSpace.finite_derivatives* and</span>
+<span class="sd">    :math:`\mathbf{E} = -\partial_t\mathbf{A}`; the current is</span>
+<span class="sd">    :math:`j^a = -\frac1\Omega\langle\partial H/\partial A_a\rangle` (charge</span>
+<span class="sd">    :math:`-e`, :math:`\hbar = e = 1`). The density matrix to second order</span>
+<span class="sd">    gives, after the occupations are moved onto one state at a time,</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \sigma^{abc}(\omega_1,\omega_2) = \frac{1}{2\Omega\,\omega_1\omega_2}</span>
+<span class="sd">        \left[S^{abc}(\omega_1,\omega_2) + S^{acb}(\omega_2,\omega_1)\right]\, ,</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        S^{abc}(\omega_1,\omega_2) = \int d\varepsilon\,f(\varepsilon)\Big\{</span>
+<span class="sd">        \tfrac12\mathrm{Tr}[\delta\,h^{abc}]</span>
+<span class="sd">        + \tfrac12\mathcal{T}(h^{bc}, h^a; \omega_3)</span>
+<span class="sd">        + \mathcal{T}(h^c, h^{ab}; \omega_2)</span>
+<span class="sd">        + \mathrm{Tr}[\delta\,h^aG^R_{\omega_3}h^bG^R_{\omega_2}h^c]</span>
+<span class="sd">        + \mathrm{Tr}[G^A_{-\omega_2}h^aG^R_{\omega_1}h^b\,\delta\,h^c]</span>
+<span class="sd">        + \mathrm{Tr}[G^A_{-\omega_3}h^a\,\delta\,h^bG^A_{-\omega_1}h^c]\Big\}\, ,</span>
+
+<span class="sd">    with :math:`\delta = \delta(\varepsilon - H)`,</span>
+<span class="sd">    :math:`G^{R}_{\omega} = (\varepsilon + \omega + i\eta - H)^{-1}`,</span>
+<span class="sd">    :math:`G^{A}_{-\omega} = (\varepsilon - \omega - i\eta - H)^{-1}`,</span>
+<span class="sd">    :math:`\omega_3 = \omega_1 + \omega_2` (with :math:`2\eta`: each</span>
+<span class="sd">    field is switched on as :math:`e^{\eta t}`) and</span>
+<span class="sd">    :math:`\mathcal{T}(P, Q; \omega) = \mathrm{Tr}[P\,\delta\,Q\,G^R_\omega]</span>
+<span class="sd">    + \mathrm{Tr}[Q\,\delta\,P\,G^A_{-\omega}]`. The delta functions are</span>
+<span class="sd">    expanded with the kernel, the Green's functions with the broadening</span>
+<span class="sd">    :math:`\eta`. The result tends to the sum over eigenstates with</span>
+<span class="sd">    Lorentzian broadening :math:`\eta` as the width of the kernel,</span>
+<span class="sd">    :math:`\pi a/M` (:math:`2a` the spectral width), becomes small next to</span>
+<span class="sd">    :math:`\eta`, with a relative error of about :math:`(\pi a/M\eta)^2`:</span>
+<span class="sd">    20% for :math:`\pi a/M\eta = 0.34`, 2-5% for 0.17, 0.6-1.3% for 0.085.</span>
+<span class="sd">    The moments :math:`\mathrm{Tr}[T_m h^aT_n h^bT_p h^c]` cost</span>
+<span class="sd">    :math:`O(M^2R)` sparse products and :math:`O(M^3RN)` operations,</span>
+<span class="sd">    :math:`O(M^3)` memory; they serve every frequency, Fermi level and</span>
+<span class="sd">    temperature, and each frequency pair then costs :math:`O(M^4)`</span>
+<span class="sd">    operations (the energy integral).</span>
+
+<span class="sd">    In the tight-binding basis the velocity gauge is exact, and equal to</span>
+<span class="sd">    the length gauge of *tbkit.optics* with ``positions=True``: for a</span>
+<span class="sd">    linear polarization in a time-reversal-symmetric crystal,</span>
+<span class="sd">    :math:`\mathrm{Re}\,\sigma^{abb}(\omega, -\omega)` is the shift</span>
+<span class="sd">    conductivity of *tbkit.optics.shift_current* (up to the Lorentzian</span>
+<span class="sd">    instead of the Gaussian broadening). The cancellations between the</span>
+<span class="sd">    terms are exact only as :math:`\eta \to 0` and :math:`M \to \infty`; at</span>
+<span class="sd">    low frequency, where the prefactor :math:`1/\omega_1\omega_2` grows,</span>
+<span class="sd">    they need more moments.</span>
+
+<span class="sd">    The random trace is much noisier than that of *dos* or</span>
+<span class="sd">    *optical_conductivity*: on gapped graphene, about 20% for</span>
+<span class="sd">    :math:`RN \sim 10^4` (:math:`R` random vectors, :math:`N` orbitals),</span>
+<span class="sd">    falling as :math:`1/\sqrt{RN}`.</span>
+
+<span class="sd">    The trace must run over a sample without edges, a torus</span>
+<span class="sd">    (*KSpace.finite_ham* and *KSpace.finite_derivatives* with</span>
+<span class="sd">    ``periodic=True``).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ham : Square sparse Hermitian matrix</span>
+<span class="sd">    derivatives : Dict</span>
+<span class="sd">        The derivatives :math:`h^a, h^b, h^c, h^{ab}, h^{ac}, h^{bc}, h^{abc}`</span>
+<span class="sd">        of *ham*, Hermitian matrices of its shape, keyed by their axes in</span>
+<span class="sd">        alphabetical order, as *KSpace.finite_derivatives* returns them.</span>
+<span class="sd">    omega1, omega2 : Nonzero real numbers, or arrays of them (broadcast together)</span>
+<span class="sd">        Frequencies :math:`\hbar\omega_1`, :math:`\hbar\omega_2` (negative</span>
+<span class="sd">        for the conjugate field).</span>
+<span class="sd">    component : String, default 'xxx'</span>
+<span class="sd">        Three letters among 'x', 'y', 'z': :math:`a, b, c`.</span>
+<span class="sd">    e_fermi : Real number, default 0</span>
+<span class="sd">        Fermi energy, inside the spectral bounds.</span>
+<span class="sd">    temperature : Positive real or zero, default 0</span>
+<span class="sd">        In energy units.</span>
+<span class="sd">    eta : Positive real, default 0.05</span>
+<span class="sd">        Broadening of the Green's functions.</span>
+<span class="sd">    n_moments : Positive integer, default 128</span>
+<span class="sd">        Number of Chebyshev moments :math:`M`.</span>
+<span class="sd">    n_random : Positive integer, or None, default 10</span>
+<span class="sd">        See *dos*.</span>
+<span class="sd">    kernel</span>
+<span class="sd">        See *dos*.</span>
+<span class="sd">    seed</span>
+<span class="sd">        See *dos*.</span>
+<span class="sd">    bounds</span>
+<span class="sd">        See *dos*.</span>
+<span class="sd">    area : Positive real</span>
+<span class="sd">        Default value None (the number of orbitals). Area (volume)</span>
+<span class="sd">        :math:`\Omega` of the sample.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sigma</span>
+<span class="sd">        Complex ndarray, the broadcast shape of *omega1* and *omega2*</span>
+<span class="sd">        (raveled), in units of :math:`e^3/\hbar^2` times length per energy</span>
+<span class="sd">        (:math:`\hbar = e = 1`), the units of *tbkit.optics.shift_current*.</span>
+<span class="sd">    '''</span>
+    <span class="n">ham_s</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">_setup</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">n_moments</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.</span><span class="p">])</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">ham_s</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">cartesian_axes</span><span class="p">(</span><span class="n">component</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">ca</span><span class="p">,</span> <span class="n">cb</span><span class="p">,</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">component</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">component</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">component</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">letters</span><span class="p">:</span> <span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">letters</span><span class="p">))</span>  <span class="c1"># noqa: E731</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span><span class="p">(</span><span class="n">ca</span><span class="p">),</span> <span class="n">key</span><span class="p">(</span><span class="n">cb</span><span class="p">),</span> <span class="n">key</span><span class="p">(</span><span class="n">cc</span><span class="p">),</span> <span class="n">key</span><span class="p">(</span><span class="n">ca</span><span class="p">,</span> <span class="n">cb</span><span class="p">),</span> <span class="n">key</span><span class="p">(</span><span class="n">ca</span><span class="p">,</span> <span class="n">cc</span><span class="p">),</span> <span class="n">key</span><span class="p">(</span><span class="n">cb</span><span class="p">,</span> <span class="n">cc</span><span class="p">),</span> <span class="n">key</span><span class="p">(</span><span class="n">ca</span><span class="p">,</span> <span class="n">cb</span><span class="p">,</span> <span class="n">cc</span><span class="p">)]</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">nonlinear_derivatives</span><span class="p">(</span><span class="n">derivatives</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">derivatives</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'c16'</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">hermitian</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">nonzero_frequencies</span><span class="p">(</span><span class="n">omega1</span><span class="p">,</span> <span class="s1">'omega1'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">nonzero_frequencies</span><span class="p">(</span><span class="n">omega2</span><span class="p">,</span> <span class="s1">'omega2'</span><span class="p">)</span>
+    <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_arrays</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">omega1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">omega2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">))</span>
+    <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">w1</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">w2</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">e_fermi</span><span class="p">,</span> <span class="s1">'e_fermi'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">kpm_grid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">e_fermi</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">a</span><span class="p">]),</span> <span class="s1">'e_fermi'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real_zero</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">'temperature'</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span> <span class="s1">'eta'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">area</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_real</span><span class="p">(</span><span class="n">area</span><span class="p">,</span> <span class="s1">'area'</span><span class="p">)</span>
+    <span class="n">vec</span> <span class="o">=</span> <span class="n">_vectors</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n_random</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
+    <span class="c1"># the moments: Tr[h^abc T_m]; Tr[P T_m Q T_n] for the pairs (P, Q) of</span>
+    <span class="c1"># the T terms; Tr[T_m h^a T_n h^b T_p h^c] (that of h^a, h^c, h^b is</span>
+    <span class="c1"># its conjugate with m and n exchanged)</span>
+    <span class="n">mu1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="mi">6</span><span class="p">]]</span> <span class="o">@</span> <span class="n">vec</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">_chebyshev</span><span class="p">(</span><span class="n">ham_s</span><span class="p">,</span> <span class="n">vec</span><span class="p">,</span> <span class="n">n_moments</span><span class="p">)])</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="p">{(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span> <span class="n">_two_index_moments</span><span class="p">(</span><span class="n">ham_s</span><span class="p">,</span> <span class="n">h</span><span class="p">[</span><span class="n">p</span><span class="p">],</span> <span class="n">h</span><span class="p">[</span><span class="n">q</span><span class="p">],</span> <span class="n">vec</span><span class="p">,</span> <span class="n">n_moments</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span> <span class="ow">in</span> <span class="p">((</span><span class="n">keys</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">keys</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> <span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">keys</span><span class="p">[</span><span class="mi">4</span><span class="p">]),</span> <span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]))}</span>
+    <span class="n">gamma</span> <span class="o">=</span> <span class="n">_three_index_moments</span><span class="p">(</span><span class="n">ham_s</span><span class="p">,</span> <span class="n">h</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="n">vec</span><span class="p">,</span> <span class="n">n_moments</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n_random</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mu1</span> <span class="o">=</span> <span class="n">mu1</span> <span class="o">/</span> <span class="n">n_random</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="p">{</span><span class="n">pq</span><span class="p">:</span> <span class="n">mu</span> <span class="o">/</span> <span class="n">n_random</span> <span class="k">for</span> <span class="n">pq</span><span class="p">,</span> <span class="n">mu</span> <span class="ow">in</span> <span class="n">pairs</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span> <span class="o">/</span> <span class="n">n_random</span>
+    <span class="n">gamma_swap</span> <span class="o">=</span> <span class="n">gamma</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span>
+    <span class="c1"># the energy integral, on a grid uniform in theta = arccos(eps), where</span>
+    <span class="c1"># delta(eps - H~) d eps = sum_m (2 - delta_m0) g_m cos(m theta) T_m d theta / pi</span>
+    <span class="n">n_int</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">201</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">n_moments</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">PI</span> <span class="o">*</span> <span class="n">a</span> <span class="o">/</span> <span class="n">eta</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">temperature</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">((</span><span class="n">e_fermi</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">a</span><span class="p">),</span> <span class="n">PI</span><span class="p">,</span> <span class="n">n_int</span><span class="p">)</span>
+        <span class="n">occ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_int</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">PI</span><span class="p">,</span> <span class="n">n_int</span><span class="p">)</span>
+        <span class="n">occ</span> <span class="o">=</span> <span class="n">occupation</span><span class="o">.</span><span class="n">fermi_dirac</span><span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="n">e_fermi</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">occ</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n_int</span><span class="p">,</span> <span class="n">theta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">weights</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">/=</span> <span class="mf">2.</span>  <span class="c1"># trapezoid</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">jackson_kernel</span><span class="p">(</span><span class="n">n_moments</span><span class="p">)</span> <span class="k">if</span> <span class="n">kernel</span> <span class="o">==</span> <span class="s1">'jackson'</span> <span class="k">else</span> <span class="n">lorentz_kernel</span><span class="p">(</span><span class="n">n_moments</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_moments</span><span class="p">)</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">m</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">)</span> <span class="o">*</span> <span class="n">g</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">m</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">theta</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span> <span class="o">/</span> <span class="n">PI</span> <span class="o">*</span> <span class="n">weights</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">green</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">n_eta</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># coefficients of G^R(eps + omega) = c(z)/a, z = eps~ + (omega + i n_eta eta)/a</span>
+        <span class="c1"># (G^A(eps - omega) is the conjugate of G^R at -omega); each field</span>
+        <span class="c1"># is switched on as exp(eta t), so omega_3 carries 2 eta</span>
+        <span class="k">return</span> <span class="n">_resolvent_coefficients</span><span class="p">(</span><span class="n">eps</span> <span class="o">+</span> <span class="p">(</span><span class="n">omega</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">n_eta</span> <span class="o">*</span> <span class="n">eta</span><span class="p">)</span> <span class="o">/</span> <span class="n">a</span><span class="p">,</span> <span class="n">n_moments</span><span class="p">)</span> <span class="o">/</span> <span class="n">a</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">pair</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">n_eta</span><span class="p">):</span>
+        <span class="c1"># T(P, Q; omega) = Tr[P delta Q G^R_omega] + Tr[Q delta P G^A_-omega]</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="n">pairs</span><span class="p">[(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span> <span class="o">*</span> <span class="p">(</span><span class="n">mu</span> <span class="o">@</span> <span class="n">green</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">n_eta</span><span class="p">)</span> <span class="o">+</span> <span class="n">mu</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">green</span><span class="p">(</span><span class="o">-</span><span class="n">omega</span><span class="p">,</span> <span class="n">n_eta</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">()))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">triple</span><span class="p">(</span><span class="n">gam</span><span class="p">,</span> <span class="n">om1</span><span class="p">,</span> <span class="n">om2</span><span class="p">):</span>
+        <span class="c1"># the three terms of Tr[. h^a . h^b . h^c] with G and delta in turn</span>
+        <span class="n">om3</span> <span class="o">=</span> <span class="n">om1</span> <span class="o">+</span> <span class="n">om2</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="n">j</span>
+        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="p">((</span><span class="n">delta</span><span class="p">,</span> <span class="n">green</span><span class="p">(</span><span class="n">om3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">green</span><span class="p">(</span><span class="n">om2</span><span class="p">)),</span>
+                              <span class="p">(</span><span class="n">green</span><span class="p">(</span><span class="o">-</span><span class="n">om2</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">green</span><span class="p">(</span><span class="n">om1</span><span class="p">),</span> <span class="n">delta</span><span class="p">),</span>
+                              <span class="p">(</span><span class="n">green</span><span class="p">(</span><span class="o">-</span><span class="n">om3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">delta</span><span class="p">,</span> <span class="n">green</span><span class="p">(</span><span class="o">-</span><span class="n">om1</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">())):</span>
+            <span class="k">for</span> <span class="n">e0</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_int</span><span class="p">,</span> <span class="mi">64</span><span class="p">):</span>  <span class="c1"># sum_p first, 64 energies at a time</span>
+                <span class="n">sl</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">e0</span><span class="p">,</span> <span class="n">e0</span> <span class="o">+</span> <span class="mi">64</span><span class="p">)</span>
+                <span class="n">inner</span> <span class="o">=</span> <span class="p">(</span><span class="n">gam</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_moments</span><span class="p">)</span> <span class="o">@</span> <span class="n">z</span><span class="p">[:,</span> <span class="n">sl</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_moments</span><span class="p">,</span> <span class="n">n_moments</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">total</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'mne,me,ne-&gt;'</span><span class="p">,</span> <span class="n">inner</span><span class="p">,</span> <span class="n">x</span><span class="p">[:,</span> <span class="n">sl</span><span class="p">],</span> <span class="n">y</span><span class="p">[:,</span> <span class="n">sl</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">total</span>
+
+    <span class="n">one</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span> <span class="o">*</span> <span class="n">mu1</span><span class="o">.</span><span class="n">real</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">])</span>  <span class="c1"># Tr[delta h^abc] is real</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w1</span><span class="p">),</span> <span class="s1">'c16'</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">om1</span><span class="p">,</span> <span class="n">om2</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">)):</span>
+        <span class="n">rect</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">pair</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">om1</span> <span class="o">+</span> <span class="n">om2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">s_abc</span> <span class="o">=</span> <span class="n">one</span> <span class="o">+</span> <span class="n">rect</span> <span class="o">+</span> <span class="n">pair</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">keys</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">om2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">triple</span><span class="p">(</span><span class="n">gamma</span><span class="p">,</span> <span class="n">om1</span><span class="p">,</span> <span class="n">om2</span><span class="p">)</span>
+        <span class="n">s_acb</span> <span class="o">=</span> <span class="n">one</span> <span class="o">+</span> <span class="n">rect</span> <span class="o">+</span> <span class="n">pair</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">keys</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">om1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">triple</span><span class="p">(</span><span class="n">gamma_swap</span><span class="p">,</span> <span class="n">om2</span><span class="p">,</span> <span class="n">om1</span><span class="p">)</span>
+        <span class="n">sigma</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">s_abc</span> <span class="o">+</span> <span class="n">s_acb</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.</span> <span class="o">*</span> <span class="n">area</span> <span class="o">*</span> <span class="n">om1</span> <span class="o">*</span> <span class="n">om2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sigma</span></div>
+
 </pre></div>
 
                 </article>
@@ -1376,7 +1638,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.2.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.1.
   </p>
 </div>
       

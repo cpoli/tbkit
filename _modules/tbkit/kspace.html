@@ -149,6 +149,20 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_pythtb.html">
+    Coming from PythTB
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../history/index.html">
     History
   </a>
@@ -271,6 +285,20 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../tutorial.html">
     Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_pythtb.html">
+    Coming from PythTB
   </a>
 </li>
 
@@ -405,7 +433,7 @@
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">product</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span><span class="p">,</span> <span class="n">product</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">overload</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -568,6 +596,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_nonreciprocal</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># set_hopping(hermitian=False) was used</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_overlap_hop</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># overlaps, as _hop: list of (i, j, R_cartesian, s)</span>
+        <span class="c1"># position matrix elements &lt;i,0|r|j,R&gt; other than the orbital</span>
+        <span class="c1"># positions (a Wannier90 _tb.dat file, see io.read_wannier90_tb):</span>
+        <span class="c1"># list of (i, j, R_cartesian, r), r a complex vector of space_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_position_hop</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rec_vec</span> <span class="o">=</span> <span class="n">reciprocal_vectors</span><span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">prim_vec</span><span class="p">)</span>
         <span class="c1"># Orthonormal basis (columns) of the span of prim_vec, in which k is</span>
         <span class="c1"># given: the identity when the lattice fills its space, a1/|a1| for a</span>
@@ -1923,6 +1955,13 @@
         <span class="n">hops</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hop</span> <span class="k">if</span> <span class="n">params</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hops</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
         <span class="n">ham</span><span class="p">,</span> <span class="n">dham</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bloch_sum</span><span class="p">(</span><span class="n">hops</span><span class="p">,</span> <span class="n">k_cart</span><span class="p">,</span> <span class="n">directions</span><span class="p">,</span> <span class="n">positions</span><span class="p">)</span>
         <span class="n">ham</span> <span class="o">=</span> <span class="n">ham</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">onsite</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_onsite_offdiag</span><span class="p">)[</span><span class="kc">None</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">positions</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position_hop</span><span class="p">:</span>
+            <span class="c1"># the velocity i[H, r] with the whole position operator: the</span>
+            <span class="c1"># derivative in the gauge of the orbital positions, plus</span>
+            <span class="c1"># i[H, A_u] with the connection of the other elements</span>
+            <span class="n">error_handling</span><span class="o">.</span><span class="n">no_overlap</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_overlap_hop</span><span class="p">))</span>
+            <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="p">(</span><span class="n">k_cart</span><span class="p">,</span> <span class="n">directions</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">dham</span> <span class="o">=</span> <span class="n">dham</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">ham</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">@</span> <span class="n">conn</span> <span class="o">-</span> <span class="n">conn</span> <span class="o">@</span> <span class="n">ham</span><span class="p">[</span><span class="kc">None</span><span class="p">])</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_overlap_hop</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">ham</span><span class="p">,</span> <span class="n">dham</span>
         <span class="n">s</span><span class="p">,</span> <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bloch_sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_overlap_hop</span><span class="p">,</span> <span class="n">k_cart</span><span class="p">,</span> <span class="n">directions</span><span class="p">,</span> <span class="n">positions</span><span class="p">)</span>
@@ -1939,6 +1978,29 @@
         <span class="n">ds_inv</span> <span class="o">=</span> <span class="n">vs</span> <span class="o">@</span> <span class="p">((</span><span class="n">vh</span> <span class="o">@</span> <span class="n">ds</span> <span class="o">@</span> <span class="n">vs</span><span class="p">)</span> <span class="o">*</span> <span class="n">lk</span><span class="p">)</span> <span class="o">@</span> <span class="n">vh</span>
         <span class="n">dham</span> <span class="o">=</span> <span class="n">ds_inv</span> <span class="o">@</span> <span class="n">ham</span> <span class="o">@</span> <span class="n">s_inv</span> <span class="o">+</span> <span class="n">s_inv</span> <span class="o">@</span> <span class="n">dham</span> <span class="o">@</span> <span class="n">s_inv</span> <span class="o">+</span> <span class="n">s_inv</span> <span class="o">@</span> <span class="n">ham</span> <span class="o">@</span> <span class="n">ds_inv</span>
         <span class="k">return</span> <span class="n">s_inv</span> <span class="o">@</span> <span class="n">ham</span> <span class="o">@</span> <span class="n">s_inv</span><span class="p">,</span> <span class="n">dham</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_connection</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">k_cart</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">directions</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]],</span>
+        <span class="n">derivatives</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">        Private method. The Berry connection of the orbitals beyond their</span>
+<span class="sd">        positions, :math:`A_u(\mathbf{k}) = \sum_{\mathbf{R}}(\mathbf{u}\cdot\mathbf{r}_{ij}(\mathbf{R}))\,</span>
+<span class="sd">        e^{i\mathbf{k}\cdot(\mathbf{R}+\boldsymbol\tau_j-\boldsymbol\tau_i)}` with</span>
+<span class="sd">        :math:`\mathbf{r}_{ij}(\mathbf{R}) = \langle i,\mathbf{0}|\mathbf{r}|j,\mathbf{R}\rangle`</span>
+<span class="sd">        the position matrix elements of *_position_hop*, in the gauge of the</span>
+<span class="sd">        orbital positions (*positions=True*), along each Cartesian unit</span>
+<span class="sd">        vector *directions*: shape (len(directions), nk, norb, norb). With</span>
+<span class="sd">        *derivatives*, also :math:`\partial_v A_u`, shape</span>
+<span class="sd">        (len(directions), len(directions), nk, norb, norb) (u first).</span>
+<span class="sd">        '''</span>
+        <span class="n">conn</span><span class="p">,</span> <span class="n">dconn</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">directions</span><span class="p">:</span>
+            <span class="n">hops</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="nb">complex</span><span class="p">(</span><span class="n">r</span> <span class="o">@</span> <span class="n">u</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position_hop</span><span class="p">]</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">da</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bloch_sum</span><span class="p">(</span><span class="n">hops</span><span class="p">,</span> <span class="n">k_cart</span><span class="p">,</span> <span class="n">directions</span> <span class="k">if</span> <span class="n">derivatives</span> <span class="k">else</span> <span class="p">(),</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">dconn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">da</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">conn</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dconn</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_kubo</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">e_fermi</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -1958,10 +2020,21 @@
 <span class="sd">        returns, per k-point, the occupation-independent size of the</span>
 <span class="sd">        curvature, :math:`\sum_{n\neq m}|\mathrm{Im}[X_{nm}Y_{mn}]|/(E_n-E_m)^2`,</span>
 <span class="sd">        which locates the hot spots of the adaptive refinement.</span>
+
+<span class="sd">        With position matrix elements beyond the orbital positions</span>
+<span class="sd">        (*_position_hop*, ``positions=True``), the velocities include</span>
+<span class="sd">        :math:`i[H, A]` (see *_bloch_derivatives*) and the band curvature</span>
+<span class="sd">        gains the curvature of the orbitals' own connection (Wang, Yates,</span>
+<span class="sd">        Souza and Vanderbilt, Phys. Rev. B 74, 195118 (2006)):</span>
+<span class="sd">        :math:`\Omega_n = -2\,\mathrm{Im}\sum_{m\neq n}v^a_{nm}v^b_{mn}/(E_n-E_m)^2</span>
+<span class="sd">        + \langle n|\partial_aA_b-\partial_bA_a-i[A_a, A_b]|n\rangle`. Only the</span>
+<span class="sd">        responses :math:`\sum_n w_n\Omega_n` take it ('hall', 'nernst',</span>
+<span class="sd">        'thermal' without *spin_op*); the others are refused upstream.</span>
 <span class="sd">        '''</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ks</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">e_fermi</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">pairs</span><span class="p">)))</span>
         <span class="n">hot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ks</span><span class="p">))</span>
         <span class="n">chunk</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">400000</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">norb</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">internal</span> <span class="o">=</span> <span class="n">positions</span> <span class="ow">and</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_position_hop</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">c0</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ks</span><span class="p">),</span> <span class="n">chunk</span><span class="p">):</span>
             <span class="n">ham</span><span class="p">,</span> <span class="n">dham</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bloch_derivatives</span><span class="p">(</span><span class="n">ks</span><span class="p">[</span><span class="n">c0</span><span class="p">:</span><span class="n">c0</span> <span class="o">+</span> <span class="n">chunk</span><span class="p">],</span> <span class="n">directions</span><span class="p">,</span> <span class="n">positions</span><span class="p">)</span>
             <span class="n">en</span><span class="p">,</span> <span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span>
@@ -1972,13 +2045,23 @@
             <span class="n">inv2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">degenerate</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">degenerate</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">de</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">spin_op</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">s_e</span> <span class="o">=</span> <span class="n">vh</span> <span class="o">@</span> <span class="n">spin_op</span> <span class="o">@</span> <span class="n">vec</span>
+            <span class="k">if</span> <span class="n">internal</span><span class="p">:</span>
+                <span class="n">conn</span><span class="p">,</span> <span class="n">dconn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="p">(</span><span class="n">ks</span><span class="p">[</span><span class="n">c0</span><span class="p">:</span><span class="n">c0</span> <span class="o">+</span> <span class="n">chunk</span><span class="p">]</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_basis</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">directions</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pairs</span><span class="p">):</span>
                 <span class="n">x</span> <span class="o">=</span> <span class="n">vel</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="k">if</span> <span class="n">spin_op</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">s_e</span> <span class="o">@</span> <span class="n">vel</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">+</span> <span class="n">vel</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">@</span> <span class="n">s_e</span><span class="p">)</span>
                 <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">vel</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">inv2</span>
                 <span class="n">hot</span><span class="p">[</span><span class="n">c0</span><span class="p">:</span><span class="n">c0</span> <span class="o">+</span> <span class="n">chunk</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">internal</span><span class="p">:</span>
+                    <span class="c1"># the curvature of the connection, on the diagonal of the eigenbasis</span>
+                    <span class="n">curv</span> <span class="o">=</span> <span class="n">dconn</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">]</span> <span class="o">-</span> <span class="n">dconn</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">conn</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">@</span> <span class="n">conn</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">-</span> <span class="n">conn</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">@</span> <span class="n">conn</span><span class="p">[</span><span class="n">a</span><span class="p">])</span>
+                    <span class="n">omega</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'kni,kij,kjn-&gt;kn'</span><span class="p">,</span> <span class="n">vh</span><span class="p">,</span> <span class="n">curv</span><span class="p">,</span> <span class="n">vec</span><span class="p">))</span>
+                    <span class="n">hot</span><span class="p">[</span><span class="n">c0</span><span class="p">:</span><span class="n">c0</span> <span class="o">+</span> <span class="n">chunk</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">omega</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">mu</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">e_fermi</span><span class="p">):</span>
                     <span class="n">weights</span> <span class="o">=</span> <span class="n">_response_weights</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">mu</span><span class="p">),</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
                     <span class="n">out</span><span class="p">[</span><span class="n">c0</span><span class="p">:</span><span class="n">c0</span> <span class="o">+</span> <span class="n">chunk</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'knm,knm-&gt;k'</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">internal</span><span class="p">:</span>
+                        <span class="n">occ</span> <span class="o">=</span> <span class="n">_response_occupations</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">mu</span><span class="p">),</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+                        <span class="n">out</span><span class="p">[</span><span class="n">c0</span><span class="p">:</span><span class="n">c0</span> <span class="o">+</span> <span class="n">chunk</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">p</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'kn,kn-&gt;k'</span><span class="p">,</span> <span class="n">occ</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">out</span><span class="p">,</span> <span class="n">hot</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_hall</span><span class="p">(</span>
@@ -2003,6 +2086,10 @@
         <span class="n">error_handling</span><span class="o">.</span><span class="n">plane</span><span class="p">(</span><span class="n">plane</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">k_fixed_hall</span><span class="p">(</span><span class="n">k_fixed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">spin_axis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="s1">'positions'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">spin_axis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">response</span> <span class="o">==</span> <span class="s1">'magnetization'</span><span class="p">:</span>
+            <span class="n">error_handling</span><span class="o">.</span><span class="n">no_position_elements</span><span class="p">(</span><span class="n">positions</span> <span class="ow">and</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_position_hop</span><span class="p">),</span>
+                                                <span class="s1">'spin_hall_conductivity'</span> <span class="k">if</span> <span class="n">spin_axis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                                                <span class="k">else</span> <span class="s1">'orbital_magnetization'</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">positive_int</span><span class="p">(</span><span class="n">refine</span><span class="p">,</span> <span class="s1">'refine'</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">refine_fraction</span><span class="p">(</span><span class="n">refine_fraction</span><span class="p">)</span>
         <span class="n">full</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">k_fixed</span> <span class="ow">is</span> <span class="kc">None</span>
@@ -2145,7 +2232,16 @@
 <span class="sd">        :math:`E_F` are all full (in a gap, at any temperature well below</span>
 <span class="sd">        the gap) and differ in general at partial filling, by the circulation</span>
 <span class="sd">        :math:`\frac{1}{2\pi}\oint_{FS}\langle n|\boldsymbol\tau|n\rangle\cdot d\mathbf{k}`</span>
-<span class="sd">        around the Fermi surface. The default is the physical one.</span>
+<span class="sd">        around the Fermi surface. The default is the physical one. A model</span>
+<span class="sd">        read from a Wannier90 ``_tb.dat`` file (*tbkit.io.read_wannier90_tb*)</span>
+<span class="sd">        knows the other matrix elements of the position operator too, and</span>
+<span class="sd">        ``positions=True`` then uses the whole operator: the velocity is</span>
+<span class="sd">        :math:`i[H, \mathbf{r}]` with all of them, and each band's curvature</span>
+<span class="sd">        gains that of the Wannier functions' own Berry connection (Wang,</span>
+<span class="sd">        Yates, Souza and Vanderbilt, Phys. Rev. B 74, 195118 (2006)). The</span>
+<span class="sd">        anomalous Nernst and thermal Hall conductivities do the same;</span>
+<span class="sd">        *spin_hall_conductivity*, *orbital_magnetization* and *axion_angle*</span>
+<span class="sd">        refuse such a model with ``positions=True``.</span>
 
 <span class="sd">        **Units and dimensions.** In 2D, :math:`\sigma` is in units of</span>
 <span class="sd">        :math:`e^2/h` (:math:`\frac{1}{2\pi}\int d^2k\,F`). In 3D, with</span>
@@ -2611,6 +2707,7 @@
         <span class="n">error_handling</span><span class="o">.</span><span class="n">nk</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">real_number</span><span class="p">(</span><span class="n">theta0</span><span class="p">,</span> <span class="s1">'theta0'</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="s1">'positions'</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">no_position_elements</span><span class="p">(</span><span class="n">positions</span> <span class="ow">and</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_position_hop</span><span class="p">),</span> <span class="s1">'axion_angle'</span><span class="p">)</span>
         <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span>
         <span class="n">fracs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nk</span><span class="p">],</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">'ij'</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
         <span class="n">ks</span> <span class="o">=</span> <span class="n">fracs</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec_vec_k</span>
@@ -2776,22 +2873,85 @@
         <span class="n">error_handling</span><span class="o">.</span><span class="n">nk</span><span class="p">(</span><span class="n">n_cells</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">periodic</span><span class="p">,</span> <span class="s1">'periodic'</span><span class="p">)</span>
         <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">sparse</span><span class="p">,</span> <span class="s1">'sparse'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_finite_derivative</span><span class="p">(</span><span class="n">n_cells</span><span class="p">,</span> <span class="n">periodic</span><span class="p">,</span> <span class="n">sparse</span><span class="p">,</span> <span class="p">(</span><span class="n">alpha</span><span class="p">,))</span> <span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">space_dim</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="KSpace.finite_derivatives">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.kspace.KSpace.finite_derivatives">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">finite_derivatives</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">n_cells</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">component</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">periodic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">sparse</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]</span> <span class="o">|</span> <span class="n">sp</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">        Get the derivatives of the Hamiltonian of the finite sample of</span>
+<span class="sd">        *finite_ham* with respect to a uniform vector potential, the</span>
+<span class="sd">        vertices of the nonlinear optical response in the velocity gauge</span>
+<span class="sd">        (*tbkit.kpm.nonlinear_optical_conductivity*). With the Peierls</span>
+<span class="sd">        phases :math:`H_{ab}(\mathbf{A}) = H_{ab}\,e^{i\mathbf{A}\cdot\mathbf{d}}`</span>
+<span class="sd">        (:math:`\mathbf{d}` the bond vector of *finite_velocity*, a charge</span>
+<span class="sd">        :math:`-e`, :math:`\hbar = e = 1`),</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            h^{\alpha_1\dots\alpha_n}_{ab} =</span>
+<span class="sd">            \frac{\partial^n H_{ab}}{\partial A_{\alpha_1}\cdots\partial A_{\alpha_n}}</span>
+<span class="sd">            = i^n\,d_{\alpha_1}\cdots d_{\alpha_n}\,H_{ab}\, ,</span>
+
+<span class="sd">        the real-space counterparts of :math:`\partial^nH/\partial k_{\alpha_1}\cdots`</span>
+<span class="sd">        with ``positions=True``. :math:`h^\alpha` is the velocity</span>
+<span class="sd">        :math:`v_\alpha` of *finite_velocity*.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        n_cells</span>
+<span class="sd">            See *finite_ham*.</span>
+<span class="sd">        component : String</span>
+<span class="sd">            Cartesian axes, e.g. 'xyy' for :math:`\sigma^{xyy}`.</span>
+<span class="sd">        periodic : Boolean, default False</span>
+<span class="sd">            See *finite_ham*.</span>
+<span class="sd">        sparse : Boolean, default False</span>
+<span class="sd">            See *finite_ham*.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        derivatives</span>
+<span class="sd">            Dict from axes (letters in alphabetical order, e.g. 'y', 'xy',</span>
+<span class="sd">            'xyy') to complex ndarrays (or CSR matrices): one entry per</span>
+<span class="sd">            nonempty subset of the letters of *component*.</span>
+<span class="sd">        '''</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">nk</span><span class="p">(</span><span class="n">n_cells</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">cartesian_axes</span><span class="p">(</span><span class="n">component</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">space_dim</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">periodic</span><span class="p">,</span> <span class="s1">'periodic'</span><span class="p">)</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span><span class="n">sparse</span><span class="p">,</span> <span class="s1">'sparse'</span><span class="p">)</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">{</span><span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">component</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">subset</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">component</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">subset</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">component</span><span class="p">)),</span> <span class="n">size</span><span class="p">)}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finite_derivative</span><span class="p">(</span><span class="n">n_cells</span><span class="p">,</span> <span class="n">periodic</span><span class="p">,</span> <span class="n">sparse</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="s1">'xyz'</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">key</span><span class="p">))</span>
+                   <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">s</span><span class="p">))}</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_finite_derivative</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">n_cells</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">periodic</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">sparse</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">axes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]</span> <span class="o">|</span> <span class="n">sp</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">        Private method. :math:`i^n d_{\alpha_1}\cdots d_{\alpha_n}H` on the</span>
+<span class="sd">        finite sample (see *finite_derivatives*), one term per stored</span>
+<span class="sd">        hopping, so that bonds that wrap onto the same pair of a small</span>
+<span class="sd">        torus keep their own displacements.</span>
+<span class="sd">        '''</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">n_tot</span><span class="p">,</span> <span class="n">entries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finite_entries</span><span class="p">(</span><span class="n">n_cells</span><span class="p">,</span> <span class="n">periodic</span><span class="p">)</span>
         <span class="n">tau</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orbital_positions</span><span class="p">()</span>
         <span class="n">n</span> <span class="o">=</span> <span class="n">n_tot</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">norb</span>
-        <span class="n">vel</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">space_dim</span><span class="p">):</span>
-            <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">)],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">)],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'c16'</span><span class="p">)]</span>
-            <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">R_cart</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
-                <span class="n">d</span> <span class="o">=</span> <span class="n">R_cart</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span> <span class="o">+</span> <span class="n">tau</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">alpha</span><span class="p">]</span> <span class="o">-</span> <span class="n">tau</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">alpha</span><span class="p">]</span>
-                <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
-                <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-                <span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">t</span> <span class="o">*</span> <span class="n">d</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'c16'</span><span class="p">))</span>
-            <span class="n">mat</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">coo_matrix</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">vals</span><span class="p">),</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">rows</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">cols</span><span class="p">))),</span>
-                                          <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span><span class="o">.</span><span class="n">tocsr</span><span class="p">()</span>
-            <span class="n">vel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mat</span> <span class="k">if</span> <span class="n">sparse</span> <span class="k">else</span> <span class="n">mat</span><span class="o">.</span><span class="n">toarray</span><span class="p">())</span>
-        <span class="k">return</span> <span class="n">vel</span></div>
-
+        <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">)],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">)],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'c16'</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">R_cart</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
+            <span class="n">factor</span> <span class="o">=</span> <span class="mi">1</span><span class="n">j</span> <span class="o">**</span> <span class="nb">len</span><span class="p">(</span><span class="n">axes</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span>
+            <span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+                <span class="n">factor</span> <span class="o">*=</span> <span class="n">R_cart</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span> <span class="o">+</span> <span class="n">tau</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">alpha</span><span class="p">]</span> <span class="o">-</span> <span class="n">tau</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">alpha</span><span class="p">]</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+            <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">factor</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'c16'</span><span class="p">))</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">coo_matrix</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">vals</span><span class="p">),</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">rows</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">cols</span><span class="p">))),</span>
+                                      <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span><span class="o">.</span><span class="n">tocsr</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">mat</span> <span class="k">if</span> <span class="n">sparse</span> <span class="k">else</span> <span class="n">mat</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
 
 <div class="viewcode-block" id="KSpace.get_ham_beta">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.kspace.KSpace.get_ham_beta">[docs]</a>
@@ -4873,19 +5033,28 @@
             <span class="n">g</span> <span class="o">=</span> <span class="n">temperature</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">logaddexp</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">en</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">temperature</span><span class="p">)</span>
         <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">f</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="n">f</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:])</span> <span class="o">*</span> <span class="p">(</span><span class="n">en</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">en</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">])</span> \
             <span class="o">-</span> <span class="p">(</span><span class="n">g</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">g</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:])</span>
-    <span class="k">if</span> <span class="n">response</span> <span class="o">==</span> <span class="s1">'hall'</span><span class="p">:</span>
-        <span class="n">w</span> <span class="o">=</span> <span class="n">occupation</span><span class="o">.</span><span class="n">fermi_dirac</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">en</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">temperature</span>
-        <span class="k">if</span> <span class="n">response</span> <span class="o">==</span> <span class="s1">'nernst'</span><span class="p">:</span>
-            <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">))</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="n">expit</span><span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># int_a^inf y^2 (-f') dy = a^2 f(a) + 2 [a ln(1 + e^-a) - Li2(-e^-a)]</span>
-            <span class="c1"># for a &gt;= 0, and pi^2/3 minus it below the Fermi level</span>
-            <span class="c1"># (Li2(z) = spence(1 - z) in scipy's convention)</span>
-            <span class="n">c2</span> <span class="o">=</span> <span class="n">a</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">expit</span><span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">))</span> <span class="o">-</span> <span class="n">spence</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">)))</span>
-            <span class="n">w</span> <span class="o">=</span> <span class="n">temperature</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">en</span> <span class="o">&gt;=</span> <span class="n">mu</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">PI</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">-</span> <span class="n">c2</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">_response_occupations</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
     <span class="k">return</span> <span class="o">-</span><span class="p">(</span><span class="n">w</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">w</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:])</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_response_occupations</span><span class="p">(</span>
+    <span class="n">en</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">mu</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Private. The weights :math:`w_n` of the responses</span>
+<span class="sd">    :math:`\sum_n w_n\Omega_n` ('hall', 'nernst', 'thermal'), shape of</span>
+<span class="sd">    *en*: see *_response_weights*.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">response</span> <span class="o">==</span> <span class="s1">'hall'</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">occupation</span><span class="o">.</span><span class="n">fermi_dirac</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">en</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">temperature</span>
+    <span class="k">if</span> <span class="n">response</span> <span class="o">==</span> <span class="s1">'nernst'</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">))</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="n">expit</span><span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">)</span>
+    <span class="c1"># int_a^inf y^2 (-f') dy = a^2 f(a) + 2 [a ln(1 + e^-a) - Li2(-e^-a)]</span>
+    <span class="c1"># for a &gt;= 0, and pi^2/3 minus it below the Fermi level</span>
+    <span class="c1"># (Li2(z) = spence(1 - z) in scipy's convention)</span>
+    <span class="n">c2</span> <span class="o">=</span> <span class="n">a</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">expit</span><span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">))</span> <span class="o">-</span> <span class="n">spence</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">temperature</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">en</span> <span class="o">&gt;=</span> <span class="n">mu</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">PI</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">-</span> <span class="n">c2</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_path</span><span class="p">(</span>
@@ -5253,7 +5422,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.2.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.1.
   </p>
 </div>
       

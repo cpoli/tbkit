@@ -38,7 +38,7 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -62,7 +62,7 @@
     <link rel="canonical" href="https://cpoli.github.io/tbkit/tutorial.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="History" href="history/index.html" />
+    <link rel="next" title="Coming from Kwant" href="coming_from_kwant.html" />
     <link rel="prev" title="tbkit: Tight-Binding Models in Python" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
@@ -156,6 +156,20 @@
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#" aria-current="page">
     Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="coming_from_pythtb.html">
+    Coming from PythTB
   </a>
 </li>
 
@@ -285,6 +299,20 @@
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#" aria-current="page">
     Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="coming_from_pythtb.html">
+    Coming from PythTB
   </a>
 </li>
 
@@ -484,6 +512,14 @@ honeycomb, three for the kagome and Lieb:</p>
 </figure>
 <p>See <code class="docutils literal notranslate"><span class="pre">lat.plot()</span></code> to look at what you built, and
 <code class="docutils literal notranslate"><span class="pre">examples/tight_binding/plot_building_finite_lattices.py</span></code> for many more shapes.</p>
+<p><a class="reference internal" href="tbkit.html#module-tbkit.models" title="tbkit.models"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.models</span></code></a> goes one step further, to the hoppings: the named
+models of the literature (SSH, Rice-Mele, Kitaev chain, Haldane,
+Qi-Wu-Zhang, Kane-Mele, BHZ, the three-band TMD model, a 3D topological
+insulator, a Weyl semimetal), each in one call with the parameters of
+its paper, e.g. <code class="docutils literal notranslate"><span class="pre">models.haldane(t2=0.1,</span> <span class="pre">M=0.2)</span></code>. They are
+<a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">KSpace</span></code></a> models (see below);
+<a class="reference internal" href="tbkit.html#tbkit.bridges.finite_system" title="tbkit.bridges.finite_system"><code class="xref py py-func docutils literal notranslate"><span class="pre">finite_system()</span></code></a> cuts one into a finite
+<a class="reference internal" href="tbkit.html#tbkit.system.System" title="tbkit.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">System</span></code></a>.</p>
 <p>Sculpting works on the finite patch. Cutting a disc out of a honeycomb
 sheet, for instance:</p>
 <figure class="align-default">
@@ -834,14 +870,17 @@ and Peierls phases on multi-orbital flakes. See <code class="docutils literal no
 <section id="large-lattices-sparse-solvers-and-the-kernel-polynomial-method">
 <h2>Large lattices: sparse solvers and the kernel polynomial method<a class="headerlink" href="#large-lattices-sparse-solvers-and-the-kernel-polynomial-method" title="Link to this heading">#</a></h2>
 <p>Above <code class="docutils literal notranslate"><span class="pre">System.dense_max</span></code> sites, <em>System</em> finds neighbours with a
-k-d tree instead of a dense distance matrix, and
+k-d tree instead of a dense distance matrix,
 <a class="reference internal" href="tbkit.html#tbkit.system.System.get_eig_sparse" title="tbkit.system.System.get_eig_sparse"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_eig_sparse()</span></code></a> finds a few eigenstates near
-an energy by shift-invert. For spectral quantities of hundreds of
+an energy by shift-invert, and <a class="reference internal" href="tbkit.html#tbkit.system.System.get_eig_window" title="tbkit.system.System.get_eig_window"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_eig_window()</span></code></a>
+finds all those in an energy window (spectrum slicing, each slice counted
+exactly by Sylvester inertia). For spectral quantities of hundreds of
 thousands of sites, <a class="reference internal" href="tbkit.html#module-tbkit.kpm" title="tbkit.kpm"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.kpm</span></code></a> expands them in Chebyshev
 polynomials – density of states, local density of states, the
 Kubo-Greenwood conductivity, the spectral function <span class="math notranslate nohighlight">\(A(\mathbf{k}, E)\)</span>
-of a disordered sample and its optical conductivity – at the cost of a
-few hundred sparse matrix-vector products. The same recursion, with
+of a disordered sample, its optical conductivity and its second-order
+(nonlinear) conductivity – at the cost of a few hundred sparse
+matrix-vector products. The same recursion, with
 Bessel coefficients, evolves a state in time exactly
 (<a class="reference internal" href="tbkit.html#tbkit.kpm.time_evolution" title="tbkit.kpm.time_evolution"><code class="xref py py-func docutils literal notranslate"><span class="pre">time_evolution()</span></code></a>, or
 <code class="docutils literal notranslate"><span class="pre">Propagation.get_propagation(...,</span> <span class="pre">method='chebyshev')</span></code>):</p>
@@ -861,6 +900,9 @@ Bessel coefficients, evolves a state in time exactly
 </div><div class="sphx-glr-thumbcontainer" tooltip="Photoemission (ARPES) measures the spectral function A(\mathbf{k}, E): how much of a plane wave of momentum \mathbf{k} lives at energy E. In a crystal it is peaked on the bands; disorder gives the quasiparticles a finite lifetime, which broadens the peaks, and shifts them. Band unfolding (tbkit.moire.spectral_function) gets it from the eigenstates of a supercell, which caps the sample at a few thousand orbitals. The kernel polynomial method needs none: with one plane wave per sublattice o,"><img alt="" src="_images/sphx_glr_plot_kpm_spectral_function_thumb.png" />
 <p><a class="reference internal" href="api/gallery/large_scale/plot_kpm_spectral_function.html"><span class="doc">The Spectral Function of Disordered Graphene, 28,800 Sites</span></a></p>
   <div class="sphx-glr-thumbnail-title">The Spectral Function of Disordered Graphene, 28,800 Sites</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="A dense diagonalization gives every eigenstate of a flake, at a cost O(N^3) and N^2 numbers in memory: 32 GB of complex numbers for 45,000 sites. Shift-invert (~tbkit.system.System.get_eig_sparse) gives the few states nearest one energy. Between the two, one often wants all the states in a window: those near a Dirac point, inside a gap, or in one band."><img alt="" src="_images/sphx_glr_plot_spectrum_slicing_thumb.png" />
+<p><a class="reference internal" href="api/gallery/large_scale/plot_spectrum_slicing.html"><span class="doc">Every State in an Energy Window: Spectrum Slicing</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Every State in an Energy Window: Spectrum Slicing</div>
 </div></div></section>
 <section id="green-s-functions-occupations-and-transport">
 <h2>Green’s functions, occupations, and transport<a class="headerlink" href="#green-s-functions-occupations-and-transport" title="Link to this heading">#</a></h2>
@@ -1031,11 +1073,11 @@ made concrete.</p></li>
       </div>
     </a>
     <a class="right-next"
-       href="history/index.html"
+       href="coming_from_kwant.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">History</p>
+        <p class="prev-next-title">Coming from Kwant</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1120,7 +1162,7 @@ made concrete.</p></li>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.2.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.1.
   </p>
 </div>
       

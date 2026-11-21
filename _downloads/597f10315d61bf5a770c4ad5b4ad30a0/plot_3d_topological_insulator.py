@@ -37,35 +37,19 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
 from tbkit.lattice import Lattice
-from tbkit.kspace import KSpace, PAULI
+from tbkit.kspace import PAULI
 from tbkit.system import System
+from tbkit import models
 
-cubic = [(1., 0., 0.), (0., 1., 0.), (0., 0., 1.)]
 # orbitals: (s, up), (s, down), (p, up), (p, down) -> two "sites" with spin
-lat = Lattice(unit_cell=[{'tag': 's', 'r0': (0., 0., 0.)}, {'tag': 'p', 'r0': (0., 0., 0.)}],
-                     prim_vec=cubic)
 SIGMA = [PAULI['x'], PAULI['y'], PAULI['z']]
 INVERSION = np.kron(np.diag([1., -1.]), np.eye(2))  # s even, p odd
-
-
-def topological_insulator(M):
-    ti = KSpace(lat, spin=True)
-    hops = []
-    for d in range(3):
-        R = tuple(int(x) for x in np.eye(3, dtype=int)[d])
-        # 2 cos k_i tau_z, and sin k_i tau_x sigma_i
-        hops += [{'i': 0, 'j': 0, 'R': R, 't': PAULI['0']}, {'i': 1, 'j': 1, 'R': R, 't': -PAULI['0']},
-                     {'i': 0, 'j': 1, 'R': R, 't': -0.5j * SIGMA[d]},
-                     {'i': 1, 'j': 0, 'R': R, 't': -0.5j * SIGMA[d]}]
-    ti.set_hopping(hops)
-    ti.set_onsite({'s': (M - 6) * PAULI['0'], 'p': -(M - 6) * PAULI['0']})
-    return ti
 
 
 k = np.array([0.3, -0.7, 1.1])
 m = 2. - 2 * (3 - np.cos(k).sum())
 h = m * np.kron(PAULI['z'], PAULI['0']) + sum(np.sin(k[d]) * np.kron(PAULI['x'], SIGMA[d]) for d in range(3))
-assert np.allclose(topological_insulator(2.).get_ham(k), h)
+assert np.allclose(models.topological_insulator_3d(2.).get_ham(k), h)
 
 # %%
 # The lattice
@@ -106,7 +90,7 @@ ax_lat.set_axis_off()
 
 phases = {-2.: (0, 0, 0, 0), 2.: (1, 0, 0, 0), 6.: (0, 1, 1, 1), 10.: (1, 1, 1, 1)}
 for M, indices in phases.items():
-    ti = topological_insulator(M)
+    ti = models.topological_insulator_3d(M)
     assert ti.parity_z2(INVERSION, [0, 1]) == indices[0]
     assert ti.z2_indices_3d([0, 1], nk=60, nk_perp=31) == indices
     print('M = {:5.1f}: (nu_0; nu_1 nu_2 nu_3) = ({}; {}{}{})'.format(M, *indices))
@@ -131,7 +115,7 @@ energies = np.linspace(-2.5, 2.5, 201)
 eta = 0.02
 gap = np.abs(energies) < 0.6  # inside the gap, beyond the broadened bulk tails
 
-ti = topological_insulator(2.)
+ti = models.topological_insulator_3d(2.)
 surface = ti.surface_spectral_function(path, energies, direction=2, eta=eta)
 bulk = ti.surface_spectral_function(path, energies, direction=2, eta=eta, bulk=True)
 assert bulk[:, gap].max() < 0.05
@@ -158,9 +142,9 @@ print('One surface Dirac cone at Gamma-bar, velocity 1.')
 # and the cone to its projection :math:`\bar{M}`. In the trivial insulator
 # (:math:`M = -2`) the gap stays empty on the surface too.
 
-surface_10 = topological_insulator(10.).surface_spectral_function(path, energies, direction=2, eta=eta)
+surface_10 = models.topological_insulator_3d(10.).surface_spectral_function(path, energies, direction=2, eta=eta)
 assert surface_10[0, zero] > 10. and surface_10[gamma, zero] < 0.05
-surface_triv = topological_insulator(-2.).surface_spectral_function(path, energies, direction=2, eta=eta)
+surface_triv = models.topological_insulator_3d(-2.).surface_spectral_function(path, energies, direction=2, eta=eta)
 assert surface_triv[:, gap].max() < 0.05
 print('M = 10: the cone sits at M-bar. M = -2: no surface state in the gap.')
 

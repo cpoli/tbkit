@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Coming from Kwant" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://cpoli.github.io/tbkit/coming_from_kwant.html" />
+<meta property="og:site_name" content="tbkit" />
+<meta property="og:description" content="If you already write Kwant scripts, this page shows how the same tasks are written in tbkit, where the two codes use different conventions, and one model ported line by line. A model you already ha..." />
+<meta property="og:image" content="https://cpoli.github.io/tbkit/_static/images/readme_hero.png" />
+<meta property="og:image:alt" content="tbkit" />
+<meta name="description" content="If you already write Kwant scripts, this page shows how the same tasks are written in tbkit, where the two codes use different conventions, and one model ported line by line. A model you already ha..." />
+
+    <title>Coming from Kwant &#8212; tbkit</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
+
+    <script src="_static/documentation_options.js?v=cce5339e"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/sg-tags.js?v=d80f6fa4"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'coming_from_kwant';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="_static/js/force_light.js?v=8e7666d6"></script>
+    <script async="async" data-goatcounter="https://cpoli.goatcounter.com/count" src="https://gc.zgo.at/count.js"></script>
+    <link rel="canonical" href="https://cpoli.github.io/tbkit/coming_from_kwant.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Coming from PythTB" href="coming_from_pythtb.html" />
+    <link rel="prev" title="Tutorial" href="tutorial.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.8" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="light">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/tbkit_logo.png" class="logo__image only-light" alt="tbkit logo"/>
+    <img src="_static/tbkit_logo.png" class="logo__image only-dark pst-js-only" alt="tbkit logo"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#" aria-current="page">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="coming_from_pythtb.html">
+    Coming from PythTB
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="history/index.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://cpoli.github.io/" title="Charles Poli" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-user fa-lg" aria-hidden="true"></i><span class="visually-hidden">Charles Poli</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page" aria-expanded="false" aria-controls="pst-secondary-sidebar-modal">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="tutorial.html">
+    Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#" aria-current="page">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="coming_from_pythtb.html">
+    Coming from PythTB
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="history/index.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api/gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="tbkit.html">
+    API
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cpoli/tbkit" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tbkit/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="_static/images/pypi.svg" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://cpoli.github.io/" title="Charles Poli" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-user fa-lg" aria-hidden="true"></i><span class="visually-hidden">Charles Poli</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-house"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Coming from Kwant</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="coming-from-kwant">
+<h1>Coming from Kwant<a class="headerlink" href="#coming-from-kwant" title="Link to this heading">#</a></h1>
+<p>If you already write <a class="reference external" href="https://kwant-project.org">Kwant</a> scripts, this page
+shows how the same tasks are written in <strong>tbkit</strong>, where the two codes use
+different conventions, and one model ported line by line. A model you already
+have converts in one line, either way, with <a class="reference internal" href="tbkit.html#module-tbkit.interop" title="tbkit.interop"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.interop</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.interop</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_kwant</span><span class="p">,</span> <span class="n">to_kwant</span>
+
+<span class="n">ham</span><span class="p">,</span> <span class="n">positions</span> <span class="o">=</span> <span class="n">from_kwant</span><span class="p">(</span><span class="n">fsyst</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">'alpha'</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">})</span>  <span class="c1"># finalized Kwant system -&gt; matrix</span>
+<span class="n">builder</span> <span class="o">=</span> <span class="n">to_kwant</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span>    <span class="c1"># tbkit System or Transport (with its leads) -&gt; kwant.Builder</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="tbkit.html#tbkit.interop.from_kwant" title="tbkit.interop.from_kwant"><code class="xref py py-func docutils literal notranslate"><span class="pre">from_kwant()</span></code></a> does not import the leads: attach tbkit leads
+to the matrix with <a class="reference internal" href="tbkit.html#tbkit.transport.Transport" title="tbkit.transport.Transport"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transport</span></code></a>.</p>
+<section id="the-same-tasks-side-by-side">
+<h2>The same tasks side by side<a class="headerlink" href="#the-same-tasks-side-by-side" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 18.0%" />
+<col style="width: 41.0%" />
+<col style="width: 41.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Task</p></th>
+<th class="head"><p>Kwant 1.5</p></th>
+<th class="head"><p>tbkit</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>A lattice</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lat</span> <span class="pre">=</span> <span class="pre">kwant.lattice.square(a=1,</span> <span class="pre">norbs=1)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lat</span> <span class="pre">=</span> <span class="pre">tbkit.lattices.square()</span></code>; any other with
+<a class="reference internal" href="tbkit.html#tbkit.lattice.Lattice" title="tbkit.lattice.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> <code class="docutils literal notranslate"><span class="pre">(unit_cell,</span> <span class="pre">prim_vec)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>The sites of a sample</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">syst[(lat(x,</span> <span class="pre">y)</span> <span class="pre">for</span> <span class="pre">x</span> <span class="pre">in</span> <span class="pre">range(L)</span> <span class="pre">for</span> <span class="pre">y</span> <span class="pre">in</span> <span class="pre">range(W))]</span> <span class="pre">=</span> <span class="pre">4</span> <span class="pre">*</span> <span class="pre">t</span></code>,
+or a shape function</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lat.get_lattice(n1=L,</span> <span class="pre">n2=W)</span></code>, then <code class="docutils literal notranslate"><span class="pre">syst</span> <span class="pre">=</span> <span class="pre">System(lat)</span></code> and
+<code class="docutils literal notranslate"><span class="pre">syst.set_onsite({'a':</span> <span class="pre">4</span> <span class="pre">*</span> <span class="pre">t})</span></code>; shapes with <code class="docutils literal notranslate"><span class="pre">lat.ellipse_in</span></code>,
+<code class="docutils literal notranslate"><span class="pre">remove_sites</span></code>, <code class="docutils literal notranslate"><span class="pre">boundary_line</span></code>, <code class="docutils literal notranslate"><span class="pre">lat1</span> <span class="pre">+</span> <span class="pre">lat2</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Hoppings</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">syst[lat.neighbors()]</span> <span class="pre">=</span> <span class="pre">-t</span></code>; <code class="docutils literal notranslate"><span class="pre">lat.neighbors(2)</span></code> for second
+neighbours</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">syst.set_hopping([{'n':</span> <span class="pre">1,</span> <span class="pre">'t':</span> <span class="pre">-t}])</span></code>; <code class="docutils literal notranslate"><span class="pre">{'n':</span> <span class="pre">2,</span> <span class="pre">...}</span></code> for
+second neighbours, or select by <code class="docutils literal notranslate"><span class="pre">'ang'</span></code> and <code class="docutils literal notranslate"><span class="pre">'tag'</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Building the matrix</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">fsyst</span> <span class="pre">=</span> <span class="pre">syst.finalized()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">syst.get_ham()</span></code> (sparse CSR in <code class="docutils literal notranslate"><span class="pre">syst.ham</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p>Parameters</p></td>
+<td><p>value functions <code class="docutils literal notranslate"><span class="pre">onsite(site,</span> <span class="pre">V)</span></code>, <code class="docutils literal notranslate"><span class="pre">hopping(site_i,</span> <span class="pre">site_j,</span> <span class="pre">phi)</span></code>,
+passed <code class="docutils literal notranslate"><span class="pre">params={...}</span></code></p></td>
+<td><p>value functions <code class="docutils literal notranslate"><span class="pre">onsite(site,</span> <span class="pre">**params)</span></code>,
+<code class="docutils literal notranslate"><span class="pre">t(site_i,</span> <span class="pre">site_j,</span> <span class="pre">**params)</span></code>, passed to <code class="docutils literal notranslate"><span class="pre">get_ham(**params)</span></code>
+(see <code class="docutils literal notranslate"><span class="pre">tbkit.values</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>A magnetic field</p></td>
+<td><p>a Peierls phase written into a hopping value function</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">syst.set_magnetic_field(alpha)</span></code> (uniform, symmetric gauge), or any
+gauge with <code class="docutils literal notranslate"><span class="pre">syst.set_peierls_phase(phase)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>A band structure</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">kwant.plotter.bands(flead)</span></code>, <code class="docutils literal notranslate"><span class="pre">kwant.physics.Bands(flead)</span></code></p></td>
+<td><p><a class="reference internal" href="tbkit.html#tbkit.kspace.ribbon" title="tbkit.kspace.ribbon"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbkit.kspace.ribbon()</span></code></a> gives the lead (or any periodic model) as a
+<a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">KSpace</span></code></a>: <code class="docutils literal notranslate"><span class="pre">ks.k_path(points,</span> <span class="pre">nk)</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ks.get_bands(ks_list)</span></code>, <code class="docutils literal notranslate"><span class="pre">ks.plot_bands()</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Leads</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lead</span> <span class="pre">=</span> <span class="pre">kwant.Builder(kwant.TranslationalSymmetry((-1,</span> <span class="pre">0)))</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">syst.attach_lead(lead)</span></code> and <code class="docutils literal notranslate"><span class="pre">syst.attach_lead(lead.reversed())</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lead</span> <span class="pre">=</span> <span class="pre">ribbon(...)</span></code>, <code class="docutils literal notranslate"><span class="pre">tr</span> <span class="pre">=</span> <span class="pre">Transport(syst.ham)</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">tr.attach_lead(syst,</span> <span class="pre">lead,</span> <span class="pre">direction=-1)</span></code> and
+<code class="docutils literal notranslate"><span class="pre">tr.attach_lead(syst,</span> <span class="pre">lead,</span> <span class="pre">direction=1)</span></code>; <code class="docutils literal notranslate"><span class="pre">extend=True</span></code> completes
+a ragged interface, as Kwant does</p></td>
+</tr>
+<tr class="row-even"><td><p>A conductance</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">kwant.smatrix(fsyst,</span> <span class="pre">E).transmission(1,</span> <span class="pre">0)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tr.transmission(energies,</span> <span class="pre">0,</span> <span class="pre">1)</span></code> (many energies), or
+<code class="docutils literal notranslate"><span class="pre">tr.smatrix(E).transmission(1,</span> <span class="pre">0)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Conservation laws</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">kwant.Builder(sym,</span> <span class="pre">conservation_law=...)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tr.attach_lead(...,</span> <span class="pre">conservation_law=...)</span></code>; blocks addressed as
+<code class="docutils literal notranslate"><span class="pre">(lead,</span> <span class="pre">block)</span></code>, as in Kwant</p></td>
+</tr>
+<tr class="row-even"><td><p>Scattering states, LDOS, currents</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">kwant.wave_function</span></code>, <code class="docutils literal notranslate"><span class="pre">kwant.ldos</span></code>, <code class="docutils literal notranslate"><span class="pre">kwant.operator.Current</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tr.wave_function(E,</span> <span class="pre">lead)</span></code>, <code class="docutils literal notranslate"><span class="pre">tr.ldos(E)</span></code>, <code class="docutils literal notranslate"><span class="pre">tr.bond_currents</span></code>,
+<code class="docutils literal notranslate"><span class="pre">tr.local_currents</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Kernel polynomial method</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">kwant.kpm</span></code></p></td>
+<td><p><a class="reference internal" href="tbkit.html#module-tbkit.kpm" title="tbkit.kpm"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tbkit.kpm</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="differences-of-convention">
+<h2>Differences of convention<a class="headerlink" href="#differences-of-convention" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Hopping values.</strong> Both codes store the value you give as the matrix
+element <span class="math notranslate nohighlight">\(H_{ij}\)</span>, with no sign added: Kwant’s tutorial writes
+<span class="math notranslate nohighlight">\(4t\)</span> on site and <span class="math notranslate nohighlight">\(-t\)</span> for the hopping, and so does the port
+below. A Kwant hopping value function <code class="docutils literal notranslate"><span class="pre">f(site_i,</span> <span class="pre">site_j)</span></code> gives
+<span class="math notranslate nohighlight">\(H_{ij}\)</span>; a tbkit Peierls phase <code class="docutils literal notranslate"><span class="pre">phase(xi,</span> <span class="pre">yi,</span> <span class="pre">xj,</span> <span class="pre">yj)</span></code> gives the
+phase of the same <span class="math notranslate nohighlight">\(H_{ij}\)</span>, so a phase written for Kwant carries over
+unchanged. tbkit adds the conjugate of every bond, as Kwant does.</p></li>
+<li><p><strong>Value functions are vectorized.</strong> Kwant calls a value function once per
+site or bond, with a <code class="docutils literal notranslate"><span class="pre">Site</span></code> whose position is <code class="docutils literal notranslate"><span class="pre">site.pos</span></code>. tbkit calls
+it once per Hamiltonian with arrays: <code class="docutils literal notranslate"><span class="pre">site</span></code> is a structured array with
+fields <code class="docutils literal notranslate"><span class="pre">'x'</span></code>, <code class="docutils literal notranslate"><span class="pre">'y'</span></code> (and <code class="docutils literal notranslate"><span class="pre">'z'</span></code>), <code class="docutils literal notranslate"><span class="pre">'tag'</span></code> and <code class="docutils literal notranslate"><span class="pre">'index'</span></code>, so write
+<code class="docutils literal notranslate"><span class="pre">np.where</span></code> rather than <code class="docutils literal notranslate"><span class="pre">if</span></code>.</p></li>
+<li><p><strong>Lead order.</strong> <code class="docutils literal notranslate"><span class="pre">tr.transmission(energies,</span> <span class="pre">lead_in,</span> <span class="pre">lead_out)</span></code> takes the
+incoming lead first, while <code class="docutils literal notranslate"><span class="pre">SMatrix.transmission(lead_out,</span> <span class="pre">lead_in)</span></code>
+follows Kwant’s order. Leads are numbered in the order they are attached in
+both codes.</p></li>
+<li><p><strong>Units.</strong> Neither code has units: energies are in the units of the
+hoppings, lengths in those of the lattice vectors. <code class="docutils literal notranslate"><span class="pre">set_magnetic_field</span></code>
+takes the flux density <span class="math notranslate nohighlight">\(B/\Phi_0\)</span>, in flux quanta per unit area.</p></li>
+<li><p><strong>No finalization.</strong> A tbkit model stays editable after <code class="docutils literal notranslate"><span class="pre">get_ham</span></code>;
+call <code class="docutils literal notranslate"><span class="pre">get_ham</span></code> again after a change.</p></li>
+</ul>
+</section>
+<section id="a-quantum-wire-ported-line-by-line">
+<h2>A quantum wire, ported line by line<a class="headerlink" href="#a-quantum-wire-ported-line-by-line" title="Link to this heading">#</a></h2>
+<p>The quantum wire of Kwant’s tutorial (width 10, length 30, <span class="math notranslate nohighlight">\(t = 1\)</span>),
+with a magnetic field of 0.05 flux quanta per plaquette through the window
+<span class="math notranslate nohighlight">\(10 \le x \le 20\)</span>. The gauge <span class="math notranslate nohighlight">\(\mathbf{A} = (-By\,g(x), 0)\)</span>,
+with <span class="math notranslate nohighlight">\(g\)</span> the window, vanishes in the leads. Without the field, the
+conductance counts the open channels, 1, 2, 3, 4; with it, Kwant and tbkit
+agree to <span class="math notranslate nohighlight">\(10^{-12}\)</span> on values that are not quantized.</p>
+<p>Kwant (shown, not run when the docs are built):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">kwant</span>
+
+<span class="n">t</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">L</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">30</span>
+<span class="n">x0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span>                      <span class="c1"># the field threads 10 &lt;= x &lt;= 20</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">window</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">x0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">x1</span><span class="p">),</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">hopping</span><span class="p">(</span><span class="n">site_i</span><span class="p">,</span> <span class="n">site_j</span><span class="p">,</span> <span class="n">alpha</span><span class="p">):</span>  <span class="c1"># H[i, j], Landau gauge A = (-B y g(x), 0)</span>
+    <span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">),</span> <span class="p">(</span><span class="n">xj</span><span class="p">,</span> <span class="n">yj</span><span class="p">)</span> <span class="o">=</span> <span class="n">site_i</span><span class="o">.</span><span class="n">pos</span><span class="p">,</span> <span class="n">site_j</span><span class="o">.</span><span class="n">pos</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">t</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">yi</span> <span class="o">*</span> <span class="n">window</span><span class="p">((</span><span class="n">xi</span> <span class="o">+</span> <span class="n">xj</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">xj</span> <span class="o">-</span> <span class="n">xi</span><span class="p">))</span>
+
+
+<span class="n">lat</span> <span class="o">=</span> <span class="n">kwant</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">norbs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">syst</span> <span class="o">=</span> <span class="n">kwant</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
+<span class="n">syst</span><span class="p">[(</span><span class="n">lat</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">W</span><span class="p">))]</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">t</span>
+<span class="n">syst</span><span class="p">[</span><span class="n">lat</span><span class="o">.</span><span class="n">neighbors</span><span class="p">()]</span> <span class="o">=</span> <span class="n">hopping</span>
+
+<span class="n">lead</span> <span class="o">=</span> <span class="n">kwant</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="n">kwant</span><span class="o">.</span><span class="n">TranslationalSymmetry</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+<span class="n">lead</span><span class="p">[(</span><span class="n">lat</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">W</span><span class="p">))]</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">t</span>
+<span class="n">lead</span><span class="p">[</span><span class="n">lat</span><span class="o">.</span><span class="n">neighbors</span><span class="p">()]</span> <span class="o">=</span> <span class="o">-</span><span class="n">t</span>
+<span class="n">syst</span><span class="o">.</span><span class="n">attach_lead</span><span class="p">(</span><span class="n">lead</span><span class="p">)</span>
+<span class="n">syst</span><span class="o">.</span><span class="n">attach_lead</span><span class="p">(</span><span class="n">lead</span><span class="o">.</span><span class="n">reversed</span><span class="p">())</span>
+<span class="n">fsyst</span> <span class="o">=</span> <span class="n">syst</span><span class="o">.</span><span class="n">finalized</span><span class="p">()</span>
+
+<span class="n">energies</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]</span>
+<span class="n">G0</span> <span class="o">=</span> <span class="p">[</span><span class="n">kwant</span><span class="o">.</span><span class="n">smatrix</span><span class="p">(</span><span class="n">fsyst</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">'alpha'</span><span class="p">:</span> <span class="mf">0.</span><span class="p">})</span><span class="o">.</span><span class="n">transmission</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">energies</span><span class="p">]</span>
+<span class="n">GB</span> <span class="o">=</span> <span class="p">[</span><span class="n">kwant</span><span class="o">.</span><span class="n">smatrix</span><span class="p">(</span><span class="n">fsyst</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">'alpha'</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">})</span><span class="o">.</span><span class="n">transmission</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">energies</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'G(B = 0) ='</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">G0</span><span class="p">,</span> <span class="mi">13</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'G(B)     ='</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">GB</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>tbkit (run, with its assertions, when the docs are built):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.lattices</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">lattices</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.kspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">ribbon</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.system</span><span class="w"> </span><span class="kn">import</span> <span class="n">System</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tbkit.transport</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transport</span>
+
+<span class="n">t</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">L</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">30</span>
+<span class="n">x0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span>                      <span class="c1"># the field threads 10 &lt;= x &lt;= 20</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">window</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">x0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">x1</span><span class="p">),</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">peierls</span><span class="p">(</span><span class="n">alpha</span><span class="p">):</span>                  <span class="c1"># phase of H[i, j], gauge A = (-B y g(x), 0)</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">,</span> <span class="n">xj</span><span class="p">,</span> <span class="n">yj</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">yi</span> <span class="o">*</span> <span class="n">window</span><span class="p">((</span><span class="n">xi</span> <span class="o">+</span> <span class="n">xj</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">xj</span> <span class="o">-</span> <span class="n">xi</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">wire</span><span class="p">(</span><span class="n">alpha</span><span class="p">):</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">lattices</span><span class="o">.</span><span class="n">square</span><span class="p">()</span>          <span class="c1"># a = 1, one site 'a' per cell</span>
+    <span class="n">lat</span><span class="o">.</span><span class="n">get_lattice</span><span class="p">(</span><span class="n">n1</span><span class="o">=</span><span class="n">L</span><span class="p">,</span> <span class="n">n2</span><span class="o">=</span><span class="n">W</span><span class="p">)</span>      <span class="c1"># sites at x = 0..L-1, y = 0..W-1</span>
+    <span class="n">syst</span> <span class="o">=</span> <span class="n">System</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
+    <span class="n">syst</span><span class="o">.</span><span class="n">set_onsite</span><span class="p">({</span><span class="s1">'a'</span><span class="p">:</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">t</span><span class="p">})</span>
+    <span class="n">syst</span><span class="o">.</span><span class="n">set_hopping</span><span class="p">([{</span><span class="s1">'n'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="o">-</span><span class="n">t</span><span class="p">}])</span>
+    <span class="n">syst</span><span class="o">.</span><span class="n">set_peierls_phase</span><span class="p">(</span><span class="n">peierls</span><span class="p">(</span><span class="n">alpha</span><span class="p">))</span>
+    <span class="n">syst</span><span class="o">.</span><span class="n">get_ham</span><span class="p">()</span>
+
+    <span class="n">lead</span> <span class="o">=</span> <span class="n">ribbon</span><span class="p">(</span><span class="n">lattices</span><span class="o">.</span><span class="n">square</span><span class="p">(),</span> <span class="p">[{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="o">-</span><span class="n">t</span><span class="p">},</span>
+                                      <span class="p">{</span><span class="s1">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'j'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'R'</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">'t'</span><span class="p">:</span> <span class="o">-</span><span class="n">t</span><span class="p">}],</span>
+                  <span class="n">width</span><span class="o">=</span><span class="n">W</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">onsite</span><span class="o">=</span><span class="p">{</span><span class="s1">'a'</span><span class="p">:</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">t</span><span class="p">})</span>
+    <span class="n">tr</span> <span class="o">=</span> <span class="n">Transport</span><span class="p">(</span><span class="n">syst</span><span class="o">.</span><span class="n">ham</span><span class="p">)</span>
+    <span class="n">tr</span><span class="o">.</span><span class="n">attach_lead</span><span class="p">(</span><span class="n">syst</span><span class="p">,</span> <span class="n">lead</span><span class="p">,</span> <span class="n">direction</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>   <span class="c1"># lead 0, towards -x</span>
+    <span class="n">tr</span><span class="o">.</span><span class="n">attach_lead</span><span class="p">(</span><span class="n">syst</span><span class="p">,</span> <span class="n">lead</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>    <span class="c1"># lead 1, towards +x</span>
+    <span class="k">return</span> <span class="n">tr</span>
+
+
+<span class="n">energies</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]</span>
+<span class="n">G0</span> <span class="o">=</span> <span class="n">wire</span><span class="p">(</span><span class="mf">0.</span><span class="p">)</span><span class="o">.</span><span class="n">transmission</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">GB</span> <span class="o">=</span> <span class="n">wire</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span><span class="o">.</span><span class="n">transmission</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Kwant 1.5: kwant.smatrix(fsyst, e, params=...).transmission(1, 0)</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">G0</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">],</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">GB</span><span class="p">,</span> <span class="p">[</span><span class="mf">9.4824712e-06</span><span class="p">,</span> <span class="mf">0.9939437048524</span><span class="p">,</span> <span class="mf">1.8907644932474</span><span class="p">,</span> <span class="mf">2.7304048090486</span><span class="p">],</span>
+                   <span class="n">atol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'G(B = 0) ='</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">G0</span><span class="p">,</span> <span class="mi">13</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'G(B)     ='</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">GB</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<section id="what-tbkit-adds-and-what-it-does-not-do">
+<h2>What tbkit adds, and what it does not do<a class="headerlink" href="#what-tbkit-adds-and-what-it-does-not-do" title="Link to this heading">#</a></h2>
+<p>The same lattice also gives band topology (Chern and <span class="math notranslate nohighlight">\(\mathbb{Z}_2\)</span>
+invariants, Wilson loops), Hall, optical and thermoelectric responses,
+non-Hermitian and Floquet models, crystal symmetry, mean field and exact
+diagonalization, all on the same <a class="reference internal" href="tbkit.html#tbkit.system.System" title="tbkit.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">System</span></code></a> and
+<a class="reference internal" href="tbkit.html#tbkit.kspace.KSpace" title="tbkit.kspace.KSpace"><code class="xref py py-class docutils literal notranslate"><span class="pre">KSpace</span></code></a> objects (see the <a class="reference internal" href="tutorial.html"><span class="doc">Tutorial</span></a> and the
+<a class="reference internal" href="api/gallery/index.html"><span class="doc">example gallery</span></a>).</p>
+<p>tbkit has no <code class="docutils literal notranslate"><span class="pre">Builder</span></code>: a model is a lattice and its hoppings, not a graph
+of sites to edit one by one, and <a class="reference internal" href="tbkit.html#tbkit.interop.from_kwant" title="tbkit.interop.from_kwant"><code class="xref py py-func docutils literal notranslate"><span class="pre">from_kwant()</span></code></a> imports the
+finalized matrix, not the <code class="docutils literal notranslate"><span class="pre">Builder</span></code> with its value functions. Kwant’s
+time-dependent extension, tkwant, has no tbkit counterpart yet.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="tutorial.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Tutorial</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="coming_from_pythtb.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Coming from PythTB</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal" tabindex="-1"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-same-tasks-side-by-side">The same tasks side by side</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#differences-of-convention">Differences of convention</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-quantum-wire-ported-line-by-line">A quantum wire, ported line by line</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-tbkit-adds-and-what-it-does-not-do">What tbkit adds, and what it does not do</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/coming_from_kwant.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2014-2026, Charles Poli.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.1.
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.24.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

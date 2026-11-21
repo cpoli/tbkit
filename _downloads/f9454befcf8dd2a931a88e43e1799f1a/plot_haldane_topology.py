@@ -20,9 +20,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from tbkit.lattice import Lattice
-from tbkit.kspace import KSpace, reciprocal_vectors, high_symmetry_path
+from tbkit.kspace import reciprocal_vectors, high_symmetry_path
 from tbkit.system import System
 from tbkit.plot import Plot
+from tbkit import models
 
 
 DX, DY = 0.5 * 3 ** 0.5, 0.5
@@ -30,27 +31,6 @@ unit_cell = [{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (DX, DY)}]
 prim_vec = [(2*DX, 0.), (DX, 1.5)]
 t1, t2, phi = 1., 0.2, np.pi / 2
 M_c = 3 * np.sqrt(3) * t2 * abs(np.sin(phi))  # critical mass (see module docstring)
-
-
-def haldane(M):
-    '''Build the Haldane model with staggered onsite energy +-M.'''
-    lat = Lattice(unit_cell=unit_cell, prim_vec=prim_vec)
-    hal = KSpace(lat)
-    hal.set_hopping([{'i': 0, 'j': 1, 'R': (0, 0), 't': t1},
-                            {'i': 0, 'j': 1, 'R': (-1, 0), 't': t1},
-                            {'i': 0, 'j': 1, 'R': (0, -1), 't': t1}])
-    # next-nearest-neighbor hopping t2*exp(+i*phi) along the three
-    # second-neighbor vectors a2, -a1, a1-a2 (120 degrees apart, so the
-    # model keeps the lattice's C3 symmetry; the reverse bonds, added as
-    # Hermitian conjugates, carry exp(-i*phi)). Same 3 vectors for both
-    # sublattices, but with opposite chirality (t2*exp(+-i*phi)) -- this
-    # circulating "staggered flux" is what breaks time-reversal symmetry
-    # without any net magnetic field through the unit cell.
-    for R in [(0, 1), (-1, 0), (1, -1)]:
-        hal.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': t2*np.exp(1j*phi)}])
-        hal.set_hopping([{'i': 1, 'j': 1, 'R': R, 't': t2*np.exp(-1j*phi)}])
-    hal.set_onsite({'a': M, 'b': -M})
-    return hal
 
 
 # %%
@@ -74,15 +54,15 @@ fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 # ------------------------------------------------------------
 
 masses = np.linspace(0., 2*M_c, 21)
-chern = [haldane(M).chern_number(bands=[0], nk=40) for M in masses]
+chern = [models.haldane(t1, t2, phi, M=M).chern_number(bands=[0], nk=40) for M in masses]
 
 # The gaps at K and K' are 2|M + M_c| and 2|M - M_c|: Haldane's formula,
 # checked directly. The one at K' closes at M = M_c.
 b1, b2 = (np.array(v) for v in reciprocal_vectors(prim_vec))
 K_pt = (b1 - b2) / 3
 for M in [0., 0.5*M_c, 1.5*M_c]:
-    en_K = np.linalg.eigvalsh(haldane(M).get_ham(K_pt))
-    en_Kp = np.linalg.eigvalsh(haldane(M).get_ham(-K_pt))
+    en_K = np.linalg.eigvalsh(models.haldane(t1, t2, phi, M=M).get_ham(K_pt))
+    en_Kp = np.linalg.eigvalsh(models.haldane(t1, t2, phi, M=M).get_ham(-K_pt))
     assert np.isclose(en_K[1] - en_K[0], 2*abs(M + M_c), atol=1e-10)
     assert np.isclose(en_Kp[1] - en_Kp[0], 2*abs(M - M_c), atol=1e-10)
 
@@ -110,7 +90,7 @@ ax.set_title('Haldane model: topological phase transition')
 # :meth:`~tbkit.kspace.KSpace.plot_berry_curvature` draws it as a density
 # over the first Brillouin zone, the hexagon whose corners are K and K'.
 
-hal_topological = haldane(M=0.)
+hal_topological = models.haldane(t1, t2, phi, M=0.)
 curv = hal_topological.berry_curvature(bands=[0], nk=60)
 assert np.isclose(curv.sum(), 2 * np.pi, atol=1e-6)
 fig2 = hal_topological.plot_berry_curvature(0, nk=60, fs=14)

@@ -149,6 +149,20 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_pythtb.html">
+    Coming from PythTB
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../history/index.html">
     History
   </a>
@@ -271,6 +285,20 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../tutorial.html">
     Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_pythtb.html">
+    Coming from PythTB
   </a>
 </li>
 
@@ -971,6 +999,19 @@
         <span class="n">System</span><span class="o">.</span><span class="n">get_eig_sparse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_eig</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">eigenvec</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="OrbitalSystem.get_eig_window">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.orbital.OrbitalSystem.get_eig_window">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_eig_window</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">e_min</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">e_max</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">eigenvec</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">n_slice</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">'''</span>
+<span class="sd">        Get all the eigenpairs in the window [e_min, e_max] (see</span>
+<span class="sd">        *System.get_eig_window*; orthogonal basis only).</span>
+<span class="sd">        '''</span>
+        <span class="n">error_handling</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">)</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">get_eig_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e_min</span><span class="p">,</span> <span class="n">e_max</span><span class="p">,</span> <span class="n">eigenvec</span><span class="p">,</span> <span class="n">n_slice</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="OrbitalSystem.get_local_chern_marker">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.orbital.OrbitalSystem.get_local_chern_marker">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_local_chern_marker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e_fermi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">area</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
@@ -1060,7 +1101,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.2.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.1.
   </p>
 </div>
       

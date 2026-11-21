@@ -33,30 +33,11 @@ case.
 import numpy as np
 import matplotlib.pyplot as plt
 
-import tbkit.lattices as lattices
 from tbkit.bridges import finite_system
-from tbkit.kspace import KSpace
-from tbkit.lattice import Lattice
 from tbkit.moire import supercell
 from tbkit.plot import Plot
 from tbkit.topology import entanglement_spectrum
-
-
-def ssh(v, w):
-    lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (0.5, 0.)}],
-                         prim_vec=[(1., 0.)])
-    chain = KSpace(lat)
-    chain.set_hopping([{'i': 0, 'j': 1, 'R': (0,), 't': v}, {'i': 1, 'j': 0, 'R': (1,), 't': w}])
-    return chain
-
-
-def haldane(t2=0.2, M=0.):
-    hal = KSpace(lattices.honeycomb())
-    hal.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
-    for R in [(0, 1), (-1, 0), (1, -1)]:
-        hal.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j*t2}, {'i': 1, 'j': 1, 'R': R, 't': -1j*t2}])
-    hal.set_onsite({'a': M, 'b': -M})
-    return hal
+from tbkit import models
 
 
 # %%
@@ -67,7 +48,7 @@ def haldane(t2=0.2, M=0.):
 # hoppings: here the topological case, :math:`v = 0.4` inside each cell
 # and :math:`w = 1` between cells.
 
-fig_lat = Plot(finite_system(ssh(0.4, 1.), 8)).lattice(plt_hop=True, ms=7, c=4., figsize=(7, 1.2))
+fig_lat = Plot(finite_system(models.ssh(0.4, 1.), 8)).lattice(plt_hop=True, ms=7, c=4., figsize=(7, 1.2))
 
 # %%
 # The SSH ring: a mode at 1/2 at each cut
@@ -79,7 +60,7 @@ n_cells = 40
 half = list(range(n_cells))  # the 40 orbitals of the first 20 cells
 xi_ssh = {}
 for (v, w), name in (((1., 0.4), 'trivial'), ((0.4, 1.), 'topological')):
-    ring = ssh(v, w).finite_ham(n_cells, periodic=True)
+    ring = models.ssh(v, w).finite_ham(n_cells, periodic=True)
     xi_ssh[name] = entanglement_spectrum(ring, half)
 mid = np.sort(np.abs(xi_ssh['topological'] - 0.5))
 print('topological: |xi - 1/2| of the two closest modes {:.1e}, next {:.3f}'.format(mid[1], mid[2]))
@@ -103,7 +84,7 @@ assert np.min(np.abs(xi_ssh['trivial'] - 0.5)) > 0.4
 # ('a' and 'b', in two colours), the nearest-neighbour hopping (thick) and
 # the complex second-neighbour hoppings :math:`\pm it_2` (thin).
 
-fig_lat = Plot(finite_system(haldane(), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+fig_lat = Plot(finite_system(models.haldane(t2=0.2), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 # %%
 # The entanglement spectrum along :math:`k`:
@@ -112,7 +93,7 @@ n_super = 12
 fracs = np.linspace(-0.5, 0.5, 201)
 xi_cyl = {}
 for M, name in ((0., 'Chern'), (2., 'trivial')):
-    sc = supercell(haldane(M=M), [[1, 0], [0, n_super]])
+    sc = supercell(models.haldane(t2=0.2, M=M), [[1, 0], [0, n_super]])
     k = fracs[:, None] * sc.rec_vec_k[0][None, :]
     occupied = list(range(sc.norb // 2))
     region = list(range(sc.norb // 2))  # the orbitals of the first 6 cells

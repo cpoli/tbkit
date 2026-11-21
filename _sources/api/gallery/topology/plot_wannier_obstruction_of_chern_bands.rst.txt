@@ -44,7 +44,7 @@ lower band of the Haldane model on both sides of the transition: trivial
 (:math:`C = 0`, staggered potential :math:`M = 1.5`) and Chern
 (:math:`C = 1`, :math:`M = 0`).
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-53
+.. GENERATED FROM PYTHON SOURCE LINES 28-43
 
 .. code-block:: Python
 
@@ -52,23 +52,13 @@ lower band of the Haldane model on both sides of the transition: trivial
     import matplotlib.pyplot as plt
     from matplotlib.ticker import NullFormatter, ScalarFormatter
 
-    import tbkit.lattices as lattices
     from tbkit.bridges import finite_system
-    from tbkit.kspace import KSpace
     from tbkit.plot import Plot
     from tbkit.wannier import wannierize
+    from tbkit import models
 
 
-    def haldane(t2=0.2, M=0.):
-        hal = KSpace(lattices.honeycomb())
-        hal.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
-        for R in [(0, 1), (-1, 0), (1, -1)]:
-            hal.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j*t2}, {'i': 1, 'j': 1, 'R': R, 't': -1j*t2}])
-        hal.set_onsite({'a': M, 'b': -M})
-        return hal
-
-
-    trivial, chern = haldane(M=1.5), haldane(M=0.)
+    trivial, chern = models.haldane(t2=0.2, M=1.5), models.haldane(t2=0.2, M=0.)
     c_triv, c_chern = trivial.chern_number(0, 30), chern.chern_number(0, 30)
     print('Chern numbers: trivial {:.3f}, Chern {:.3f}'.format(c_triv, c_chern))
     assert np.isclose(c_triv, 0., atol=1e-8) and np.isclose(c_chern, 1., atol=1e-8)
@@ -81,12 +71,12 @@ lower band of the Haldane model on both sides of the transition: trivial
 
  .. code-block:: none
 
-    Chern numbers: trivial -0.000, Chern 1.000
+    Chern numbers: trivial 0.000, Chern 1.000
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-63
+.. GENERATED FROM PYTHON SOURCE LINES 44-53
 
 The lattice
 -----------
@@ -98,7 +88,7 @@ proportional to its amplitude: the honeycomb lattice's two sublattices
 within each sublattice (thin), which break time-reversal symmetry. The
 trivial model adds the staggered mass :math:`\pm M`, an onsite term.
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-66
+.. GENERATED FROM PYTHON SOURCE LINES 53-56
 
 .. code-block:: Python
 
@@ -117,7 +107,7 @@ trivial model adds the staggered mass :math:`\pm M`, an onsite term.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-75
+.. GENERATED FROM PYTHON SOURCE LINES 57-65
 
 Every projection fails somewhere
 ------------------------------------
@@ -128,7 +118,7 @@ everywhere. In the Chern phase the band sits on ``a`` at one corner and on
 ``b`` at the other, so both trial orbitals miss it at one of them: on a
 mesh through K and K' (12 x 12), each projection is exactly singular.
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-84
+.. GENERATED FROM PYTHON SOURCE LINES 65-74
 
 .. code-block:: Python
 
@@ -155,7 +145,7 @@ mesh through K and K' (12 x 12), each projection is exactly singular.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 85-91
+.. GENERATED FROM PYTHON SOURCE LINES 75-81
 
 The spread diverges with the sample
 ----------------------------------------
@@ -164,7 +154,7 @@ the Chern phase its smallest singular value falls as :math:`1/N`, and the
 minimized spread grows by about the same amount at each doubling of
 :math:`N`: like :math:`\log N`. In the trivial phase it converges.
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-108
+.. GENERATED FROM PYTHON SOURCE LINES 81-98
 
 .. code-block:: Python
 
@@ -199,7 +189,7 @@ minimized spread grows by about the same amount at each doubling of
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-115
+.. GENERATED FROM PYTHON SOURCE LINES 99-105
 
 A poor trial orbital is not the same thing. Projected onto the
 high-energy orbital ``a``, even the trivial band has zeros, at K and K':
@@ -208,7 +198,7 @@ descent stops in the local minimum around them, and the spread grows as
 well. The Chern band fails the same way from either orbital;
 the trivial band only from the wrong one.
 
-.. GENERATED FROM PYTHON SOURCE LINES 115-122
+.. GENERATED FROM PYTHON SOURCE LINES 105-112
 
 .. code-block:: Python
 
@@ -232,7 +222,7 @@ the trivial band only from the wrong one.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-128
+.. GENERATED FROM PYTHON SOURCE LINES 113-118
 
 Exponential versus power-law tails
 --------------------------------------
@@ -240,7 +230,7 @@ On the 64 x 64 sample, the trivial Wannier function decays exponentially;
 the Chern one only as :math:`|W|^2 \sim r^{-4}`, too slowly for
 :math:`\langle r^2\rangle` to converge.
 
-.. GENERATED FROM PYTHON SOURCE LINES 128-166
+.. GENERATED FROM PYTHON SOURCE LINES 118-156
 
 .. code-block:: Python
 
@@ -303,7 +293,7 @@ the Chern one only as :math:`|W|^2 \sim r^{-4}`, too slowly for
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.973 seconds)
+   **Total running time of the script:** (0 minutes 3.000 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_wannier_obstruction_of_chern_bands.py:

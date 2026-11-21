@@ -36,7 +36,7 @@ vacancies, disorder and defects. On a torus,
 :meth:`~tbkit.system.System.get_bott_index` gives the Chern number of a
 disordered sample.
 
-.. GENERATED FROM PYTHON SOURCE LINES 20-50
+.. GENERATED FROM PYTHON SOURCE LINES 20-47
 
 .. code-block:: Python
 
@@ -44,9 +44,9 @@ disordered sample.
     import matplotlib.pyplot as plt
 
     import tbkit.lattices as lattices
-    from tbkit.kspace import KSpace
     from tbkit.plot import Plot
     from tbkit.system import System
+    from tbkit import models
 
     t2 = 0.2
 
@@ -65,10 +65,7 @@ disordered sample.
         return sys
 
 
-    hal = KSpace(lattices.honeycomb())
-    hal.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
-    for R in [(0, 1), (-1, 0), (1, -1)]:
-        hal.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j*t2}, {'i': 1, 'j': 1, 'R': R, 't': -1j*t2}])
+    hal = models.haldane(t2=t2)
 
 
 
@@ -77,7 +74,7 @@ disordered sample.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-58
+.. GENERATED FROM PYTHON SOURCE LINES 48-55
 
 The lattice
 -----------
@@ -87,7 +84,7 @@ proportional to the amplitudes: the honeycomb lattice's two sublattices
 the second-neighbour hoppings :math:`\pm it_2` (thin). The torus and the
 cylinder below add the bonds across the boundaries, which are not drawn.
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-61
+.. GENERATED FROM PYTHON SOURCE LINES 55-58
 
 .. code-block:: Python
 
@@ -106,7 +103,7 @@ cylinder below add the bonds across the boundaries, which are not drawn.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-67
+.. GENERATED FROM PYTHON SOURCE LINES 59-64
 
 Torus, cylinder and flake
 ----------------------------
@@ -114,7 +111,7 @@ The torus has the spectrum of the k-mesh, and an empty gap. The cylinder
 and the flake fill the gap with the chiral edge states of the Haldane
 model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-82
+.. GENERATED FROM PYTHON SOURCE LINES 64-79
 
 .. code-block:: Python
 
@@ -146,14 +143,14 @@ model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-87
+.. GENERATED FROM PYTHON SOURCE LINES 80-84
 
 A disordered torus keeps its Chern number
 --------------------------------------------
 Random onsite energies and 5% vacancies: no Brillouin zone, yet the Bott
 index of the torus is still 1.
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-113
+.. GENERATED FROM PYTHON SOURCE LINES 84-110
 
 .. code-block:: Python
 
@@ -204,7 +201,7 @@ index of the torus is still 1.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.414 seconds)
+   **Total running time of the script:** (0 minutes 0.194 seconds)
 
 
 .. _sphx_glr_download_api_gallery_tight_binding_plot_periodic_boundaries.py:

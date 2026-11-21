@@ -41,7 +41,7 @@ The model: :math:`H(\mathbf{k}) = \sin k_x\,\sigma_x + \sin k_y\,\sigma_y
 + (2 + \cos k_0 - \cos k_x - \cos k_y - \cos k_z)\,\sigma_z`, Weyl points at
 :math:`(0, 0, \pm k_0)`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-46
+.. GENERATED FROM PYTHON SOURCE LINES 25-51
 
 .. code-block:: Python
 
@@ -53,18 +53,23 @@ The model: :math:`H(\mathbf{k}) = \sin k_x\,\sigma_x + \sin k_y\,\sigma_y
     from tbkit.kspace import KSpace, PAULI, ribbon
     from tbkit.system import System
     from tbkit.topology import find_weyl_points
+    from tbkit import models
 
     k0 = np.pi / 2
     cubic = [(1., 0., 0.), (0., 1., 0.), (0., 0., 1.)]
     lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0., 0.)}], prim_vec=cubic)
     # the two components are the "spin" of a spinful site
+    weyl = models.weyl_semimetal(k0)
+    # its hoppings, written out for the slab below (ribbon cuts a slab out of a
+    # list of hoppings): the same model
     hops = [{'i': 0, 'j': 0, 'R': (1, 0, 0), 't': -0.5j*PAULI['x'] - 0.5*PAULI['z']},
                 {'i': 0, 'j': 0, 'R': (0, 1, 0), 't': -0.5j*PAULI['y'] - 0.5*PAULI['z']},
                 {'i': 0, 'j': 0, 'R': (0, 0, 1), 't': -0.5*PAULI['z']}]
     onsite = {'a': (2. + np.cos(k0)) * PAULI['z']}
-    weyl = KSpace(lat, spin=True)
-    weyl.set_hopping(hops)
-    weyl.set_onsite(onsite)
+    check = KSpace(lat, spin=True)
+    check.set_hopping(hops)
+    check.set_onsite(onsite)
+    assert np.allclose(check.get_ham((0.3, -0.8, 1.2)), weyl.get_ham((0.3, -0.8, 1.2)))
 
 
 
@@ -73,7 +78,7 @@ The model: :math:`H(\mathbf{k}) = \sin k_x\,\sigma_x + \sin k_y\,\sigma_y
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-53
+.. GENERATED FROM PYTHON SOURCE LINES 52-58
 
 The lattice
 -----------
@@ -82,7 +87,7 @@ nearest-neighbour bonds. Each site holds a two-component orbital, and
 the hoppings along :math:`x` and :math:`y` are :math:`2\times2` matrices
 that act on it (not drawn).
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-67
+.. GENERATED FROM PYTHON SOURCE LINES 58-72
 
 .. code-block:: Python
 
@@ -112,7 +117,7 @@ that act on it (not drawn).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-75
+.. GENERATED FROM PYTHON SOURCE LINES 73-80
 
 The Weyl points and their chirality
 ---------------------------------------
@@ -122,7 +127,7 @@ measures the chirality of each touching: the Berry flux of the lower band
 out of a small sphere around it, divided by :math:`2\pi`. The two
 chiralities cancel, as they must over a whole zone (Nielsen-Ninomiya).
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-90
+.. GENERATED FROM PYTHON SOURCE LINES 80-95
 
 .. code-block:: Python
 
@@ -155,7 +160,7 @@ chiralities cancel, as they must over a whole zone (Nielsen-Ninomiya).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-96
+.. GENERATED FROM PYTHON SOURCE LINES 96-101
 
 The Chern number of the k_z planes
 ----------------------------------------
@@ -163,7 +168,7 @@ By Gauss's law, the Chern number of the plane jumps by the chirality as
 the plane crosses a Weyl point upwards: :math:`-1` at :math:`-k_0`, back up
 by :math:`+1` at :math:`+k_0`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 96-103
+.. GENERATED FROM PYTHON SOURCE LINES 101-108
 
 .. code-block:: Python
 
@@ -187,7 +192,7 @@ by :math:`+1` at :math:`+k_0`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-109
+.. GENERATED FROM PYTHON SOURCE LINES 109-114
 
 The Fermi arc
 ----------------
@@ -195,7 +200,7 @@ A slab, finite along y (:func:`~tbkit.kspace.ribbon` of the 3D model):
 at :math:`k_x = 0`, zero-energy states exist only for :math:`|k_z| < k_0`,
 and live on the two surfaces.
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-134
+.. GENERATED FROM PYTHON SOURCE LINES 114-139
 
 .. code-block:: Python
 
@@ -242,7 +247,7 @@ and live on the two surfaces.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-144
+.. GENERATED FROM PYTHON SOURCE LINES 141-149
 
 The Fermi surface of the slab
 ---------------------------------
@@ -253,7 +258,7 @@ The Fermi surface of the slab
 pockets around the projections of the Weyl points -- one closed contour,
 half on each surface.
 
-.. GENERATED FROM PYTHON SOURCE LINES 144-154
+.. GENERATED FROM PYTHON SOURCE LINES 149-159
 
 .. code-block:: Python
 
@@ -289,7 +294,7 @@ half on each surface.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.126 seconds)
+   **Total running time of the script:** (0 minutes 1.701 seconds)
 
 
 .. _sphx_glr_download_api_gallery_three_dimensions_plot_weyl_semimetal.py:

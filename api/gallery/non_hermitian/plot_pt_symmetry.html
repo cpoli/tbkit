@@ -38,7 +38,7 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -156,6 +156,20 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../tutorial.html">
     Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../coming_from_pythtb.html">
+    Coming from PythTB
   </a>
 </li>
 
@@ -290,6 +304,20 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../coming_from_pythtb.html">
+    Coming from PythTB
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../history/index.html">
     History
   </a>
@@ -418,6 +446,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_anomalous_nernst_effect.html">The Berry-Phase Anomalous Nernst Effect</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_intrinsic_spin_hall_effect.html">The Intrinsic Spin Hall Effect: Kane-Mele Plateau and Rashba Coupling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_thermal_hall_effect.html">The Intrinsic Thermal Hall Effect and the Wiedemann-Franz Law</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hall_effects/plot_wannier_position_operator.html">The Position Operator of Wannier Functions in the Anomalous Hall Effect</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../higher_order/index.html">Higher-Order Topology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -429,9 +458,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_batched_k_space.html">Batched and Threaded k-Space Diagonalization: the Haldane Model on 90,000 k-Points</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_chebyshev_time_evolution.html">Chebyshev Time Evolution: a Wavepacket on 90,000 Sites</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_kernel_polynomial_method.html">The Kernel Polynomial Method: Graphene With Vacancies, 45,000 Sites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_kpm_nonlinear_optical_conductivity.html">Second-Order Optical Conductivity from Three-Index Chebyshev Moments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_kpm_optical_conductivity.html">The Optical Conductivity of Disordered Graphene, 45,000 Sites</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_kpm_optical_hall_conductivity.html">The Optical Hall Conductivity of a Disordered Chern Insulator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_kpm_spectral_function.html">The Spectral Function of Disordered Graphene, 28,800 Sites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../large_scale/plot_spectrum_slicing.html">Every State in an Energy Window: Spectrum Slicing</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../magnetic_field/index.html">Magnetic Field</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -805,8 +836,8 @@ gamma=0.45: 2 of 40 states have Im E != 0; max|Im E| = 0.4500.
 </span><span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="s1">The amplified mode sits entirely on the gain sublattice, the damped </span><span class="s1">'</span><span class="w">
 </span>      <span class="s1">'</span><span class="s1">one entirely on the loss sublattice -- exactly as chiral symmetry demands.</span><span class="s1">'</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>amplified mode: E=0.2j, weight on gain sublattice = 1.0000, weight within 6 sites of an end = 0.9844.
-   damped mode: E=-0.2j, weight on gain sublattice = 0.0000, weight within 6 sites of an end = 0.9844.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>amplified mode: E=(-0+0.2j), weight on gain sublattice = 1.0000, weight within 6 sites of an end = 0.9844.
+   damped mode: E=(-0-0.2j), weight on gain sublattice = 0.0000, weight within 6 sites of an end = 0.9844.
 The amplified mode sits entirely on the gain sublattice, the damped one entirely on the loss sublattice -- exactly as chiral symmetry demands.
 </pre></div>
 </div>
@@ -855,7 +886,7 @@ gamma=0.80 (&gt; |v-w|=0.50): 12 complex modes.
 </span><a class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_title.html#matplotlib.axes.Axes.set_title" title="matplotlib.axes.Axes.set_title"><span class="n">ax4</span><span class="o">.</span><span class="n">set_title</span></a><span class="p">(</span><span class="sa">r</span><span class="s1">'</span><span class="s1">Eigenbasis skew at $</span><span class="s1">\</span><span class="s1">gamma=0.2$</span><span class="s1">'</span><span class="p">)</span><span class="w">
 </span><a class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.tight_layout.html#matplotlib.figure.Figure.tight_layout" title="matplotlib.figure.Figure.tight_layout"><span class="n">fig2</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<img src="../../../_images/sphx_glr_plot_pt_symmetry_003.png" srcset="../../../_images/sphx_glr_plot_pt_symmetry_003.png" alt="Edge mode breaks PT immediately, Eigenbasis skew at $\gamma=0.2$" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.087 seconds)</p>
+<img src="../../../_images/sphx_glr_plot_pt_symmetry_003.png" srcset="../../../_images/sphx_glr_plot_pt_symmetry_003.png" alt="Edge mode breaks PT immediately, Eigenbasis skew at $\gamma=0.2$" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.402 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-api-gallery-non-hermitian-plot-pt-symmetry-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/5597d7e6c7e60a2ebea3479308a6af93/plot_pt_symmetry.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_pt_symmetry.ipynb</span></code></a></p>
@@ -970,7 +1001,7 @@ gamma=0.80 (&gt; |v-w|=0.50): 12 complex modes.
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.2.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.1.
   </p>
 </div>
       

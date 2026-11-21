@@ -54,8 +54,8 @@
             </div>
         </aside>
         <h2>
-            <span class="text">244 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">244<span class="text"> run</span></button>
+            <span class="text">247 statements &nbsp;</span>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">247<span class="text"> run</span></button>
             <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">0<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
         </h2>
@@ -65,7 +65,7 @@
             <a id="nextFileLink" class="nav" href="z_9c3955d98c44937c_plot_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.17.3">coverage.py v7.17.3</a>,
-            created at 2026-11-16 16:25 +0000
+            created at 2026-11-21 10:56 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -608,38 +608,48 @@
     <p class="run"><span class="n"><a id="t526" href="#t526">526</a></span><span class="t">        <span class="nam">error_handling</span><span class="op">.</span><span class="nam">orthogonal</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">overlap</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t527" href="#t527">527</a></span><span class="t">        <span class="nam">System</span><span class="op">.</span><span class="nam">get_eig_sparse</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">n_eig</span><span class="op">,</span> <span class="nam">sigma</span><span class="op">,</span> <span class="nam">eigenvec</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t528" href="#t528">528</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t529" href="#t529">529</a></span><span class="t">    <span class="key">def</span> <span class="nam">get_local_chern_marker</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">e_fermi</span><span class="op">:</span> <span class="nam">float</span> <span class="op">=</span> <span class="num">0.</span><span class="op">,</span> <span class="nam">area</span><span class="op">:</span> <span class="nam">float</span> <span class="op">|</span> <span class="key">None</span> <span class="op">=</span> <span class="key">None</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="nam">NDArray</span><span class="op">[</span><span class="nam">np</span><span class="op">.</span><span class="nam">float64</span><span class="op">]</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t530" href="#t530">530</a></span><span class="t">        <span class="str">&#x27;&#x27;&#x27;</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t531" href="#t531">531</a></span><span class="t"><span class="str">        Get the local Chern marker (see *System.get_local_chern_marker*),</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t532" href="#t532">532</a></span><span class="t"><span class="str">        summed over the orbitals and spin of each site (orthogonal basis only).</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t533" href="#t533">533</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t534" href="#t534">534</a></span><span class="t"><span class="str">        Parameters</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t535" href="#t535">535</a></span><span class="t"><span class="str">        ----------</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t536" href="#t536">536</a></span><span class="t"><span class="str">        e_fermi : Real number, default 0</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t537" href="#t537">537</a></span><span class="t"><span class="str">        area : Positive real number, default None</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t529" href="#t529">529</a></span><span class="t">    <span class="key">def</span> <span class="nam">get_eig_window</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t530" href="#t530">530</a></span><span class="t">        <span class="nam">self</span><span class="op">,</span> <span class="nam">e_min</span><span class="op">:</span> <span class="nam">float</span><span class="op">,</span> <span class="nam">e_max</span><span class="op">:</span> <span class="nam">float</span><span class="op">,</span> <span class="nam">eigenvec</span><span class="op">:</span> <span class="nam">bool</span> <span class="op">=</span> <span class="key">False</span><span class="op">,</span> <span class="nam">n_slice</span><span class="op">:</span> <span class="nam">int</span> <span class="op">=</span> <span class="num">50</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t531" href="#t531">531</a></span><span class="t">    <span class="op">)</span> <span class="op">-&gt;</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t532" href="#t532">532</a></span><span class="t">        <span class="str">&#x27;&#x27;&#x27;</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t533" href="#t533">533</a></span><span class="t"><span class="str">        Get all the eigenpairs in the window [e_min, e_max] (see</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t534" href="#t534">534</a></span><span class="t"><span class="str">        *System.get_eig_window*; orthogonal basis only).</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t535" href="#t535">535</a></span><span class="t"><span class="str">        &#x27;&#x27;&#x27;</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t536" href="#t536">536</a></span><span class="t">        <span class="nam">error_handling</span><span class="op">.</span><span class="nam">orthogonal</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">overlap</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t537" href="#t537">537</a></span><span class="t">        <span class="nam">System</span><span class="op">.</span><span class="nam">get_eig_window</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">e_min</span><span class="op">,</span> <span class="nam">e_max</span><span class="op">,</span> <span class="nam">eigenvec</span><span class="op">,</span> <span class="nam">n_slice</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t538" href="#t538">538</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t539" href="#t539">539</a></span><span class="t"><span class="str">        Returns</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t540" href="#t540">540</a></span><span class="t"><span class="str">        -------</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t541" href="#t541">541</a></span><span class="t"><span class="str">        marker : Real ndarray, shape (sites,)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t542" href="#t542">542</a></span><span class="t"><span class="str">        &#x27;&#x27;&#x27;</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t543" href="#t543">543</a></span><span class="t">        <span class="nam">error_handling</span><span class="op">.</span><span class="nam">orthogonal</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">overlap</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t544" href="#t544">544</a></span><span class="t">        <span class="key">return</span> <span class="nam">System</span><span class="op">.</span><span class="nam">get_local_chern_marker</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">e_fermi</span><span class="op">,</span> <span class="nam">area</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t545" href="#t545">545</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t546" href="#t546">546</a></span><span class="t">    <span class="key">def</span> <span class="nam">get_bott_index</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">e_fermi</span><span class="op">:</span> <span class="nam">float</span> <span class="op">=</span> <span class="num">0.</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="nam">float</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t547" href="#t547">547</a></span><span class="t">        <span class="str">&#x27;&#x27;&#x27;</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t548" href="#t548">548</a></span><span class="t"><span class="str">        Get the Bott index of a torus (see *System.get_bott_index*), the</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t549" href="#t549">549</a></span><span class="t"><span class="str">        orbitals and spin of a site sharing its position (orthogonal basis only).</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t550" href="#t550">550</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t551" href="#t551">551</a></span><span class="t"><span class="str">        Parameters</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t552" href="#t552">552</a></span><span class="t"><span class="str">        ----------</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t553" href="#t553">553</a></span><span class="t"><span class="str">        e_fermi : Real number, default 0</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t554" href="#t554">554</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t555" href="#t555">555</a></span><span class="t"><span class="str">        Returns</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t556" href="#t556">556</a></span><span class="t"><span class="str">        -------</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t557" href="#t557">557</a></span><span class="t"><span class="str">        bott : Real number, close to an integer</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t558" href="#t558">558</a></span><span class="t"><span class="str">        &#x27;&#x27;&#x27;</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t559" href="#t559">559</a></span><span class="t">        <span class="nam">error_handling</span><span class="op">.</span><span class="nam">orthogonal</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">overlap</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t560" href="#t560">560</a></span><span class="t">        <span class="key">return</span> <span class="nam">System</span><span class="op">.</span><span class="nam">get_bott_index</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">e_fermi</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t539" href="#t539">539</a></span><span class="t">    <span class="key">def</span> <span class="nam">get_local_chern_marker</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">e_fermi</span><span class="op">:</span> <span class="nam">float</span> <span class="op">=</span> <span class="num">0.</span><span class="op">,</span> <span class="nam">area</span><span class="op">:</span> <span class="nam">float</span> <span class="op">|</span> <span class="key">None</span> <span class="op">=</span> <span class="key">None</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="nam">NDArray</span><span class="op">[</span><span class="nam">np</span><span class="op">.</span><span class="nam">float64</span><span class="op">]</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t540" href="#t540">540</a></span><span class="t">        <span class="str">&#x27;&#x27;&#x27;</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t541" href="#t541">541</a></span><span class="t"><span class="str">        Get the local Chern marker (see *System.get_local_chern_marker*),</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t542" href="#t542">542</a></span><span class="t"><span class="str">        summed over the orbitals and spin of each site (orthogonal basis only).</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t543" href="#t543">543</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t544" href="#t544">544</a></span><span class="t"><span class="str">        Parameters</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t545" href="#t545">545</a></span><span class="t"><span class="str">        ----------</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t546" href="#t546">546</a></span><span class="t"><span class="str">        e_fermi : Real number, default 0</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t547" href="#t547">547</a></span><span class="t"><span class="str">        area : Positive real number, default None</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t548" href="#t548">548</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t549" href="#t549">549</a></span><span class="t"><span class="str">        Returns</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t550" href="#t550">550</a></span><span class="t"><span class="str">        -------</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t551" href="#t551">551</a></span><span class="t"><span class="str">        marker : Real ndarray, shape (sites,)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t552" href="#t552">552</a></span><span class="t"><span class="str">        &#x27;&#x27;&#x27;</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t553" href="#t553">553</a></span><span class="t">        <span class="nam">error_handling</span><span class="op">.</span><span class="nam">orthogonal</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">overlap</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t554" href="#t554">554</a></span><span class="t">        <span class="key">return</span> <span class="nam">System</span><span class="op">.</span><span class="nam">get_local_chern_marker</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">e_fermi</span><span class="op">,</span> <span class="nam">area</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t555" href="#t555">555</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t556" href="#t556">556</a></span><span class="t">    <span class="key">def</span> <span class="nam">get_bott_index</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">e_fermi</span><span class="op">:</span> <span class="nam">float</span> <span class="op">=</span> <span class="num">0.</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="nam">float</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t557" href="#t557">557</a></span><span class="t">        <span class="str">&#x27;&#x27;&#x27;</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t558" href="#t558">558</a></span><span class="t"><span class="str">        Get the Bott index of a torus (see *System.get_bott_index*), the</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t559" href="#t559">559</a></span><span class="t"><span class="str">        orbitals and spin of a site sharing its position (orthogonal basis only).</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t560" href="#t560">560</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t561" href="#t561">561</a></span><span class="t"><span class="str">        Parameters</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t562" href="#t562">562</a></span><span class="t"><span class="str">        ----------</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t563" href="#t563">563</a></span><span class="t"><span class="str">        e_fermi : Real number, default 0</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t564" href="#t564">564</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t565" href="#t565">565</a></span><span class="t"><span class="str">        Returns</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t566" href="#t566">566</a></span><span class="t"><span class="str">        -------</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t567" href="#t567">567</a></span><span class="t"><span class="str">        bott : Real number, close to an integer</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t568" href="#t568">568</a></span><span class="t"><span class="str">        &#x27;&#x27;&#x27;</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t569" href="#t569">569</a></span><span class="t">        <span class="nam">error_handling</span><span class="op">.</span><span class="nam">orthogonal</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">overlap</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t570" href="#t570">570</a></span><span class="t">        <span class="key">return</span> <span class="nam">System</span><span class="op">.</span><span class="nam">get_bott_index</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">e_fermi</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -649,7 +659,7 @@
             <a class="nav" href="z_9c3955d98c44937c_plot_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.17.3">coverage.py v7.17.3</a>,
-            created at 2026-11-16 16:25 +0000
+            created at 2026-11-21 10:56 +0000
         </p>
     </div>
 </footer>

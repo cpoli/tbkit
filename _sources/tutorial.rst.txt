@@ -81,6 +81,15 @@ honeycomb, three for the kagome and Lieb:
 See ``lat.plot()`` to look at what you built, and
 ``examples/tight_binding/plot_building_finite_lattices.py`` for many more shapes.
 
+:mod:`tbkit.models` goes one step further, to the hoppings: the named
+models of the literature (SSH, Rice-Mele, Kitaev chain, Haldane,
+Qi-Wu-Zhang, Kane-Mele, BHZ, the three-band TMD model, a 3D topological
+insulator, a Weyl semimetal), each in one call with the parameters of
+its paper, e.g. ``models.haldane(t2=0.1, M=0.2)``. They are
+:class:`~tbkit.kspace.KSpace` models (see below);
+:func:`~tbkit.bridges.finite_system` cuts one into a finite
+:class:`~tbkit.system.System`.
+
 Sculpting works on the finite patch. Cutting a disc out of a honeycomb
 sheet, for instance:
 
@@ -460,14 +469,17 @@ Large lattices: sparse solvers and the kernel polynomial method
 --------------------------------------------------------------------
 
 Above ``System.dense_max`` sites, *System* finds neighbours with a
-k-d tree instead of a dense distance matrix, and
+k-d tree instead of a dense distance matrix,
 :meth:`~tbkit.system.System.get_eig_sparse` finds a few eigenstates near
-an energy by shift-invert. For spectral quantities of hundreds of
+an energy by shift-invert, and :meth:`~tbkit.system.System.get_eig_window`
+finds all those in an energy window (spectrum slicing, each slice counted
+exactly by Sylvester inertia). For spectral quantities of hundreds of
 thousands of sites, :mod:`tbkit.kpm` expands them in Chebyshev
 polynomials -- density of states, local density of states, the
 Kubo-Greenwood conductivity, the spectral function :math:`A(\mathbf{k}, E)`
-of a disordered sample and its optical conductivity -- at the cost of a
-few hundred sparse matrix-vector products. The same recursion, with
+of a disordered sample, its optical conductivity and its second-order
+(nonlinear) conductivity -- at the cost of a few hundred sparse
+matrix-vector products. The same recursion, with
 Bessel coefficients, evolves a state in time exactly
 (:func:`~tbkit.kpm.time_evolution`, or
 ``Propagation.get_propagation(..., method='chebyshev')``)::
@@ -482,6 +494,7 @@ See ``examples/large_scale/``.
 .. minigallery:: ../../examples/large_scale/plot_kernel_polynomial_method.py
     ../../examples/large_scale/plot_kpm_spectral_function.py
     ../../examples/large_scale/plot_kpm_optical_conductivity.py
+    ../../examples/large_scale/plot_spectrum_slicing.py
 
 
 Green's functions, occupations, and transport

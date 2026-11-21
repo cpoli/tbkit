@@ -44,23 +44,19 @@ superconductors.
 :math:`\Omega` over the zone gives the Chern number; the metric obeys the
 bound at every :math:`\mathbf{k}`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-42
+.. GENERATED FROM PYTHON SOURCE LINES 28-38
 
 .. code-block:: Python
 
     import numpy as np
     import matplotlib.pyplot as plt
 
-    import tbkit.lattices as lattices
     from tbkit.bridges import finite_system
-    from tbkit.kspace import KSpace
     from tbkit.plot import Plot
+    from tbkit import models
 
 
-    hal = KSpace(lattices.honeycomb())
-    hal.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
-    for R in [(0, 1), (-1, 0), (1, -1)]:
-        hal.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 0.2j}, {'i': 1, 'j': 1, 'R': R, 't': -0.2j}])
+    hal = models.haldane(t2=0.2)
 
 
 
@@ -69,7 +65,7 @@ bound at every :math:`\mathbf{k}`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-50
+.. GENERATED FROM PYTHON SOURCE LINES 39-46
 
 The lattice
 -----------
@@ -79,7 +75,7 @@ amplitudes: the honeycomb lattice's two sublattices ('a' and 'b', in two
 colours), the nearest-neighbour hopping (thick) and the complex
 second-neighbour hoppings :math:`\pm 0.2i` (thin).
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-53
+.. GENERATED FROM PYTHON SOURCE LINES 46-49
 
 .. code-block:: Python
 
@@ -98,12 +94,12 @@ second-neighbour hoppings :math:`\pm 0.2i` (thin).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-56
+.. GENERATED FROM PYTHON SOURCE LINES 50-52
 
 Curvature and metric over the Brillouin zone
 ---------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-83
+.. GENERATED FROM PYTHON SOURCE LINES 52-79
 
 .. code-block:: Python
 
@@ -156,7 +152,7 @@ Curvature and metric over the Brillouin zone
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.321 seconds)
+   **Total running time of the script:** (0 minutes 0.261 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_quantum_geometry.py:

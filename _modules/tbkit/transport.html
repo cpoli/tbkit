@@ -149,6 +149,20 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_pythtb.html">
+    Coming from PythTB
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../history/index.html">
     History
   </a>
@@ -271,6 +285,20 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../tutorial.html">
     Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_pythtb.html">
+    Coming from PythTB
   </a>
 </li>
 
@@ -458,6 +486,7 @@
 <span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">TypeVar</span>
 
@@ -468,6 +497,13 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">scipy.sparse.linalg</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">spla</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">tbkit.error_handling</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">error_handling</span>
+
+<span class="n">_MUMPS</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># [the python-mumps module, or None without it], once looked for</span>
+<span class="n">_MUMPS_LOCK</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>  <span class="c1"># MUMPS is not thread-safe: one call at a time</span>
+<span class="n">_MUMPS_WIDTH</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># orbitals of the widest lead from which solver 'auto' takes MUMPS</span>
+<span class="n">_POOL</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">local</span><span class="p">()</span>  <span class="c1"># .active is set in the threads of _EnergyWorkers._map</span>
+<span class="n">_SCHUR_FILL</span> <span class="o">=</span> <span class="mi">64</span>  <span class="c1"># largest Schur complement of _mumps_schur, in entries per unknown</span>
+<span class="n">_SCHUR_GROWTH</span> <span class="o">=</span> <span class="mf">1e3</span>  <span class="c1"># largest Schur entry, over the largest of the matrix, that is trusted</span>
 
 <span class="n">_T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">'_T'</span><span class="p">)</span>
 
@@ -836,6 +872,112 @@
     <span class="k">return</span> <span class="n">LeadModes</span><span class="p">(</span><span class="n">phis</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">vels</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ks</span><span class="p">),</span> <span class="nb">int</span><span class="p">)),</span> <span class="n">n_in</span><span class="p">,</span> <span class="n">u0</span><span class="p">,</span> <span class="n">u1</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_mumps_module</span><span class="p">(</span><span class="n">solver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Private function. The python-mumps module that the sparse solver</span>
+<span class="sd">    *solver* (*Transport.solver*) uses, or None for SuperLU. ``'auto'`` is</span>
+<span class="sd">    MUMPS when python-mumps is installed and the widest lead has at least</span>
+<span class="sd">    *_MUMPS_WIDTH* orbitals (*width*): below, on narrow or small devices,</span>
+<span class="sd">    SuperLU is as fast or faster. In the threads of *set_workers* it is</span>
+<span class="sd">    SuperLU too: MUMPS runs one factorization at a time, SuperLU one per</span>
+<span class="sd">    thread.</span>
+<span class="sd">    '''</span>
+    <span class="n">error_handling</span><span class="o">.</span><span class="n">transport_solver</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">solver</span> <span class="o">==</span> <span class="s1">'superlu'</span> <span class="ow">or</span> <span class="p">(</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'auto'</span> <span class="ow">and</span> <span class="p">(</span><span class="n">width</span> <span class="o">&lt;</span> <span class="n">_MUMPS_WIDTH</span> <span class="ow">or</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">_POOL</span><span class="p">,</span> <span class="s1">'active'</span><span class="p">,</span> <span class="kc">False</span><span class="p">))):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_MUMPS</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">mumps</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="n">mumps</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">_MUMPS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mumps</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">_MUMPS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">solver</span> <span class="o">==</span> <span class="s1">'mumps'</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">"</span><span class="se">\n\n</span><span class="s2">Transport.solver = 'mumps' needs the python-mumps package "</span>
+                          <span class="s2">"(conda install -c conda-forge python-mumps).</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_MUMPS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_solve</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">rows</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">solver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Private function. Solve the sparse system *mat* x = *rhs* (both CSC,</span>
+<span class="sd">    one column of *rhs* per right-hand side) with one factorization, and</span>
+<span class="sd">    return the rows *rows* of x (every row for None), as a dense array.</span>
+<span class="sd">    *solver* and *width* (the orbitals of the widest lead) choose between</span>
+<span class="sd">    MUMPS and SuperLU (*_mumps_module*).</span>
+
+<span class="sd">    With MUMPS and *rows*, nothing but the interface (*rows* and the rows</span>
+<span class="sd">    where *rhs* is not zero) is solved for: MUMPS eliminates the other</span>
+<span class="sd">    unknowns and returns the Schur complement on the interface</span>
+<span class="sd">    (*_mumps_schur*), a small dense system. Otherwise the matrix is</span>
+<span class="sd">    factorized (MUMPS or *scipy.sparse.linalg.splu*) and the right-hand</span>
+<span class="sd">    sides are solved in column blocks.</span>
+<span class="sd">    '''</span>
+    <span class="n">mumps</span> <span class="o">=</span> <span class="n">_mumps_module</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mumps</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># python-mumps 0.0.6 refuses a 1 x 1 solution</span>
+        <span class="n">lu</span> <span class="o">=</span> <span class="n">spla</span><span class="o">.</span><span class="n">splu</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_solve_columns</span><span class="p">(</span><span class="k">lambda</span> <span class="n">b</span><span class="p">:</span> <span class="n">lu</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">toarray</span><span class="p">()),</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">rows</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">_MUMPS_LOCK</span><span class="p">:</span>
+        <span class="n">sol</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">rows</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">_mumps_schur</span><span class="p">(</span><span class="n">mumps</span><span class="p">,</span> <span class="n">mat</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">rows</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_mumps_columns</span><span class="p">(</span><span class="n">mumps</span><span class="p">,</span> <span class="n">mat</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">rows</span><span class="p">)</span> <span class="k">if</span> <span class="n">sol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">sol</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_solve_columns</span><span class="p">(</span><span class="n">solve</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">rows</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Private function. The rows *rows* of the solutions *solve* (rhs), from</span>
+<span class="sd">    the sparse right-hand sides in column blocks whose dense solutions</span>
+<span class="sd">    take at most 64 MB.</span>
+<span class="sd">    '''</span>
+    <span class="n">size</span><span class="p">,</span> <span class="n">n_rhs</span> <span class="o">=</span> <span class="n">rhs</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">chunk</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">22</span> <span class="o">//</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="k">if</span> <span class="n">rows</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">rows</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">solve</span><span class="p">(</span><span class="n">rhs</span><span class="p">[:,</span> <span class="n">c</span><span class="p">:</span><span class="n">c</span> <span class="o">+</span> <span class="n">chunk</span><span class="p">])[</span><span class="n">keep</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_rhs</span><span class="p">,</span> <span class="n">chunk</span><span class="p">)])</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_mumps_columns</span><span class="p">(</span><span class="n">mumps</span><span class="p">,</span> <span class="n">mat</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">rows</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Private function. *_solve* by a MUMPS factorization of the whole matrix.</span>
+<span class="sd">    '''</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">mumps</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>  <span class="c1"># the MUMPS instance is freed here, under _MUMPS_LOCK, even after an error</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">tocoo</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">_solve_columns</span><span class="p">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">solve</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">rows</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">ctx</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_mumps_schur</span><span class="p">(</span><span class="n">mumps</span><span class="p">,</span> <span class="n">mat</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">rows</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">    Private function. *_solve* through the Schur complement. With I the</span>
+<span class="sd">    interface (*rows* and the non-zero rows of *rhs*) and D the other</span>
+<span class="sd">    unknowns, where the right-hand side vanishes,</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        S x_I = b_I\, ,\qquad S = A_{II} - A_{ID}A_{DD}^{-1}A_{DI}\, ,</span>
+
+<span class="sd">    and MUMPS returns S without the triangular solves of a full solution.</span>
+
+<span class="sd">    Returns None, for *_solve* to factorize the whole matrix instead, when</span>
+<span class="sd">    the interface is the whole system or too large for a dense S (more</span>
+<span class="sd">    than *_SCHUR_FILL* entries per unknown), or when :math:`A_{DD}` is singular or nearly so</span>
+<span class="sd">    (an eigenstate of the device cut from its leads at this energy), which</span>
+<span class="sd">    shows as an S with entries above *_SCHUR_GROWTH* times those of the matrix.</span>
+<span class="sd">    '''</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">union1d</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">indices</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">idx</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">idx</span><span class="o">.</span><span class="n">size</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;</span> <span class="n">_SCHUR_FILL</span> <span class="o">*</span> <span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">mumps</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>  <span class="c1"># the MUMPS instance is freed here, under _MUMPS_LOCK</span>
+        <span class="n">schur</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">schur</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">mat</span><span class="o">.</span><span class="n">tocoo</span><span class="p">(),</span> <span class="n">discard_factors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">mumps</span><span class="o">.</span><span class="n">MUMPSError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">ctx</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">schur</span><span class="p">))</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">schur</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">_SCHUR_GROWTH</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">schur</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">tocsr</span><span class="p">()[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">toarray</span><span class="p">())[</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">rows</span><span class="p">)]</span>
+
+
 <div class="viewcode-block" id="SMatrix">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.transport.SMatrix">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SMatrix</span><span class="p">():</span>
@@ -961,7 +1103,9 @@
 <span class="sd">        energy is one sparse factorization (or, for *RecursiveTransport*,</span>
 <span class="sd">        dense inversions of slices), mostly in</span>
 <span class="sd">        LAPACK and SuperLU, which release the GIL, so the energies run in</span>
-<span class="sd">        parallel. The results do not depend on *workers*.</span>
+<span class="sd">        parallel. In these threads the default *Transport.solver* keeps</span>
+<span class="sd">        SuperLU, since MUMPS factorizes one matrix at a time. The</span>
+<span class="sd">        results do not depend on *workers*, up to rounding.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -984,7 +1128,8 @@
 <span class="sd">        *workers* threads.</span>
 <span class="sd">        '''</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">workers</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workers</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">)))</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workers</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">)),</span>
+                                    <span class="n">initializer</span><span class="o">=</span><span class="nb">setattr</span><span class="p">,</span> <span class="n">initargs</span><span class="o">=</span><span class="p">(</span><span class="n">_POOL</span><span class="p">,</span> <span class="s1">'active'</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">energies</span><span class="p">)))</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">func</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">energies</span><span class="p">]</span>
 
@@ -1006,11 +1151,24 @@
 <span class="sd">    energy. Only *get_green* and *self_energy*, which return full matrices,</span>
 <span class="sd">    build the dense matrix *ham* (once, the first time it is needed).</span>
 
+<span class="sd">    The sparse solver is *solver*: ``'mumps'`` (the optional python-mumps</span>
+<span class="sd">    package, ``conda install -c conda-forge python-mumps``), ``'superlu'``</span>
+<span class="sd">    (SciPy) or ``'auto'``, the default. MUMPS is several times faster on</span>
+<span class="sd">    large 2D and 3D devices, and where only the leads matter (*smatrix*,</span>
+<span class="sd">    the transmissions, the noise) it solves for the lead sites alone.</span>
+<span class="sd">    SuperLU is as fast or faster on small devices and on narrow ones,</span>
+<span class="sd">    however long. ``'auto'`` takes MUMPS when it is installed and a lead</span>
+<span class="sd">    has at least 50 orbitals, and SuperLU otherwise; for a wide device</span>
+<span class="sd">    with narrow leads, set MUMPS, on the class or on one object::</span>
+
+<span class="sd">        tr.solver = 'mumps'</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    ham : Square matrix (sparse or dense)</span>
 <span class="sd">        Device Hamiltonian.</span>
 <span class="sd">    '''</span>
+    <span class="n">solver</span> <span class="o">=</span> <span class="s1">'auto'</span>  <span class="c1"># sparse solver: 'auto', 'mumps' or 'superlu'</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ham</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ham</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'c16'</span><span class="p">)</span>
@@ -1337,19 +1495,19 @@
         <span class="n">s_in</span><span class="p">,</span> <span class="n">s_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">[</span><span class="n">lead_in</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">[</span><span class="n">lead_out</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">caroli</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
-            <span class="n">g</span><span class="p">,</span> <span class="n">gam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_green_columns</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">s_in</span><span class="p">)</span>
-            <span class="n">g</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="n">s_out</span><span class="p">]</span>
+            <span class="n">g</span><span class="p">,</span> <span class="n">gam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_green_columns</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">s_in</span><span class="p">,</span> <span class="n">s_out</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">gam</span><span class="p">[</span><span class="n">lead_out</span><span class="p">]</span> <span class="o">@</span> <span class="n">g</span> <span class="o">@</span> <span class="n">gam</span><span class="p">[</span><span class="n">lead_in</span><span class="p">]</span> <span class="o">@</span> <span class="n">g</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">(</span><span class="n">caroli</span><span class="p">,</span> <span class="n">energies</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_green_columns</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">cols</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">cols</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">keep</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">]]]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">        Private method. The columns *cols* of the retarded Green's function,</span>
 <span class="sd">        :math:`G^r_{:,c} = [E + i\eta - H - \sum_l\Sigma_l]^{-1}e_c` (shape</span>
-<span class="sd">        (n_sites, len(cols))), from one sparse LU factorization: the</span>
+<span class="sd">        (n_sites, len(cols)), or (len(keep), len(cols)) with only the sites</span>
+<span class="sd">        *keep*), from one sparse factorization (*_solve*): the</span>
 <span class="sd">        self-energies only fill the blocks of the lead sites. Also returns</span>
 <span class="sd">        the broadening :math:`\Gamma_l = i(\Sigma_l - \Sigma_l^\dagger)` of</span>
 <span class="sd">        every lead, restricted to its sites (shape (len(sites), len(sites))).</span>
@@ -1369,9 +1527,16 @@
         <span class="n">mat</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">rows</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">columns</span><span class="p">))),</span>
                             <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
         <span class="n">cols</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-        <span class="n">rhs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">)),</span> <span class="s1">'c16'</span><span class="p">)</span>
-        <span class="n">rhs</span><span class="p">[</span><span class="n">cols</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">))]</span> <span class="o">=</span> <span class="mf">1.</span>
-        <span class="k">return</span> <span class="n">spla</span><span class="o">.</span><span class="n">splu</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">rhs</span><span class="p">),</span> <span class="n">gam</span>
+        <span class="n">rhs</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">),</span> <span class="s1">'c16'</span><span class="p">),</span> <span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">)))),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">_solve</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">keep</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">keep</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                      <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span><span class="p">()),</span> <span class="n">gam</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_width</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">'''</span>
+<span class="sd">        Private method. The number of orbitals of the widest lead, the</span>
+<span class="sd">        cross-section by which the solver ``'auto'`` chooses (*_mumps_module*).</span>
+<span class="sd">        '''</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">h0</span><span class="p">)</span> <span class="k">for</span> <span class="n">h0</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">)</span>
 
     <span class="c1"># ------------------------------------------------------------------</span>
     <span class="c1"># Scattering matrix and scattering states</span>
@@ -1412,8 +1577,8 @@
 <span class="sd">            -\tau_l^\dagger\psi + [(E - h_0)U_0 - vU_1]b_l = -(E - h_0 - \lambda_{in}v)\phi^{in}_l\, ,</span>
 
 <span class="sd">        one sparse system of size n_sites + sum_l m_l, factorized once</span>
-<span class="sd">        (*scipy.sparse.linalg.splu*) for every right-hand side. Only the rows</span>
-<span class="sd">        *keep* of the solution are stored (e.g. the lead amplitudes for the</span>
+<span class="sd">        (*_solve*) for every right-hand side. Only the rows</span>
+<span class="sd">        *keep* of the solution are computed (e.g. the lead amplitudes for the</span>
 <span class="sd">        scattering matrix).</span>
 
 <span class="sd">        Returns</span>
@@ -1456,11 +1621,8 @@
             <span class="k">return</span> <span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">found</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'c16'</span><span class="p">)[</span><span class="n">keep</span><span class="p">]</span>
         <span class="n">mat</span><span class="p">,</span> <span class="n">rhs</span> <span class="o">=</span> <span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">c</span><span class="p">))),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span>
                     <span class="k">for</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">((</span><span class="n">coo</span><span class="p">,</span> <span class="n">size</span><span class="p">),</span> <span class="p">(</span><span class="n">rhs_coo</span><span class="p">,</span> <span class="n">n_rhs</span><span class="p">)))</span>
-        <span class="n">lu</span> <span class="o">=</span> <span class="n">spla</span><span class="o">.</span><span class="n">splu</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
-        <span class="c1"># the right-hand sides are dense in blocks of at most 64 MB</span>
-        <span class="n">chunk</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">22</span> <span class="o">//</span> <span class="n">size</span><span class="p">)</span>
-        <span class="n">sol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">lu</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">rhs</span><span class="p">[:,</span> <span class="n">c</span><span class="p">:</span><span class="n">c</span> <span class="o">+</span> <span class="n">chunk</span><span class="p">]</span><span class="o">.</span><span class="n">toarray</span><span class="p">())[</span><span class="n">keep</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_rhs</span><span class="p">,</span> <span class="n">chunk</span><span class="p">)])</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">found</span><span class="p">],</span> <span class="n">sol</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">keep</span> <span class="o">==</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">size</span><span class="p">)[</span><span class="n">keep</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">found</span><span class="p">],</span> <span class="n">_solve</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span><span class="p">())</span>
 
 <div class="viewcode-block" id="Transport.smatrix">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.transport.Transport.smatrix">[docs]</a>
@@ -1692,12 +1854,13 @@
         <span class="n">eta</span> <span class="o">=</span> <span class="mf">1e-9</span> <span class="k">if</span> <span class="n">eta</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">eta</span>
         <span class="n">lead_sites</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sites</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
                                                <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">sites</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">]))</span>
-        <span class="n">g</span><span class="p">,</span> <span class="n">gam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_green_columns</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">lead_sites</span><span class="p">)</span>
+        <span class="n">g</span><span class="p">,</span> <span class="n">gam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_green_columns</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">lead_sites</span><span class="p">,</span> <span class="n">lead_sites</span><span class="p">)</span>
+        <span class="n">at</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">lead_sites</span><span class="p">,</span> <span class="n">sites</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">sites</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">]</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="n">q</span><span class="p">:</span>
-                    <span class="n">gpq</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">[</span><span class="n">p</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">lead_sites</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">leads</span><span class="p">[</span><span class="n">q</span><span class="p">][</span><span class="mi">3</span><span class="p">]))]</span>
+                    <span class="n">gpq</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">at</span><span class="p">[</span><span class="n">p</span><span class="p">],</span> <span class="n">at</span><span class="p">[</span><span class="n">q</span><span class="p">])]</span>
                     <span class="n">out</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">gam</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">@</span> <span class="n">gpq</span> <span class="o">@</span> <span class="n">gam</span><span class="p">[</span><span class="n">q</span><span class="p">]</span> <span class="o">@</span> <span class="n">gpq</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
         <span class="k">return</span> <span class="n">out</span></div>
 
@@ -1927,8 +2090,8 @@
             <span class="n">out</span><span class="p">[:</span><span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">))]</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="p">)]</span>
             <span class="k">return</span> <span class="n">out</span>
         <span class="n">eta</span> <span class="o">=</span> <span class="mf">1e-9</span> <span class="k">if</span> <span class="n">eta</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">eta</span>
-        <span class="n">g</span><span class="p">,</span> <span class="n">gam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_green_columns</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">s_in</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">_eigen_transmissions</span><span class="p">(</span><span class="n">gam</span><span class="p">[</span><span class="n">lead_out</span><span class="p">],</span> <span class="n">g</span><span class="p">[</span><span class="n">s_out</span><span class="p">],</span> <span class="n">gam</span><span class="p">[</span><span class="n">lead_in</span><span class="p">])</span></div>
+        <span class="n">g</span><span class="p">,</span> <span class="n">gam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_green_columns</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">s_in</span><span class="p">,</span> <span class="n">s_out</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_eigen_transmissions</span><span class="p">(</span><span class="n">gam</span><span class="p">[</span><span class="n">lead_out</span><span class="p">],</span> <span class="n">g</span><span class="p">,</span> <span class="n">gam</span><span class="p">[</span><span class="n">lead_in</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="Transport.shot_noise">
@@ -2300,7 +2463,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.2.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.1.
   </p>
 </div>
       

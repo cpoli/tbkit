@@ -149,6 +149,20 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_pythtb.html">
+    Coming from PythTB
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../history/index.html">
     History
   </a>
@@ -271,6 +285,20 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../tutorial.html">
     Tutorial
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_kwant.html">
+    Coming from Kwant
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../coming_from_pythtb.html">
+    Coming from PythTB
   </a>
 </li>
 
@@ -490,6 +518,23 @@
 <span class="sd">    '''</span>         
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter </span><span class="si">{}</span><span class="s1"> must be a real number.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var_name</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="real_numbers">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.real_numbers">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">real_numbers</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that every value of the dictionary *params* (name: value) is a</span>
+<span class="sd">    real number.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        Parameter *name* must be a real number.</span>
+<span class="sd">    '''</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">real_number</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
 
 
 
@@ -2799,6 +2844,24 @@
 
 
 
+<div class="viewcode-block" id="slice_count">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.slice_count">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">slice_count</span><span class="p">(</span><span class="n">found</span><span class="p">,</span> <span class="n">expected</span><span class="p">,</span> <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that a shift-invert slice of *System.get_eig_window* found as</span>
+<span class="sd">    many independent eigenvectors as its inertia count.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    RuntimeError</span>
+<span class="sd">        The sparse solver missed eigenvalues of a slice.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">found</span> <span class="o">!=</span> <span class="n">expected</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The sparse solver found </span><span class="si">{}</span><span class="s1"> independent eigenvectors in [</span><span class="si">{:.6g}</span><span class="s1">, </span><span class="si">{:.6g}</span><span class="s1">) '</span>
+                                      <span class="s1">'instead of </span><span class="si">{}</span><span class="s1"> (Sylvester inertia): use get_eig.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">found</span><span class="p">,</span> <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span><span class="p">,</span> <span class="n">expected</span><span class="p">))</span></div>
+
+
+
 <span class="c1">####################################</span>
 <span class="c1"># TRANSPORT</span>
 <span class="c1">####################################</span>
@@ -3033,6 +3096,22 @@
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The lead index must be an integer.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">lead</span> <span class="o">&lt;</span> <span class="n">n_leads</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">No lead </span><span class="si">{}</span><span class="s1"> (</span><span class="si">{}</span><span class="s1"> lead(s) attached with add_lead).</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lead</span><span class="p">,</span> <span class="n">n_leads</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="transport_solver">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.transport_solver">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">transport_solver</span><span class="p">(</span><span class="n">solver</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check the sparse solver of *Transport* (*Transport.solver*).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Transport.solver must be "auto", "mumps" or "superlu".</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">solver</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'auto'</span><span class="p">,</span> <span class="s1">'mumps'</span><span class="p">,</span> <span class="s1">'superlu'</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Transport.solver must be "auto", "mumps" or "superlu".</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
 
 
 
@@ -4315,10 +4394,10 @@
 
 <div class="viewcode-block" id="hr_header">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.hr_header">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">hr_header</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hr_header</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'_hr.dat'</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">'''</span>
-<span class="sd">    Check the header of a Wannier90 ``_hr.dat`` file: num_wann, nrpts and</span>
-<span class="sd">    the nrpts degeneracy weights, as positive integers.</span>
+<span class="sd">    Check the header of a Wannier90 ``_hr.dat`` (or *name*) file: num_wann,</span>
+<span class="sd">    nrpts and the nrpts degeneracy weights, as positive integers.</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
@@ -4329,11 +4408,11 @@
         <span class="n">num_wann</span><span class="p">,</span> <span class="n">nrpts</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span> <span class="o">+</span> <span class="n">nrpts</span><span class="p">]]</span>
     <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Not a Wannier90 _hr.dat file: expected num_wann, nrpts and '</span>
-                                   <span class="s1">'the degeneracy weights after the header line.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Not a Wannier90 </span><span class="si">{}</span><span class="s1"> file: expected num_wann, nrpts and '</span>
+                                   <span class="s1">'the degeneracy weights after the header.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
     <span class="k">if</span> <span class="n">num_wann</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">nrpts</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">!=</span> <span class="n">nrpts</span> <span class="ow">or</span> <span class="nb">min</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Not a Wannier90 _hr.dat file: num_wann, nrpts and the '</span>
-                                   <span class="s1">'degeneracy weights must be positive integers.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Not a Wannier90 </span><span class="si">{}</span><span class="s1"> file: num_wann, nrpts and the '</span>
+                                   <span class="s1">'degeneracy weights must be positive integers.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span></div>
 
 
 
@@ -4390,10 +4469,10 @@
 
 <div class="viewcode-block" id="win_cell">
 <a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.win_cell">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">win_cell</span><span class="p">(</span><span class="n">cell</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">win_cell</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">what</span><span class="o">=</span><span class="s1">'The unit_cell_cart block'</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">'''</span>
-<span class="sd">    Check the ``unit_cell_cart`` block of a ``.win`` file: three lines of</span>
-<span class="sd">    three real numbers.</span>
+<span class="sd">    Check the ``unit_cell_cart`` block of a ``.win`` file (or the cell of</span>
+<span class="sd">    a ``_tb.dat`` file, *what*): three lines of three real numbers.</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
@@ -4406,7 +4485,7 @@
     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
         <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The unit_cell_cart block must hold three vectors of three real numbers.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="si">{}</span><span class="s1"> must hold three vectors of three real numbers.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">what</span><span class="p">))</span></div>
 
 
 
@@ -4544,6 +4623,319 @@
     <span class="k">if</span> <span class="n">h_max</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">For dim=2, the matrix elements with R3 != 0 must vanish '</span>
                                    <span class="s1">'(largest: </span><span class="si">{:.3g}</span><span class="s1">).</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">h_max</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="tb_body">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.tb_body">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tb_body</span><span class="p">(</span><span class="n">n_tokens</span><span class="p">,</span> <span class="n">nrpts</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check the number of entries of a Wannier90 ``_tb.dat`` file.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The file must have nrpts blocks of the Hamiltonian, then nrpts of positions.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">n_tokens</span> <span class="o">!=</span> <span class="n">nrpts</span> <span class="o">*</span> <span class="p">(</span><span class="mi">6</span> <span class="o">+</span> <span class="mi">12</span> <span class="o">*</span> <span class="n">num_wann</span> <span class="o">**</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The _tb.dat file must hold, after the weights, nrpts = </span><span class="si">{0}</span><span class="s1"> blocks '</span>
+                                   <span class="s1">'"R1 R2 R3" followed by num_wann**2 = </span><span class="si">{1}</span><span class="s1"> lines "m n Re Im", then '</span>
+                                   <span class="s1">'nrpts blocks "R1 R2 R3" followed by </span><span class="si">{1}</span><span class="s1"> lines of 2 + 6 numbers.</span><span class="se">\n</span><span class="s1">'</span>
+                                   <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nrpts</span><span class="p">,</span> <span class="n">num_wann</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="tb_vectors">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.tb_vectors">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tb_vectors</span><span class="p">(</span><span class="n">ok</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that the position blocks of a ``_tb.dat`` file come in the order</span>
+<span class="sd">    of its Hamiltonian blocks.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The two lists of lattice vectors differ.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The position blocks of the _tb.dat file must list the lattice '</span>
+                                   <span class="s1">'vectors R in the order of the Hamiltonian blocks.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="tb_origin">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.tb_origin">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tb_origin</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that a ``_tb.dat`` file lists the lattice vector R = 0 once.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        R = 0 must appear once.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The _tb.dat file must list the lattice vector R = (0, 0, 0) once '</span>
+                                   <span class="s1">'(it holds the Wannier centres); it does </span><span class="si">{}</span><span class="s1"> times.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="wannier_export_dim">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.wannier_export_dim">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">wannier_export_dim</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">space_dim</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that a KSpace can be written in the Wannier90 formats: a 2D</span>
+<span class="sd">    lattice in the plane or a 3D lattice.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Only 2D models in the plane and 3D models.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">dim</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="ow">or</span> <span class="n">dim</span> <span class="o">!=</span> <span class="n">space_dim</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Only a 2D model in the plane (dim = space_dim = 2) or a 3D model '</span>
+                                   <span class="s1">'can be written in the Wannier90 formats (dim = </span><span class="si">{}</span><span class="s1">, space_dim = </span><span class="si">{}</span><span class="s1">).</span><span class="se">\n</span><span class="s1">'</span>
+                                   <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">space_dim</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="no_position_elements">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.no_position_elements">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">no_position_elements</span><span class="p">(</span><span class="n">present</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that a response which knows only the orbital positions is not</span>
+<span class="sd">    asked to use the position matrix elements of a ``_tb.dat`` model.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        *method* does not use the position matrix elements.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">present</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="si">{}</span><span class="s1"> does not use the position matrix elements of a _tb.dat model '</span>
+                                   <span class="s1">'besides the Wannier centres: read the model with '</span>
+                                   <span class="s1">'read_wannier90_tb(..., elements=False) to keep the centres only, '</span>
+                                   <span class="s1">'or pass positions=False.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">method</span><span class="p">))</span></div>
+
+
+
+<span class="c1">####################################</span>
+<span class="c1"># INTEROPERABILITY (tbkit.interop)</span>
+<span class="c1">####################################</span>
+
+
+<div class="viewcode-block" id="site_tags">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.site_tags">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">site_tags</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check a list of *n* sublattice tags (strings of 1 to TAG_LEN characters).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        tags must be a list of strings.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        One tag per site, of 1 to TAG_LEN characters.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter tags must be a list of strings.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">TAG_LEN</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter tags must hold </span><span class="si">{}</span><span class="s1"> strings (one per site) of 1 to </span><span class="si">{}</span><span class="s1"> '</span>
+                                   <span class="s1">'characters.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">TAG_LEN</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="ase_periodic">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.ase_periodic">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ase_periodic</span><span class="p">(</span><span class="n">pbc</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that an ASE Atoms object has a periodic direction.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        At least one periodic direction.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">pbc</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The Atoms object needs at least one periodic direction (pbc).</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ase_space_dim">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.ase_space_dim">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ase_space_dim</span><span class="p">(</span><span class="n">space_dim</span><span class="p">,</span> <span class="n">planar</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check the space dimension asked of *lattice_from_ase*.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        space_dim must be 2 or 3, and 2 only for a planar structure.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">space_dim</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter space_dim must be 2, 3 or None.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">space_dim</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">planar</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">space_dim=2 needs at most two periodic vectors in the (x, y) plane '</span>
+                                   <span class="s1">'and every atom at the same height.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="chemical_symbols">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.chemical_symbols">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">chemical_symbols</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">known</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that every name is a chemical symbol of ASE.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Not a chemical symbol: give a dictionary symbols={tag: symbol}.</span>
+<span class="sd">    '''</span>
+    <span class="n">unknown</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">({</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">known</span><span class="p">})</span>
+    <span class="k">if</span> <span class="n">unknown</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="si">{}</span><span class="s1"> are not chemical symbols: map the tags to symbols with '</span>
+                                   <span class="s1">'symbols={{tag: symbol}}.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unknown</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="pythtb_periodic">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.pythtb_periodic">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pythtb_periodic</span><span class="p">(</span><span class="n">n_per</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that a PythTB model has a periodic direction.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        A finite PythTB model has no KSpace.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">n_per</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The PythTB model has no periodic direction: a KSpace needs one.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="numeric_terms">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.numeric_terms">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">numeric_terms</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that the onsite energies and hoppings of a model of *code* are</span>
+<span class="sd">    numbers (or matrices of numbers).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parametric terms are not supported.</span>
+<span class="sd">    '''</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s1">'biufc'</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The </span><span class="si">{}</span><span class="s1"> model has parametric terms (strings or functions): '</span>
+                                       <span class="s1">'give them numbers before importing it.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">code</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="pybinding_aliases">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.pybinding_aliases">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pybinding_aliases</span><span class="p">(</span><span class="n">unique</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that a pybinding lattice has no sublattice aliases.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Sublattice aliases are not supported.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">unique</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The pybinding lattice has sublattice aliases, which tbkit does '</span>
+                                   <span class="s1">'not import.</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="pybinding_spin">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.pybinding_spin">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pybinding_spin</span><span class="p">(</span><span class="n">sizes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that every sublattice has two orbitals, for spin=True.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        spin=True needs two orbitals per sublattice.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">n</span> <span class="o">!=</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">sizes</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">spin=True needs every sublattice to have 2 orbitals '</span>
+                                   <span class="s1">'(they have </span><span class="si">{}</span><span class="s1">).</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sizes</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="kwant_ham">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.kwant_ham">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">kwant_ham</span><span class="p">(</span><span class="n">n_ham</span><span class="p">,</span> <span class="n">n_sites</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that a System's Hamiltonian is built, before exporting it.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Call get_ham first.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">n_ham</span> <span class="o">!=</span> <span class="n">n_sites</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The System has no Hamiltonian of its </span><span class="si">{}</span><span class="s1"> sites: call get_ham first.</span><span class="se">\n</span><span class="s1">'</span>
+                                   <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_sites</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="hermitian_matrix">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.hermitian_matrix">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">hermitian_matrix</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">leads</span><span class="o">=</span><span class="p">(),</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that a sparse Hamiltonian, and the leads (h0, v, coupling,</span>
+<span class="sd">    sites) attached to it, are Hermitian.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        The Hamiltonian must be Hermitian.</span>
+<span class="sd">    '''</span>
+    <span class="n">dev</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ham</span> <span class="o">-</span> <span class="n">ham</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="k">if</span> <span class="n">ham</span><span class="o">.</span><span class="n">nnz</span> <span class="k">else</span> <span class="mf">0.</span>
+    <span class="n">dev</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">dev</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">h0</span> <span class="o">-</span> <span class="n">h0</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="k">for</span> <span class="n">h0</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="ow">in</span> <span class="n">leads</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">dev</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Kwant needs a Hermitian Hamiltonian (largest deviation </span><span class="si">{:.3g}</span><span class="s1">).</span><span class="se">\n</span><span class="s1">'</span>
+                                   <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dev</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="kwant_finite">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.kwant_finite">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">kwant_finite</span><span class="p">(</span><span class="n">fsys</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that an object is a finalized, finite Kwant system.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        Not a finalized finite Kwant system.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">fsys</span><span class="p">,</span> <span class="s1">'hamiltonian_submatrix'</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">fsys</span><span class="p">,</span> <span class="s1">'sites'</span><span class="p">))</span> \
+            <span class="ow">or</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">fsys</span><span class="p">,</span> <span class="s1">'cell_size'</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Expected a finalized, finite Kwant system '</span>
+                                  <span class="s1">'(builder.finalized(), not a lead).</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="kwant_orbitals">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.kwant_orbitals">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">kwant_orbitals</span><span class="p">(</span><span class="n">n_orbitals</span><span class="p">,</span> <span class="n">n_ham</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that the orbitals of a Kwant system match its Hamiltonian.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Set norbs on the site families.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">n_orbitals</span> <span class="o">!=</span> <span class="n">n_ham</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">The Kwant system has </span><span class="si">{}</span><span class="s1"> orbitals for </span><span class="si">{}</span><span class="s1"> sites: set norbs on its '</span>
+                                   <span class="s1">'site families.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_ham</span><span class="p">,</span> <span class="n">n_orbitals</span><span class="p">))</span></div>
 
 
 
@@ -4837,6 +5229,74 @@
 <span class="sd">    '''</span>
     <span class="k">if</span> <span class="n">part</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'real'</span><span class="p">,</span> <span class="s1">'imag'</span><span class="p">,</span> <span class="s1">'complex'</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter part must be "real", "imag" or "complex".</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="cartesian_axes">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.cartesian_axes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cartesian_axes</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">space_dim</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">'component'</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check a string of Cartesian axes ('x', 'y', 'z', within the space</span>
+<span class="sd">    dimension), for the derivatives of *KSpace.finite_derivatives* and the</span>
+<span class="sd">    components of *kpm.nonlinear_optical_conductivity*.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        Parameter must be a string.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter must be letters among the axes (*length* of them if given).</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter </span><span class="si">{}</span><span class="s1"> must be a string.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var_name</span><span class="p">))</span>
+    <span class="n">letters</span> <span class="o">=</span> <span class="s1">'xyz'</span><span class="p">[:</span><span class="n">space_dim</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">axes</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">letters</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">axes</span><span class="p">)</span> <span class="o">!=</span> <span class="n">length</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter </span><span class="si">{}</span><span class="s1"> must be a string of </span><span class="si">{}</span><span class="s1"> letters among '</span>
+                                    <span class="s2">"'</span><span class="si">{}</span><span class="s2">'.</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var_name</span><span class="p">,</span> <span class="n">length</span> <span class="ow">or</span> <span class="s1">'one or more'</span><span class="p">,</span> <span class="n">letters</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="nonlinear_derivatives">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.nonlinear_derivatives">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">nonlinear_derivatives</span><span class="p">(</span><span class="n">derivatives</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check the derivatives of the Hamiltonian given to</span>
+<span class="sd">    *kpm.nonlinear_optical_conductivity*: a dict holding every key in</span>
+<span class="sd">    *keys*, each a (n, n) matrix.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        Parameter derivatives must be a dict.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter derivatives must hold the derivative along each key.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">derivatives</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter derivatives must be a dict (see KSpace.finite_derivatives).</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+    <span class="n">missing</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">derivatives</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter derivatives lacks the derivatives </span><span class="si">{}</span><span class="s1"> (see '</span>
+                                    <span class="s1">'KSpace.finite_derivatives).</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">missing</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="n">velocity</span><span class="p">(</span><span class="n">derivatives</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">n</span><span class="p">,</span> <span class="s2">"derivatives['</span><span class="si">{}</span><span class="s2">']"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="nonzero_frequencies">
+<a class="viewcode-back" href="../../tbkit.html#tbkit.error_handling.nonzero_frequencies">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">nonzero_frequencies</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">var_name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''</span>
+<span class="sd">    Check that the frequencies of a nonlinear response are finite and</span>
+<span class="sd">    nonzero (the velocity gauge divides by them).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Parameter must be nonzero.</span>
+<span class="sd">    '''</span>
+    <span class="n">frequencies</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">var_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">omega</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">Parameter </span><span class="si">{}</span><span class="s1"> must be nonzero.</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var_name</span><span class="p">))</span></div>
 
 
 
@@ -6591,7 +7051,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.2.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.1.
   </p>
 </div>
       

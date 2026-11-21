@@ -6,11 +6,12 @@ Large lattices
 --------------
 
 Lattices far beyond dense diagonalization: sparse neighbour search,
-shift-invert eigensolvers, and the kernel polynomial method, which
-turns spectral densities, spectral functions, DC and optical
-conductivities of hundreds of thousands of sites into a few hundred
-sparse matrix-vector products, and evolves wavepackets in time by the
-same Chebyshev recursion. In k-space,
+shift-invert eigensolvers, every eigenstate in an energy window by
+spectrum slicing, and the kernel polynomial method, which turns spectral
+densities, spectral functions, DC, optical and second-order optical
+conductivities of hundreds of thousands of sites into sparse
+matrix-vector products, and evolves wavepackets in time by the same
+Chebyshev recursion. In k-space,
 fine meshes are diagonalized in batches, optionally across threads.
 
 
@@ -78,6 +79,23 @@ fine meshes are diagonalized in batches, optionally across threads.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="A crystal without inversion symmetry answers a field \mathbf{E}(\omega_1) + \mathbf{E}(\omega_2) with a current at \omega_1 + \omega_2, j^a = \sigma^{abc}(\omega_1, \omega_2)E^b(\omega_1)E^c(\omega_2): second-harmonic generation at \omega_1 = \omega_2, and at \omega_2 = -\omega_1 a direct current, the shift current of /api/gallery/optics/plot_bulk_photovoltaic_shift_current.">
+
+.. only:: html
+
+  .. image:: /api/gallery/large_scale/images/thumb/sphx_glr_plot_kpm_nonlinear_optical_conductivity_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/large_scale/plot_kpm_nonlinear_optical_conductivity`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Second-Order Optical Conductivity from Three-Index Chebyshev Moments</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The Kubo-Greenwood formula gives the absorptive part of the optical conductivity as a joint density of occupied and empty states, weighted by the velocity between them:">
 
 .. only:: html
@@ -127,6 +145,23 @@ fine meshes are diagonalized in batches, optionally across threads.
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A dense diagonalization gives every eigenstate of a flake, at a cost O(N^3) and N^2 numbers in memory: 32 GB of complex numbers for 45,000 sites. Shift-invert (~tbkit.system.System.get_eig_sparse) gives the few states nearest one energy. Between the two, one often wants all the states in a window: those near a Dirac point, inside a gap, or in one band.">
+
+.. only:: html
+
+  .. image:: /api/gallery/large_scale/images/thumb/sphx_glr_plot_spectrum_slicing_thumb.png
+    :alt:
+
+  :doc:`/api/gallery/large_scale/plot_spectrum_slicing`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Every State in an Energy Window: Spectrum Slicing</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -140,7 +175,9 @@ fine meshes are diagonalized in batches, optionally across threads.
    /api/gallery/large_scale/plot_batched_k_space
    /api/gallery/large_scale/plot_chebyshev_time_evolution
    /api/gallery/large_scale/plot_kernel_polynomial_method
+   /api/gallery/large_scale/plot_kpm_nonlinear_optical_conductivity
    /api/gallery/large_scale/plot_kpm_optical_conductivity
    /api/gallery/large_scale/plot_kpm_optical_hall_conductivity
    /api/gallery/large_scale/plot_kpm_spectral_function
+   /api/gallery/large_scale/plot_spectrum_slicing
 

@@ -35,7 +35,7 @@ the lower band's Chern number, computed via
 :meth:`~tbkit.kspace.KSpace.chern_number`, is :math:`\pm 1` for :math:`|M|`
 below that (:math:`+1` here, with :math:`\phi=\pi/2`), 0 above it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-56
+.. GENERATED FROM PYTHON SOURCE LINES 19-36
 
 .. code-block:: Python
 
@@ -43,9 +43,10 @@ below that (:math:`+1` here, with :math:`\phi=\pi/2`), 0 above it.
     import matplotlib.pyplot as plt
 
     from tbkit.lattice import Lattice
-    from tbkit.kspace import KSpace, reciprocal_vectors, high_symmetry_path
+    from tbkit.kspace import reciprocal_vectors, high_symmetry_path
     from tbkit.system import System
     from tbkit.plot import Plot
+    from tbkit import models
 
 
     DX, DY = 0.5 * 3 ** 0.5, 0.5
@@ -55,25 +56,6 @@ below that (:math:`+1` here, with :math:`\phi=\pi/2`), 0 above it.
     M_c = 3 * np.sqrt(3) * t2 * abs(np.sin(phi))  # critical mass (see module docstring)
 
 
-    def haldane(M):
-        '''Build the Haldane model with staggered onsite energy +-M.'''
-        lat = Lattice(unit_cell=unit_cell, prim_vec=prim_vec)
-        hal = KSpace(lat)
-        hal.set_hopping([{'i': 0, 'j': 1, 'R': (0, 0), 't': t1},
-                                {'i': 0, 'j': 1, 'R': (-1, 0), 't': t1},
-                                {'i': 0, 'j': 1, 'R': (0, -1), 't': t1}])
-        # next-nearest-neighbor hopping t2*exp(+i*phi) along the three
-        # second-neighbor vectors a2, -a1, a1-a2 (120 degrees apart, so the
-        # model keeps the lattice's C3 symmetry; the reverse bonds, added as
-        # Hermitian conjugates, carry exp(-i*phi)). Same 3 vectors for both
-        # sublattices, but with opposite chirality (t2*exp(+-i*phi)) -- this
-        # circulating "staggered flux" is what breaks time-reversal symmetry
-        # without any net magnetic field through the unit cell.
-        for R in [(0, 1), (-1, 0), (1, -1)]:
-            hal.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': t2*np.exp(1j*phi)}])
-            hal.set_hopping([{'i': 1, 'j': 1, 'R': R, 't': t2*np.exp(-1j*phi)}])
-        hal.set_onsite({'a': M, 'b': -M})
-        return hal
 
 
 
@@ -81,9 +63,7 @@ below that (:math:`+1` here, with :math:`\phi=\pi/2`), 0 above it.
 
 
 
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 57-65
+.. GENERATED FROM PYTHON SOURCE LINES 37-45
 
 The lattice
 --------------
@@ -94,7 +74,7 @@ bonds shown. What the model adds is invisible in this picture: a
 opposite chirality on the two, which is why it breaks time-reversal
 symmetry without any net flux through the cell.
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-72
+.. GENERATED FROM PYTHON SOURCE LINES 45-52
 
 .. code-block:: Python
 
@@ -117,26 +97,26 @@ symmetry without any net flux through the cell.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-75
+.. GENERATED FROM PYTHON SOURCE LINES 53-55
 
 Chern number across the topological phase transition
 ------------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-103
+.. GENERATED FROM PYTHON SOURCE LINES 55-83
 
 .. code-block:: Python
 
 
     masses = np.linspace(0., 2*M_c, 21)
-    chern = [haldane(M).chern_number(bands=[0], nk=40) for M in masses]
+    chern = [models.haldane(t1, t2, phi, M=M).chern_number(bands=[0], nk=40) for M in masses]
 
     # The gaps at K and K' are 2|M + M_c| and 2|M - M_c|: Haldane's formula,
     # checked directly. The one at K' closes at M = M_c.
     b1, b2 = (np.array(v) for v in reciprocal_vectors(prim_vec))
     K_pt = (b1 - b2) / 3
     for M in [0., 0.5*M_c, 1.5*M_c]:
-        en_K = np.linalg.eigvalsh(haldane(M).get_ham(K_pt))
-        en_Kp = np.linalg.eigvalsh(haldane(M).get_ham(-K_pt))
+        en_K = np.linalg.eigvalsh(models.haldane(t1, t2, phi, M=M).get_ham(K_pt))
+        en_Kp = np.linalg.eigvalsh(models.haldane(t1, t2, phi, M=M).get_ham(-K_pt))
         assert np.isclose(en_K[1] - en_K[0], 2*abs(M + M_c), atol=1e-10)
         assert np.isclose(en_Kp[1] - en_Kp[0], 2*abs(M - M_c), atol=1e-10)
 
@@ -176,7 +156,7 @@ Chern number across the topological phase transition
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-112
+.. GENERATED FROM PYTHON SOURCE LINES 84-92
 
 Berry curvature in the topological phase
 ------------------------------------------------
@@ -187,12 +167,12 @@ rather than concentrated at the Dirac points.
 :meth:`~tbkit.kspace.KSpace.plot_berry_curvature` draws it as a density
 over the first Brillouin zone, the hexagon whose corners are K and K'.
 
-.. GENERATED FROM PYTHON SOURCE LINES 112-118
+.. GENERATED FROM PYTHON SOURCE LINES 92-98
 
 .. code-block:: Python
 
 
-    hal_topological = haldane(M=0.)
+    hal_topological = models.haldane(t1, t2, phi, M=0.)
     curv = hal_topological.berry_curvature(bands=[0], nk=60)
     assert np.isclose(curv.sum(), 2 * np.pi, atol=1e-6)
     fig2 = hal_topological.plot_berry_curvature(0, nk=60, fs=14)
@@ -209,14 +189,14 @@ over the first Brillouin zone, the hexagon whose corners are K and K'.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-123
+.. GENERATED FROM PYTHON SOURCE LINES 99-103
 
 Band structure in the topological phase
 ------------------------------------------------
 :func:`~tbkit.kspace.high_symmetry_path` recognizes the hexagonal
 lattice and returns the path :math:`\Gamma` - M - K - :math:`\Gamma`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-127
+.. GENERATED FROM PYTHON SOURCE LINES 103-107
 
 .. code-block:: Python
 
@@ -239,7 +219,7 @@ lattice and returns the path :math:`\Gamma` - M - K - :math:`\Gamma`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.530 seconds)
+   **Total running time of the script:** (0 minutes 0.481 seconds)
 
 
 .. _sphx_glr_download_api_gallery_topology_plot_haldane_topology.py:

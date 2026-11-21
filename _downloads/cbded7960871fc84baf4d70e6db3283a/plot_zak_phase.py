@@ -29,19 +29,9 @@ gauge-invariant discrete Wilson loop.
 import numpy as np
 import matplotlib.pyplot as plt
 
-from tbkit.lattice import Lattice
 from tbkit.bridges import finite_system
-from tbkit.kspace import KSpace
 from tbkit.plot import Plot
-
-
-def ssh(v, w):
-    lat = Lattice(unit_cell=[{'tag': 'a', 'r0': (0., 0.)}, {'tag': 'b', 'r0': (0.5, 0.)}],
-                         prim_vec=[(1., 0.)])
-    chain = KSpace(lat)
-    chain.set_hopping([{'i': 0, 'j': 1, 'R': (0,), 't': v},
-                                {'i': 1, 'j': 0, 'R': (1,), 't': w}])
-    return chain
+from tbkit import models
 
 
 # %%
@@ -53,15 +43,15 @@ def ssh(v, w):
 # :math:`v > w` (top) and :math:`v < w` (bottom).
 
 fig_lat, axes_lat = plt.subplots(2, 1, figsize=(7, 2.2))
-Plot(finite_system(ssh(1., 0.4), 8)).lattice(plt_hop=True, ms=7, c=4., ax=axes_lat[0])
-Plot(finite_system(ssh(0.4, 1.), 8)).lattice(plt_hop=True, ms=7, c=4., ax=axes_lat[1])
+Plot(finite_system(models.ssh(1., 0.4), 8)).lattice(plt_hop=True, ms=7, c=4., ax=axes_lat[0])
+Plot(finite_system(models.ssh(0.4, 1.), 8)).lattice(plt_hop=True, ms=7, c=4., ax=axes_lat[1])
 
 # %%
 # The Wannier centre sits on the strong bond
 # -------------------------------------------------
 
 for v, w, centre in [(1., 0.4, 0.25), (0.4, 1., 0.75)]:
-    x = ssh(v, w).wannier_centers(0, nk=200)[0]
+    x = models.ssh(v, w).wannier_centers(0, nk=200)[0]
     print('v = {}, w = {}: Wannier centre x = {:.6f}'.format(v, w, x))
     assert np.isclose(x, centre, atol=1e-8)
 
@@ -72,7 +62,7 @@ for v, w, centre in [(1., 0.4, 0.25), (0.4, 1., 0.75)]:
 # :math:`\pi` where it closes, at :math:`v = w`.
 
 ratios = np.linspace(0.2, 2., 37)
-zak = np.array([ssh(r, 1.).berry_phase(0, nk=200) for r in ratios])
+zak = np.array([models.ssh(r, 1.).berry_phase(0, nk=200) for r in ratios])
 centres = (zak / (2*np.pi)) % 1.
 topo = ratios < 1.
 assert np.allclose(centres[topo], 0.75, atol=1e-8)
@@ -94,7 +84,7 @@ fig.set_layout_engine('tight')
 # Placing both orbitals on the cell origin (``positions=False``) shifts
 # each phase, but not the quantized difference between the two phases.
 
-diff = (ssh(0.4, 1.).berry_phase(0, positions=False)
-            - ssh(1., 0.4).berry_phase(0, positions=False)) % (2*np.pi)
+diff = (models.ssh(0.4, 1.).berry_phase(0, positions=False)
+            - models.ssh(1., 0.4).berry_phase(0, positions=False)) % (2*np.pi)
 assert np.isclose(diff, np.pi)
 print('Zak-phase difference in the periodic gauge: {:.6f} = pi.'.format(diff))

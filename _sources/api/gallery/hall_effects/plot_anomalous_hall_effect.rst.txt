@@ -43,27 +43,16 @@ no longer zero even in a topologically trivial phase.
 behind it at any Fermi level, for the Haldane model below (the sign is that
 of :meth:`~tbkit.kspace.KSpace.chern_number`, see its docstring).
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-46
+.. GENERATED FROM PYTHON SOURCE LINES 27-35
 
 .. code-block:: Python
 
     import numpy as np
     import matplotlib.pyplot as plt
 
-    import tbkit.lattices as lattices
     from tbkit.bridges import finite_system
-    from tbkit.kspace import KSpace
     from tbkit.plot import Plot
-
-
-    def haldane(M, t2=0.2):
-        '''Haldane model: nearest-neighbour t = 1, i t2 on the second neighbours, mass +-M.'''
-        hal = KSpace(lattices.honeycomb())
-        hal.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
-        for R in [(0, 1), (-1, 0), (1, -1)]:  # a2, -a1, a1 - a2: 120 degrees apart
-            hal.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j*t2}, {'i': 1, 'j': 1, 'R': R, 't': -1j*t2}])
-        hal.set_onsite({'a': M, 'b': -M})
-        return hal
+    from tbkit import models
 
 
 
@@ -73,7 +62,7 @@ of :meth:`~tbkit.kspace.KSpace.chern_number`, see its docstring).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-55
+.. GENERATED FROM PYTHON SOURCE LINES 36-44
 
 The lattice
 -----------
@@ -84,12 +73,12 @@ proportional to its amplitude: the honeycomb lattice's two sublattices
 (thick) and the complex second-neighbour hoppings :math:`\pm it_2`
 within each sublattice (thin), which break time-reversal symmetry.
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-59
+.. GENERATED FROM PYTHON SOURCE LINES 44-48
 
 .. code-block:: Python
 
 
-    fig_lat = Plot(finite_system(haldane(0.3), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+    fig_lat = Plot(finite_system(models.haldane(t2=0.2, M=0.3), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 
 
@@ -104,7 +93,7 @@ within each sublattice (thin), which break time-reversal symmetry.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-66
+.. GENERATED FROM PYTHON SOURCE LINES 49-55
 
 The Hall conductivity across the spectrum
 ---------------------------------------------
@@ -113,13 +102,13 @@ The topological phase (:math:`M = 0.3`, below Haldane's
 :math:`M_c = 3\sqrt3\,t_2 \approx 1.04`) and the trivial one
 (:math:`M = 1.5`):
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-103
+.. GENERATED FROM PYTHON SOURCE LINES 55-92
 
 .. code-block:: Python
 
 
     e_f = np.linspace(-3.6, 3.6, 721)
-    phases = {'topological, M = 0.3': haldane(0.3), 'trivial, M = 1.5': haldane(1.5)}
+    phases = {'topological, M = 0.3': models.haldane(t2=0.2, M=0.3), 'trivial, M = 1.5': models.haldane(t2=0.2, M=1.5)}
     sigma = {name: hal.hall_conductivity(e_f, nk=150) for name, hal in phases.items()}
 
     for name, hal in phases.items():
@@ -172,11 +161,11 @@ The topological phase (:math:`M = 0.3`, below Haldane's
     topological, M = 0.3: sigma_xy(E_F = -1.20) = 0.4184 e^2/h
     trivial, M = 1.5: sigma_xy(E_F = -1.20) = 0.1695 e^2/h
 
-    <matplotlib.legend.Legend object at 0x77ea38100050>
+    <matplotlib.legend.Legend object at 0x10b6f13a0>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 105-115
+.. GENERATED FROM PYTHON SOURCE LINES 94-104
 
 Where the curvature sits
 ---------------------------
@@ -189,7 +178,7 @@ at one valley and not at the other), so :math:`\sigma_{xy}` rises and
 then falls back to exactly 0 as the band fills: a Hall current carried
 by a metal whose filled bands are topologically trivial.
 
-.. GENERATED FROM PYTHON SOURCE LINES 115-123
+.. GENERATED FROM PYTHON SOURCE LINES 104-112
 
 .. code-block:: Python
 
@@ -214,7 +203,7 @@ by a metal whose filled bands are topologically trivial.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 124-130
+.. GENERATED FROM PYTHON SOURCE LINES 113-119
 
 Temperature and convergence
 ------------------------------
@@ -223,7 +212,7 @@ empty the top of the lower band), and speeds up the convergence in the
 mesh: at :math:`T = 0.05`, a 60 x 60 mesh already agrees with 240 x 240
 to :math:`10^{-4}` in the bands.
 
-.. GENERATED FROM PYTHON SOURCE LINES 130-146
+.. GENERATED FROM PYTHON SOURCE LINES 119-135
 
 .. code-block:: Python
 
@@ -258,14 +247,14 @@ to :math:`10^{-4}` in the bands.
 
     T = 0.05, nk = 60 vs 240: max difference 1.37e-07
 
-    <matplotlib.legend.Legend object at 0x77ea3831bb10>
+    <matplotlib.legend.Legend object at 0x10b944950>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.928 seconds)
+   **Total running time of the script:** (0 minutes 1.904 seconds)
 
 
 .. _sphx_glr_download_api_gallery_hall_effects_plot_anomalous_hall_effect.py:

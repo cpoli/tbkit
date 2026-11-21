@@ -31,32 +31,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tbkit.lattices as lattices
-from tbkit.kspace import KSpace, PAULI
+from tbkit.kspace import PAULI
 from tbkit.plot import Plot
 from tbkit.system import System
+from tbkit import models
 
 
-lat = lattices.honeycomb()
 lam = 0.06
 S_Z = np.kron(np.eye(2), PAULI['z'])  # sigma_z on both sites
-
-
-def kane_mele(M=0.1, rashba=0.):
-    km = KSpace(lat, spin=True)
-    km.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
-    for R in [(0, 1), (-1, 0), (1, -1)]:
-        km.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j*lam*PAULI['z']},
-                                {'i': 1, 'j': 1, 'R': R, 't': -1j*lam*PAULI['z']}])
-    if rashba:
-        tau = np.array([d['r0'] for d in lat.unit_cell])
-        a = np.array(lat.prim_vec)
-        for R in [(0, 0), (-1, 0), (0, -1)]:
-            d = tau[1] + R[0]*a[0] + R[1]*a[1] - tau[0]
-            d = d / np.linalg.norm(d)
-            km.set_hopping([{'i': 0, 'j': 1, 'R': R,
-                                     't': 1j*rashba*(PAULI['x']*d[1] - PAULI['y']*d[0])}])
-    km.set_onsite({'a': M, 'b': -M})
-    return km
 
 
 def spin_spectrum(km, ks):
@@ -87,7 +69,7 @@ fig_lat = Plot(vis).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 # :math:`P s_z P` has eigenvalues exactly :math:`\pm1`: the sectors are spin
 # up and spin down, with Chern numbers :math:`\pm1`.
 
-c_plus, c_minus = kane_mele().sector_chern_numbers(S_Z, [0, 1])
+c_plus, c_minus = models.kane_mele(lambda_so=lam, lambda_v=0.1).sector_chern_numbers(S_Z, [0, 1])
 print('Rashba 0: C_+ = {:.3f}, C_- = {:.3f}'.format(c_plus, c_minus))
 assert np.allclose([c_plus, c_minus], [1., -1.])
 
@@ -105,7 +87,7 @@ rashbas = np.array([0., 0.05, 0.1, 0.15, 0.2, 0.3])
 fracs = np.stack(np.meshgrid(np.arange(40) / 40, np.arange(40) / 40, indexing='ij'), -1).reshape(-1, 2)
 c_s, nu, spin_gap, bulk_gap = [], [], [], []
 for r in rashbas:
-    km = kane_mele(rashba=r)
+    km = models.kane_mele(lambda_so=lam, lambda_v=0.1, lambda_r=r)
     c_s.append(km.spin_chern_number([0, 1]))
     nu.append(km.z2_invariant([0, 1], nk=60, nk_perp=41))
     spin_gap.append(np.min(np.abs(spin_spectrum(km, fracs @ km.rec_vec_k))))
@@ -114,7 +96,7 @@ for r in rashbas:
 c_s = np.array(c_s)
 for row in zip(rashbas, c_s, nu, spin_gap, bulk_gap):
     print('lambda_R = {:.2f}: C_s = {:+.3f}, nu = {}, spin gap {:.3f}, bulk gap {:.3f}'.format(*row))
-km = kane_mele(rashba=0.1)
+km = models.kane_mele(lambda_so=lam, lambda_v=0.1, lambda_r=0.1)
 ham = km.get_ham([0.3, 0.7])
 assert np.max(np.abs(ham @ S_Z - S_Z @ ham)) > 0.05  # s_z is not conserved
 assert np.allclose(c_s, [1, 1, 1, 1, 0, 0], atol=1e-6)
@@ -131,7 +113,7 @@ assert min(spin_gap) > 0.1
 
 time_reversal = np.kron(np.eye(2), 1j*PAULI['y'])
 for B in (0.02, 0.05):
-    km_b = kane_mele(rashba=0.1)
+    km_b = models.kane_mele(lambda_so=lam, lambda_v=0.1, lambda_r=0.1)
     km_b.set_onsite({'a': 0.1*PAULI['0'] + B*PAULI['x'], 'b': -0.1*PAULI['0'] + B*PAULI['x']})
     assert km_b.symmetry_error(time_reversal, antiunitary=True) > 0.01
     assert np.isclose(km_b.spin_chern_number([0, 1]), 1.) and abs(km_b.chern_number([0, 1])) < 1e-8
@@ -148,7 +130,7 @@ kpts = np.concatenate([np.linspace(corners[i], corners[i + 1], 60, endpoint=Fals
 # sphinx_gallery_thumbnail_number = 2
 fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 for r, color in ((0., 'k'), (0.1, 'b'), (0.15, 'r')):
-    w = spin_spectrum(kane_mele(rashba=r), kpts)
+    w = spin_spectrum(models.kane_mele(lambda_so=lam, lambda_v=0.1, lambda_r=r), kpts)
     axes[0].plot(w, color=color, label=[r'$\lambda_R = {}$'.format(r), None])
 axes[0].axhline(0., color='gray', lw=0.5)
 axes[0].set_xticks([0, 60, 120, 179], [r'$\Gamma$', '$K$', '$M$', r'$\Gamma$'])

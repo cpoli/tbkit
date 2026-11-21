@@ -49,7 +49,7 @@ edge states.
 :meth:`~tbkit.kspace.KSpace.thermal_hall_conductivity` evaluates it for the
 Haldane model below.
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-55
+.. GENERATED FROM PYTHON SOURCE LINES 33-44
 
 .. code-block:: Python
 
@@ -57,23 +57,12 @@ Haldane model below.
     import matplotlib.pyplot as plt
     from scipy.integrate import trapezoid
 
-    import tbkit.lattices as lattices
     from tbkit.bridges import finite_system
-    from tbkit.kspace import KSpace
     from tbkit.plot import Plot
+    from tbkit import models
 
 
-    def haldane(M, t2=0.2):
-        '''Haldane model: nearest-neighbour t = 1, i t2 on the second neighbours, mass +-M.'''
-        hal = KSpace(lattices.honeycomb())
-        hal.set_hopping([{'i': 0, 'j': 1, 'R': R, 't': 1.} for R in [(0, 0), (-1, 0), (0, -1)]])
-        for R in [(0, 1), (-1, 0), (1, -1)]:
-            hal.set_hopping([{'i': 0, 'j': 0, 'R': R, 't': 1j*t2}, {'i': 1, 'j': 1, 'R': R, 't': -1j*t2}])
-        hal.set_onsite({'a': M, 'b': -M})
-        return hal
-
-
-    hal = haldane(0.3)
+    hal = models.haldane(t2=0.2, M=0.3)
 
 
 
@@ -82,7 +71,7 @@ Haldane model below.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-64
+.. GENERATED FROM PYTHON SOURCE LINES 45-53
 
 The lattice
 -----------
@@ -93,12 +82,12 @@ proportional to its amplitude: the honeycomb lattice's two sublattices
 (thick) and the complex second-neighbour hoppings :math:`\pm it_2`
 within each sublattice (thin), which break time-reversal symmetry.
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-68
+.. GENERATED FROM PYTHON SOURCE LINES 53-57
 
 .. code-block:: Python
 
 
-    fig_lat = Plot(finite_system(haldane(0.3), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
+    fig_lat = Plot(finite_system(models.haldane(t2=0.2, M=0.3), (5, 4))).lattice(plt_hop=True, ms=12, figsize=(5.5, 4.5))
 
 
 
@@ -113,7 +102,7 @@ within each sublattice (thin), which break time-reversal symmetry.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-74
+.. GENERATED FROM PYTHON SOURCE LINES 58-63
 
 The Wiedemann-Franz ratio across the spectrum
 -------------------------------------------------
@@ -121,7 +110,7 @@ The Wiedemann-Franz ratio across the spectrum
 :math:`\frac{\pi^2}{3}\sigma_{xy}` (:math:`\sigma_{xy}` in :math:`e^2/h`):
 on the plateau they are equal, :math:`\pi^2/3` for :math:`C = 1`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-87
+.. GENERATED FROM PYTHON SOURCE LINES 63-76
 
 .. code-block:: Python
 
@@ -151,7 +140,7 @@ on the plateau they are equal, :math:`\pi^2/3` for :math:`C = 1`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-94
+.. GENERATED FROM PYTHON SOURCE LINES 77-83
 
 The law needs :math:`\sigma_{xy}(E)` to vary slowly within
 :math:`k_BT` of :math:`\mu`. At :math:`k_BT = 0.2`, comparable to the
@@ -160,7 +149,7 @@ in the middle of the gap. The exact relation to :math:`\sigma_{xy}(E)`
 holds everywhere, as a fine energy grid of the :math:`T = 0` Hall
 conductivity confirms.
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-117
+.. GENERATED FROM PYTHON SOURCE LINES 83-106
 
 .. code-block:: Python
 
@@ -204,14 +193,14 @@ conductivity confirms.
     T = 0.2: max |kappa - integral of sigma_xy(E)| = 4.5e-06
     T = 0.2: kappa / (pi^2/3 T sigma) at mu = 0: 0.874
 
-    <matplotlib.legend.Legend object at 0x77ea3c4d3ed0>
+    <matplotlib.legend.Legend object at 0x11484f800>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.956 seconds)
+   **Total running time of the script:** (0 minutes 2.618 seconds)
 
 
 .. _sphx_glr_download_api_gallery_hall_effects_plot_thermal_hall_effect.py:
